@@ -11,6 +11,9 @@ You can find the most recent version of the Create React App guide [here](https:
 * [Getting Started](#getting-started)
 * [Development](#development)
   * [Git Workflow](#git-workflow)
+  * [JavaScript](#javascript)
+    * [Formatting](#formatting)
+    * [Static Type Checking](#static-type-checking)
   * [Styling](#styling)
 
 ## Getting Started
@@ -59,6 +62,10 @@ Pull requests should be sent to the `develop` branch for code review.
 Merges into `master` happen at the end of sprints, and tags in master correspond to production releases.
 
 ### JavaScript
+
+#### Formatting
+
+We use [Prettier](https://prettier.io/), an opinionated code formatter, for JS code formatting. Whenever a commit is made, Prettier will automatically format the changed files. Prettier can also be [integrated](https://prettier.io/docs/en/editors.html) into many text editors.
 
 #### Static Type Checking
 
