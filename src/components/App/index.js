@@ -11,13 +11,15 @@ import Experiment from '../../containers/Experiment';
 const App = () => {
   return (
     <div className={styles.App}>
-      <Header />
       <Router history={history}>
-        <Switch>
-          <Route exact path="/" component={Search} />
-          <Route path="/results" component={Results} />
-          <Route path="/experiment" component={Experiment} />
-        </Switch>
+        <div>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Search} />
+            <Route path="/results" component={Results} />
+            <Route path="/experiment" component={Experiment} />
+          </Switch>
+        </div>
       </Router>
     </div>
   );
