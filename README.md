@@ -58,6 +58,18 @@ New features should be developed on new feature branches named in the following 
 Pull requests should be sent to the `develop` branch for code review.
 Merges into `master` happen at the end of sprints, and tags in master correspond to production releases.
 
+### JavaScript
+
+#### Static Type Checking
+
+We use [Flow](https://flow.org/) for static type checking.
+
+Flow only checks files that include this annotation as the first line of the file:
+
+`// @flow`
+
+Run Flow via the command line with `yarn flow`.
+
 ### Styling
 
 * Pre-processor: [SASS](https://sass-lang.com/)
