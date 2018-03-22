@@ -9,7 +9,9 @@ You can find the most recent version of the Create React App guide [here](https:
 ## Table of Contents
 
 * [Getting Started](#getting-started)
-* [Tools/Packages](#toolspackages)
+* [Development](#development)
+  * [Git Workflow](#git-workflow)
+  * [Styling](#styling)
 
 ## Getting Started
 
@@ -46,9 +48,17 @@ In the project directory, run:
 * Correctly bundles React in production mode and optimizes the build for the best performance
 * Build is minified and filenames include hashes
 
-## Tools/Packages
+## Development
 
-#### Styling
+### Git Workflow
+
+This project uses a [feature branch](http://nvie.com/posts/a-successful-git-branching-model/) based workflow.
+
+New features should be developed on new feature branches named in the following format: `[username]/[fancy-branch-name]`.
+Pull requests should be sent to the `develop` branch for code review.
+Merges into `master` happen at the end of sprints, and tags in master correspond to production releases.
+
+### Styling
 
 * Pre-processor: [SASS](https://sass-lang.com/)
 * Locally scoped class names with [CSS Modules](https://github.com/css-modules/css-modules)
