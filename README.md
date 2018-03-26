@@ -12,6 +12,7 @@ You can find the most recent version of the Create React App guide [here](https:
 * [Development](#development)
   * [Git Workflow](#git-workflow)
   * [JavaScript](#javascript)
+    * [Framework](#framework)
     * [Formatting](#formatting)
     * [Static Type Checking](#static-type-checking)
   * [Styling](#styling)
@@ -62,6 +63,10 @@ Pull requests should be sent to the `develop` branch for code review.
 Merges into `master` happen at the end of sprints, and tags in master correspond to production releases.
 
 ### JavaScript
+
+#### Framework
+
+This project is using [React](https://reactjs.org/) as a frontend framework coupled with [Redux](https://redux.js.org/) for state management. Routing is being implemented with [React Router](https://github.com/ReactTraining/react-router).
 
 #### Formatting
 
