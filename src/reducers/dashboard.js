@@ -18,3 +18,13 @@ const dashboardReducer = (state = initialState, action) => {
 };
 
 export default dashboardReducer;
+
+export function getTotalLengthofQueuesByType(state) {
+  const stats = state.dashboard.stats;
+  return Object.keys(stats).map((job, i) => {
+    return {
+      name: job,
+      value: stats[job].total
+    };
+  });
+}

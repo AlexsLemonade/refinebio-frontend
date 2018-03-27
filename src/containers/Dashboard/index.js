@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
 import * as actions from '../../actions/dashboard';
+import * as chartSelectors from '../../reducers/dashboard';
 
 class Dashboard extends Component {
   componentWillMount() {
@@ -11,13 +12,7 @@ class Dashboard extends Component {
 
   render() {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-    const { dashboard: { stats } } = this.props;
-    const data = Object.keys(stats).map((job, i) => {
-      return {
-        name: job,
-        value: stats[job].total
-      };
-    });
+    const { totalLengthOfQueuesByType } = this.props;
 
     return (
       <div className="Dashboard">
@@ -43,7 +38,7 @@ class Dashboard extends Component {
               <PieChart>
                 <Tooltip />
                 <Pie
-                  data={data}
+                  data={totalLengthOfQueuesByType}
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
@@ -51,7 +46,7 @@ class Dashboard extends Component {
                   outerRadius={'100%'}
                   fill="#8884d8"
                 >
-                  {data.map((entry, index) => (
+                  {totalLengthOfQueuesByType.map((entry, index) => (
                     <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
@@ -67,7 +62,9 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
   const { dashboard } = state;
   return {
-    dashboard
+    totalLengthOfQueuesByType: chartSelectors.getTotalLengthofQueuesByType(
+      state
+    )
   };
 };
 
