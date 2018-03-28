@@ -44,3 +44,15 @@ export function getAllEstimatedTimeTilCompletion(state, jobType) {
     return allEstimatedTimes;
   }, {});
 }
+
+export function getExperimentsCount(state) {
+  const { experiments: { count = 0 } } = state.dashboard;
+
+  return count;
+}
+
+export function getSamplesCount(state) {
+  const { samples: { count = 0 } } = state.dashboard;
+
+  return count;
+}

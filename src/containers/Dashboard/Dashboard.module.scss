@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Hind+Vadodara:300,400,500,600');
+
+.dashboard {
+  font-family: 'Hind Vadodara', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #f3f3f3;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-column-gap: 15px;
+  margin: 0 auto;
+  width: 90%;
+}
