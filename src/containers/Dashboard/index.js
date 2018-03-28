@@ -22,17 +22,22 @@ class Dashboard extends Component {
 
     const chartsConfig = [
       {
-        title: 'Total Estimated Time Till Completion: Processor Jobs',
+        title: 'Total Length of Queues by Type',
+        data: totalLengthOfQueuesByType,
+        type: 'pie'
+      },
+      {
+        title: 'Estimated Time Till Completion: Processor Jobs',
         data: estimatedTimesTilCompletion.processor_jobs,
         type: 'text'
       },
       {
-        title: 'Total Estimated Time Till Completion: Survey Jobs',
+        title: 'Estimated Time Till Completion: Survey Jobs',
         data: estimatedTimesTilCompletion.survey_jobs,
         type: 'text'
       },
       {
-        title: 'Total Estimated Time Till Completion: Downloader Jobs',
+        title: 'Estimated Time Till Completion: Downloader Jobs',
         data: estimatedTimesTilCompletion.downloader_jobs,
         type: 'text'
       },
@@ -45,11 +50,6 @@ class Dashboard extends Component {
         title: 'Total Samples Created',
         data: samplesCount,
         type: 'text'
-      },
-      {
-        title: 'Total Length of Queues by Type',
-        data: totalLengthOfQueuesByType,
-        type: 'pie'
       }
     ];
 

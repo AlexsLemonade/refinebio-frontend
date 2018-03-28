@@ -19,25 +19,27 @@ const ResponsiveChart = props => {
   };
 
   return (
-    <div
-      style={{
-        paddingBottom: '100%',
-        width: '100%',
-        position: 'relative',
-        height: 0
-      }}
-    >
+    <div>
+      <h2>{title}</h2>
       <div
         style={{
-          position: 'absolute',
-          top: '0',
-          left: '0',
+          paddingBottom: '100%',
           width: '100%',
-          height: '100%'
+          position: 'relative',
+          height: 0
         }}
       >
-        <h2>{title}</h2>
-        {renderChart(type, data)}
+        <div
+          style={{
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%'
+          }}
+        >
+          {renderChart(type, data)}
+        </div>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ const App = () => {
   return (
     <div className={styles.App}>
       <Router history={history}>
-        <div>
+        <div className={styles.container}>
           <Header />
           <Switch>
             <Route exact path="/" component={Search} />
