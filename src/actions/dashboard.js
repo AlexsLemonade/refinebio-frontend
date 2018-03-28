@@ -1,11 +1,15 @@
 export const fetchDashboardData = () => {
   return async dispatch => {
     try {
-      const response = await (await fetch('./data/stats.json')).json();
+      const stats = await (await fetch('./data/stats.json')).json();
+      const samples = await (await fetch('./data/samples.json')).json();
+      const experiments = await (await fetch('./data/experiments.json')).json();
       dispatch({
         type: 'DASHBOARD_REQUEST_SUCCESS',
         data: {
-          stats: response
+          stats,
+          samples,
+          experiments
         }
       });
     } catch (e) {
