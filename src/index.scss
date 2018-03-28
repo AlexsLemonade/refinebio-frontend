@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Overpass:300,400,500,600');
+@import url('https://fonts.googleapis.com/css?family=Overpass:300,400,500,600,700');
 
 html,
 body,
@@ -6,6 +6,8 @@ body,
   position: relative;
   width: 100%;
   min-height: 100vh;
+  color: #444;
+  font-size: 15px;
 }
 
 * {

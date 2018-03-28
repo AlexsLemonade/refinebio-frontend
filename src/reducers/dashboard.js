@@ -27,7 +27,7 @@ export function getTotalLengthofQueuesByType(state) {
   const stats = state.dashboard.stats;
   return Object.keys(stats).map(jobType => {
     return {
-      name: jobType,
+      name: jobType.split('_')[0],
       value: stats[jobType].total
     };
   });

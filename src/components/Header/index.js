@@ -6,7 +6,9 @@ const Header = props => {
   return (
     <header>
       <div className={styles.container}>
-        <div className={styles.logo}>refine.bio</div>
+        <div className={styles.logo}>
+          <span className={styles.highlight}>refine</span>.bio
+        </div>
         <div>
           <Link className={styles.link} to="/">
             Search

@@ -4,10 +4,11 @@ import {
   PieChart as PieRechart,
   Pie,
   Cell,
-  Tooltip
+  Tooltip,
+  Legend
 } from 'recharts';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#36AEB5', '#3CC7B0', '#65DDA1', '#9BF18D'];
 
 const PieChart = props => {
   const { data = [] } = props;
@@ -23,11 +24,13 @@ const PieChart = props => {
           cy="50%"
           outerRadius={'100%'}
           fill="#8884d8"
+          paddingAngle={0}
         >
           {data.map((entry, index) => (
             <Cell key={index} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
+        <Legend iconType={'circle'} iconSize={10} />
       </PieRechart>
     </ResponsiveContainer>
   );

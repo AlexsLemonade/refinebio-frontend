@@ -8,7 +8,7 @@ const ResponsiveChart = props => {
   const renderChart = (type, data) => {
     switch (type.toLowerCase()) {
       case 'text': {
-        return <h3>{data}</h3>;
+        return <h3 className={styles.text}>{data}</h3>;
       }
       case 'pie': {
         return <PieChart data={data} />;
@@ -21,26 +21,9 @@ const ResponsiveChart = props => {
 
   return (
     <div className={styles.chart}>
-      <h2>{title}</h2>
-      <div
-        style={{
-          paddingBottom: '100%',
-          width: '100%',
-          position: 'relative',
-          height: 0
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: '100%'
-          }}
-        >
-          {renderChart(type, data)}
-        </div>
+      <h2 className={styles.title}>{title}</h2>
+      <div className={styles.container}>
+        <div className={styles.absolute}>{renderChart(type, data)}</div>
       </div>
     </div>
   );
