@@ -1,5 +1,6 @@
 import React from 'react';
 import PieChart from '../PieChart';
+import * as styles from './ResponsiveChart.module.scss';
 
 const ResponsiveChart = props => {
   const { type, title, data } = props;
@@ -19,7 +20,7 @@ const ResponsiveChart = props => {
   };
 
   return (
-    <div>
+    <div className={styles.chart}>
       <h2>{title}</h2>
       <div
         style={{

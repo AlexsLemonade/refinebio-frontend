@@ -1,11 +1,20 @@
 .container {
   justify-content: space-between;
+  align-items: center;
   display: flex;
   width: 95%;
-  max-width: 1200px;
+  max-width: 1600px;
+  padding: 10px 15px;
   margin: 0 auto;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .link {
   margin: 0 16px;
+  font-weight: 500;
 }
