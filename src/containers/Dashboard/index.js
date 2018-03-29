@@ -5,7 +5,7 @@ import * as actions from '../../actions/dashboard';
 import * as chartSelectors from '../../reducers/dashboard';
 import ResponsiveChart from '../../components/ResponsiveChart';
 
-import * as styles from './Dashboard.module.scss';
+import './Dashboard.scss';
 
 class Dashboard extends Component {
   componentWillMount() {
@@ -54,8 +54,8 @@ class Dashboard extends Component {
     ];
 
     return (
-      <div className={styles.dashboard}>
-        <div className={styles.container}>
+      <div className="dashboard">
+        <div className="dashboard__container">
           {chartsConfig.map((chart, i) => {
             const { type, title, data } = chart;
             return (

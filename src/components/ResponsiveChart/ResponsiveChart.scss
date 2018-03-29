@@ -1,0 +1,31 @@
+.responsive-chart {
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 24px;
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 24px;
+  }
+
+  &__text {
+    font-size: 3rem;
+  }
+
+  &__container {
+    position: relative;
+    height: 0;
+    width: 100%;
+    padding-bottom: 100%;
+  }
+
+  &__absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

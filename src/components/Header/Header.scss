@@ -1,0 +1,28 @@
+.header {
+  &__container {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    width: 95%;
+    max-width: 1600px;
+    padding: 10px 15px;
+    margin: 0 auto;
+  }
+
+  &__logo {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  &__highlight {
+    color: #36AEB5;
+    font-weight: 500;
+  }
+
+  &__link {
+    margin: 0 16px;
+    font-weight: 500;
+  }
+}
+

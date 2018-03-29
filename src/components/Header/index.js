@@ -1,25 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Header.module.scss';
+import './Header.scss';
 
 const Header = props => {
   return (
     <header>
-      <div className={styles.container}>
-        <div className={styles.logo}>
-          <span className={styles.highlight}>refine</span>.bio
+      <div className="header__container">
+        <div className="header__logo">
+          <span className="header__highlight">refine</span>.bio
         </div>
         <div>
-          <Link className={styles.link} to="/">
+          <Link className="header__link" to="/">
             Search
           </Link>
-          <Link className={styles.link} to="/api">
+          <Link className="header__link" to="/api">
             API
           </Link>
-          <Link className={styles.link} to="/docs">
+          <Link className="header__link" to="/docs">
             Docs
           </Link>
-          <Link className={styles.link} to="/about">
+          <Link className="header__link" to="/about">
             About
           </Link>
         </div>

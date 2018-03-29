@@ -1,0 +1,15 @@
+.dashboard {
+  flex: 1;
+  background: #F5F6FA;
+
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 32px;
+    grid-template-rows: auto;
+    padding: 32px 0;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1600px;
+  }
+}

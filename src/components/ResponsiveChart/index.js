@@ -1,6 +1,6 @@
 import React from 'react';
 import PieChart from '../PieChart';
-import * as styles from './ResponsiveChart.module.scss';
+import './ResponsiveChart.scss';
 
 const ResponsiveChart = props => {
   const { type, title, data } = props;
@@ -8,7 +8,7 @@ const ResponsiveChart = props => {
   const renderChart = (type, data) => {
     switch (type.toLowerCase()) {
       case 'text': {
-        return <h3 className={styles.text}>{data}</h3>;
+        return <h3 className="responsive-chart__text">{data}</h3>;
       }
       case 'pie': {
         return <PieChart data={data} />;
@@ -20,10 +20,12 @@ const ResponsiveChart = props => {
   };
 
   return (
-    <div className={styles.chart}>
-      <h2 className={styles.title}>{title}</h2>
-      <div className={styles.container}>
-        <div className={styles.absolute}>{renderChart(type, data)}</div>
+    <div className="responsive-chart">
+      <h2 className="responsive-chart__title">{title}</h2>
+      <div className="responsive-chart__container">
+        <div className="responsive-chart__absolute">
+          {renderChart(type, data)}
+        </div>
       </div>
     </div>
   );
