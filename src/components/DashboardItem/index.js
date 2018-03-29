@@ -1,9 +1,9 @@
 import React from 'react';
 import PieChart from '../PieChart';
-import './ResponsiveChart.scss';
+import './DashboardItem.scss';
 
-const ResponsiveChart = props => {
-  const { type, title, data } = props;
+const DashboardItem = props => {
+  const { type, title, data, size = 'one-one' } = props;
 
   const renderChart = (type, data) => {
     switch (type.toLowerCase()) {
@@ -19,11 +19,13 @@ const ResponsiveChart = props => {
     }
   };
 
+  const isChart = type !== 'text';
+
   return (
-    <div className="responsive-chart">
+    <div className={`responsive-chart responsive-chart--${size}`}>
       <h2 className="responsive-chart__title">{title}</h2>
       <div className="responsive-chart__container">
-        <div className="responsive-chart__absolute">
+        <div className={isChart ? 'responsive-chart__absolute' : null}>
           {renderChart(type, data)}
         </div>
       </div>
@@ -31,4 +33,4 @@ const ResponsiveChart = props => {
   );
 };
 
-export default ResponsiveChart;
+export default DashboardItem;

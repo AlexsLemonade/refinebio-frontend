@@ -2,6 +2,12 @@
   background: #fff;
   border: 1px solid #eee;
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+
+  &--one-one {
+    grid-row: span 2;
+  }
 
   &__title {
     font-size: 1.1rem;
@@ -16,9 +22,10 @@
 
   &__container {
     position: relative;
-    height: 0;
     width: 100%;
-    padding-bottom: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
   }
 
   &__absolute {

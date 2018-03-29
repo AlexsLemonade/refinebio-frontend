@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/dashboard';
 import * as chartSelectors from '../../reducers/dashboard';
-import ResponsiveChart from '../../components/ResponsiveChart';
+import DashboardItem from '../../components/DashboardItem';
 
 import './Dashboard.scss';
 
@@ -24,32 +24,38 @@ class Dashboard extends Component {
       {
         title: 'Total Length of Queues by Type',
         data: totalLengthOfQueuesByType,
-        type: 'pie'
+        type: 'pie',
+        size: 'one-one'
       },
       {
         title: 'Estimated Time Till Completion: Processor Jobs',
         data: estimatedTimesTilCompletion.processor_jobs,
-        type: 'text'
+        type: 'text',
+        size: 'two-one'
       },
       {
         title: 'Estimated Time Till Completion: Survey Jobs',
         data: estimatedTimesTilCompletion.survey_jobs,
-        type: 'text'
+        type: 'text',
+        size: 'two-one'
       },
       {
         title: 'Estimated Time Till Completion: Downloader Jobs',
         data: estimatedTimesTilCompletion.downloader_jobs,
-        type: 'text'
+        type: 'text',
+        size: 'two-one'
       },
       {
         title: 'Total Experiments Created',
         data: experimentsCount,
-        type: 'text'
+        type: 'text',
+        size: 'two-one'
       },
       {
         title: 'Total Samples Created',
         data: samplesCount,
-        type: 'text'
+        type: 'text',
+        size: 'two-one'
       }
     ];
 
@@ -57,9 +63,15 @@ class Dashboard extends Component {
       <div className="dashboard">
         <div className="dashboard__container">
           {chartsConfig.map((chart, i) => {
-            const { type, title, data } = chart;
+            const { type, title, data, size } = chart;
             return (
-              <ResponsiveChart key={i} type={type} data={data} title={title} />
+              <DashboardItem
+                key={i}
+                type={type}
+                data={data}
+                title={title}
+                size={size}
+              />
             );
           })}
         </div>
