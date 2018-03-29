@@ -17,10 +17,7 @@
     "redux-thunk": "^2.2.0"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,json,css}": [
-      "prettier --single-quote --write",
-      "git add"
-    ]
+    "src/**/*.{js,jsx,json,css}": ["prettier --single-quote --write", "git add"]
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -32,5 +29,6 @@
   },
   "devDependencies": {
     "flow-bin": "^0.68.0"
-  }
+  },
+  "proxy": "http://184.72.200.146"
 }

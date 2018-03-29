@@ -28,9 +28,28 @@ export function getTotalLengthofQueuesByType(state) {
   return Object.keys(stats).map(jobType => {
     return {
       name: jobType.split('_')[0],
-      value: stats[jobType].total
+      value: stats[jobType].open + stats[jobType].pending
     };
   });
+}
+
+export function getJobsByStatusStatus(state) {
+  const stats = state.dashboard.stats;
+  return Object.keys(stats).reduce((accum, jobType) => {
+    accum[jobType] = Object.keys(stats[jobType]).reduce(
+      (allStatuses, status) => {
+        if (status !== 'total' && status !== 'average_time') {
+          allStatuses.push({
+            name: status,
+            value: stats[jobType][status]
+          });
+        }
+        return allStatuses;
+      },
+      []
+    );
+    return accum;
+  }, {});
 }
 
 export function getAllEstimatedTimeTilCompletion(state, jobType) {
@@ -40,7 +59,8 @@ export function getAllEstimatedTimeTilCompletion(state, jobType) {
 
   return Object.keys(stats).reduce((allEstimatedTimes, jobType) => {
     allEstimatedTimes[jobType] =
-      stats[jobType].total * parseInt(stats[jobType].average_time, 10);
+      stats[jobType].open +
+      stats[jobType].pending * parseInt(stats[jobType].average_time, 10);
     return allEstimatedTimes;
   }, {});
 }

@@ -17,13 +17,32 @@ class Dashboard extends Component {
       totalLengthOfQueuesByType,
       estimatedTimesTilCompletion,
       experimentsCount,
-      samplesCount
+      samplesCount,
+      jobsByStatus
     } = this.props;
 
     const chartsConfig = [
       {
         title: 'Total Length of Queues by Type',
         data: totalLengthOfQueuesByType,
+        type: 'pie',
+        size: 'one-one'
+      },
+      {
+        title: 'Survey Jobs by Status',
+        data: jobsByStatus.survey_jobs,
+        type: 'pie',
+        size: 'one-one'
+      },
+      {
+        title: 'Processor Jobs by Status',
+        data: jobsByStatus.processor_jobs,
+        type: 'pie',
+        size: 'one-one'
+      },
+      {
+        title: 'Downloader Jobs by Status',
+        data: jobsByStatus.downloader_jobs,
         type: 'pie',
         size: 'one-one'
       },
@@ -85,6 +104,7 @@ const mapStateToProps = state => {
     totalLengthOfQueuesByType: chartSelectors.getTotalLengthofQueuesByType(
       state
     ),
+    jobsByStatus: chartSelectors.getJobsByStatusStatus(state),
     estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
       state,
       'processor_jobs'

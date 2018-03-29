@@ -24,7 +24,11 @@ const DashboardItem = props => {
   return (
     <div className={`responsive-chart responsive-chart--${size}`}>
       <h2 className="responsive-chart__title">{title}</h2>
-      <div className="responsive-chart__container">
+      <div
+        className={`responsive-chart__container ${
+          isChart ? 'responsive-chart__container--chart' : ''
+        }`}
+      >
         <div className={isChart ? 'responsive-chart__absolute' : null}>
           {renderChart(type, data)}
         </div>
