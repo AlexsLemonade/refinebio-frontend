@@ -1,9 +1,10 @@
 import React from 'react';
 import PieChart from '../PieChart';
+import LineChart from '../LineChart';
 import './DashboardItem.scss';
 
 const DashboardItem = props => {
-  const { type, title, data, size = 'one-one' } = props;
+  const { type, title, data, size = 'small' } = props;
 
   const renderChart = (type, data) => {
     switch (type.toLowerCase()) {
@@ -12,6 +13,9 @@ const DashboardItem = props => {
       }
       case 'pie': {
         return <PieChart data={data} />;
+      }
+      case 'line': {
+        return <LineChart data={data} />;
       }
       default: {
         return null;
@@ -25,9 +29,7 @@ const DashboardItem = props => {
     <div className={`responsive-chart responsive-chart--${size}`}>
       <h2 className="responsive-chart__title">{title}</h2>
       <div
-        className={`responsive-chart__container ${
-          isChart ? 'responsive-chart__container--chart' : ''
-        }`}
+        className={`responsive-chart__container responsive-chart__container--${size}`}
       >
         <div className={isChart ? 'responsive-chart__absolute' : null}>
           {renderChart(type, data)}

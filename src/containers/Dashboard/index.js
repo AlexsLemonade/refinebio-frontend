@@ -18,7 +18,8 @@ class Dashboard extends Component {
       estimatedTimesTilCompletion,
       experimentsCount,
       samplesCount,
-      jobsByStatus
+      jobsByStatus,
+      sizeOfQueuesOverTime
     } = this.props;
 
     const chartsConfig = [
@@ -26,55 +27,61 @@ class Dashboard extends Component {
         title: 'Total Length of Queues by Type',
         data: totalLengthOfQueuesByType,
         type: 'pie',
-        size: 'one-one'
+        size: 'medium'
       },
       {
         title: 'Estimated Time Till Completion: Survey Jobs',
         data: estimatedTimesTilCompletion.survey_jobs,
         type: 'text',
-        size: 'two-one'
+        size: 'small'
       },
       {
         title: 'Estimated Time Till Completion: Processor Jobs',
         data: estimatedTimesTilCompletion.processor_jobs,
         type: 'text',
-        size: 'two-one'
+        size: 'small'
       },
       {
         title: 'Estimated Time Till Completion: Downloader Jobs',
         data: estimatedTimesTilCompletion.downloader_jobs,
         type: 'text',
-        size: 'two-one'
+        size: 'small'
       },
       {
         title: 'Survey Jobs by Status',
         data: jobsByStatus.survey_jobs,
         type: 'pie',
-        size: 'one-one'
+        size: 'medium'
       },
       {
         title: 'Processor Jobs by Status',
         data: jobsByStatus.processor_jobs,
         type: 'pie',
-        size: 'one-one'
+        size: 'medium'
       },
       {
         title: 'Downloader Jobs by Status',
         data: jobsByStatus.downloader_jobs,
         type: 'pie',
-        size: 'one-one'
+        size: 'medium'
       },
       {
         title: 'Total Experiments Created',
         data: experimentsCount,
         type: 'text',
-        size: 'two-one'
+        size: 'small'
       },
       {
         title: 'Total Samples Created',
         data: samplesCount,
         type: 'text',
-        size: 'two-one'
+        size: 'small'
+      },
+      {
+        title: 'Size of Queues Over Time',
+        data: sizeOfQueuesOverTime.survey,
+        type: 'line',
+        size: 'large'
       }
     ];
 
@@ -110,7 +117,8 @@ const mapStateToProps = state => {
       'processor_jobs'
     ),
     experimentsCount: chartSelectors.getExperimentsCount(state),
-    samplesCount: chartSelectors.getSamplesCount(state)
+    samplesCount: chartSelectors.getSamplesCount(state),
+    sizeOfQueuesOverTime: chartSelectors.getSizeOfQueuesOverTime(state)
   };
 };
 

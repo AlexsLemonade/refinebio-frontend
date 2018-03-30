@@ -1,18 +1,20 @@
 const initialState = {
   stats: {},
   samples: {},
-  experiments: {}
+  experiments: {},
+  jobs: {}
 };
 
 const dashboardReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'DASHBOARD_REQUEST_SUCCESS': {
-      const { stats, samples, experiments } = action.data;
+      const { stats, samples, experiments, jobs } = action.data;
       return {
         ...state,
         stats,
         samples,
-        experiments
+        experiments,
+        jobs
       };
     }
     default: {
@@ -82,4 +84,9 @@ export function getSamplesCount(state) {
   const { samples: { count = 0 } } = state.dashboard;
 
   return count;
+}
+
+export function getSizeOfQueuesOverTime(state) {
+  const { jobs } = state.dashboard;
+  return jobs;
 }
