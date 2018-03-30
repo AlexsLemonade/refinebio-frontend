@@ -52,15 +52,22 @@ export function getJobsByStatusStatus(state) {
   }, {});
 }
 
+function convertMinToHours(sec) {
+  const hours = Math.floor(sec / 3600),
+    minutes = Math.floor((sec % 3600) / 60);
+  return `${hours} hr ${minutes} min`;
+}
+
 export function getAllEstimatedTimeTilCompletion(state, jobType) {
   const stats = state.dashboard.stats;
 
   if (!Object.keys(stats).length) return {};
 
   return Object.keys(stats).reduce((allEstimatedTimes, jobType) => {
-    allEstimatedTimes[jobType] =
-      stats[jobType].open +
-      stats[jobType].pending * parseInt(stats[jobType].average_time, 10);
+    const estimateSec =
+      (stats[jobType].open + stats[jobType].pending) *
+      parseInt(stats[jobType].average_time, 10);
+    allEstimatedTimes[jobType] = convertMinToHours(estimateSec);
     return allEstimatedTimes;
   }, {});
 }
