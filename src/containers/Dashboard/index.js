@@ -29,6 +29,24 @@ class Dashboard extends Component {
         size: 'one-one'
       },
       {
+        title: 'Estimated Time Till Completion: Survey Jobs',
+        data: estimatedTimesTilCompletion.survey_jobs,
+        type: 'text',
+        size: 'two-one'
+      },
+      {
+        title: 'Estimated Time Till Completion: Processor Jobs',
+        data: estimatedTimesTilCompletion.processor_jobs,
+        type: 'text',
+        size: 'two-one'
+      },
+      {
+        title: 'Estimated Time Till Completion: Downloader Jobs',
+        data: estimatedTimesTilCompletion.downloader_jobs,
+        type: 'text',
+        size: 'two-one'
+      },
+      {
         title: 'Survey Jobs by Status',
         data: jobsByStatus.survey_jobs,
         type: 'pie',
@@ -45,24 +63,6 @@ class Dashboard extends Component {
         data: jobsByStatus.downloader_jobs,
         type: 'pie',
         size: 'one-one'
-      },
-      {
-        title: 'Estimated Time Till Completion: Processor Jobs',
-        data: estimatedTimesTilCompletion.processor_jobs,
-        type: 'text',
-        size: 'two-one'
-      },
-      {
-        title: 'Estimated Time Till Completion: Survey Jobs',
-        data: estimatedTimesTilCompletion.survey_jobs,
-        type: 'text',
-        size: 'two-one'
-      },
-      {
-        title: 'Estimated Time Till Completion: Downloader Jobs',
-        data: estimatedTimesTilCompletion.downloader_jobs,
-        type: 'text',
-        size: 'two-one'
       },
       {
         title: 'Total Experiments Created',
