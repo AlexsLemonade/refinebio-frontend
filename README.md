@@ -21,9 +21,9 @@ You can find the most recent version of the Create React App guide [here](https:
 
 ### Requirements
 
-For development, you will need Node.js and [Yarn package manager](https://yarnpkg.com/en/) installed on your environment.
+For development, you will need [Node.js](https://nodejs.org/en/download/) and [Yarn package manager](https://yarnpkg.com/lang/en/docs/install/) installed on your environment.
 
-You can install Yarn through [Homebrew package manager](https://brew.sh/). This will also install Node.js if not already installed.
+If you are using a Mac, you can install Yarn through [Homebrew package manager](https://brew.sh/). This will also install Node.js if not already installed.
 
 `brew install yarn`
 
@@ -59,7 +59,7 @@ In the project directory, run:
 This project uses a [feature branch](http://nvie.com/posts/a-successful-git-branching-model/) based workflow.
 
 New features should be developed on new feature branches named in the following format: `[username]/[fancy-branch-name]`.
-Pull requests should be sent to the `develop` branch for code review.
+Pull requests should be sent to the `dev` branch for code review.
 Merges into `master` happen at the end of sprints, and tags in master correspond to production releases.
 
 ### JavaScript
