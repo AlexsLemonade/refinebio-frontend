@@ -7,6 +7,7 @@
     "history": "^4.7.2",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",
+    "moment": "^2.22.0",
     "prettier": "^1.11.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -17,7 +18,10 @@
     "redux-thunk": "^2.2.0"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,json,css}": ["prettier --single-quote --write", "git add"]
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -30,5 +34,5 @@
   "devDependencies": {
     "flow-bin": "^0.68.0"
   },
-  "proxy": "http://54.165.240.151/"
+  "proxy": "http://localhost:8000/"
 }

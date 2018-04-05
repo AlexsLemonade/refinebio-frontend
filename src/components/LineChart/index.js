@@ -9,21 +9,16 @@ import {
   Line,
   Legend
 } from 'recharts';
+import moment from 'moment';
 
 const COLORS = ['#36AEB5', '#3CC7B0', '#65DDA1', '#9BF18D'];
 
 const LineChart = props => {
-  /*const { data = [] } = props;
-  console.log(data);*/
-  const data = [
-    { x: '06-09', y: 2.978 },
-    { x: '06-10', y: 2.973 },
-    { x: '06-11', y: 2.964 },
-    { x: '06-12', y: 2.955 },
-    { x: '06-13', y: 2.937 },
-    { x: '06-14', y: 2.919 },
-    { x: '06-15', y: 2.902 }
-  ];
+  const { data = [] } = props;
+
+  function formatXAxis(tickItem) {
+    return moment(tickItem).format('MMM Do hh:mm');
+  }
 
   return (
     <ResponsiveContainer>
@@ -31,15 +26,27 @@ const LineChart = props => {
         data={data}
         margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
       >
-        <XAxis dataKey="x" />
+        <XAxis dataKey="date" tickFormatter={formatXAxis} />
         <YAxis />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
         <Legend />
         <Line
           type="monotone"
-          dataKey="y"
+          dataKey="survey"
           stroke="#8884d8"
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="processor"
+          stroke="#36AEB5"
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="downloader"
+          stroke="#65DDA1"
           activeDot={{ r: 8 }}
         />
       </LineRechart>

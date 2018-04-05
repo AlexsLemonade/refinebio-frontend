@@ -1,3 +1,5 @@
+import { getTimePoints } from '../actions/dashboard';
+
 const initialState = {
   stats: {},
   samples: {},
@@ -86,7 +88,24 @@ export function getSamplesCount(state) {
   return count;
 }
 
-export function getSizeOfQueuesOverTime(state) {
+export function getJobsCompletedOverTime(state) {
   const { jobs } = state.dashboard;
-  return jobs;
+  const timePoints = getTimePoints();
+
+  return timePoints.map((time, i) => {
+    const dataPoint = {
+      date: time.utc().format()
+    };
+
+    Object.keys(jobs).forEach(jobName => {
+      dataPoint[jobName] = jobs[jobName][i].count;
+    });
+    return dataPoint;
+  });
+}
+
+export function getSamplesCreatedOverTime(state) {
+  const { samples: { results = [] } } = state.dashboard;
+
+  return results;
 }

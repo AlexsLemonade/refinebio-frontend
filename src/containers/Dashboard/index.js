@@ -19,7 +19,7 @@ class Dashboard extends Component {
       experimentsCount,
       samplesCount,
       jobsByStatus,
-      sizeOfQueuesOverTime
+      jobsCompletedOverTime
     } = this.props;
 
     const chartsConfig = [
@@ -78,8 +78,8 @@ class Dashboard extends Component {
         size: 'small'
       },
       {
-        title: 'Size of Queues Over Time',
-        data: sizeOfQueuesOverTime.survey,
+        title: 'Jobs Completed Over Time',
+        data: jobsCompletedOverTime,
         type: 'line',
         size: 'large'
       }
@@ -118,7 +118,7 @@ const mapStateToProps = state => {
     ),
     experimentsCount: chartSelectors.getExperimentsCount(state),
     samplesCount: chartSelectors.getSamplesCount(state),
-    sizeOfQueuesOverTime: chartSelectors.getSizeOfQueuesOverTime(state)
+    jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state)
   };
 };
 
