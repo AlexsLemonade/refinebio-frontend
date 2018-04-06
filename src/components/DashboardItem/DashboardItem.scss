@@ -1,26 +1,28 @@
 @import '../../common/styles/variables';
 
 .responsive-chart {
+  flex-direction: column;
+  display: flex;
+  padding: 24px;
   background: $white;
   border: 1px solid $gallery;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
 
-  &--medium {
-    grid-row: span 2;
-  }
+  @media screen and (min-width: $mobile) {
+    &--medium {
+      grid-row: span 2;
+    }
 
-  &--large {
-    grid-column: span 2;
-    grid-row: span 2;
+    &--large {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
   }
 
   &__title {
+    margin-bottom: 24px;
     font-size: 1.1rem;
     font-weight: 700;
     line-height: 1.3;
-    margin-bottom: 24px;
   }
 
   &__text {
@@ -29,17 +31,21 @@
 
   &__container {
     position: relative;
-    width: 100%;
+    align-items: center;
     flex: 1;
     display: flex;
-    align-items: center;
+    width: 100%;
 
     &--medium {
       padding-bottom: 100%;
     }
 
     &--large {
-      padding-bottom: 50%;
+      padding-bottom: 75%;
+      
+      @media screen and (min-width: $mobile) {
+        padding-bottom: 50%;
+      }
     }
   }
 
