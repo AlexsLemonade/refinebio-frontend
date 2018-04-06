@@ -1,7 +1,5 @@
 @import '../../common/styles/variables';
 
-$container-spacing: 32px;
-
 .dashboard {
   flex: 1;
   background: $background-color--light;
@@ -10,14 +8,6 @@ $container-spacing: 32px;
     padding: $container-spacing 0 ($container-spacing * 2);
     margin: 0 auto;
     width: 90%;
-    max-width: 1600px;
-  }
-
-  &__grid {
-    margin-top: $container-spacing;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: $container-spacing;
-    grid-template-rows: auto;
+    max-width: 1300px;
   }
 }

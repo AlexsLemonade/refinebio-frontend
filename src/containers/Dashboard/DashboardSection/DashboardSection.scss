@@ -1,0 +1,22 @@
+@import '../../../common/styles/variables';
+
+.dashboard-section {
+  margin: $container-spacing 0 (2*$container-spacing);
+  // padding-bottom: (2 * $container-spacing);
+  //border-bottom: 1px solid $pelorous;
+
+  &__title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__grid {
+    margin-top: $container-spacing;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-gap: $container-spacing;
+    grid-template-rows: auto;
+  }
+}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/dashboard';
 import * as chartSelectors from '../../reducers/dashboard';
-import DashboardItem from '../../components/DashboardItem';
+import DashboardSection from './DashboardSection';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
 
 import './Dashboard.scss';
@@ -34,72 +34,82 @@ class Dashboard extends Component {
 
     const chartsConfig = [
       {
-        title: 'Jobs Over Time by Type',
-        data: jobsCompletedOverTime,
-        type: 'line',
-        series: ['survey', 'processor', 'downloader'],
-        size: 'large'
+        title: 'Jobs',
+        charts: [
+          {
+            title: 'Jobs Over Time by Type',
+            data: jobsCompletedOverTime,
+            type: 'line',
+            series: ['survey', 'processor', 'downloader'],
+            size: 'large'
+          },
+          {
+            title: 'Total Length of Queues by Type',
+            data: totalLengthOfQueuesByType,
+            type: 'pie',
+            size: 'medium'
+          },
+          {
+            title: 'Estimated Time Till Completion: Survey Jobs',
+            data: estimatedTimesTilCompletion.survey_jobs,
+            type: 'text',
+            size: 'small'
+          },
+          {
+            title: 'Estimated Time Till Completion: Processor Jobs',
+            data: estimatedTimesTilCompletion.processor_jobs,
+            type: 'text',
+            size: 'small'
+          },
+          {
+            title: 'Estimated Time Till Completion: Downloader Jobs',
+            data: estimatedTimesTilCompletion.downloader_jobs,
+            type: 'text',
+            size: 'small'
+          },
+          {
+            title: 'Survey Jobs by Status',
+            data: jobsByStatus.survey_jobs,
+            type: 'pie',
+            size: 'medium'
+          },
+          {
+            title: 'Processor Jobs by Status',
+            data: jobsByStatus.processor_jobs,
+            type: 'pie',
+            size: 'medium'
+          },
+          {
+            title: 'Downloader Jobs by Status',
+            data: jobsByStatus.downloader_jobs,
+            type: 'pie',
+            size: 'medium'
+          }
+        ]
       },
       {
-        title: 'Total Length of Queues by Type',
-        data: totalLengthOfQueuesByType,
-        type: 'pie',
-        size: 'medium'
-      },
-      {
-        title: 'Total Experiments Created',
-        data: experimentsCount,
-        type: 'text',
-        size: 'small'
-      },
-      {
-        title: 'Total Samples Created',
-        data: samplesCount,
-        type: 'text',
-        size: 'small'
-      },
-      {
-        title: 'Estimated Time Till Completion: Survey Jobs',
-        data: estimatedTimesTilCompletion.survey_jobs,
-        type: 'text',
-        size: 'small'
-      },
-      {
-        title: 'Estimated Time Till Completion: Processor Jobs',
-        data: estimatedTimesTilCompletion.processor_jobs,
-        type: 'text',
-        size: 'small'
-      },
-      {
-        title: 'Estimated Time Till Completion: Downloader Jobs',
-        data: estimatedTimesTilCompletion.downloader_jobs,
-        type: 'text',
-        size: 'small'
-      },
-      {
-        title: 'Survey Jobs by Status',
-        data: jobsByStatus.survey_jobs,
-        type: 'pie',
-        size: 'medium'
-      },
-      {
-        title: 'Processor Jobs by Status',
-        data: jobsByStatus.processor_jobs,
-        type: 'pie',
-        size: 'medium'
-      },
-      {
-        title: 'Downloader Jobs by Status',
-        data: jobsByStatus.downloader_jobs,
-        type: 'pie',
-        size: 'medium'
-      },
-      {
-        title: 'Samples and Experiments Over Time',
-        data: samplesOverTime,
-        series: ['experiments', 'samples'],
-        type: 'line',
-        size: 'large'
+        title: 'Experiments and Samples',
+        charts: [
+          {
+            title: 'Total Experiments Created',
+            data: experimentsCount,
+            type: 'text',
+            size: 'small'
+          },
+          {
+            title: 'Total Samples Created',
+            data: samplesCount,
+            type: 'text',
+            size: 'small'
+          },
+          {
+            title: 'Samples and Experiments Over Time',
+            data: samplesOverTime,
+            series: ['experiments', 'samples'],
+            type: 'line',
+            size: 'large'
+          }
+        ]
       }
     ];
 
@@ -116,21 +126,10 @@ class Dashboard extends Component {
             ]}
             updatedTimeRange={updatedTimeRange}
           />
-          <div className="dashboard__grid">
-            {chartsConfig.map((chart, i) => {
-              const { type, title, data, size, series } = chart;
-              return (
-                <DashboardItem
-                  key={i}
-                  type={type}
-                  data={data}
-                  title={title}
-                  size={size}
-                  series={series}
-                />
-              );
-            })}
-          </div>
+          {chartsConfig.map((section, i) => {
+            const { title, charts } = section;
+            return <DashboardSection key={i} title={title} charts={charts} />;
+          })}
         </div>
       </div>
     );

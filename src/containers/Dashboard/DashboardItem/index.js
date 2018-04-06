@@ -1,6 +1,6 @@
 import React from 'react';
-import PieChart from '../PieChart';
-import LineChart from '../LineChart';
+import PieChart from '../../../components/PieChart';
+import LineChart from '../../../components/LineChart';
 import './DashboardItem.scss';
 
 const DashboardItem = props => {
