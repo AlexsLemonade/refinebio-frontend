@@ -50,6 +50,27 @@ function createTimeQueries(
   return Promise.all(promiseArray);
 }
 
+function getJobStatusesOverTime(jobData) {
+  const pending = jobData.map(
+    jobs => jobs.results.filter(job => job.start_time === null).length
+  );
+  const failed = jobData.map(
+    jobs => jobs.results.filter(job => job.success === false).length
+  );
+  const completed = jobData.map(
+    jobs => jobs.results.filter(job => !!job.success).length
+  );
+  const open = jobData.map(
+    jobs => jobs.results.filter(job => job.success === null).length
+  );
+  return {
+    pending,
+    failed,
+    open,
+    completed
+  };
+}
+
 const fetchDataOverTime = timePoints => {
   return async dispatch => {
     const survey = await createTimeQueries('/jobs/survey/', timePoints);
@@ -67,13 +88,26 @@ const fetchDataOverTime = timePoints => {
       'created_at'
     );
 
+    const surveyStatus = getJobStatusesOverTime(survey);
+    const processorStatus = getJobStatusesOverTime(processor);
+    const downloaderStatus = getJobStatusesOverTime(downloader);
+
     dispatch({
       type: 'DASHBOARD_TIME_REQUESTS_SUCCESS',
       data: {
         jobs: {
-          survey,
-          processor,
-          downloader
+          survey: {
+            all: survey,
+            ...surveyStatus
+          },
+          processor: {
+            all: processor,
+            ...processorStatus
+          },
+          downloader: {
+            all: downloader,
+            ...downloaderStatus
+          }
         },
         samplesOverTime: samples.map(sample => sample.count),
         experimentsOverTime: experiments.map(experiments => experiments.count)

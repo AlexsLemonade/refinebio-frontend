@@ -29,7 +29,10 @@ class Dashboard extends Component {
       jobsCompletedOverTime,
       updatedTimeRange,
       timeOptions,
-      samplesOverTime
+      samplesOverTime,
+      processorJobsOverTimeByStatus,
+      downloaderJobsOverTimeByStatus,
+      surveyJobsOverTimeByStatus
     } = this.props;
 
     const chartsConfig = [
@@ -84,6 +87,27 @@ class Dashboard extends Component {
             data: jobsByStatus.downloader_jobs,
             type: 'pie',
             size: 'medium'
+          },
+          {
+            title: 'Processor Jobs Over Time by Status',
+            data: processorJobsOverTimeByStatus,
+            type: 'line',
+            series: ['pending', 'open', 'completed', 'failed'],
+            size: 'large'
+          },
+          {
+            title: 'Survey Jobs Over Time by Status',
+            data: surveyJobsOverTimeByStatus,
+            type: 'line',
+            series: ['pending', 'open', 'completed', 'failed'],
+            size: 'large'
+          },
+          {
+            title: 'Downloader Jobs Over Time by Status',
+            data: downloaderJobsOverTimeByStatus,
+            type: 'line',
+            series: ['pending', 'open', 'completed', 'failed'],
+            size: 'large'
           }
         ]
       },
@@ -103,7 +127,7 @@ class Dashboard extends Component {
             size: 'small'
           },
           {
-            title: 'Samples and Experiments Over Time',
+            title: 'Samples and Experiments Created Over Time',
             data: samplesOverTime,
             series: ['experiments', 'samples'],
             type: 'line',
@@ -143,7 +167,7 @@ const mapStateToProps = state => {
     totalLengthOfQueuesByType: chartSelectors.getTotalLengthofQueuesByType(
       state
     ),
-    jobsByStatus: chartSelectors.getJobsByStatusStatus(state),
+    jobsByStatus: chartSelectors.getJobsByStatus(state),
     estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
       state,
       'processor_jobs'
@@ -151,7 +175,19 @@ const mapStateToProps = state => {
     experimentsCount: chartSelectors.getExperimentsCount(state),
     samplesCount: chartSelectors.getSamplesCount(state),
     jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state),
-    samplesOverTime: chartSelectors.getSamplesCreatedOverTime(state)
+    samplesOverTime: chartSelectors.getSamplesCreatedOverTime(state),
+    processorJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+      state,
+      'processor'
+    ),
+    surveyJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+      state,
+      'survey'
+    ),
+    downloaderJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+      state,
+      'downloader'
+    )
   };
 };
 

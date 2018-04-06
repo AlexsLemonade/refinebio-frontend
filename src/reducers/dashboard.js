@@ -58,7 +58,7 @@ export function getTotalLengthofQueuesByType(state) {
   });
 }
 
-export function getJobsByStatusStatus(state) {
+export function getJobsByStatus(state) {
   const stats = state.dashboard.stats;
   return Object.keys(stats).reduce((accum, jobType) => {
     accum[jobType] = Object.keys(stats[jobType]).reduce(
@@ -122,8 +122,8 @@ export function getJobsCompletedOverTime(state) {
       date: time.utc().format()
     };
     Object.keys(jobs).forEach(jobName => {
-      if (jobs[jobName].length === timePoints.length) {
-        dataPoint[jobName] = jobs[jobName][i].count;
+      if (jobs[jobName].all.length === timePoints.length) {
+        dataPoint[jobName] = jobs[jobName].all[i].count;
       }
     });
     return dataPoint;
@@ -143,6 +143,25 @@ export function getSamplesCreatedOverTime(state) {
       samples: samplesOverTime[i],
       experiments: experimentsOverTime[i]
     };
+    return dataPoint;
+  });
+}
+
+export function getJobsByStatusOverTime(state, jobName = 'processor') {
+  const { jobs, timeOptions: { timePoints } } = state.dashboard;
+
+  const jobType = jobs[jobName] || [];
+
+  return timePoints.map((time, i) => {
+    const dataPoint = {
+      date: time.utc().format()
+    };
+
+    Object.keys(jobType).forEach(status => {
+      if (status === 'all') return;
+      dataPoint[status] = jobType[status][i];
+    });
+
     return dataPoint;
   });
 }
