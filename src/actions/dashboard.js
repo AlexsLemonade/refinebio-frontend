@@ -13,8 +13,21 @@ export function getTimePoints(timeRange = 'week', timeUnit = 'day') {
   return timePoints;
 }
 
-function createTimeQuery(endPoint = '/jobs/survey/') {
-  const timePoints = getTimePoints();
+function getTimeUnit(range) {
+  switch (range) {
+    case 'day': {
+      return 'hour';
+    }
+    case 'year': {
+      return 'month';
+    }
+    default: {
+      return 'day';
+    }
+  }
+}
+
+function createTimeQuery(endPoint = '/jobs/survey/', timePoints = []) {
   const promiseArray = timePoints.map(async (datePoint, i) => {
     const gte = datePoint.utc().format(),
       lte = timePoints[i + 1]
@@ -32,15 +45,15 @@ function createTimeQuery(endPoint = '/jobs/survey/') {
   return Promise.all(promiseArray);
 }
 
-export const fetchDashboardData = () => {
+export const fetchDashboardData = timePoints => {
   return async dispatch => {
     try {
       const stats = await (await fetch('/stats/')).json();
       const samples = await (await fetch('/samples/')).json();
       const experiments = await (await fetch('/experiments/')).json();
-      const survey = await createTimeQuery();
-      const processor = await createTimeQuery('/jobs/processor/');
-      const downloader = await createTimeQuery('/jobs/downloader/');
+      const survey = await createTimeQuery('/jobs/survey/', timePoints);
+      const processor = await createTimeQuery('/jobs/processor/', timePoints);
+      const downloader = await createTimeQuery('/jobs/downloader/', timePoints);
 
       dispatch({
         type: 'DASHBOARD_REQUEST_SUCCESS',
@@ -58,5 +71,22 @@ export const fetchDashboardData = () => {
     } catch (e) {
       console.log(e);
     }
+  };
+};
+
+export const updatedTimeRange = (range = 'week') => {
+  return dispatch => {
+    const unit = getTimeUnit(range);
+    const timePoints = getTimePoints(range, unit);
+    dispatch(fetchDashboardData(timePoints));
+    dispatch({
+      type: 'DASHBOARD_TIME_OPTIONS_UPDATED',
+      data: {
+        timeOptions: {
+          range,
+          timePoints
+        }
+      }
+    });
   };
 };

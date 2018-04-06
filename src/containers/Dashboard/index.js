@@ -4,12 +4,14 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/dashboard';
 import * as chartSelectors from '../../reducers/dashboard';
 import DashboardItem from '../../components/DashboardItem';
+import TimeRangeSelect from '../../components/TimeRangeSelect';
 
 import './Dashboard.scss';
 
 class Dashboard extends Component {
   componentWillMount() {
-    this.props.fetchDashboardData();
+    const { timeOptions: { range }, updatedTimeRange } = this.props;
+    updatedTimeRange(range);
   }
 
   render() {
@@ -19,7 +21,9 @@ class Dashboard extends Component {
       experimentsCount,
       samplesCount,
       jobsByStatus,
-      jobsCompletedOverTime
+      jobsCompletedOverTime,
+      updatedTimeRange,
+      timeOptions
     } = this.props;
 
     const chartsConfig = [
@@ -87,6 +91,16 @@ class Dashboard extends Component {
 
     return (
       <div className="dashboard">
+        <TimeRangeSelect
+          initialValues={{ timeRange: timeOptions.range }}
+          options={[
+            { label: 'Today', value: 'day' },
+            { label: 'Week', value: 'week' },
+            { label: 'Month', value: 'month' },
+            { label: 'Year', value: 'year' }
+          ]}
+          updatedTimeRange={updatedTimeRange}
+        />
         <div className="dashboard__container">
           {chartsConfig.map((chart, i) => {
             const { type, title, data, size } = chart;
@@ -108,6 +122,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => {
   return {
+    timeRangeForm: state.form.timeRange,
+    timeOptions: state.dashboard.timeOptions,
     totalLengthOfQueuesByType: chartSelectors.getTotalLengthofQueuesByType(
       state
     ),

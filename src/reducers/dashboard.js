@@ -4,7 +4,11 @@ const initialState = {
   stats: {},
   samples: {},
   experiments: {},
-  jobs: {}
+  jobs: {},
+  timeOptions: {
+    range: 'day',
+    timePoints: []
+  }
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -17,6 +21,13 @@ const dashboardReducer = (state = initialState, action) => {
         samples,
         experiments,
         jobs
+      };
+    }
+    case 'DASHBOARD_TIME_OPTIONS_UPDATED': {
+      const { timeOptions } = action.data;
+      return {
+        ...state,
+        timeOptions
       };
     }
     default: {
@@ -56,10 +67,14 @@ export function getJobsByStatusStatus(state) {
   }, {});
 }
 
-function convertMinToHours(sec) {
+function convertSecToMinHours(sec) {
   const hours = Math.floor(sec / 3600),
     minutes = Math.floor((sec % 3600) / 60);
-  return `${hours} hr ${minutes} min`;
+  if (isNaN(hours) || isNaN(minutes)) {
+    return `N/A`;
+  } else {
+    return `${hours} hr ${minutes} min`;
+  }
 }
 
 export function getAllEstimatedTimeTilCompletion(state, jobType) {
@@ -71,7 +86,8 @@ export function getAllEstimatedTimeTilCompletion(state, jobType) {
     const estimateSec =
       (stats[jobType].open + stats[jobType].pending) *
       parseInt(stats[jobType].average_time, 10);
-    allEstimatedTimes[jobType] = convertMinToHours(estimateSec);
+    // we're assuming that average_time is in seconds...
+    allEstimatedTimes[jobType] = convertSecToMinHours(estimateSec);
     return allEstimatedTimes;
   }, {});
 }
@@ -89,8 +105,7 @@ export function getSamplesCount(state) {
 }
 
 export function getJobsCompletedOverTime(state) {
-  const { jobs } = state.dashboard;
-  const timePoints = getTimePoints();
+  const { jobs, timeOptions: { timePoints } } = state.dashboard;
 
   return timePoints.map((time, i) => {
     const dataPoint = {
@@ -98,7 +113,9 @@ export function getJobsCompletedOverTime(state) {
     };
 
     Object.keys(jobs).forEach(jobName => {
-      dataPoint[jobName] = jobs[jobName][i].count;
+      if (jobs[jobName].length === timePoints.length) {
+        dataPoint[jobName] = jobs[jobName][i].count;
+      }
     });
     return dataPoint;
   });
