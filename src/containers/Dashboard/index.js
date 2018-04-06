@@ -23,14 +23,16 @@ class Dashboard extends Component {
       jobsByStatus,
       jobsCompletedOverTime,
       updatedTimeRange,
-      timeOptions
+      timeOptions,
+      samplesOverTime
     } = this.props;
 
     const chartsConfig = [
       {
-        title: 'Jobs Completed Over Time',
+        title: 'Jobs Over Time by Type',
         data: jobsCompletedOverTime,
         type: 'line',
+        series: ['survey', 'processor', 'downloader'],
         size: 'large'
       },
       {
@@ -86,6 +88,13 @@ class Dashboard extends Component {
         data: jobsByStatus.downloader_jobs,
         type: 'pie',
         size: 'medium'
+      },
+      {
+        title: 'Jobs Over Time by Type',
+        data: samplesOverTime,
+        series: ['experiments', 'samples'],
+        type: 'line',
+        size: 'large'
       }
     ];
 
@@ -104,7 +113,7 @@ class Dashboard extends Component {
           />
           <div className="dashboard__grid">
             {chartsConfig.map((chart, i) => {
-              const { type, title, data, size } = chart;
+              const { type, title, data, size, series } = chart;
               return (
                 <DashboardItem
                   key={i}
@@ -112,6 +121,7 @@ class Dashboard extends Component {
                   data={data}
                   title={title}
                   size={size}
+                  series={series}
                 />
               );
             })}
@@ -136,7 +146,8 @@ const mapStateToProps = state => {
     ),
     experimentsCount: chartSelectors.getExperimentsCount(state),
     samplesCount: chartSelectors.getSamplesCount(state),
-    jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state)
+    jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state),
+    samplesOverTime: chartSelectors.getSamplesCreatedOverTime(state)
   };
 };
 

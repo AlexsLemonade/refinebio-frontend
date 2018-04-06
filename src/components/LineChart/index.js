@@ -11,10 +11,11 @@ import {
 } from 'recharts';
 import moment from 'moment';
 
-const COLORS = ['#36AEB5', '#3CC7B0', '#65DDA1', '#9BF18D'];
+const COLORS = ['#D094CE', '#41E0AD', '#59C4EB', '#EA7576', '#D8AE41'];
 
 const LineChart = props => {
-  const { data = [] } = props;
+  const { data = [], series = [] } = props;
+  console.log(series);
 
   function formatXAxis(tickItem) {
     return moment(tickItem).format('MMM Do hh:mm');
@@ -31,24 +32,9 @@ const LineChart = props => {
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
         <Legend />
-        <Line
-          type="monotone"
-          dataKey="survey"
-          stroke="#8884d8"
-          activeDot={{ r: 8 }}
-        />
-        <Line
-          type="monotone"
-          dataKey="processor"
-          stroke="#36AEB5"
-          activeDot={{ r: 8 }}
-        />
-        <Line
-          type="monotone"
-          dataKey="downloader"
-          stroke="#65DDA1"
-          activeDot={{ r: 8 }}
-        />
+        {series.map((set, i) => (
+          <Line type="monotone" dataKey={set} stroke={COLORS[i]} />
+        ))}
       </LineRechart>
     </ResponsiveContainer>
   );

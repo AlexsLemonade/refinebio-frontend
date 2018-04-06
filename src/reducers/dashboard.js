@@ -122,7 +122,20 @@ export function getJobsCompletedOverTime(state) {
 }
 
 export function getSamplesCreatedOverTime(state) {
-  const { samples: { results = [] } } = state.dashboard;
+  const {
+    samples: { overTime = [] },
+    experiments: { overTime: experimentsOverTime = [] },
+    timeOptions: { timePoints }
+  } = state.dashboard;
 
-  return results;
+  return timePoints.map((time, i) => {
+    const dataPoint = {
+      date: time.utc().format(),
+      samples: overTime[i],
+      experiments: experimentsOverTime[i]
+    };
+    return dataPoint;
+  });
+
+  return overTime;
 }
