@@ -10,8 +10,13 @@ import './Dashboard.scss';
 
 class Dashboard extends Component {
   componentWillMount() {
-    const { timeOptions: { range }, updatedTimeRange } = this.props;
+    const {
+      timeOptions: { range },
+      updatedTimeRange,
+      fetchDashboardData
+    } = this.props;
     updatedTimeRange(range);
+    fetchDashboardData();
   }
 
   render() {
@@ -90,7 +95,7 @@ class Dashboard extends Component {
         size: 'medium'
       },
       {
-        title: 'Jobs Over Time by Type',
+        title: 'Samples and Experiments Over Time',
         data: samplesOverTime,
         series: ['experiments', 'samples'],
         type: 'line',

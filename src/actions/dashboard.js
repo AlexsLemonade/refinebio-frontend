@@ -50,7 +50,39 @@ function createTimeQueries(
   return Promise.all(promiseArray);
 }
 
-export const fetchDashboardData = timePoints => {
+const fetchDataOverTime = timePoints => {
+  return async dispatch => {
+    const survey = await createTimeQueries('/jobs/survey/', timePoints);
+    const processor = await createTimeQueries('/jobs/processor/', timePoints);
+    const downloader = await createTimeQueries('/jobs/downloader/', timePoints);
+
+    const samples = await createTimeQueries(
+      '/samples/',
+      timePoints,
+      'created_at'
+    );
+    const experiments = await createTimeQueries(
+      '/experiments/',
+      timePoints,
+      'created_at'
+    );
+
+    dispatch({
+      type: 'DASHBOARD_TIME_REQUESTS_SUCCESS',
+      data: {
+        jobs: {
+          survey,
+          processor,
+          downloader
+        },
+        samplesOverTime: samples.map(sample => sample.count),
+        experimentsOverTime: experiments.map(experiments => experiments.count)
+      }
+    });
+  };
+};
+
+export const fetchDashboardData = () => {
   return async dispatch => {
     try {
       const stats = await (await fetch('/stats/')).json();
@@ -58,40 +90,16 @@ export const fetchDashboardData = timePoints => {
       // samples and experiments will most likely go in another reducer when time comes
       const allSamples = await (await fetch('/samples/')).json();
       const allExperiments = await (await fetch('/experiments/')).json();
-      const survey = await createTimeQueries('/jobs/survey/', timePoints);
-      const processor = await createTimeQueries('/jobs/processor/', timePoints);
-      const downloader = await createTimeQueries(
-        '/jobs/downloader/',
-        timePoints
-      );
-
-      const samplePoints = await createTimeQueries(
-        '/samples/',
-        timePoints,
-        'created_at'
-      );
-      const experimentPoints = await createTimeQueries(
-        '/experiments/',
-        timePoints,
-        'created_at'
-      );
 
       dispatch({
         type: 'DASHBOARD_REQUEST_SUCCESS',
         data: {
           stats,
           samples: {
-            count: allSamples.count,
-            overTime: samplePoints.map(sample => sample.count)
+            count: allSamples.count
           },
           experiments: {
-            count: allExperiments.count,
-            overTime: experimentPoints.map(experiment => experiment.count)
-          },
-          jobs: {
-            survey,
-            processor,
-            downloader
+            count: allExperiments.count
           }
         }
       });
@@ -105,7 +113,7 @@ export const updatedTimeRange = (range = 'week') => {
   return dispatch => {
     const unit = getTimeUnit(range);
     const timePoints = getTimePoints(range, unit);
-    dispatch(fetchDashboardData(timePoints));
+    dispatch(fetchDataOverTime(timePoints));
     dispatch({
       type: 'DASHBOARD_TIME_OPTIONS_UPDATED',
       data: {

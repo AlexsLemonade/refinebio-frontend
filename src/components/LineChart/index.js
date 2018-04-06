@@ -33,7 +33,7 @@ const LineChart = props => {
         <Tooltip />
         <Legend />
         {series.map((set, i) => (
-          <Line type="monotone" dataKey={set} stroke={COLORS[i]} />
+          <Line key={i} type="monotone" dataKey={set} stroke={COLORS[i]} />
         ))}
       </LineRechart>
     </ResponsiveContainer>

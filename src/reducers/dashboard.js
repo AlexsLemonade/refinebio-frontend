@@ -1,7 +1,9 @@
 const initialState = {
   stats: {},
   samples: {},
+  samplesOverTime: [],
   experiments: {},
+  experimentsOverTime: [],
   jobs: {},
   timeOptions: {
     range: 'day',
@@ -12,12 +14,20 @@ const initialState = {
 const dashboardReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'DASHBOARD_REQUEST_SUCCESS': {
-      const { stats, samples, experiments, jobs } = action.data;
+      const { stats, samples, experiments } = action.data;
       return {
         ...state,
         stats,
         samples,
-        experiments,
+        experiments
+      };
+    }
+    case 'DASHBOARD_TIME_REQUESTS_SUCCESS': {
+      const { samplesOverTime, experimentsOverTime, jobs } = action.data;
+      return {
+        ...state,
+        samplesOverTime,
+        experimentsOverTime,
         jobs
       };
     }
@@ -111,7 +121,6 @@ export function getJobsCompletedOverTime(state) {
     const dataPoint = {
       date: time.utc().format()
     };
-
     Object.keys(jobs).forEach(jobName => {
       if (jobs[jobName].length === timePoints.length) {
         dataPoint[jobName] = jobs[jobName][i].count;
@@ -123,19 +132,17 @@ export function getJobsCompletedOverTime(state) {
 
 export function getSamplesCreatedOverTime(state) {
   const {
-    samples: { overTime = [] },
-    experiments: { overTime: experimentsOverTime = [] },
+    samplesOverTime,
+    experimentsOverTime,
     timeOptions: { timePoints }
   } = state.dashboard;
 
   return timePoints.map((time, i) => {
     const dataPoint = {
       date: time.utc().format(),
-      samples: overTime[i],
+      samples: samplesOverTime[i],
       experiments: experimentsOverTime[i]
     };
     return dataPoint;
   });
-
-  return overTime;
 }
