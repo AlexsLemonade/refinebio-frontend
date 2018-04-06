@@ -28,10 +28,28 @@ class Dashboard extends Component {
 
     const chartsConfig = [
       {
+        title: 'Jobs Completed Over Time',
+        data: jobsCompletedOverTime,
+        type: 'line',
+        size: 'large'
+      },
+      {
         title: 'Total Length of Queues by Type',
         data: totalLengthOfQueuesByType,
         type: 'pie',
         size: 'medium'
+      },
+      {
+        title: 'Total Experiments Created',
+        data: experimentsCount,
+        type: 'text',
+        size: 'small'
+      },
+      {
+        title: 'Total Samples Created',
+        data: samplesCount,
+        type: 'text',
+        size: 'small'
       },
       {
         title: 'Estimated Time Till Completion: Survey Jobs',
@@ -68,52 +86,36 @@ class Dashboard extends Component {
         data: jobsByStatus.downloader_jobs,
         type: 'pie',
         size: 'medium'
-      },
-      {
-        title: 'Total Experiments Created',
-        data: experimentsCount,
-        type: 'text',
-        size: 'small'
-      },
-      {
-        title: 'Total Samples Created',
-        data: samplesCount,
-        type: 'text',
-        size: 'small'
-      },
-      {
-        title: 'Jobs Completed Over Time',
-        data: jobsCompletedOverTime,
-        type: 'line',
-        size: 'large'
       }
     ];
 
     return (
       <div className="dashboard">
-        <TimeRangeSelect
-          initialValues={{ timeRange: timeOptions.range }}
-          options={[
-            { label: 'Today', value: 'day' },
-            { label: 'Week', value: 'week' },
-            { label: 'Month', value: 'month' },
-            { label: 'Year', value: 'year' }
-          ]}
-          updatedTimeRange={updatedTimeRange}
-        />
         <div className="dashboard__container">
-          {chartsConfig.map((chart, i) => {
-            const { type, title, data, size } = chart;
-            return (
-              <DashboardItem
-                key={i}
-                type={type}
-                data={data}
-                title={title}
-                size={size}
-              />
-            );
-          })}
+          <TimeRangeSelect
+            initialValues={{ timeRange: timeOptions.range }}
+            options={[
+              { label: 'Today', value: 'day' },
+              { label: 'Last Week', value: 'week' },
+              { label: 'Last Month', value: 'month' },
+              { label: 'Last Year', value: 'year' }
+            ]}
+            updatedTimeRange={updatedTimeRange}
+          />
+          <div className="dashboard__grid">
+            {chartsConfig.map((chart, i) => {
+              const { type, title, data, size } = chart;
+              return (
+                <DashboardItem
+                  key={i}
+                  type={type}
+                  data={data}
+                  title={title}
+                  size={size}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     );

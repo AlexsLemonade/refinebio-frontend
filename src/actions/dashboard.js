@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export function getTimePoints(timeRange = 'week', timeUnit = 'day') {
+function getTimePoints(timeRange = 'week', timeUnit = 'day') {
   const gtDate = moment().startOf(timeRange),
     timePoints = [];
   let datePoint = gtDate.clone().startOf(timeUnit);

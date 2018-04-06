@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import './TimeRangeSelect.scss';
 
-const Select = ({ input, options, disabled, onChange }) => {
-  console.log(input);
+const Select = ({ input, options, disabled = false }) => {
   return (
-    <div>
-      <select {...input} disabled={disabled}>
+    <div className="select">
+      <select className="select__dropdown" {...input} disabled={disabled}>
         {options.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -24,13 +23,18 @@ const TimeRangeSelect = props => {
 
   return (
     <div className="time-range-select">
-      <label htmlFor="timeRange">Time Range: </label>
-      <Field
-        name="timeRange"
-        options={props.options}
-        component={Select}
-        onChange={handleChange}
-      />
+      <div className="time-range-select__field">
+        <label className="time-range-select__label" htmlFor="timeRange">
+          Time Range:{' '}
+        </label>
+        <Field
+          className="time-range-select__dropdown"
+          name="timeRange"
+          options={props.options}
+          component={Select}
+          onChange={handleChange}
+        />
+      </div>
     </div>
   );
 };

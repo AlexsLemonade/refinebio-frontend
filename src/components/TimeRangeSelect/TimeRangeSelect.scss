@@ -1,4 +1,55 @@
+@import '../../common/styles/variables';
+
 .time-range-select {
-  margin: 1rem 0;
+  justify-content: flex-end;
   display: flex;
+
+  &__label {
+    margin-right: 16px;
+    font-weight: 700;
+  }
+
+  &__field {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.select {
+  position: relative;
+
+  &__dropdown {
+    position: relative;
+    min-width: 130px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: none;
+    border-radius: 0;
+    outline: none;
+    z-index: 2;
+    color: $pelorous;
+    font-weight: 700;
+    border-bottom: 2px solid currentColor;
+    font-family: inherit;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &:after {
+    content: '';
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: block;
+    position: absolute;
+    border-top: 6px solid currentColor;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    z-index: 1;
+  }
 }

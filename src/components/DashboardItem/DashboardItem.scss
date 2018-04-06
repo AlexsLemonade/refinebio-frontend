@@ -1,6 +1,8 @@
+@import '../../common/styles/variables';
+
 .responsive-chart {
-  background: #fff;
-  border: 1px solid #eee;
+  background: $white;
+  border: 1px solid $gallery;
   padding: 24px;
   display: flex;
   flex-direction: column;

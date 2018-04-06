@@ -1,5 +1,3 @@
-import { getTimePoints } from '../actions/dashboard';
-
 const initialState = {
   stats: {},
   samples: {},
@@ -37,6 +35,8 @@ const dashboardReducer = (state = initialState, action) => {
 };
 
 export default dashboardReducer;
+
+// chart selectors for creating chart data for individual charts on dashboard
 
 export function getTotalLengthofQueuesByType(state) {
   const stats = state.dashboard.stats;
