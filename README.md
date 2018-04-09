@@ -85,7 +85,5 @@ Run Flow via the command line with `yarn flow`.
 ### Styling
 
 * Pre-processor: [SASS](https://sass-lang.com/)
-* Locally scoped class names with [CSS Modules](https://github.com/css-modules/css-modules)
-  * for a `.scss` file to uses modules, the file must be named in the following format: `[name].module.scss`
-  * non-prefixed files will be parsed normally
+* Write resuabled, modularized using [BEM](http://getbem.com/)
 * Configured using [custom-react-scripts](https://github.com/kitze/custom-react-scripts) to avoid losing future creat-react-app support
