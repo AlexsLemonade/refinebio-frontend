@@ -21,6 +21,10 @@ const LineChart = props => {
     return moment(tickItem).format('MMM Do hh:mm');
   }
 
+  function renderCustomTooltip(args) {
+    console.log(args);
+  }
+
   return (
     <ResponsiveContainer>
       <LineRechart

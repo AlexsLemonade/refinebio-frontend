@@ -30,7 +30,7 @@ function getTimeUnit(range) {
 function createTimeQueries(
   endPoint = '/jobs/survey/',
   timePoints = [],
-  queryField = 'start_time'
+  queryField = 'created_at'
 ) {
   const promiseArray = timePoints.map(async (datePoint, i) => {
     const gte = timePoints[0].utc().format();
@@ -41,27 +41,42 @@ function createTimeQueries(
           .format();
 
     const response = await fetch(
-      `${endPoint}?${queryField}__gte=${gte}&${queryField}__lte=${lte}`
+      `${endPoint}?${queryField}__gte=${gte}&${queryField}__lte=${lte}&limit=100`
     );
-    const responseJSON = await response.json();
 
-    return responseJSON;
+    if (response.status === 200) {
+      return await response.json();
+    } else {
+      return {
+        error: 'there was an error with response'
+      };
+    }
   });
   return Promise.all(promiseArray);
 }
 
-function getJobStatusesOverTime(jobData) {
+function getJobStatusesOverTime(jobData = []) {
   const pending = jobData.map(
-    jobs => jobs.results.filter(job => job.start_time === null).length
+    jobs =>
+      jobs.results
+        ? jobs.results.filter(job => job.start_time === null).length
+        : null
   );
   const failed = jobData.map(
-    jobs => jobs.results.filter(job => job.success === false).length
+    jobs =>
+      jobs.results
+        ? jobs.results.filter(job => job.success === false).length
+        : null
   );
   const completed = jobData.map(
-    jobs => jobs.results.filter(job => !!job.success).length
+    jobs =>
+      jobs.results ? jobs.results.filter(job => !!job.success).length : null
   );
   const open = jobData.map(
-    jobs => jobs.results.filter(job => job.success === null).length
+    jobs =>
+      jobs.results
+        ? jobs.results.filter(job => job.success === null).length
+        : null
   );
   return {
     pending,
