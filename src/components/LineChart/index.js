@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import {
   ResponsiveContainer,
@@ -13,7 +14,12 @@ import moment from 'moment';
 
 const COLORS = ['#D094CE', '#41E0AD', '#59C4EB', '#EA7576', '#D8AE41'];
 
-const LineChart = props => {
+type Props = {
+  series: Array<string>,
+  data: Array<{ date: string }>
+};
+
+const LineChart = (props: Props) => {
   const { data = [], series = [] } = props;
   console.log(series);
 
