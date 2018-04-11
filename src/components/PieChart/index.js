@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import {
   ResponsiveContainer,
@@ -10,7 +11,11 @@ import {
 
 const COLORS = ['#36AEB5', '#3CC7B0', '#65DDA1', '#9BF18D'];
 
-const PieChart = props => {
+type Props = {
+  data: Array<{ value: any, name: string }>
+};
+
+const PieChart = (props: Props) => {
   const { data = [] } = props;
   return (
     <ResponsiveContainer>
