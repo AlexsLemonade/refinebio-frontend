@@ -1,22 +1,15 @@
-import React, { Component } from 'react';
+// @flow
+import React from 'react';
 import { reduxForm, Field } from 'redux-form';
+import Select from '../Select';
 import './TimeRangeSelect.scss';
 
-const Select = ({ input, options, disabled = false }) => {
-  return (
-    <div className="select">
-      <select className="select__dropdown" {...input} disabled={disabled}>
-        {options.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
+type Props = {
+  updatedTimeRange: (value: number) => any,
+  options: Array<{ value: number, label: string }>
 };
 
-const TimeRangeSelect = props => {
+const TimeRangeSelect = (props: Props) => {
   function handleChange(e) {
     props.updatedTimeRange(e.target.value);
   }
