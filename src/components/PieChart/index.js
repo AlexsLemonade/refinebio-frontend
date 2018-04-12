@@ -8,8 +8,7 @@ import {
   Tooltip,
   Legend
 } from 'recharts';
-
-const COLORS = ['#36AEB5', '#3CC7B0', '#65DDA1', '#9BF18D'];
+import { COLORS } from '../../constants/colors';
 
 type Props = {
   data: Array<{ value: any, name: string }>

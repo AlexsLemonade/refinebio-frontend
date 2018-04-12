@@ -11,8 +11,7 @@ import {
   Legend
 } from 'recharts';
 import moment from 'moment';
-
-const COLORS = ['#D094CE', '#41E0AD', '#59C4EB', '#EA7576', '#D8AE41'];
+import { COLORS } from '../../constants/colors';
 
 type Props = {
   series: Array<string>,
