@@ -27,7 +27,7 @@ const LineChart = (props: Props) => {
     return moment(tickItem).format('MMM Do hh:mm');
   }
 
-  if (isLoading) return <div class="loader" />;
+  if (isLoading) return <div className="loader" />;
   return (
     <ResponsiveContainer>
       <LineRechart
