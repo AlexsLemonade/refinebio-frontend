@@ -5,7 +5,7 @@ import Select from '../Select';
 import './TimeRangeSelect.scss';
 
 type Props = {
-  updatedTimeRange: (value: number) => any,
+  updatedTimeRange: (value: number) => {},
   options: Array<{ value: number, label: string }>
 };
 

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import dashboard from './dashboard';
+import dashboard from './dashboard/reducer';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({

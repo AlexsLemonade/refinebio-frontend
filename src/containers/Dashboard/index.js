@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../../actions/dashboard';
-import * as chartSelectors from '../../reducers/dashboard';
+import * as actions from '../../state/dashboard/actions';
+import * as chartSelectors from '../../state/dashboard/reducer';
 import DashboardSection from './DashboardSection';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
 
