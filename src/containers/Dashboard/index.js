@@ -32,7 +32,8 @@ class Dashboard extends Component {
       samplesOverTime,
       processorJobsOverTimeByStatus,
       downloaderJobsOverTimeByStatus,
-      surveyJobsOverTimeByStatus
+      surveyJobsOverTimeByStatus,
+      isLoading
     } = this.props;
 
     const chartsConfig = [
@@ -152,7 +153,14 @@ class Dashboard extends Component {
           />
           {chartsConfig.map((section, i) => {
             const { title, charts } = section;
-            return <DashboardSection key={i} title={title} charts={charts} />;
+            return (
+              <DashboardSection
+                key={i}
+                title={title}
+                charts={charts}
+                isLoading={isLoading}
+              />
+            );
           })}
         </div>
       </div>
@@ -163,6 +171,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
   return {
     timeRangeForm: state.form.timeRange,
+    isLoading: state.dashboard.isLoading,
     timeOptions: state.dashboard.timeOptions,
     totalLengthOfQueuesByType: chartSelectors.getTotalLengthofQueuesByType(
       state

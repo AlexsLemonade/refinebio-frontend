@@ -16,16 +16,18 @@ const COLORS = ['#D094CE', '#41E0AD', '#59C4EB', '#EA7576', '#D8AE41'];
 
 type Props = {
   series: Array<string>,
-  data: Array<{ date: string }>
+  data: Array<{ date: string }>,
+  isLoading: boolean
 };
 
 const LineChart = (props: Props) => {
-  const { data = [], series = [] } = props;
+  const { data = [], series = [], isLoading = false } = props;
 
   function formatXAxis(tickItem) {
     return moment(tickItem).format('MMM Do hh:mm');
   }
 
+  if (isLoading) return <div class="loader" />;
   return (
     <ResponsiveContainer>
       <LineRechart

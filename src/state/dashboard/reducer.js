@@ -9,7 +9,8 @@ const initialState = {
   timeOptions: {
     range: 'day',
     timePoints: []
-  }
+  },
+  isLoading: false
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -29,14 +30,16 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         samplesOverTime,
         experimentsOverTime,
-        jobs
+        jobs,
+        isLoading: false
       };
     }
     case 'DASHBOARD_TIME_OPTIONS_UPDATED': {
       const { timeOptions } = action.data;
       return {
         ...state,
-        timeOptions
+        timeOptions,
+        isLoading: true
       };
     }
     default: {

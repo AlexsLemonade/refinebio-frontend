@@ -3,7 +3,7 @@ import DashboardItem from '../DashboardItem';
 import './DashboardSection.scss';
 
 const DashboardSection = props => {
-  const { title, charts } = props;
+  const { title, charts, isLoading } = props;
 
   return (
     <section className="dashboard-section">
@@ -19,6 +19,7 @@ const DashboardSection = props => {
               title={title}
               size={size}
               series={series}
+              isLoading={isLoading}
             />
           );
         })}

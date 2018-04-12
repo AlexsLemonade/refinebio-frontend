@@ -4,7 +4,14 @@ import LineChart from '../../../components/LineChart';
 import './DashboardItem.scss';
 
 const DashboardItem = props => {
-  const { type, title, data, size = 'small', series } = props;
+  const {
+    type,
+    title,
+    data,
+    size = 'small',
+    series,
+    isLoading = false
+  } = props;
 
   const renderChart = (type, data) => {
     switch (type.toLowerCase()) {
@@ -15,7 +22,7 @@ const DashboardItem = props => {
         return <PieChart data={data} />;
       }
       case 'line': {
-        return <LineChart data={data} series={series} />;
+        return <LineChart data={data} series={series} isLoading={isLoading} />;
       }
       default: {
         return null;
