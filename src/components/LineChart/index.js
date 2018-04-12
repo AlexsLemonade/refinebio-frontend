@@ -21,14 +21,9 @@ type Props = {
 
 const LineChart = (props: Props) => {
   const { data = [], series = [] } = props;
-  console.log(series);
 
   function formatXAxis(tickItem) {
     return moment(tickItem).format('MMM Do hh:mm');
-  }
-
-  function renderCustomTooltip(args) {
-    console.log(args);
   }
 
   return (
@@ -43,7 +38,14 @@ const LineChart = (props: Props) => {
         <Tooltip />
         <Legend />
         {series.map((set, i) => (
-          <Line key={i} type="monotone" dataKey={set} stroke={COLORS[i]} />
+          <Line
+            isAnimationActive={false}
+            key={i}
+            type="monotone"
+            dataKey={set}
+            stroke={COLORS[i]}
+            strokeWidth={2}
+          />
         ))}
       </LineRechart>
     </ResponsiveContainer>

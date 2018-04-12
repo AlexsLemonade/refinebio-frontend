@@ -1,3 +1,4 @@
+// TODO: samples and experiments will most likely be moved into their own reducers in the future
 const initialState = {
   stats: {},
   samples: {},
@@ -117,17 +118,25 @@ export function getSamplesCount(state) {
 export function getJobsCompletedOverTime(state) {
   const { jobs, timeOptions: { timePoints } } = state.dashboard;
 
-  return timePoints.map((time, i) => {
+  return timePoints.reduce((jobTotals, time, i) => {
     const dataPoint = {
       date: time.utc().format()
     };
+
     Object.keys(jobs).forEach(jobName => {
       if (jobs[jobName].all.length === timePoints.length) {
-        dataPoint[jobName] = jobs[jobName].all[i].count;
+        // accumulate count completed over time
+        const jobCount =
+          i === 0
+            ? jobs[jobName].all[i].count
+            : jobTotals[i - 1][jobName] + jobs[jobName].all[i].count;
+        dataPoint[jobName] = jobCount;
       }
     });
-    return dataPoint;
-  });
+
+    jobTotals.push(dataPoint);
+    return jobTotals;
+  }, []);
 }
 
 export function getSamplesCreatedOverTime(state) {

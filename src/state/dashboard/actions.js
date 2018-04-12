@@ -30,10 +30,12 @@ function getTimeUnit(range) {
 function createTimeQueries(
   endPoint = '/jobs/survey/',
   timePoints = [],
-  queryField = 'created_at'
+  isCumulative = false
 ) {
   const promiseArray = timePoints.map(async (datePoint, i) => {
-    const gte = timePoints[0].utc().format();
+    const gte = isCumulative
+      ? timePoints[0].utc().format()
+      : timePoints[i].utc().format();
     const lte = timePoints[i + 1]
       ? timePoints[i + 1].utc().format()
       : moment()
@@ -41,7 +43,7 @@ function createTimeQueries(
           .format();
 
     const response = await fetch(
-      `${endPoint}?${queryField}__gte=${gte}&${queryField}__lte=${lte}&limit=100`
+      `${endPoint}?created_at__gte=${gte}&created_at__lte=${lte}&limit=100`
     );
 
     if (response.status === 200) {
@@ -94,15 +96,11 @@ const fetchDataOverTime = timePoints => {
     const processor = await createTimeQueries('/jobs/processor/', timePoints);
     const downloader = await createTimeQueries('/jobs/downloader/', timePoints);
 
-    const samples = await createTimeQueries(
-      '/samples/',
-      timePoints,
-      'created_at'
-    );
+    const samples = await createTimeQueries('/samples/', timePoints, true);
     const experiments = await createTimeQueries(
       '/experiments/',
       timePoints,
-      'created_at'
+      true
     );
 
     const surveyStatus = getJobStatusesOverTime(survey);

@@ -37,6 +37,30 @@ class Dashboard extends Component {
 
     const chartsConfig = [
       {
+        title: 'Experiments and Samples',
+        charts: [
+          {
+            title: 'Total Experiments Created',
+            data: experimentsCount,
+            type: 'text',
+            size: 'small'
+          },
+          {
+            title: 'Total Samples Created',
+            data: samplesCount,
+            type: 'text',
+            size: 'small'
+          },
+          {
+            title: 'Samples and Experiments Created Over Time',
+            data: samplesOverTime,
+            series: ['experiments', 'samples'],
+            type: 'line',
+            size: 'large'
+          }
+        ]
+      },
+      {
         title: 'Jobs',
         charts: [
           {
@@ -107,30 +131,6 @@ class Dashboard extends Component {
             data: downloaderJobsOverTimeByStatus,
             type: 'line',
             series: ['pending', 'open', 'completed', 'failed'],
-            size: 'large'
-          }
-        ]
-      },
-      {
-        title: 'Experiments and Samples',
-        charts: [
-          {
-            title: 'Total Experiments Created',
-            data: experimentsCount,
-            type: 'text',
-            size: 'small'
-          },
-          {
-            title: 'Total Samples Created',
-            data: samplesCount,
-            type: 'text',
-            size: 'small'
-          },
-          {
-            title: 'Samples and Experiments Created Over Time',
-            data: samplesOverTime,
-            series: ['experiments', 'samples'],
-            type: 'line',
             size: 'large'
           }
         ]
