@@ -30,7 +30,8 @@ function getTimeUnit(range) {
 function createTimeQueries(
   endPoint = '/jobs/survey/',
   timePoints = [],
-  isCumulative = false
+  isCumulative = false,
+  limit = 1000000000
 ) {
   const promiseArray = timePoints.map(async (datePoint, i) => {
     const gte = isCumulative
@@ -43,7 +44,7 @@ function createTimeQueries(
           .format();
 
     const response = await fetch(
-      `${endPoint}?created_at__gte=${gte}&created_at__lte=${lte}&limit=100`
+      `${endPoint}?created_at__gte=${gte}&created_at__lte=${lte}&limit=${limit}`
     );
 
     if (response.status === 200) {
@@ -96,11 +97,14 @@ const fetchDataOverTime = timePoints => {
     const processor = await createTimeQueries('/jobs/processor/', timePoints);
     const downloader = await createTimeQueries('/jobs/downloader/', timePoints);
 
-    const samples = await createTimeQueries('/samples/', timePoints, true);
+    // for samples and experiments, we only need the count,
+    // not the results themselves, so we don't need a high limit
+    const samples = await createTimeQueries('/samples/', timePoints, true, 1);
     const experiments = await createTimeQueries(
       '/experiments/',
       timePoints,
-      true
+      true,
+      1
     );
 
     const surveyStatus = getJobStatusesOverTime(survey);
