@@ -27,6 +27,24 @@ function getTimeUnit(range) {
   }
 }
 
+async function asyncFetch(url, isLoop = true, accum = []) {
+  const response = await fetch(url);
+
+  if (response.status === 200) {
+    const responseJSON = await response.json();
+    const totalResults = [...accum, ...responseJSON.results];
+    if (!responseJSON.next || !isLoop) return totalResults;
+    const nextURL = responseJSON.next.split(':8000')[1];
+    return asyncFetch(nextURL, true, totalResults);
+  } else {
+    return [
+      {
+        error: 'there was an error with response'
+      }
+    ];
+  }
+}
+
 function createTimeQueries(
   endPoint = '/jobs/survey/',
   timePoints = [],
@@ -42,45 +60,26 @@ function createTimeQueries(
           .utc()
           .format();
 
-    const response = await fetch(
-      `${endPoint}?created_at__gte=${gte}&created_at__lte=${lte}&limit=100`
+    return await asyncFetch(
+      `${endPoint}?created_at__gte=${gte}&created_at__lte=${lte}&limit=100`,
+      !isCumulative
     );
-
-    if (response.status === 200) {
-      return await response.json();
-    } else {
-      return [
-        {
-          error: 'there was an error with response'
-        }
-      ];
-    }
   });
   return Promise.all(promiseArray);
 }
 
 function getJobStatusesOverTime(jobData = []) {
   const pending = jobData.map(
-    jobs =>
-      jobs.results
-        ? jobs.results.filter(job => job.start_time === null).length
-        : null
+    jobs => jobs.filter(job => job.start_time === null).length
   );
   const failed = jobData.map(
-    jobs =>
-      jobs.results
-        ? jobs.results.filter(job => job.success === false).length
-        : null
+    jobs => jobs.filter(job => job.success === false).length
   );
   const completed = jobData.map(
-    jobs =>
-      jobs.results ? jobs.results.filter(job => !!job.success).length : null
+    jobs => jobs.filter(job => !!job.success).length
   );
   const open = jobData.map(
-    jobs =>
-      jobs.results
-        ? jobs.results.filter(job => job.success === null).length
-        : null
+    jobs => jobs.filter(job => job.success === null).length
   );
   return {
     pending,
