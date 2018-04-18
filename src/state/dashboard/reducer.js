@@ -99,7 +99,7 @@ export function getAllEstimatedTimeTilCompletion(state, jobType) {
   return Object.keys(stats).reduce((allEstimatedTimes, jobType) => {
     const estimateSec =
       (stats[jobType].open + stats[jobType].pending) *
-      parseInt(stats[jobType].average_time, 10);
+      parseFloat(stats[jobType].average_time);
     // we're assuming that average_time is in seconds...
     allEstimatedTimes[jobType] = convertSecToMinHours(estimateSec);
     return allEstimatedTimes;
