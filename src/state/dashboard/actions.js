@@ -49,13 +49,12 @@ function createTimeQueries(
 
     if (response.status === 200) {
       return await response.json();
-    } else {
-      return [
-        {
-          error: 'there was an error with response'
-        }
-      ];
     }
+    return [
+      {
+        error: 'there was an error with response'
+      }
+    ];
   });
   return Promise.all(promiseArray);
 }

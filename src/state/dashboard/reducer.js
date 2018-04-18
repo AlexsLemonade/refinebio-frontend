@@ -52,7 +52,7 @@ export default dashboardReducer;
 
 // chart selectors for creating chart data for individual charts on dashboard
 
-export function getTotalLengthofQueuesByType(state) {
+export function getTotalLengthOfQueuesByType(state) {
   const stats = state.dashboard.stats;
   return Object.keys(stats).map(jobType => {
     return {

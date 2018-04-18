@@ -173,7 +173,7 @@ const mapStateToProps = state => {
     timeRangeForm: state.form.timeRange,
     isLoading: state.dashboard.isLoading,
     timeOptions: state.dashboard.timeOptions,
-    totalLengthOfQueuesByType: chartSelectors.getTotalLengthofQueuesByType(
+    totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
       state
     ),
     jobsByStatus: chartSelectors.getJobsByStatus(state),
