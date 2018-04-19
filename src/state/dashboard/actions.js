@@ -161,6 +161,15 @@ export const fetchDashboardData = () => {
   };
 };
 
+export const selectedTimeRange = (range = 'week') => {
+  return dispatch => {
+    dispatch({
+      type: 'DASHBOARD_TIME_OPTIONS_SELECTED'
+    });
+    dispatch(updatedTimeRange(range));
+  };
+};
+
 export const updatedTimeRange = (range = 'week') => {
   return dispatch => {
     const unit = getTimeUnit(range);

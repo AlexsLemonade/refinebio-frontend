@@ -5,13 +5,13 @@ import Select from '../Select';
 import './TimeRangeSelect.scss';
 
 type Props = {
-  updatedTimeRange: (value: number) => {},
+  selectedTimeRange: (value: number) => {},
   options: Array<{ value: number, label: string }>
 };
 
 const TimeRangeSelect = (props: Props) => {
   function handleChange(e) {
-    props.updatedTimeRange(e.target.value);
+    props.selectedTimeRange(e.target.value);
   }
 
   return (

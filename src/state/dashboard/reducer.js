@@ -34,12 +34,17 @@ const dashboardReducer = (state = initialState, action) => {
         isLoading: false
       };
     }
+    case 'DASHBOARD_TIME_OPTIONS_SELECTED': {
+      return {
+        ...state,
+        isLoading: true
+      };
+    }
     case 'DASHBOARD_TIME_OPTIONS_UPDATED': {
       const { timeOptions } = action.data;
       return {
         ...state,
-        timeOptions,
-        isLoading: true
+        timeOptions
       };
     }
     default: {

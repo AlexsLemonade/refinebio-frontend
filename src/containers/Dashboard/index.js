@@ -16,16 +16,31 @@ class Dashboard extends Component {
       fetchDashboardData
     } = this.props;
 
-    // data live reloads every minute
-    setInterval(
+    fetchDashboardData();
+
+    // data live reloads every 5 seconds
+    this.intervalId = setInterval(
       (function fetchData() {
         updatedTimeRange(range);
-        fetchDashboardData();
         return fetchData;
       })(),
-      60000
+      5000
     );
   }
+
+  handleSelectChange = range => {
+    const { selectedTimeRange, updatedTimeRange } = this.props;
+    clearInterval(this.intervalId);
+    selectedTimeRange(range);
+
+    this.intervalId = setInterval(
+      (function fetchData() {
+        updatedTimeRange(range);
+        return fetchData;
+      })(),
+      5000
+    );
+  };
 
   render() {
     const {
@@ -35,7 +50,6 @@ class Dashboard extends Component {
       samplesCount,
       jobsByStatus,
       jobsCompletedOverTime,
-      updatedTimeRange,
       timeOptions,
       samplesOverTime,
       processorJobsOverTimeByStatus,
@@ -157,7 +171,7 @@ class Dashboard extends Component {
               { label: 'Last Month', value: 'month' },
               { label: 'Last Year', value: 'year' }
             ]}
-            updatedTimeRange={updatedTimeRange}
+            selectedTimeRange={this.handleSelectChange}
           />
           {chartsConfig.map((section, i) => {
             const { title, charts } = section;
