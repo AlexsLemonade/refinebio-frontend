@@ -15,8 +15,16 @@ class Dashboard extends Component {
       updatedTimeRange,
       fetchDashboardData
     } = this.props;
-    updatedTimeRange(range);
-    fetchDashboardData();
+
+    // data live reloads every 5 seconds
+    setInterval(
+      (function fetchData() {
+        updatedTimeRange(range);
+        fetchDashboardData();
+        return fetchData;
+      })(),
+      5000
+    );
   }
 
   render() {
