@@ -118,9 +118,18 @@ export function getSamplesCount(state) {
   return count;
 }
 
+/**
+ * Build an array of datapoints with a date property and the total of all jobs
+ * run up to that point in time since the beginning of that time range for each
+ * job type
+ */
 export function getJobsCompletedOverTime(state) {
   const { jobs, timeOptions: { timePoints } } = state.dashboard;
 
+  /**
+   * Loop over each "date" in the time range and use the index to find the
+   * corresponding jobs API reponse for that date
+   */
   return timePoints.reduce((jobTotals, time, i) => {
     const dataPoint = {
       date: time.utc().format()
@@ -128,7 +137,10 @@ export function getJobsCompletedOverTime(state) {
 
     Object.keys(jobs).forEach(jobName => {
       if (jobs[jobName].all.length === timePoints.length) {
-        // accumulate count completed over time
+        /**
+         * If this isn't the first job run in the set time range,
+         * accumulate the total of jobs run up to this point in time
+         */
         const jobCount =
           i === 0
             ? jobs[jobName].all[i].count
