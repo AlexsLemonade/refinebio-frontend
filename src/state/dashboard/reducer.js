@@ -87,8 +87,8 @@ export function getJobsByStatus(state) {
 }
 
 function convertSecToMinHours(sec) {
-  const hours = Math.floor(sec / 3600),
-    minutes = Math.floor((sec % 3600) / 60);
+  const hours = Math.round(sec / 3600),
+    minutes = Math.round((sec % 3600) / 60);
   if (isNaN(hours) || isNaN(minutes)) {
     return `N/A`;
   } else {
