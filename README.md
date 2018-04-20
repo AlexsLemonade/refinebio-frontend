@@ -16,6 +16,8 @@ You can find the most recent version of the Create React App guide [here](https:
     * [Formatting](#formatting)
     * [Static Type Checking](#static-type-checking)
   * [Styling](#styling)
+* [Executive Dashboard](#executive-dashboard)
+  * [Running Locally](#running-locally)
 
 ## Getting Started
 
@@ -85,7 +87,13 @@ Run Flow via the command line with `yarn flow`.
 ### Styling
 
 * Pre-processor: [SASS](https://sass-lang.com/)
-* Locally scoped class names with [CSS Modules](https://github.com/css-modules/css-modules)
-  * for a `.scss` file to uses modules, the file must be named in the following format: `[name].module.scss`
-  * non-prefixed files will be parsed normally
+* Write resuabled, modularized using [BEM](http://getbem.com/)
 * Configured using [custom-react-scripts](https://github.com/kitze/custom-react-scripts) to avoid losing future creat-react-app support
+
+## Executive Dashboard
+
+Our executive dashboard is used for monitoring the health and state of our system. The dashboard can be viewed at the `/dashboard` route of the frontend.
+
+### Running Locally
+If you have the refine.bio backend running locally, just modify `proxy` in `package.json` to point to where your local backend is running.
+
