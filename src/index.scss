@@ -1,4 +1,5 @@
 @import 'common/styles/variables';
+@import 'common/styles/type';
 
 html,
 body,
@@ -17,8 +18,6 @@ body,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Overpass', sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
 a {
