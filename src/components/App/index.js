@@ -7,7 +7,7 @@ import Search from '../../containers/Search';
 import Results from '../../containers/Results';
 import Experiment from '../../containers/Experiment';
 import Dashboard from '../../containers/Dashboard';
-import Download from '../../containers/Download';
+import Downloads from '../../containers/Downloads';
 import Layout from '../Layout';
 
 const App = () => {
@@ -20,7 +20,7 @@ const App = () => {
             <Route path="/results" component={Results} />
             <Route path="/experiment" component={Experiment} />
             <Route path="/dashboard" component={Dashboard} />
-            <Route path="/download" component={Download} />
+            <Route path="/download" component={Downloads} />
           </Switch>
         </Layout>
       </Router>

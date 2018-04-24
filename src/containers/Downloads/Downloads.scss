@@ -1,0 +1,81 @@
+@import '../../common/styles/variables';
+
+.downloads {
+  &__bar,
+  &__fieldset {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__bar {
+    align-items: center;
+    border-bottom: 1px solid $gray;
+    padding-bottom: 1rem;
+  }
+
+  &__section {
+    margin: 1.5rem 0;
+  }
+
+  &__cards {
+    display: grid;
+    grid-column-gap: 14px;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0 7px;
+  }
+
+  &__card {
+    background-color: $whisper;
+    box-shadow: 0 3px 20px 0 rgba($black, 0.1);
+    flex: 1;
+    margin: 1rem 0;
+    padding: 18px 2px;
+    text-align: center;
+
+    &--summary {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  &__table {
+    border-collapse: collapse;
+    font-size: 1.125rem;
+    width: 100%;
+  }
+
+  &__table-cell,
+  &__table-header {
+    border-bottom: 2px solid $gray;
+    font-weight: 400;
+    padding: 1rem 0;
+  }
+
+  &__table-cell {
+    &--value {
+      color: $azure;
+    }
+  }
+
+  &__table-row {
+    &:last-of-type {
+      .downloads__table-cell {
+        border-bottom: 0;
+      }
+    }
+  }
+
+  &__sample {
+    align-items: flex-start;
+    border-bottom: 2px solid $gray;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 1.5rem 1.5rem;
+    padding-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  &__sample-stats {
+    display: flex;
+  }
+}
