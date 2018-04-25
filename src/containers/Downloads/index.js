@@ -9,7 +9,7 @@ function mapStateToProps(state) {
   };
 }
 
-const cardData = [
+const downloadFilesData = [
   {
     title: '13 Gene Expression Matrices',
     description: '1 file per Species',
@@ -36,6 +36,19 @@ const cardData = [
   }
 ];
 
+const speciesData = [
+  {
+    name: 'Human',
+    samples: Array(100).fill({}),
+    genes: Array(233).fill({})
+  },
+  {
+    name: 'Mouse',
+    samples: Array(30).fill({}),
+    genes: Array(133).fill({})
+  }
+];
+
 class Download extends Component {
   render() {
     return (
@@ -57,12 +70,15 @@ class Download extends Component {
         <section className="downloads__section">
           <h2>Download Files Summary</h2>
           <div className="downloads__cards">
-            {cardData.map((card, i) => (
+            {downloadFilesData.map((card, i) => (
               <div className="downloads__card" key={i}>
                 <h4>{card.title}</h4>
                 <p>{card.description}</p>
                 <div className="downloads__card-stats">
-                  <p className="caption">{card.size}</p>
+                  <p className="downloads__card-stat">
+                    Total Size: {card.size}
+                  </p>
+                  <p className="downloads__card-stat">Format: {card.format}</p>
                 </div>
               </div>
             ))}
@@ -115,17 +131,23 @@ class Download extends Component {
           <h2>Samples</h2>
           <div className="toggle">Species View | Experiment View</div>
           <div className="downloads__card">
-            <div className="downloads__sample">
-              <div className="downloads__sample-info">
-                <h2>Human Samples</h2>
-                <div className="downloads__sample-stats">
-                  <p>100 Samples</p>
-                  <p>233 Genes</p>
+            {speciesData.map((species, i) => (
+              <div className="downloads__sample" key={i}>
+                <div className="downloads__sample-info">
+                  <h2>{species.name} Samples</h2>
+                  <div className="downloads__sample-stats">
+                    <p className="downloads__sample-stat">
+                      {species.samples.length} Samples
+                    </p>
+                    <p className="downloads__sample-stat">
+                      {species.genes.length} Genes
+                    </p>
+                  </div>
+                  <Button text="View Samples" buttonStyle="secondary" />
                 </div>
-                <Button text="View Samples" />
+                <Button text="Remove" buttonStyle="remove" />
               </div>
-              <Button text="Remove" />
-            </div>
+            ))}
           </div>
         </section>
       </div>

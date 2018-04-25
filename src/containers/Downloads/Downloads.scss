@@ -38,6 +38,18 @@
     }
   }
 
+  &__card-stats {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 1rem -1.5rem 0;
+  }
+
+  &__card-stat {
+    font-size: 0.875rem;
+    margin: 0 1.5rem;
+  }
+
   &__table {
     border-collapse: collapse;
     font-size: 1.125rem;
@@ -66,16 +78,26 @@
   }
 
   &__sample {
-    align-items: flex-start;
+    align-items: center;
     border-bottom: 2px solid $gray;
     display: flex;
     justify-content: space-between;
     margin: 0 1.5rem 1.5rem;
     padding-bottom: 1.5rem;
     text-align: left;
+
+    &:last-of-type {
+      border-bottom: 0;
+      margin-bottom: 0;
+    }
   }
 
   &__sample-stats {
     display: flex;
+    margin: 0 -2rem 1.5rem;
+  }
+
+  &__sample-stat {
+    margin: 0 2rem;
   }
 }
