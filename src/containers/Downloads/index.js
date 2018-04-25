@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
+import Dropdown from '../../components/Dropdown';
 import './Downloads.scss';
 
 function mapStateToProps(state) {
@@ -56,13 +57,16 @@ class Download extends Component {
         <h1 className="downloads__heading">Download Dataset</h1>
         <div className="downloads__bar">
           <div className="downloads__fieldset">
-            <label>
+            <label className="downloads__label">
               Aggregate
-              <div className="dropdown">dropdown</div>
+              <Dropdown
+                options={['Experiments', 'Samples']}
+                selectedOption={'Experiments'}
+              />
             </label>
-            <label>
+            <label className="downloads__label">
               Transformation
-              <div className="dropdown">dropdown</div>
+              <Dropdown options={['None', 'Samples']} selectedOption={'None'} />
             </label>
           </div>
           <Button text="Download" />

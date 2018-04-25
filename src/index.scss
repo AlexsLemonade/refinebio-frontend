@@ -8,7 +8,6 @@ body,
   width: 100%;
   min-height: 100vh;
   color: $font-color;
-  font-size: 15px;
 }
 
 * {
@@ -23,6 +22,24 @@ body {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+button {
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  -webkit-font-smoothing: inherit;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 0;
+  text-align: inherit;
+  width: auto;
 }
 
 fieldset {

@@ -83,7 +83,7 @@
     display: flex;
     justify-content: space-between;
     margin: 0 1.5rem 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1rem;
     text-align: left;
 
     &:last-of-type {
@@ -99,5 +99,9 @@
 
   &__sample-stat {
     margin: 0 2rem;
+  }
+
+  &__label {
+    margin-right: 1.5rem;
   }
 }

@@ -6,9 +6,7 @@ const Header = props => {
   return (
     <header>
       <div className="header__container">
-        <div className="header__logo">
-          <span className="header__highlight">refine</span>.bio
-        </div>
+        <div className="header__logo">refine.bio</div>
         <div>
           <Link className="header__link" to="/">
             Search
