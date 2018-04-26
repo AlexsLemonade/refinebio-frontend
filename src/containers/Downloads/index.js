@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
-import Dropdown from '../../components/Dropdown';
 import Toggle from '../../components/Toggle';
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
+
+import DownloadBar from './DownloadBar';
+import DownloadFileSummary from './DownloadFileSummary';
+import DownloadDatasetSummary from './DownloadDatasetSummary';
 
 import './Downloads.scss';
 
@@ -147,15 +150,27 @@ class Download extends Component {
           <h2 className="downloads__experiment-title">{experiment.title}</h2>
           <div className="downloads__sample-stats">
             <div className="downloads__sample-stat">
-              <img src={AccessionIcon} className="downloads__sample-icon" />{' '}
+              <img
+                src={AccessionIcon}
+                className="downloads__sample-icon"
+                alt="Accession Icon"
+              />{' '}
               {experiment.id}
             </div>
             <div className="downloads__sample-stat">
-              <img src={SampleIcon} className="downloads__sample-icon" />{' '}
+              <img
+                src={SampleIcon}
+                className="downloads__sample-icon"
+                alt="Sample Icon"
+              />{' '}
               {experiment.samples.length}
             </div>
             <div className="downloads__sample-stat downloads__sample-stat--experiment">
-              <img src={OrganismIcon} className="downloads__sample-icon" />{' '}
+              <img
+                src={OrganismIcon}
+                className="downloads__sample-icon"
+                alt="Organism Icon"
+              />{' '}
               {experiment.species}
             </div>
           </div>
@@ -174,82 +189,9 @@ class Download extends Component {
     return (
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
-        <div className="downloads__bar">
-          <div className="downloads__fieldset">
-            <label className="downloads__label">
-              Aggregate
-              <Dropdown
-                options={['Experiments', 'Samples']}
-                selectedOption={'Experiments'}
-              />
-            </label>
-            <label className="downloads__label">
-              Transformation
-              <Dropdown options={['None', 'Samples']} selectedOption={'None'} />
-            </label>
-          </div>
-          <Button text="Download" />
-        </div>
-        <section className="downloads__section">
-          <h2>Download Files Summary</h2>
-          <div className="downloads__cards">
-            {downloadFilesData.map((card, i) => (
-              <div className="downloads__card" key={i}>
-                <h4>{card.title}</h4>
-                <p>{card.description}</p>
-                <div className="downloads__card-stats">
-                  <p className="downloads__card-stat">
-                    Total Size: {card.size}
-                  </p>
-                  <p className="downloads__card-stat">Format: {card.format}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-        <section className="downloads__section">
-          <h2>Dataset Summary</h2>
-          <div className="downloads__card downloads__card--summary">
-            <table className="downloads__table">
-              <thead>
-                <tr className="downloads__table-row">
-                  <th className="downloads__table-header" />
-                  <th className="downloads__table-header">Samples</th>
-                  <th className="downloads__table-header">Experiments</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="downloads__table-row">
-                  <td className="downloads__table-cell">Humans</td>
-                  <td className="downloads__table-cell downloads__table-cell--value">
-                    100
-                  </td>
-                  <td className="downloads__table-cell downloads__table-cell--value">
-                    10
-                  </td>
-                </tr>
-                <tr className="downloads__table-row">
-                  <td className="downloads__table-cell">Mouse</td>
-                  <td className="downloads__table-cell downloads__table-cell--value">
-                    100
-                  </td>
-                  <td className="downloads__table-cell downloads__table-cell--value">
-                    10
-                  </td>
-                </tr>
-                <tr className="downloads__table-row">
-                  <td className="downloads__table-cell">Total</td>
-                  <td className="downloads__table-cell downloads__table-cell--value">
-                    100
-                  </td>
-                  <td className="downloads__table-cell downloads__table-cell--value">
-                    10
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <DownloadBar />
+        <DownloadFileSummary summaryData={downloadFilesData} />
+        <DownloadDatasetSummary />
         <section className="downloads__section">
           <h2>Samples</h2>
           <Toggle

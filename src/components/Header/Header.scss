@@ -7,8 +7,8 @@
     display: flex;
     width: 95%;
     max-width: 1250px;
-    padding: 20px;
-    margin: 30px auto 0;
+    padding: 0 20px;
+    margin: 1.5rem auto 0;
   }
 
   &__logo {
@@ -18,8 +18,9 @@
 
   &__link {
     margin: 0 1rem;
-    font-weight: 500;
+    font-weight: 400;
     font-family: 'Rubik', sans-serif;
+    font-size: 1rem;
   }
 }
 
