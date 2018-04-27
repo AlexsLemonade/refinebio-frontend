@@ -14,7 +14,7 @@ import './Downloads.scss';
 
 function mapStateToProps(state) {
   return {
-    dashboard: state.dashboard
+    download: state.download
   };
 }
 
@@ -144,7 +144,7 @@ class Download extends Component {
   };
 
   renderExperimentsView = () => {
-    return experimentData.map((experiment, i) => (
+    return this.props.download.experiments.map((experiment, i) => (
       <div className="downloads__sample" key={i}>
         <div className="downloads__experiments-info">
           <h2 className="downloads__experiment-title">{experiment.title}</h2>
@@ -175,7 +175,7 @@ class Download extends Component {
             </div>
           </div>
           <h4>Sample Metadata Fields</h4>
-          <h5>{experiment.metadata.join(', ')}</h5>
+          <h5>{experiment.metadata ? experiment.metadata.join(', ') : null}</h5>
           <Button text="View Samples" buttonStyle="secondary" />
         </div>
         <Button text="Remove" buttonStyle="remove" />
