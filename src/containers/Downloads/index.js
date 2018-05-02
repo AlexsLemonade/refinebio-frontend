@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Button from '../../components/Button';
 import Toggle from '../../components/Toggle';
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
+
+import * as downloadActions from '../../state/download/actions';
+import { groupSamplesBySpecies } from '../../state/download/reducer';
 
 import DownloadBar from './DownloadBar';
 import DownloadFileSummary from './DownloadFileSummary';
@@ -14,14 +18,19 @@ import './Downloads.scss';
 
 function mapStateToProps(state) {
   return {
-    download: state.download
+    experiments: state.download.experiments,
+    species: groupSamplesBySpecies(state)
   };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(downloadActions, dispatch);
 }
 
 const downloadFilesData = [
   {
     title: '13 Gene Expression Matrices',
-    description: '1 file per Species',
+    description: '1 file per Aggregation Choice',
     size: '21 MB',
     format: 'csv'
   },
@@ -45,70 +54,6 @@ const downloadFilesData = [
   }
 ];
 
-const speciesData = [
-  {
-    name: 'Human',
-    samples: Array(100).fill({}),
-    genes: Array(233).fill({})
-  },
-  {
-    name: 'Mouse',
-    samples: Array(30).fill({}),
-    genes: Array(133).fill({})
-  }
-];
-
-const experimentData = [
-  {
-    id: 'E-GEOD-7529',
-    title:
-      'Transcription profiling of human neuroblast tumours reveals two distinct gene signatures identify malignant Neuroblast and Schwannian stromal cells',
-    samples: Array(10).fill({}),
-    species: 'Human',
-    metadata: [
-      'Sample Title',
-      'Organism Part',
-      'Sample Description',
-      'Gender',
-      'Age',
-      'Disease',
-      'Cell Line'
-    ]
-  },
-  {
-    id: 'E-GEOD-7529',
-    title:
-      'Transcription profiling of human neuroblast tumours reveals two distinct gene signatures identify malignant Neuroblast and Schwannian stromal cells',
-    samples: Array(10).fill({}),
-    species: 'Human',
-    metadata: [
-      'Sample Title',
-      'Organism Part',
-      'Sample Description',
-      'Gender',
-      'Age',
-      'Disease',
-      'Cell Line'
-    ]
-  },
-  {
-    id: 'E-GEOD-7529',
-    title:
-      'Transcription profiling of human neuroblast tumours reveals two distinct gene signatures identify malignant Neuroblast and Schwannian stromal cells',
-    samples: Array(10).fill({}),
-    species: 'Human',
-    metadata: [
-      'Sample Title',
-      'Organism Part',
-      'Sample Description',
-      'Gender',
-      'Age',
-      'Disease',
-      'Cell Line'
-    ]
-  }
-];
-
 class Download extends Component {
   constructor(props) {
     super(props);
@@ -124,27 +69,36 @@ class Download extends Component {
   }
 
   renderSpeciesSamples = () => {
-    return speciesData.map((species, i) => (
+    const { species } = this.props;
+
+    if (!Object.keys(species).length)
+      return <p>No samples added to download dataset.</p>;
+    return Object.keys(species).map((speciesName, i) => (
       <div className="downloads__sample" key={i}>
         <div className="downloads__sample-info">
-          <h2>{species.name} Samples</h2>
+          <h2>{speciesName} Samples</h2>
           <div className="downloads__sample-stats">
             <p className="downloads__sample-stat">
-              {species.samples.length} Samples
-            </p>
-            <p className="downloads__sample-stat">
-              {species.genes.length} Genes
+              {species[speciesName].length} Samples
             </p>
           </div>
           <Button text="View Samples" buttonStyle="secondary" />
         </div>
-        <Button text="Remove" buttonStyle="remove" />
+        <Button
+          text="Remove"
+          buttonStyle="remove"
+          onClick={() => this.props.removedSpecies(speciesName)}
+        />
       </div>
     ));
   };
 
   renderExperimentsView = () => {
-    return this.props.download.experiments.map((experiment, i) => (
+    const { experiments } = this.props;
+
+    if (!experiments.length)
+      return <p>No samples added to download dataset.</p>;
+    return this.props.experiments.map((experiment, i) => (
       <div className="downloads__sample" key={i}>
         <div className="downloads__experiments-info">
           <h2 className="downloads__experiment-title">{experiment.title}</h2>
@@ -178,7 +132,11 @@ class Download extends Component {
           <h5>{experiment.metadata ? experiment.metadata.join(', ') : null}</h5>
           <Button text="View Samples" buttonStyle="secondary" />
         </div>
-        <Button text="Remove" buttonStyle="remove" />
+        <Button
+          text="Remove"
+          buttonStyle="remove"
+          onClick={() => this.props.removedExperiment(experiment.id)}
+        />
       </div>
     ));
   };
@@ -191,7 +149,7 @@ class Download extends Component {
         <h1 className="downloads__heading">Download Dataset</h1>
         <DownloadBar />
         <DownloadFileSummary summaryData={downloadFilesData} />
-        <DownloadDatasetSummary />
+        <DownloadDatasetSummary data={this.props.experiments} />
         <section className="downloads__section">
           <h2>Samples</h2>
           <Toggle
@@ -207,4 +165,4 @@ class Download extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Download);
+export default connect(mapStateToProps, mapDispatchToProps)(Download);

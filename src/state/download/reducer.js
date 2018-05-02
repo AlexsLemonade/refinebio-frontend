@@ -18,94 +18,306 @@ const initialState = {
       publication_doi: '',
       pubmed_id: '',
       samples: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36,
-        37,
-        38,
-        39,
-        40,
-        41,
-        42,
-        43,
-        44,
-        45,
-        46,
-        47,
-        48,
-        49,
-        50,
-        51,
-        52,
-        53,
-        54,
-        55,
-        56,
-        57,
-        58,
-        59,
-        60,
-        61,
-        62,
-        63,
-        64,
-        65,
-        66,
-        67,
-        68,
-        69,
-        70,
-        71,
-        72,
-        73,
-        74,
-        75,
-        76,
-        77,
-        78,
-        79,
-        80,
-        81,
-        82,
-        83,
-        84,
-        85,
-        86,
-        87,
-        88
+        {
+          id: 1,
+          accession_code: 'GSM414087 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.889263Z',
+          last_modified: '2018-04-19T18:46:50.889263Z'
+        },
+        {
+          id: 2,
+          accession_code: 'GSM414086 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.921606Z',
+          last_modified: '2018-04-19T18:46:50.921606Z'
+        },
+        {
+          id: 3,
+          accession_code: 'GSM414085 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.934763Z',
+          last_modified: '2018-04-19T18:46:50.934763Z'
+        },
+        {
+          id: 4,
+          accession_code: 'GSM414084 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.949774Z',
+          last_modified: '2018-04-19T18:46:50.949774Z'
+        },
+        {
+          id: 5,
+          accession_code: 'GSM414083 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.965318Z',
+          last_modified: '2018-04-19T18:46:50.965318Z'
+        },
+        {
+          id: 6,
+          accession_code: 'GSM414082 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.980007Z',
+          last_modified: '2018-04-19T18:46:50.980007Z'
+        },
+        {
+          id: 7,
+          accession_code: 'GSM414081 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.996349Z',
+          last_modified: '2018-04-19T18:46:50.996349Z'
+        },
+        {
+          id: 8,
+          accession_code: 'GSM414080 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.008842Z',
+          last_modified: '2018-04-19T18:46:51.008842Z'
+        },
+        {
+          id: 9,
+          accession_code: 'GSM414079 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.019163Z',
+          last_modified: '2018-04-19T18:46:51.019163Z'
+        },
+        {
+          id: 10,
+          accession_code: 'GSM414078 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.030051Z',
+          last_modified: '2018-04-19T18:46:51.030051Z'
+        },
+        {
+          id: 11,
+          accession_code: 'GSM414077 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.039925Z',
+          last_modified: '2018-04-19T18:46:51.039925Z'
+        },
+        {
+          id: 12,
+          accession_code: 'GSM414076 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.050403Z',
+          last_modified: '2018-04-19T18:46:51.050403Z'
+        },
+        {
+          id: 13,
+          accession_code: 'GSM414075 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.059208Z',
+          last_modified: '2018-04-19T18:46:51.059208Z'
+        },
+        {
+          id: 14,
+          accession_code: 'GSM414074 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.068174Z',
+          last_modified: '2018-04-19T18:46:51.068174Z'
+        },
+        {
+          id: 15,
+          accession_code: 'GSM414073 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.077299Z',
+          last_modified: '2018-04-19T18:46:51.077299Z'
+        },
+        {
+          id: 16,
+          accession_code: 'GSM414072 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.085685Z',
+          last_modified: '2018-04-19T18:46:51.085685Z'
+        },
+        {
+          id: 17,
+          accession_code: 'GSM414071 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.094268Z',
+          last_modified: '2018-04-19T18:46:51.094268Z'
+        },
+        {
+          id: 18,
+          accession_code: 'GSM414070 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.102816Z',
+          last_modified: '2018-04-19T18:46:51.102816Z'
+        },
+        {
+          id: 19,
+          accession_code: 'GSM414069 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.111942Z',
+          last_modified: '2018-04-19T18:46:51.111942Z'
+        },
+        {
+          id: 20,
+          accession_code: 'GSM414068 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.123123Z',
+          last_modified: '2018-04-19T18:46:51.123123Z'
+        },
+        {
+          id: 21,
+          accession_code: 'GSM414067 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.131672Z',
+          last_modified: '2018-04-19T18:46:51.131672Z'
+        },
+        {
+          id: 22,
+          accession_code: 'GSM414066 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.140599Z',
+          last_modified: '2018-04-19T18:46:51.140599Z'
+        },
+        {
+          id: 23,
+          accession_code: 'GSM414065 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.149730Z',
+          last_modified: '2018-04-19T18:46:51.149730Z'
+        },
+        {
+          id: 24,
+          accession_code: 'GSM414064 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.159144Z',
+          last_modified: '2018-04-19T18:46:51.159144Z'
+        },
+        {
+          id: 25,
+          accession_code: 'GSM414063 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.169261Z',
+          last_modified: '2018-04-19T18:46:51.169261Z'
+        }
       ],
       submitter_institution: 'Academic Medical Centre, University of Amsterdam',
       created_at: '2018-04-19T18:46:47.666345Z',
@@ -128,34 +340,174 @@ const initialState = {
       publication_doi: '',
       pubmed_id: '',
       samples: [
-        89,
-        90,
-        91,
-        92,
-        93,
-        94,
-        95,
-        96,
-        97,
-        98,
-        99,
-        100,
-        101,
-        102,
-        103,
-        104,
-        105,
-        106,
-        107,
-        108,
-        109,
-        110,
-        111,
-        112,
-        113,
-        114,
-        115,
-        116
+        {
+          id: 1,
+          accession_code: 'GSM414087 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.889263Z',
+          last_modified: '2018-04-19T18:46:50.889263Z'
+        },
+        {
+          id: 2,
+          accession_code: 'GSM414086 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.921606Z',
+          last_modified: '2018-04-19T18:46:50.921606Z'
+        },
+        {
+          id: 3,
+          accession_code: 'GSM414085 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.934763Z',
+          last_modified: '2018-04-19T18:46:50.934763Z'
+        },
+        {
+          id: 4,
+          accession_code: 'GSM414084 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.949774Z',
+          last_modified: '2018-04-19T18:46:50.949774Z'
+        },
+        {
+          id: 5,
+          accession_code: 'GSM414083 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.965318Z',
+          last_modified: '2018-04-19T18:46:50.965318Z'
+        },
+        {
+          id: 6,
+          accession_code: 'GSM414082 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.980007Z',
+          last_modified: '2018-04-19T18:46:50.980007Z'
+        },
+        {
+          id: 7,
+          accession_code: 'GSM414081 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.996349Z',
+          last_modified: '2018-04-19T18:46:50.996349Z'
+        },
+        {
+          id: 8,
+          accession_code: 'GSM414080 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.008842Z',
+          last_modified: '2018-04-19T18:46:51.008842Z'
+        },
+        {
+          id: 9,
+          accession_code: 'GSM414079 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.019163Z',
+          last_modified: '2018-04-19T18:46:51.019163Z'
+        },
+        {
+          id: 10,
+          accession_code: 'GSM414078 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.030051Z',
+          last_modified: '2018-04-19T18:46:51.030051Z'
+        },
+        {
+          id: 11,
+          accession_code: 'GSM414077 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.039925Z',
+          last_modified: '2018-04-19T18:46:51.039925Z'
+        },
+        {
+          id: 12,
+          accession_code: 'GSM414076 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.050403Z',
+          last_modified: '2018-04-19T18:46:51.050403Z'
+        },
+        {
+          id: 13,
+          accession_code: 'GSM414075 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.059208Z',
+          last_modified: '2018-04-19T18:46:51.059208Z'
+        },
+        {
+          id: 14,
+          accession_code: 'GSM414074 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:51.068174Z',
+          last_modified: '2018-04-19T18:46:51.068174Z'
+        }
       ],
       submitter_institution: 'National Institute for Cancer Research (IST)',
       created_at: '2018-04-19T18:46:56.213486Z',
@@ -179,70 +531,42 @@ const initialState = {
       publication_doi: '18923523',
       pubmed_id: '18923523',
       samples: [
-        117,
-        118,
-        119,
-        120,
-        121,
-        122,
-        123,
-        124,
-        125,
-        126,
-        127,
-        128,
-        129,
-        130,
-        131,
-        132,
-        133,
-        134,
-        135,
-        136,
-        137,
-        138,
-        139,
-        140,
-        141,
-        142,
-        143,
-        144,
-        145,
-        146,
-        147,
-        148,
-        149,
-        150,
-        151,
-        152,
-        153,
-        154,
-        155,
-        156,
-        157,
-        158,
-        159,
-        160,
-        161,
-        162,
-        163,
-        164,
-        165,
-        166,
-        167,
-        168,
-        169,
-        170,
-        171,
-        172,
-        173,
-        174,
-        175,
-        176,
-        177,
-        178,
-        179,
-        180
+        {
+          id: 1,
+          accession_code: 'GSM414087 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.889263Z',
+          last_modified: '2018-04-19T18:46:50.889263Z'
+        },
+        {
+          id: 2,
+          accession_code: 'GSM414086 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.921606Z',
+          last_modified: '2018-04-19T18:46:50.921606Z'
+        },
+        {
+          id: 3,
+          accession_code: 'GSM414085 1',
+          organism: {
+            name: 'HOMO_SAPIENS',
+            taxonomy_id: 9606
+          },
+          is_downloaded: false,
+          is_processed: false,
+          created_at: '2018-04-19T18:46:50.934763Z',
+          last_modified: '2018-04-19T18:46:50.934763Z'
+        }
       ],
       submitter_institution: 'Institut Curie',
       created_at: '2018-04-19T18:47:02.212132Z',
@@ -253,7 +577,49 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'DOWNLOAD_EXPERIMENT_REMOVED': {
+      const { experimentId } = action.data;
+      const filteredExperiments = state.experiments.filter(
+        experiment => experiment.id !== experimentId
+      );
+      return {
+        ...state,
+        experiments: filteredExperiments
+      };
+    }
+    case 'DOWNLOAD_SPECIES_REMOVED': {
+      const { speciesName } = action.data;
+      const experimentsWithFilteredSamples = state.experiments.reduce(
+        (filteredExperiments, experiment) => {
+          const filteredSamples = experiment.samples.filter(
+            sample => sample.organism.name !== speciesName
+          );
+          if (filteredSamples.length) filteredExperiments.push(filteredSamples);
+          return filteredExperiments;
+        },
+        []
+      );
+
+      return {
+        ...state,
+        experiments: experimentsWithFilteredSamples
+      };
+    }
     default:
       return state;
   }
 };
+
+export function groupSamplesBySpecies(state) {
+  const { experiments = [] } = state.download;
+
+  return experiments.reduce((species, experiment) => {
+    if (!experiment.samples) return species;
+    experiment.samples.forEach(sample => {
+      const { organism: { name: organismName } } = sample;
+      species[organismName] = species[organismName] || [];
+      species[organismName].push(sample);
+    });
+    return species;
+  }, {});
+}
