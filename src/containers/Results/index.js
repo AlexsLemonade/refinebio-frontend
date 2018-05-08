@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const Results = () => {
-  return <div>Results bar</div>;
-};
+import Results from './Results';
 
 const mapStateToProps = state => {
   const { aReducer } = state;
