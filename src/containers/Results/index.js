@@ -1,15 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as resultsActions from '../../state/results/actions';
 
 import Results from './Results';
 
 const mapStateToProps = state => {
-  const { aReducer } = state;
+  const { results } = state;
   return {
-    aReducer
+    results
   };
 };
 
-const ResultsContainer = connect(mapStateToProps)(Results);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(resultsActions, dispatch);
+};
+
+const ResultsContainer = connect(mapStateToProps, mapDispatchToProps)(Results);
 
 export default ResultsContainer;
