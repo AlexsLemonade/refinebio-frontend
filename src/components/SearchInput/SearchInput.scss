@@ -1,0 +1,19 @@
+@import '../../common/styles/variables';
+
+.search-input {
+  display: flex;
+
+  &__textbox {
+    border: 2px solid $gray;
+    border-radius: 3px;
+    font-size: 1rem;
+    font-family: inherit;
+    margin-right: 16px;
+    padding: 11px 24px;
+    width: 450px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as resultsActions from '../../state/results/actions';
+import * as resultsActions from '../../state/search/actions';
 
 import Results from './Results';
 
 const mapStateToProps = state => {
-  const { results } = state;
+  const { search: { results } } = state;
   return {
-    results
+    results,
+    searchInputForm: state.form.searchInput
   };
 };
 
