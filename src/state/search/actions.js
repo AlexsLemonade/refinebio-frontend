@@ -1,7 +1,7 @@
 export function fetchResults(searchTerm) {
   return async dispatch => {
     dispatch({
-      type: 'SEARCH_FETCH'
+      type: 'SEARCH_RESULTS_FETCH'
     });
 
     try {
@@ -16,18 +16,43 @@ export function fetchResults(searchTerm) {
 
 export function fetchResultsSucceeded(results) {
   return {
-    type: 'SEARCH_FETCH_SUCCESS',
+    type: 'SEARCH_RESULTS_FETCH_SUCCESS',
     data: {
       results
     }
   };
 }
 
-export function fetchResultsErrored(results) {
+export function fetchResultsErrored() {
   return {
-    type: 'SEARCH_FETCH_ERROR',
+    type: 'SEARCH_RESULTS_FETCH_ERROR'
+  };
+}
+export function fetchOrganisms(searchTerm) {
+  return async dispatch => {
+    dispatch({
+      type: 'SEARCH_ORGANISMS_FETCH'
+    });
+
+    try {
+      const results = await (await fetch(`/organisms/`)).json();
+
+      dispatch(fetchOrganismsSucceeded(results));
+    } catch (error) {}
+  };
+}
+
+export function fetchOrganismsSucceeded(organisms) {
+  return {
+    type: 'SEARCH_ORGANISMS_FETCH_SUCCESS',
     data: {
-      results
+      organisms
     }
+  };
+}
+
+export function fetchOrganismsErrored() {
+  return {
+    type: 'SEARCH_ORGANISMS_FETCH_ERROR'
   };
 }

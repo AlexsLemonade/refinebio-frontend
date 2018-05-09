@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Result from './Result';
+import ResultFilter from './ResultFilter';
 import SearchInput from '../../components/SearchInput';
 import './Results.scss';
 
@@ -9,6 +10,7 @@ class Results extends Component {
 
     const q = location.search.substr(1).replace(/q=/, '');
     this.props.fetchResults(q);
+    this.props.fetchOrganisms();
   }
 
   handleSubmit = values => {
@@ -16,7 +18,7 @@ class Results extends Component {
   };
 
   render() {
-    const { results } = this.props;
+    const { results, organisms } = this.props;
     return (
       <div className="results">
         <div className="results__search">
@@ -24,7 +26,7 @@ class Results extends Component {
         </div>
         <div className="results__container">
           <div className="results__filters">
-            <h2>Filters</h2>
+            <ResultFilter organisms={organisms} />
           </div>
           <div className="results__list">
             {results.map((result, i) => <Result key={i} result={result} />)}
