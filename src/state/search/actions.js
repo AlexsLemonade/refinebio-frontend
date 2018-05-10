@@ -1,9 +1,15 @@
-export function fetchResults(searchTerm) {
-  return async dispatch => {
+export function fetchResults(searchTerm, filters) {
+  return async (dispatch, getState) => {
     dispatch({
-      type: 'SEARCH_RESULTS_FETCH'
+      type: 'SEARCH_RESULTS_FETCH',
+      data: {
+        searchTerm
+      }
     });
 
+    const { filters } = getState().search;
+
+    let filterArray = [];
     try {
       const results = (await (await fetch(
         `/search/?search=${searchTerm}`
@@ -54,5 +60,19 @@ export function fetchOrganismsSucceeded(organisms) {
 export function fetchOrganismsErrored() {
   return {
     type: 'SEARCH_ORGANISMS_FETCH_ERROR'
+  };
+}
+
+export function toggledFilter(filterType, filterValue) {
+  return (dispatch, getState) => {
+    const searchTerm = getState().search.searchTerm;
+    dispatch(fetchResults(searchTerm));
+    dispatch({
+      type: 'SEARCH_FILTER_TOGGLE',
+      data: {
+        filterType,
+        filterValue
+      }
+    });
   };
 }

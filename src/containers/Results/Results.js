@@ -18,7 +18,7 @@ class Results extends Component {
   };
 
   render() {
-    const { results, organisms } = this.props;
+    const { results, organisms, toggledFilter, filters } = this.props;
     return (
       <div className="results">
         <div className="results__search">
@@ -26,7 +26,11 @@ class Results extends Component {
         </div>
         <div className="results__container">
           <div className="results__filters">
-            <ResultFilter organisms={organisms} />
+            <ResultFilter
+              organisms={organisms}
+              toggledFilter={toggledFilter}
+              filters={filters}
+            />
           </div>
           <div className="results__list">
             {results.map((result, i) => <Result key={i} result={result} />)}
