@@ -5,12 +5,15 @@ import * as resultsActions from '../../state/search/actions';
 import Results from './Results';
 
 const mapStateToProps = state => {
-  const { search: { results, organisms, filters, pagination } } = state;
+  const {
+    search: { results, organisms, filters, pagination, searchTerm }
+  } = state;
   return {
     results,
     organisms,
     filters,
     pagination,
+    searchTerm,
     searchInputForm: state.form.searchInput
   };
 };

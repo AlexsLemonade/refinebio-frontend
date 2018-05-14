@@ -29,12 +29,13 @@ class Results extends Component {
       toggledFilter,
       getPage,
       filters,
+      searchTerm,
       pagination: { totalPages, totalResults, resultsPerPage, currentPage }
     } = this.props;
     return (
       <div className="results">
         <div className="results__search">
-          <SearchInput onSubmit={this.handleSubmit} />
+          <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
         <div className="results__container">
           <div className="results__filters">
