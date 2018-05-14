@@ -1,0 +1,43 @@
+@import '../../common/styles/variables';
+
+.pagination {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  &__ends {
+    font-size: 14px;
+    margin: 0 4px;
+
+    &:disabled {
+      color: $gray;
+    }
+  }
+
+  &__page {
+    margin: 0 2px;
+
+    &--active {
+      background: $azure;
+      border-radius: 2px;
+      color: white;
+      padding: 0 3px;
+    }
+  }
+
+  &__input {
+    font-size: 1rem;
+    margin-left: 8px;
+    padding: 8px 0;
+    text-align: center;
+    width: 50px;
+  }
+
+  &__jumper {
+    margin-left: 24px;
+  }
+
+  &__ellipsis {
+    margin: 0 4px;
+  }
+}

@@ -1,4 +1,8 @@
 .results {
+  &__top-bar{
+    margin-bottom: 24px;
+  }
+
   &__container {
     display: flex;
   }

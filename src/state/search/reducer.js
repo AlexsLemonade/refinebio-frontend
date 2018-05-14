@@ -2,6 +2,15 @@ const initialState = {
   results: [],
   organisms: [],
   filters: {},
+  searchTerm: '',
+  pagination: {
+    nextUrl: '',
+    previousUrl: '',
+    totalResults: 0,
+    totalPages: 0,
+    resultsPerPage: 5,
+    currentPage: 1
+  },
   isSearching: false
 };
 
@@ -16,10 +25,28 @@ export default (state = initialState, action) => {
       };
     }
     case 'SEARCH_RESULTS_FETCH_SUCCESS': {
-      const { results } = action.data;
+      const {
+        results,
+        nextUrl,
+        previousUrl,
+        totalResults,
+        currentPage
+      } = action.data;
+      const totalPages = Math.round(
+        totalResults / state.pagination.resultsPerPage
+      );
+
       return {
         ...state,
         results,
+        pagination: {
+          ...state.pagination,
+          nextUrl,
+          previousUrl,
+          totalResults,
+          totalPages,
+          currentPage
+        },
         isSearching: false
       };
     }

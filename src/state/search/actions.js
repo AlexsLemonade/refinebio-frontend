@@ -1,4 +1,4 @@
-export function fetchResults(searchTerm, filters) {
+export function fetchResults(searchTerm, currentPage = 1) {
   return async (dispatch, getState) => {
     dispatch({
       type: 'SEARCH_RESULTS_FETCH',
@@ -7,24 +7,42 @@ export function fetchResults(searchTerm, filters) {
       }
     });
 
-    const { filters } = getState().search;
+    const { filters, pagination: { resultsPerPage } } = getState().search;
 
     let filterArray = [];
-    try {
-      const results = (await (await fetch(
-        `/search/?search=${searchTerm}`
-      )).json()).results;
 
-      dispatch(fetchResultsSucceeded(results));
-    } catch (error) {}
+    try {
+      const resultsJSON = await (await fetch(
+        `/search/?search=${searchTerm}&limit=${resultsPerPage}&offset=${(currentPage -
+          1) *
+          resultsPerPage}`
+      )).json();
+      const { results, next, previous, count } = resultsJSON;
+
+      dispatch(
+        fetchResultsSucceeded(results, next, previous, count, currentPage)
+      );
+    } catch (error) {
+      dispatch(fetchResultsErrored());
+    }
   };
 }
 
-export function fetchResultsSucceeded(results) {
+export function fetchResultsSucceeded(
+  results,
+  nextUrl,
+  previousUrl,
+  totalResults,
+  currentPage
+) {
   return {
     type: 'SEARCH_RESULTS_FETCH_SUCCESS',
     data: {
-      results
+      results,
+      nextUrl,
+      previousUrl,
+      totalResults,
+      currentPage
     }
   };
 }
@@ -34,6 +52,7 @@ export function fetchResultsErrored() {
     type: 'SEARCH_RESULTS_FETCH_ERROR'
   };
 }
+
 export function fetchOrganisms(searchTerm) {
   return async dispatch => {
     dispatch({
@@ -74,5 +93,16 @@ export function toggledFilter(filterType, filterValue) {
         filterValue
       }
     });
+  };
+}
+
+export function getPage(pageNum) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: 'SEARCH_GET_PAGE'
+    });
+    const { searchTerm } = getState().search;
+
+    dispatch(fetchResults(searchTerm, parseInt(pageNum, 10)));
   };
 }

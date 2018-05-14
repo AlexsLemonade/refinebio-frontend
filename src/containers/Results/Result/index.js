@@ -11,7 +11,11 @@ const Result = ({ result }) => {
       <div className="result__title-container">
         <div className="result__title-info">
           <div className="result__accession">
-            <img src={AccessionIcon} className="result__icon" />{' '}
+            <img
+              src={AccessionIcon}
+              className="result__icon"
+              alt="accession-icon"
+            />{' '}
             {result.accession_code}
           </div>
           <h2 className="result__title">{result.title}</h2>
@@ -20,15 +24,23 @@ const Result = ({ result }) => {
       </div>
       <ul className="result__stats">
         <li className="result__stat">
-          <img src={organismIcon} className="result__icon" />{' '}
+          <img
+            src={organismIcon}
+            className="result__icon"
+            alt="organism-icon"
+          />{' '}
           {result.organisms.join(',')}
         </li>
         <li className="result__stat">
-          <img src={sampleIcon} className="result__icon" />{' '}
+          <img src={sampleIcon} className="result__icon" alt="sample-icon" />{' '}
           {result.samples.length}
         </li>
         <li className="result__stat">
-          <img src={organismIcon} className="result__icon" />{' '}
+          <img
+            src={organismIcon}
+            className="result__icon"
+            alt="organism-icon"
+          />{' '}
           {result.platform_name.split(/(-|\s)/)[0]}
         </li>
       </ul>
