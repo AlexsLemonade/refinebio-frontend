@@ -7,9 +7,7 @@ export function fetchResults(searchTerm, currentPage = 1) {
       }
     });
 
-    const { filters, pagination: { resultsPerPage } } = getState().search;
-
-    let filterArray = [];
+    const { pagination: { resultsPerPage } } = getState().search;
 
     try {
       const resultsJSON = await (await fetch(
