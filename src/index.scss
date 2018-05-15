@@ -3,11 +3,10 @@
 html,
 body,
 #root {
+  background-color: $whisper;
   position: relative;
   width: 100%;
-  min-height: 100vh;
   color: $font-color;
-  font-size: 15px;
 }
 
 * {
@@ -17,8 +16,6 @@ body,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Overpass', sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -26,8 +23,26 @@ a {
   color: inherit;
 }
 
-h1, h2, h3, h4, h5 {
+button {
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  -webkit-font-smoothing: inherit;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
   margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 0;
+  text-align: inherit;
+  width: auto;
+}
+
+fieldset {
+  border: none;
 }
 
 .loader {
@@ -48,7 +63,7 @@ h1, h2, h3, h4, h5 {
     top: 25px;
     width: 50px;
     height: 50px;
-    background-color: $pelorous;
+    background-color: $azure;
     animation: flip 1s infinite;
   }
 }
@@ -66,3 +81,5 @@ h1, h2, h3, h4, h5 {
     transform: rotateY(180deg)  rotateX(180deg);
   }
 }
+
+@import 'common/styles/type';

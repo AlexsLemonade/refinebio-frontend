@@ -6,25 +6,21 @@
     align-items: center;
     display: flex;
     width: 95%;
-    max-width: 1600px;
-    padding: 10px 15px;
-    margin: 0 auto;
+    max-width: 1250px;
+    padding: 0 20px;
+    margin: 1.5rem auto 0;
   }
 
   &__logo {
-    font-size: 26px;
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
-
-  &__highlight {
-    color: $pelorous;
-    font-weight: 500;
+    color: #002F6C;
+    font-size: 1.5rem;
   }
 
   &__link {
-    margin: 0 16px;
-    font-weight: 500;
+    margin: 0 1rem;
+    font-weight: 400;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1rem;
   }
 }
 

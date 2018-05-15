@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../../common/icons/logo.svg';
 import './Header.scss';
 
 const Header = props => {
@@ -7,7 +8,7 @@ const Header = props => {
     <header>
       <div className="header__container">
         <div className="header__logo">
-          <span className="header__highlight">refine</span>.bio
+          <img src={logo} alt="refine.bio" />
         </div>
         <div>
           <Link className="header__link" to="/">
