@@ -1,8 +1,9 @@
 import React from 'react';
 import Button from '../../components/Button';
 import Dropdown from '../../components/Dropdown';
-
 import Modal from '../../components/Modal';
+import InputCopy from '../../components/InputCopy';
+import './DownloadBar.scss';
 
 const DownloadBar = () => {
   return (
@@ -53,9 +54,10 @@ class ShareButton extends React.Component {
           isOpen={this.state.shareModalOpen}
           center={true}
           onClose={() => this.setState({ shareModalOpen: false })}
+          className="share-link-modal"
         >
-          <h1>Test </h1>
-          <h1>Test </h1>
+          <h1 className="share-link-modal__title">Sharable Link</h1>
+          <InputCopy value="Url to be copied, connect redux" />
         </Modal>
       </div>
     );

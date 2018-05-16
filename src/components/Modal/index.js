@@ -3,16 +3,22 @@ import ReactDOM from 'react-dom';
 import styles from './Modal.scss';
 import CloseIcon from '../../common/icons/accession.svg';
 
+type Props = {
+  // Determines wether the modal is displayed or not. Note that the modal is only added to the DOM
+  // when its being displayed
+  isOpen: boolean,
+  // Set to true for modals that should be centered
+  center: boolean,
+  // This callback is called when the user wants to close the dialog.
+  onClose: () => void
+};
+
 const modalRoot = document.body;
 
-// Generic Modal Component, example usage:
-// <Modal isOpen={true} center={false} onClose={()=>...}>
-//    ... content of the Modal
-// </Modal>
-//
+// Generic Modal Component
 // thanks to https://reactjs.org/docs/portals.html
 export default class Modal extends React.Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.el = document.createElement('div');
   }
@@ -63,7 +69,7 @@ export default class Modal extends React.Component {
           // modal dialog. Clicks inside of the modal dialog will trigger this handler too.
           onClick={e => e.target === e.currentTarget && this._closeModal()}
         >
-          <div className="modal__dialog">
+          <div className={`modal__dialog ${this.props.className}`}>
             {this.props.children}
             <a
               href="#"
