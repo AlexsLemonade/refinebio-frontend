@@ -1,14 +1,26 @@
 import React from 'react';
 import Button from '../../components/Button';
 import Dropdown from '../../components/Dropdown';
-import Modal from '../../components/Modal';
+import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
 
 const DownloadBar = () => {
   return (
     <div className="downloads__bar">
-      <ShareButton />
+      <ModalManager
+        component={showModal => (
+          <Button buttonStyle="secondary" text="Share" onClick={showModal} />
+        )}
+        modalProps={{ center: true, className: 'share-link-modal' }}
+      >
+        {() => (
+          <div>
+            <h1 className="share-link-modal__title">Sharable Link</h1>
+            <InputCopy value="Url to be copied, connect redux" />
+          </div>
+        )}
+      </ModalManager>
 
       <div className="downloads__actions">
         <div className="downloads__fieldset">
@@ -31,35 +43,3 @@ const DownloadBar = () => {
 };
 
 export default DownloadBar;
-
-// The state of the modal could be saved in the Redux store, but since is not needed anywhere else in the app
-// it may be better to store in the component's state instead.
-class ShareButton extends React.Component {
-  state = {
-    shareModalOpen: false
-  };
-
-  render() {
-    return (
-      <div>
-        <Button
-          buttonStyle="secondary"
-          text="Share"
-          onClick={() =>
-            this.setState({ shareModalOpen: !this.state.shareModalOpen })
-          }
-        />
-
-        <Modal
-          isOpen={this.state.shareModalOpen}
-          center={true}
-          onClose={() => this.setState({ shareModalOpen: false })}
-          className="share-link-modal"
-        >
-          <h1 className="share-link-modal__title">Sharable Link</h1>
-          <InputCopy value="Url to be copied, connect redux" />
-        </Modal>
-      </div>
-    );
-  }
-}

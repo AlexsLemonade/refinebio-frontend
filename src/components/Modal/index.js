@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styles from './Modal.scss';
-import CloseIcon from '../../common/icons/accession.svg';
+import './Modal.scss';
 
 type Props = {
   // Determines wether the modal is displayed or not. Note that the modal is only added to the DOM
