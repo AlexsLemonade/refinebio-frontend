@@ -1,40 +1,54 @@
 const initialState = {
+  dataSetId: null,
   experiments: []
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'DOWNLOAD_EXPERIMENT_REMOVED': {
-      const { experimentId } = action.data;
-      const filteredExperiments = state.experiments.filter(
-        experiment => experiment.id !== experimentId
-      );
+    // case 'DOWNLOAD_EXPERIMENT_REMOVED': {
+    //   const { experimentId } = action.data;
+    //   const filteredExperiments = state.experiments.filter(
+    //     experiment => experiment.id !== experimentId
+    //   );
+    //   return {
+    //     ...state,
+    //     experiments: filteredExperiments
+    //   };
+    // }
+    // case 'DOWNLOAD_SPECIES_REMOVED': {
+    //   const { speciesName } = action.data;
+    //   const experimentsWithFilteredSamples = state.experiments.reduce(
+    //     (filteredExperiments, experiment) => {
+    //       const filteredSamples = experiment.samples.filter(
+    //         sample => sample.organism.name !== speciesName
+    //       );
+    //       if (filteredSamples.length) filteredExperiments.push(filteredSamples);
+    //       return filteredExperiments;
+    //     },
+    //     []
+    //   );
+
+    //   return {
+    //     ...state,
+    //     experiments: experimentsWithFilteredSamples
+    //   };
+    // }
+    case 'DOWNLOAD_DATASET_FETCH': {
+      const { dataSetId } = action.data;
       return {
         ...state,
-        experiments: filteredExperiments
+        dataSetId
       };
     }
-    case 'DOWNLOAD_SPECIES_REMOVED': {
-      const { speciesName } = action.data;
-      const experimentsWithFilteredSamples = state.experiments.reduce(
-        (filteredExperiments, experiment) => {
-          const filteredSamples = experiment.samples.filter(
-            sample => sample.organism.name !== speciesName
-          );
-          if (filteredSamples.length) filteredExperiments.push(filteredSamples);
-          return filteredExperiments;
-        },
-        []
-      );
-
+    case 'DOWNLOAD_EXPERIMENT_ADDED': {
+      const { dataSetId } = action.data;
       return {
         ...state,
-        experiments: experimentsWithFilteredSamples
+        dataSetId
       };
     }
     case 'DOWNLOAD_FETCH_DATA': {
       const { dataSet } = action.data;
-      console.log(dataSet);
       return {
         ...state,
         experiments: dataSet

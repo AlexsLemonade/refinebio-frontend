@@ -31,6 +31,7 @@ class Results extends Component {
       getPage,
       filters,
       searchTerm,
+      dataSetId,
       pagination: { totalPages, totalResults, resultsPerPage, currentPage }
     } = this.props;
     return (
@@ -57,6 +58,7 @@ class Results extends Component {
                 key={i}
                 result={result}
                 addedExperiment={addedExperiment}
+                dataSetId={dataSetId}
               />
             ))}
             <Pagination

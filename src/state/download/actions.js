@@ -1,3 +1,13 @@
+const _formatDataSetObj = dataset => {
+  const results = {};
+  for (let experiment of dataset) {
+    results[experiment.accession_code] = experiment.samples.map(
+      sample => sample.id
+    );
+  }
+  return results;
+};
+
 export const removedExperiment = experimentId => {
   return {
     type: 'DOWNLOAD_EXPERIMENT_REMOVED',
@@ -16,16 +26,9 @@ export const removedSpecies = speciesName => {
   };
 };
 
-export const addedExperiment = experiment => {
-  return async dispatch => {
-    const dataSetId = localStorage.getItem('dataSetId');
-    const bodyData = {
-      data: {
-        [experiment.accession_code]: experiment.samples
-      }
-    };
-
-    let response;
+export const addedExperiment = (experiment, dataSetId) => {
+  return async (dispatch, getState) => {
+    let response, bodyData;
 
     if (!dataSetId) {
       response = await (await fetch('/dataset/create/', {
@@ -37,8 +40,23 @@ export const addedExperiment = experiment => {
       })).json();
 
       const { id } = response;
+
+      bodyData = {
+        data: {
+          [experiment.accession_code]: experiment.samples
+        }
+      };
       localStorage.setItem('dataSetId', id);
     } else {
+      const prevDataSet = getState().download.experiments;
+      const formattedDataSet = _formatDataSetObj(prevDataSet);
+      bodyData = {
+        data: {
+          ...formattedDataSet,
+          [experiment.accession_code]: experiment.samples
+        }
+      };
+
       response = await (await fetch(`/dataset/${dataSetId}/`, {
         method: 'PUT',
         headers: {
@@ -51,6 +69,12 @@ export const addedExperiment = experiment => {
     const { data } = response;
 
     dispatch(fetchDownloadData(data));
+    dispatch({
+      type: 'DOWNLOAD_EXPERIMENT_ADDED',
+      data: {
+        dataSetId
+      }
+    });
   };
 };
 
@@ -63,7 +87,10 @@ export const fetchDataSet = () => {
 
     if (response) dispatch(fetchDownloadData(response.data));
     dispatch({
-      type: 'DOWNLOAD_DATASET_FETCH'
+      type: 'DOWNLOAD_DATASET_FETCH',
+      data: {
+        dataSetId
+      }
     });
   };
 };

@@ -5,9 +5,9 @@ import organismIcon from '../../../common/icons/organism.svg';
 import sampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 
-const Result = ({ result, addedExperiment }) => {
+const Result = ({ result, addedExperiment, dataSetId }) => {
   function handleAddExperiment() {
-    addedExperiment(result);
+    addedExperiment(result, dataSetId);
   }
 
   return (
