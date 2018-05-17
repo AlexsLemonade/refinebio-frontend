@@ -1,3 +1,4 @@
+@import '../../common/styles/variables';
 
 // This class is applied to the body element when a modal dialog is displayed to disable scrolling
 /*body*/.modal-open {
@@ -5,7 +6,7 @@
 }
 
 .modal-backdrop {
-    background: #000;
+    background: $black;
     opacity: 0.5;
     position: absolute;
     top: 0;
@@ -37,13 +38,6 @@
         padding-bottom: 200px;
     }
 
-    &__backdrop {
-        background: red;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-    }
-
     &__dialog {
         position: relative;
         width: auto;
@@ -52,8 +46,8 @@
         margin-left: auto;
         margin-right: auto;
         padding: 16px;
-        border: 1px solid #979797;	
-        background-color: #FFFFFF;	
+        border: 1px solid $border-color;	
+        background-color: $white;	
         box-shadow: 0 2px 20px 0 rgba(0,0,0,0.06);
     }
 

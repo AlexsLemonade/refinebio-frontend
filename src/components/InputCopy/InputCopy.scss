@@ -1,3 +1,4 @@
+@import '../../common/styles/variables';
 
 
 .input-copy {
@@ -13,7 +14,7 @@
 
     &__alert {
         font-size: 14px;
-        color: #41A36D;
+        color: $success;
         margin-bottom: 8px;
     }
 }

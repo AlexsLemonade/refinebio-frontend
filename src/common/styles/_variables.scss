@@ -8,12 +8,23 @@ $black: #000;
 
 $azure: #386DB0;
 
+$success: #41A36D;
+
 // FUNCTIONAL COLORS
 $font-color: $black;
 $background-color--light: $whisper;
+
+$border-color: #979797;
 
 // SCREEN SIZES
 $mobile: '600px';
 
 // SPACING
 $container-spacing: 32px;
+
+
+// FORM ELEMENTS
+$input-normal: #9B9B9B;
+$input-hover: $input-normal;
+$input-focus: #386DB0;
+

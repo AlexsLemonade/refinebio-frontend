@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.scss';
+import Button from '../Button';
 
 type Props = {
   // Determines wether the modal is displayed or not. Note that the modal is only added to the DOM
@@ -70,13 +71,14 @@ export default class Modal extends React.Component {
         >
           <div className={`modal__dialog ${this.props.className}`}>
             {this.props.children}
-            <a
-              href="#"
+
+            <Button
               className="modal__close"
               onClick={() => this._closeModal()}
+              buttonStyle="transparent"
             >
               <i className="icon ion-close" />
-            </a>
+            </Button>
           </div>
         </div>
       </div>
