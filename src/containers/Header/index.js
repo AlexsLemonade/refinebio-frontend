@@ -7,7 +7,7 @@ import * as downloadActions from '../../state/download/actions';
 import './Header.scss';
 
 class Header extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchDataSet();
   }
 
@@ -32,9 +32,10 @@ class Header extends React.Component {
               About
             </Link>
             <Link className="header__link" to="/download">
-              Download Dataset ({
-                Object.keys(this.props.download.experiments).length
-              })
+              Download Dataset
+              {this.props.isLoading
+                ? null
+                : ` (${Object.keys(this.props.dataSet).length})`}
             </Link>
           </div>
         </div>
@@ -44,9 +45,10 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { download } = state;
+  const { download: { dataSet, isLoading } } = state;
   return {
-    download
+    dataSet,
+    isLoading
   };
 }
 

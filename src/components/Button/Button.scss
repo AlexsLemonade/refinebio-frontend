@@ -15,6 +15,16 @@
     color: $azure;
   }
 
+  &--plain {
+    color: $azure;
+    font-size: 0.8rem;
+    border: 0;
+    text-decoration: underline;
+    border-radius: 0;
+    background: none;
+    padding: 0;
+  }
+
   &--remove {
     background: none;
     color: $black;

@@ -18,7 +18,7 @@ import './Downloads.scss';
 
 function mapStateToProps(state) {
   return {
-    experiments: state.download.experiments,
+    dataSet: state.download.dataSet,
     species: groupSamplesBySpecies(state)
   };
 }
@@ -94,51 +94,58 @@ class Download extends Component {
   };
 
   renderExperimentsView = () => {
-    const { experiments } = this.props;
+    const { dataSet } = this.props;
 
-    if (!experiments.length)
+    if (!Object.keys(dataSet).length)
       return <p>No samples added to download dataset.</p>;
-    return this.props.experiments.map((experiment, i) => (
-      <div className="downloads__sample" key={i}>
-        <div className="downloads__experiments-info">
-          <h2 className="downloads__experiment-title">{experiment.title}</h2>
-          <div className="downloads__sample-stats">
-            <div className="downloads__sample-stat">
-              <img
-                src={AccessionIcon}
-                className="downloads__sample-icon"
-                alt="Accession Icon"
-              />{' '}
-              {experiment.id}
+    return Object.keys(dataSet).map((id, i) => {
+      const experiment = dataSet[id];
+      return (
+        <div className="downloads__sample" key={i}>
+          <div className="downloads__dataSet-info">
+            <h2 className="downloads__experiment-title">{experiment.title}</h2>
+            <div className="downloads__sample-stats">
+              <div className="downloads__sample-stat">
+                <img
+                  src={AccessionIcon}
+                  className="downloads__sample-icon"
+                  alt="Accession Icon"
+                />{' '}
+                {experiment.id}
+              </div>
+              <div className="downloads__sample-stat">
+                <img
+                  src={SampleIcon}
+                  className="downloads__sample-icon"
+                  alt="Sample Icon"
+                />{' '}
+                {experiment.samples.length}
+              </div>
+              <div className="downloads__sample-stat downloads__sample-stat--experiment">
+                <img
+                  src={OrganismIcon}
+                  className="downloads__sample-icon"
+                  alt="Organism Icon"
+                />{' '}
+                {experiment.species}
+              </div>
             </div>
-            <div className="downloads__sample-stat">
-              <img
-                src={SampleIcon}
-                className="downloads__sample-icon"
-                alt="Sample Icon"
-              />{' '}
-              {experiment.samples.length}
-            </div>
-            <div className="downloads__sample-stat downloads__sample-stat--experiment">
-              <img
-                src={OrganismIcon}
-                className="downloads__sample-icon"
-                alt="Organism Icon"
-              />{' '}
-              {experiment.species}
-            </div>
+            <h4>Sample Metadata Fields</h4>
+            <h5>
+              {experiment.metadata ? experiment.metadata.join(', ') : null}
+            </h5>
+            <Button text="View Samples" buttonStyle="secondary" />
           </div>
-          <h4>Sample Metadata Fields</h4>
-          <h5>{experiment.metadata ? experiment.metadata.join(', ') : null}</h5>
-          <Button text="View Samples" buttonStyle="secondary" />
+          <Button
+            text="Remove"
+            buttonStyle="remove"
+            onClick={() =>
+              this.props.removedExperiment(experiment.accession_code)
+            }
+          />
         </div>
-        <Button
-          text="Remove"
-          buttonStyle="remove"
-          onClick={() => this.props.removedExperiment(experiment.id)}
-        />
-      </div>
-    ));
+      );
+    });
   };
 
   sampleTabs = [this.renderSpeciesSamples, this.renderExperimentsView];
@@ -149,7 +156,7 @@ class Download extends Component {
         <h1 className="downloads__heading">Download Dataset</h1>
         <DownloadBar />
         <DownloadFileSummary summaryData={downloadFilesData} />
-        <DownloadDatasetSummary data={this.props.experiments} />
+        <DownloadDatasetSummary data={this.props.dataSet} />
         <section className="downloads__section">
           <h2>Samples</h2>
           <Toggle

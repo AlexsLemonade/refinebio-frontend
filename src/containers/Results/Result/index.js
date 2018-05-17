@@ -5,9 +5,13 @@ import organismIcon from '../../../common/icons/organism.svg';
 import sampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 
-const Result = ({ result, addedExperiment, dataSetId }) => {
+const Result = ({ result, addedExperiment, isAdded, removedExperiment }) => {
   function handleAddExperiment() {
-    addedExperiment(result, dataSetId);
+    addedExperiment(result);
+  }
+
+  function handleRemoveExperiment() {
+    removedExperiment(result.accession_code);
   }
 
   return (
@@ -24,7 +28,21 @@ const Result = ({ result, addedExperiment, dataSetId }) => {
           </div>
           <h2 className="result__title">{result.title}</h2>
         </div>
-        <Button text="Add to Dataset" onClick={handleAddExperiment} />
+        {!isAdded ? (
+          <Button text="Add to Dataset" onClick={handleAddExperiment} />
+        ) : (
+          <div className="result__added-container">
+            <span className="result__added">
+              <i className="ion-checkmark-circled result__added-icon" /> Added
+              to Dataset
+            </span>
+            <Button
+              buttonStyle="plain"
+              text="Remove"
+              onClick={handleRemoveExperiment}
+            />
+          </div>
+        )}
       </div>
       <ul className="result__stats">
         <li className="result__stat">

@@ -6,7 +6,7 @@ import Pagination from '../../components/Pagination';
 import './Results.scss';
 
 class Results extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { location } = this.props;
 
     const q = location.search.substr(1).replace(/q=/, '');
@@ -28,12 +28,15 @@ class Results extends Component {
       organisms,
       toggledFilter,
       addedExperiment,
+      removedExperiment,
       getPage,
       filters,
       searchTerm,
-      dataSetId,
+      dataSet,
+      isLoading,
       pagination: { totalPages, totalResults, resultsPerPage, currentPage }
     } = this.props;
+
     return (
       <div className="results">
         <div className="results__search">
@@ -47,26 +50,32 @@ class Results extends Component {
               filters={filters}
             />
           </div>
-          <div className="results__list">
-            <div className="results__top-bar">
-              {results.length
-                ? `Showing ${resultsPerPage} of ${totalResults} results`
-                : null}
-            </div>
-            {results.map((result, i) => (
-              <Result
-                key={i}
-                result={result}
-                addedExperiment={addedExperiment}
-                dataSetId={dataSetId}
+          {isLoading ? (
+            <div className="loader" />
+          ) : (
+            <div className="results__list">
+              <div className="results__top-bar">
+                {results.length
+                  ? `Showing ${resultsPerPage} of ${totalResults} results`
+                  : null}
+              </div>
+              {results.map((result, i) => (
+                <Result
+                  key={i}
+                  result={result}
+                  addedExperiment={addedExperiment}
+                  removedExperiment={removedExperiment}
+                  dataSet={dataSet}
+                  isAdded={!!dataSet[result.accession_code]}
+                />
+              ))}
+              <Pagination
+                onPaginate={getPage}
+                totalPages={totalPages}
+                currentPage={currentPage}
               />
-            ))}
-            <Pagination
-              onPaginate={getPage}
-              totalPages={totalPages}
-              currentPage={currentPage}
-            />
-          </div>
+            </div>
+          )}
         </div>
       </div>
     );

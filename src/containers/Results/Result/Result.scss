@@ -58,4 +58,22 @@
   &__paragraph {
     margin-bottom: 1.5rem;
   }
+
+  &__added {
+    display: flex;
+    align-items: center;
+    margin-right: 6px;
+    font-size: 0.875rem;
+    color: $success;
+  }
+
+  &__added-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &__added-icon {
+    font-size: 1.5rem;
+    margin-right: 6px;
+  }
 }
