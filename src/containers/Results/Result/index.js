@@ -5,7 +5,11 @@ import organismIcon from '../../../common/icons/organism.svg';
 import sampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 
-const Result = ({ result }) => {
+const Result = ({ result, addedExperiment }) => {
+  function handleAddExperiment() {
+    addedExperiment(result);
+  }
+
   return (
     <div className="result">
       <div className="result__title-container">
@@ -20,7 +24,7 @@ const Result = ({ result }) => {
           </div>
           <h2 className="result__title">{result.title}</h2>
         </div>
-        <Button text="Add to Dataset" />
+        <Button text="Add to Dataset" onClick={handleAddExperiment} />
       </div>
       <ul className="result__stats">
         <li className="result__stat">

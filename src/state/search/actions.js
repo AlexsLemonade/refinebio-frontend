@@ -15,30 +15,20 @@ export function fetchResults(searchTerm, currentPage = 1) {
           1) *
           resultsPerPage}`
       )).json();
-      const { results, next, previous, count } = resultsJSON;
+      const { results, count } = resultsJSON;
 
-      dispatch(
-        fetchResultsSucceeded(results, next, previous, count, currentPage)
-      );
+      dispatch(fetchResultsSucceeded(results, count, currentPage));
     } catch (error) {
       dispatch(fetchResultsErrored());
     }
   };
 }
 
-export function fetchResultsSucceeded(
-  results,
-  nextUrl,
-  previousUrl,
-  totalResults,
-  currentPage
-) {
+export function fetchResultsSucceeded(results, totalResults, currentPage) {
   return {
     type: 'SEARCH_RESULTS_FETCH_SUCCESS',
     data: {
       results,
-      nextUrl,
-      previousUrl,
       totalResults,
       currentPage
     }

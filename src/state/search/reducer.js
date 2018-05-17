@@ -4,8 +4,6 @@ const initialState = {
   filters: {},
   searchTerm: '',
   pagination: {
-    nextUrl: '',
-    previousUrl: '',
     totalResults: 0,
     totalPages: 0,
     resultsPerPage: 5,
@@ -25,13 +23,7 @@ export default (state = initialState, action) => {
       };
     }
     case 'SEARCH_RESULTS_FETCH_SUCCESS': {
-      const {
-        results,
-        nextUrl,
-        previousUrl,
-        totalResults,
-        currentPage
-      } = action.data;
+      const { results, totalResults, currentPage } = action.data;
       const totalPages = Math.round(
         totalResults / state.pagination.resultsPerPage
       );
@@ -41,8 +33,6 @@ export default (state = initialState, action) => {
         results,
         pagination: {
           ...state.pagination,
-          nextUrl,
-          previousUrl,
           totalResults,
           totalPages,
           currentPage

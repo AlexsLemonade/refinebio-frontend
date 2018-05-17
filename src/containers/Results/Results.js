@@ -27,6 +27,7 @@ class Results extends Component {
       results,
       organisms,
       toggledFilter,
+      addedExperiment,
       getPage,
       filters,
       searchTerm,
@@ -51,7 +52,13 @@ class Results extends Component {
                 ? `Showing ${resultsPerPage} of ${totalResults} results`
                 : null}
             </div>
-            {results.map((result, i) => <Result key={i} result={result} />)}
+            {results.map((result, i) => (
+              <Result
+                key={i}
+                result={result}
+                addedExperiment={addedExperiment}
+              />
+            ))}
             <Pagination
               onPaginate={getPage}
               totalPages={totalPages}

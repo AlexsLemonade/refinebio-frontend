@@ -62,6 +62,10 @@ class Download extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.fetchDataSet();
+  }
+
   handleTabChange(tabIndex) {
     this.setState({
       activeTab: tabIndex

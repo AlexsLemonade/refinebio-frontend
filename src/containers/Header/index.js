@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../../common/icons/logo.svg';
 import './Header.scss';
@@ -23,10 +24,20 @@ const Header = props => {
           <Link className="header__link" to="/about">
             About
           </Link>
+          <Link className="header__link" to="/download">
+            Download Dataset {Object.keys(props.download.experiments).length}
+          </Link>
         </div>
       </div>
     </header>
   );
 };
 
-export default Header;
+function mapStateToProps(state) {
+  const { download } = state;
+  return {
+    download
+  };
+}
+
+export default connect(mapStateToProps)(Header);
