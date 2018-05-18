@@ -18,12 +18,7 @@ export default class InputCopy extends React.Component {
             <i className="ion-checkmark-circled" /> Copied to clipboard.
           </div>
         )}
-        <div>
-          <Button
-            text="Copy"
-            className="input-copy__btn"
-            onClick={() => this._copy()}
-          />
+        <div className="input-copy__row">
           <div className="input-copy__text">
             <input
               ref={input => (this._input = input)}
@@ -33,6 +28,7 @@ export default class InputCopy extends React.Component {
               readOnly
             />
           </div>
+          <Button text="Copy" onClick={() => this._copy()} />
         </div>
       </div>
     );
