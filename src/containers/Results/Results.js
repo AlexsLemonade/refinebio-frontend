@@ -3,15 +3,15 @@ import Result from './Result';
 import ResultFilter from './ResultFilter';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
-import { getQueryParamValue } from '../../common/helpers';
+import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
 
 class Results extends Component {
   componentDidMount() {
     const { location } = this.props;
 
-    const q = getQueryParamValue(location.search.substr(1), 'q');
-    this.props.fetchResults(q);
+    const { q, p } = getQueryParamObject(location.search.substr(1));
+    this.props.fetchResults(q, parseInt(p, 10));
     this.props.fetchOrganisms();
   }
 

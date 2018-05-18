@@ -1,6 +1,6 @@
 /**
  * Generates a query string from a query object
- * @param {any} queryObj
+ * @param {object} queryObj
  * @returns {string}
  */
 export function getQueryString(queryObj) {
@@ -12,16 +12,15 @@ export function getQueryString(queryObj) {
 }
 
 /**
- * Returns the value of a query param given a query string
- * @param {any} queryString
- * @param {any} queryParam
- * @returns string
+ * Returns a query param object given a query string
+ * @param {string} queryString
+ * @returns {object}
  */
-export function getQueryParamValue(queryString, queryParam) {
+export function getQueryParamObject(queryString) {
   const queryObj = {};
   queryString.split('&').forEach(queryParam => {
     const [key, value] = queryParam.split('=');
     queryObj[key] = value;
   });
-  return queryObj[queryParam];
+  return queryObj;
 }
