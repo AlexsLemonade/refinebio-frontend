@@ -46,11 +46,11 @@ let Experiment = ({
             <div className="experiment__stats">
               <div>
                 <img
-                  src={AccessionIcon}
+                  src={OrganismIcon}
                   className="experiment__stats-icon"
-                  alt="Accession Icon"
+                  alt="Organism Icon"
                 />{' '}
-                {experiment.id}
+                {experiment.species}
               </div>
               <div>
                 <img
@@ -62,11 +62,11 @@ let Experiment = ({
               </div>
               <div>
                 <img
-                  src={OrganismIcon}
+                  src={MicroarrayIcon}
                   className="experiment__stats-icon"
-                  alt="Organism Icon"
+                  alt="MicroArray Badge Icon"
                 />{' '}
-                {experiment.species}
+                {experiment.id}
               </div>
             </div>
 
