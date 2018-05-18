@@ -3,13 +3,14 @@ import Result from './Result';
 import ResultFilter from './ResultFilter';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
+import { getQueryString, getQueryParamValue } from '../../common/helpers';
 import './Results.scss';
 
 class Results extends Component {
   componentDidMount() {
     const { location } = this.props;
 
-    const q = location.search.substr(1).replace(/q=/, '');
+    const q = getQueryParamValue(location.search.substr(1), 'q');
     this.props.fetchResults(q);
     this.props.fetchOrganisms();
   }
@@ -22,6 +23,15 @@ class Results extends Component {
     this.props.fetchResults(values.search);
   };
 
+  handlePagination = pageNum => {
+    const { getPage, history, searchTerm } = this.props;
+    console.log(getQueryString({ q: searchTerm, p: pageNum }));
+    history.push({
+      search: getQueryString({ q: searchTerm, p: pageNum })
+    });
+    getPage(pageNum);
+  };
+
   render() {
     const {
       results,
@@ -29,7 +39,6 @@ class Results extends Component {
       toggledFilter,
       addedExperiment,
       removedExperiment,
-      getPage,
       filters,
       searchTerm,
       dataSet,
@@ -70,7 +79,7 @@ class Results extends Component {
                 />
               ))}
               <Pagination
-                onPaginate={getPage}
+                onPaginate={this.handlePagination}
                 totalPages={totalPages}
                 currentPage={currentPage}
               />

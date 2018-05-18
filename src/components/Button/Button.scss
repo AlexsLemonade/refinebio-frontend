@@ -19,7 +19,8 @@
     color: $azure;
     font-size: 0.8rem;
     border: 0;
-    text-decoration: underline;
+    border-bottom: 1px solid currentColor;
+    line-height: 1;
     border-radius: 0;
     background: none;
     padding: 0;
