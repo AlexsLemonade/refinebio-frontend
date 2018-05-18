@@ -113,7 +113,7 @@ export const fetchDataSet = () => {
     });
     const response = dataSetId
       ? await (await fetch(`/dataset/${dataSetId}/`)).json()
-      : [];
+      : null;
 
     if (response) dispatch(fetchDownloadData(response.data));
   };
