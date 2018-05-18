@@ -70,6 +70,7 @@ class Pagination extends Component {
   render() {
     const { onPaginate, totalPages, currentPage } = this.props;
 
+    if (totalPages <= 1) return null;
     return (
       <div className="pagination">
         <div>

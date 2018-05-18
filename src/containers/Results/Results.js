@@ -3,7 +3,7 @@ import Result from './Result';
 import ResultFilter from './ResultFilter';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
-import { getQueryString, getQueryParamValue } from '../../common/helpers';
+import { getQueryParamValue } from '../../common/helpers';
 import './Results.scss';
 
 class Results extends Component {
@@ -24,11 +24,7 @@ class Results extends Component {
   };
 
   handlePagination = pageNum => {
-    const { getPage, history, searchTerm } = this.props;
-    console.log(getQueryString({ q: searchTerm, p: pageNum }));
-    history.push({
-      search: getQueryString({ q: searchTerm, p: pageNum })
-    });
+    const { getPage } = this.props;
     getPage(pageNum);
   };
 
@@ -65,7 +61,11 @@ class Results extends Component {
             <div className="results__list">
               <div className="results__top-bar">
                 {results.length
-                  ? `Showing ${resultsPerPage} of ${totalResults} results`
+                  ? `Showing ${
+                      resultsPerPage < totalResults
+                        ? resultsPerPage
+                        : totalResults
+                    } of ${totalResults} results`
                   : null}
               </div>
               {results.map((result, i) => (

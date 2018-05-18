@@ -13,7 +13,7 @@ class Header extends React.Component {
 
   render() {
     return (
-      <header>
+      <header className="header">
         <div className="header__container">
           <div className="header__logo">
             <img src={logo} alt="refine.bio" />
@@ -31,11 +31,13 @@ class Header extends React.Component {
             <Link className="header__link" to="/about">
               About
             </Link>
-            <Link className="header__link" to="/download">
+            <Link className="header__link header__link--button" to="/download">
               Download Dataset
-              {this.props.isLoading
-                ? null
-                : ` (${Object.keys(this.props.dataSet).length})`}
+              {this.props.isLoading ? null : (
+                <div className="header__dataset-count">
+                  {Object.keys(this.props.dataSet).length}
+                </div>
+              )}
             </Link>
           </div>
         </div>

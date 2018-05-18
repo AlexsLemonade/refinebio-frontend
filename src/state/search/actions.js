@@ -1,4 +1,7 @@
-export function fetchResults(searchTerm, currentPage = 1) {
+import history from '../../history';
+import { getQueryString } from '../../common/helpers';
+
+export function fetchResults(searchTerm = '', currentPage = 1) {
   return async (dispatch, getState) => {
     dispatch({
       type: 'SEARCH_RESULTS_FETCH',
@@ -17,21 +20,31 @@ export function fetchResults(searchTerm, currentPage = 1) {
       )).json();
       const { results, count } = resultsJSON;
 
-      dispatch(fetchResultsSucceeded(results, count, currentPage));
+      dispatch(fetchResultsSucceeded(results, count, currentPage, searchTerm));
     } catch (error) {
       dispatch(fetchResultsErrored());
     }
   };
 }
 
-export function fetchResultsSucceeded(results, totalResults, currentPage) {
-  return {
-    type: 'SEARCH_RESULTS_FETCH_SUCCESS',
-    data: {
-      results,
-      totalResults,
-      currentPage
-    }
+export function fetchResultsSucceeded(
+  results,
+  totalResults,
+  currentPage,
+  searchTerm
+) {
+  return dispatch => {
+    history.push({
+      search: getQueryString({ q: searchTerm, p: currentPage })
+    });
+    dispatch({
+      type: 'SEARCH_RESULTS_FETCH_SUCCESS',
+      data: {
+        results,
+        totalResults,
+        currentPage
+      }
+    });
   };
 }
 
@@ -90,6 +103,10 @@ export function getPage(pageNum) {
       type: 'SEARCH_GET_PAGE'
     });
     const { searchTerm } = getState().search;
+
+    history.push({
+      search: getQueryString({ q: searchTerm, p: pageNum })
+    });
 
     dispatch(fetchResults(searchTerm, parseInt(pageNum, 10)));
   };

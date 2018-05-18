@@ -7,7 +7,14 @@ import Results from './Results';
 
 const mapStateToProps = state => {
   const {
-    search: { results, organisms, filters, pagination, searchTerm },
+    search: {
+      results,
+      organisms,
+      filters,
+      pagination,
+      searchTerm,
+      isSearching
+    },
     download: { dataSet, isLoading }
   } = state;
   return {
@@ -17,7 +24,7 @@ const mapStateToProps = state => {
     pagination,
     searchTerm,
     dataSet,
-    isLoading,
+    isLoading: isSearching || isLoading,
     searchInputForm: state.form.searchInput
   };
 };
