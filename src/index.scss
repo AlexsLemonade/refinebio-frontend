@@ -4,9 +4,12 @@ html,
 body,
 #root {
   background-color: $whisper;
-  position: relative;
   width: 100%;
   color: $font-color;
+}
+
+#root {
+  position: relative;  
 }
 
 * {

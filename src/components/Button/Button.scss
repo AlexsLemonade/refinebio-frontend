@@ -30,4 +30,11 @@
     background: none;
     color: $black;
   }
+
+  &--transparent {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    color: $black;    
+  }
 }
