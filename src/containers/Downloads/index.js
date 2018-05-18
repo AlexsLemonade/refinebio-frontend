@@ -47,7 +47,7 @@ const downloadFilesData = [
     format: 'html'
   },
   {
-    title: 'Extimated Download Size',
+    title: 'Estimated Download Size',
     description: ' ',
     size: '60 MB',
     format: ''
@@ -79,7 +79,8 @@ class Download extends Component {
           <h2>{speciesName} Samples</h2>
           <div className="downloads__sample-stats">
             <p className="downloads__sample-stat">
-              {species[speciesName].length} Samples
+              {species[speciesName].length}{' '}
+              {species[speciesName].length > 1 ? 'Samples' : 'Sample'}
             </p>
           </div>
           <Button text="View Samples" buttonStyle="secondary" />
