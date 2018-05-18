@@ -4,11 +4,10 @@
  * @returns {string}
  */
 export function getQueryString(queryObj) {
-  const query = [];
-  Object.keys(queryObj).forEach(key => {
-    if (queryObj[key]) query.push(`${key}=${encodeURI(queryObj[key])}`);
-  });
-  return query.join('&');
+  return Object.keys(queryObj)
+    .filter(key => !!queryObj[key])
+    .map(key => `${key}=${encodeURI(queryObj[key])}`)
+    .join('&');
 }
 
 /**
