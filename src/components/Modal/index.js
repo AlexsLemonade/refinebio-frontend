@@ -28,8 +28,10 @@ export default class Modal extends React.Component {
     this._addBodyClass();
   }
 
-  componentDidUpdate() {
-    this._addBodyClass();
+  componentDidUpdate(prevProps) {
+    if (prevProps.isOpen !== this.props.isOpen) {
+      this._addBodyClass();
+    }
   }
 
   componentWillUnmount() {
