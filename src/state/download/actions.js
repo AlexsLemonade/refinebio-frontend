@@ -38,7 +38,7 @@ export const removedExperiment = accessionCode => {
 };
 
 export const removedSpecies = speciesName => {
-  return async dispatch => {
+  return dispatch => {
     dispatch({
       type: 'DOWNLOAD_SPECIES_REMOVED',
       data: {
