@@ -22,7 +22,6 @@ export default class ModalManager extends React.Component {
         {this.props.component(() => this.setState({ modalOpen: true }))}
         <Modal
           {...this.props.modalProps}
-          key="2"
           isOpen={this.state.modalOpen}
           onClose={() => this.setState({ modalOpen: false })}
         >
