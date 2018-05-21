@@ -7,7 +7,7 @@ import './Result.scss';
 
 const Result = ({ result, addedExperiment, isAdded, removedExperiment }) => {
   function handleAddExperiment() {
-    addedExperiment(result);
+    addedExperiment([result]);
   }
 
   function handleRemoveExperiment() {

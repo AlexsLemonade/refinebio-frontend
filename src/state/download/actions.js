@@ -49,18 +49,26 @@ export const removedSpecies = speciesName => {
   };
 };
 
-export const addedExperiment = experiment => {
+export const addedExperiment = experiments => {
   return async (dispatch, getState) => {
-    let response, bodyData;
+    let response;
 
     const dataSetId = getState().download.dataSetId;
+    const prevDataSet = getState().download.dataSet;
+    const formattedDataSet = _formatDataSetObj(prevDataSet);
+    const newExperiments = experiments.reduce((result, experiment) => {
+      if (experiment.samples.length)
+        result[experiment.accession_code] = experiment.samples;
+      return result;
+    }, {});
+    const bodyData = {
+      data: {
+        ...formattedDataSet,
+        ...newExperiments
+      }
+    };
 
     if (!dataSetId) {
-      bodyData = {
-        data: {
-          [experiment.accession_code]: experiment.samples
-        }
-      };
       response = await asyncFetch('/dataset/create/', {
         method: 'POST',
         headers: {
@@ -72,15 +80,6 @@ export const addedExperiment = experiment => {
       const { id } = response;
       localStorage.setItem('dataSetId', id);
     } else {
-      const prevDataSet = getState().download.dataSet;
-      const formattedDataSet = _formatDataSetObj(prevDataSet);
-      bodyData = {
-        data: {
-          ...formattedDataSet,
-          [experiment.accession_code]: experiment.samples
-        }
-      };
-
       response = await asyncFetch(`/dataset/${dataSetId}/`, {
         method: 'PUT',
         headers: {

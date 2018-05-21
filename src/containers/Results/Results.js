@@ -3,6 +3,7 @@ import Result from './Result';
 import ResultFilter from './ResultFilter';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
+import Button from '../../components/Button';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
 
@@ -67,6 +68,13 @@ class Results extends Component {
                         : totalResults
                     } of ${totalResults} results`
                   : null}
+                <Button
+                  buttonStyle="secondary"
+                  text="Add Page to Dataset"
+                  onClick={() => {
+                    addedExperiment(results);
+                  }}
+                />
               </div>
               {results.map((result, i) => (
                 <Result
