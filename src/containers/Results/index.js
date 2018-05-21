@@ -1,17 +1,41 @@
-import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as resultsActions from '../../state/search/actions';
+import * as downloadActions from '../../state/download/actions';
 
-const Results = () => {
-  return <div>Results bar</div>;
-};
+import Results from './Results';
 
 const mapStateToProps = state => {
-  const { aReducer } = state;
+  const {
+    search: {
+      results,
+      organisms,
+      filters,
+      pagination,
+      searchTerm,
+      isSearching
+    },
+    download: { dataSet, isLoading }
+  } = state;
   return {
-    aReducer
+    results,
+    organisms,
+    filters,
+    pagination,
+    searchTerm,
+    dataSet,
+    isLoading: isSearching || isLoading,
+    searchInputForm: state.form.searchInput
   };
 };
 
-const ResultsContainer = connect(mapStateToProps)(Results);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { ...resultsActions, ...downloadActions },
+    dispatch
+  );
+};
+
+const ResultsContainer = connect(mapStateToProps, mapDispatchToProps)(Results);
 
 export default ResultsContainer;

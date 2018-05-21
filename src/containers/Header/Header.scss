@@ -1,0 +1,56 @@
+@import '../../common/styles/variables';
+
+.header {
+  position: sticky;
+  top: 0;
+  background: $background-color--light;
+  padding: 1.5rem 0;
+
+  &__container {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    width: 95%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  &__logo {
+    color: #002F6C;
+    font-size: 1.5rem;
+  }
+
+  &__link {
+    margin: 0 1rem;
+    font-weight: 400;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1rem;
+
+    &--button {
+      position: relative;
+      background: none;
+      border-radius: 3px;
+      border: 1px solid currentColor;
+      color: $azure;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      padding: 4px 24px;
+    }
+  }
+
+  &__dataset-count {
+    position: absolute;
+    top: -0.5em;
+    left: 92%;
+    background: $azure;
+    color: $white;
+    border-radius: 15px;
+    padding: 0 0.5em;
+    line-height: 1.5;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+}
+
