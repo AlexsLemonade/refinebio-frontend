@@ -23,3 +23,29 @@ export function getQueryParamObject(queryString) {
   });
   return queryObj;
 }
+
+/**
+ * Generates an array of consecutive numbers from 1 to n.
+ *
+ * @param {number} n
+ * @returns {array}
+ */
+export function getRange(n) {
+  const result = [];
+  for (let i = 1; i <= n; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+/**
+ * Using fetch with async await that returns fulfilled value of the request
+ *
+ * @param {string} url
+ * @param {object} params
+ * @returns {Promise}
+ */
+export async function asyncFetch(url, params) {
+  const response = await fetch(url, params);
+  return await response.json();
+}

@@ -1,3 +1,4 @@
+import { asyncFetch } from '../../common/helpers';
 /**
  * Convert the reducer's dataset data structure to a map where
  * key = accesion code and value = array of sample ids
@@ -23,7 +24,7 @@ export const removedExperiment = accessionCode => {
     const newDataSet = { ...dataSet };
     delete newDataSet[accessionCode];
 
-    const response = (await (await fetch(`/dataset/${dataSetId}/`, {
+    const response = await asyncFetch(`/dataset/${dataSetId}/`, {
       method: 'PUT',
       headers: {
         'content-type': 'application/json'
@@ -31,9 +32,9 @@ export const removedExperiment = accessionCode => {
       body: JSON.stringify({
         data: _formatDataSetObj(newDataSet)
       })
-    })).json()).data;
+    });
 
-    dispatch(fetchDownloadData(response));
+    dispatch(fetchDownloadData(response.data));
   };
 };
 
@@ -55,21 +56,20 @@ export const addedExperiment = experiment => {
     const dataSetId = getState().download.dataSetId;
 
     if (!dataSetId) {
-      response = await (await fetch('/dataset/create/', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify(bodyData)
-      })).json();
-
-      const { id } = response;
-
       bodyData = {
         data: {
           [experiment.accession_code]: experiment.samples
         }
       };
+      response = await asyncFetch('/dataset/create/', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(bodyData)
+      });
+
+      const { id } = response;
       localStorage.setItem('dataSetId', id);
     } else {
       const prevDataSet = getState().download.dataSet;
@@ -81,13 +81,13 @@ export const addedExperiment = experiment => {
         }
       };
 
-      response = await (await fetch(`/dataset/${dataSetId}/`, {
+      response = await asyncFetch(`/dataset/${dataSetId}/`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json'
         },
         body: JSON.stringify(bodyData)
-      })).json();
+      });
     }
 
     const { data } = response;
@@ -112,7 +112,7 @@ export const fetchDataSet = () => {
       }
     });
     const response = dataSetId
-      ? await (await fetch(`/dataset/${dataSetId}/`)).json()
+      ? await asyncFetch(`/dataset/${dataSetId}/`)
       : null;
 
     if (response) dispatch(fetchDownloadData(response.data));
@@ -121,28 +121,39 @@ export const fetchDataSet = () => {
 
 export const fetchDownloadData = dataSet => {
   return async dispatch => {
+    dispatch({
+      type: 'DOWNLOAD_FETCH_DATA'
+    });
+
     let dataSetArray = {};
 
     for (let accessionCode of Object.keys(dataSet)) {
-      const experiment = await (await fetch(
+      const experiment = await asyncFetch(
         `/experiments/?accession_code=${accessionCode}`
-      )).json();
+      );
 
       // there should only be one result for each experiment response
       const experimentInfo = experiment.results[0];
       const { samples: sampleList } = experimentInfo;
-      const samples = (await (await fetch(
+      const response = await asyncFetch(
         `/samples/?limit=1000000000000000&ids=${sampleList.join(',')}`
-      )).json()).results;
+      );
+      const samples = response.results;
+
       dataSetArray[accessionCode] = {
         ...experimentInfo,
         samples
       };
     }
+    dispatch(fetchDownloadDataSucceeded(dataSetArray));
+  };
+};
 
-    dispatch({
-      type: 'DOWNLOAD_FETCH_DATA',
-      data: { dataSet: dataSetArray }
-    });
+export const fetchDownloadDataSucceeded = dataSet => {
+  return {
+    type: 'DOWNLOAD_FETCH_DATA_SUCCESS',
+    data: {
+      dataSet
+    }
   };
 };

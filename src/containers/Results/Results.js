@@ -11,11 +11,11 @@ class Results extends Component {
     const { location } = this.props;
 
     const { q, p } = getQueryParamObject(location.search.substr(1));
-    this.props.fetchResults(q, parseInt(p, 10));
+    this.props.fetchResults(q, p);
     this.props.fetchOrganisms();
   }
 
-  componentWillUpdate = nextProps => {
+  componentDidUpdate = nextProps => {
     if (nextProps.results !== this.props.results) window.scrollTo(0, 0);
   };
 

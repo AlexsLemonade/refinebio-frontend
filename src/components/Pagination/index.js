@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { getRange } from '../../common/helpers';
 import './Pagination.scss';
 
 class Pagination extends Component {
@@ -24,15 +25,8 @@ class Pagination extends Component {
 
   renderPages() {
     const { totalPages, onPaginate, currentPage } = this.props;
-    let pageArray = [];
 
-    if (totalPages < 5) {
-      for (var i = 1; i <= totalPages; i++) {
-        pageArray.push(i);
-      }
-    } else {
-      pageArray = [1, 2, 3];
-    }
+    const pageArray = totalPages < 5 ? getRange(totalPages) : [1, 2, 3];
 
     return (
       <span>
@@ -53,7 +47,6 @@ class Pagination extends Component {
           <span>
             <span className="pagination__ellipsis">...</span>
             <button
-              key={i}
               onClick={() => onPaginate(totalPages)}
               className={`pagination__page ${
                 currentPage === totalPages ? 'pagination__page--active' : ''

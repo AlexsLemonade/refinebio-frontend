@@ -1,7 +1,7 @@
 import history from '../../history';
-import { getQueryString } from '../../common/helpers';
+import { getQueryString, asyncFetch } from '../../common/helpers';
 
-export function fetchResults(searchTerm = '', currentPage = 1) {
+export function fetchResults(searchTerm = '', pageNum = 1) {
   return async (dispatch, getState) => {
     dispatch({
       type: 'SEARCH_RESULTS_FETCH',
@@ -11,13 +11,14 @@ export function fetchResults(searchTerm = '', currentPage = 1) {
     });
 
     const { pagination: { resultsPerPage } } = getState().search;
+    const currentPage = parseInt(pageNum, 10);
 
     try {
-      const resultsJSON = await (await fetch(
+      const resultsJSON = await asyncFetch(
         `/search/?search=${searchTerm}&limit=${resultsPerPage}&offset=${(currentPage -
           1) *
           resultsPerPage}`
-      )).json();
+      );
       const { results, count } = resultsJSON;
 
       dispatch(fetchResultsSucceeded(results, count, currentPage, searchTerm));
@@ -61,7 +62,7 @@ export function fetchOrganisms(searchTerm) {
     });
 
     try {
-      const results = await (await fetch(`/organisms/`)).json();
+      const results = await asyncFetch(`/organisms/`);
 
       dispatch(fetchOrganismsSucceeded(results));
     } catch (error) {}

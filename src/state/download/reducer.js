@@ -10,8 +10,7 @@ export default (state = initialState, action) => {
       const { dataSetId } = action.data;
       return {
         ...state,
-        dataSetId,
-        isLoading: true
+        dataSetId
       };
     }
     case 'DOWNLOAD_EXPERIMENT_ADDED': {
@@ -22,6 +21,12 @@ export default (state = initialState, action) => {
       };
     }
     case 'DOWNLOAD_FETCH_DATA': {
+      return {
+        ...state,
+        isLoading: true
+      };
+    }
+    case 'DOWNLOAD_FETCH_DATA_SUCCESS': {
       const { dataSet } = action.data;
       return {
         ...state,
