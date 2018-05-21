@@ -15,9 +15,9 @@ class Results extends Component {
     this.props.fetchOrganisms();
   }
 
-  componentDidUpdate = nextProps => {
+  componentDidUpdate(nextProps) {
     if (nextProps.results !== this.props.results) window.scrollTo(0, 0);
-  };
+  }
 
   handleSubmit = values => {
     this.props.fetchResults(values.search);
