@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Loader from '../../components/Loader';
 import { fetchExperiment } from '../../state/experiment/actions';
 import Button from '../../components/Button';
@@ -151,17 +152,21 @@ let Experiment = ({
 );
 Experiment = connect(
   ({ experiment }) => ({ experiment }),
-  (dispatch, ownProps) => ({
-    fetch: () => dispatch(fetchExperiment(ownProps.match.params.id)),
-    addExperimentToDataset: () => {
-      let experimentId = ownProps.match.params.id;
-      // TODO: Add the current experiment to the Dataset
-      console.log('Add experiment to dataset: ', experimentId);
-    },
-    addSamplesToDataset: samples => {
-      console.log('TODO: add page to dataset', samples);
-    }
-  })
+  (dispatch, ownProps) =>
+    bindActionCreators(
+      {
+        fetch: () => fetchExperiment(ownProps.match.params.id),
+        addExperimentToDataset: () => {
+          let experimentId = ownProps.match.params.id;
+          // TODO: Add the current experiment to the Dataset
+          console.log('Add experiment to dataset: ', experimentId);
+        },
+        addSamplesToDataset: samples => {
+          console.log('TODO: add page to dataset', samples);
+        }
+      },
+      dispatch
+    )
 )(Experiment);
 
 export default Experiment;
