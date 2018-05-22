@@ -10,23 +10,42 @@ export default (state = initialState, action) => {
       const { dataSetId } = action.data;
       return {
         ...state,
-        dataSetId
-      };
-    }
-    case 'DOWNLOAD_EXPERIMENT_ADDED': {
-      const { dataSetId } = action.data;
-      return {
-        ...state,
-        dataSetId
-      };
-    }
-    case 'DOWNLOAD_FETCH_DATA': {
-      return {
-        ...state,
+        dataSetId,
         isLoading: true
       };
     }
-    case 'DOWNLOAD_FETCH_DATA_SUCCESS': {
+    case 'DOWNLOAD_DATASET_FETCH_SUCCESS': {
+      const { dataSet } = action.data;
+      return {
+        ...state,
+        dataSet,
+        isLoading: false
+      };
+    }
+    case 'DOWNLOAD_ADD_EXPERIMENT': {
+      const { dataSetId, dataSet } = action.data;
+      return {
+        ...state,
+        dataSetId,
+        dataSet
+      };
+    }
+    case 'DOWNLOAD_REMOVE_EXPERIMENT_SUCCESS': {
+      const { dataSet } = action.data;
+      return {
+        ...state,
+        dataSet
+      };
+    }
+    case 'DOWNLOAD_FETCH_DETAILS': {
+      const { dataSet } = action.data;
+      return {
+        ...state,
+        dataSet,
+        isLoading: false
+      };
+    }
+    case 'DOWNLOAD_FETCH_DETAILS_SUCCESS': {
       const { dataSet } = action.data;
       return {
         ...state,

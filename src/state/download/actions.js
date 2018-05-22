@@ -1,16 +1,4 @@
 import { asyncFetch } from '../../common/helpers';
-/**
- * Convert the reducer's dataset data structure to a map where
- * key = accesion code and value = array of sample ids
- * for submitting to the endpoint
- */
-const _formatDataSetObj = dataset => {
-  const results = {};
-  Object.keys(dataset).forEach(key => {
-    results[key] = dataset[key].samples.map(sample => sample.id);
-  });
-  return results;
-};
 
 /**
  * Removes all experiments with the corresponding accession codes from dataset
@@ -19,7 +7,7 @@ const _formatDataSetObj = dataset => {
 export const removedExperiment = accessionCodes => {
   return async (dispatch, getState) => {
     dispatch({
-      type: 'DOWNLOAD_EXPERIMENT_REMOVED',
+      type: 'DOWNLOAD_REMOVE_EXPERIMENT',
       data: {
         accessionCodes
       }
@@ -33,17 +21,29 @@ export const removedExperiment = accessionCodes => {
       return result;
     }, {});
 
-    const response = await asyncFetch(`/dataset/${dataSetId}/`, {
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        data: _formatDataSetObj(newDataSet)
-      })
-    });
+    try {
+      const response = await asyncFetch(`/dataset/${dataSetId}/`, {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          data: newDataSet
+        })
+      });
+      dispatch(removedExperimentSucceeded(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
-    dispatch(fetchDownloadData(response.data));
+export const removedExperimentSucceeded = dataSet => {
+  return {
+    type: 'DOWNLOAD_REMOVE_EXPERIMENT_SUCCESS',
+    data: {
+      dataSet
+    }
   };
 };
 
@@ -68,7 +68,7 @@ export const addedExperiment = experiments => {
 
     const dataSetId = getState().download.dataSetId;
     const prevDataSet = getState().download.dataSet;
-    const formattedDataSet = _formatDataSetObj(prevDataSet);
+    const formattedDataSet = prevDataSet;
     const newExperiments = experiments.reduce((result, experiment) => {
       if (experiment.samples.length)
         result[experiment.accession_code] = experiment.samples;
@@ -103,12 +103,11 @@ export const addedExperiment = experiments => {
     }
 
     const { data } = response;
-
-    dispatch(fetchDownloadData(data));
     dispatch({
-      type: 'DOWNLOAD_EXPERIMENT_ADDED',
+      type: 'DOWNLOAD_ADD_EXPERIMENT',
       data: {
-        dataSetId
+        dataSetId,
+        dataSet: data
       }
     });
   };
@@ -125,16 +124,28 @@ export const fetchDataSet = () => {
     });
     const response = dataSetId
       ? await asyncFetch(`/dataset/${dataSetId}/`)
-      : null;
+      : [];
 
-    if (response) dispatch(fetchDownloadData(response.data));
+    dispatch(fetchDataSetSucceeded(response.data));
   };
 };
 
-export const fetchDownloadData = dataSet => {
+export const fetchDataSetSucceeded = dataSet => {
+  return {
+    type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
+    data: {
+      dataSet
+    }
+  };
+};
+
+export const fetchDownloadDetails = dataSet => {
   return async dispatch => {
     dispatch({
-      type: 'DOWNLOAD_FETCH_DATA'
+      type: 'DOWNLOAD_FETCH_DETAILS',
+      data: {
+        dataSet
+      }
     });
 
     let dataSetArray = {};
@@ -157,13 +168,13 @@ export const fetchDownloadData = dataSet => {
         samples
       };
     }
-    dispatch(fetchDownloadDataSucceeded(dataSetArray));
+    dispatch(fetchDownloadDetailsSucceeded(dataSetArray));
   };
 };
 
-export const fetchDownloadDataSucceeded = dataSet => {
+export const fetchDownloadDetailsSucceeded = dataSet => {
   return {
-    type: 'DOWNLOAD_FETCH_DATA_SUCCESS',
+    type: 'DOWNLOAD_FETCH_DETAILS_SUCCESS',
     data: {
       dataSet
     }

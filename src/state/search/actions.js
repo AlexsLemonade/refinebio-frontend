@@ -35,6 +35,7 @@ export function fetchResultsSucceeded(
   searchTerm
 ) {
   return dispatch => {
+    console.log(getQueryString({ q: searchTerm, p: currentPage }));
     history.push({
       search: getQueryString({ q: searchTerm, p: currentPage })
     });
