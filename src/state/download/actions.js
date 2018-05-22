@@ -12,6 +12,10 @@ const _formatDataSetObj = dataset => {
   return results;
 };
 
+/**
+ * Removes all experiments with the corresponding accession codes from dataset
+ * @param {array} accessionCodes
+ */
 export const removedExperiment = accessionCodes => {
   return async (dispatch, getState) => {
     dispatch({
