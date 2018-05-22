@@ -14,6 +14,7 @@ import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import Anchor from '../../components/Anchor';
 
 let Experiment = ({
   fetch,
@@ -100,7 +101,8 @@ let Experiment = ({
               </div>
             </div>
 
-            <section className="experiment__section">
+            <section id="samples" className="experiment__section">
+              <Anchor name="samples" />
               <h2 className="experiment__title">Samples</h2>
 
               <ReactTable
