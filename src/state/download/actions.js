@@ -129,7 +129,7 @@ export const addExperimentSucceeded = (dataSetId, dataSet) => {
  * If a dataSetId exists in localStorage,
  * use it to fetch dataset from endpoint
  */
-export const fetchDataSet = () => {
+export const fetchDataSet = (shouldfetchDetails = false) => {
   return async dispatch => {
     const dataSetId = localStorage.getItem('dataSetId');
     dispatch({
@@ -143,6 +143,7 @@ export const fetchDataSet = () => {
       : [];
 
     dispatch(fetchDataSetSucceeded(response.data));
+    if (shouldfetchDetails) dispatch(fetchDataSetDetails(response.data));
   };
 };
 
@@ -155,21 +156,20 @@ export const fetchDataSetSucceeded = dataSet => {
   };
 };
 
-export const fetchDownloadDetails = dataSet => {
+export const fetchDataSetDetails = dataSet => {
   return async dispatch => {
     dispatch({
-      type: 'DOWNLOAD_FETCH_DETAILS',
-      data: {
-        dataSet
-      }
+      type: 'DOWNLOAD_FETCH_DETAILS'
     });
-
-    let dataSetArray = {};
+    const experiments = {},
+      samples = {};
 
     for (let accessionCode of Object.keys(dataSet)) {
       const experiment = await asyncFetch(
         `/experiments/?accession_code=${accessionCode}`
       );
+
+      experiments[accessionCode] = experiment.results[0];
 
       // there should only be one result for each experiment response
       const experimentInfo = experiment.results[0];
@@ -177,22 +177,20 @@ export const fetchDownloadDetails = dataSet => {
       const response = await asyncFetch(
         `/samples/?limit=1000000000000000&ids=${sampleList.join(',')}`
       );
-      const samples = response.results;
+      const sampleInfo = response.results;
 
-      dataSetArray[accessionCode] = {
-        ...experimentInfo,
-        samples
-      };
+      samples[accessionCode] = sampleInfo;
     }
-    dispatch(fetchDownloadDetailsSucceeded(dataSetArray));
+    dispatch(fetchDataSetDetailsSucceeded(experiments, samples));
   };
 };
 
-export const fetchDownloadDetailsSucceeded = dataSet => {
+export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
   return {
     type: 'DOWNLOAD_FETCH_DETAILS_SUCCESS',
     data: {
-      dataSet
+      experiments,
+      samples
     }
   };
 };

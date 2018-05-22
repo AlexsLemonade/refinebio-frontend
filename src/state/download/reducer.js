@@ -1,6 +1,8 @@
 const initialState = {
   dataSetId: null,
   dataSet: {},
+  experiments: {},
+  samples: {},
   isLoading: false
 };
 
@@ -45,18 +47,17 @@ export default (state = initialState, action) => {
       };
     }
     case 'DOWNLOAD_FETCH_DETAILS': {
-      const { dataSet } = action.data;
       return {
         ...state,
-        dataSet,
         isLoading: false
       };
     }
     case 'DOWNLOAD_FETCH_DETAILS_SUCCESS': {
-      const { dataSet } = action.data;
+      const { experiments, samples } = action.data;
       return {
         ...state,
-        dataSet,
+        experiments,
+        samples,
         isLoading: false
       };
     }
@@ -66,12 +67,12 @@ export default (state = initialState, action) => {
 };
 
 export function groupSamplesBySpecies(state) {
-  const { dataSet = {} } = state.download;
+  const { samples = {} } = state.download;
 
-  return Object.keys(dataSet).reduce((species, id) => {
-    const experiment = dataSet[id];
-    if (!experiment.samples) return species;
-    experiment.samples.forEach(sample => {
+  return Object.keys(samples).reduce((species, id) => {
+    const experiment = samples[id];
+    if (!experiment.length) return species;
+    experiment.forEach(sample => {
       const { organism: { name: organismName } } = sample;
       species[organismName] = species[organismName] || [];
       species[organismName].push(sample);

@@ -18,7 +18,7 @@ import './Downloads.scss';
 
 function mapStateToProps(state) {
   return {
-    dataSet: state.download.dataSet,
+    ...state.download,
     species: groupSamplesBySpecies(state)
   };
 }
@@ -95,12 +95,12 @@ class Download extends Component {
   };
 
   renderExperimentsView = () => {
-    const { dataSet } = this.props;
+    const { dataSet, experiments } = this.props;
 
     if (!Object.keys(dataSet).length)
       return <p>No samples added to download dataset.</p>;
-    return Object.keys(dataSet).map((id, i) => {
-      const experiment = dataSet[id];
+    return Object.keys(experiments).map((id, i) => {
+      const experiment = experiments[id];
       return (
         <div className="downloads__sample" key={i}>
           <div className="downloads__dataSet-info">
