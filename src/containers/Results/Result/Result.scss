@@ -1,0 +1,79 @@
+@import '../../../common/styles/variables';
+
+.result {
+  background: $whisper;
+  margin-bottom: 48px;
+  box-shadow: 0 3px 20px 0 rgba($black,0.1);
+  padding: 24px;
+
+  &__accession {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  &__title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title-info {
+    flex: 1;
+    margin-right: 80px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: $azure;
+  }
+
+  &__stats {
+    border-top: 1px solid $gray;
+    border-bottom: 1px solid $gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin: 24px 0;
+    padding: 4.5px 0;
+  }
+
+  &__icon {
+    margin-right: 5px;
+    height: 24px;
+  }
+
+  &__stat {
+    display: flex;
+    align-items: center;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1rem;
+    line-height: 1;
+    flex: 1;
+  }
+
+  &__paragraph {
+    margin-bottom: 1.5rem;
+  }
+
+  &__added {
+    display: flex;
+    align-items: center;
+    margin-right: 6px;
+    font-size: 0.875rem;
+    color: $success;
+  }
+
+  &__added-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &__added-icon {
+    font-size: 1.5rem;
+    margin-right: 6px;
+  }
+}

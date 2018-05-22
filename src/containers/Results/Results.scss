@@ -1,0 +1,21 @@
+.results {
+  &__top-bar{
+    margin-bottom: 24px;
+  }
+
+  &__container {
+    display: flex;
+  }
+
+  &__filters {
+    max-width: 230px;
+    min-width: 230px;
+    margin-right: 48px;
+  }
+
+  &__search {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+}
