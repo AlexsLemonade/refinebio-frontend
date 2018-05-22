@@ -15,7 +15,7 @@ export default class Loader extends React.Component {
 
   async componentDidMount() {
     this.setState({ isLoading: true });
-    let data = await this.props.fetch();
+    const data = await this.props.fetch();
     this.setState({ isLoading: false, data });
   }
 

@@ -1,9 +1,11 @@
+import { asyncFetch } from '../../common/helpers';
+
 const loadExperiment = data => ({
   type: 'LOAD_EXPERIMENT',
   data
 });
 
 export const fetchExperiment = id => async dispatch => {
-  let data = await (await fetch(`/experiments/${id}.json`)).json();
+  const data = await asyncFetch(`/experiments/${id}/`);
   dispatch(loadExperiment(data));
 };

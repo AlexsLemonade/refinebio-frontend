@@ -45,7 +45,7 @@ let Experiment = ({
             </div>
 
             <div className="experiment__stats">
-              <div>
+              <div className="experiment__stats-item">
                 <img
                   src={OrganismIcon}
                   className="experiment__stats-icon"
@@ -53,7 +53,7 @@ let Experiment = ({
                 />{' '}
                 {experiment.species}
               </div>
-              <div>
+              <div className="experiment__stats-item">
                 <img
                   src={SampleIcon}
                   className="experiment__stats-icon"
@@ -61,7 +61,7 @@ let Experiment = ({
                 />{' '}
                 {experiment.samples.length} Samples
               </div>
-              <div>
+              <div className="experiment__stats-item">
                 <img
                   src={MicroarrayIcon}
                   className="experiment__stats-icon"
@@ -100,50 +100,50 @@ let Experiment = ({
               </div>
             </div>
 
-            <hr className="experiment__divider" />
+            <section className="experiment__section">
+              <h2 className="experiment__title">Samples</h2>
 
-            <h2 className="experiment__title">Samples</h2>
+              <ReactTable
+                data={experiment.samples}
+                columns={[
+                  {
+                    Header: 'Sample ID',
+                    accessor: 'id'
+                  },
+                  {
+                    Header: 'Title',
+                    accessor: 'title'
+                  },
+                  {
+                    Header: 'Age'
+                  },
+                  {
+                    Header: 'Gender'
+                  },
+                  {
+                    Header: 'Processing Information'
+                  }
+                ]}
+              >
+                {(state, makeTable, instance) => {
+                  return (
+                    <React.Fragment>
+                      <div className="experiment__sample-commands">
+                        <Button
+                          text="Add Page to Dataset"
+                          buttonStyle="secondary"
+                          onClick={() =>
+                            addSamplesToDataset(state.pageRows.map(x => x.id))
+                          }
+                        />
+                      </div>
 
-            <ReactTable
-              data={experiment.samples}
-              columns={[
-                {
-                  Header: 'Sample ID',
-                  accessor: 'id'
-                },
-                {
-                  Header: 'Title',
-                  accessor: 'title'
-                },
-                {
-                  Header: 'Age'
-                },
-                {
-                  Header: 'Gender'
-                },
-                {
-                  Header: 'Processing Information'
-                }
-              ]}
-            >
-              {(state, makeTable, instance) => {
-                return (
-                  <React.Fragment>
-                    <div className="experiment__sample-commands">
-                      <Button
-                        text="Add Page to Dataset"
-                        buttonStyle="secondary"
-                        onClick={() =>
-                          addSamplesToDataset(state.pageRows.map(x => x.id))
-                        }
-                      />
-                    </div>
-
-                    {makeTable()}
-                  </React.Fragment>
-                );
-              }}
-            </ReactTable>
+                      {makeTable()}
+                    </React.Fragment>
+                  );
+                }}
+              </ReactTable>
+            </section>
           </div>
         </div>
       )
