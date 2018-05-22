@@ -29,6 +29,12 @@ class Results extends Component {
     getPage(pageNum);
   };
 
+  handlePageRemove = () => {
+    const { removedExperiment, results } = this.props;
+    const accessionCodes = results.map(result => result.accession_code);
+    removedExperiment(accessionCodes);
+  };
+
   render() {
     const {
       results,
@@ -68,13 +74,32 @@ class Results extends Component {
                         : totalResults
                     } of ${totalResults} results`
                   : null}
-                <Button
-                  buttonStyle="secondary"
-                  text="Add Page to Dataset"
-                  onClick={() => {
-                    addedExperiment(results);
-                  }}
-                />
+                {results.filter(result => !dataSet[result.accession_code])
+                  .length === 0 ? (
+                  <div className="results__added-container">
+                    <span className="results__added">
+                      <i className="ion-checkmark-circled results__added-icon" />{' '}
+                      {results.reduce(
+                        (sum, result) => sum + result.samples.length,
+                        0
+                      )}{' '}
+                      Samples Added to Dataset
+                    </span>
+                    <Button
+                      buttonStyle="plain"
+                      text="Remove"
+                      onClick={this.handlePageRemove}
+                    />
+                  </div>
+                ) : (
+                  <Button
+                    buttonStyle="secondary"
+                    text="Add Page to Dataset"
+                    onClick={() => {
+                      addedExperiment(results);
+                    }}
+                  />
+                )}
               </div>
               {results.map((result, i) => (
                 <Result

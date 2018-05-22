@@ -12,17 +12,22 @@ const _formatDataSetObj = dataset => {
   return results;
 };
 
-export const removedExperiment = accessionCode => {
+export const removedExperiment = accessionCodes => {
   return async (dispatch, getState) => {
     dispatch({
       type: 'DOWNLOAD_EXPERIMENT_REMOVED',
       data: {
-        accessionCode
+        accessionCodes
       }
     });
     const { dataSet, dataSetId } = getState().download;
-    const newDataSet = { ...dataSet };
-    delete newDataSet[accessionCode];
+    const newDataSet = Object.keys(dataSet).reduce((result, key) => {
+      const shouldRemove = accessionCodes.some(
+        accessionCode => accessionCode === key
+      );
+      if (!shouldRemove) result[key] = dataSet[key];
+      return result;
+    }, {});
 
     const response = await asyncFetch(`/dataset/${dataSetId}/`, {
       method: 'PUT',
@@ -49,6 +54,10 @@ export const removedSpecies = speciesName => {
   };
 };
 
+/**
+ * Takes an array of experiments and adds to users dataset via endpoint
+ * @param {array} experiments
+ */
 export const addedExperiment = experiments => {
   return async (dispatch, getState) => {
     let response;

@@ -11,7 +11,7 @@ const Result = ({ result, addedExperiment, isAdded, removedExperiment }) => {
   }
 
   function handleRemoveExperiment() {
-    removedExperiment(result.accession_code);
+    removedExperiment([result.accession_code]);
   }
 
   return (
