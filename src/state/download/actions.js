@@ -4,7 +4,7 @@ import { asyncFetch } from '../../common/helpers';
  * Removes all experiments with the corresponding accession codes from dataset
  * @param {array} accessionCodes
  */
-export const removedExperiment = accessionCodes => {
+export const removeExperiment = accessionCodes => {
   return async (dispatch, getState) => {
     dispatch({
       type: 'DOWNLOAD_REMOVE_EXPERIMENT',
@@ -31,14 +31,14 @@ export const removedExperiment = accessionCodes => {
           data: newDataSet
         })
       });
-      dispatch(removedExperimentSucceeded(response.data));
+      dispatch(removeExperimentSucceeded(response.data));
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-export const removedExperimentSucceeded = dataSet => {
+export const removeExperimentSucceeded = dataSet => {
   return {
     type: 'DOWNLOAD_REMOVE_EXPERIMENT_SUCCESS',
     data: {
@@ -62,10 +62,14 @@ export const removedSpecies = speciesName => {
  * Takes an array of experiments and adds to users dataset via endpoint
  * @param {array} experiments
  */
-export const addedExperiment = experiments => {
+export const addExperiment = experiments => {
   return async (dispatch, getState) => {
-    let response;
-
+    dispatch({
+      type: 'DOWNLOAD_ADD_EXPERIMENT',
+      data: {
+        experiments
+      }
+    });
     const dataSetId = getState().download.dataSetId;
     const prevDataSet = getState().download.dataSet;
     const formattedDataSet = prevDataSet;
@@ -81,38 +85,50 @@ export const addedExperiment = experiments => {
       }
     };
 
-    if (!dataSetId) {
-      response = await asyncFetch('/dataset/create/', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify(bodyData)
-      });
+    try {
+      let response;
+      if (!dataSetId) {
+        response = await asyncFetch('/dataset/create/', {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify(bodyData)
+        });
 
-      const { id } = response;
-      localStorage.setItem('dataSetId', id);
-    } else {
-      response = await asyncFetch(`/dataset/${dataSetId}/`, {
-        method: 'PUT',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify(bodyData)
-      });
-    }
-
-    const { data } = response;
-    dispatch({
-      type: 'DOWNLOAD_ADD_EXPERIMENT',
-      data: {
-        dataSetId,
-        dataSet: data
+        const { id } = response;
+        localStorage.setItem('dataSetId', id);
+      } else {
+        response = await asyncFetch(`/dataset/${dataSetId}/`, {
+          method: 'PUT',
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify(bodyData)
+        });
       }
-    });
+      const { data } = response;
+      dispatch(addExperimentSucceeded(dataSetId, data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
+export const addExperimentSucceeded = (dataSetId, dataSet) => {
+  return {
+    type: 'DOWNLOAD_ADD_EXPERIMENT_SUCCESS',
+    data: {
+      dataSet,
+      dataSetId
+    }
+  };
+};
+
+/**
+ * If a dataSetId exists in localStorage,
+ * use it to fetch dataset from endpoint
+ */
 export const fetchDataSet = () => {
   return async dispatch => {
     const dataSetId = localStorage.getItem('dataSetId');

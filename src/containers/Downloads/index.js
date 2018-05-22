@@ -141,7 +141,7 @@ class Download extends Component {
             text="Remove"
             buttonStyle="remove"
             onClick={() =>
-              this.props.removedExperiment(experiment.accession_code)
+              this.props.removeExperiment(experiment.accession_code)
             }
           />
         </div>

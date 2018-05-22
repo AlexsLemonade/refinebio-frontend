@@ -23,11 +23,18 @@ export default (state = initialState, action) => {
       };
     }
     case 'DOWNLOAD_ADD_EXPERIMENT': {
+      return {
+        ...state,
+        isLoading: true
+      };
+    }
+    case 'DOWNLOAD_ADD_EXPERIMENT_SUCCESS': {
       const { dataSetId, dataSet } = action.data;
       return {
         ...state,
         dataSetId,
-        dataSet
+        dataSet,
+        isLoading: false
       };
     }
     case 'DOWNLOAD_REMOVE_EXPERIMENT_SUCCESS': {

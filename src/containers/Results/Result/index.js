@@ -5,13 +5,13 @@ import organismIcon from '../../../common/icons/organism.svg';
 import sampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 
-const Result = ({ result, addedExperiment, isAdded, removedExperiment }) => {
+const Result = ({ result, addExperiment, isAdded, removeExperiment }) => {
   function handleAddExperiment() {
-    addedExperiment([result]);
+    addExperiment([result]);
   }
 
   function handleRemoveExperiment() {
-    removedExperiment([result.accession_code]);
+    removeExperiment([result.accession_code]);
   }
 
   return (

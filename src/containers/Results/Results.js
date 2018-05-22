@@ -30,9 +30,9 @@ class Results extends Component {
   };
 
   handlePageRemove = () => {
-    const { removedExperiment, results } = this.props;
+    const { removeExperiment, results } = this.props;
     const accessionCodes = results.map(result => result.accession_code);
-    removedExperiment(accessionCodes);
+    removeExperiment(accessionCodes);
   };
 
   render() {
@@ -40,8 +40,8 @@ class Results extends Component {
       results,
       organisms,
       toggledFilter,
-      addedExperiment,
-      removedExperiment,
+      addExperiment,
+      removeExperiment,
       filters,
       searchTerm,
       dataSet,
@@ -96,7 +96,7 @@ class Results extends Component {
                     buttonStyle="secondary"
                     text="Add Page to Dataset"
                     onClick={() => {
-                      addedExperiment(results);
+                      addExperiment(results);
                     }}
                   />
                 )}
@@ -105,8 +105,8 @@ class Results extends Component {
                 <Result
                   key={i}
                   result={result}
-                  addedExperiment={addedExperiment}
-                  removedExperiment={removedExperiment}
+                  addExperiment={addExperiment}
+                  removeExperiment={removeExperiment}
                   dataSet={dataSet}
                   isAdded={!!dataSet[result.accession_code]}
                 />
