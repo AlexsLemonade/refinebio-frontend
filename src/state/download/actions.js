@@ -129,7 +129,7 @@ export const addExperimentSucceeded = (dataSetId, dataSet) => {
  * If a dataSetId exists in localStorage,
  * use it to fetch dataset from endpoint
  */
-export const fetchDataSet = (shouldfetchDetails = false) => {
+export const fetchDataSet = () => {
   return async dispatch => {
     const dataSetId = localStorage.getItem('dataSetId');
     dispatch({
@@ -143,7 +143,6 @@ export const fetchDataSet = (shouldfetchDetails = false) => {
       : [];
 
     dispatch(fetchDataSetSucceeded(response.data));
-    if (shouldfetchDetails) dispatch(fetchDataSetDetails(response.data));
   };
 };
 

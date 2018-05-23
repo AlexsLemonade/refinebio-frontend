@@ -68,6 +68,17 @@ class Download extends Component {
     });
   }
 
+  componentWillMount() {
+    const { dataSetId, fetchDataSetDetails, dataSet } = this.props;
+    if (dataSetId && dataSet.length) fetchDataSetDetails(dataSet);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { dataSet, fetchDataSetDetails } = this.props;
+    if (prevProps.dataSet !== dataSet && Object.keys(dataSet).length)
+      fetchDataSetDetails(dataSet);
+  }
+
   renderSpeciesSamples = () => {
     const { species } = this.props;
 
