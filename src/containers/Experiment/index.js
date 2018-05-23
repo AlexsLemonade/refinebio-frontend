@@ -40,8 +40,15 @@ let Experiment = ({
             </div>
 
             <div className="experiment__header">
-              <h3>{experiment.title || 'No Title.'}</h3>
-              <Button text="Add to Dataset" onClick={addExperimentToDataset} />
+              <h3 className="experiment__header-title">
+                {experiment.title || 'No Title.'}
+              </h3>
+              <div>
+                <Button
+                  text="Add to Dataset"
+                  onClick={addExperimentToDataset}
+                />
+              </div>
             </div>
 
             <div className="experiment__stats">
