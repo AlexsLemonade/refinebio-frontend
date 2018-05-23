@@ -3,7 +3,8 @@ const initialState = {
   dataSet: {},
   experiments: {},
   samples: {},
-  isLoading: false
+  isLoading: false,
+  areDetailsFetched: false
 };
 
 export default (state = initialState, action) => {
@@ -49,7 +50,7 @@ export default (state = initialState, action) => {
     case 'DOWNLOAD_FETCH_DETAILS': {
       return {
         ...state,
-        isLoading: false
+        isLoading: true
       };
     }
     case 'DOWNLOAD_FETCH_DETAILS_SUCCESS': {
@@ -58,7 +59,8 @@ export default (state = initialState, action) => {
         ...state,
         experiments,
         samples,
-        isLoading: false
+        isLoading: false,
+        areDetailsFetched: true
       };
     }
     default:

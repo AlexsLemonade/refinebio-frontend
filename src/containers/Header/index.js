@@ -11,6 +11,13 @@ class Header extends React.Component {
     this.props.fetchDataSet();
   }
 
+  getTotalSamplesAdded(dataSet) {
+    return Object.keys(dataSet).reduce(
+      (sum, accessionCode) => sum + dataSet[accessionCode].length,
+      0
+    );
+  }
+
   render() {
     return (
       <header className="header">
@@ -35,7 +42,7 @@ class Header extends React.Component {
               Download Dataset
               {this.props.isLoading ? null : (
                 <div className="header__dataset-count">
-                  {Object.keys(this.props.dataSet).length}
+                  {this.getTotalSamplesAdded(this.props.dataSet)}
                 </div>
               )}
             </Link>

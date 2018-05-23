@@ -68,14 +68,23 @@ class Download extends Component {
     });
   }
 
-  componentWillMount() {
-    const { dataSetId, fetchDataSetDetails, dataSet } = this.props;
-    if (dataSetId && dataSet.length) fetchDataSetDetails(dataSet);
+  componentDidMount() {
+    const { dataSet, dataSetId, fetchDataSetDetails } = this.props;
+    if (dataSetId) fetchDataSetDetails(dataSet);
   }
 
   componentDidUpdate(prevProps) {
-    const { dataSet, fetchDataSetDetails } = this.props;
-    if (prevProps.dataSet !== dataSet && Object.keys(dataSet).length)
+    const {
+      dataSet,
+      dataSetId,
+      areDetailsFetched,
+      fetchDataSetDetails,
+      isLoading
+    } = this.props;
+    if (
+      prevProps.dataSet !== dataSet ||
+      (dataSetId && !areDetailsFetched && !isLoading)
+    )
       fetchDataSetDetails(dataSet);
   }
 
@@ -163,22 +172,29 @@ class Download extends Component {
   sampleTabs = [this.renderSpeciesSamples, this.renderExperimentsView];
 
   render() {
+    const { isLoading, areDetailsFetched } = this.props;
     return (
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
         <DownloadBar />
-        <DownloadFileSummary summaryData={downloadFilesData} />
-        <DownloadDatasetSummary data={this.props.dataSet} />
-        <section className="downloads__section">
-          <h2>Samples</h2>
-          <Toggle
-            tabs={['Species View', 'Experiments View']}
-            onToggle={this.handleTabChange.bind(this)}
-          />
-          <div className="downloads__card">
-            {this.sampleTabs[this.state.activeTab]()}
+        {isLoading || !areDetailsFetched ? (
+          'loading...'
+        ) : (
+          <div>
+            <DownloadFileSummary summaryData={downloadFilesData} />
+            <DownloadDatasetSummary data={this.props.dataSet} />
+            <section className="downloads__section">
+              <h2>Samples</h2>
+              <Toggle
+                tabs={['Species View', 'Experiments View']}
+                onToggle={this.handleTabChange.bind(this)}
+              />
+              <div className="downloads__card">
+                {this.sampleTabs[this.state.activeTab]()}
+              </div>
+            </section>
           </div>
-        </section>
+        )}
       </div>
     );
   }
