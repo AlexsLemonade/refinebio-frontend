@@ -174,8 +174,8 @@ class Download extends Component {
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
         <DownloadBar />
-        {isLoading || !areDetailsFetched ? (
-          'loading...'
+        {isLoading && !areDetailsFetched ? (
+          <div className="loader" />
         ) : (
           <div>
             <DownloadFileSummary summaryData={downloadFilesData} />

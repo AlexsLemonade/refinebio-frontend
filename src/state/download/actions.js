@@ -107,8 +107,8 @@ export const addExperiment = experiments => {
           body: JSON.stringify(bodyData)
         });
       }
-      const { data } = response;
-      dispatch(addExperimentSucceeded(dataSetId, data));
+      const { data, id } = response;
+      dispatch(addExperimentSucceeded(id, data));
     } catch (err) {
       console.log(err);
     }
@@ -140,9 +140,11 @@ export const fetchDataSet = () => {
     });
     const response = dataSetId
       ? await asyncFetch(`/dataset/${dataSetId}/`)
-      : [];
+      : null;
 
-    dispatch(fetchDataSetSucceeded(response.data));
+    const dataSet = response ? response.data : {};
+
+    dispatch(fetchDataSetSucceeded(dataSet));
   };
 };
 
