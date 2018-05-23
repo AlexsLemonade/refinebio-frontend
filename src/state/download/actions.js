@@ -47,14 +47,55 @@ export const removeExperimentSucceeded = dataSet => {
   };
 };
 
-export const removedSpecies = speciesName => {
-  return dispatch => {
+/**
+ * Removes all samples with corresponding ids from each experiment in dataset
+ * @param {array} samples
+ */
+export const removeSpecies = samples => {
+  return async (dispatch, getState) => {
+    const sampleIds = samples.map(sample => sample.id);
     dispatch({
-      type: 'DOWNLOAD_SPECIES_REMOVED',
+      type: 'DOWNLOAD_REMOVE_SPECIES',
       data: {
-        speciesName
+        sampleIds
       }
     });
+
+    const { download: { dataSet, dataSetId } } = getState();
+
+    const newDataSet = Object.keys(dataSet).reduce((result, accessionCode) => {
+      const samples = dataSet[accessionCode];
+
+      const filteredSamples = samples.filter(sample => {
+        return sampleIds.indexOf(sample) === -1;
+      });
+      if (filteredSamples.length) result[accessionCode] = filteredSamples;
+      return result;
+    }, {});
+
+    try {
+      const response = await asyncFetch(`/dataset/${dataSetId}/`, {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          data: newDataSet
+        })
+      });
+      dispatch(removeSpeciesSucceeded(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const removeSpeciesSucceeded = dataSet => {
+  return {
+    type: 'DOWNLOAD_REMOVE_SPECIES_SUCCESS',
+    data: {
+      dataSet
+    }
   };
 };
 

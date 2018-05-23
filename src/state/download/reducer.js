@@ -47,6 +47,13 @@ export default (state = initialState, action) => {
         dataSet
       };
     }
+    case 'DOWNLOAD_REMOVE_SPECIES_SUCCESS': {
+      const { dataSet } = action.data;
+      return {
+        ...state,
+        dataSet
+      };
+    }
     case 'DOWNLOAD_FETCH_DETAILS': {
       return {
         ...state,
