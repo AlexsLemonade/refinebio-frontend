@@ -73,7 +73,7 @@ class Download extends Component {
     if (dataSetId) fetchDataSetDetails(dataSet);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     const {
       dataSet,
       dataSetId,
@@ -81,10 +81,7 @@ class Download extends Component {
       fetchDataSetDetails,
       isLoading
     } = this.props;
-    if (
-      prevProps.dataSet !== dataSet ||
-      (dataSetId && !areDetailsFetched && !isLoading)
-    )
+    if (dataSetId && !areDetailsFetched && !isLoading)
       fetchDataSetDetails(dataSet);
   }
 
@@ -119,7 +116,7 @@ class Download extends Component {
 
     if (!Object.keys(dataSet).length)
       return <p>No samples added to download dataset.</p>;
-    return Object.keys(experiments).map((id, i) => {
+    return Object.keys(dataSet).map((id, i) => {
       const experiment = experiments[id];
       return (
         <div className="downloads__sample" key={i}>
@@ -161,7 +158,7 @@ class Download extends Component {
             text="Remove"
             buttonStyle="remove"
             onClick={() =>
-              this.props.removeExperiment(experiment.accession_code)
+              this.props.removeExperiment([experiment.accession_code])
             }
           />
         </div>

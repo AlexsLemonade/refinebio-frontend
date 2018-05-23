@@ -69,9 +69,10 @@ export default (state = initialState, action) => {
 };
 
 export function groupSamplesBySpecies(state) {
-  const { samples = {} } = state.download;
+  const { samples, dataSet } = state.download;
 
-  return Object.keys(samples).reduce((species, id) => {
+  return Object.keys(dataSet).reduce((species, id) => {
+    if (!Object.keys(samples).length) return species;
     const experiment = samples[id];
     if (!experiment.length) return species;
     experiment.forEach(sample => {
