@@ -3,8 +3,13 @@ import Result from './Result';
 import ResultFilter from './ResultFilter';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
+import Button from '../../components/Button';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
+
+const backToTop = () => {
+  return <Button buttonStyle="plain">Back to Top</Button>;
+};
 
 class Results extends Component {
   componentDidMount() {
@@ -16,7 +21,11 @@ class Results extends Component {
   }
 
   componentDidUpdate(nextProps) {
-    if (nextProps.results !== this.props.results) window.scrollTo(0, 0);
+    if (nextProps.results !== this.props.results) this.scrollBackToTop();
+  }
+
+  scrollBackToTop() {
+    window.scrollTo(0, 0);
   }
 
   handleSubmit = values => {
