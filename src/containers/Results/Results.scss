@@ -1,4 +1,6 @@
 .results {
+  position: relative;
+
   &__top-bar{
     margin-bottom: 24px;
   }
@@ -17,5 +19,22 @@
     display: flex;
     justify-content: center;
     margin-bottom: 40px;
+  }
+}
+
+.back-to-top {
+  position: sticky;
+  float: right;
+  top: 1600px;
+  right: -10px;
+
+  &__icon {
+    display: block;
+    border: 1px solid;
+
+    &:before {
+      content: '\f3d0';
+      font-family: 'Ionicons';
+    }
   }
 }

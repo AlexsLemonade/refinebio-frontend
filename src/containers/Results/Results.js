@@ -7,8 +7,16 @@ import Button from '../../components/Button';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
 
-const backToTop = () => {
-  return <Button buttonStyle="plain">Back to Top</Button>;
+const BackToTop = ({ scrollBackToTop }) => {
+  return (
+    <Button
+      buttonStyle="plain"
+      className="back-to-top"
+      onClick={scrollBackToTop}
+    >
+      <i className="back-to-top__icon" />Back to Top
+    </Button>
+  );
 };
 
 class Results extends Component {
@@ -53,6 +61,7 @@ class Results extends Component {
 
     return (
       <div className="results">
+        <BackToTop scrollBackToTop={this.scrollBackToTop} />
         <div className="results__search">
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
