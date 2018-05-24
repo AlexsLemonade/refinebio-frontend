@@ -7,7 +7,11 @@ import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 
-import * as downloadActions from '../../state/download/actions';
+import {
+  removeExperiment,
+  removedSpecies,
+  fetchDataSetDetails
+} from '../../state/download/actions';
 import { groupSamplesBySpecies } from '../../state/download/reducer';
 
 import DownloadBar from './DownloadBar';
@@ -24,7 +28,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(downloadActions, dispatch);
+  return bindActionCreators(
+    { removedSpecies, removeExperiment, fetchDataSetDetails },
+    dispatch
+  );
 }
 
 const downloadFilesData = [

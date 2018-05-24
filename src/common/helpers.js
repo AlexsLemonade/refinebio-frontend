@@ -5,10 +5,7 @@
  */
 export function getQueryString(queryObj) {
   return Object.keys(queryObj)
-    .filter(key => {
-      if (key === 'q') return !!queryObj[key];
-      return queryObj[key] !== undefined;
-    })
+    .filter(key => queryObj[key] !== undefined)
     .map(key => `${key}=${encodeURI(queryObj[key])}`)
     .join('&');
 }
