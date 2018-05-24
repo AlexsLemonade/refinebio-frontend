@@ -7,17 +7,40 @@ import Button from '../../components/Button';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
 
-const BackToTop = ({ scrollBackToTop }) => {
-  return (
-    <Button
-      buttonStyle="plain"
-      className="back-to-top"
-      onClick={scrollBackToTop}
-    >
-      <i className="back-to-top__icon" />Back to Top
-    </Button>
-  );
-};
+class BackToTop extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeClass: false
+    };
+  }
+  componentDidMount() {
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset >= window.innerHeight / 2) {
+        this.setState({
+          activeClass: true
+        });
+      } else {
+        this.setState({
+          activeClass: false
+        });
+      }
+    });
+  }
+  render() {
+    return (
+      <Button
+        buttonStyle="plain"
+        className={`back-to-top ${
+          this.state.activeClass ? 'back-to-top--active' : ''
+        }`}
+        onClick={() => window.scrollTo(0, 0)}
+      >
+        <i className="back-to-top__icon" />Back to Top
+      </Button>
+    );
+  }
+}
 
 class Results extends Component {
   componentDidMount() {
@@ -29,11 +52,7 @@ class Results extends Component {
   }
 
   componentDidUpdate(nextProps) {
-    if (nextProps.results !== this.props.results) this.scrollBackToTop();
-  }
-
-  scrollBackToTop() {
-    window.scrollTo(0, 0);
+    if (nextProps.results !== this.props.results) window.scrollTo(0, 0);
   }
 
   handleSubmit = values => {
@@ -61,7 +80,7 @@ class Results extends Component {
 
     return (
       <div className="results">
-        <BackToTop scrollBackToTop={this.scrollBackToTop} />
+        <BackToTop />
         <div className="results__search">
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
