@@ -23,18 +23,25 @@
 }
 
 .back-to-top {
-  position: sticky;
-  float: right;
-  top: 1600px;
-  right: -10px;
+  position: fixed;
+  bottom: 80px;
+  right: 80px;
+  border-bottom: none;
 
   &__icon {
-    display: block;
     border: 1px solid;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    margin: 0 auto 8px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 
     &:before {
       content: '\f3d0';
       font-family: 'Ionicons';
+      font-style: normal;
     }
   }
 }
