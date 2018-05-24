@@ -1,0 +1,16 @@
+
+/* Styles for form controls here */
+
+// add a consistent style for all text inputs
+.input-text {
+  border: 2px solid $gray;
+  border-radius: 3px;
+  font-size: 22px;
+  font-family: inherit;
+  padding: 5px 24px;
+
+  &:focus {
+    outline: none;
+  }
+}
+

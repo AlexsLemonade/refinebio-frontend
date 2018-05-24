@@ -1,12 +1,29 @@
 
 .dataset {
   &__container {
-    width: 572px;
-    
+    width: 630px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 180px;
+  }
+
+  &__image {
+    margin-top: 96px;
+    text-align: center;
   }
 }
 
 
+
+
+.form-edit-email {
+  display: flex;
+
+  &__text {
+    margin-right: 8px;
+    width: 47*8px;
+  }
+}
 
 
 
