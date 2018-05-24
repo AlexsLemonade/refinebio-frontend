@@ -9,9 +9,12 @@
   margin-top: 32px;
   margin-bottom: 80px;
 
+  &__header-title {
+    margin-right: 20*8px;
+  }
+
   &__title {
     margin-bottom: 16px;    
-  
   }
 
   &__header {
@@ -35,13 +38,13 @@
     padding-top: 8px;
     padding-bottom: 8px;
     margin-bottom: 32px;
+  }
 
-    >div {
+  &__stats-item {
       display: flex;
       flex-basis: (100%/3);
       align-items: center;
     }
-  }
 
   &__stats-icon {
     height: 24px;
@@ -62,9 +65,10 @@
     }
   }
 
-  &__divider {
+  &__section {
     margin-top: 24px;
-    margin-bottom: 24px;
+    padding-top: 24px;
+    border-top: 1px solid $border-color;
   }
 
   &__row-label {

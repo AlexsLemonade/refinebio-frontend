@@ -39,12 +39,19 @@ let Experiment = ({
             </div>
 
             <div className="experiment__header">
-              <h3>{experiment.title || 'No Title.'}</h3>
-              <Button text="Add to Dataset" onClick={addExperimentToDataset} />
+              <h3 className="experiment__header-title">
+                {experiment.title || 'No Title.'}
+              </h3>
+              <div>
+                <Button
+                  text="Add to Dataset"
+                  onClick={addExperimentToDataset}
+                />
+              </div>
             </div>
 
             <div className="experiment__stats">
-              <div>
+              <div className="experiment__stats-item">
                 <img
                   src={OrganismIcon}
                   className="experiment__stats-icon"
@@ -52,7 +59,7 @@ let Experiment = ({
                 />{' '}
                 {experiment.species}
               </div>
-              <div>
+              <div className="experiment__stats-item">
                 <img
                   src={SampleIcon}
                   className="experiment__stats-icon"
@@ -60,7 +67,7 @@ let Experiment = ({
                 />{' '}
                 {experiment.samples.length} Samples
               </div>
-              <div>
+              <div className="experiment__stats-item">
                 <img
                   src={MicroarrayIcon}
                   className="experiment__stats-icon"
@@ -99,14 +106,14 @@ let Experiment = ({
               </div>
             </div>
 
-            <hr className="experiment__divider" />
+            <section className="experiment__section">
+              <h2 className="experiment__title">Samples</h2>
 
-            <h2 className="experiment__title">Samples</h2>
-
-            <SamplesTable
-              samples={experiment.samples}
-              addSamplesToDataset={addSamplesToDataset}
-            />
+              <SamplesTable
+                samples={experiment.samples}
+                addSamplesToDataset={addSamplesToDataset}
+              />
+            </section>
           </div>
         </div>
       )
