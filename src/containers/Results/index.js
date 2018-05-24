@@ -15,7 +15,7 @@ const mapStateToProps = state => {
       searchTerm,
       isSearching
     },
-    download: { dataSet, isLoading }
+    download: { dataSet }
   } = state;
   return {
     results,

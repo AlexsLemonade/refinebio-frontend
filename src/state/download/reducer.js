@@ -83,3 +83,11 @@ export function groupSamplesBySpecies(state) {
     return species;
   }, {});
 }
+
+export function getTotalSamplesAdded(state) {
+  const { dataSet } = state.download;
+  return Object.keys(dataSet).reduce(
+    (sum, accessionCode) => sum + dataSet[accessionCode].length,
+    0
+  );
+}

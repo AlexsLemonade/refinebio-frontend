@@ -49,6 +49,11 @@ class Results extends Component {
       pagination: { totalPages, totalResults, resultsPerPage, currentPage }
     } = this.props;
 
+    const totalSamplesOnPage = results.reduce(
+      (sum, result) => sum + result.samples.length,
+      0
+    );
+
     return (
       <div className="results">
         <div className="results__search">
@@ -79,11 +84,7 @@ class Results extends Component {
                   <div className="results__added-container">
                     <span className="results__added">
                       <i className="ion-checkmark-circled results__added-icon" />{' '}
-                      {results.reduce(
-                        (sum, result) => sum + result.samples.length,
-                        0
-                      )}{' '}
-                      Samples Added to Dataset
+                      {totalSamplesOnPage} Samples Added to Dataset
                     </span>
                     <Button
                       buttonStyle="plain"
