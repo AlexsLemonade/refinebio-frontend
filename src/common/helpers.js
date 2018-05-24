@@ -49,3 +49,7 @@ export async function asyncFetch(url, params) {
   const response = await fetch(url, params);
   return await response.json();
 }
+
+export function getAmazonDownloadLinkUrl(s3_bucket, s3_key) {
+  return `https://s3.amazonaws.com/${s3_bucket}/${s3_key}`;
+}

@@ -36,6 +36,12 @@
     border: none;
     background-color: transparent;
     padding: 0;
-    color: $black;    
+    color: $black;
+  }
+
+  // button will look like a text link
+  &--link {
+    @extend .button--transparent;
+    color: $link-color;
   }
 }

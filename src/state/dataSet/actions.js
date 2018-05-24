@@ -30,5 +30,5 @@ export const editEmail = ({ dataSetId, email }) => async dispatch => {
       email_address: email
     })
   });
-  dispatch(updateDataSet({ email }));
+  dispatch(updateDataSet({ email_address: email }));
 };

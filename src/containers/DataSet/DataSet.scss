@@ -1,4 +1,6 @@
 
+@import '../../common/styles/variables.scss';
+
 .dataset {
   &__container {
     width: 630px;
@@ -10,6 +12,33 @@
   &__image {
     margin-top: 96px;
     text-align: center;
+  }
+
+  &__email-modal {
+    padding: 32px 80px;
+    max-width: 84*8px;
+  }
+
+  &__email-modal-title {
+    margin-bottom: 16px;
+  }
+
+  &__way-container {
+    display: flex;
+  }
+
+  &__way-image {
+    margin-left: 16px;
+  }
+
+  &__way-section {
+    margin-top: 32px;
+    border-top: 1px solid $border-color;
+    padding-top: 32px;
+    margin-left: -40px;
+    margin-right: -40px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
 
