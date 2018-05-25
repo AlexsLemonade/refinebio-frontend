@@ -152,7 +152,7 @@ class Download extends Component {
                   className="downloads__sample-icon"
                   alt="Organism Icon"
                 />{' '}
-                {experiment.species}
+                {experiment.organisms.join(',')}
               </div>
             </div>
             <h4>Sample Metadata Fields</h4>
