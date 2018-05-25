@@ -91,10 +91,30 @@ export function groupSamplesBySpecies(state) {
   }, {});
 }
 
+export function getExperimentCountBySpecies(state) {
+  const { experiments, dataSet } = state.download;
+
+  return Object.keys(dataSet).reduce((species, accessionCode) => {
+    const experimentInfo = experiments[accessionCode];
+    if (!experimentInfo) return {};
+    const { organisms } = experimentInfo;
+    organisms.forEach(organism => {
+      if (!species[organism]) species[organism] = 0;
+      species[organism]++;
+    });
+    return species;
+  }, {});
+}
+
 export function getTotalSamplesAdded(state) {
   const { dataSet } = state.download;
   return Object.keys(dataSet).reduce(
     (sum, accessionCode) => sum + dataSet[accessionCode].length,
     0
   );
+}
+
+export function getTotalExperimentsAdded(state) {
+  const { dataSet } = state.download;
+  return Object.keys(dataSet).length;
 }

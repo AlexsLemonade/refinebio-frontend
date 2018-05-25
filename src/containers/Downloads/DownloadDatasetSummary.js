@@ -1,18 +1,22 @@
 import React from 'react';
 
-const DownloadDatasetSummary = ({ species }) => {
-  const renderSpeciesRow = species => {
-    console.log(species);
-    return Object.keys(species).map(organism => {
-      const samples = species[organism];
+const DownloadDatasetSummary = ({
+  samplesBySpecies,
+  totalSamples,
+  totalExperiments,
+  experimentCountBySpecies
+}) => {
+  const renderSpeciesRow = () => {
+    return Object.keys(samplesBySpecies).map((organism, i) => {
+      const samples = samplesBySpecies[organism];
       return (
-        <tr className="downloads__table-row">
+        <tr className="downloads__table-row" key={i}>
           <td className="downloads__table-cell">{organism}</td>
           <td className="downloads__table-cell downloads__table-cell--value">
             {samples.length}
           </td>
           <td className="downloads__table-cell downloads__table-cell--value">
-            10
+            {experimentCountBySpecies[organism]}
           </td>
         </tr>
       );
@@ -32,14 +36,14 @@ const DownloadDatasetSummary = ({ species }) => {
             </tr>
           </thead>
           <tbody>
-            {renderSpeciesRow(species)}
+            {renderSpeciesRow()}
             <tr className="downloads__table-row">
               <td className="downloads__table-cell">Total</td>
               <td className="downloads__table-cell downloads__table-cell--value">
-                100
+                {totalSamples}
               </td>
               <td className="downloads__table-cell downloads__table-cell--value">
-                10
+                {totalExperiments}
               </td>
             </tr>
           </tbody>

@@ -11,7 +11,12 @@ import {
   removeSpecies,
   fetchDataSetDetails
 } from '../../state/download/actions';
-import { groupSamplesBySpecies } from '../../state/download/reducer';
+import {
+  groupSamplesBySpecies,
+  getTotalSamplesAdded,
+  getExperimentCountBySpecies,
+  getTotalExperimentsAdded
+} from '../../state/download/reducer';
 
 import DownloadBar from './DownloadBar';
 import DownloadFileSummary from './DownloadFileSummary';
@@ -22,7 +27,10 @@ import './Downloads.scss';
 function mapStateToProps(state) {
   return {
     ...state.download,
-    species: groupSamplesBySpecies(state)
+    samplesBySpecies: groupSamplesBySpecies(state),
+    totalSamples: getTotalSamplesAdded(state),
+    totalExperiments: getTotalExperimentsAdded(state),
+    experimentCountBySpecies: getExperimentCountBySpecies(state)
   };
 }
 
@@ -85,7 +93,7 @@ class Download extends Component {
   }
 
   renderSpeciesSamples = () => {
-    const { species } = this.props;
+    const { samplesBySpecies: species } = this.props;
 
     if (!Object.keys(species).length)
       return <p>No samples added to download dataset.</p>;
@@ -168,7 +176,15 @@ class Download extends Component {
   sampleTabs = [this.renderSpeciesSamples, this.renderExperimentsView];
 
   render() {
-    const { isLoading, areDetailsFetched, dataSet, species } = this.props;
+    const {
+      isLoading,
+      areDetailsFetched,
+      dataSet,
+      samplesBySpecies,
+      experimentCountBySpecies,
+      totalSamples,
+      totalExperiments
+    } = this.props;
     return (
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
@@ -178,7 +194,12 @@ class Download extends Component {
         ) : (
           <div>
             <DownloadFileSummary summaryData={downloadFilesData} />
-            <DownloadDatasetSummary species={species} />
+            <DownloadDatasetSummary
+              samplesBySpecies={samplesBySpecies}
+              totalSamples={totalSamples}
+              totalExperiments={totalExperiments}
+              experimentCountBySpecies={experimentCountBySpecies}
+            />
             <section className="downloads__section">
               <h2>Samples</h2>
               <Toggle
