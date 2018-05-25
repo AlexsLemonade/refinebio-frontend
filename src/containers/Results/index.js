@@ -15,7 +15,7 @@ const mapStateToProps = state => {
       searchTerm,
       isSearching
     },
-    download: { dataSet, isLoading }
+    download: { dataSet }
   } = state;
   return {
     results,
@@ -24,7 +24,7 @@ const mapStateToProps = state => {
     pagination,
     searchTerm,
     dataSet,
-    isLoading: isSearching || isLoading,
+    isLoading: isSearching,
     searchInputForm: state.form.searchInput
   };
 };

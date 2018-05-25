@@ -1,17 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import organismIcon from '../../../common/icons/organism.svg';
 import sampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 
-const Result = ({ result, addedExperiment, isAdded, removedExperiment }) => {
+const Result = ({ result, addExperiment, isAdded, removeExperiment }) => {
   function handleAddExperiment() {
-    addedExperiment(result);
+    addExperiment([result]);
   }
 
   function handleRemoveExperiment() {
-    removedExperiment(result.accession_code);
+    removeExperiment([result.accession_code]);
   }
 
   return (
@@ -72,7 +73,12 @@ const Result = ({ result, addedExperiment, isAdded, removedExperiment }) => {
       <p className="result__paragraph">{result.publication_title}</p>
       <h3>Sample Metadata Fields</h3>
       <p className="result__paragraph">todo...</p>
-      <Button buttonStyle="secondary" text="View Samples" />
+      <Link
+        className="button button--secondary"
+        to={`/experiments/${result.id}#samples`}
+      >
+        View Samples
+      </Link>
     </div>
   );
 };
