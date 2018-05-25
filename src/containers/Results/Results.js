@@ -3,6 +3,7 @@ import Result from './Result';
 import ResultFilter from './ResultFilter';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
+import BackToTop from '../../components/BackToTop';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
 
@@ -44,6 +45,7 @@ class Results extends Component {
 
     return (
       <div className="results">
+        <BackToTop />
         <div className="results__search">
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
