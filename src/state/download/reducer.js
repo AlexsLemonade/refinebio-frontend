@@ -81,7 +81,7 @@ export function groupSamplesBySpecies(state) {
   return Object.keys(dataSet).reduce((species, id) => {
     if (!Object.keys(samples).length) return species;
     const experiment = samples[id];
-    if (!experiment.length) return species;
+    if (!experiment || !experiment.length) return species;
     experiment.forEach(sample => {
       const { organism: { name: organismName } } = sample;
       species[organismName] = species[organismName] || [];
