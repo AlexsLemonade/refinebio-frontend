@@ -23,6 +23,20 @@ const DownloadDatasetSummary = ({
     });
   };
 
+  const renderTotalsRow = () => {
+    return (
+      <tr className="downloads__table-row">
+        <td className="downloads__table-cell">Total</td>
+        <td className="downloads__table-cell downloads__table-cell--value">
+          {totalSamples}
+        </td>
+        <td className="downloads__table-cell downloads__table-cell--value">
+          {totalExperiments}
+        </td>
+      </tr>
+    );
+  };
+
   return (
     <section className="downloads__section">
       <h2>Dataset Summary</h2>
@@ -37,15 +51,7 @@ const DownloadDatasetSummary = ({
           </thead>
           <tbody>
             {renderSpeciesRow()}
-            <tr className="downloads__table-row">
-              <td className="downloads__table-cell">Total</td>
-              <td className="downloads__table-cell downloads__table-cell--value">
-                {totalSamples}
-              </td>
-              <td className="downloads__table-cell downloads__table-cell--value">
-                {totalExperiments}
-              </td>
-            </tr>
+            {renderTotalsRow()}
           </tbody>
         </table>
       </div>
