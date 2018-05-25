@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import logo from '../../common/icons/logo.svg';
-import * as downloadActions from '../../state/download/actions';
+import { fetchDataSet } from '../../state/download/actions';
+import { getTotalSamplesAdded } from '../../state/download/reducer';
 import './Header.scss';
 
 class Header extends React.Component {
@@ -35,7 +36,7 @@ class Header extends React.Component {
               Download Dataset
               {this.props.isLoading ? null : (
                 <div className="header__dataset-count">
-                  {Object.keys(this.props.dataSet).length}
+                  {this.props.totalSamples}
                 </div>
               )}
             </Link>
@@ -47,15 +48,15 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { download: { dataSet, isLoading } } = state;
+  const { download: { isLoading } } = state;
   return {
-    dataSet,
+    totalSamples: getTotalSamplesAdded(state),
     isLoading
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(downloadActions, dispatch);
+  return bindActionCreators({ fetchDataSet }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

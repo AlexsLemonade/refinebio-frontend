@@ -12,9 +12,8 @@ import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 import Anchor from '../../components/Anchor';
+import SamplesTable from './SamplesTable';
 
 let Experiment = ({
   fetch,
@@ -41,8 +40,15 @@ let Experiment = ({
             </div>
 
             <div className="experiment__header">
-              <h3>{experiment.title || 'No Title.'}</h3>
-              <Button text="Add to Dataset" onClick={addExperimentToDataset} />
+              <h3 className="experiment__header-title">
+                {experiment.title || 'No Title.'}
+              </h3>
+              <div>
+                <Button
+                  text="Add to Dataset"
+                  onClick={addExperimentToDataset}
+                />
+              </div>
             </div>
 
             <div className="experiment__stats">
@@ -105,47 +111,11 @@ let Experiment = ({
               {() => (
                 <section className="experiment__section">
                   <h2 className="experiment__title">Samples</h2>
-                  <ReactTable
-                    data={experiment.samples}
-                    columns={[
-                      {
-                        Header: 'Sample ID',
-                        accessor: 'id'
-                      },
-                      {
-                        Header: 'Title',
-                        accessor: 'title'
-                      },
-                      {
-                        Header: 'Age'
-                      },
-                      {
-                        Header: 'Gender'
-                      },
-                      {
-                        Header: 'Processing Information'
-                      }
-                    ]}
-                  >
-                    {(state, makeTable, instance) => {
-                      return (
-                        <React.Fragment>
-                          <div className="experiment__sample-commands">
-                            <Button
-                              text="Add Page to Dataset"
-                              buttonStyle="secondary"
-                              onClick={() =>
-                                addSamplesToDataset(
-                                  state.pageRows.map(x => x.id)
-                                )
-                              }
-                            />
-                          </div>
-                          {makeTable()}
-                        </React.Fragment>
-                      );
-                    }}
-                  </ReactTable>
+
+                  <SamplesTable
+                    samples={experiment.samples}
+                    addSamplesToDataset={addSamplesToDataset}
+                  />
                 </section>
               )}
             </Anchor>

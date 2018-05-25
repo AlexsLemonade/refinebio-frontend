@@ -35,8 +35,17 @@ export function fetchResultsSucceeded(
   searchTerm
 ) {
   return dispatch => {
+    const queryObj = searchTerm
+      ? {
+          q: searchTerm,
+          p: currentPage
+        }
+      : {
+          p: currentPage
+        };
+
     history.push({
-      search: getQueryString({ q: searchTerm, p: currentPage })
+      search: getQueryString(queryObj)
     });
     dispatch({
       type: 'SEARCH_RESULTS_FETCH_SUCCESS',

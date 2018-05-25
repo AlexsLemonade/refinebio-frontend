@@ -3,6 +3,8 @@ import Result from './Result';
 import ResultFilter from './ResultFilter';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
+import Button from '../../components/Button';
+import BackToTop from '../../components/BackToTop';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
 
@@ -28,13 +30,19 @@ class Results extends Component {
     getPage(pageNum);
   };
 
+  handlePageRemove = () => {
+    const { removeExperiment, results } = this.props;
+    const accessionCodes = results.map(result => result.accession_code);
+    removeExperiment(accessionCodes);
+  };
+
   render() {
     const {
       results,
       organisms,
       toggledFilter,
-      addedExperiment,
-      removedExperiment,
+      addExperiment,
+      removeExperiment,
       filters,
       searchTerm,
       dataSet,
@@ -42,8 +50,14 @@ class Results extends Component {
       pagination: { totalPages, totalResults, resultsPerPage, currentPage }
     } = this.props;
 
+    const totalSamplesOnPage = results.reduce(
+      (sum, result) => sum + result.samples.length,
+      0
+    );
+
     return (
       <div className="results">
+        <BackToTop />
         <div className="results__search">
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
@@ -67,13 +81,35 @@ class Results extends Component {
                         : totalResults
                     } of ${totalResults} results`
                   : null}
+                {results.filter(result => !dataSet[result.accession_code])
+                  .length === 0 ? (
+                  <div className="results__added-container">
+                    <span className="results__added">
+                      <i className="ion-checkmark-circled results__added-icon" />{' '}
+                      {totalSamplesOnPage} Samples Added to Dataset
+                    </span>
+                    <Button
+                      buttonStyle="plain"
+                      text="Remove"
+                      onClick={this.handlePageRemove}
+                    />
+                  </div>
+                ) : (
+                  <Button
+                    buttonStyle="secondary"
+                    text="Add Page to Dataset"
+                    onClick={() => {
+                      addExperiment(results);
+                    }}
+                  />
+                )}
               </div>
               {results.map((result, i) => (
                 <Result
                   key={i}
                   result={result}
-                  addedExperiment={addedExperiment}
-                  removedExperiment={removedExperiment}
+                  addExperiment={addExperiment}
+                  removeExperiment={removeExperiment}
                   dataSet={dataSet}
                   isAdded={!!dataSet[result.accession_code]}
                 />
