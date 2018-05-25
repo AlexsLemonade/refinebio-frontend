@@ -12,6 +12,7 @@ import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
+import Anchor from '../../components/Anchor';
 import SamplesTable from './SamplesTable';
 
 let Experiment = ({
@@ -106,14 +107,18 @@ let Experiment = ({
               </div>
             </div>
 
-            <section className="experiment__section">
-              <h2 className="experiment__title">Samples</h2>
+            <Anchor name="samples">
+              {() => (
+                <section className="experiment__section">
+                  <h2 className="experiment__title">Samples</h2>
 
-              <SamplesTable
-                samples={experiment.samples}
-                addSamplesToDataset={addSamplesToDataset}
-              />
-            </section>
+                  <SamplesTable
+                    samples={experiment.samples}
+                    addSamplesToDataset={addSamplesToDataset}
+                  />
+                </section>
+              )}
+            </Anchor>
           </div>
         </div>
       )
