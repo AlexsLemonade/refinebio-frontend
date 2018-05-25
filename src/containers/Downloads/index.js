@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Button from '../../components/Button';
 import Toggle from '../../components/Toggle';
 import AccessionIcon from '../../common/icons/accession.svg';
@@ -25,13 +24,6 @@ function mapStateToProps(state) {
     ...state.download,
     species: groupSamplesBySpecies(state)
   };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    { removedSpecies, removeExperiment, fetchDataSetDetails },
-    dispatch
-  );
 }
 
 const downloadFilesData = [
@@ -204,4 +196,8 @@ class Download extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Download);
+export default connect(mapStateToProps, {
+  removedSpecies,
+  removeExperiment,
+  fetchDataSetDetails
+})(Download);
