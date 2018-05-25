@@ -157,3 +157,17 @@ export const fetchDownloadDataSucceeded = dataSet => {
     }
   };
 };
+
+export const startDownload = () => async (dispatch, getState) => {
+  const { dataSetId, dataSet } = getState().download;
+  const response = await asyncFetch(`/dataset/${dataSetId}/`, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      start: true,
+      data: _formatDataSetObj(dataSet)
+    })
+  });
+};
