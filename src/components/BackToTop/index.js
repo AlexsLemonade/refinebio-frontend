@@ -9,18 +9,22 @@ class BackToTop extends Component {
       activeClass: false
     };
   }
+  handleScroll = () => {
+    if (window.pageYOffset >= window.innerHeight / 2) {
+      this.setState({
+        activeClass: true
+      });
+    } else {
+      this.setState({
+        activeClass: false
+      });
+    }
+  };
   componentDidMount() {
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset >= window.innerHeight / 2) {
-        this.setState({
-          activeClass: true
-        });
-      } else {
-        this.setState({
-          activeClass: false
-        });
-      }
-    });
+    window.addEventListener('scroll', this.handleScroll);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
   }
   render() {
     return (
