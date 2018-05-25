@@ -168,7 +168,7 @@ class Download extends Component {
   sampleTabs = [this.renderSpeciesSamples, this.renderExperimentsView];
 
   render() {
-    const { isLoading, areDetailsFetched } = this.props;
+    const { isLoading, areDetailsFetched, dataSet, species } = this.props;
     return (
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
@@ -178,7 +178,7 @@ class Download extends Component {
         ) : (
           <div>
             <DownloadFileSummary summaryData={downloadFilesData} />
-            <DownloadDatasetSummary data={this.props.dataSet} />
+            <DownloadDatasetSummary species={species} />
             <section className="downloads__section">
               <h2>Samples</h2>
               <Toggle
