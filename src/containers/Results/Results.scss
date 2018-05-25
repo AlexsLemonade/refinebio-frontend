@@ -1,6 +1,8 @@
 @import '../../common/styles/variables';
 
 .results {
+  position: relative;
+  
   &__top-bar {
     display: flex;
     justify-content: space-between;
