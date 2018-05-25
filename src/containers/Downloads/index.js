@@ -104,7 +104,7 @@ class Download extends Component {
         <Button
           text="Remove"
           buttonStyle="remove"
-          onClick={() => this.props.removedSpecies(speciesName)}
+          onClick={() => this.props.removeSpecies(species[speciesName])}
         />
       </div>
     ));
