@@ -9,6 +9,7 @@
   font-size: 1rem;
   line-height: 1.5;
   padding: 4px 24px;
+  display: inline-block;
 
   &--secondary {
     background: none;
@@ -37,12 +38,4 @@
     padding: 0;
     color: $black;    
   }
-}
-
-
-// For some reason `a` elements styled as buttons don't have the same height.
-// This rule fixes that
-a.button {
-  padding-top: 7px;
-  padding-bottom: 7px;
 }
