@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Button from '../../components/Button';
 import Toggle from '../../components/Toggle';
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 
-import * as downloadActions from '../../state/download/actions';
+import {
+  removeExperiment,
+  removedSpecies,
+  fetchDataSetDetails
+} from '../../state/download/actions';
 import { groupSamplesBySpecies } from '../../state/download/reducer';
 
 import DownloadBar from './DownloadBar';
@@ -18,13 +21,9 @@ import './Downloads.scss';
 
 function mapStateToProps(state) {
   return {
-    dataSet: state.download.dataSet,
+    ...state.download,
     species: groupSamplesBySpecies(state)
   };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(downloadActions, dispatch);
 }
 
 const downloadFilesData = [
@@ -68,6 +67,23 @@ class Download extends Component {
     });
   }
 
+  componentDidMount() {
+    const { dataSet, dataSetId, fetchDataSetDetails } = this.props;
+    if (dataSetId) fetchDataSetDetails(dataSet);
+  }
+
+  componentDidUpdate() {
+    const {
+      dataSet,
+      dataSetId,
+      areDetailsFetched,
+      fetchDataSetDetails,
+      isLoading
+    } = this.props;
+    if (dataSetId && !areDetailsFetched && !isLoading)
+      fetchDataSetDetails(dataSet);
+  }
+
   renderSpeciesSamples = () => {
     const { species } = this.props;
 
@@ -95,12 +111,12 @@ class Download extends Component {
   };
 
   renderExperimentsView = () => {
-    const { dataSet } = this.props;
+    const { dataSet, experiments } = this.props;
 
     if (!Object.keys(dataSet).length)
       return <p>No samples added to download dataset.</p>;
     return Object.keys(dataSet).map((id, i) => {
-      const experiment = dataSet[id];
+      const experiment = experiments[id];
       return (
         <div className="downloads__sample" key={i}>
           <div className="downloads__dataSet-info">
@@ -141,7 +157,7 @@ class Download extends Component {
             text="Remove"
             buttonStyle="remove"
             onClick={() =>
-              this.props.removedExperiment(experiment.accession_code)
+              this.props.removeExperiment([experiment.accession_code])
             }
           />
         </div>
@@ -152,25 +168,36 @@ class Download extends Component {
   sampleTabs = [this.renderSpeciesSamples, this.renderExperimentsView];
 
   render() {
+    const { isLoading, areDetailsFetched } = this.props;
     return (
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
         <DownloadBar />
-        <DownloadFileSummary summaryData={downloadFilesData} />
-        <DownloadDatasetSummary data={this.props.dataSet} />
-        <section className="downloads__section">
-          <h2>Samples</h2>
-          <Toggle
-            tabs={['Species View', 'Experiments View']}
-            onToggle={this.handleTabChange.bind(this)}
-          />
-          <div className="downloads__card">
-            {this.sampleTabs[this.state.activeTab]()}
+        {isLoading && !areDetailsFetched ? (
+          <div className="loader" />
+        ) : (
+          <div>
+            <DownloadFileSummary summaryData={downloadFilesData} />
+            <DownloadDatasetSummary data={this.props.dataSet} />
+            <section className="downloads__section">
+              <h2>Samples</h2>
+              <Toggle
+                tabs={['Species View', 'Experiments View']}
+                onToggle={this.handleTabChange.bind(this)}
+              />
+              <div className="downloads__card">
+                {this.sampleTabs[this.state.activeTab]()}
+              </div>
+            </section>
           </div>
-        </section>
+        )}
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Download);
+export default connect(mapStateToProps, {
+  removedSpecies,
+  removeExperiment,
+  fetchDataSetDetails
+})(Download);
