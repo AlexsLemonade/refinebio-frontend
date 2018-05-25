@@ -1,4 +1,6 @@
 import { asyncFetch } from '../../common/helpers';
+import { push } from '../routerActions';
+
 /**
  * Convert the reducer's dataset data structure to a map where
  * key = accesion code and value = array of sample ids
@@ -170,4 +172,7 @@ export const startDownload = () => async (dispatch, getState) => {
       data: _formatDataSetObj(dataSet)
     })
   });
+
+  // Use `push` action to navigate to the dataset url
+  dispatch(push(`/dataset/${dataSetId}`));
 };
