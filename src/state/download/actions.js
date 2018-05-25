@@ -165,23 +165,25 @@ export const fetchDataSetDetails = dataSet => {
     const experiments = {},
       samples = {};
 
-    for (let accessionCode of Object.keys(dataSet)) {
-      const experiment = await asyncFetch(
-        `/experiments/?accession_code=${accessionCode}`
-      );
+    await Promise.all(
+      Object.keys(dataSet).map(async accessionCode => {
+        const experiment = await asyncFetch(
+          `/experiments/?accession_code=${accessionCode}`
+        );
 
-      experiments[accessionCode] = experiment.results[0];
+        experiments[accessionCode] = experiment.results[0];
 
-      // there should only be one result for each experiment response
-      const experimentInfo = experiment.results[0];
-      const { samples: sampleList } = experimentInfo;
-      const response = await asyncFetch(
-        `/samples/?limit=1000000000000000&ids=${sampleList.join(',')}`
-      );
-      const sampleInfo = response.results;
+        // there should only be one result for each experiment response
+        const experimentInfo = experiment.results[0];
+        const { samples: sampleList } = experimentInfo;
+        const response = await asyncFetch(
+          `/samples/?limit=1000000000000000&ids=${sampleList.join(',')}`
+        );
+        const sampleInfo = response.results;
 
-      samples[accessionCode] = sampleInfo;
-    }
+        samples[accessionCode] = sampleInfo;
+      })
+    );
     dispatch(fetchDataSetDetailsSucceeded(experiments, samples));
   };
 };
