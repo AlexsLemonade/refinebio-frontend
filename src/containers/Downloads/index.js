@@ -8,7 +8,7 @@ import OrganismIcon from '../../common/icons/organism.svg';
 
 import {
   removeExperiment,
-  removedSpecies,
+  removeSpecies,
   fetchDataSetDetails
 } from '../../state/download/actions';
 import { groupSamplesBySpecies } from '../../state/download/reducer';
@@ -197,7 +197,7 @@ class Download extends Component {
 }
 
 export default connect(mapStateToProps, {
-  removedSpecies,
+  removeSpecies,
   removeExperiment,
   fetchDataSetDetails
 })(Download);
