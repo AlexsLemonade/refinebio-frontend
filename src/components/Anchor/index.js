@@ -25,6 +25,6 @@ export default class Anchor extends React.Component {
   }
 
   render() {
-    return <a ref={x => (this.element = x)} name={this.props.name} />;
+    return <div ref={x => (this.element = x)}>{this.props.children()}</div>;
   }
 }

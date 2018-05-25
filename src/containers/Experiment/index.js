@@ -101,51 +101,54 @@ let Experiment = ({
               </div>
             </div>
 
-            <section id="samples" className="experiment__section">
-              <Anchor name="samples" />
-              <h2 className="experiment__title">Samples</h2>
-
-              <ReactTable
-                data={experiment.samples}
-                columns={[
-                  {
-                    Header: 'Sample ID',
-                    accessor: 'id'
-                  },
-                  {
-                    Header: 'Title',
-                    accessor: 'title'
-                  },
-                  {
-                    Header: 'Age'
-                  },
-                  {
-                    Header: 'Gender'
-                  },
-                  {
-                    Header: 'Processing Information'
-                  }
-                ]}
-              >
-                {(state, makeTable, instance) => {
-                  return (
-                    <React.Fragment>
-                      <div className="experiment__sample-commands">
-                        <Button
-                          text="Add Page to Dataset"
-                          buttonStyle="secondary"
-                          onClick={() =>
-                            addSamplesToDataset(state.pageRows.map(x => x.id))
-                          }
-                        />
-                      </div>
-
-                      {makeTable()}
-                    </React.Fragment>
-                  );
-                }}
-              </ReactTable>
-            </section>
+            <Anchor name="samples">
+              {() => (
+                <section className="experiment__section">
+                  <h2 className="experiment__title">Samples</h2>
+                  <ReactTable
+                    data={experiment.samples}
+                    columns={[
+                      {
+                        Header: 'Sample ID',
+                        accessor: 'id'
+                      },
+                      {
+                        Header: 'Title',
+                        accessor: 'title'
+                      },
+                      {
+                        Header: 'Age'
+                      },
+                      {
+                        Header: 'Gender'
+                      },
+                      {
+                        Header: 'Processing Information'
+                      }
+                    ]}
+                  >
+                    {(state, makeTable, instance) => {
+                      return (
+                        <React.Fragment>
+                          <div className="experiment__sample-commands">
+                            <Button
+                              text="Add Page to Dataset"
+                              buttonStyle="secondary"
+                              onClick={() =>
+                                addSamplesToDataset(
+                                  state.pageRows.map(x => x.id)
+                                )
+                              }
+                            />
+                          </div>
+                          {makeTable()}
+                        </React.Fragment>
+                      );
+                    }}
+                  </ReactTable>
+                </section>
+              )}
+            </Anchor>
           </div>
         </div>
       )
