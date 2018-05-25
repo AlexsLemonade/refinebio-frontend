@@ -7,7 +7,7 @@ import './DownloadBar.scss';
 import { startDownload } from '../../state/download/actions';
 import { connect } from 'react-redux';
 
-function DownloadBar({ startDownload }) {
+let DownloadBar = ({ startDownload }) => {
   return (
     <div className="downloads__bar">
       <ModalManager
@@ -42,7 +42,7 @@ function DownloadBar({ startDownload }) {
       </div>
     </div>
   );
-}
+};
 DownloadBar = connect(state => ({}), {
   startDownload
 })(DownloadBar);

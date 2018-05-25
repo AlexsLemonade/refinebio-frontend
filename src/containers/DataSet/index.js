@@ -1,7 +1,6 @@
 import React from 'react';
-import { asyncFetch, getAmazonDownloadLinkUrl } from '../../common/helpers';
+import { getAmazonDownloadLinkUrl } from '../../common/helpers';
 import Loader from '../../components/Loader';
-import { isAbsolute } from 'upath';
 import ProcessingImage from './download-processing.svg';
 import NextStepsImage from './download-next-steps.svg';
 import './DataSet.scss';
@@ -89,7 +88,7 @@ function DatasetNoEmail({ id }) {
       <EmailForm dataSetId={id} />
 
       <div className="dataset__image">
-        <img src={ProcessingImage} />
+        <img src={ProcessingImage} alt="" />
       </div>
     </div>
   );
@@ -148,22 +147,14 @@ class DataSetWithEmail extends React.Component {
             <p>If you haven’t recevied it, please check your spam folders.</p>
           </section>
           <div className="dataset__way-image">
-            <img src={NextStepsImage} />
+            <img src={NextStepsImage} alt="" />
           </div>
         </div>
         {false && (
           <section className="dataset__way-section">
             <h2>Next Steps...</h2>
-            <p>
-              <a href="#">
-                What exactly is in my download file and how can I use it?
-              </a>
-            </p>
-            <p>
-              <a href="#">
-                How can I link sample metadata to the Gene Expression file?
-              </a>
-            </p>
+            <p>What exactly is in my download file and how can I use it?</p>
+            <p>How can I link sample metadata to the Gene Expression file?</p>
           </section>
         )}
       </div>
@@ -192,7 +183,7 @@ function DataSetReady({ s3_bucket, s3_key }) {
       </div>
 
       <div className="dataset__way-image">
-        <img src={NextStepsImage} />
+        <img src={NextStepsImage} alt="" />
       </div>
     </div>
   );
@@ -209,7 +200,7 @@ function DataSetExpired() {
 /**
  * This form can be used to edit the email that's associated with a dataset
  */
-function EmailForm({ handleSubmit }) {
+let EmailForm = ({ handleSubmit }) => {
   return (
     <form className="form-edit-email" onSubmit={handleSubmit}>
       <Field
@@ -222,7 +213,7 @@ function EmailForm({ handleSubmit }) {
       <Button text="Submit" />
     </form>
   );
-}
+};
 EmailForm = reduxForm({
   form: 'dataSet-email-edit'
 })(EmailForm);

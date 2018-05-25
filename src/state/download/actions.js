@@ -242,7 +242,7 @@ export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
 
 export const startDownload = () => async (dispatch, getState) => {
   const { dataSetId, dataSet } = getState().download;
-  const response = await asyncFetch(`/dataset/${dataSetId}/`, {
+  await asyncFetch(`/dataset/${dataSetId}/`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json'
