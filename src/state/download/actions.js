@@ -249,7 +249,7 @@ export const startDownload = () => async (dispatch, getState) => {
     },
     body: JSON.stringify({
       start: true,
-      data: _formatDataSetObj(dataSet)
+      data: dataSet
     })
   });
 
