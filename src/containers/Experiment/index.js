@@ -14,13 +14,16 @@ import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
 import Anchor from '../../components/Anchor';
 import SamplesTable from './SamplesTable';
-import { addExperiment } from '../../state/download/actions';
+import { addExperiment, removeExperiment } from '../../state/download/actions';
+import { RemoveFromDatasetButton } from '../Results/Result';
 
 let Experiment = ({
   fetch,
   experiment,
   addExperiment,
-  addSamplesToDataset
+  removeExperiment,
+  addSamplesToDataset,
+  dataSet
 }) => (
   <Loader fetch={fetch}>
     {({ isLoading }) =>
@@ -45,10 +48,18 @@ let Experiment = ({
                 {experiment.title || 'No Title.'}
               </h3>
               <div>
-                <Button
-                  text="Add to Dataset"
-                  onClick={() => addExperiment([experiment])}
-                />
+                {!dataSet[experiment.accession_code] ? (
+                  <Button
+                    text="Add to Dataset"
+                    onClick={() => addExperiment([experiment])}
+                  />
+                ) : (
+                  <RemoveFromDatasetButton
+                    handleRemove={() =>
+                      removeExperiment([experiment.accession_code])
+                    }
+                  />
+                )}
               </div>
             </div>
 
@@ -127,12 +138,13 @@ let Experiment = ({
   </Loader>
 );
 Experiment = connect(
-  ({ experiment }) => ({ experiment }),
+  ({ experiment, download: { dataSet } }) => ({ experiment, dataSet }),
   (dispatch, ownProps) =>
     bindActionCreators(
       {
         fetch: () => fetchExperiment(ownProps.match.params.id),
         addExperiment,
+        removeExperiment,
         addSamplesToDataset: samples => {
           console.log('TODO: add page to dataset', samples);
         }
