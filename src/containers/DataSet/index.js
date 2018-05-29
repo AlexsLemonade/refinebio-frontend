@@ -150,13 +150,13 @@ class DataSetWithEmail extends React.Component {
             <img src={NextStepsImage} alt="" />
           </div>
         </div>
-        {false && (
+        {/*
           <section className="dataset__way-section">
             <h2>Next Steps...</h2>
             <p>What exactly is in my download file and how can I use it?</p>
             <p>How can I link sample metadata to the Gene Expression file?</p>
           </section>
-        )}
+        */}
       </div>
     );
   }
