@@ -123,10 +123,10 @@ let Experiment = ({
               {() => (
                 <section className="experiment__section">
                   <h2 className="experiment__title">Samples</h2>
-
                   <SamplesTable
+                    accessionCode={experiment.accession_code}
                     samples={experiment.samples}
-                    addSamplesToDataset={addSamplesToDataset}
+                    addSamplesToDataset={addExperiment}
                   />
                 </section>
               )}

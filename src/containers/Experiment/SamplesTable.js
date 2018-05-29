@@ -14,8 +14,13 @@ export default class SamplesTable extends React.Component {
     pageSize: 10
   };
 
+  handleAddSamplesToDataset = samples => {
+    const { accessionCode: accession_code, addSamplesToDataset } = this.props;
+    addSamplesToDataset([{ accession_code, samples }]);
+  };
+
   render() {
-    const { samples, addSamplesToDataset } = this.props;
+    const { samples } = this.props;
     const totalPages = Math.ceil(samples.length / this.state.pageSize);
 
     return (
@@ -47,7 +52,7 @@ export default class SamplesTable extends React.Component {
                   text="Add Page to Dataset"
                   buttonStyle="secondary"
                   onClick={() =>
-                    this.props.addSamplesToDataset(
+                    this.handleAddSamplesToDataset(
                       state.pageRows.map(x => x.id)
                     )
                   }
