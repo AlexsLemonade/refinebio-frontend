@@ -6,6 +6,18 @@ import organismIcon from '../../../common/icons/organism.svg';
 import sampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 
+export function RemoveFromDatasetButton({ handleRemove, totalAdded }) {
+  return (
+    <div className="result__added-container">
+      <span className="result__added">
+        <i className="ion-checkmark-circled result__added-icon" />
+        {totalAdded && `${totalAdded} Samples`} Added to Dataset
+      </span>
+      <Button buttonStyle="plain" text="Remove" onClick={handleRemove} />
+    </div>
+  );
+}
+
 const Result = ({ result, addExperiment, isAdded, removeExperiment }) => {
   function handleAddExperiment() {
     addExperiment([result]);
@@ -32,17 +44,7 @@ const Result = ({ result, addExperiment, isAdded, removeExperiment }) => {
         {!isAdded ? (
           <Button text="Add to Dataset" onClick={handleAddExperiment} />
         ) : (
-          <div className="result__added-container">
-            <span className="result__added">
-              <i className="ion-checkmark-circled result__added-icon" /> Added
-              to Dataset
-            </span>
-            <Button
-              buttonStyle="plain"
-              text="Remove"
-              onClick={handleRemoveExperiment}
-            />
-          </div>
+          <RemoveFromDatasetButton handleRemove={handleRemoveExperiment} />
         )}
       </div>
       <ul className="result__stats">

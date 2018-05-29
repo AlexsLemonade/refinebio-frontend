@@ -10,11 +10,12 @@
   margin-bottom: 80px;
 
   &__header-title {
-    margin-right: 20*8px;
+    margin-right: 10*8px;
+    flex: 1;
   }
 
   &__title {
-    margin-bottom: 16px;    
+    margin-bottom: 16px;
   }
 
   &__header {
@@ -165,4 +166,4 @@
 
 
 // first two columns sticky
-// 
+//

@@ -11,7 +11,12 @@ import {
   removeSpecies,
   fetchDataSetDetails
 } from '../../state/download/actions';
-import { groupSamplesBySpecies } from '../../state/download/reducer';
+import {
+  groupSamplesBySpecies,
+  getTotalSamplesAdded,
+  getExperimentCountBySpecies,
+  getTotalExperimentsAdded
+} from '../../state/download/reducer';
 
 import DownloadBar from './DownloadBar';
 import DownloadFileSummary from './DownloadFileSummary';
@@ -57,13 +62,23 @@ class Download extends Component {
   }
 }
 Download = connect(
-  ({ download }) => ({
-    ...download,
-    species: groupSamplesBySpecies({
-      samples: download.samples,
-      dataSet: download.dataSet
+  ({ download: { dataSetId, isLoading, samples, dataSet, experiments } }) => ({
+    dataSetId,
+    isLoading,
+    samples,
+    dataSet,
+    experiments,
+    samplesBySpecies: groupSamplesBySpecies({
+      samples: samples,
+      dataSet: dataSet
     }),
-    filesData: downloadFilesData
+    filesData: downloadFilesData,
+    totalSamples: getTotalSamplesAdded({ dataSet }),
+    totalExperiments: getTotalExperimentsAdded({ dataSet }),
+    experimentCountBySpecies: getExperimentCountBySpecies({
+      experiments,
+      dataSet
+    })
   }),
   {
     removeSpecies,

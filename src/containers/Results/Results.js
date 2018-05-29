@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Result from './Result';
+import Result, { RemoveFromDatasetButton } from './Result';
 import ResultFilter from './ResultFilter';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
@@ -83,17 +83,10 @@ class Results extends Component {
                   : null}
                 {results.filter(result => !dataSet[result.accession_code])
                   .length === 0 ? (
-                  <div className="results__added-container">
-                    <span className="results__added">
-                      <i className="ion-checkmark-circled results__added-icon" />{' '}
-                      {totalSamplesOnPage} Samples Added to Dataset
-                    </span>
-                    <Button
-                      buttonStyle="plain"
-                      text="Remove"
-                      onClick={this.handlePageRemove}
-                    />
-                  </div>
+                  <RemoveFromDatasetButton
+                    totalAdded={totalSamplesOnPage}
+                    handleRemove={this.handlePageRemove}
+                  />
                 ) : (
                   <Button
                     buttonStyle="secondary"
