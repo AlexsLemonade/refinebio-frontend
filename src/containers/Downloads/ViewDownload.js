@@ -6,7 +6,7 @@ import DownloadDetails from './DownloadDetails';
 import DownloadBar from './DownloadBar';
 import { groupSamplesBySpecies } from '../../state/download/reducer';
 
-let ViewDownload = ({ fetchDownload, ...props }) => (
+let ViewDownload = ({ fetchDownload, dataSetId, ...props }) => (
   <Loader fetch={fetchDownload}>
     {({ isLoading }) =>
       isLoading ? (
@@ -14,7 +14,7 @@ let ViewDownload = ({ fetchDownload, ...props }) => (
       ) : (
         <div className="downloads">
           <h1 className="downloads__heading">Download Dataset</h1>
-          <DownloadBar />
+          <DownloadBar dataSetId={dataSetId} />
           <DownloadDetails {...props} />
         </div>
       )

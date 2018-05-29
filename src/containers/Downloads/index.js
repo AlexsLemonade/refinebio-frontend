@@ -40,12 +40,12 @@ class Download extends Component {
   }
 
   render() {
-    const { isLoading, areDetailsFetched } = this.props;
+    const { dataSetId, isLoading, areDetailsFetched } = this.props;
 
     return (
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
-        <DownloadBar />
+        <DownloadBar dataSetId={dataSetId} />
 
         {isLoading && !areDetailsFetched ? (
           <div className="loader" />
