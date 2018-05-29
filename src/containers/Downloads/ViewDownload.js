@@ -6,6 +6,11 @@ import DownloadDetails from './DownloadDetails';
 import DownloadBar from './DownloadBar';
 import { groupSamplesBySpecies } from '../../state/download/reducer';
 
+/**
+ * This page is displayed when the user views a download that is different from the one that's
+ * being created. All the details about that dataset are fetched from the server and stored sepparately
+ * from the download data in the store.
+ */
 let ViewDownload = ({ fetchDownload, dataSetId, ...props }) => (
   <Loader fetch={fetchDownload}>
     {({ isLoading }) =>
@@ -35,10 +40,8 @@ ViewDownload = connect(
         : null
   }),
   (dispatch, ownProps) => ({
-    fetchDownload: () => {
-      const dataSetId = ownProps.match.params.id;
-      return dispatch(fetchDataSetDetailsForView(dataSetId));
-    }
+    fetchDownload: () =>
+      dispatch(fetchDataSetDetailsForView(ownProps.match.params.id))
   })
 )(ViewDownload);
 
