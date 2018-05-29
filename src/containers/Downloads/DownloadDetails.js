@@ -15,7 +15,9 @@ export default function DownloadDetails({
   dataSet,
   filesData,
   species,
-  experiments
+  experiments,
+  removeSpecies,
+  removeExperiment
 }) {
   return (
     <div>
@@ -27,10 +29,14 @@ export default function DownloadDetails({
 
         <TabControl tabs={['Species View', 'Experiments View']}>
           <div className="downloads__card">
-            <SpeciesSamples species={species} />
+            <SpeciesSamples species={species} removeSpecies={removeSpecies} />
           </div>
           <div className="downloads__card">
-            <ExperimentsView dataSet={dataSet} experiments={experiments} />
+            <ExperimentsView
+              dataSet={dataSet}
+              experiments={experiments}
+              removeExperiment={removeExperiment}
+            />
           </div>
         </TabControl>
       </section>
