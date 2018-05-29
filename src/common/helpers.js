@@ -55,3 +55,7 @@ export async function asyncFetch(url, params) {
   if (!response.ok) throw new Error(response.status);
   return await response.json();
 }
+
+export function getAmazonDownloadLinkUrl(s3_bucket, s3_key) {
+  return `https://s3.amazonaws.com/${s3_bucket}/${s3_key}`;
+}
