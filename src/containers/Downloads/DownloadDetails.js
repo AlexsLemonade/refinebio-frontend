@@ -14,22 +14,33 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 export default function DownloadDetails({
   dataSet,
   filesData,
-  species,
   experiments,
   removeSpecies,
-  removeExperiment
+  removeExperiment,
+  samplesBySpecies,
+  experimentCountBySpecies,
+  totalSamples,
+  totalExperiments
 }) {
   return (
     <div>
       {filesData && <DownloadFileSummary summaryData={filesData} />}
-      <DownloadDatasetSummary data={dataSet} />
+      <DownloadDatasetSummary
+        samplesBySpecies={samplesBySpecies}
+        totalSamples={totalSamples}
+        totalExperiments={totalExperiments}
+        experimentCountBySpecies={experimentCountBySpecies}
+      />
 
       <section className="downloads__section">
         <h2>Samples</h2>
 
         <TabControl tabs={['Species View', 'Experiments View']}>
           <div className="downloads__card">
-            <SpeciesSamples species={species} removeSpecies={removeSpecies} />
+            <SpeciesSamples
+              samplesBySpecies={samplesBySpecies}
+              removeSpecies={removeSpecies}
+            />
           </div>
           <div className="downloads__card">
             <ExperimentsView
@@ -44,7 +55,8 @@ export default function DownloadDetails({
   );
 }
 
-const SpeciesSamples = ({ species, removeSpecies }) => {
+const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
+  const species = samplesBySpecies;
   if (!species || !Object.keys(species).length) {
     return <p>No samples added to download dataset.</p>;
   }
@@ -107,7 +119,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
                 className="downloads__sample-icon"
                 alt="Organism Icon"
               />{' '}
-              {experiment.species}
+              {experiment.organisms.join(',')}
             </div>
           </div>
           <h4>Sample Metadata Fields</h4>

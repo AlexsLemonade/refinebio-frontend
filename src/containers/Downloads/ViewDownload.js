@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 import { fetchDataSetDetailsForView } from '../../state/viewDownload/actions';
 import DownloadDetails from './DownloadDetails';
 import DownloadBar from './DownloadBar';
-import { groupSamplesBySpecies } from '../../state/download/reducer';
-
+import {
+  groupSamplesBySpecies,
+  getTotalSamplesAdded,
+  getExperimentCountBySpecies,
+  getTotalExperimentsAdded
+} from '../../state/download/reducer';
 /**
  * This page is displayed when the user views a download that is different from the one that's
  * being created. All the details about that dataset are fetched from the server and stored sepparately
@@ -27,17 +31,25 @@ let ViewDownload = ({ fetchDownload, dataSetId, ...props }) => (
   </Loader>
 );
 ViewDownload = connect(
-  ({ viewDownload }, ownProps) => ({
-    ...viewDownload,
+  ({ viewDownload: { samples, dataSet, experiments } }, ownProps) => ({
+    samples,
+    dataSet,
+    experiments,
     dataSetId: ownProps.match.params.id,
     filesData: downloadFilesData,
-    species:
-      viewDownload.samples && viewDownload.dataSet
+    samplesBySpecies:
+      samples && dataSet
         ? groupSamplesBySpecies({
-            samples: viewDownload.samples,
-            dataSet: viewDownload.dataSet
+            samples: samples,
+            dataSet: dataSet
           })
-        : null
+        : null,
+    totalSamples: getTotalSamplesAdded({ dataSet }),
+    totalExperiments: getTotalExperimentsAdded({ dataSet }),
+    experimentCountBySpecies: getExperimentCountBySpecies({
+      experiments,
+      dataSet
+    })
   }),
   (dispatch, ownProps) => ({
     fetchDownload: () =>

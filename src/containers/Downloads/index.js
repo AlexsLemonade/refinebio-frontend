@@ -62,9 +62,19 @@ class Download extends Component {
   }
 }
 Download = connect(
-  ({ download: { dataSetId, isLoading, samples, dataSet, experiments } }) => ({
+  ({
+    download: {
+      dataSetId,
+      isLoading,
+      areDetailsFetched,
+      samples,
+      dataSet,
+      experiments
+    }
+  }) => ({
     dataSetId,
     isLoading,
+    areDetailsFetched,
     samples,
     dataSet,
     experiments,
