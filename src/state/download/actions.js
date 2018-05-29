@@ -1,4 +1,5 @@
 import { asyncFetch } from '../../common/helpers';
+import { push } from '../routerActions';
 
 /**
  * Removes all experiments with the corresponding accession codes from dataset
@@ -237,4 +238,21 @@ export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
       samples
     }
   };
+};
+
+export const startDownload = () => async (dispatch, getState) => {
+  const { dataSetId, dataSet } = getState().download;
+  await asyncFetch(`/dataset/${dataSetId}/`, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      start: true,
+      data: dataSet
+    })
+  });
+
+  // Use `push` action to navigate to the dataset url
+  dispatch(push(`/dataset/${dataSetId}`));
 };

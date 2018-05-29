@@ -4,8 +4,10 @@ import Dropdown from '../../components/Dropdown';
 import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
+import { startDownload } from '../../state/download/actions';
+import { connect } from 'react-redux';
 
-const DownloadBar = () => {
+let DownloadBar = ({ startDownload }) => {
   return (
     <div className="downloads__bar">
       <ModalManager
@@ -36,10 +38,12 @@ const DownloadBar = () => {
             <Dropdown options={['None', 'Samples']} selectedOption={'None'} />
           </label>
         </div>
-        <Button text="Download" />
+        <Button text="Download" onClick={startDownload} />
       </div>
     </div>
   );
 };
-
+DownloadBar = connect(state => ({}), {
+  startDownload
+})(DownloadBar);
 export default DownloadBar;
