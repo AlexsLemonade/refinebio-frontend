@@ -14,11 +14,12 @@ import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
 import Anchor from '../../components/Anchor';
 import SamplesTable from './SamplesTable';
+import { addExperiment } from '../../state/download/actions';
 
 let Experiment = ({
   fetch,
   experiment,
-  addExperimentToDataset,
+  addExperiment,
   addSamplesToDataset
 }) => (
   <Loader fetch={fetch}>
@@ -46,7 +47,7 @@ let Experiment = ({
               <div>
                 <Button
                   text="Add to Dataset"
-                  onClick={addExperimentToDataset}
+                  onClick={() => addExperiment([experiment])}
                 />
               </div>
             </div>
@@ -131,11 +132,7 @@ Experiment = connect(
     bindActionCreators(
       {
         fetch: () => fetchExperiment(ownProps.match.params.id),
-        addExperimentToDataset: () => {
-          let experimentId = ownProps.match.params.id;
-          // TODO: Add the current experiment to the Dataset
-          console.log('Add experiment to dataset: ', experimentId);
-        },
+        addExperiment,
         addSamplesToDataset: samples => {
           console.log('TODO: add page to dataset', samples);
         }

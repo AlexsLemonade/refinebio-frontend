@@ -100,7 +100,7 @@ export const removeSpeciesSucceeded = dataSet => {
 };
 
 /**
- * Takes an array of experiments and adds to users dataset via endpoint
+ * Takes an array of experiment objects and adds to users dataset via endpoint
  * @param {array} experiments
  */
 export const addExperiment = experiments => {
