@@ -106,11 +106,9 @@ export function getExperimentCountBySpecies({ experiments, dataSet }) {
 
 export function getTotalSamplesAdded({ dataSet }) {
   if (!dataSet) return 0;
-
-  return Object.keys(dataSet).reduce(
-    (sum, accessionCode) => sum + dataSet[accessionCode].length,
-    0
-  );
+  return Object.keys(dataSet).reduce((sum, accessionCode) => {
+    return sum + dataSet[accessionCode].length;
+  }, 0);
 }
 
 export function getTotalExperimentsAdded({ dataSet }) {

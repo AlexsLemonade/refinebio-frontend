@@ -10,6 +10,7 @@ import {
   getExperimentCountBySpecies,
   getTotalExperimentsAdded
 } from '../../state/download/reducer';
+
 /**
  * This page is displayed when the user views a download that is different from the one that's
  * being created. All the details about that dataset are fetched from the server and stored sepparately
