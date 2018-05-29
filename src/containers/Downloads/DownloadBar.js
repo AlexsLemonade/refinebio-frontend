@@ -4,8 +4,9 @@ import Dropdown from '../../components/Dropdown';
 import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
+import { connect } from 'react-redux';
 
-const DownloadBar = () => {
+let DownloadBar = ({ shareUrl }) => {
   return (
     <div className="downloads__bar">
       <ModalManager
@@ -17,7 +18,7 @@ const DownloadBar = () => {
         {() => (
           <div>
             <h1 className="share-link-modal__title">Sharable Link</h1>
-            <InputCopy value="Url to be copied, connect redux" />
+            <InputCopy value={shareUrl} />
           </div>
         )}
       </ModalManager>
@@ -41,5 +42,8 @@ const DownloadBar = () => {
     </div>
   );
 };
+DownloadBar = connect(state => ({
+  shareUrl: `${window.location.origin}/download/${state.download.dataSetId}`
+}))(DownloadBar);
 
 export default DownloadBar;
