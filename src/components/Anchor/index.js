@@ -13,24 +13,12 @@ export default class Anchor extends React.Component {
       setTimeout(() => {
         const offset = this.element.offsetTop;
         // Substract the top bar height from the element's position
-        window.scrollTo({ top: offset - this._topBarHeight() });
+        window.scrollTo({ top: offset });
       }, 0);
     }
   }
 
   render() {
     return <div ref={x => (this.element = x)}>{this.props.children()}</div>;
-  }
-
-  /**
-   * To work properly this component needs to measure the height of the header, to be able to calculate
-   * the correct position of the scrollbar when navigating to an element in the screen.
-   *
-   * This method is probably an anti-pattern in React, since it creates a dependency between this component and
-   * the header component that is in other place. A better solution could take advantage of the React Context API
-   * but that seemed overcomplicated for this use case.
-   */
-  _topBarHeight() {
-    return document.getElementsByClassName('js-header')[0].offsetHeight;
   }
 }

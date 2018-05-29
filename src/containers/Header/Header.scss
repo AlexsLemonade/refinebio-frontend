@@ -1,8 +1,15 @@
 @import '../../common/styles/variables';
 
+body {
+  // compensate for the top bar fixed at the top
+  padding-top: 115px;
+}
+
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   background: $background-color--light;
   padding: 1.5rem 0;
   z-index: 10;
