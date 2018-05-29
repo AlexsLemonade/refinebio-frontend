@@ -47,9 +47,7 @@ export default class SamplesTable extends React.Component {
                   text="Add Page to Dataset"
                   buttonStyle="secondary"
                   onClick={() =>
-                    this.props.addSamplesToDataset(
-                      state.pageRows.map(x => x.id)
-                    )
+                    addSamplesToDataset(state.pageRows.map(x => x.id))
                   }
                 />
               </div>

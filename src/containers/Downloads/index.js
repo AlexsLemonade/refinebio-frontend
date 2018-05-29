@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Button from '../../components/Button';
-import Toggle from '../../components/Toggle';
-import AccessionIcon from '../../common/icons/accession.svg';
-import SampleIcon from '../../common/icons/sample.svg';
-import OrganismIcon from '../../common/icons/organism.svg';
 
 import {
   removeExperiment,
@@ -19,8 +14,6 @@ import {
 } from '../../state/download/reducer';
 
 import DownloadBar from './DownloadBar';
-import DownloadFileSummary from './DownloadFileSummary';
-import DownloadDatasetSummary from './DownloadDatasetSummary';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
 

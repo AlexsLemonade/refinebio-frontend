@@ -4,7 +4,6 @@ import Dropdown from '../../components/Dropdown';
 import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
-import { connect } from 'react-redux';
 
 let DownloadBar = ({ dataSetId, shareUrl }) => {
   return (

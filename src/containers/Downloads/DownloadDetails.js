@@ -1,13 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Button from '../../components/Button';
-import Toggle from '../../components/Toggle';
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import TabControl from '../../components/TabControl';
 
-import DownloadBar from './DownloadBar';
 import DownloadFileSummary from './DownloadFileSummary';
 import DownloadDatasetSummary from './DownloadDatasetSummary';
 
