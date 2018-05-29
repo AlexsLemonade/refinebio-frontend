@@ -1,4 +1,5 @@
 import { asyncFetch } from '../../common/helpers';
+import { getSamplesAndExperiments, getDataSet } from './dataSetApi';
 
 /**
  * Removes all experiments with the corresponding accession codes from dataset
@@ -173,58 +174,34 @@ export const addExperimentSucceeded = (dataSetId, dataSet) => {
 export const fetchDataSet = () => {
   return async dispatch => {
     const dataSetId = localStorage.getItem('dataSetId');
+    if (!dataSetId) {
+      return dispatch(fetchDataSetSucceeded({}));
+    }
+
     dispatch({
       type: 'DOWNLOAD_DATASET_FETCH',
       data: {
         dataSetId
       }
     });
-    const response = dataSetId
-      ? await asyncFetch(`/dataset/${dataSetId}/`)
-      : null;
-
-    const dataSet = response ? response.data : {};
-
-    dispatch(fetchDataSetSucceeded(dataSet));
+    const { data } = await getDataSet(dataSetId);
+    dispatch(fetchDataSetSucceeded(data));
   };
 };
 
-export const fetchDataSetSucceeded = dataSet => {
-  return {
-    type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
-    data: {
-      dataSet
-    }
-  };
-};
+export const fetchDataSetSucceeded = dataSet => ({
+  type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
+  data: {
+    dataSet
+  }
+});
 
 export const fetchDataSetDetails = dataSet => {
   return async dispatch => {
     dispatch({
       type: 'DOWNLOAD_FETCH_DETAILS'
     });
-    const experiments = {},
-      samples = {};
-
-    await Promise.all(
-      Object.keys(dataSet).map(async accessionCode => {
-        const experiment = await asyncFetch(
-          `/experiments/?accession_code=${accessionCode}`
-        );
-
-        experiments[accessionCode] = experiment.results[0];
-
-        // there should only be one result for each experiment response
-        const experimentInfo = experiment.results[0];
-        const { samples: sampleList } = experimentInfo;
-        const response = await asyncFetch(
-          `/samples/?limit=1000000000000000&ids=${sampleList.join(',')}`
-        );
-        const sampleInfo = response.results;
-
-        samples[accessionCode] = sampleInfo;
-      })
-    );
+    const { experiments, samples } = await getSamplesAndExperiments(dataSet);
     dispatch(fetchDataSetDetailsSucceeded(experiments, samples));
   };
 };
