@@ -58,6 +58,12 @@ let Experiment = ({
                     handleRemove={() =>
                       removeExperiment([experiment.accession_code])
                     }
+                    samplesInDataset={
+                      dataSet[experiment.accession_code].length !==
+                      experiment.samples.length
+                        ? dataSet[experiment.accession_code].length
+                        : null
+                    }
                   />
                 )}
               </div>
@@ -127,6 +133,7 @@ let Experiment = ({
                     accessionCode={experiment.accession_code}
                     samples={experiment.samples}
                     addSamplesToDataset={addExperiment}
+                    dataSet={dataSet}
                   />
                 </section>
               )}

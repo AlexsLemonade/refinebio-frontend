@@ -113,15 +113,19 @@ export const addExperiment = experiments => {
     });
     const dataSetId = getState().download.dataSetId;
     const prevDataSet = getState().download.dataSet;
-    const formattedDataSet = prevDataSet;
     const newExperiments = experiments.reduce((result, experiment) => {
-      if (experiment.samples.length)
-        result[experiment.accession_code] = experiment.samples;
+      if (experiment.samples.length) {
+        result[experiment.accession_code] = prevDataSet[
+          experiment.accession_code
+        ]
+          ? [...prevDataSet[experiment.accession_code], ...experiment.samples]
+          : experiment.samples;
+      }
       return result;
     }, {});
     const bodyData = {
       data: {
-        ...formattedDataSet,
+        ...prevDataSet,
         ...newExperiments
       }
     };

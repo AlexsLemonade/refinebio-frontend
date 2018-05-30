@@ -20,7 +20,7 @@ export default class SamplesTable extends React.Component {
   };
 
   render() {
-    const { samples } = this.props;
+    const { samples, dataSet, accessionCode } = this.props;
     const totalPages = Math.ceil(samples.length / this.state.pageSize);
 
     return (
@@ -47,16 +47,22 @@ export default class SamplesTable extends React.Component {
                   />
                   of {samples.length} Samples
                 </div>
-
-                <Button
-                  text="Add Page to Dataset"
-                  buttonStyle="secondary"
-                  onClick={() =>
-                    this.handleAddSamplesToDataset(
-                      state.pageRows.map(x => x.id)
-                    )
-                  }
-                />
+                {state.pageRows.filter(x => {
+                  if (!dataSet[accessionCode]) return true;
+                  return dataSet[accessionCode].indexOf(x.id) === -1;
+                }).length === 0 ? (
+                  'Page has been added'
+                ) : (
+                  <Button
+                    text="Add Page to Dataset"
+                    buttonStyle="secondary"
+                    onClick={() =>
+                      this.handleAddSamplesToDataset(
+                        state.pageRows.map(x => x.id)
+                      )
+                    }
+                  />
+                )}
               </div>
               <div className="experiment__table-container">{makeTable()}</div>
 

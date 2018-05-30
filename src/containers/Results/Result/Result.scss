@@ -58,7 +58,9 @@
   &__paragraph {
     margin-bottom: 1.5rem;
   }
+}
 
+.dataset-remove-button {
   &__added {
     display: flex;
     align-items: center;
@@ -72,8 +74,24 @@
     align-items: center;
   }
 
+  &__added-icon,
+  &__info-icon {
+    margin-right: 6px;
+  }
+
   &__added-icon {
     font-size: 1.5rem;
-    margin-right: 6px;
+  }
+
+  &__info-icon {
+    display: inline-block;
+    font-size: 1rem;
+    transform: rotate(15deg);
+    color: #002F6C;
+  }
+
+  &__info-text {
+    font-size: 0.75rem;
+    line-height: 1.5;
   }
 }
