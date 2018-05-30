@@ -48,7 +48,7 @@ class Pagination extends Component {
             <button
               onClick={() => onPaginate(1)}
               className={`pagination__page ${
-                currentPage === totalPages ? 'pagination__page--active' : ''
+                currentPage === 1 ? 'pagination__page--active' : ''
               }`}
             >
               1
