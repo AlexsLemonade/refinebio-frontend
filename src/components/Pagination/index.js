@@ -23,13 +23,41 @@ class Pagination extends Component {
     this.setState({ pageNumber: value });
   }
 
+  getPaginationRange(currentPage, totalPages) {
+    if (currentPage <= 2) {
+      return [2, 3];
+    } else if (currentPage >= totalPages - 1) {
+      return [totalPages - 2, totalPages - 1];
+    } else {
+      return [currentPage - 1, currentPage, currentPage + 1];
+    }
+  }
+
   renderPages() {
     const { totalPages, onPaginate, currentPage } = this.props;
 
-    const pageArray = totalPages < 5 ? getRange(totalPages) : [1, 2, 3];
+    const pageArray =
+      totalPages < 5
+        ? getRange(totalPages)
+        : this.getPaginationRange(currentPage, totalPages);
 
     return (
       <span>
+        {totalPages < 5 ? null : (
+          <span>
+            <button
+              onClick={() => onPaginate(1)}
+              className={`pagination__page ${
+                currentPage === totalPages ? 'pagination__page--active' : ''
+              }`}
+            >
+              1
+            </button>
+            {currentPage > 3 && (
+              <span className="pagination__ellipsis">...</span>
+            )}
+          </span>
+        )}
         {pageArray.map((page, i) => {
           return (
             <button
@@ -45,7 +73,9 @@ class Pagination extends Component {
         })}
         {totalPages < 5 ? null : (
           <span>
-            <span className="pagination__ellipsis">...</span>
+            {currentPage < totalPages - 2 && (
+              <span className="pagination__ellipsis">...</span>
+            )}
             <button
               onClick={() => onPaginate(totalPages)}
               className={`pagination__page ${
