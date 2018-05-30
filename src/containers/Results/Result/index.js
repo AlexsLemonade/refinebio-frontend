@@ -30,7 +30,13 @@ export function RemoveFromDatasetButton({
   );
 }
 
-const Result = ({ result, addExperiment, isAdded, removeExperiment }) => {
+const Result = ({
+  result,
+  addExperiment,
+  isAdded,
+  removeExperiment,
+  dataSet
+}) => {
   function handleAddExperiment() {
     addExperiment([result]);
   }
@@ -56,7 +62,14 @@ const Result = ({ result, addExperiment, isAdded, removeExperiment }) => {
         {!isAdded ? (
           <Button text="Add to Dataset" onClick={handleAddExperiment} />
         ) : (
-          <RemoveFromDatasetButton handleRemove={handleRemoveExperiment} />
+          <RemoveFromDatasetButton
+            handleRemove={handleRemoveExperiment}
+            samplesInDataset={
+              dataSet[result.accession_code].length !== result.samples.length
+                ? dataSet[result.accession_code].length
+                : null
+            }
+          />
         )}
       </div>
       <ul className="result__stats">
