@@ -1,4 +1,4 @@
-import { asyncFetch } from '../../common/helpers';
+import { asyncFetch } from '../common/helpers';
 
 export async function getDataSet(dataSetId) {
   return await asyncFetch(`/dataset/${dataSetId}/`);

@@ -6,6 +6,7 @@ import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
 import { startDownload } from '../../state/download/actions';
 import { connect } from 'react-redux';
+import { getDomain } from '../../common/helpers';
 
 let DownloadBar = ({ dataSetId, shareUrl, startDownload }) => {
   return (
@@ -19,9 +20,7 @@ let DownloadBar = ({ dataSetId, shareUrl, startDownload }) => {
         {() => (
           <div>
             <h1 className="share-link-modal__title">Sharable Link</h1>
-            <InputCopy
-              value={`${window.location.origin}/download/${dataSetId}`}
-            />
+            <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
           </div>
         )}
       </ModalManager>

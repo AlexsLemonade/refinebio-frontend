@@ -1,4 +1,4 @@
-import { getDataSet, getSamplesAndExperiments } from '../download/dataSetApi';
+import { getDataSet, getSamplesAndExperiments } from '../../api/dataSet';
 
 export const loadViewDownload = data => ({
   type: 'LOAD_VIEW_DOWNLOAD',

@@ -1,5 +1,5 @@
 import { asyncFetch } from '../../common/helpers';
-import { getSamplesAndExperiments, getDataSet } from './dataSetApi';
+import { getDataSet, getSamplesAndExperiments } from '../../api/dataSet';
 import { push } from '../routerActions';
 
 /**
@@ -176,7 +176,7 @@ export const fetchDataSet = () => {
   return async dispatch => {
     const dataSetId = localStorage.getItem('dataSetId');
     if (!dataSetId) {
-      return dispatch(fetchDataSetSucceeded({}));
+      return;
     }
 
     dispatch({

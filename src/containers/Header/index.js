@@ -49,7 +49,7 @@ class Header extends React.Component {
 
 function mapStateToProps({ download: { dataSet, isLoading } }) {
   return {
-    totalSamples: getTotalSamplesAdded(dataSet),
+    totalSamples: getTotalSamplesAdded({ dataSet }),
     isLoading
   };
 }
