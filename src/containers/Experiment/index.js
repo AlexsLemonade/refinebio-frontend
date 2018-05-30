@@ -14,7 +14,11 @@ import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
 import Anchor from '../../components/Anchor';
 import SamplesTable from './SamplesTable';
-import { addExperiment, removeExperiment } from '../../state/download/actions';
+import {
+  addExperiment,
+  removeExperiment,
+  removeSamplesFromExperiment
+} from '../../state/download/actions';
 import { RemoveFromDatasetButton } from '../Results/Result';
 
 let Experiment = ({
@@ -22,6 +26,7 @@ let Experiment = ({
   experiment,
   addExperiment,
   removeExperiment,
+  removeSamplesFromExperiment,
   addSamplesToDataset,
   dataSet
 }) => (
@@ -133,6 +138,7 @@ let Experiment = ({
                     accessionCode={experiment.accession_code}
                     samples={experiment.samples}
                     addSamplesToDataset={addExperiment}
+                    removeSamplesFromDataset={removeSamplesFromExperiment}
                     dataSet={dataSet}
                   />
                 </section>
@@ -152,6 +158,7 @@ Experiment = connect(
         fetch: () => fetchExperiment(ownProps.match.params.id),
         addExperiment,
         removeExperiment,
+        removeSamplesFromExperiment,
         addSamplesToDataset: samples => {
           console.log('TODO: add page to dataset', samples);
         }

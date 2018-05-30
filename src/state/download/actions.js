@@ -47,6 +47,43 @@ export const removeExperimentSucceeded = dataSet => {
   };
 };
 
+export const removeSamplesFromExperiment = (accessionCode, sampleIds) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: 'DOWNLOAD_REMOVE_EXPERIMENT',
+      data: {
+        accessionCode,
+        sampleIds
+      }
+    });
+    const { dataSet, dataSetId } = getState().download;
+    const filteredSamples = dataSet[accessionCode].filter(
+      sample => sampleIds.indexOf(sample) === -1
+    );
+    const newDataSet = { ...dataSet };
+    if (filteredSamples.length) {
+      newDataSet[accessionCode] = filteredSamples;
+    } else {
+      delete newDataSet[accessionCode];
+    }
+
+    try {
+      const response = await asyncFetch(`/dataset/${dataSetId}/`, {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          data: newDataSet
+        })
+      });
+      dispatch(removeExperimentSucceeded(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 /**
  * Removes all samples with corresponding ids from each experiment in dataset
  * @param {array} samples
@@ -115,11 +152,12 @@ export const addExperiment = experiments => {
     const prevDataSet = getState().download.dataSet;
     const newExperiments = experiments.reduce((result, experiment) => {
       if (experiment.samples.length) {
+        const sampleIds = experiment.samples.map(sample => sample.id);
         result[experiment.accession_code] = prevDataSet[
           experiment.accession_code
         ]
-          ? [...prevDataSet[experiment.accession_code], ...experiment.samples]
-          : experiment.samples;
+          ? [...prevDataSet[experiment.accession_code], ...sampleIds]
+          : sampleIds;
       }
       return result;
     }, {});
