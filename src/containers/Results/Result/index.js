@@ -39,7 +39,12 @@ const Result = ({ result, addExperiment, isAdded, removeExperiment }) => {
             />{' '}
             {result.accession_code}
           </div>
-          <h2 className="result__title">{result.title}</h2>
+          <Link
+            className="button button--link"
+            to={`/experiments/${result.id}`}
+          >
+            <h2 className="result__title">{result.title}</h2>
+          </Link>
         </div>
         {!isAdded ? (
           <Button text="Add to Dataset" onClick={handleAddExperiment} />

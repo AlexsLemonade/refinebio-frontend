@@ -44,5 +44,6 @@
   &--link {
     @extend .button--transparent;
     color: $link-color;
+    white-space: normal;
   }
 }
