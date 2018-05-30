@@ -47,10 +47,9 @@ class Header extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { download: { isLoading } } = state;
+function mapStateToProps({ download: { dataSet, isLoading } }) {
   return {
-    totalSamples: getTotalSamplesAdded(state),
+    totalSamples: getTotalSamplesAdded({ dataSet }),
     isLoading
   };
 }

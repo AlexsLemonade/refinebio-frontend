@@ -16,16 +16,22 @@ export default class ModalManager extends React.Component {
     modalOpen: false
   };
 
+  showModal = () => this.setState({ modalOpen: true });
+
+  hideModal = () => this.setState({ modalOpen: false });
+
   render() {
     return (
       <React.Fragment>
-        {this.props.component(() => this.setState({ modalOpen: true }))}
+        {this.props.component(this.showModal)}
         <Modal
           {...this.props.modalProps}
           isOpen={this.state.modalOpen}
-          onClose={() => this.setState({ modalOpen: false })}
+          onClose={this.hideModal}
         >
-          {this.props.children()}
+          {this.props.children({
+            hideModal: this.hideModal
+          })}
         </Modal>
       </React.Fragment>
     );

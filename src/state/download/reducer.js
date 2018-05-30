@@ -75,13 +75,11 @@ export default (state = initialState, action) => {
   }
 };
 
-export function groupSamplesBySpecies(state) {
-  const { samples, dataSet } = state.download;
-
+export function groupSamplesBySpecies({ samples, dataSet }) {
   return Object.keys(dataSet).reduce((species, id) => {
     if (!Object.keys(samples).length) return species;
     const experiment = samples[id];
-    if (!experiment.length) return species;
+    if (!experiment || !experiment.length) return species;
     experiment.forEach(sample => {
       const { organism: { name: organismName } } = sample;
       species[organismName] = species[organismName] || [];
@@ -91,10 +89,30 @@ export function groupSamplesBySpecies(state) {
   }, {});
 }
 
-export function getTotalSamplesAdded(state) {
-  const { dataSet } = state.download;
-  return Object.keys(dataSet).reduce(
-    (sum, accessionCode) => sum + dataSet[accessionCode].length,
-    0
-  );
+export function getExperimentCountBySpecies({ experiments, dataSet }) {
+  if (!dataSet) return {};
+
+  return Object.keys(dataSet).reduce((species, accessionCode) => {
+    const experimentInfo = experiments[accessionCode];
+    if (!experimentInfo) return {};
+    const { organisms } = experimentInfo;
+    organisms.forEach(organism => {
+      if (!species[organism]) species[organism] = 0;
+      species[organism]++;
+    });
+    return species;
+  }, {});
+}
+
+export function getTotalSamplesAdded({ dataSet }) {
+  if (!dataSet) return 0;
+  return Object.keys(dataSet).reduce((sum, accessionCode) => {
+    return sum + dataSet[accessionCode].length;
+  }, 0);
+}
+
+export function getTotalExperimentsAdded({ dataSet }) {
+  if (!dataSet) return 0;
+
+  return Object.keys(dataSet).length;
 }

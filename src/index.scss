@@ -85,4 +85,9 @@ fieldset {
   }
 }
 
+.color-success {
+  color: $success;
+}
+
 @import 'common/styles/type';
+@import 'common/styles/form';

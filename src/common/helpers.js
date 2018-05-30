@@ -55,3 +55,16 @@ export async function asyncFetch(url, params) {
   if (!response.ok) throw new Error(response.status);
   return await response.json();
 }
+
+export function getAmazonDownloadLinkUrl(s3_bucket, s3_key) {
+  return `https://s3.amazonaws.com/${s3_bucket}/${s3_key}`;
+}
+
+/**
+ * Returns the current domain where the application is running.
+ * If we ever introduce environment variables, this should be updated
+ * ref: https://github.com/AlexsLemonade/refinebio-frontend/pull/44#discussion_r191784930
+ */
+export function getDomain() {
+  return window.location.origin;
+}
