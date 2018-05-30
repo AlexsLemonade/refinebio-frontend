@@ -1,5 +1,9 @@
 import { asyncFetch } from '../../common/helpers';
-import { getDataSet, getSamplesAndExperiments } from '../../api/dataSet';
+import {
+  getDataSet,
+  getSamplesAndExperiments,
+  updateDataSet
+} from '../../api/dataSet';
 import { push } from '../routerActions';
 
 /**
@@ -24,15 +28,7 @@ export const removeExperiment = accessionCodes => {
     }, {});
 
     try {
-      const response = await asyncFetch(`/dataset/${dataSetId}/`, {
-        method: 'PUT',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          data: newDataSet
-        })
-      });
+      const response = await updateDataSet(dataSetId, newDataSet);
       dispatch(removeExperimentSucceeded(response.data));
     } catch (error) {
       console.log(error);
@@ -70,15 +66,7 @@ export const removeSamplesFromExperiment = (accessionCode, sampleIds) => {
     }
 
     try {
-      const response = await asyncFetch(`/dataset/${dataSetId}/`, {
-        method: 'PUT',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          data: newDataSet
-        })
-      });
+      const response = await updateDataSet(dataSetId, newDataSet);
       dispatch(removeExperimentSucceeded(response.data));
     } catch (error) {
       console.log(error);
@@ -113,15 +101,7 @@ export const removeSpecies = samples => {
     }, {});
 
     try {
-      const response = await asyncFetch(`/dataset/${dataSetId}/`, {
-        method: 'PUT',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          data: newDataSet
-        })
-      });
+      const response = await updateDataSet(dataSetId, newDataSet);
       dispatch(removeSpeciesSucceeded(response.data));
     } catch (error) {
       console.log(error);
@@ -184,13 +164,7 @@ export const addExperiment = experiments => {
         const { id } = response;
         localStorage.setItem('dataSetId', id);
       } else {
-        response = await asyncFetch(`/dataset/${dataSetId}/`, {
-          method: 'PUT',
-          headers: {
-            'content-type': 'application/json'
-          },
-          body: JSON.stringify(bodyData)
-        });
+        response = await updateDataSet(dataSetId, JSON.stringify(bodyData));
       }
       const { data, id } = response;
       dispatch(addExperimentSucceeded(id, data));
