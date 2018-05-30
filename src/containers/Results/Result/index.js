@@ -6,19 +6,37 @@ import organismIcon from '../../../common/icons/organism.svg';
 import sampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 
-export function RemoveFromDatasetButton({ handleRemove, totalAdded }) {
+export function RemoveFromDatasetButton({
+  handleRemove,
+  totalAdded,
+  samplesInDataset
+}) {
   return (
-    <div className="result__added-container">
-      <span className="result__added">
-        <i className="ion-checkmark-circled result__added-icon" />
-        {totalAdded && `${totalAdded} Samples`} Added to Dataset
-      </span>
-      <Button buttonStyle="plain" text="Remove" onClick={handleRemove} />
+    <div className="dataset-remove-button">
+      <div className="dataset-remove-button__added-container">
+        <span className="dataset-remove-button__added">
+          <i className="ion-checkmark-circled dataset-remove-button__added-icon" />
+          {totalAdded && `${totalAdded} Samples`} Added to Dataset
+        </span>
+        <Button buttonStyle="plain" text="Remove" onClick={handleRemove} />
+      </div>
+      {samplesInDataset && (
+        <p className="dataset-remove-button__info-text">
+          <i className="ion-information-circled dataset-remove-button__info-icon" />{' '}
+          {samplesInDataset} Samples are already in Dataset
+        </p>
+      )}
     </div>
   );
 }
 
-const Result = ({ result, addExperiment, isAdded, removeExperiment }) => {
+const Result = ({
+  result,
+  addExperiment,
+  isAdded,
+  removeExperiment,
+  dataSet
+}) => {
   function handleAddExperiment() {
     addExperiment([result]);
   }
@@ -49,7 +67,14 @@ const Result = ({ result, addExperiment, isAdded, removeExperiment }) => {
         {!isAdded ? (
           <Button text="Add to Dataset" onClick={handleAddExperiment} />
         ) : (
-          <RemoveFromDatasetButton handleRemove={handleRemoveExperiment} />
+          <RemoveFromDatasetButton
+            handleRemove={handleRemoveExperiment}
+            samplesInDataset={
+              dataSet[result.accession_code].length !== result.samples.length
+                ? dataSet[result.accession_code].length
+                : null
+            }
+          />
         )}
       </div>
       <ul className="result__stats">

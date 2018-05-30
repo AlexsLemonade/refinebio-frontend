@@ -5,6 +5,7 @@ import 'react-table/react-table.css';
 
 import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
+import { RemoveFromDatasetButton } from '../Results/Result';
 
 const PAGE_SIZES = [10, 20, 50];
 
@@ -14,8 +15,18 @@ export default class SamplesTable extends React.Component {
     pageSize: 10
   };
 
+  handleAddSamplesToDataset = samples => {
+    const { accessionCode: accession_code, addSamplesToDataset } = this.props;
+    addSamplesToDataset([{ accession_code, samples }]);
+  };
+
+  handleRemoveSamplesFromDataset = sampleIds => {
+    const { accessionCode, removeSamplesFromDataset } = this.props;
+    removeSamplesFromDataset(accessionCode, sampleIds);
+  };
+
   render() {
-    const { samples, addSamplesToDataset } = this.props;
+    const { samples, dataSet, accessionCode } = this.props;
     const totalPages = Math.ceil(samples.length / this.state.pageSize);
 
     return (
@@ -30,6 +41,11 @@ export default class SamplesTable extends React.Component {
         ThComponent={ThComponent}
       >
         {(state, makeTable, instance) => {
+          const samplesNotInDataset = state.pageRows.filter(x => {
+            if (!dataSet[accessionCode]) return true;
+            return dataSet[accessionCode].indexOf(x.id) === -1;
+          });
+
           return (
             <div>
               <div className="experiment__sample-commands">
@@ -42,14 +58,23 @@ export default class SamplesTable extends React.Component {
                   />
                   of {samples.length} Samples
                 </div>
-
-                <Button
-                  text="Add Page to Dataset"
-                  buttonStyle="secondary"
-                  onClick={() =>
-                    addSamplesToDataset(state.pageRows.map(x => x.id))
-                  }
-                />
+                {samplesNotInDataset.length === 0 ? (
+                  <RemoveFromDatasetButton
+                    handleRemove={() =>
+                      this.handleRemoveSamplesFromDataset(
+                        state.pageRows.map(sample => sample.id)
+                      )
+                    }
+                  />
+                ) : (
+                  <Button
+                    text="Add Page to Dataset"
+                    buttonStyle="secondary"
+                    onClick={() =>
+                      this.handleAddSamplesToDataset(state.pageRows)
+                    }
+                  />
+                )}
               </div>
               <div className="experiment__table-container">{makeTable()}</div>
 

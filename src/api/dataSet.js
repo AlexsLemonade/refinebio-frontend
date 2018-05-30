@@ -30,3 +30,15 @@ export async function getSamplesAndExperiments(dataSet) {
 
   return { experiments, samples };
 }
+
+export async function updateDataSet(dataSetId, dataSet) {
+  return await asyncFetch(`/dataset/${dataSetId}/`, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      data: dataSet
+    })
+  });
+}
