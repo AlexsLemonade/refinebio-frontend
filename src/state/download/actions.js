@@ -144,10 +144,8 @@ export const addExperiment = experiments => {
       return result;
     }, {});
     const bodyData = {
-      data: {
-        ...prevDataSet,
-        ...newExperiments
-      }
+      ...prevDataSet,
+      ...newExperiments
     };
 
     try {
@@ -158,13 +156,13 @@ export const addExperiment = experiments => {
           headers: {
             'content-type': 'application/json'
           },
-          body: JSON.stringify(bodyData)
+          body: JSON.stringify({ data: bodyData })
         });
 
         const { id } = response;
         localStorage.setItem('dataSetId', id);
       } else {
-        response = await updateDataSet(dataSetId, JSON.stringify(bodyData));
+        response = await updateDataSet(dataSetId, bodyData);
       }
       const { data, id } = response;
       dispatch(addExperimentSucceeded(id, data));
