@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
       };
     }
     case 'SEARCH_RESULTS_FETCH_SUCCESS': {
-      const { results, totalResults, currentPage } = action.data;
+      const { results, filters, totalResults, currentPage } = action.data;
       const totalPages = Math.round(
         totalResults / state.pagination.resultsPerPage
       );
@@ -31,6 +31,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         results,
+        filters,
         pagination: {
           ...state.pagination,
           totalResults,

@@ -19,9 +19,11 @@ export function fetchResults(searchTerm = '', pageNum = 1) {
           1) *
           resultsPerPage}`
       );
-      const { results, count } = resultsJSON;
+      const { results, count, filters } = resultsJSON;
 
-      dispatch(fetchResultsSucceeded(results, count, currentPage, searchTerm));
+      dispatch(
+        fetchResultsSucceeded(results, filters, count, currentPage, searchTerm)
+      );
     } catch (error) {
       dispatch(fetchResultsErrored());
     }
@@ -30,6 +32,7 @@ export function fetchResults(searchTerm = '', pageNum = 1) {
 
 export function fetchResultsSucceeded(
   results,
+  filters,
   totalResults,
   currentPage,
   searchTerm
@@ -51,6 +54,7 @@ export function fetchResultsSucceeded(
       type: 'SEARCH_RESULTS_FETCH_SUCCESS',
       data: {
         results,
+        filters,
         totalResults,
         currentPage
       }

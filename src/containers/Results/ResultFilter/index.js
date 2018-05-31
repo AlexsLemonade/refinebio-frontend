@@ -2,6 +2,7 @@ import React from 'react';
 import './ResultFilter.scss';
 
 const ResultFilter = ({ toggledFilter, organisms, filters }) => {
+  console.log(filters);
   return (
     <div className="result-filter">
       <div className="result-filter__title-container">
@@ -14,9 +15,7 @@ const ResultFilter = ({ toggledFilter, organisms, filters }) => {
             type="checkbox"
             name={organism.name}
             id={organism.name}
-            checked={
-              filters['organism'] && filters['organisms'].has(organism.name)
-            }
+            checked={false}
             onChange={() => toggledFilter('organisms', organism.name)}
           />
           {organism.name}
