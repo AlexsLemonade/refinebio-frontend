@@ -9,9 +9,10 @@ const Filter = ({
   category,
   appliedFilters
 }) => (
-  <label className="filter">
+  <div className="filter">
     <input
       type="checkbox"
+      className="filter__checkbox"
       name={filterName}
       id={filterName}
       checked={
@@ -19,8 +20,10 @@ const Filter = ({
       }
       onChange={() => toggledFilter(category, filterName)}
     />
-    {formatSentenceCase(filterName)} ({filterCount})
-  </label>
+    <label className="filter__label" for={filterName}>
+      {formatSentenceCase(filterName)} ({filterCount})
+    </label>
+  </div>
 );
 
 const FilterCategory = ({
