@@ -14,7 +14,11 @@ import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
 import Anchor from '../../components/Anchor';
 import SamplesTable from './SamplesTable';
-import { addExperiment, removeExperiment } from '../../state/download/actions';
+import {
+  addExperiment,
+  removeExperiment,
+  removeSamplesFromExperiment
+} from '../../state/download/actions';
 import { RemoveFromDatasetButton } from '../Results/Result';
 
 let Experiment = ({
@@ -22,6 +26,7 @@ let Experiment = ({
   experiment,
   addExperiment,
   removeExperiment,
+  removeSamplesFromExperiment,
   addSamplesToDataset,
   dataSet
 }) => (
@@ -57,6 +62,12 @@ let Experiment = ({
                   <RemoveFromDatasetButton
                     handleRemove={() =>
                       removeExperiment([experiment.accession_code])
+                    }
+                    samplesInDataset={
+                      dataSet[experiment.accession_code].length !==
+                      experiment.samples.length
+                        ? dataSet[experiment.accession_code].length
+                        : null
                     }
                   />
                 )}
@@ -123,10 +134,12 @@ let Experiment = ({
               {() => (
                 <section className="experiment__section">
                   <h2 className="experiment__title">Samples</h2>
-
                   <SamplesTable
+                    accessionCode={experiment.accession_code}
                     samples={experiment.samples}
-                    addSamplesToDataset={addSamplesToDataset}
+                    addSamplesToDataset={addExperiment}
+                    removeSamplesFromDataset={removeSamplesFromExperiment}
+                    dataSet={dataSet}
                   />
                 </section>
               )}
@@ -145,6 +158,7 @@ Experiment = connect(
         fetch: () => fetchExperiment(ownProps.match.params.id),
         addExperiment,
         removeExperiment,
+        removeSamplesFromExperiment,
         addSamplesToDataset: samples => {
           console.log('TODO: add page to dataset', samples);
         }

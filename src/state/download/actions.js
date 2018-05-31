@@ -1,5 +1,9 @@
 import { asyncFetch } from '../../common/helpers';
-import { getDataSet, getSamplesAndExperiments } from '../../api/dataSet';
+import {
+  getDataSet,
+  getSamplesAndExperiments,
+  updateDataSet
+} from '../../api/dataSet';
 import { push } from '../routerActions';
 
 /**
@@ -24,15 +28,7 @@ export const removeExperiment = accessionCodes => {
     }, {});
 
     try {
-      const response = await asyncFetch(`/dataset/${dataSetId}/`, {
-        method: 'PUT',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          data: newDataSet
-        })
-      });
+      const response = await updateDataSet(dataSetId, newDataSet);
       dispatch(removeExperimentSucceeded(response.data));
     } catch (error) {
       console.log(error);
@@ -45,6 +41,35 @@ export const removeExperimentSucceeded = dataSet => {
     type: 'DOWNLOAD_REMOVE_EXPERIMENT_SUCCESS',
     data: {
       dataSet
+    }
+  };
+};
+
+export const removeSamplesFromExperiment = (accessionCode, sampleIds) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: 'DOWNLOAD_REMOVE_EXPERIMENT',
+      data: {
+        accessionCode,
+        sampleIds
+      }
+    });
+    const { dataSet, dataSetId } = getState().download;
+    const filteredSamples = dataSet[accessionCode].filter(
+      sample => sampleIds.indexOf(sample) === -1
+    );
+    const newDataSet = { ...dataSet };
+    if (filteredSamples.length) {
+      newDataSet[accessionCode] = filteredSamples;
+    } else {
+      delete newDataSet[accessionCode];
+    }
+
+    try {
+      const response = await updateDataSet(dataSetId, newDataSet);
+      dispatch(removeExperimentSucceeded(response.data));
+    } catch (error) {
+      console.log(error);
     }
   };
 };
@@ -76,15 +101,7 @@ export const removeSpecies = samples => {
     }, {});
 
     try {
-      const response = await asyncFetch(`/dataset/${dataSetId}/`, {
-        method: 'PUT',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          data: newDataSet
-        })
-      });
+      const response = await updateDataSet(dataSetId, newDataSet);
       dispatch(removeSpeciesSucceeded(response.data));
     } catch (error) {
       console.log(error);
@@ -115,17 +132,20 @@ export const addExperiment = experiments => {
     });
     const dataSetId = getState().download.dataSetId;
     const prevDataSet = getState().download.dataSet;
-    const formattedDataSet = prevDataSet;
     const newExperiments = experiments.reduce((result, experiment) => {
-      if (experiment.samples.length)
-        result[experiment.accession_code] = experiment.samples;
+      if (experiment.samples.length) {
+        const sampleIds = experiment.samples.map(sample => sample.id);
+        result[experiment.accession_code] = prevDataSet[
+          experiment.accession_code
+        ]
+          ? [...prevDataSet[experiment.accession_code], ...sampleIds]
+          : sampleIds;
+      }
       return result;
     }, {});
     const bodyData = {
-      data: {
-        ...formattedDataSet,
-        ...newExperiments
-      }
+      ...prevDataSet,
+      ...newExperiments
     };
 
     try {
@@ -136,19 +156,13 @@ export const addExperiment = experiments => {
           headers: {
             'content-type': 'application/json'
           },
-          body: JSON.stringify(bodyData)
+          body: JSON.stringify({ data: bodyData })
         });
 
         const { id } = response;
         localStorage.setItem('dataSetId', id);
       } else {
-        response = await asyncFetch(`/dataset/${dataSetId}/`, {
-          method: 'PUT',
-          headers: {
-            'content-type': 'application/json'
-          },
-          body: JSON.stringify(bodyData)
-        });
+        response = await updateDataSet(dataSetId, bodyData);
       }
       const { data, id } = response;
       dispatch(addExperimentSucceeded(id, data));
