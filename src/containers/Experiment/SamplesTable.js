@@ -209,17 +209,17 @@ export default class SamplesTable extends React.Component {
 
     // 2. count the number of samples that have a value for each column
     for (let column of columns) {
-      column.__total_values = data.reduce(
+      column.__totalValues = data.reduce(
         (total, sample) => total + (!!column.accessor(sample) ? 1 : 0),
         0
       );
     }
     columns = columns.sort(
-      (column1, column2) => column2.__total_values - column1.__total_values
+      (column1, column2) => column2.__totalValues - column1.__totalValues
     );
 
     // 3. Filter out the columns that don't have a value
-    columns = columns.filter(column => column.__total_values > 0);
+    columns = columns.filter(column => column.__totalValues > 0);
 
     // Return the final list of columns, the last two are always the same
     return [
@@ -237,7 +237,8 @@ export default class SamplesTable extends React.Component {
       ...columns,
       {
         Header: 'Processing Information',
-        id: 'processing_information'
+        id: 'processing_information',
+        sortable: false
       }
       // {
       //   Header: 'Add/Remove',
