@@ -2,6 +2,7 @@ const initialState = {
   results: [],
   organisms: [],
   filters: {},
+  appliedFilters: {},
   searchTerm: '',
   pagination: {
     totalResults: 0,
