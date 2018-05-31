@@ -7,6 +7,10 @@ import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import { RemoveFromDatasetButton } from '../Results/Result';
 import { getAllDetailedSamples } from '../../api/samples';
+import { AnonymousSubject } from 'rxjs';
+import ModalManager from '../../components/Modal/ModalManager';
+
+import './SamplesTable.scss';
 
 const PAGE_SIZES = [10, 20, 50];
 
@@ -238,7 +242,8 @@ export default class SamplesTable extends React.Component {
       {
         Header: 'Processing Information',
         id: 'processing_information',
-        sortable: false
+        sortable: false,
+        Cell: ProcessingInformationCell
       }
       // {
       //   Header: 'Add/Remove',
@@ -274,6 +279,83 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
       <div className="samples-table__sort-asc">
         <i className="ion-chevron-up samples-table__sort-icon" />
       </div>
+    </div>
+  );
+}
+
+function ProcessingInformationCell({ original: sample, ...props }) {
+  let { annotations } = sample;
+
+  // If the sample is marked with `is_ccdl = false` then this sample is "Submitter Processed"
+  if (annotations.length > 0 && !annotations[0].is_ccdl) {
+    return <SumitterProcessedModal sample={sample} />;
+  }
+
+  // TODO add other types of processing information modals
+
+  return <div />;
+}
+
+function SumitterProcessedModal({ sample }) {
+  return (
+    <ModalManager
+      component={showModal => (
+        <Button
+          text="Submitter-processed"
+          buttonStyle="link"
+          onClick={showModal}
+        />
+      )}
+      modalProps={{ className: 'processing-info-modal' }}
+    >
+      {() => (
+        <div>
+          <h1 className="processing-info-modal__title">
+            Processing Information
+          </h1>
+          <div className="dot-label dot-label--submitter">
+            Submitter processed
+          </div>
+
+          <SubmitterSuppliedProtocol />
+
+          <section className="processing-info-modal__section">
+            <GeneIdentifierConversion />
+          </section>
+        </div>
+      )}
+    </ModalManager>
+  );
+}
+
+function SubmitterSuppliedProtocol() {
+  return (
+    <div>
+      <h3>Submitter Supplied Protocol</h3>
+      <p>
+        These tissues samples were obtained at surgery and stored at -80C until
+        use., These tissues samples were obtained at surgery without any other
+        pretreatment., Acid guanidinium thiocyanate-phenol-chloroform extraction
+        of total RNA was performed according to the previous report (Anal.
+        Biochem, 162: 156,1987)., Biotinylated cRNA were prepared according to
+        the standard Affymetrix protocol from 2 ug total RNA (Expression
+        Analysis Technical Manual, 2001, Affymetrix)., Title: Affymetrix CEL
+        analysis. Description:, The data were analyzed with Microarray Suite
+        version 5.0 (MAS 5.0) using Affymetrix default analysis settings and
+        global scaling as normalization method.
+      </p>
+    </div>
+  );
+}
+
+function GeneIdentifierConversion() {
+  return (
+    <div>
+      <h3>Gene Identifier Conversion</h3>
+      <p>
+        The gene identifiers were converted to Ensembl Gene Identifiers using
+        g:Profiler (version 2.0.1)
+      </p>
     </div>
   );
 }
