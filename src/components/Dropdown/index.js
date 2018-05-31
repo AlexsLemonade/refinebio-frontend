@@ -7,7 +7,9 @@ const Dropdown = ({ options = [], selectedOption = '', onChange }) => {
       <select
         className="dropdown__select"
         value={options.indexOf(selectedOption)}
-        onChange={e => onChange && onChange(options[parseInt(e.target.value)])}
+        onChange={e =>
+          onChange && onChange(options[parseInt(e.target.value, 10)])
+        }
       >
         {/* Set the value of each option to the index selected, to be able to return the correct selected option
         on the `onChange` handler */}

@@ -11,6 +11,7 @@ const mapStateToProps = state => {
       results,
       organisms,
       filters,
+      appliedFilters,
       pagination,
       searchTerm,
       isSearching
@@ -21,6 +22,7 @@ const mapStateToProps = state => {
     results,
     organisms,
     filters,
+    appliedFilters,
     pagination,
     searchTerm,
     dataSet,

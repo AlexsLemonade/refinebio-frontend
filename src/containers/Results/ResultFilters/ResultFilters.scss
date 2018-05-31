@@ -1,5 +1,22 @@
-.result-filter {
-  &__title-container {
-    margin-bottom: 24px;
+@import '../../../common/styles/variables';
+
+.result-filters {
+  &__title {
+    text-transform: capitalize;
+    margin-bottom: 0;
   }
+
+  &__section {
+    padding: 4*8px 0;
+    border-bottom: 1px solid $gray;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+}
+
+.filter {
+  display: block;
+  margin-top: 8px;
 }

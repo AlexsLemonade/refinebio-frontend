@@ -57,13 +57,27 @@ export default (state = initialState, action) => {
     }
     case 'SEARCH_FILTER_TOGGLE': {
       const { filterType, filterValue } = action.data;
+      const { appliedFilters: prevFilters } = state;
+      const appliedFilterType = new Set();
+      if (!prevFilters[filterType]) {
+        appliedFilterType.add(filterValue);
+      } else {
+        for (let filter of prevFilters[filterType]) {
+          if (filter !== filterValue) {
+            appliedFilterType.add(filter);
+          }
+        }
+        if (prevFilters[filterType].has(filterValue)) {
+          appliedFilterType.delete(filterValue);
+        } else {
+          appliedFilterType.add(filterValue);
+        }
+      }
       return {
         ...state,
-        filters: {
-          ...state.filters,
-          [filterType]: state.filters[filterType]
-            ? state.filters[filterType].add(filterValue)
-            : new Set([filterValue])
+        appliedFilters: {
+          ...state.appliedFilters,
+          [filterType]: appliedFilterType
         }
       };
     }

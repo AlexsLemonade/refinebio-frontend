@@ -1,32 +1,47 @@
 import React from 'react';
 import './ResultFilters.scss';
 
-const Filter = ({ filterName, filterCount, toggledFilter, category }) => (
-  <label>
+const Filter = ({
+  filterName,
+  filterCount,
+  toggledFilter,
+  category,
+  appliedFilters
+}) => (
+  <label className="filter">
     <input
       type="checkbox"
       name={filterName}
       id={filterName}
-      checked={false}
+      checked={
+        !!appliedFilters[category] && appliedFilters[category].has(filterName)
+      }
       onChange={() => toggledFilter(category, filterName)}
     />
-    {filterName} {filterCount}
+    {filterName} ({filterCount})
   </label>
 );
 
-const FilterCategory = ({ category, title, toggledFilter }) => (
-  <div>
-    <h3>{title}</h3>
-    {Object.keys(category).map((filter, i) => (
-      <Filter
-        key={i}
-        filterName={filter}
-        category={category}
-        filterCount={category[filter]}
-        toggledFilter={toggledFilter}
-      />
-    ))}
-  </div>
+const FilterCategory = ({
+  categoryFilters,
+  categoryName,
+  toggledFilter,
+  appliedFilters
+}) => (
+  <section className="result-filters__section">
+    <h3 className="result-filters__title">{categoryName}</h3>
+    {categoryFilters &&
+      Object.keys(categoryFilters).map((filter, i) => (
+        <Filter
+          key={i}
+          filterName={filter}
+          category={categoryName}
+          filterCount={categoryFilters[filter]}
+          toggledFilter={toggledFilter}
+          appliedFilters={appliedFilters}
+        />
+      ))}
+  </section>
 );
 
 const ResultFilters = ({
@@ -36,20 +51,23 @@ const ResultFilters = ({
   appliedFilters
 }) => {
   return (
-    <div className="result-filter">
-      <div className="result-filter__title-container">
-        <h2 className="result-filter__title">Filters</h2>
+    <div className="result-filters">
+      <div className="result-filters__title-container">
+        <h2 className="result-filters__title">Filters</h2>
       </div>
-      {Object.keys(filters).map((category, i) => (
+      {filterCategories.map((category, i) => (
         <FilterCategory
           key={i}
-          category={filters[category]}
-          title={category}
+          categoryFilters={filters[category]}
+          categoryName={category}
           toggledFilter={toggledFilter}
+          appliedFilters={appliedFilters}
         />
       ))}
     </div>
   );
 };
+
+const filterCategories = ['organism', 'technology', 'publication'];
 
 export default ResultFilters;
