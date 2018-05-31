@@ -6,13 +6,17 @@ import 'react-table/react-table.css';
 import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import { RemoveFromDatasetButton } from '../Results/Result';
+import { getAllDetailedSamples } from '../../api/samples';
 
 const PAGE_SIZES = [10, 20, 50];
 
 export default class SamplesTable extends React.Component {
   state = {
     page: 0,
-    pageSize: 10
+    pages: -1,
+    pageSize: 10,
+    columns: this._getColumns(),
+    data: []
   };
 
   handleAddSamplesToDataset = samples => {
@@ -31,13 +35,17 @@ export default class SamplesTable extends React.Component {
 
     return (
       <ReactTable
+        manual={true}
+        onFetchData={this.fetchData}
+        loading={this.state.loading}
+        pages={this.state.pages}
+        data={this.state.data}
+        page={this.state.page}
+        pageSize={this.state.pageSize}
         className="samples-table"
         showPageSizeOptions={false}
         showPagination={false}
-        data={samples}
-        page={this.state.page}
-        pageSize={this.state.pageSize}
-        columns={this._getColumns()}
+        columns={this.state.columns}
         ThComponent={ThComponent}
       >
         {(state, makeTable, instance) => {
@@ -54,7 +62,7 @@ export default class SamplesTable extends React.Component {
                   <Dropdown
                     options={PAGE_SIZES}
                     selectedOption={this.state.pageSize}
-                    onChange={pageSize => this.setState({ pageSize })}
+                    onChange={this.handlePageSizeChange}
                   />
                   of {samples.length} Samples
                 </div>
@@ -90,8 +98,29 @@ export default class SamplesTable extends React.Component {
     );
   }
 
+  fetchData = async () => {
+    const { page, pageSize } = this.state;
+    this.setState({ loading: true });
+    const samples = this.props.samples
+      .slice(page * pageSize, (page + 1) * pageSize)
+      .map(sample => sample.id);
+
+    const data = await getAllDetailedSamples(samples);
+
+    this.setState({
+      data,
+      pages: Math.ceil(this.props.samples.length / pageSize),
+      loading: false
+    });
+  };
+
   handlePagination = page => {
-    this.setState({ page: page - 1 });
+    // Set the current page, and update the data afterwards
+    this.setState({ page: page - 1 }, () => this.fetchData());
+  };
+
+  handlePageSizeChange = pageSize => {
+    this.setState({ pageSize }, () => this.fetchData());
   };
 
   _getColumns() {
