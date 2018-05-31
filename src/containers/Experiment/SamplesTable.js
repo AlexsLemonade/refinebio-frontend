@@ -9,6 +9,8 @@ import { RemoveFromDatasetButton } from '../Results/Result';
 import { getAllDetailedSamples } from '../../api/samples';
 import { AnonymousSubject } from 'rxjs';
 import ModalManager from '../../components/Modal/ModalManager';
+import FileIcon from './file.svg';
+import ProcessIcon from './process.svg';
 
 import './SamplesTable.scss';
 
@@ -286,6 +288,8 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
 function ProcessingInformationCell({ original: sample, ...props }) {
   let { annotations } = sample;
 
+  return <AffimetrixScanModal sample={sample} />;
+
   // If the sample is marked with `is_ccdl = false` then this sample is "Submitter Processed"
   if (annotations.length > 0 && !annotations[0].is_ccdl) {
     return <SumitterProcessedModal sample={sample} />;
@@ -356,6 +360,102 @@ function GeneIdentifierConversion() {
         The gene identifiers were converted to Ensembl Gene Identifiers using
         g:Profiler (version 2.0.1)
       </p>
+    </div>
+  );
+}
+
+function AffimetrixScanModal({ sample }) {
+  return (
+    <ModalManager
+      component={showModal => (
+        <Button text="Affymetrix SCAN" buttonStyle="link" onClick={showModal} />
+      )}
+      modalProps={{ className: 'processing-info-modal' }}
+    >
+      {() => (
+        <div>
+          <h1 className="processing-info-modal__title">
+            Processing Information
+          </h1>
+          <div className="dot-label">refine.bio processed</div>
+
+          <h3>Affymetrix SCAN</h3>
+
+          <div className="pipeline">
+            <div className="pipeline__item">
+              <img src={FileIcon} />
+              <div>Input File</div>
+            </div>
+            <div className="pipeline__arrow">
+              <div className="arrow" />
+            </div>
+            <div className="pipeline__item">
+              <img src={ProcessIcon} />
+              <div>SCAN</div>
+            </div>
+            <div className="pipeline__arrow">
+              <div className="arrow" />
+            </div>
+            <div className="pipeline__item">
+              <img src={FileIcon} />
+              <div>Gene Expression Matrix</div>
+            </div>
+          </div>
+
+          <ScanProtocol />
+
+          <section className="processing-info-modal__section">
+            <GeneIdentifierConversion />
+          </section>
+        </div>
+      )}
+    </ModalManager>
+  );
+}
+
+function ScanProtocol() {
+  return (
+    <div>
+      <h3>SCAN</h3>
+      <p>
+        SCAN (Single Channel Array Normalization) is a normalization method for
+        single channel (Affymetrix) microarrays that allows us to process
+        individual samples. SCAN models and corrects for the effect of technical
+        bias, such as GC content, using a mixture-modeling approach. For more
+        information about this approach, see the primary publication (Piccolo,
+        et al. Genomics. 2012.{' '}
+        <a
+          href="http://doi.org/10.1016/j.ygeno.2012.08.003"
+          target="_blank"
+          className="button button--link"
+        >
+          DOI: 10.1016/j.ygeno.2012.08.003
+        </a>) and the SCAN.UPC bioconductor package documentation (<a
+          href="http://doi.org/10.1016/j.ygeno.2012.08.003"
+          target="_blank"
+          className="button button--link"
+        >
+          DOI: 10.18129/B9.bioc.SCAN.UPC
+        </a>)
+      </p>
+
+      <h3 className="processing-info-modal__subtitle">Version Information</h3>
+      <table>
+        <tbody>
+          <tr>
+            <td className="processing-info-modal__version">SCAN</td>
+            <td>0.2</td>
+          </tr>
+          <tr>
+            <td className="processing-info-modal__version">BrainArray</td>
+            <td>0.4.1</td>
+          </tr>
+          <tr>
+            <td className="processing-info-modal__version">Platform Design</td>
+            <td>1.3</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
