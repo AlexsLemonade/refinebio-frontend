@@ -1,5 +1,6 @@
 import React from 'react';
 import './ResultFilters.scss';
+import { formatSentenceCase } from '../../../common/helpers';
 
 const Filter = ({
   filterName,
@@ -18,7 +19,7 @@ const Filter = ({
       }
       onChange={() => toggledFilter(category, filterName)}
     />
-    {filterName} ({filterCount})
+    {formatSentenceCase(filterName)} ({filterCount})
   </label>
 );
 

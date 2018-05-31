@@ -68,3 +68,8 @@ export function getAmazonDownloadLinkUrl(s3_bucket, s3_key) {
 export function getDomain() {
   return window.location.origin;
 }
+
+export function formatSentenceCase(str) {
+  const tmpStr = str.toLowerCase().replace(/\_/g, ' ');
+  return tmpStr.charAt(0).toUpperCase() + tmpStr.slice(1);
+}
