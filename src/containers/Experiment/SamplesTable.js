@@ -98,18 +98,35 @@ export default class SamplesTable extends React.Component {
     );
   }
 
-  fetchData = async () => {
+  fetchData = async (tableState = false) => {
     const { page, pageSize } = this.state;
-    this.setState({ loading: true });
-    const samples = this.props.samples
-      .slice(page * pageSize, (page + 1) * pageSize)
-      .map(sample => sample.id);
 
-    // TODO Right now we're paginating using the ids of the samples associated with the details of
-    // the current experiment, and with those ids, this is fetching detailed information for each one
-    // of them in a sepparate request.
-    // We'll change this to use a single endpoint from the server and sort the samples information.
-    const data = await getAllDetailedSamples(samples);
+    let orderBy = undefined;
+    if (tableState) {
+      const { sorted } = tableState;
+      // check table sort
+      if (sorted && sorted.length > 0) {
+        // we don't support sorting by multiple columns, so only consider the first one
+        const { id, desc } = sorted[0];
+        orderBy = `${desc ? '-' : ''}${id}`;
+      } else {
+        orderBy = undefined;
+      }
+    } else {
+      orderBy = this.state.orderBy;
+    }
+
+    this.setState({ loading: true, orderBy });
+    const sampleIds = this.props.samples.map(sample => sample.id);
+
+    let offset = page * pageSize;
+
+    const data = await getAllDetailedSamples({
+      ids: sampleIds,
+      orderBy,
+      offset,
+      limit: pageSize
+    });
 
     // Customize the columns and their order depending on de data
     let columns = this._getColumns(data);
@@ -143,67 +160,80 @@ export default class SamplesTable extends React.Component {
       {
         Header: 'Accession Code',
         id: 'accession_code',
-        accessor: d => d.accession_code
+        accessor: d => d.accession_code,
+        minWidth: 160
       },
       {
         Header: 'Sex',
         id: 'sex',
-        accessor: d => d.sex
+        accessor: d => d.sex,
+        minWidth: 160
       },
       {
         Header: 'Age',
         id: 'age',
-        accessor: d => d.age
+        accessor: d => d.age,
+        minWidth: 160
       },
       {
         Header: 'Specimen Part',
         id: 'specimen_part',
-        accessor: d => d.specimen_part
+        accessor: d => d.specimen_part,
+        minWidth: 160
       },
       {
         Header: 'Genotype',
         id: 'genotype',
-        accessor: d => d.genotype
+        accessor: d => d.genotype,
+        minWidth: 160
       },
       {
         Header: 'Disease',
         id: 'disease',
-        accessor: d => d.disease
+        accessor: d => d.disease,
+        minWidth: 160
       },
       {
         Header: 'Disease Stage',
         id: 'disease_stage',
-        accessor: d => d.disease_stage
+        accessor: d => d.disease_stage,
+        minWidth: 160
       },
       {
         Header: 'Cell line',
         id: 'cell_line',
-        accessor: d => d.cell_line
+        accessor: d => d.cell_line,
+        minWidth: 160
       },
       {
         Header: 'Treatment',
         id: 'treatment',
-        accessor: d => d.treatment
+        accessor: d => d.treatment,
+        minWidth: 160
       },
       {
         Header: 'Race',
         id: 'race',
-        accessor: d => d.race
+        accessor: d => d.race,
+        minWidth: 160
       },
       {
         Header: 'Subject',
         id: 'subject',
-        accessor: d => d.subject
+        accessor: d => d.subject,
+        minWidth: 160
       },
       {
         Header: 'Compound',
         id: 'compound',
-        accessor: d => d.compound
+        accessor: d => d.compound,
+        minWidth: 160
       },
       {
         Header: 'Time',
         id: 'time',
-        accessor: d => d.time
+        accessor: d => d.time,
+        minWidth: 160
       }
     ];
 
@@ -232,7 +262,7 @@ export default class SamplesTable extends React.Component {
         Header: 'Title',
         id: 'title',
         accessor: d => d.title,
-        minWidth: 140
+        minWidth: 180
       },
       ...columns,
       {
