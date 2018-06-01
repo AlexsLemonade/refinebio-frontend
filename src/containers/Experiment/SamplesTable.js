@@ -99,25 +99,12 @@ export default class SamplesTable extends React.Component {
   }
 
   fetchData = async (tableState = false) => {
+    const sampleIds = this.props.samples.map(sample => sample.id);
     const { page, pageSize } = this.state;
-
-    let orderBy = undefined;
-    if (tableState) {
-      const { sorted } = tableState;
-      // check table sort
-      if (sorted && sorted.length > 0) {
-        // we don't support sorting by multiple columns, so only consider the first one
-        const { id, desc } = sorted[0];
-        orderBy = `${desc ? '-' : ''}${id}`;
-      } else {
-        orderBy = undefined;
-      }
-    } else {
-      orderBy = this.state.orderBy;
-    }
+    // get the backend ready `order_by` param, based on the sort options from the table
+    let orderBy = this._getSortParam(tableState);
 
     this.setState({ loading: true, orderBy });
-    const sampleIds = this.props.samples.map(sample => sample.id);
 
     let offset = page * pageSize;
 
@@ -282,6 +269,29 @@ export default class SamplesTable extends React.Component {
       //   id: 'add_remove'
       // }
     ];
+  }
+
+  /**
+   * Returns the sort parameter as required from the backend
+   * @param {*} tableState State from the table, as given to `fetchData`
+   */
+  _getSortParam(tableState) {
+    let orderBy = undefined;
+    if (tableState) {
+      const { sorted } = tableState;
+      // check table sort
+      if (sorted && sorted.length > 0) {
+        // we don't support sorting by multiple columns, so only consider the first one
+        const { id, desc } = sorted[0];
+        // ref: https://github.com/AlexsLemonade/refinebio/pull/298
+        orderBy = `${desc ? '-' : ''}${id}`;
+      } else {
+        orderBy = undefined;
+      }
+    } else {
+      orderBy = this.state.orderBy;
+    }
+    return orderBy;
   }
 }
 
