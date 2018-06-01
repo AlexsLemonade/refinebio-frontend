@@ -61,7 +61,7 @@ const Result = ({
             className="button button--link"
             to={`/experiments/${result.id}`}
           >
-            <h2 className="result__title">{result.title}</h2>
+            <h2 className="result__title">{result.title || 'No title.'}</h2>
           </Link>
         </div>
         {!isAdded ? (
