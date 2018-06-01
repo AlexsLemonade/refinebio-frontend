@@ -7,7 +7,6 @@ import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import { RemoveFromDatasetButton } from '../Results/Result';
 import { getAllDetailedSamples } from '../../api/samples';
-import { AnonymousSubject } from 'rxjs';
 import ModalManager from '../../components/Modal/ModalManager';
 import FileIcon from './file.svg';
 import ProcessIcon from './process.svg';
@@ -383,21 +382,21 @@ function AffimetrixScanModal({ sample }) {
 
           <div className="pipeline">
             <div className="pipeline__item">
-              <img src={FileIcon} />
+              <img src={FileIcon} alt="" />
               <div>Input File</div>
             </div>
             <div className="pipeline__arrow">
               <div className="arrow" />
             </div>
             <div className="pipeline__item">
-              <img src={ProcessIcon} />
+              <img src={ProcessIcon} alt="" />
               <div>SCAN</div>
             </div>
             <div className="pipeline__arrow">
               <div className="arrow" />
             </div>
             <div className="pipeline__item">
-              <img src={FileIcon} />
+              <img src={FileIcon} alt="" />
               <div>Gene Expression Matrix</div>
             </div>
           </div>
@@ -427,12 +426,14 @@ function ScanProtocol() {
         <a
           href="http://doi.org/10.1016/j.ygeno.2012.08.003"
           target="_blank"
+          rel="noopener noreferrer"
           className="button button--link"
         >
           DOI: 10.1016/j.ygeno.2012.08.003
         </a>) and the SCAN.UPC bioconductor package documentation (<a
           href="http://doi.org/10.1016/j.ygeno.2012.08.003"
           target="_blank"
+          rel="noopener noreferrer"
           className="button button--link"
         >
           DOI: 10.18129/B9.bioc.SCAN.UPC
@@ -483,28 +484,28 @@ function SalmonTxtimportModal({ sample }) {
 
           <div className="pipeline">
             <div className="pipeline__item">
-              <img src={FileIcon} />
+              <img src={FileIcon} alt="" />
               <div>Input File</div>
             </div>
             <div className="pipeline__arrow">
               <div className="arrow" />
             </div>
             <div className="pipeline__item">
-              <img src={ProcessIcon} />
+              <img src={ProcessIcon} alt="" />
               <div>Salmon</div>
             </div>
             <div className="pipeline__arrow">
               <div className="arrow" />
             </div>
             <div className="pipeline__item">
-              <img src={ProcessIcon} />
+              <img src={ProcessIcon} alt="" />
               <div>txtimport</div>
             </div>
             <div className="pipeline__arrow">
               <div className="arrow" />
             </div>
             <div className="pipeline__item">
-              <img src={FileIcon} />
+              <img src={FileIcon} alt="" />
               <div>Gene Expression Matrix</div>
             </div>
           </div>
@@ -562,6 +563,7 @@ function SalmonProtocol() {
         <a
           href="https://combine-lab.github.io/salmon/"
           target="_blank"
+          rel="noopener noreferrer"
           className="button button--link"
         >
           Learn more
@@ -584,7 +586,8 @@ function TxtimportProtocol() {
         processing pipeline. Our tximport implementation generates{' '}
         <a
           href="https://www.rdocumentation.org/packages/tximport/versions/1.0.3/topics/tximport"
-          rel="nofollow"
+          target="_blank"
+          rel="noopener noreferrer"
           className="button button--link"
         >
           "lengthScaledTPM"
@@ -594,14 +597,16 @@ function TxtimportProtocol() {
         rather than to single samples. For additional information, see the{' '}
         <a
           href="http://bioconductor.org/packages/release/bioc/html/tximport.html"
-          rel="nofollow"
+          target="_blank"
+          rel="noopener noreferrer"
           className="button button--link"
         >
           tximport Bioconductor page
         </a>, the{' '}
         <a
           href="http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html"
-          rel="nofollow"
+          target="_blank"
+          rel="noopener noreferrer"
           className="button button--link"
         >
           tximport tutorial{' '}
@@ -609,7 +614,8 @@ function TxtimportProtocol() {
         </a>, and{' '}
         <a
           href="http://dx.doi.org/10.12688/f1000research.7563.1"
-          rel="nofollow"
+          target="_blank"
+          rel="noopener noreferrer"
           className="button button--link"
         >
           Soneson, et al. <em>F1000Research.</em> 2015.
