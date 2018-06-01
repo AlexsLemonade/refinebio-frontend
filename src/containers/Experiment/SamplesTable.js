@@ -145,7 +145,14 @@ export default class SamplesTable extends React.Component {
   };
 
   handlePageSizeChange = pageSize => {
-    this.setState({ pageSize }, () => this.fetchData());
+    let page = this.state.page;
+    // check if the page is outside of the new page range
+    if ((page + 1) * pageSize > this.props.samples.length) {
+      // set the page to the last one
+      page = Math.floor(this.props.samples.length / pageSize);
+    }
+
+    this.setState({ page, pageSize }, () => this.fetchData());
   };
 
   /**
