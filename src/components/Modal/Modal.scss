@@ -3,6 +3,7 @@
 // This class is applied to the body element when a modal dialog is displayed to disable scrolling
 /*body*/.modal-open {
     overflow: hidden;
+    position: relative;
 }
 
 .modal-backdrop {
