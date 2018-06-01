@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
 import AccessionIcon from '../../../common/icons/accession.svg';
-import organismIcon from '../../../common/icons/organism.svg';
-import sampleIcon from '../../../common/icons/sample.svg';
+import OrganismIcon from '../../../common/icons/organism.svg';
+import SampleIcon from '../../../common/icons/sample.svg';
+import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
 
 export function RemoveFromDatasetButton({
@@ -80,21 +81,21 @@ const Result = ({
       <ul className="result__stats">
         <li className="result__stat">
           <img
-            src={organismIcon}
+            src={OrganismIcon}
             className="result__icon"
             alt="organism-icon"
           />{' '}
-          {result.organisms.join(',')}
+          {result.organisms.join(',') || 'No species.'}
         </li>
         <li className="result__stat">
-          <img src={sampleIcon} className="result__icon" alt="sample-icon" />{' '}
+          <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
           {result.samples.length}
         </li>
         <li className="result__stat">
           <img
-            src={organismIcon}
+            src={MicroarrayIcon}
             className="result__icon"
-            alt="organism-icon"
+            alt="MicroArray Badge Icon"
           />{' '}
           {result.platform_name.split(/(-|\s)/)[0]}
         </li>
