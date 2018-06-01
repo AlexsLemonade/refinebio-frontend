@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Result, { RemoveFromDatasetButton } from './Result';
-import ResultFilter from './ResultFilter';
+import ResultFilters from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
@@ -12,8 +12,10 @@ class Results extends Component {
   componentDidMount() {
     const { location } = this.props;
 
-    const { q, p } = getQueryParamObject(location.search.substr(1));
-    this.props.fetchResults(q, p);
+    const queryObject = getQueryParamObject(location.search.substr(1));
+    const { q, p, ...filters } = queryObject;
+
+    this.props.fetchResults(q, p, filters);
     this.props.fetchOrganisms();
   }
 
@@ -44,6 +46,7 @@ class Results extends Component {
       addExperiment,
       removeExperiment,
       filters,
+      appliedFilters,
       searchTerm,
       dataSet,
       isLoading,
@@ -63,10 +66,11 @@ class Results extends Component {
         </div>
         <div className="results__container">
           <div className="results__filters">
-            <ResultFilter
+            <ResultFilters
               organisms={organisms}
               toggledFilter={toggledFilter}
               filters={filters}
+              appliedFilters={appliedFilters}
             />
           </div>
           {isLoading ? (

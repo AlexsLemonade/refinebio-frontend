@@ -1,7 +1,7 @@
-import history from '../../history';
+import { push } from '../routerActions';
 import { getQueryString, asyncFetch } from '../../common/helpers';
 
-export function fetchResults(searchTerm = '', pageNum = 1) {
+export function fetchResults(searchTerm = '', pageNum = 1, filters) {
   return async (dispatch, getState) => {
     dispatch({
       type: 'SEARCH_RESULTS_FETCH',
@@ -10,18 +10,58 @@ export function fetchResults(searchTerm = '', pageNum = 1) {
       }
     });
 
-    const { pagination: { resultsPerPage } } = getState().search;
+    const {
+      pagination: { resultsPerPage },
+      appliedFilters
+    } = getState().search;
     const currentPage = parseInt(pageNum, 10);
+
+    let filterString = filters ? getQueryString(filters) : '',
+      filtersToApply = Object.keys(appliedFilters).length ? appliedFilters : {};
+    if (!filters) {
+      /**
+       * Convert to an object without Sets for use with getQueryString
+       */
+      const filtersObj = Object.keys(appliedFilters).reduce(
+        (result, filterType) => {
+          const filtersArr = Array.from(appliedFilters[filterType]);
+          if (filtersArr.length) result[filterType] = filtersArr;
+          return result;
+        },
+        {}
+      );
+
+      filterString = getQueryString(filtersObj);
+    } else {
+      /**
+       * Convert to an object with Sets for reducer
+       */
+      filtersToApply = Object.keys(filters).reduce((result, filterType) => {
+        const filtersArr = filters[filterType].split(',');
+        result[filterType] = new Set(filtersArr);
+        return result;
+      }, {});
+    }
 
     try {
       const resultsJSON = await asyncFetch(
         `/search/?search=${searchTerm}&limit=${resultsPerPage}&offset=${(currentPage -
           1) *
-          resultsPerPage}`
+          resultsPerPage}${filterString.length ? `&${filterString}` : ''}`
       );
-      const { results, count } = resultsJSON;
+      const { results, count, filters } = resultsJSON;
 
-      dispatch(fetchResultsSucceeded(results, count, currentPage, searchTerm));
+      dispatch(
+        fetchResultsSucceeded(
+          results,
+          filters,
+          count,
+          currentPage,
+          searchTerm,
+          filterString,
+          filtersToApply
+        )
+      );
     } catch (error) {
       dispatch(fetchResultsErrored());
     }
@@ -30,9 +70,12 @@ export function fetchResults(searchTerm = '', pageNum = 1) {
 
 export function fetchResultsSucceeded(
   results,
+  filters,
   totalResults,
   currentPage,
-  searchTerm
+  searchTerm,
+  filterString,
+  appliedFilters
 ) {
   return dispatch => {
     const queryObj = searchTerm
@@ -44,15 +87,21 @@ export function fetchResultsSucceeded(
           p: currentPage
         };
 
-    history.push({
-      search: getQueryString(queryObj)
-    });
+    dispatch(
+      push({
+        search: `${getQueryString(queryObj)}${
+          filterString.length ? `&${filterString}` : ''
+        }`
+      })
+    );
     dispatch({
       type: 'SEARCH_RESULTS_FETCH_SUCCESS',
       data: {
         results,
+        filters,
         totalResults,
-        currentPage
+        currentPage,
+        appliedFilters
       }
     });
   };
@@ -95,8 +144,6 @@ export function fetchOrganismsErrored() {
 
 export function toggledFilter(filterType, filterValue) {
   return (dispatch, getState) => {
-    const searchTerm = getState().search.searchTerm;
-    dispatch(fetchResults(searchTerm));
     dispatch({
       type: 'SEARCH_FILTER_TOGGLE',
       data: {
@@ -104,6 +151,8 @@ export function toggledFilter(filterType, filterValue) {
         filterValue
       }
     });
+    const searchTerm = getState().search.searchTerm;
+    dispatch(fetchResults(searchTerm));
   };
 }
 
@@ -113,10 +162,6 @@ export function getPage(pageNum) {
       type: 'SEARCH_GET_PAGE'
     });
     const { searchTerm } = getState().search;
-
-    history.push({
-      search: getQueryString({ q: searchTerm, p: pageNum })
-    });
 
     dispatch(fetchResults(searchTerm, parseInt(pageNum, 10)));
   };

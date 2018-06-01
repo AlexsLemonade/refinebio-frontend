@@ -69,6 +69,11 @@ export function getDomain() {
   return window.location.origin;
 }
 
+export function formatSentenceCase(str) {
+  const tmpStr = str.toLowerCase().replace(/_/g, ' ');
+  return tmpStr.charAt(0).toUpperCase() + tmpStr.slice(1);
+}
+
 // Helper methods to ease working with ajax functions
 export const Ajax = {
   get: (url, params) => asyncFetch(`${url}?${getQueryString(params)}`),
