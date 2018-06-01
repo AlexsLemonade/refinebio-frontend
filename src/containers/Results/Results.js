@@ -12,8 +12,10 @@ class Results extends Component {
   componentDidMount() {
     const { location } = this.props;
 
-    const { q, p } = getQueryParamObject(location.search.substr(1));
-    this.props.fetchResults(q, p);
+    const queryObject = getQueryParamObject(location.search.substr(1));
+    const { q, p, ...filters } = queryObject;
+
+    this.props.fetchResults(q, p, filters);
     this.props.fetchOrganisms();
   }
 

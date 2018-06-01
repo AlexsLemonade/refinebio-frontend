@@ -1,7 +1,7 @@
 import { push } from '../routerActions';
 import { getQueryString, asyncFetch } from '../../common/helpers';
 
-export function fetchResults(searchTerm = '', pageNum = 1) {
+export function fetchResults(searchTerm = '', pageNum = 1, filters) {
   return async (dispatch, getState) => {
     dispatch({
       type: 'SEARCH_RESULTS_FETCH',
@@ -16,16 +16,32 @@ export function fetchResults(searchTerm = '', pageNum = 1) {
     } = getState().search;
     const currentPage = parseInt(pageNum, 10);
 
-    /**
-     * Convert to an object without Sets for use with getQueryString
-     */
-    const filters = Object.keys(appliedFilters).reduce((result, filterType) => {
-      const filtersArr = Array.from(appliedFilters[filterType]);
-      if (filtersArr.length) result[filterType] = filtersArr;
-      return result;
-    }, {});
+    let filterString = filters ? getQueryString(filters) : '',
+      filtersToApply = Object.keys(appliedFilters).length ? appliedFilters : {};
+    if (!filters) {
+      /**
+       * Convert to an object without Sets for use with getQueryString
+       */
+      const filtersObj = Object.keys(appliedFilters).reduce(
+        (result, filterType) => {
+          const filtersArr = Array.from(appliedFilters[filterType]);
+          if (filtersArr.length) result[filterType] = filtersArr;
+          return result;
+        },
+        {}
+      );
 
-    const filterString = getQueryString(filters);
+      filterString = getQueryString(filtersObj);
+    } else {
+      /**
+       * Convert to an object with Sets for reducer
+       */
+      filtersToApply = Object.keys(filters).reduce((result, filterType) => {
+        const filtersArr = filters[filterType].split(',');
+        result[filterType] = new Set(filtersArr);
+        return result;
+      }, {});
+    }
 
     try {
       const resultsJSON = await asyncFetch(
@@ -42,7 +58,8 @@ export function fetchResults(searchTerm = '', pageNum = 1) {
           count,
           currentPage,
           searchTerm,
-          filterString
+          filterString,
+          filtersToApply
         )
       );
     } catch (error) {
@@ -57,7 +74,8 @@ export function fetchResultsSucceeded(
   totalResults,
   currentPage,
   searchTerm,
-  filterString
+  filterString,
+  appliedFilters
 ) {
   return dispatch => {
     const queryObj = searchTerm
@@ -82,7 +100,8 @@ export function fetchResultsSucceeded(
         results,
         filters,
         totalResults,
-        currentPage
+        currentPage,
+        appliedFilters
       }
     });
   };
