@@ -70,6 +70,6 @@ export function getDomain() {
 }
 
 export function formatSentenceCase(str) {
-  const tmpStr = str.toLowerCase().replace(/\_/g, ' ');
+  const tmpStr = str.toLowerCase().replace(/_/g, ' ');
   return tmpStr.charAt(0).toUpperCase() + tmpStr.slice(1);
 }

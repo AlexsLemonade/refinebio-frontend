@@ -1,30 +1,7 @@
 import React from 'react';
 import './ResultFilters.scss';
+import Checkbox from '../../../components/Checkbox';
 import { formatSentenceCase } from '../../../common/helpers';
-
-const Filter = ({
-  filterName,
-  filterCount,
-  toggledFilter,
-  category,
-  appliedFilters
-}) => (
-  <div className="filter">
-    <input
-      type="checkbox"
-      className="filter__checkbox"
-      name={filterName}
-      id={filterName}
-      checked={
-        !!appliedFilters[category] && appliedFilters[category].has(filterName)
-      }
-      onChange={() => toggledFilter(category, filterName)}
-    />
-    <label className="filter__label" for={filterName}>
-      {formatSentenceCase(filterName)} ({filterCount})
-    </label>
-  </div>
-);
 
 const FilterCategory = ({
   categoryFilters,
@@ -36,14 +13,17 @@ const FilterCategory = ({
     <h3 className="result-filters__title">{categoryName}</h3>
     {categoryFilters &&
       Object.keys(categoryFilters).map((filter, i) => (
-        <Filter
+        <Checkbox
           key={i}
-          filterName={filter}
-          category={categoryName}
-          filterCount={categoryFilters[filter]}
-          toggledFilter={toggledFilter}
-          appliedFilters={appliedFilters}
-        />
+          name={filter}
+          onToggle={() => toggledFilter(categoryName, filter)}
+          checked={
+            !!appliedFilters[categoryName] &&
+            appliedFilters[categoryName].has(filter)
+          }
+        >
+          {formatSentenceCase(filter)} ({categoryFilters[filter]})
+        </Checkbox>
       ))}
   </section>
 );
