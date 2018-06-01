@@ -132,27 +132,27 @@
 .arrow {
   display: block;
   position: relative;
-  border-top: 1px solid $border-color;
+  border-top: 2px solid $border-color;
   margin-top: 5px;
   margin-bottom: 5px;
 
   &:before {
     content: ' ';
-    border-top: 1px solid $border-color;
+    border-top: 2px solid $border-color;
     position: absolute;
-    top: -3px;
+    top: -6px;
     right: 0;
-    transform: rotate(15deg);
+    transform: rotate(30deg);
     width: 16px;
   }
 
   &:after {
     content: ' ';
-    border-top: 1px solid $border-color;
+    border-top: 2px solid $border-color;
     position: absolute;
-    top: 1px;
+    top: 2px;
     right: 0;
-    transform: rotate(-15deg);
+    transform: rotate(-30deg);
     width: 16px;
   }
 }
@@ -163,7 +163,8 @@
   flex-direction: row;
   align-items: center;
   text-align: center;
-  margin: 16px 56px 32px 56px;
+  margin: 16px 0 32px 0;
+  justify-content: space-around;
 
   &__item {
     margin-left: 8px;
