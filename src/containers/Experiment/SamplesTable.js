@@ -23,18 +23,11 @@ export default class SamplesTable extends React.Component {
     data: []
   };
 
-  handleAddSamplesToDataset = samples => {
-    const { accessionCode: accession_code, addSamplesToDataset } = this.props;
-    addSamplesToDataset([{ accession_code, samples }]);
-  };
-
-  handleRemoveSamplesFromDataset = sampleIds => {
-    const { accessionCode, removeSamplesFromDataset } = this.props;
-    removeSamplesFromDataset(accessionCode, sampleIds);
-  };
-
   render() {
-    const { samples, dataSet, accessionCode } = this.props;
+    const { samples, dataSet, pageActionComponent } = this.props;
+    // `pageActionComponent` is a render prop to add a component at the top right of the table
+    // Good for a add/remove samples button. It's a function that receives the currently displayed
+    // samples as an argument
     const totalPages = Math.ceil(samples.length / this.state.pageSize);
 
     return (
@@ -53,11 +46,6 @@ export default class SamplesTable extends React.Component {
         ThComponent={ThComponent}
       >
         {(state, makeTable, instance) => {
-          const samplesNotInDataset = state.pageRows.filter(x => {
-            if (!dataSet[accessionCode]) return true;
-            return dataSet[accessionCode].indexOf(x.id) === -1;
-          });
-
           return (
             <div>
               <div className="experiment__sample-commands">
@@ -70,23 +58,8 @@ export default class SamplesTable extends React.Component {
                   />
                   of {samples.length} Samples
                 </div>
-                {samplesNotInDataset.length === 0 ? (
-                  <RemoveFromDatasetButton
-                    handleRemove={() =>
-                      this.handleRemoveSamplesFromDataset(
-                        state.pageRows.map(sample => sample.id)
-                      )
-                    }
-                  />
-                ) : (
-                  <Button
-                    text="Add Page to Dataset"
-                    buttonStyle="secondary"
-                    onClick={() =>
-                      this.handleAddSamplesToDataset(state.pageRows)
-                    }
-                  />
-                )}
+                {pageActionComponent &&
+                  pageActionComponent(state.pageRows.map(x => x._original))}
               </div>
               <div className="experiment__table-container">{makeTable()}</div>
 

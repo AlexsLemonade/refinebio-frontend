@@ -135,11 +135,38 @@ let Experiment = ({
                 <section className="experiment__section">
                   <h2 className="experiment__title">Samples</h2>
                   <SamplesTable
-                    accessionCode={experiment.accession_code}
                     samples={experiment.samples}
-                    addSamplesToDataset={addExperiment}
-                    removeSamplesFromDataset={removeSamplesFromExperiment}
                     dataSet={dataSet}
+                    // Render prop for the button that adds the samples to the dataset
+                    pageActionComponent={samplesDisplayed =>
+                      samplesNotInDataSet(
+                        samplesDisplayed,
+                        experiment.accession_code,
+                        dataSet
+                      ).length === 0 ? (
+                        <RemoveFromDatasetButton
+                          handleRemove={() =>
+                            removeSamplesFromExperiment(
+                              experiment.accession_code,
+                              samplesDisplayed.map(x => x.id)
+                            )
+                          }
+                        />
+                      ) : (
+                        <Button
+                          text="Add Page to Dataset"
+                          buttonStyle="secondary"
+                          onClick={() =>
+                            addExperiment([
+                              {
+                                accession_code: experiment.accession_code,
+                                samples: samplesDisplayed
+                              }
+                            ])
+                          }
+                        />
+                      )
+                    }
                   />
                 </section>
               )}
@@ -168,3 +195,10 @@ Experiment = connect(
 )(Experiment);
 
 export default Experiment;
+
+function samplesNotInDataSet(samples, accessionCode, dataSet) {
+  return samples.filter(x => {
+    if (!dataSet[accessionCode]) return true;
+    return dataSet[accessionCode].indexOf(x.id) === -1;
+  });
+}
