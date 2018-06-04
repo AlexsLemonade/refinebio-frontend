@@ -284,19 +284,58 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
   );
 }
 
+// Pipeline names ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/22#issuecomment-394010812
+const PIPELINES = {
+  SubmitterProcessed: 'Submitter-processed',
+  AffymetrixSCAN: 'Affymetrix SCAN',
+  Salmontools: 'Salmontools',
+  AgilentSCANTwoColor: 'Agilent SCAN TwoColor',
+  IlluminaSCAN: 'Illumina SCAN',
+  tximport: 'tximport',
+  Salmon: 'Salmon',
+  MultiQC: 'MultiQC'
+};
+
 function ProcessingInformationCell({ original: sample, ...props }) {
-  let { annotations } = sample;
+  let { pipelines } = sample;
 
-  // If the sample is marked with `is_ccdl = false` then this sample is "Submitter Processed"
-  if (annotations.length > 0 && !annotations[0].is_ccdl) {
+  // Logic to decide which pipeline modal dialog should be displayed. On Keytar Kurt we're only supporting 4 types of
+  // pipelines. In the future when we add more, we might want to refactor these modal dialogs
+  if (pipelines.length === 1 && pipelines[0] === PIPELINES.AffymetrixSCAN) {
+    // check for `pipelines === ['Affymetrix SCAN']`
+    return <ScanModal sample={sample} scanType={PIPELINES.AffymetrixSCAN} />;
+  } else if (
+    pipelines.length === 1 &&
+    pipelines[0] === PIPELINES.IlluminaSCAN
+  ) {
+    // check for `pipelines === ['Illumina SCAN']`
+    return <ScanModal sample={sample} scanType={PIPELINES.IlluminaSCAN} />;
+  } else if (
+    pipelines.length === 1 &&
+    pipelines[0] === PIPELINES.SubmitterProcessed
+  ) {
+    // check for `pipelines === ['Submitter-processed']`
     return <SumitterProcessedModal sample={sample} />;
+  } else if (
+    pipelines.length === 2 &&
+    pipelines[0] === PIPELINES.tximport &&
+    pipelines[1] === PIPELINES.Salmon
+  ) {
+    // check for `pipelines === ['tximport', 'Salmon']`
+    return <SalmonTxtimportModal sample={sample} />;
+  } else if (
+    pipelines.length === 2 &&
+    pipelines[0] === PIPELINES.Salmon &&
+    pipelines[1] === PIPELINES.tximport
+  ) {
+    // check for `pipelines === ['Salmon', 'tximport']`
+    return <SalmonTxtimportModal sample={sample} />;
+  } else if (pipelines.length > 0) {
+    // we don't have information about these pipelines yet, so just return the values
+    return <div>{pipelines.join(', ')}</div>;
+  } else {
+    return <div />;
   }
-
-  // TODO Add logic to decide which processing information modal should be displayed
-  // return <SalmonTxtimportModal sample={sample} />;
-  // return <AffimetrixScanModal sample={sample} />;
-
-  return <div />;
 }
 
 function SumitterProcessedModal({ sample }) {
@@ -363,11 +402,11 @@ function GeneIdentifierConversion() {
   );
 }
 
-function AffimetrixScanModal({ sample }) {
+function ScanModal({ sample, scanType }) {
   return (
     <ModalManager
       component={showModal => (
-        <Button text="Affymetrix SCAN" buttonStyle="link" onClick={showModal} />
+        <Button text={scanType} buttonStyle="link" onClick={showModal} />
       )}
       modalProps={{ className: 'processing-info-modal' }}
     >
@@ -378,7 +417,7 @@ function AffimetrixScanModal({ sample }) {
           </h1>
           <div className="dot-label">refine.bio processed</div>
 
-          <h3>Affymetrix SCAN</h3>
+          <h3>{scanType}</h3>
 
           <div className="pipeline">
             <div className="pipeline__item">
