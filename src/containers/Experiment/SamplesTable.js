@@ -301,6 +301,7 @@ function ProcessingInformationCell({ original: sample, ...props }) {
 
   // Logic to decide which pipeline modal dialog should be displayed. On Keytar Kurt we're only supporting 4 types of
   // pipelines. In the future when we add more, we might want to refactor these modal dialogs
+  // ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/22#issuecomment-394408631
   if (pipelines.length === 1 && pipelines[0] === PIPELINES.AffymetrixSCAN) {
     // check for `pipelines === ['Affymetrix SCAN']`
     return <ScanModal sample={sample} scanType={PIPELINES.AffymetrixSCAN} />;
