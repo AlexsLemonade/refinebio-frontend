@@ -5,9 +5,7 @@ import 'react-table/react-table.css';
 
 import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
-import { RemoveFromDatasetButton } from '../Results/Result';
 import { getAllDetailedSamples } from '../../api/samples';
-import { AnonymousSubject } from 'rxjs';
 import ModalManager from '../../components/Modal/ModalManager';
 
 import './SamplesTable.scss';
@@ -24,7 +22,7 @@ export default class SamplesTable extends React.Component {
   };
 
   render() {
-    const { samples, dataSet, pageActionComponent } = this.props;
+    const { samples, pageActionComponent } = this.props;
     // `pageActionComponent` is a render prop to add a component at the top right of the table
     // Good for a add/remove samples button. It's a function that receives the currently displayed
     // samples as an argument

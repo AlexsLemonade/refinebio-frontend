@@ -136,7 +136,6 @@ let Experiment = ({
                   <h2 className="experiment__title">Samples</h2>
                   <SamplesTable
                     samples={experiment.samples}
-                    dataSet={dataSet}
                     // Render prop for the button that adds the samples to the dataset
                     pageActionComponent={samplesDisplayed =>
                       samplesNotInDataSet(
