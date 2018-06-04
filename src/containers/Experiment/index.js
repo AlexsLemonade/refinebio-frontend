@@ -135,7 +135,7 @@ let Experiment = ({
                 <section className="experiment__section">
                   <h2 className="experiment__title">Samples</h2>
                   <SamplesTable
-                    samples={experiment.samples}
+                    sampleIds={experiment.samples.map(x => x.id)}
                     // Render prop for the button that adds the samples to the dataset
                     pageActionComponent={samplesDisplayed =>
                       samplesNotInDataSet(

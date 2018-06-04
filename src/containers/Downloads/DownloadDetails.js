@@ -8,6 +8,9 @@ import TabControl from '../../components/TabControl';
 import DownloadFileSummary from './DownloadFileSummary';
 import DownloadDatasetSummary from './DownloadDatasetSummary';
 
+import ModalManager from '../../components/Modal/ModalManager';
+import SamplesTable from '../Experiment/SamplesTable';
+
 export default function DownloadDetails({
   dataSet,
   filesData,
@@ -68,7 +71,21 @@ const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
             {species[speciesName].length > 1 ? 'Samples' : 'Sample'}
           </p>
         </div>
-        <Button text="View Samples" buttonStyle="secondary" />
+
+        <ModalManager
+          component={showModal => (
+            <Button
+              text="View Samples"
+              buttonStyle="secondary"
+              onClick={showModal}
+            />
+          )}
+          modalProps={{ className: 'samples-modal' }}
+        >
+          {() => (
+            <SamplesTable sampleIds={species[speciesName].map(x => x.id)} />
+          )}
+        </ModalManager>
       </div>
 
       {removeSpecies && (
@@ -121,7 +138,21 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
           </div>
           <h4>Sample Metadata Fields</h4>
           <h5>{experiment.metadata ? experiment.metadata.join(', ') : null}</h5>
-          <Button text="View Samples" buttonStyle="secondary" />
+
+          {experiment.samples.length > 0 && (
+            <ModalManager
+              component={showModal => (
+                <Button
+                  text="View Samples"
+                  buttonStyle="secondary"
+                  onClick={showModal}
+                />
+              )}
+              modalProps={{ className: 'samples-modal' }}
+            >
+              {() => <SamplesTable sampleIds={experiment.samples} />}
+            </ModalManager>
+          )}
         </div>
         {removeExperiment && (
           <Button
