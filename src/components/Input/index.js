@@ -6,8 +6,19 @@ type Props = {
   onChange: (newValue: string) => void
 };
 
-const Input = (props: Props) => (
-  <input type="text" {...props} className={`input ${props.className || ''}`} />
+const Input = ({ onChange, className = 'input', ...props }: Props) => (
+  <input
+    type="text"
+    {...props}
+    className={className}
+    onChange={e => onChange(e.target.value)}
+  />
 );
 
 export default Input;
+
+// Use the input component with a `Field` component inside forms
+// ref: https://redux-form.com/7.3.0/docs/faq/customcomponent.md/
+export const InputField = ({ input: { value, onChange }, className = '' }) => (
+  <Input className={className} value={value} onChange={onChange} />
+);
