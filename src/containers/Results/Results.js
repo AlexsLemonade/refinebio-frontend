@@ -19,8 +19,8 @@ class Results extends Component {
     this.props.fetchOrganisms();
   }
 
-  componentDidUpdate(nextProps) {
-    if (nextProps.results !== this.props.results) window.scrollTo(0, 0);
+  componentDidUpdate(prevProps) {
+    if (prevProps.results !== this.props.results) window.scrollTo(0, 0);
   }
 
   handleSubmit = values => {
@@ -108,7 +108,6 @@ class Results extends Component {
                   addExperiment={addExperiment}
                   removeExperiment={removeExperiment}
                   dataSet={dataSet}
-                  isAdded={!!dataSet[result.accession_code]}
                 />
               ))}
               <Pagination
