@@ -1,7 +1,7 @@
-import { asyncFetch } from '../common/helpers';
+import { Ajax } from '../common/helpers';
 
 export async function getDataSet(dataSetId) {
-  return await asyncFetch(`/dataset/${dataSetId}/`);
+  return await Ajax.get(`/dataset/${dataSetId}/`);
 }
 
 export async function getSamplesAndExperiments(dataSet) {
@@ -10,18 +10,19 @@ export async function getSamplesAndExperiments(dataSet) {
 
   await Promise.all(
     Object.keys(dataSet).map(async accessionCode => {
-      const experiment = await asyncFetch(
-        `/experiments/?accession_code=${accessionCode}`
-      );
+      const experiment = await Ajax.get('/experiments/', {
+        accession_code: accessionCode
+      });
 
       experiments[accessionCode] = experiment.results[0];
 
       // there should only be one result for each experiment response
       const experimentInfo = experiment.results[0];
       const { samples: sampleList } = experimentInfo;
-      const response = await asyncFetch(
-        `/samples/?limit=1000000000000000&ids=${sampleList.join(',')}`
-      );
+      const response = await Ajax.get('/samples/', {
+        limit: 1000000000000000,
+        ids: sampleList.join(',')
+      });
       const sampleInfo = response.results;
 
       samples[accessionCode] = sampleInfo;
@@ -32,13 +33,5 @@ export async function getSamplesAndExperiments(dataSet) {
 }
 
 export async function updateDataSet(dataSetId, dataSet) {
-  return await asyncFetch(`/dataset/${dataSetId}/`, {
-    method: 'PUT',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      data: dataSet
-    })
-  });
+  return await Ajax.put(`/dataset/${dataSetId}/`, { data: dataSet });
 }

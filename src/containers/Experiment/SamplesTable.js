@@ -7,7 +7,6 @@ import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import { RemoveFromDatasetButton } from '../Results/Result';
 import { getAllDetailedSamples } from '../../api/samples';
-import { AnonymousSubject } from 'rxjs';
 import ModalManager from '../../components/Modal/ModalManager';
 
 import './SamplesTable.scss';

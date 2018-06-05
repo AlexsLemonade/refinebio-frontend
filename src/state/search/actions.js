@@ -1,5 +1,5 @@
 import { push } from '../routerActions';
-import { getQueryString, asyncFetch } from '../../common/helpers';
+import { getQueryString, Ajax } from '../../common/helpers';
 
 export function fetchResults(searchTerm = '', pageNum = 1, filters) {
   return async (dispatch, getState) => {
@@ -16,22 +16,20 @@ export function fetchResults(searchTerm = '', pageNum = 1, filters) {
     } = getState().search;
     const currentPage = parseInt(pageNum, 10);
 
-    let filterString = filters ? getQueryString(filters) : '',
-      filtersToApply = Object.keys(appliedFilters).length ? appliedFilters : {};
+    let filtersObj = filters;
+    let filtersToApply = Object.keys(appliedFilters).length
+      ? appliedFilters
+      : {};
+
     if (!filters) {
       /**
        * Convert to an object without Sets for use with getQueryString
        */
-      const filtersObj = Object.keys(appliedFilters).reduce(
-        (result, filterType) => {
-          const filtersArr = Array.from(appliedFilters[filterType]);
-          if (filtersArr.length) result[filterType] = filtersArr;
-          return result;
-        },
-        {}
-      );
-
-      filterString = getQueryString(filtersObj);
+      filtersObj = Object.keys(appliedFilters).reduce((result, filterType) => {
+        const filtersArr = Array.from(appliedFilters[filterType]);
+        if (filtersArr.length) result[filterType] = filtersArr;
+        return result;
+      }, {});
     } else {
       /**
        * Convert to an object with Sets for reducer
@@ -44,11 +42,12 @@ export function fetchResults(searchTerm = '', pageNum = 1, filters) {
     }
 
     try {
-      const resultsJSON = await asyncFetch(
-        `/search/?search=${searchTerm}&limit=${resultsPerPage}&offset=${(currentPage -
-          1) *
-          resultsPerPage}${filterString.length ? `&${filterString}` : ''}`
-      );
+      const resultsJSON = await Ajax.get('/search/', {
+        search: searchTerm,
+        limit: resultsPerPage,
+        offset: (currentPage - 1) * resultsPerPage,
+        ...filtersObj
+      });
       const { results, count, filters } = resultsJSON;
 
       dispatch(
@@ -58,7 +57,7 @@ export function fetchResults(searchTerm = '', pageNum = 1, filters) {
           count,
           currentPage,
           searchTerm,
-          filterString,
+          filtersObj,
           filtersToApply
         )
       );
@@ -74,7 +73,7 @@ export function fetchResultsSucceeded(
   totalResults,
   currentPage,
   searchTerm,
-  filterString,
+  filtersObj,
   appliedFilters
 ) {
   return dispatch => {
@@ -89,9 +88,7 @@ export function fetchResultsSucceeded(
 
     dispatch(
       push({
-        search: `${getQueryString(queryObj)}${
-          filterString.length ? `&${filterString}` : ''
-        }`
+        search: `${getQueryString({ ...queryObj, ...filtersObj })}`
       })
     );
     dispatch({
@@ -120,7 +117,7 @@ export function fetchOrganisms(searchTerm) {
     });
 
     try {
-      const results = await asyncFetch(`/organisms/`);
+      const results = await Ajax.get(`/organisms/`);
 
       dispatch(fetchOrganismsSucceeded(results));
     } catch (error) {}

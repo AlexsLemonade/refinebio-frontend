@@ -76,8 +76,13 @@ export function formatSentenceCase(str) {
 
 // Helper methods to ease working with ajax functions
 export const Ajax = {
-  get: (url, params) => asyncFetch(`${url}?${getQueryString(params)}`),
-  put: (url, params) =>
+  get: (url, params = false) => {
+    if (params) {
+      return asyncFetch(`${url}?${getQueryString(params)}`);
+    }
+    return asyncFetch(url);
+  },
+  put: (url, params = {}) =>
     asyncFetch(url, {
       method: 'PUT',
       headers: {
@@ -85,7 +90,7 @@ export const Ajax = {
       },
       body: JSON.stringify(params)
     }),
-  post: (url, params) =>
+  post: (url, params = {}) =>
     asyncFetch(url, {
       method: 'POST',
       headers: {

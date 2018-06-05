@@ -1,4 +1,4 @@
-import { asyncFetch } from '../../common/helpers';
+import { Ajax } from '../../common/helpers';
 import {
   getDataSet,
   getSamplesAndExperiments,
@@ -151,12 +151,8 @@ export const addExperiment = experiments => {
     try {
       let response;
       if (!dataSetId) {
-        response = await asyncFetch('/dataset/create/', {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json'
-          },
-          body: JSON.stringify({ data: bodyData })
+        response = await Ajax.post('/dataset/create/', {
+          data: bodyData
         });
 
         const { id } = response;
@@ -233,17 +229,10 @@ export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
 
 export const startDownload = () => async (dispatch, getState) => {
   const { dataSetId, dataSet } = getState().download;
-  await asyncFetch(`/dataset/${dataSetId}/`, {
-    method: 'PUT',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      start: true,
-      data: dataSet
-    })
+  await Ajax.put(`/dataset/${dataSetId}/`, {
+    start: true,
+    data: dataSet
   });
-
   // Use `push` action to navigate to the dataset url
   dispatch(push(`/dataset/${dataSetId}`));
 };
