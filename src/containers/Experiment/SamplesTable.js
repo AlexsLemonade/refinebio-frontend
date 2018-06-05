@@ -26,7 +26,7 @@ export default class SamplesTable extends React.Component {
   }
 
   render() {
-    const { sampleIds, pageActionComponent } = this.props;
+    const { pageActionComponent } = this.props;
     // `pageActionComponent` is a render prop to add a component at the top right of the table
     // Good for a add/remove samples button. It's a function that receives the currently displayed
     // samples as an argument
