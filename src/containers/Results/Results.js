@@ -56,7 +56,7 @@ class Results extends Component {
       searchTerm,
       dataSet,
       isLoading,
-      pagination: { totalPages, totalResults, resultsPerPage, currentPage }
+      pagination: { totalPages, currentPage }
     } = this.props;
 
     const totalSamplesOnPage = results.reduce(
@@ -149,10 +149,9 @@ let NumberOfResults = ({
     </div>
   );
 NumberOfResults = connect(
-  ({
-    search: {
-      pagination: { totalPages, totalResults, resultsPerPage, currentPage }
-    }
-  }) => ({ totalResults, resultsPerPage }),
+  ({ search: { pagination: { totalResults, resultsPerPage } } }) => ({
+    totalResults,
+    resultsPerPage
+  }),
   { updateResultsPerPage }
 )(NumberOfResults);
