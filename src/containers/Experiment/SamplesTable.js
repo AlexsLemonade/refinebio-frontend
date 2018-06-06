@@ -299,8 +299,6 @@ const PIPELINES = {
 function ProcessingInformationCell({ original: sample, ...props }) {
   let { pipelines } = sample;
 
-  pipelines = ['Salmon', 'tximport'];
-
   const pipelineString = pipelines.join(', ');
 
   // Logic to decide which pipeline modal dialog should be displayed. On Keytar Kurt we're only supporting 4 types of
