@@ -299,28 +299,27 @@ const PIPELINES = {
 function ProcessingInformationCell({ original: sample, ...props }) {
   let { pipelines } = sample;
 
-  const pipelineString = pipelines.join(', ');
-
   // Logic to decide which pipeline modal dialog should be displayed. On Keytar Kurt we're only supporting 4 types of
   // pipelines. In the future when we add more, we might want to refactor these modal dialogs
   // ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/22#issuecomment-394408631
-  const pipelineFactory = {
-    'Affymetrix SCAN': () => (
-      <ScanModal sample={sample} scanType={PIPELINES.AffymetrixSCAN} />
-    ),
-    'Illumina SCAN': () => (
-      <ScanModal sample={sample} scanType={PIPELINES.IlluminaSCAN} />
-    ),
-    'Submitter-processed': () => <SumitterProcessedModal sample={sample} />,
-    'tximport, Salmon': () => <SalmonTximportModal sample={sample} />,
-    'Salmon, tximport': () => <SalmonTximportModal sample={sample} />
-  };
-
-  if (pipelineFactory[pipelineString]) {
-    return pipelineFactory[pipelineString]();
-  } else {
-    return <div>{pipelineString}</div>;
+  if (pipelines.length === 1) {
+    if (pipelines.includes(PIPELINES.AffymetrixSCAN)) {
+      return <ScanModal sample={sample} scanType={PIPELINES.AffymetrixSCAN} />;
+    } else if (pipelines.includes(PIPELINES.IlluminaSCAN)) {
+      return <ScanModal sample={sample} scanType={PIPELINES.IlluminaSCAN} />;
+    } else if (pipelines.includes(PIPELINES.SubmitterProcessed)) {
+      return <SumitterProcessedModal sample={sample} />;
+    }
+  } else if (pipelines.length === 2) {
+    if (
+      pipelines.includes(PIPELINES.tximport) &&
+      pipelines.includes(PIPELINES.Salmon)
+    ) {
+      return <SalmonTximportModal sample={sample} />;
+    }
   }
+
+  return <div>{pipelines.join(', ')}</div>;
 }
 
 function SumitterProcessedModal({ sample }) {
