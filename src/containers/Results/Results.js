@@ -15,7 +15,10 @@ class Results extends Component {
     const queryObject = getQueryParamObject(location.search.substr(1));
     const { q, p, ...filters } = queryObject;
 
-    this.props.fetchResults(q, p, filters);
+    // Unescape keyword comming from the url
+    const query = unescape(q);
+
+    this.props.fetchResults(query, p, filters);
     this.props.fetchOrganisms();
   }
 
