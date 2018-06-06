@@ -25,13 +25,11 @@ export default class Modal extends React.Component {
 
   componentDidMount() {
     modalRoot.appendChild(this.el);
-    this._addBodyClass();
+    this._addBodyClass(false);
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.isOpen !== this.props.isOpen) {
-      this._addBodyClass();
-    }
+    this._addBodyClass(prevProps.isOpen);
   }
 
   componentWillUnmount() {
@@ -45,10 +43,10 @@ export default class Modal extends React.Component {
   // As a side effect of oppening the modal we need to add the class `modal-open` to the body
   // if there's a modal dialog open. This removes the scroll bars from the body, leaving only
   // the ones from the dialog (if they are needed).
-  _addBodyClass() {
+  _addBodyClass(prevOpen) {
     if (this.props.isOpen) {
       modalRoot.classList.add('modal-open');
-    } else {
+    } else if (!this.props.isOpen && prevOpen) {
       modalRoot.classList.remove('modal-open');
     }
   }
