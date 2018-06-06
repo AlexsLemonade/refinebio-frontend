@@ -299,43 +299,29 @@ const PIPELINES = {
 function ProcessingInformationCell({ original: sample, ...props }) {
   let { pipelines } = sample;
 
+  pipelines = ['Salmon', 'tximport'];
+
+  const pipelineString = pipelines.join(', ');
+
   // Logic to decide which pipeline modal dialog should be displayed. On Keytar Kurt we're only supporting 4 types of
   // pipelines. In the future when we add more, we might want to refactor these modal dialogs
   // ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/22#issuecomment-394408631
-  if (pipelines.length === 1 && pipelines[0] === PIPELINES.AffymetrixSCAN) {
-    // check for `pipelines === ['Affymetrix SCAN']`
-    return <ScanModal sample={sample} scanType={PIPELINES.AffymetrixSCAN} />;
-  } else if (
-    pipelines.length === 1 &&
-    pipelines[0] === PIPELINES.IlluminaSCAN
-  ) {
-    // check for `pipelines === ['Illumina SCAN']`
-    return <ScanModal sample={sample} scanType={PIPELINES.IlluminaSCAN} />;
-  } else if (
-    pipelines.length === 1 &&
-    pipelines[0] === PIPELINES.SubmitterProcessed
-  ) {
-    // check for `pipelines === ['Submitter-processed']`
-    return <SumitterProcessedModal sample={sample} />;
-  } else if (
-    pipelines.length === 2 &&
-    pipelines[0] === PIPELINES.tximport &&
-    pipelines[1] === PIPELINES.Salmon
-  ) {
-    // check for `pipelines === ['tximport', 'Salmon']`
-    return <SalmonTxtimportModal sample={sample} />;
-  } else if (
-    pipelines.length === 2 &&
-    pipelines[0] === PIPELINES.Salmon &&
-    pipelines[1] === PIPELINES.tximport
-  ) {
-    // check for `pipelines === ['Salmon', 'tximport']`
-    return <SalmonTxtimportModal sample={sample} />;
-  } else if (pipelines.length > 0) {
-    // we don't have information about these pipelines yet, so just return the values
-    return <div>{pipelines.join(', ')}</div>;
+  const pipelineFactory = {
+    'Affymetrix SCAN': () => (
+      <ScanModal sample={sample} scanType={PIPELINES.AffymetrixSCAN} />
+    ),
+    'Illumina SCAN': () => (
+      <ScanModal sample={sample} scanType={PIPELINES.IlluminaSCAN} />
+    ),
+    'Submitter-processed': () => <SumitterProcessedModal sample={sample} />,
+    'tximport, Salmon': () => <SalmonTximportModal sample={sample} />,
+    'Salmon, tximport': () => <SalmonTximportModal sample={sample} />
+  };
+
+  if (pipelineFactory[pipelineString]) {
+    return pipelineFactory[pipelineString]();
   } else {
-    return <div />;
+    return <div>{pipelineString}</div>;
   }
 }
 
@@ -501,7 +487,7 @@ function ScanProtocol() {
   );
 }
 
-function SalmonTxtimportModal({ sample }) {
+function SalmonTximportModal({ sample }) {
   return (
     <ModalManager
       component={showModal => (
@@ -539,7 +525,7 @@ function SalmonTxtimportModal({ sample }) {
             </div>
             <div className="pipeline__item">
               <img src={ProcessIcon} alt="" />
-              <div>txtimport</div>
+              <div>tximport</div>
             </div>
             <div className="pipeline__arrow">
               <div className="arrow" />
