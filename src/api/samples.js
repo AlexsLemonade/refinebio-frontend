@@ -1,11 +1,11 @@
-import { asyncFetch, Ajax } from '../common/helpers';
+import { Ajax } from '../common/helpers';
 
 /**
  * Returns detailed information for the given sample id
  * @param {number} sampleId Id of the Sample
  */
 export async function getDetailedSample(sampleId) {
-  return asyncFetch(`/samples/${sampleId}/`);
+  return Ajax.get(`/samples/${sampleId}/`);
 }
 
 /**

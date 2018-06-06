@@ -1,4 +1,4 @@
-import { asyncFetch } from '../../common/helpers';
+import { Ajax } from '../../common/helpers';
 
 const loadExperiment = data => ({
   type: 'LOAD_EXPERIMENT',
@@ -6,6 +6,6 @@ const loadExperiment = data => ({
 });
 
 export const fetchExperiment = id => async dispatch => {
-  const data = await asyncFetch(`/experiments/${id}/`);
+  const data = await Ajax.get(`/experiments/${id}/`);
   dispatch(loadExperiment(data));
 };
