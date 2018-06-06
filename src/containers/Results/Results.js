@@ -7,6 +7,9 @@ import Button from '../../components/Button';
 import BackToTop from '../../components/BackToTop';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
+import { connect } from 'react-redux';
+import { updateResultsPerPage } from '../../state/search/actions';
+import Dropdown from '../../components/Dropdown';
 
 class Results extends Component {
   componentDidMount() {
@@ -81,13 +84,7 @@ class Results extends Component {
           ) : (
             <div className="results__list">
               <div className="results__top-bar">
-                {results.length
-                  ? `Showing ${
-                      resultsPerPage < totalResults
-                        ? resultsPerPage
-                        : totalResults
-                    } of ${totalResults} results`
-                  : null}
+                {results.length ? <NumberOfResults /> : null}
                 {results.filter(result => !dataSet[result.accession_code])
                   .length === 0 ? (
                   <RemoveFromDatasetButton
@@ -127,3 +124,35 @@ class Results extends Component {
 }
 
 export default Results;
+
+const PAGE_SIZES = [10, 20, 50];
+
+let NumberOfResults = ({
+  resultsPerPage,
+  totalResults,
+  updateResultsPerPage
+}) =>
+  // Only show the dropdown if there're enough elements
+  totalResults < PAGE_SIZES[0] ? (
+    <div>
+      Showing {totalResults} of {totalResults} results
+    </div>
+  ) : (
+    <div>
+      Showing
+      <Dropdown
+        options={PAGE_SIZES}
+        selectedOption={resultsPerPage}
+        onChange={updateResultsPerPage}
+      />{' '}
+      of {totalResults} results
+    </div>
+  );
+NumberOfResults = connect(
+  ({
+    search: {
+      pagination: { totalPages, totalResults, resultsPerPage, currentPage }
+    }
+  }) => ({ totalResults, resultsPerPage }),
+  { updateResultsPerPage }
+)(NumberOfResults);

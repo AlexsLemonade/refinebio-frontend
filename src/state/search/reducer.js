@@ -88,6 +88,16 @@ export default (state = initialState, action) => {
         }
       };
     }
+    case 'UPDATE_PAGE_SIZE': {
+      const resultsPerPage = action.data;
+      return {
+        ...state,
+        pagination: {
+          ...state.pagination,
+          resultsPerPage
+        }
+      };
+    }
     default:
       return state;
   }

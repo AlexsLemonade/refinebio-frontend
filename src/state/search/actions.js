@@ -154,12 +154,25 @@ export function toggledFilter(filterType, filterValue) {
 }
 
 export function getPage(pageNum) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     dispatch({
       type: 'SEARCH_GET_PAGE'
     });
     const { searchTerm } = getState().search;
 
-    dispatch(fetchResults(searchTerm, parseInt(pageNum, 10)));
+    await dispatch(fetchResults(searchTerm, parseInt(pageNum, 10)));
   };
 }
+
+export const updateResultsPerPage = resultsPerPage => async (
+  dispatch,
+  getState
+) => {
+  dispatch({
+    type: 'UPDATE_PAGE_SIZE',
+    data: resultsPerPage
+  });
+  const { searchTerm } = getState().search;
+
+  await dispatch(fetchResults(searchTerm));
+};
