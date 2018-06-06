@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import Button from '../Button';
 import './SearchInput.scss';
+import { InputField } from '../Input';
 
 class SearchInput extends Component {
   componentWillUpdate = nextProps => {
@@ -23,9 +24,8 @@ class SearchInput extends Component {
     return (
       <form className="search-input" onSubmit={handleSubmit}>
         <Field
-          component="input"
+          component={InputField}
           name="search"
-          type="text"
           className="search-input__textbox"
         />
         <Button text="Search" buttonStyle="secondary" />

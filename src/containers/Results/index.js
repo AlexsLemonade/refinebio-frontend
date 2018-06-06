@@ -31,13 +31,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { ...resultsActions, ...downloadActions },
-    dispatch
-  );
-};
-
-const ResultsContainer = connect(mapStateToProps, mapDispatchToProps)(Results);
+const ResultsContainer = connect(mapStateToProps, {
+  ...resultsActions,
+  ...downloadActions
+})(Results);
 
 export default ResultsContainer;
