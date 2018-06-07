@@ -47,7 +47,7 @@
     }
 
     &--blue-gradient {
-      background: linear-gradient(180deg, rgba(12,52,131,0.94) 0%, #4B6DB1 100%);
+      background: $background-color--blue-gradient;
       text-align: center;
       color: $white;
       padding: 17*8px 0;
@@ -65,7 +65,7 @@
         height: 120%;
         width: 120%;
         transform: translateX(-50%);
-        background: linear-gradient(180deg, rgba(12,52,131,0.94) 0%, #4B6DB1 100%);
+        background: $background-color--blue-gradient;
         border-bottom-left-radius: 50%;
         border-bottom-right-radius: 50%;
       }
