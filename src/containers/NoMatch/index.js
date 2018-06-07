@@ -14,7 +14,7 @@ let NoMatch = ({ goBack }) => (
     </div>
 
     <div className="error-page__image">
-      <img src={RewardPoster} />
+      <img src={RewardPoster} alt="404 not found reward poster" />
     </div>
   </div>
 );
