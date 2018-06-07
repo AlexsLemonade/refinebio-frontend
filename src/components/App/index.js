@@ -14,23 +14,21 @@ import DataSet from '../../containers/DataSet';
 
 const App = () => {
   return (
-    <div>
-      <Router history={history}>
-        <Layout>
-          <Switch>
-            <Route exact path="/" component={Main} />
-            <div className="layout__content">
-              <Route path="/results" component={Results} />
-              <Route path="/experiments/:id" component={Experiment} />
-              <Route path="/dashboard" component={Dashboard} />
-              <Route path="/download/:id" component={ViewDownload} />
-              <Route path="/download" component={Downloads} />
-              <Route path="/dataset/:id" component={DataSet} />
-            </div>
-          </Switch>
-        </Layout>
-      </Router>
-    </div>
+    <Router history={history}>
+      <Layout>
+        <Switch>
+          <Route exact path="/" component={Main} />
+          <div className="layout__content">
+            <Route path="/results" component={Results} />
+            <Route path="/experiments/:id" component={Experiment} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/download/:id" component={ViewDownload} />
+            <Route path="/download" component={Downloads} />
+            <Route path="/dataset/:id" component={DataSet} />
+          </div>
+        </Switch>
+      </Layout>
+    </Router>
   );
 };
 
