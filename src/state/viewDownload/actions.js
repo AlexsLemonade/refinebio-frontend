@@ -1,4 +1,5 @@
 import { getDataSet, getSamplesAndExperiments } from '../../api/dataSet';
+import { push } from '../../state/routerActions';
 
 export const loadViewDownload = data => ({
   type: 'LOAD_VIEW_DOWNLOAD',
@@ -6,12 +7,19 @@ export const loadViewDownload = data => ({
 });
 
 export const fetchDataSetDetailsForView = dataSetId => async dispatch => {
-  // 1. fetch dataset information
-  const { data: dataSet } = await getDataSet(dataSetId);
+  console.log(dataSetId);
+  try {
+    // 1. fetch dataset information
+    const { data: dataSet } = await getDataSet(dataSetId);
 
-  // 2. fetch details associated with dataset
-  const { experiments, samples } = await getSamplesAndExperiments(dataSet);
+    // 2. fetch details associated with dataset
+    const { experiments, samples } = await getSamplesAndExperiments(dataSet);
 
-  // 3. store data in `viewDownload` reducer
-  dispatch(loadViewDownload({ dataSet, experiments, samples }));
+    // 3. store data in `viewDownload` reducer
+    dispatch(loadViewDownload({ dataSet, experiments, samples }));
+  } catch (e) {
+    // TODO: check the type of error
+    dispatch(push('/no-match'));
+    return;
+  }
 };
