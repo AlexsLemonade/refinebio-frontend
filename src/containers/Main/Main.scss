@@ -84,8 +84,21 @@
   }
 
   &__search-suggestions {
+    margin: 5*8px;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
+  }
+
+  &__search-suggestion-label {
+    margin: 0;
+  }
+
+  &__search-suggestion {
+    font-size: 1.375rem;
+    color: $azure;
+    margin: 0 4*8px 0 8px;
+    line-height: 1;
+    border-bottom: 2px solid currentColor;
   }
 }

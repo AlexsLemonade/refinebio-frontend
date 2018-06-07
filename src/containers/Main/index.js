@@ -1,10 +1,12 @@
 import React from 'react';
+import { push } from '../../state/routerActions';
 import { connect } from 'react-redux';
-import * as resultsActions from '../../state/search/actions';
+import { fetchResults } from '../../state/search/actions';
 import SearchInput from '../../components/SearchInput';
+import { Link } from 'react-router-dom';
 import './Main.scss';
 
-const Main = ({ searchTerm }) => {
+const Main = ({ searchTerm, fetchResults, push }) => {
   return (
     <div className="main">
       <section className="main__section main__section--searchbox">
@@ -12,12 +14,24 @@ const Main = ({ searchTerm }) => {
           <h1 className="main__heading-1">
             Search for harmonized transcriptome data
           </h1>
-          <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
+          <SearchInput
+            onSubmit={value => push(`/results?q=${value.search}`)}
+            searchTerm={searchTerm}
+          />
           <div className="main__search-suggestions">
-            <p>Try searching for:</p>
-            <a href="">Notch</a>
-            <a href="">medulloblastoma</a>
-            <a href="">GSE16476</a>
+            <p className="main__search-suggestion-label">Try searching for:</p>
+            <Link className="main__search-suggestion" to="/results?q=Notch">
+              Notch
+            </Link>
+            <Link
+              className="main__search-suggestion"
+              to="/results?q=medulloblastoma"
+            >
+              Medulloblastoma
+            </Link>
+            <Link className="main__search-suggestion" to="/results?q=GSE16476">
+              GSE16476
+            </Link>
           </div>
         </div>
       </section>
@@ -25,7 +39,7 @@ const Main = ({ searchTerm }) => {
         <div className="main__container main__container--flex">
           <div className="main__col">
             <h3 className="main__heading-2">Find the data you need</h3>
-            <p class="main__paragraph">
+            <p className="main__paragraph">
               Search the collection of harmonized RNA-seq and microarray data
               from publicly available sources like GEO, ArrayExpress, and SRA.
               The data has been processed with a set of standardized pipelines
@@ -34,7 +48,7 @@ const Main = ({ searchTerm }) => {
           </div>
           <div className="main__col">
             <h3 className="main__heading-2">Create custom datasets</h3>
-            <p class="main__paragraph">
+            <p className="main__paragraph">
               Build and download custom datasets tailored to your needs
               including gene expression matrices and sample metadata.
             </p>
@@ -114,6 +128,6 @@ const mapStateToProps = state => {
   };
 };
 
-const MainContainer = connect(mapStateToProps)(Main);
+const MainContainer = connect(mapStateToProps, { fetchResults, push })(Main);
 
 export default MainContainer;
