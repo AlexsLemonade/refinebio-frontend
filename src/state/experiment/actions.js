@@ -1,5 +1,5 @@
 import { Ajax } from '../../common/helpers';
-import { push } from '../../state/routerActions';
+import { replace } from '../../state/routerActions';
 
 const loadExperiment = data => ({
   type: 'LOAD_EXPERIMENT',
@@ -11,6 +11,6 @@ export const fetchExperiment = id => async dispatch => {
     const data = await Ajax.get(`/experiments/${id}/`);
     dispatch(loadExperiment(data));
   } catch (e) {
-    dispatch(push('/no-match'));
+    dispatch(replace('/no-match'));
   }
 };
