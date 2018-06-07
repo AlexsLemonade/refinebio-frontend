@@ -5,7 +5,6 @@ import 'react-table/react-table.css';
 
 import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
-import { RemoveFromDatasetButton } from '../Results/Result';
 import { getAllDetailedSamples } from '../../api/samples';
 import ModalManager from '../../components/Modal/ModalManager';
 import FileIcon from './file.svg';
@@ -25,20 +24,16 @@ export default class SamplesTable extends React.Component {
     data: []
   };
 
-  handleAddSamplesToDataset = samples => {
-    const { accessionCode: accession_code, addSamplesToDataset } = this.props;
-    addSamplesToDataset([{ accession_code, samples }]);
-  };
-
-  handleRemoveSamplesFromDataset = sampleIds => {
-    const { accessionCode, removeSamplesFromDataset } = this.props;
-    removeSamplesFromDataset(accessionCode, sampleIds);
-  };
+  get totalSamples() {
+    return this.props.sampleIds.length;
+  }
 
   render() {
-    const { samples, dataSet, accessionCode } = this.props;
-    const totalPages = Math.ceil(samples.length / this.state.pageSize);
-
+    const { pageActionComponent } = this.props;
+    // `pageActionComponent` is a render prop to add a component at the top right of the table
+    // Good for a add/remove samples button. It's a function that receives the currently displayed
+    // samples as an argument
+    const totalPages = Math.ceil(this.totalSamples / this.state.pageSize);
     return (
       <ReactTable
         manual={true}
@@ -55,11 +50,6 @@ export default class SamplesTable extends React.Component {
         ThComponent={ThComponent}
       >
         {(state, makeTable, instance) => {
-          const samplesNotInDataset = state.pageRows.filter(x => {
-            if (!dataSet[accessionCode]) return true;
-            return dataSet[accessionCode].indexOf(x.id) === -1;
-          });
-
           return (
             <div>
               <div className="experiment__sample-commands">
@@ -70,25 +60,10 @@ export default class SamplesTable extends React.Component {
                     selectedOption={this.state.pageSize}
                     onChange={this.handlePageSizeChange}
                   />
-                  of {samples.length} Samples
+                  of {this.totalSamples} Samples
                 </div>
-                {samplesNotInDataset.length === 0 ? (
-                  <RemoveFromDatasetButton
-                    handleRemove={() =>
-                      this.handleRemoveSamplesFromDataset(
-                        state.pageRows.map(sample => sample.id)
-                      )
-                    }
-                  />
-                ) : (
-                  <Button
-                    text="Add Page to Dataset"
-                    buttonStyle="secondary"
-                    onClick={() =>
-                      this.handleAddSamplesToDataset(state.pageRows)
-                    }
-                  />
-                )}
+                {pageActionComponent &&
+                  pageActionComponent(state.pageRows.map(x => x._original))}
               </div>
               <div className="experiment__table-container">{makeTable()}</div>
 
@@ -105,7 +80,7 @@ export default class SamplesTable extends React.Component {
   }
 
   fetchData = async (tableState = false) => {
-    const sampleIds = this.props.samples.map(sample => sample.id);
+    const sampleIds = this.props.sampleIds;
     const { page, pageSize } = this.state;
     // get the backend ready `order_by` param, based on the sort options from the table
     let orderBy = this._getSortParam(tableState);
@@ -127,7 +102,7 @@ export default class SamplesTable extends React.Component {
     this.setState({
       data,
       columns,
-      pages: Math.ceil(this.props.samples.length / pageSize),
+      pages: Math.ceil(this.totalSamples / pageSize),
       loading: false
     });
   };
@@ -140,9 +115,9 @@ export default class SamplesTable extends React.Component {
   handlePageSizeChange = pageSize => {
     let page = this.state.page;
     // check if the page is outside of the new page range
-    if ((page + 1) * pageSize > this.props.samples.length) {
+    if ((page + 1) * pageSize > this.totalSamples) {
       // set the page to the last one
-      page = Math.floor(this.props.samples.length / pageSize);
+      page = Math.floor(this.totalSamples / pageSize);
     }
 
     this.setState({ page, pageSize }, () => this.fetchData());
