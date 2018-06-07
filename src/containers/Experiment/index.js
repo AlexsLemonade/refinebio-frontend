@@ -135,11 +135,11 @@ let Experiment = ({
                 <section className="experiment__section">
                   <h2 className="experiment__title">Samples</h2>
                   <SamplesTable
-                    accessionCode={experiment.accession_code}
-                    samples={experiment.samples}
-                    addSamplesToDataset={addExperiment}
-                    removeSamplesFromDataset={removeSamplesFromExperiment}
-                    dataSet={dataSet}
+                    sampleIds={experiment.samples.map(x => x.id)}
+                    // Render prop for the button that adds the samples to the dataset
+                    pageActionComponent={samplesDisplayed => (
+                      <SampleTableActions samples={samplesDisplayed} />
+                    )}
                   />
                 </section>
               )}
@@ -168,3 +168,59 @@ Experiment = connect(
 )(Experiment);
 
 export default Experiment;
+
+/**
+ * This component is used for the top-right part of the Samples table, manages adding a set of samples
+ * to the current dataset. Sample usage:
+ * <SampleTableActions samples={samplesDisplayed} />
+ */
+let SampleTableActions = ({
+  samples,
+  allSamplesInDataset,
+  experiment,
+  removeSamplesFromExperiment,
+  addExperiment
+}) =>
+  allSamplesInDataset ? (
+    <RemoveFromDatasetButton
+      handleRemove={() =>
+        removeSamplesFromExperiment(
+          experiment.accession_code,
+          samples.map(x => x.id)
+        )
+      }
+    />
+  ) : (
+    <Button
+      text="Add Page to Dataset"
+      buttonStyle="secondary"
+      onClick={() =>
+        addExperiment([
+          {
+            accession_code: experiment.accession_code,
+            samples: samples
+          }
+        ])
+      }
+    />
+  );
+SampleTableActions = connect(
+  ({ experiment, download: { dataSet } }, { samples }) => ({
+    experiment,
+    // should be true if all samples passed are already in the dataset
+    allSamplesInDataset:
+      samplesNotInDataSet(samples, experiment.accession_code, dataSet)
+        .length === 0
+  }),
+  {
+    addExperiment,
+    removeSamplesFromExperiment
+  }
+)(SampleTableActions);
+
+function samplesNotInDataSet(samples, accessionCode, dataSet) {
+  return samples.filter(x => {
+    if (!dataSet[accessionCode]) return true;
+    return dataSet[accessionCode].indexOf(x.id) === -1;
+  });
+}
