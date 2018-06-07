@@ -19,6 +19,7 @@ const Main = ({ searchTerm, fetchResults, push }) => {
           <SearchInput
             onSubmit={value => push(`/results?q=${value.search}`)}
             searchTerm={searchTerm}
+            buttonStyle="primary"
           />
           <div className="main__search-suggestions">
             <p className="main__search-suggestion-label">Try searching for:</p>

@@ -19,7 +19,7 @@ class SearchInput extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, buttonStyle = 'secondary' } = this.props;
 
     return (
       <form className="search-input" onSubmit={handleSubmit}>
@@ -28,7 +28,7 @@ class SearchInput extends Component {
           name="search"
           className="search-input__textbox"
         />
-        <Button text="Search" buttonStyle="secondary" />
+        <Button text="Search" buttonStyle={buttonStyle} />
       </form>
     );
   }
