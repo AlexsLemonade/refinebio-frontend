@@ -10,6 +10,7 @@ import './Results.scss';
 import { connect } from 'react-redux';
 import { updateResultsPerPage } from '../../state/search/actions';
 import Dropdown from '../../components/Dropdown';
+import { PAGE_SIZES } from '../../constants/table';
 
 class Results extends Component {
   componentDidMount() {
@@ -124,8 +125,6 @@ class Results extends Component {
 }
 
 export default Results;
-
-const PAGE_SIZES = [10, 20, 50];
 
 let NumberOfResults = ({
   resultsPerPage,

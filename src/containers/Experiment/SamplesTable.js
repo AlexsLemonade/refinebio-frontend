@@ -10,10 +10,9 @@ import { getAllDetailedSamples } from '../../api/samples';
 import ModalManager from '../../components/Modal/ModalManager';
 import FileIcon from './file.svg';
 import ProcessIcon from './process.svg';
+import { PAGE_SIZES } from '../../constants/table';
 
 import './SamplesTable.scss';
-
-const PAGE_SIZES = [10, 20, 50];
 
 export default class SamplesTable extends React.Component {
   state = {
