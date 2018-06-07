@@ -21,6 +21,11 @@
     .header__link--button {
       color: $white;
     }
+
+    .header__dataset-count {
+      background: $white;
+      color: $azure;
+    }
   }
 
   &__container {
