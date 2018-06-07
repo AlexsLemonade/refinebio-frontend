@@ -1,4 +1,5 @@
 import { Ajax } from '../../common/helpers';
+import reportError from '../reportError';
 
 const loadExperiment = data => ({
   type: 'LOAD_EXPERIMENT',
@@ -6,6 +7,11 @@ const loadExperiment = data => ({
 });
 
 export const fetchExperiment = id => async dispatch => {
-  const data = await Ajax.get(`/experiments/${id}/`);
-  dispatch(loadExperiment(data));
+  try {
+    const data = await Ajax.get(`/experiments/${id}/`);
+    dispatch(loadExperiment(data));
+  } catch (e) {
+    dispatch(reportError(e));
+    // TODO: check if this was a 404 error, and redirect to the 404 page
+  }
 };

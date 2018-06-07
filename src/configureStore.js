@@ -4,6 +4,7 @@ import rootReducer from './state/rootReducer';
 import thunk from 'redux-thunk';
 import history from './history';
 import { CALL_HISTORY_METHOD } from './state/routerActions';
+import { REPORT_ERROR } from './state/reportError';
 
 const initialState = {};
 
@@ -19,13 +20,28 @@ const customMiddleware = store => next => action => {
   next(action);
 };
 
+const errorMiddleware = () => next => action => {
+  if (action.type !== REPORT_ERROR) {
+    return next(action);
+  }
+
+  // log the error into the console
+  // If we wanted we could log these errors to the server here
+  console.log(action.data);
+};
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   rootReducer,
   initialState,
   composeEnhancers(
-    applyMiddleware(thunk, customMiddleware, routerMiddleware(history))
+    applyMiddleware(
+      thunk,
+      customMiddleware,
+      routerMiddleware(history),
+      errorMiddleware
+    )
   )
 );
 

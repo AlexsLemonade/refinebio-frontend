@@ -182,22 +182,20 @@ export const addExperimentSucceeded = (dataSetId, dataSet) => {
  * If a dataSetId exists in localStorage,
  * use it to fetch dataset from endpoint
  */
-export const fetchDataSet = () => {
-  return async dispatch => {
-    const dataSetId = localStorage.getItem('dataSetId');
-    if (!dataSetId) {
-      return;
-    }
+export const fetchDataSet = () => async dispatch => {
+  const dataSetId = localStorage.getItem('dataSetId');
+  if (!dataSetId) {
+    return;
+  }
 
-    dispatch({
-      type: 'DOWNLOAD_DATASET_FETCH',
-      data: {
-        dataSetId
-      }
-    });
-    const { data } = await getDataSet(dataSetId);
-    dispatch(fetchDataSetSucceeded(data));
-  };
+  dispatch({
+    type: 'DOWNLOAD_DATASET_FETCH',
+    data: {
+      dataSetId
+    }
+  });
+  const { data } = await getDataSet(dataSetId);
+  dispatch(fetchDataSetSucceeded(data));
 };
 
 export const fetchDataSetSucceeded = dataSet => ({
