@@ -60,12 +60,12 @@ const Terms = () => (
       of the Policy. You hereby agree to the terms of the CCDL Privacy Policy,
       located at{' '}
       <a
-        href="https://www.ccdatalab.org/privacy"
+        href="https://www.ccdatalab.org/privacy-policy"
         target="_blank"
         rel="noopener noreferrer"
         className="link"
       >
-        https://www.ccdatalab.org/privacy.
+        https://www.ccdatalab.org/privacy-policy.
       </a>
     </p>
     <p>

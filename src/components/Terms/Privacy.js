@@ -39,7 +39,7 @@ const Privacy = () => (
       Your access to, and use of, the CCDL is subject to our Terms of Use,
       located at{' '}
       <Link className="link" to="/terms">
-        http://cognoma.org/#!/terms
+        http://refine.bio/terms
       </Link>{' '}
       (the <strong>"Terms of Use"</strong>). We have created this Privacy Policy
       (this <strong>"Privacy Policy"</strong>) to explain what information we
