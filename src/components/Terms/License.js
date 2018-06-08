@@ -2,8 +2,8 @@ import React from 'react';
 import './Terms.scss';
 
 const Privacy = () => (
-  <div class="terms">
-    <h1 class="terms__title">BSD 3-Clause License</h1>
+  <div className="terms">
+    <h1 className="terms__title">BSD 3-Clause License</h1>
     <p>
       Copyright &copy; 2017-2018, Greene Laboratory, University of Pennsylvania
       and Childhood Cancer Data Lab, Alex's Lemonade Stand Foundation. All

@@ -1,5 +1,6 @@
 import React from 'react';
 import FundIcon from '../../common/icons/fund-icon.svg';
+import { Link } from 'react-router-dom';
 import './Footer.scss';
 
 const Footer = () => (
@@ -72,10 +73,18 @@ const Footer = () => (
     <div className="footer__container footer__flex footer__flex--v-centered">
       <div className="footer__left">
         <ul className="footer__links">
-          <li className="footer__link">BDS 3-Clause License</li>
-          <li className="footer__link">Privacy</li>
-          <li className="footer__link">Terms of Use</li>
-          <li className="footer__link">Contact</li>
+          <li className="footer__link">
+            <Link to="/license">BDS 3-Clause License</Link>
+          </li>
+          <li className="footer__link">
+            <Link to="/privacy">Privacy</Link>
+          </li>
+          <li className="footer__link">
+            <Link to="/terms">Terms of Use</Link>
+          </li>
+          <li className="footer__link">
+            <a href="mailto:ccdl@alexslemonade.org">Contact</a>
+          </li>
         </ul>
       </div>
       <div className="footer__right">

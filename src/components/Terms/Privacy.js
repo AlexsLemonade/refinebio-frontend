@@ -1,18 +1,34 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Terms.scss';
 
 const Privacy = () => (
-  <div class="terms">
-    <h1 class="terms__title">Privacy Policy</h1>
+  <div className="terms">
+    <h1 className="terms__title">Privacy Policy</h1>
     <p>
       This database and websites, located at{' '}
-      <a href="https://www.ccdatalab.org" target="_blank" class="link">
+      <a
+        href="https://www.ccdatalab.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="link"
+      >
         https://www.ccdatalab.org
       </a>,{' '}
-      <a href="https://cognoma.org" target="_blank" class="link">
+      <a
+        href="https://cognoma.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="link"
+      >
         https://cognoma.org
       </a>, and{' '}
-      <a href="http://www.refine.bio" target="_blank" class="link">
+      <a
+        href="http://www.refine.bio"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="link"
+      >
         http://www.refine.bio
       </a>{' '}
       or any subdomains thereof (the <strong>"CCDL"</strong>), is supported by
@@ -22,9 +38,9 @@ const Privacy = () => (
     <p>
       Your access to, and use of, the CCDL is subject to our Terms of Use,
       located at{' '}
-      <a class="link" ui-sref="app.terms" href="#">
+      <Link className="link" to="/terms">
         http://cognoma.org/#!/terms
-      </a>{' '}
+      </Link>{' '}
       (the <strong>"Terms of Use"</strong>). We have created this Privacy Policy
       (this <strong>"Privacy Policy"</strong>) to explain what information we
       gather when you visit or interact with the CCDL, how we and others may use
@@ -40,7 +56,7 @@ const Privacy = () => (
       Changes to this Privacy Policy will apply only to information collected
       after the date of the change.
     </p>
-    <ol class="terms__list--bold">
+    <ol className="terms__list--bold">
       <li>
         What information is gathered?
         <p>
@@ -49,7 +65,7 @@ const Privacy = () => (
           communications, or participate in another CCDL feature. Here are the
           types of personal information we gather:
         </p>
-        <ul class="terms__list">
+        <ul className="terms__list">
           <li>
             <strong>Information You Give Us:</strong> When registering or
             seeking authentication, or otherwise communicating with us, we may
@@ -89,7 +105,7 @@ const Privacy = () => (
         <p>
           We may use your personal information in any of the following ways:
         </p>
-        <ul class="terms__list">
+        <ul className="terms__list">
           <li>To authenticate or update your information.</li>
           <li>To administer your account or profile.</li>
           <li>
@@ -124,7 +140,7 @@ const Privacy = () => (
           notice. However, we may disclose personal information as described
           below:
         </p>
-        <ul class="terms__list">
+        <ul className="terms__list">
           <li>
             <strong>Agents and Contractors:</strong> We may contract with other
             companies and individuals to operate the CCDL and to perform
@@ -168,7 +184,12 @@ const Privacy = () => (
         <p>
           You can correct or update your personal information by re-registering,
           updating your profile, or by contacting us at{' '}
-          <a href="mailto:ccdl@alexslemonade.org" target="_blank" class="link">
+          <a
+            href="mailto:ccdl@alexslemonade.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
             ccdl@alexslemonade.org
           </a>. You can also request that we delete your personal information or
           remove you from our communications.
@@ -235,7 +256,12 @@ const Privacy = () => (
         <p>
           Any questions or feedback about the CCDL or this Privacy Policy should
           be directed to{' '}
-          <a href="mailto:ccdl@alexslemonade.org" target="_blank" class="link">
+          <a
+            href="mailto:ccdl@alexslemonade.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
             ccdl@alexslemonade.org
           </a>.
         </p>
@@ -257,7 +283,12 @@ const Privacy = () => (
           children under 13 years of age. If a child has provided us with
           personal information, a parent or guardian of that child may send an
           email message to{' '}
-          <a href="mailto:ccdl@alexslemonade.org" target="_blank" class="link">
+          <a
+            href="mailto:ccdl@alexslemonade.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
             ccdl@alexslemonade.org
           </a>{' '}
           with "Request for Child Information Removal" in the subject line and

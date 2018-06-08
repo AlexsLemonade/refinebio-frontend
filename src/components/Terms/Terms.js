@@ -2,21 +2,36 @@ import React from 'react';
 import './Terms.scss';
 
 const Terms = () => (
-  <div class="terms">
-    <h1 class="terms__title">Terms of Use</h1>
+  <div className="terms">
+    <h1 className="terms__title">Terms of Use</h1>
     <p>
       Welcome to the Alex’s Lemonade Childhood Cancer Data Lab, which is
       supported by Alex’s Lemonade Stand Foundation (<strong>"we,"</strong>{' '}
       <strong>"our,"</strong> or <strong>"us"</strong>). These Terms of Use
       (these <strong>"Terms"</strong>) are a binding legal agreement between you
       and us regarding your access to and use of the websites located at{' '}
-      <a href="https://www.ccdatalab.org" target="_blank" class="link">
+      <a
+        href="https://www.ccdatalab.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="link"
+      >
         https://www.ccdatalab.org
       </a>,{' '}
-      <a href="https://cognoma.org" target="_blank" class="link">
+      <a
+        href="https://cognoma.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="link"
+      >
         https://cognoma.org
       </a>,{' '}
-      <a href="http://www.refine.bio" target="_blank" class="link">
+      <a
+        href="http://www.refine.bio"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="link"
+      >
         http://www.refine.bio
       </a>{' '}
       or any subdomains thereof and any embedded or associated software,
@@ -44,7 +59,12 @@ const Terms = () => (
       will control to the extent of the inconsistency with respect to the scope
       of the Policy. You hereby agree to the terms of the CCDL Privacy Policy,
       located at{' '}
-      <a href="https://www.ccdatalab.org/privacy" target="_blank" class="link">
+      <a
+        href="https://www.ccdatalab.org/privacy"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="link"
+      >
         https://www.ccdatalab.org/privacy.
       </a>
     </p>
@@ -61,7 +81,7 @@ const Terms = () => (
       of the date of the modification. If you do not agree to any provision of
       these Terms, you may not use the CCDL.
     </p>
-    <ol class="terms__list--bold">
+    <ol className="terms__list--bold">
       <li>
         Eligibility
         <p>
@@ -90,7 +110,7 @@ const Terms = () => (
       </li>
       <li>
         Access to and Use of Content
-        <ol class="terms__list" type="a">
+        <ol className="terms__list" type="a">
           <li>
             <em>Limited License to You.</em> Subject to the terms and conditions
             of these Terms, we hereby grant you a limited, non-transferable,
@@ -101,7 +121,7 @@ const Terms = () => (
           <li>
             <em>Use Restrictions.</em> In connection with any access to or use
             of the CCDL (or any Content), you may not:
-            <ol class="terms__list" type="i">
+            <ol className="terms__list" type="i">
               <li>
                 publish, present or otherwise disclose Data, or results from
                 analysis of Data, obtained through the CCDL without properly
@@ -300,7 +320,12 @@ const Terms = () => (
           reached at:
         </p>
         <p>
-          <a href="mailto:ccdl@alexslemonade.org" target="_blank" class="link">
+          <a
+            href="mailto:ccdl@alexslemonade.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
             ccdl@alexslemonade.org
           </a>
         </p>
@@ -361,7 +386,7 @@ const Terms = () => (
       </li>
       <li>
         Warranty Disclaimers
-        <p class="terms__caps">
+        <p className="terms__caps">
           except as expressly set forth in these terms, to the fullest extent
           permissible under applicable law, (a) we hereby disclaim all
           warranties related to the ccdl, or any services, data or other content
@@ -371,7 +396,7 @@ const Terms = () => (
           is" and without any warranty related to accuracy, completeness,
           quality or that the ccdl will be uninterrupted or error free.
         </p>
-        <p class="terms__caps">
+        <p className="terms__caps">
           <strong>
             we make no representations or warranties regarding, and explicitly
             disclaim the appropriateness or applicability of any content to, any
@@ -392,7 +417,7 @@ const Terms = () => (
       </li>
       <li>
         Limitations of Liability
-        <p class="terms__caps">
+        <p className="terms__caps">
           to the fullest extent permissible under applicable law, neither us nor
           our officers, directors, licensors, or suppliers will be liable to any
           party under these terms or otherwise for any indirect, incidental,
@@ -403,13 +428,13 @@ const Terms = () => (
           use, data or other intangible losses (regardless of the basis of the
           claim and even if advised of the possibility of these damages).
         </p>
-        <p class="terms__caps">
+        <p className="terms__caps">
           to the fullest extent permissible under applicable law, our and our
           suppliers’ and licensors’ maximum total liability to you for all
           claims under these terms or otherwise in connection with the ccdl is
           $50, regardless of the basis of the claim.
         </p>
-        <p class="terms__caps">
+        <p className="terms__caps">
           applicable law may not allow the limitation or exclusion of certain
           warranties or liabilities, so the above limitations or exclusions may
           not fully apply to you. in such cases, you agree that because such
@@ -434,7 +459,7 @@ const Terms = () => (
       </li>
       <li>
         Governing Law &amp; Jurisdiction
-        <ol type="a" class="terms__list">
+        <ol type="a" className="terms__list">
           <li>
             <em>Governing Law.</em> Unless otherwise agreed in writing between
             you and us, these Terms are governed by and construed in accordance
@@ -489,7 +514,12 @@ const Terms = () => (
         <p>
           If you have any questions or concerns about the CCDL, or these Terms,
           you may contact us by email at{' '}
-          <a href="mailto:ccdl@alexslemonade.org" target="_blank" class="link">
+          <a
+            href="mailto:ccdl@alexslemonade.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
             ccdl@alexslemonade.org
           </a>.
         </p>
