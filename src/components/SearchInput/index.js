@@ -5,6 +5,10 @@ import './SearchInput.scss';
 import { InputField } from '../Input';
 
 class SearchInput extends Component {
+  static defaultProps = {
+    buttonStyle: 'secondary'
+  };
+
   componentWillUpdate = nextProps => {
     if (nextProps.searchTerm !== this.props.searchTerm)
       this.handleInitialize(nextProps.searchTerm);
@@ -19,7 +23,7 @@ class SearchInput extends Component {
   }
 
   render() {
-    const { handleSubmit, buttonStyle = 'secondary' } = this.props;
+    const { handleSubmit, buttonStyle } = this.props;
 
     return (
       <form className="search-input" onSubmit={handleSubmit}>
