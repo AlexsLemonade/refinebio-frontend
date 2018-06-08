@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import * as resultsActions from '../../state/search/actions';
 import * as downloadActions from '../../state/download/actions';
 

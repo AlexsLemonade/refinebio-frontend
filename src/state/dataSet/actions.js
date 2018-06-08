@@ -1,4 +1,5 @@
 import { asyncFetch } from '../../common/helpers';
+import { replace } from '../../state/routerActions';
 
 export const loadDataSet = dataSet => ({
   type: 'LOAD_DATASET',
@@ -15,8 +16,12 @@ export const updateDataSet = props => ({
  * @param {*} id Identifier of the dataset (hash `730ad4b9-f789-48a0-a114-ca3a8c5ab030)
  */
 export const fetchDataSet = dataSetId => async dispatch => {
-  const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
-  dispatch(loadDataSet(dataSet));
+  try {
+    const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
+    dispatch(loadDataSet(dataSet));
+  } catch (e) {
+    dispatch(replace('/no-match'));
+  }
 };
 
 export const editEmail = ({ dataSetId, email }) => async dispatch => {

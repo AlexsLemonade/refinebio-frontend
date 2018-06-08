@@ -16,11 +16,15 @@ export async function getDetailedSample(sampleId) {
  * @param {number} limit
  */
 export async function getAllDetailedSamples({ ids, orderBy, offset, limit }) {
-  let { results } = await Ajax.get('/samples/', {
-    ids,
-    offset,
-    limit,
-    order_by: orderBy
-  });
-  return results;
+  if (ids && ids.length) {
+    let { results } = await Ajax.get('/samples/', {
+      ids,
+      offset,
+      limit,
+      order_by: orderBy
+    });
+    return results;
+  } else {
+    return [];
+  }
 }
