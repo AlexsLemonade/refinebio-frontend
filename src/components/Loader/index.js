@@ -9,6 +9,8 @@ import { REPORT_ERROR } from '../../state/reportError';
 //    }
 // </Loader>
 export default class Loader extends React.Component {
+  _mounted = true;
+
   state = {
     hasError: false,
     isLoading: true,
@@ -21,9 +23,20 @@ export default class Loader extends React.Component {
 
     if (data && data.type === REPORT_ERROR) {
       this.setState({ hasError: true });
-    } else {
+    } else if (this._mounted) {
+      /**
+       * In some cases, if the `Loaded` component gets unmounted before the `fetch` request above
+       * finishes we get a warning. Since `setState` can only be called on mounted components.
+       * This check removes that warning.
+       * It might be worth mentioning that when the instance of a component is unmounted it will
+       * never be mounted again ref: https://github.com/facebook/react/issues/12111#issuecomment-361296432
+       */
       this.setState({ isLoading: false, data });
     }
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
   }
 
   render() {

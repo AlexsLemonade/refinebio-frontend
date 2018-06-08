@@ -6,6 +6,9 @@ import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
 import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
+import Loader from '../../../components/Loader';
+import { getAllDetailedSamples } from '../../../api/samples';
+import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
 
 export function RemoveFromDatasetButton({
   handleRemove,
@@ -100,8 +103,9 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
       <p className="result__paragraph">{result.description}</p>
       <h3>Publication Title</h3>
       <p className="result__paragraph">{result.publication_title}</p>
-      <h3>Sample Metadata Fields</h3>
-      <p className="result__paragraph">todo...</p>
+
+      <SampleMetadataFields samples={result.samples} />
+
       <Link
         className="button button--secondary"
         to={`/experiments/${result.id}#samples`}
@@ -113,3 +117,32 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
 };
 
 export default Result;
+
+/**
+ * This component receives a list of samples, and renders the names of the fields that have values
+ * for those samples. It does so, by requesting the details of the first 10 samples and then showing
+ * the names of the fields that have any value associated.
+ */
+function SampleMetadataFields({ samples }) {
+  // request the details of the first 10 samples, and show the names of the fields that have any value
+  return (
+    <Loader fetch={() => getAllDetailedSamples({ ids: samples.slice(0, 10) })}>
+      {({ isLoading, data }) =>
+        !isLoading &&
+        data &&
+        data.length > 0 && (
+          <React.Fragment>
+            <h3>Sample Metadata Fields</h3>
+            <p className="result__paragraph">
+              {SampleFieldMetadata.filter(({ accessor }) =>
+                data.some(sample => !!accessor(sample))
+              )
+                .map(({ Header }) => Header)
+                .join(', ')}
+            </p>
+          </React.Fragment>
+        )
+      }
+    </Loader>
+  );
+}

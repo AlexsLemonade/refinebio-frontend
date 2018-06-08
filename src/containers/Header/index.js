@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../common/icons/logo.svg';
 import { fetchDataSet } from '../../state/download/actions';
 import { getTotalSamplesAdded } from '../../state/download/reducer';
+import { withRouter } from 'react-router';
 import './Header.scss';
 
 class Header extends React.Component {
@@ -13,11 +14,17 @@ class Header extends React.Component {
   }
 
   render() {
+    const { location: { pathname } } = this.props;
+
     return (
-      <header className="header js-header">
+      <header
+        className={`header js-header ${pathname === '/' && 'header--main'}`}
+      >
         <div className="header__container">
           <div className="header__logo">
-            <img src={logo} alt="refine.bio" />
+            <Link to="/">
+              <img src={logo} alt="refine.bio" />
+            </Link>
           </div>
           <div>
             <Link className="header__link" to="/">
@@ -58,4 +65,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchDataSet }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

@@ -1,0 +1,68 @@
+@import '../../common/styles/variables';
+
+.footer {
+  padding: 6.5*8px;
+  background: linear-gradient(#FFFFFF 0%, #DFE9F3 100%);
+
+  &__container {
+    width: 95%;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    &--main {
+      margin-bottom: 5*8px;
+    }
+  }
+
+  &__flex {
+    display: flex;
+    justify-content: space-between;
+
+    &--v-centered {
+      align-items: center;
+    }
+  }
+
+  &__left {
+    flex: 3;
+    margin-right: 21*8px;
+  }
+
+  &__right {
+    flex: 2;
+  }
+
+  &__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+
+  &__link {
+    margin-right: 3*8px;
+    color: $gray;
+  }
+
+  &__social {
+    font-size: 4*8px;
+    color: $gray;
+  }
+
+  &__version {
+    color: $gray;
+    font-size: 0.75rem;
+    text-align: right;
+    margin: 0;
+  }
+
+  &__author {
+    margin-top: 5*8px;
+  }
+
+  &__icon {
+    position: relative;
+    top: 2px;
+    margin-right: 8px;
+  }
+}

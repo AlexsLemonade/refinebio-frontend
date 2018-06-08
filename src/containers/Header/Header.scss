@@ -7,6 +7,27 @@
   padding: 1.5rem 0;
   z-index: 10;
 
+  &--main {
+    position: relative;
+    color: $white;
+    background: none;
+
+    .header__logo {
+      img {
+        filter: brightness(0) invert(1);
+      }
+    }
+
+    .header__link--button {
+      color: $white;
+    }
+
+    .header__dataset-count {
+      background: $white;
+      color: $azure;
+    }
+  }
+
   &__container {
     justify-content: space-between;
     align-items: center;
