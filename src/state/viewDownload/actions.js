@@ -7,7 +7,6 @@ export const loadViewDownload = data => ({
 });
 
 export const fetchDataSetDetailsForView = dataSetId => async dispatch => {
-  console.log(dataSetId);
   try {
     // 1. fetch dataset information
     const { data: dataSet } = await getDataSet(dataSetId);
@@ -20,6 +19,5 @@ export const fetchDataSetDetailsForView = dataSetId => async dispatch => {
   } catch (e) {
     // TODO: check the type of error
     dispatch(replace('/no-match'));
-    return;
   }
 };
