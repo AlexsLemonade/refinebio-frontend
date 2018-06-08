@@ -1,4 +1,5 @@
 import React from 'react';
+import { REPORT_ERROR } from '../../state/reportError';
 
 // Component abtract the logic of loading content from the server before displaying something,
 // Example Usage:
@@ -9,6 +10,7 @@ import React from 'react';
 // </Loader>
 export default class Loader extends React.Component {
   state = {
+    hasError: false,
     isLoading: true,
     data: null
   };
@@ -16,7 +18,12 @@ export default class Loader extends React.Component {
   async componentDidMount() {
     this.setState({ isLoading: true });
     const data = await this.props.fetch();
-    this.setState({ isLoading: false, data });
+
+    if (data && data.type === REPORT_ERROR) {
+      this.setState({ hasError: true });
+    } else {
+      this.setState({ isLoading: false, data });
+    }
   }
 
   render() {

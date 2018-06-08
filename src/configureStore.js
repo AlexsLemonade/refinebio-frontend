@@ -17,7 +17,7 @@ const customMiddleware = store => next => action => {
       ...meta
     });
   }
-  next(action);
+  return next(action);
 };
 
 const errorMiddleware = () => next => action => {
@@ -28,6 +28,7 @@ const errorMiddleware = () => next => action => {
   // log the error into the console
   // If we wanted we could log these errors to the server here
   console.log(action.data);
+  return next(action);
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -33,7 +33,7 @@ let Experiment = ({
 }) => (
   <Loader fetch={() => fetchExperiment(match.params.id)}>
     {({ isLoading }) =>
-      isLoading || !experiment.id ? (
+      isLoading ? (
         <div className="loader" />
       ) : (
         <div>
