@@ -1,4 +1,5 @@
 import { asyncFetch } from '../../common/helpers';
+import reportError from '../reportError';
 import { replace } from '../../state/routerActions';
 
 export const loadDataSet = dataSet => ({
@@ -20,6 +21,7 @@ export const fetchDataSet = dataSetId => async dispatch => {
     const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
     dispatch(loadDataSet(dataSet));
   } catch (e) {
+    dispatch(reportError(e));
     dispatch(replace('/no-match'));
   }
 };

@@ -1,4 +1,5 @@
 import { Ajax } from '../../common/helpers';
+import reportError from '../reportError';
 import { replace } from '../../state/routerActions';
 
 const loadExperiment = data => ({
@@ -12,5 +13,6 @@ export const fetchExperiment = id => async dispatch => {
     dispatch(loadExperiment(data));
   } catch (e) {
     dispatch(replace('/no-match'));
+    return dispatch(reportError(e));
   }
 };

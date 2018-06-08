@@ -22,15 +22,16 @@ import {
 import { RemoveFromDatasetButton } from '../Results/Result';
 
 let Experiment = ({
-  fetch,
+  fetchExperiment,
   experiment,
   addExperiment,
   removeExperiment,
   removeSamplesFromExperiment,
   addSamplesToDataset,
-  dataSet
+  dataSet,
+  match
 }) => (
-  <Loader fetch={fetch}>
+  <Loader fetch={() => fetchExperiment(match.params.id)}>
     {({ isLoading }) =>
       isLoading ? (
         <div className="loader" />
@@ -152,19 +153,12 @@ let Experiment = ({
 );
 Experiment = connect(
   ({ experiment, download: { dataSet } }) => ({ experiment, dataSet }),
-  (dispatch, ownProps) =>
-    bindActionCreators(
-      {
-        fetch: () => fetchExperiment(ownProps.match.params.id),
-        addExperiment,
-        removeExperiment,
-        removeSamplesFromExperiment,
-        addSamplesToDataset: samples => {
-          console.log('TODO: add page to dataset', samples);
-        }
-      },
-      dispatch
-    )
+  {
+    fetchExperiment,
+    addExperiment,
+    removeExperiment,
+    removeSamplesFromExperiment
+  }
 )(Experiment);
 
 export default Experiment;
