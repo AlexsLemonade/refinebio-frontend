@@ -12,6 +12,9 @@ import ViewDownload from '../../containers/Downloads/ViewDownload';
 import Layout from '../Layout';
 import DataSet from '../../containers/DataSet';
 import NoMatch from '../../containers/NoMatch';
+import Privacy from '../../components/Terms/Privacy';
+import Terms from '../../components/Terms/Terms';
+import License from '../../components/Terms/License';
 
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
@@ -26,6 +29,9 @@ const AppContent = () => (
       <Route path="/download/:id" component={ViewDownload} />
       <Route path="/download" component={Downloads} />
       <Route path="/dataset/:id" component={DataSet} />
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/terms" component={Terms} />
+      <Route path="/license" component={License} />
 
       {/* Custom route to be able to redirect to the 404 page */}
       <Route path="/not-found" component={NoMatch} />
