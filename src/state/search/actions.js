@@ -77,14 +77,14 @@ export function fetchResultsSucceeded(
   appliedFilters
 ) {
   return dispatch => {
-    const queryObj = searchTerm
-      ? {
-          q: searchTerm,
-          p: currentPage
-        }
-      : {
-          p: currentPage
-        };
+    const queryObj = {};
+
+    if (searchTerm) {
+      queryObj.q = searchTerm;
+    }
+    if (currentPage > 1) {
+      queryObj.p = currentPage;
+    }
 
     dispatch(
       push({
