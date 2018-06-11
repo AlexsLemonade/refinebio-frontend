@@ -32,10 +32,10 @@ export default function downloadsFilesData(dataSet) {
         format: 'tsv'
       },
       {
-        title: `${totalExperiments} Quality Reports`,
+        title: `${totalExperiments} Experiment Metadata Files`,
         description: '1 file per Experiment',
         size: formatBytes(qualityReportSize),
-        format: 'html'
+        format: 'json'
       }
     ]
   };
@@ -43,9 +43,9 @@ export default function downloadsFilesData(dataSet) {
   return data;
 }
 
-// TODO
+// TODO add a better estimation of the size of each sample metadata
 function sampleMetadata(sampleId) {
-  const SAMPLE_SIZE = 1024;
+  const SAMPLE_SIZE = 5 * 1024;
   return SAMPLE_SIZE;
 }
 
@@ -92,7 +92,7 @@ function estimateSampleMetadataSize(dataSet) {
 
 function estimateExperimentMetadataSize(dataSet) {
   // TODO Estimated size of experiment metadata file
-  const EXPERIMENT_SIZE = 2024;
+  const EXPERIMENT_SIZE = 4048;
   return Object.keys(dataSet).length * EXPERIMENT_SIZE;
 }
 
