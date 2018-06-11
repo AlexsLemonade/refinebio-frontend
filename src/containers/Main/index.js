@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
 import './Main.scss';
+import StatsPlaceholder from './summary-stats-placeholder.svg';
 
 const Main = ({ searchTerm, fetchResults, push }) => {
   return (
@@ -79,6 +80,8 @@ const Main = ({ searchTerm, fetchResults, push }) => {
       <section className="main__section main__section--gray">
         <div className="main__container">
           <h2 className="main__heading-1">Summary Statistics</h2>
+
+          <img src={StatsPlaceholder} class="main__stats-placeholder" />
         </div>
       </section>
       <section className="main__section main__section--blue-gradient">
