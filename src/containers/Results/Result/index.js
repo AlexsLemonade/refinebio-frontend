@@ -59,7 +59,7 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
           </div>
           <Link
             className="button button--link"
-            to={`/experiments/${result.id}`}
+            to={`/experiments/${result.id}?ref=search`}
           >
             <h2 className="result__title">{result.title || 'No title.'}</h2>
           </Link>
@@ -108,7 +108,7 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
 
       <Link
         className="button button--secondary"
-        to={`/experiments/${result.id}#samples`}
+        to={`/experiments/${result.id}?ref=search#samples`}
       >
         View Samples
       </Link>
