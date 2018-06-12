@@ -16,6 +16,9 @@ import Privacy from '../../components/Terms/Privacy';
 import Terms from '../../components/Terms/Terms';
 import License from '../../components/Terms/License';
 
+import store from '../../configureStore';
+import { Provider } from 'react-redux';
+
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
  * this helper component.
@@ -42,14 +45,17 @@ const AppContent = () => (
 
 const App = () => {
   return (
-    <Router history={history}>
-      <Layout>
-        <Switch>
-          <Route exact path="/" component={Main} />
-          <Route path="/" component={AppContent} />
-        </Switch>
-      </Layout>
-    </Router>
+    // In order to render `App` individually in the tests, Provider needs to wrap it's contents.
+    <Provider store={store}>
+      <Router history={history}>
+        <Layout>
+          <Switch>
+            <Route exact path="/" component={Main} />
+            <Route path="/" component={AppContent} />
+          </Switch>
+        </Layout>
+      </Router>
+    </Provider>
   );
 };
 
