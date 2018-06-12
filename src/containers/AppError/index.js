@@ -15,13 +15,13 @@ let AppError = ({ goBack }) => (
       </div>
 
       {Raven.lastEventId() && (
-        <p>
+        <div className="error-page__button-row">
           <Button
             text="Submit Feedback"
             buttonStyle="secondary"
             onClick={() => Raven.showReportDialog()}
           />
-        </p>
+        </div>
       )}
     </div>
 
