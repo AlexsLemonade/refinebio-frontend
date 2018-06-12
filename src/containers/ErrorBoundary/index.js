@@ -7,6 +7,14 @@ import { withRouter } from 'react-router';
 
 declare var Raven: any;
 
+/**
+ * This component wraps the entire application, and shows the `AppError` page in order to recover
+ * from errors in the component render lifecycle.
+ *
+ * https://reactjs.org/docs/error-boundaries.html
+ *
+ * Important: It won't catch errors in event handlers, just in the render methods.
+ */
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
