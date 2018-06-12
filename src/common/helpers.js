@@ -45,8 +45,8 @@ export function getRange(n) {
  * @param {object} params
  * @returns {Promise}
  */
-export async function asyncFetch(url, params) {
-  const response = await fetch(url, params);
+export async function asyncFetch(url, params = false) {
+  const response = await (!!params ? fetch(url, params) : fetch(url));
 
   /**
    * You only get an exception (rejection) when there's a network problem.
