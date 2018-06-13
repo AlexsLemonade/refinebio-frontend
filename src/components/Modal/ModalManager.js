@@ -1,5 +1,10 @@
 import React from 'react';
-import Modal from './index';
+import Modal from 'react-modal';
+import Button from '../Button';
+
+import './Modal.scss';
+
+Modal.setAppElement('#root');
 
 // This class makes it easier to create a Component that displays a modal dialog.
 // It abstracts the functionality that saves the state wether the dialog is open or not.
@@ -12,6 +17,10 @@ import Modal from './index';
 //     </div>}
 //   </ModalManager>
 export default class ModalManager extends React.Component {
+  static defaultProps = {
+    modalProps: {}
+  };
+
   state = {
     modalOpen: false
   };
@@ -27,11 +36,26 @@ export default class ModalManager extends React.Component {
         <Modal
           {...this.props.modalProps}
           isOpen={this.state.modalOpen}
-          onClose={this.hideModal}
+          onRequestClose={this.hideModal}
+          overlayClassName={`modal-backdrop ${
+            this.props.modalProps.center
+              ? 'modal-backdrop--center'
+              : 'modal-backdrop--top'
+          }`}
+          className={`modal ${this.props.modalProps.className || ''}`}
+          bodyOpenClassName="modal-open"
         >
           {this.props.children({
             hideModal: this.hideModal
           })}
+
+          <Button
+            className="modal__close"
+            onClick={this.hideModal}
+            buttonStyle="transparent"
+          >
+            <i className="icon ion-close" />
+          </Button>
         </Modal>
       </React.Fragment>
     );
