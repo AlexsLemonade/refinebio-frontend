@@ -10,6 +10,7 @@ import {
   getExperimentCountBySpecies,
   getTotalExperimentsAdded
 } from '../../state/download/reducer';
+import downloadsFilesData from './downloadFilesData';
 
 /**
  * This page is displayed when the user views a download that is different from the one that's
@@ -37,7 +38,7 @@ ViewDownload = connect(
     dataSet,
     experiments,
     dataSetId: ownProps.match.params.id,
-    filesData: downloadFilesData,
+    filesData: downloadsFilesData(dataSet),
     samplesBySpecies:
       samples && dataSet
         ? groupSamplesBySpecies({
@@ -59,30 +60,3 @@ ViewDownload = connect(
 )(ViewDownload);
 
 export default ViewDownload;
-
-const downloadFilesData = [
-  {
-    title: '13 Gene Expression Matrices',
-    description: '1 file per Aggregation Choice',
-    size: '21 MB',
-    format: 'csv'
-  },
-  {
-    title: '13 Sample Metadata Files',
-    description: '1 file per Experiment',
-    size: '26 MB',
-    format: 'txt'
-  },
-  {
-    title: '13 Quality Reports',
-    description: '1 file per Experiment',
-    size: '13 MB',
-    format: 'html'
-  },
-  {
-    title: 'Estimated Download Size',
-    description: ' ',
-    size: '60 MB',
-    format: ''
-  }
-];

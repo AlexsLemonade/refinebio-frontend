@@ -16,6 +16,7 @@ import {
 import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
+import downloadsFilesData from './downloadFilesData';
 
 class Download extends Component {
   componentDidMount() {
@@ -75,7 +76,7 @@ Download = connect(
       samples: samples,
       dataSet: dataSet
     }),
-    filesData: downloadFilesData,
+    filesData: downloadsFilesData(dataSet),
     totalSamples: getTotalSamplesAdded({ dataSet }),
     totalExperiments: getTotalExperimentsAdded({ dataSet }),
     experimentCountBySpecies: getExperimentCountBySpecies({
@@ -91,30 +92,3 @@ Download = connect(
 )(Download);
 
 export default Download;
-
-const downloadFilesData = [
-  {
-    title: '13 Gene Expression Matrices',
-    description: '1 file per Aggregation Choice',
-    size: '21 MB',
-    format: 'csv'
-  },
-  {
-    title: '13 Sample Metadata Files',
-    description: '1 file per Experiment',
-    size: '26 MB',
-    format: 'txt'
-  },
-  {
-    title: '13 Quality Reports',
-    description: '1 file per Experiment',
-    size: '13 MB',
-    format: 'html'
-  },
-  {
-    title: 'Estimated Download Size',
-    description: ' ',
-    size: '60 MB',
-    format: ''
-  }
-];
