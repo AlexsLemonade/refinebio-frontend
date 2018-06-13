@@ -126,4 +126,12 @@
     color: $azure;
     border: none;
   }
+
+  &__stats-placeholder {
+    margin-top: 50px;
+    margin-left: auto;
+    display: block;
+    margin-right: auto;
+    max-width: 100%;
+  }
 }
