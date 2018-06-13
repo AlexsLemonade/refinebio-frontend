@@ -16,6 +16,10 @@ export function getQueryString(queryObj) {
  * @returns {object}
  */
 export function getQueryParamObject(queryString) {
+  if (queryString.startsWith('?')) {
+    queryString = queryString.substr(1);
+  }
+
   const queryObj = {};
   queryString.split('&').forEach(queryParam => {
     const [key, value] = queryParam.split('=');
