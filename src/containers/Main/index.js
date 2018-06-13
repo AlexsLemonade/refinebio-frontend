@@ -77,13 +77,15 @@ const Main = ({ searchTerm, fetchResults, push }) => {
           </div>
         </div>
       </section>
-      <section className="main__section main__section--gray">
-        <div className="main__container">
-          <h2 className="main__heading-1">Summary Statistics</h2>
+      {false && (
+        <section className="main__section main__section--gray">
+          <div className="main__container">
+            <h2 className="main__heading-1">Summary Statistics</h2>
 
-          <img src={StatsPlaceholder} class="main__stats-placeholder" />
-        </div>
-      </section>
+            <img src={StatsPlaceholder} class="main__stats-placeholder" />
+          </div>
+        </section>
+      )}
       <section className="main__section main__section--blue-gradient">
         <div className="main__container">
           <h1 className="main__heading-1">Sign Up for Updates</h1>
