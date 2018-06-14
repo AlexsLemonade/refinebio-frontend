@@ -5,9 +5,11 @@ jobs:
       - image: circleci/python:3-node
     steps:
       - checkout
-      - run: pip install awscli --upgrade --user
       - run: yarn install --ignore-engines
 
       # TODO: Maybe fix this? Or at least delete this comment
       - run: CI=false yarn run build
-      - run: aws s3 sync build s3://$AWS_S3_BUCKET_PATH --delete
+      - run: pip install awscli --upgrade --user
+
+      # I'm not sure why it installs here but it does...
+      - run: ~/.local/bin/aws s3 sync build s3://$AWS_S3_BUCKET_PATH --delete
