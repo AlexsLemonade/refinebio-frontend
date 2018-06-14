@@ -11,10 +11,26 @@ import { connect } from 'react-redux';
 import { updateResultsPerPage } from '../../state/search/actions';
 import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../constants/table';
+import StartSearchingImage from '../../common/images/start-searching.svg';
+import { Link } from 'react-router-dom';
 
 class Results extends Component {
   componentDidMount() {
-    const { location } = this.props;
+    this.handleInit(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.search !== nextProps.location.search) {
+      this.handleInit(nextProps);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.results !== this.props.results) window.scrollTo(0, 0);
+  }
+
+  handleInit = props => {
+    const { location } = props;
 
     const queryObject = getQueryParamObject(location.search.substr(1));
     const { q, p, ...filters } = queryObject;
@@ -22,13 +38,9 @@ class Results extends Component {
     // Unescape keyword comming from the url
     const query = unescape(q);
 
-    this.props.fetchResults(query, p, filters);
-    this.props.fetchOrganisms();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.results !== this.props.results) window.scrollTo(0, 0);
-  }
+    props.fetchResults(query, p, filters);
+    props.fetchOrganisms();
+  };
 
   handleSubmit = values => {
     this.props.fetchResults(values.search);
@@ -71,18 +83,41 @@ class Results extends Component {
         <div className="results__search">
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
-        <div className="results__container">
-          <div className="results__filters">
-            <ResultFilters
-              organisms={organisms}
-              toggledFilter={toggledFilter}
-              filters={filters}
-              appliedFilters={appliedFilters}
-            />
+
+        {isLoading ? (
+          <div className="loader" />
+        ) : !results.length ? (
+          <div className="results__no-results">
+            <h2>Try searching for</h2>
+            <div className="results__suggestions">
+              <Link className="link results__suggestion" to="/results?q=Notch">
+                Notch
+              </Link>
+              <Link
+                className="link results__suggestion"
+                to="/results?q=medulloblastoma"
+              >
+                Medulloblastoma
+              </Link>
+              <Link
+                className="link results__suggestion"
+                to="/results?q=GSE16476"
+              >
+                GSE16476
+              </Link>
+            </div>
+            <img src={StartSearchingImage} alt="Start Searching" />
           </div>
-          {isLoading ? (
-            <div className="loader" />
-          ) : (
+        ) : (
+          <div className="results__container">
+            <div className="results__filters">
+              <ResultFilters
+                organisms={organisms}
+                toggledFilter={toggledFilter}
+                filters={filters}
+                appliedFilters={appliedFilters}
+              />
+            </div>
             <div className="results__list">
               <div className="results__top-bar">
                 {results.length ? <NumberOfResults /> : null}
@@ -117,8 +152,8 @@ class Results extends Component {
                 currentPage={currentPage}
               />
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -152,5 +187,7 @@ NumberOfResults = connect(
     totalResults,
     resultsPerPage
   }),
-  { updateResultsPerPage }
+  { updateResultsPerPage },
+  null,
+  { pure: false }
 )(NumberOfResults);
