@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  deploy:
+  build:
     machine: true
     working_directory: ~/refinebio-frontend
     steps:
