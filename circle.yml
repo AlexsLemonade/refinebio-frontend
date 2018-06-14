@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  deploy:
+    machine: true
+    working_directory: ~/refinebio-frontend
+    steps:
+      - checkout
+      - run: yarn install
+      - run: yarn run build
+      - run: aws s3 sync build s3://$AWS_S3_BUCKET_PATH --delete
