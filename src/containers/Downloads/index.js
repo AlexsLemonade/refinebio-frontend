@@ -46,7 +46,9 @@ class Download extends Component {
     return (
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
-        {!isLoading && !Object.keys(dataSet).length ? (
+        {isLoading && !areDetailsFetched ? (
+          <div className="loader" />
+        ) : !Object.keys(dataSet).length ? (
           <div className="downloads__empty">
             <h3 className="downloads__empty-heading">Your dataset is empty.</h3>
             <Link className="button" to="/">
@@ -61,12 +63,7 @@ class Download extends Component {
         ) : (
           <Fragment>
             <DownloadBar dataSetId={dataSetId} />
-
-            {isLoading && !areDetailsFetched ? (
-              <div className="loader" />
-            ) : (
-              <DownloadDetails {...this.props} />
-            )}
+            <DownloadDetails {...this.props} />
           </Fragment>
         )}
       </div>
