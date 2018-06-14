@@ -82,7 +82,11 @@ const Main = ({ searchTerm, fetchResults, push }) => {
           <div className="main__container">
             <h2 className="main__heading-1">Summary Statistics</h2>
 
-            <img src={StatsPlaceholder} class="main__stats-placeholder" />
+            <img
+              src={StatsPlaceholder}
+              class="main__stats-placeholder"
+              alt="Main Stats Placeholder"
+            />
           </div>
         </section>
       )}

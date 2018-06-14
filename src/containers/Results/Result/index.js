@@ -96,7 +96,7 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             className="result__icon"
             alt="MicroArray Badge Icon"
           />{' '}
-          {result.platform_name.split(/(-|\s)/)[0]}
+          {result.platforms.filter(platform => !!platform).join(',')}
         </li>
       </ul>
       <h3>Description</h3>

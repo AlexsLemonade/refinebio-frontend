@@ -44,13 +44,13 @@ export default function downloadsFilesData(dataSet) {
 }
 
 // TODO add a better estimation of the size of each sample metadata
-function sampleMetadata(sampleId) {
+function sampleMetadata() {
   const SAMPLE_SIZE = 5 * 1024;
   return SAMPLE_SIZE;
 }
 
 // TODO add correct estimate for the matrix of a sample
-function estimateMatrixSizeOfSample(sampleId) {
+function estimateMatrixSizeOfSample() {
   return 20 * 256;
 }
 
@@ -69,7 +69,7 @@ function estimateGeneExpressionSize(dataSet) {
     let experimentSize = 0.5 * estimateMatrixSizeOfSample(experimentSamples[0]);
     for (let sampleId of experimentSamples) {
       // Need size of value column for every sample.
-      let experimentSize =
+      experimentSize =
         experimentSize + 0.5 * estimateMatrixSizeOfSample(experimentSamples[0]);
     }
     totalSize = totalSize + experimentSize;
@@ -103,7 +103,7 @@ function estimateExperimentMetadataSize(dataSet) {
  * @param {*} decimals
  */
 function formatBytes(bytes, decimals = 2) {
-  if (bytes == 0) return '0 Bytes';
+  if (bytes === 0) return '0 Bytes';
   let k = 1024,
     dm = decimals,
     sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
