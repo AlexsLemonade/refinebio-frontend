@@ -39,7 +39,7 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: center;  
+    justify-content: center;
 
     &--summary {
       padding-left: 1.5rem;
@@ -135,6 +135,21 @@
     font-weight: 500;
     max-width: 640px;
     margin-bottom: 0.5rem;
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__empty-heading {
+    margin: 8*8px 0 2*8px;
+  }
+
+  &__empty-image {
+    margin-top: 7.5*8px;
   }
 }
 
