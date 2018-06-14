@@ -12,4 +12,4 @@ jobs:
       - run: pip install awscli --upgrade --user
 
       # I'm not sure why it installs here but it does...
-      - run: ~/.local/bin/aws s3 sync build s3://$AWS_S3_BUCKET_PATH --delete
+      - run: ~/.local/bin/aws s3 sync build s3://staging.refine.bio --delete
