@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  deploy:
     docker:
       - image: circleci/python:3-node
     steps:
@@ -13,3 +13,12 @@ jobs:
 
       # I'm not sure why it installs here but it does...
       - run: ~/.local/bin/aws s3 sync build s3://staging.refine.bio --delete --acl public-read
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: master
