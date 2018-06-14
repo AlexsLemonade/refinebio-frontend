@@ -1,8 +1,8 @@
 version: 2
 jobs:
   build:
-    machine: true
-    working_directory: ~/refinebio-frontend
+    docker:
+      - image: circleci/node
     steps:
       - checkout
       - run: yarn install
