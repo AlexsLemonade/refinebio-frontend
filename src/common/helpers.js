@@ -49,11 +49,10 @@ export function getRange(n) {
  * @param {object} params
  * @returns {Promise}
  */
-export async function asyncFetch(url, params) {
-  const response = await fetch(
-    `${process.env.REACT_APP_API_HOST}${url}`,
-    params
-  );
+
+export async function asyncFetch(url, params = false) {
+  const fullURL = `${process.env.REACT_APP_API_HOST}${url}`;
+  const response = await (!!params ? fetch(fullURL, params) : fetch(fullURL));
 
   /**
    * You only get an exception (rejection) when there's a network problem.

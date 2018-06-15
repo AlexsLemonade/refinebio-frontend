@@ -15,7 +15,8 @@ import NoMatch from '../../containers/NoMatch';
 import Privacy from '../../components/Terms/Privacy';
 import Terms from '../../components/Terms/Terms';
 import License from '../../components/Terms/License';
-
+import store from '../../configureStore';
+import { Provider } from 'react-redux';
 import ErrorBoundary from '../../containers/ErrorBoundary';
 
 /**
@@ -44,16 +45,19 @@ const AppContent = () => (
 
 const App = () => {
   return (
-    <Router history={history}>
-      <Layout>
-        <ErrorBoundary>
-          <Switch>
-            <Route exact path="/" component={Main} />
-            <Route path="/" component={AppContent} />
-          </Switch>
-        </ErrorBoundary>
-      </Layout>
-    </Router>
+    // In order to render `App` individually in the tests, Provider needs to wrap it's contents.
+    <Provider store={store}>
+      <Router history={history}>
+        <Layout>
+          <ErrorBoundary>
+            <Switch>
+              <Route exact path="/" component={Main} />
+              <Route path="/" component={AppContent} />
+            </Switch>
+          </ErrorBoundary>
+        </Layout>
+      </Router>
+    </Provider>
   );
 };
 
