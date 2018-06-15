@@ -82,6 +82,7 @@ export function fetchResultsSucceeded(
     if (searchTerm) {
       queryObj.q = searchTerm;
     }
+
     if (currentPage > 1) {
       queryObj.p = currentPage;
     }
@@ -94,7 +95,7 @@ export function fetchResultsSucceeded(
     dispatch({
       type: 'SEARCH_RESULTS_FETCH_SUCCESS',
       data: {
-        results,
+        results: !!searchTerm ? results : [],
         filters,
         totalResults,
         currentPage,
