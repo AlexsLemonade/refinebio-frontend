@@ -13,7 +13,11 @@ let DownloadBar = ({ dataSetId, shareUrl, startDownload }) => {
     <div className="downloads__bar">
       <ModalManager
         component={showModal => (
-          <Button buttonStyle="secondary" text="Share" onClick={showModal} />
+          <Button
+            buttonStyle="secondary"
+            text="Share Dataset"
+            onClick={showModal}
+          />
         )}
         modalProps={{ center: true, className: 'share-link-modal' }}
       >
