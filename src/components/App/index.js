@@ -15,9 +15,9 @@ import NoMatch from '../../containers/NoMatch';
 import Privacy from '../../components/Terms/Privacy';
 import Terms from '../../components/Terms/Terms';
 import License from '../../components/Terms/License';
-
 import store from '../../configureStore';
 import { Provider } from 'react-redux';
+import ErrorBoundary from '../../containers/ErrorBoundary';
 
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
@@ -49,10 +49,12 @@ const App = () => {
     <Provider store={store}>
       <Router history={history}>
         <Layout>
-          <Switch>
-            <Route exact path="/" component={Main} />
-            <Route path="/" component={AppContent} />
-          </Switch>
+          <ErrorBoundary>
+            <Switch>
+              <Route exact path="/" component={Main} />
+              <Route path="/" component={AppContent} />
+            </Switch>
+          </ErrorBoundary>
         </Layout>
       </Router>
     </Provider>

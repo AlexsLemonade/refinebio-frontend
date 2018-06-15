@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -17,6 +17,8 @@ import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
 import downloadsFilesData from './downloadFilesData';
+import NoDatasetsImage from './../../common/images/no-datasets.svg';
+import { Link } from 'react-router-dom';
 
 class Download extends Component {
   componentDidMount() {
@@ -39,17 +41,30 @@ class Download extends Component {
   }
 
   render() {
-    const { dataSetId, isLoading, areDetailsFetched } = this.props;
+    const { dataSetId, isLoading, areDetailsFetched, dataSet } = this.props;
 
     return (
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
-        <DownloadBar dataSetId={dataSetId} />
-
         {isLoading && !areDetailsFetched ? (
           <div className="loader" />
+        ) : !Object.keys(dataSet).length ? (
+          <div className="downloads__empty">
+            <h3 className="downloads__empty-heading">Your dataset is empty.</h3>
+            <Link className="button" to="/">
+              Search and Add Samples
+            </Link>
+            <img
+              src={NoDatasetsImage}
+              alt="Your dataset is empty"
+              className="downloads__empty-image"
+            />
+          </div>
         ) : (
-          <DownloadDetails {...this.props} />
+          <Fragment>
+            <DownloadBar dataSetId={dataSetId} />
+            <DownloadDetails {...this.props} />
+          </Fragment>
         )}
       </div>
     );

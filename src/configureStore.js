@@ -6,6 +6,8 @@ import history from './history';
 import { CALL_HISTORY_METHOD } from './state/routerActions';
 import { REPORT_ERROR } from './state/reportError';
 
+declare var Raven: any;
+
 const initialState = {};
 
 const customMiddleware = store => next => action => {
@@ -25,9 +27,16 @@ const errorMiddleware = () => next => action => {
     return next(action);
   }
 
-  // log the error into the console
-  // If we wanted we could log these errors to the server here
-  console.log(action.data);
+  let error = action.data;
+
+  if (process.env.NODE_ENV === 'development') {
+    // log exception in console on development
+    console.log(error);
+  } else {
+    // on Production Report error to Raven https://docs.sentry.io/clients/javascript/#manually-reporting-errors
+    Raven.captureException(error);
+  }
+
   return next(action);
 };
 
