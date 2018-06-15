@@ -16,6 +16,10 @@ export function getQueryString(queryObj) {
  * @returns {object}
  */
 export function getQueryParamObject(queryString) {
+  if (queryString.startsWith('?')) {
+    queryString = queryString.substr(1);
+  }
+
   const queryObj = {};
   queryString.split('&').forEach(queryParam => {
     const [key, value] = queryParam.split('=');
@@ -45,8 +49,10 @@ export function getRange(n) {
  * @param {object} params
  * @returns {Promise}
  */
+
 export async function asyncFetch(url, params = false) {
-  const response = await (!!params ? fetch(url, params) : fetch(url));
+  const fullURL = `${process.env.REACT_APP_API_HOST}${url}`;
+  const response = await (!!params ? fetch(fullURL, params) : fetch(fullURL));
 
   /**
    * You only get an exception (rejection) when there's a network problem.

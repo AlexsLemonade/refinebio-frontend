@@ -7,24 +7,14 @@
 }
 
 .modal-backdrop {
-    background: $black;
-    opacity: 0.5;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 1000;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
     overflow: auto;
-    z-index: 1001;
+    background-color: rgba(0,0,0,0.5);
 
     // center vertically the modal dialog
     &--center {
@@ -35,22 +25,24 @@
 
     // refers to modal dialogs that aren't centered and have a fixed distance from the top of the screen
     &--top {
-        padding-top: 200px;
-        padding-bottom: 200px;
+        padding-top: 80px;
+        padding-bottom: 160px;
     }
 
-    &__dialog {
-        position: relative;
-        width: auto;
-        max-width: 500px;
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 16px;
-        border: 1px solid $border-color;	
-        background-color: $white;	
-        box-shadow: 0 2px 20px 0 rgba(0,0,0,0.06);
-    }
+}
+
+.modal {
+    position: relative;
+    width: auto;
+    max-width: 500px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 16px;
+    border: 1px solid $border-color;	
+    background-color: $white;	
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.06);
+    overflow: auto;
 
     &__close {
         position: absolute;
