@@ -83,7 +83,9 @@ const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
           modalProps={{ className: 'samples-modal' }}
         >
           {() => (
-            <SamplesTable sampleIds={species[speciesName].map(x => x.id)} />
+            <SamplesTable
+              accessionCodes={species[speciesName].map(x => x.accession_code)}
+            />
           )}
         </ModalManager>
       </div>
@@ -150,7 +152,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
               )}
               modalProps={{ className: 'samples-modal' }}
             >
-              {() => <SamplesTable sampleIds={experiment.samples} />}
+              {() => <SamplesTable accessionCodes={experiment.samples} />}
             </ModalManager>
           )}
         </div>

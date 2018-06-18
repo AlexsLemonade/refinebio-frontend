@@ -45,18 +45,21 @@ export const removeExperimentSucceeded = dataSet => {
   };
 };
 
-export const removeSamplesFromExperiment = (accessionCode, sampleIds) => {
+export const removeSamplesFromExperiment = (
+  accessionCode,
+  sampleAccessions
+) => {
   return async (dispatch, getState) => {
     dispatch({
       type: 'DOWNLOAD_REMOVE_EXPERIMENT',
       data: {
         accessionCode,
-        sampleIds
+        sampleAccessions
       }
     });
     const { dataSet, dataSetId } = getState().download;
     const filteredSamples = dataSet[accessionCode].filter(
-      sample => sampleIds.indexOf(sample) === -1
+      sample => sampleAccessions.indexOf(sample) === -1
     );
     const newDataSet = { ...dataSet };
     if (filteredSamples.length) {
@@ -80,11 +83,11 @@ export const removeSamplesFromExperiment = (accessionCode, sampleIds) => {
  */
 export const removeSpecies = samples => {
   return async (dispatch, getState) => {
-    const sampleIds = samples.map(sample => sample.id);
+    const sampleAccessions = samples.map(sample => sample.accession_code);
     dispatch({
       type: 'DOWNLOAD_REMOVE_SPECIES',
       data: {
-        sampleIds
+        sampleAccessions
       }
     });
 
@@ -94,7 +97,7 @@ export const removeSpecies = samples => {
       const samples = dataSet[accessionCode];
 
       const filteredSamples = samples.filter(sample => {
-        return sampleIds.indexOf(sample) === -1;
+        return sampleAccessions.indexOf(sample) === -1;
       });
       if (filteredSamples.length) result[accessionCode] = filteredSamples;
       return result;
@@ -134,12 +137,12 @@ export const addExperiment = experiments => {
     const prevDataSet = getState().download.dataSet;
     const newExperiments = experiments.reduce((result, experiment) => {
       if (experiment.samples.length) {
-        const sampleIds = experiment.samples.map(sample => sample.id);
+        const sampleAccessions = experiment.samples;
         result[experiment.accession_code] = prevDataSet[
           experiment.accession_code
         ]
-          ? [...prevDataSet[experiment.accession_code], ...sampleIds]
-          : sampleIds;
+          ? [...prevDataSet[experiment.accession_code], ...sampleAccessions]
+          : sampleAccessions;
       }
       return result;
     }, {});
