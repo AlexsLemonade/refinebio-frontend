@@ -51,7 +51,9 @@ export function getRange(n) {
  */
 
 export async function asyncFetch(url, params = false) {
-  const fullURL = `${process.env.REACT_APP_API_HOST}${url}`;
+  const fullURL = process.env.REACT_APP_API_HOST
+    ? `${process.env.REACT_APP_API_HOST}${url}`
+    : url;
   const response = await (!!params ? fetch(fullURL, params) : fetch(fullURL));
 
   /**
