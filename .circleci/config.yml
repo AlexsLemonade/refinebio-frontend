@@ -1,5 +1,13 @@
 version: 2
 jobs:
+  test:
+    docker:
+      - image: circleci/python:3-node
+    steps:
+      - checkout
+      - run: yarn install --ignore-engines
+      - run: yarn test
+
   deploy:
     docker:
       - image: circleci/python:3-node
@@ -16,9 +24,14 @@ jobs:
 
 workflows:
   version: 2
+  test:
+    jobs:
+      - test
   deploy:
     jobs:
       - deploy:
+          requires:
+            - test
           filters:
             branches:
               only: master
