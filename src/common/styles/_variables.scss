@@ -3,6 +3,7 @@ $white: #FFF;
 $whisper: #FDFDFD;
 $gallery: #D8D8D8;
 $gray: #979797;
+$dusty-gray: #9B9B9B;
 $tundora: #444;
 $black: #000;
 
@@ -29,12 +30,12 @@ $container-spacing: 32px;
 
 
 // FORM ELEMENTS
-$input-normal: #9B9B9B;
+$input-normal: $dusty-gray;
 $input-hover: $input-normal;
 $input-focus: #386DB0;
 
-
-
+// BUTTONS
+$button-disabled: $dusty-gray;
 
 // TABLE
 $table-header-background: #CACACA;
