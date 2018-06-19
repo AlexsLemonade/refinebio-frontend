@@ -24,7 +24,7 @@ export default class SamplesTable extends React.Component {
   };
 
   get totalSamples() {
-    return this.props.sampleIds.length;
+    return this.props.accessionCodes.length;
   }
 
   render() {
@@ -79,7 +79,7 @@ export default class SamplesTable extends React.Component {
   }
 
   fetchData = async (tableState = false) => {
-    const sampleIds = this.props.sampleIds;
+    const accessionCodes = this.props.accessionCodes;
     const { page, pageSize } = this.state;
     // get the backend ready `order_by` param, based on the sort options from the table
     let orderBy = this._getSortParam(tableState);
@@ -89,7 +89,7 @@ export default class SamplesTable extends React.Component {
     let offset = page * pageSize;
 
     const data = await getAllDetailedSamples({
-      ids: sampleIds,
+      accessionCodes,
       orderBy,
       offset,
       limit: pageSize

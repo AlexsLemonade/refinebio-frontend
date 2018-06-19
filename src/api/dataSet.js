@@ -21,7 +21,7 @@ export async function getSamplesAndExperiments(dataSet) {
       const { samples: sampleList } = experimentInfo;
       const response = await Ajax.get('/samples/', {
         limit: 1000000000000000,
-        ids: sampleList.join(',')
+        accession_codes: sampleList.join(',')
       });
       const sampleInfo = response.results;
 

@@ -15,10 +15,15 @@ export async function getDetailedSample(sampleId) {
  * @param {number} offset
  * @param {number} limit
  */
-export async function getAllDetailedSamples({ ids, orderBy, offset, limit }) {
-  if (ids && ids.length) {
+export async function getAllDetailedSamples({
+  accessionCodes,
+  orderBy,
+  offset,
+  limit
+}) {
+  if (accessionCodes && accessionCodes.length) {
     let { results } = await Ajax.get('/samples/', {
-      ids,
+      accession_codes: accessionCodes,
       offset,
       limit,
       order_by: orderBy
