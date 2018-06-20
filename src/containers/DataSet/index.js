@@ -44,28 +44,51 @@ export default DataSet;
 /**
  *
  */
-function DataSetPage({
-  is_processed,
-  is_available,
-  email_address,
-  s3_bucket,
-  s3_key,
-  ...props
-}) {
-  // 1. Check if the dataset is already processed, if true show a link to the download file
-  if (is_processed) {
-    if (is_available) {
-      return <DataSetReady {...props} />;
+class DataSetPage extends React.Component {
+  state = {
+    changedEmail: false
+  };
+
+  handleEmailChange = () => {
+    this.setState({
+      changedEmail: true
+    });
+  };
+
+  render() {
+    const {
+      is_processed,
+      is_available,
+      email_address,
+      s3_bucket,
+      s3_key,
+      ...props
+    } = this.props;
+    // 1. Check if the dataset is already processed, if true show a link to the download file
+    if (is_processed) {
+      if (is_available) {
+        return <DataSetReady {...props} />;
+      } else {
+        return <DataSetExpired />;
+      }
     } else {
-      return <DataSetExpired />;
-    }
-  } else {
-    // 2. if it's not ready to be downloaded, then allow the user to set an email and receive an alert when its ready
-    if (!email_address) {
-      return <DatasetNoEmail {...props} />;
-    } else {
-      // 3. Allow the user to change its email if it's already added
-      return <DataSetWithEmail {...props} email={email_address} />;
+      // 2. if it's not ready to be downloaded, then allow the user to set an email and receive an alert when its ready
+      if (!email_address) {
+        if (!this.state.changedEmail) {
+          return <DatasetNoEmail {...props} />;
+        } else {
+          // 3. Allow the user to change its email if it's already added
+          return (
+            <DataSetWithEmail
+              {...props}
+              email={email_address}
+              handleSubmit={this.handleEmailChange}
+            />
+          );
+        }
+      } else {
+        return 'hi';
+      }
     }
   }
 }
@@ -103,7 +126,7 @@ class DataSetWithEmail extends React.Component {
   };
 
   render() {
-    const { id, email } = this.props;
+    const { id, email, handleSubmit } = this.props;
 
     return (
       <div>
@@ -138,13 +161,14 @@ class DataSetWithEmail extends React.Component {
                     onSubmit={() => {
                       hideModal();
                       this._setEmailUpdated();
+                      handleSubmit();
                     }}
                   />
                 </div>
               )}
             </ModalManager>
 
-            <p>If you haven’t recevied it, please check your spam folders.</p>
+            <p>If you haven’t received it, please check your spam folders.</p>
           </section>
           <div className="dataset__way-image">
             <img src={NextStepsImage} alt="" />
