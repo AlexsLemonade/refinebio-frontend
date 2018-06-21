@@ -10,6 +10,10 @@ import { connect } from 'react-redux';
 import { editEmail, fetchDataSet } from '../../state/dataSet/actions';
 import ModalManager from '../../components/Modal/ModalManager';
 
+import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
+
+import ViewDownload from '../Downloads/ViewDownload';
+
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
  * - Processing: The download file is being created
@@ -27,8 +31,17 @@ class DataSet extends React.Component {
           isLoading ? (
             <div className="loader" />
           ) : (
-            <div className="dataset__container">
-              <DataSetPage {...this.props.dataSet} />
+            <div>
+              <div className="dataset__container">
+                <div className="dataset__message">
+                  <DataSetPage dataSetId={dataSetId} {...this.props.dataSet} />
+                </div>
+              </div>
+              {dataSetId &&
+                !this.props.dataSet.is_processed &&
+                !!this.props.dataSet.email_address && (
+                  <ViewDownload dataSetId={dataSetId} isEmbed={true} />
+                )}
             </div>
           )
         }
@@ -62,6 +75,7 @@ class DataSetPage extends React.Component {
       email_address,
       s3_bucket,
       s3_key,
+      dataSetId,
       ...props
     } = this.props;
     // 1. Check if the dataset is already processed, if true show a link to the download file
@@ -87,7 +101,9 @@ class DataSetPage extends React.Component {
           );
         }
       } else {
-        return 'hi';
+        return (
+          <DataSetProcessing email={email_address} dataSetId={dataSetId} />
+        );
       }
     }
   }
@@ -111,7 +127,7 @@ function DatasetNoEmail({ id }) {
       <EmailForm dataSetId={id} />
 
       <div className="dataset__image">
-        <img src={ProcessingImage} alt="" />
+        <img src={ProcessingImage} alt="We're processing your download file" />
       </div>
     </div>
   );
@@ -193,6 +209,21 @@ class DataSetWithEmail extends React.Component {
       this.setState({ emailUpdated: false });
     }, 5000);
   }
+}
+
+function DataSetProcessing({ email, dataSetId }) {
+  return (
+    <div className="dataset__way-container">
+      <div className="dataset__processed-text">
+        <h1>Your dataset is being processed.</h1>
+        <p>
+          An email with a download link will be sent to <strong>{email}</strong>{' '}
+          when the dataset is ready or you can come back to this page later.
+        </p>
+      </div>
+      <ProcessingDataset loop={true} />
+    </div>
+  );
 }
 
 function DataSetReady({ s3_bucket, s3_key }) {

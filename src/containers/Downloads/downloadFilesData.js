@@ -2,7 +2,7 @@
  * Returns file information estimations for a dataset, used as a helper method for the downloads page
  * ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/25#issuecomment-395870627
  */
-export default function downloadsFilesData(dataSet) {
+export default function downloadsFilesData(dataSet = {}) {
   const totalExperiments = Object.keys(dataSet).length;
   const geneExpressionSize = estimateGeneExpressionSize(dataSet);
   const sampleMetadataSize = estimateSampleMetadataSize(dataSet);

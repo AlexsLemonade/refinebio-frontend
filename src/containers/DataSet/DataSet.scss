@@ -2,11 +2,18 @@
 @import '../../common/styles/variables.scss';
 
 .dataset {
-  &__container {
+  &__message {
     width: 630px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 180px;
+    margin: 12*8px auto;
+  }
+
+  &__container {
+    border-bottom: 1px solid $gray;
+    margin-bottom: 5*8px;
+
+    &:last-of-type {
+      border: none;
+    }
   }
 
   &__image {
@@ -25,6 +32,11 @@
 
   &__way-container {
     display: flex;
+  }
+
+  &__processed-text {
+    min-width: 2/3 * 100%;
+    margin-right: 8*8px;
   }
 
   &__way-image {

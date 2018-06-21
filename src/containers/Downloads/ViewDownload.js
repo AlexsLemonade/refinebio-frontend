@@ -17,15 +17,20 @@ import downloadsFilesData from './downloadFilesData';
  * being created. All the details about that dataset are fetched from the server and stored sepparately
  * from the download data in the store.
  */
-let ViewDownload = ({ fetchDownload, dataSetId, ...props }) => (
+let ViewDownload = ({
+  fetchDownload,
+  dataSetId,
+  isEmbed = false,
+  ...props
+}) => (
   <Loader fetch={fetchDownload}>
     {({ isLoading }) =>
       isLoading ? (
         <div className="loader" />
       ) : (
         <div className="downloads">
-          <h1 className="downloads__heading">Download Dataset</h1>
-          <DownloadBar dataSetId={dataSetId} />
+          {!isEmbed && <h1 className="downloads__heading">Download Dataset</h1>}
+          {!isEmbed && <DownloadBar dataSetId={dataSetId} />}
           <DownloadDetails {...props} />
         </div>
       )
@@ -37,7 +42,7 @@ ViewDownload = connect(
     samples,
     dataSet,
     experiments,
-    dataSetId: ownProps.match.params.id,
+    dataSetId: ownProps.dataSetId || ownProps.match.params.id,
     filesData: downloadsFilesData(dataSet),
     samplesBySpecies:
       samples && dataSet
@@ -55,7 +60,11 @@ ViewDownload = connect(
   }),
   (dispatch, ownProps) => ({
     fetchDownload: () =>
-      dispatch(fetchDataSetDetailsForView(ownProps.match.params.id))
+      dispatch(
+        fetchDataSetDetailsForView(
+          ownProps.dataSetId || ownProps.match.params.id
+        )
+      )
   })
 )(ViewDownload);
 
