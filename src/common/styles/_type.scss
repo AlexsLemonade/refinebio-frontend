@@ -49,5 +49,14 @@ p {
 .link {
   color: $azure;
   border-bottom: 1px solid currentColor;
+
+  &:hover {
+    color: lighten($azure, 10%);
+  }
+
+  &:focus,
+  &:active {
+    color: darken($azure, 10%);
+  }
 }
 

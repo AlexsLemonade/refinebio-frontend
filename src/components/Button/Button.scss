@@ -1,8 +1,11 @@
 @import '../../common/styles/variables';
 
+$default-bg: $azure;
+$default-hover: #417AC2;
+$default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
+
 .button {
-  background-color: $azure;
-  border: 1px solid currentColor;
+  background-color: $default-bg;
   border-radius: 3px;
   color: $white;
   font-family: 'Lato', sans-serif;
@@ -12,20 +15,32 @@
   display: inline-block;
   white-space: nowrap;
 
+  &:hover,
+  &:active,
+  &:focus {
+    background: $default-hover;
+    color: $white;
+    border-color: $default-hover;
+  }
+
+  &:active,
+  &:focus {
+    box-shadow: $default-active-shadow;
+  }
+
+  &:disabled {
+    background-color: $button-disabled;
+  }
+
   &--secondary {
     background: none;
     color: $azure;
-  }
+    border: 1px solid currentColor;
 
-  &--plain {
-    color: $azure;
-    font-size: 0.8rem;
-    border: 0;
-    border-bottom: 1px solid currentColor;
-    line-height: 1;
-    border-radius: 0;
-    background: none;
-    padding: 0;
+    &:disabled {
+      background: none;
+      color: $button-disabled;
+    }
   }
 
   &--remove {
@@ -38,6 +53,19 @@
     background-color: transparent;
     padding: 0;
     color: $black;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background: none;
+      color: $default-hover;
+      box-shadow: none;
+    }
+
+    &:active,
+    &:focus {
+      color: darken($azure, 10%);
+    }
   }
 
   // button will look like a text link
@@ -45,5 +73,16 @@
     @extend .button--transparent;
     color: $link-color;
     white-space: normal;
+  }
+
+  &--plain {
+    @extend .button--link;
+    font-size: 0.8rem;
+    border-bottom: 1px solid currentColor;
+    line-height: 1;
+
+    &:hover {
+      color: $default-hover;
+    }
   }
 }
