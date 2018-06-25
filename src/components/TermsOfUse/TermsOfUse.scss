@@ -1,0 +1,9 @@
+.terms-of-use {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__checkbox {
+    margin-top: 0;
+  }
+}

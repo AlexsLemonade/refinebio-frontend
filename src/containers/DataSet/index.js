@@ -3,6 +3,7 @@ import { getAmazonDownloadLinkUrl } from '../../common/helpers';
 import Loader from '../../components/Loader';
 import ProcessingImage from './download-processing.svg';
 import NextStepsImage from './download-next-steps.svg';
+import DownloadImage from './download-dataset.svg';
 import './DataSet.scss';
 import { reduxForm, Field } from 'redux-form';
 import Button from '../../components/Button';
@@ -13,6 +14,7 @@ import ModalManager from '../../components/Modal/ModalManager';
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
 
 import ViewDownload from '../Downloads/ViewDownload';
+import TermsOfUse from '../../components/TermsOfUse';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -38,8 +40,8 @@ class DataSet extends React.Component {
                 </div>
               </div>
               {dataSetId &&
-                !this.props.dataSet.is_processed &&
-                !!this.props.dataSet.email_address && (
+                (this.props.dataSet.is_processed ||
+                  !!this.props.dataSet.email_address) && (
                   <ViewDownload dataSetId={dataSetId} isEmbed={true} />
                 )}
             </div>
@@ -230,15 +232,13 @@ function DataSetReady({ s3_bucket, s3_key }) {
   const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
   return (
     <div className="dataset__way-container">
-      <div>
-        <h1>Your dataset is ready</h1>
-        <a href={downloadLink} className="button">
-          Download
-        </a>
+      <div className="dataset__processed-text">
+        <h1>Your dataset is ready for download!</h1>
+        <TermsOfUse downloadLink={downloadLink} />
       </div>
 
       <div className="dataset__way-image">
-        <img src={NextStepsImage} alt="" />
+        <img src={DownloadImage} alt="" />
       </div>
     </div>
   );

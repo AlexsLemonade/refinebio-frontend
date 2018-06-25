@@ -28,8 +28,15 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
     box-shadow: $default-active-shadow;
   }
 
-  &:disabled {
+  &:disabled,
+  &--disabled {
     background-color: $button-disabled;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: $button-disabled;
+    }
   }
 
   &--secondary {

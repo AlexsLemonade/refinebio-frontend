@@ -3,7 +3,7 @@
 
 .dataset {
   &__message {
-    width: 630px;
+    width: 650px;
     margin: 12*8px auto;
   }
 
@@ -32,6 +32,8 @@
 
   &__way-container {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__processed-text {
