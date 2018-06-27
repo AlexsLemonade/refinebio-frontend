@@ -9,6 +9,7 @@ import { reduxForm, Field } from 'redux-form';
 import Button from '../../components/Button';
 import { connect } from 'react-redux';
 import { editEmail, fetchDataSet } from '../../state/dataSet/actions';
+import { startDownload } from '../../state/download/actions';
 import ModalManager from '../../components/Modal/ModalManager';
 
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
@@ -36,7 +37,11 @@ class DataSet extends React.Component {
             <div>
               <div className="dataset__container">
                 <div className="dataset__message">
-                  <DataSetPage dataSetId={dataSetId} {...this.props.dataSet} />
+                  <DataSetPage
+                    dataSetId={dataSetId}
+                    startDownload={this.props.startDownload}
+                    {...this.props.dataSet}
+                  />
                 </div>
               </div>
               {dataSetId &&
@@ -52,7 +57,8 @@ class DataSet extends React.Component {
   }
 }
 DataSet = connect(({ dataSet }) => ({ dataSet }), {
-  fetchDataSet
+  fetchDataSet,
+  startDownload
 })(DataSet);
 export default DataSet;
 
@@ -117,13 +123,13 @@ class DataSetPage extends React.Component {
 class DatasetNoEmail extends React.Component {
   state = {
     agreedToTerms: false,
-    hasToken: false
+    token: null
   };
 
   componentDidMount() {
     const token = localStorage.getItem('refinebio-token');
     if (!!token) {
-      this.setState({ hasToken: true });
+      this.setState({ token });
     }
   }
 
@@ -132,7 +138,7 @@ class DatasetNoEmail extends React.Component {
   };
 
   render() {
-    const { id } = this.props;
+    const { id, startDownload } = this.props;
     return (
       <div>
         <h1>
@@ -146,13 +152,22 @@ class DatasetNoEmail extends React.Component {
 
         <EmailForm
           dataSetId={id}
-          isSubmitDisabled={!this.state.agreedToTerms && !this.state.hasToken}
+          isSubmitDisabled={!this.state.agreedToTerms && !this.state.token}
           onSubmit={async () => {
             const token = await (await fetch('/token/')).json();
+            await fetch(`/token/${token.id}/`, {
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: JSON.stringify({ ...token, is_activated: true })
+            });
+
             localStorage.setItem('refinebio-token', token.id);
+            startDownload(token.id);
           }}
         />
-        {!this.state.hasToken && (
+        {!this.state.token && (
           <TermsOfUse
             agreedToTerms={this.state.agreedToTerms}
             handleToggle={this.handleAgreedToTerms}
