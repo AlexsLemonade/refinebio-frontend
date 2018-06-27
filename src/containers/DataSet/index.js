@@ -142,12 +142,12 @@ class DatasetNoEmail extends React.Component {
     return (
       <div>
         <h1>
-          We’re putting your download file together. It usually takes 15- 20
-          minutes.
+          We're ready to start putting your download files together. It usually
+          takes about 15-20 minutes.
         </h1>
         <h2>
-          Enter your email and we will email you when the files are ready for
-          download.
+          Enter your email and we will email you the download link when your
+          files are ready.
         </h2>
 
         <EmailForm

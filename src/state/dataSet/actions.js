@@ -27,13 +27,14 @@ export const fetchDataSet = dataSetId => async dispatch => {
 };
 
 export const editEmail = ({ dataSetId, email }) => async dispatch => {
+  const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
   await asyncFetch(`/dataset/${dataSetId}/`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json'
     },
     body: JSON.stringify({
-      data: {},
+      data: dataSet.data,
       email_address: email
     })
   });
