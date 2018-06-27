@@ -1,26 +1,18 @@
 import React, { Component } from 'react';
 import Checkbox from '../Checkbox';
 import { Link } from 'react-router-dom';
+import Button from '../Button';
 import './TermsOfUse.scss';
 
 class TermsOfUse extends Component {
-  state = {
-    agreedToTerms: false
-  };
-
-  handleAgreedToTerms = () => {
-    this.setState({ agreedToTerms: !this.state.agreedToTerms }, () => {
-      localStorage.setItem('agreedToRefinebioTOS', this.state.agreedToTerms);
-    });
-  };
-
   render() {
+    const { agreedToTerms, handleToggle } = this.props;
     return (
       <div className="terms-of-use">
         <Checkbox
           className="terms-of-use__checkbox"
-          onToggle={this.handleAgreedToTerms}
-          checked={this.state.agreedToTerms}
+          onToggle={handleToggle}
+          checked={agreedToTerms}
           name="termsOfUse"
         >
           I agree to the{' '}
@@ -28,14 +20,6 @@ class TermsOfUse extends Component {
             Terms of Use
           </Link>
         </Checkbox>
-        <a
-          href={this.props.downloadLink}
-          className={`button ${
-            !this.state.agreedToTerms ? 'button--disabled' : ''
-          }`}
-        >
-          Download Now
-        </a>
       </div>
     );
   }

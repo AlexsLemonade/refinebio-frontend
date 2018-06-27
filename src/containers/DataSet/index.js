@@ -114,25 +114,59 @@ class DataSetPage extends React.Component {
 /**
  * This component gets rendereded in the DataSet page, when no email has been assigned
  */
-function DatasetNoEmail({ id }) {
-  return (
-    <div>
-      <h1>
-        We’re putting your download file together. It usually takes 15- 20
-        minutes.
-      </h1>
-      <h2>
-        Enter your email and we will email you when the files are ready for
-        download.
-      </h2>
+class DatasetNoEmail extends React.Component {
+  state = {
+    agreedToTerms: false,
+    hasToken: false
+  };
 
-      <EmailForm dataSetId={id} />
+  componentDidMount() {
+    const token = localStorage.getItem('refinebio-token');
+    if (!!token) {
+      this.setState({ hasToken: true });
+    }
+  }
 
-      <div className="dataset__image">
-        <img src={ProcessingImage} alt="We're processing your download file" />
+  handleAgreedToTerms = () => {
+    this.setState({ agreedToTerms: !this.state.agreedToTerms });
+  };
+
+  render() {
+    const { id } = this.props;
+    return (
+      <div>
+        <h1>
+          We’re putting your download file together. It usually takes 15- 20
+          minutes.
+        </h1>
+        <h2>
+          Enter your email and we will email you when the files are ready for
+          download.
+        </h2>
+
+        <EmailForm
+          dataSetId={id}
+          isSubmitDisabled={!this.state.agreedToTerms && !this.state.hasToken}
+          onSubmit={async () => {
+            const token = await (await fetch('/token/')).json();
+            localStorage.setItem('refinebio-token', token.id);
+          }}
+        />
+        {!this.state.hasToken && (
+          <TermsOfUse
+            agreedToTerms={this.state.agreedToTerms}
+            handleToggle={this.handleAgreedToTerms}
+          />
+        )}
+        <div className="dataset__image">
+          <img
+            src={ProcessingImage}
+            alt="We're processing your download file"
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 /**
@@ -228,20 +262,60 @@ function DataSetProcessing({ email, dataSetId }) {
   );
 }
 
-function DataSetReady({ s3_bucket, s3_key }) {
-  const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
-  return (
-    <div className="dataset__way-container">
-      <div className="dataset__processed-text">
-        <h1>Your dataset is ready for download!</h1>
-        <TermsOfUse downloadLink={downloadLink} />
-      </div>
+class DataSetReady extends React.Component {
+  state = {
+    agreedToTerms: false,
+    hasToken: false
+  };
 
-      <div className="dataset__way-image">
-        <img src={DownloadImage} alt="" />
+  componentDidMount() {
+    const token = localStorage.getItem('refinebio-token');
+    if (!!token) {
+      this.setState({ hasToken: true });
+    }
+  }
+
+  handleAgreedToTerms = () => {
+    this.setState({ agreedToTerms: !this.state.agreedToTerms });
+  };
+
+  handleSubmit = async () => {
+    if (!this.state.hasToken) {
+      const token = await (await fetch('/token/')).json();
+      localStorage.setItem('refinebio-token', token.id);
+    }
+    const { s3_bucket, s3_key } = this.props;
+    const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
+    window.location.href = downloadLink;
+  };
+
+  render() {
+    return (
+      <div className="dataset__way-container">
+        <div className="dataset__processed-text">
+          <h1>Your dataset is ready for download!</h1>
+          <div className="dataset__way-container">
+            {!this.state.hasToken && (
+              <TermsOfUse
+                agreedToTerms={this.state.agreedToTerms}
+                handleToggle={this.handleAgreedToTerms}
+              />
+            )}
+            <Button
+              onClick={this.handleSubmit}
+              isDisabled={!this.state.agreedToTerms && !this.state.hasToken}
+            >
+              Download Now
+            </Button>
+          </div>
+        </div>
+
+        <div className="dataset__way-image">
+          <img src={DownloadImage} alt="" />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 function DataSetExpired() {
@@ -255,7 +329,7 @@ function DataSetExpired() {
 /**
  * This form can be used to edit the email that's associated with a dataset
  */
-let EmailForm = ({ handleSubmit }) => {
+let EmailForm = ({ handleSubmit, isSubmitDisabled }) => {
   return (
     <form className="form-edit-email" onSubmit={handleSubmit}>
       <Field
@@ -265,7 +339,7 @@ let EmailForm = ({ handleSubmit }) => {
         placeholder="jdoe@example.com"
         className="input-text form-edit-email__text"
       />
-      <Button text="Submit" />
+      <Button text="Submit" isDisabled={isSubmitDisabled} />
     </form>
   );
 };
