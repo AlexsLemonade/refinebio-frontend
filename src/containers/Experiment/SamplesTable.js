@@ -316,8 +316,17 @@ function GeneIdentifierConversion() {
     <div>
       <h3>Gene Identifier Conversion</h3>
       <p>
-        The gene identifiers were converted to Ensembl Gene Identifiers using
-        g:Profiler (version 2.0.1)
+        The gene identifiers were detected and converted to Ensembl gene IDs
+        using our{' '}
+        <a
+          href="https://github.com/AlexsLemonade/identifier-refinery"
+          className="link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          custom mappings
+        </a>{' '}
+        and pipeline.
       </p>
     </div>
   );
@@ -361,7 +370,7 @@ function ScanModal({ sample, scanType }) {
             </div>
           </div>
 
-          <ScanProtocol />
+          <ScanProtocol scanType={scanType} />
 
           <section className="processing-info-modal__section">
             <SubmitterSuppliedProtocol />
@@ -372,17 +381,15 @@ function ScanModal({ sample, scanType }) {
   );
 }
 
-function ScanProtocol() {
+function ScanProtocol({ scanType }) {
+  const versionInfo = _getScanVersionInfo(scanType);
   return (
     <div>
       <h3>SCAN</h3>
       <p>
-        SCAN (Single Channel Array Normalization) is a normalization method for
-        single channel (Affymetrix) microarrays that allows us to process
-        individual samples. SCAN models and corrects for the effect of technical
-        bias, such as GC content, using a mixture-modeling approach. For more
-        information about this approach, see the primary publication (Piccolo,
-        et al. Genomics. 2012.{' '}
+        {scanType === PIPELINES.AffymetrixSCAN
+          ? 'SCAN (Single Channel Array Normalization) is a normalization method for single channel (Affymetrix) microarrays that allows us to process individual samples. SCAN models and corrects for the effect of technical bias, such as GC content, using a mixture-modeling approach. For more information about this approach, see the primary publication (Piccolo, et al. Genomics. 2012.'
+          : 'SCAN (Single Channel Array Normalization) is a normalization method for single channel microarrays that allows us to process individual samples. It was originally developed for Affymetrix microarrays. In our system, it has been adapted for Illumina BeadArrays. SCAN models and corrects for the effect of technical bias, such as GC content, using a mixture-modeling approach. For more information about this approach, see the primary publication (Piccolo, et al. Genomics. 2012. '}
         <a
           href="http://doi.org/10.1016/j.ygeno.2012.08.003"
           target="_blank"
@@ -390,35 +397,49 @@ function ScanProtocol() {
           className="button button--link"
         >
           DOI: 10.1016/j.ygeno.2012.08.003
-        </a>) and the SCAN.UPC bioconductor package documentation (<a
-          href="http://doi.org/10.1016/j.ygeno.2012.08.003"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="button button--link"
-        >
-          DOI: 10.18129/B9.bioc.SCAN.UPC
-        </a>)
+        </a>){' '}
+        {scanType === PIPELINES.AffymetrixSCAN ? (
+          <span>
+            and the SCAN.UPC bioconductor package documentation (<a
+              href="http://doi.org/10.1016/j.ygeno.2012.08.003"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button button--link"
+            >
+              DOI: 10.18129/B9.bioc.SCAN.UPC
+            </a>).
+          </span>
+        ) : (
+          '.'
+        )}
       </p>
 
       <h3 className="processing-info-modal__subtitle">Version Information</h3>
       <table>
         <tbody>
-          <tr>
-            <td className="processing-info-modal__version">SCAN</td>
-            <td>0.2</td>
-          </tr>
-          <tr>
-            <td className="processing-info-modal__version">BrainArray</td>
-            <td>0.4.1</td>
-          </tr>
-          <tr>
-            <td className="processing-info-modal__version">Platform Design</td>
-            <td>1.3</td>
-          </tr>
+          {Object.keys(versionInfo).map(packageName => (
+            <tr>
+              <td className="processing-info-modal__version">{packageName}</td>
+              <td>{versionInfo[packageName]}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
+}
+
+function _getScanVersionInfo(scanType) {
+  if (scanType === PIPELINES.AffymetrixSCAN) {
+    return {
+      'SCAN.UPC': '2.20.0',
+      Brainarray: '22.0.0'
+    };
+  } else if (scanType === PIPELINES.IlluminaSCAN) {
+    return {
+      'Illumina Bioconductor annotation packages': '1.26.0'
+    };
+  }
 }
 
 function SalmonTximportModal({ sample }) {
@@ -485,11 +506,11 @@ function SalmonTximportModal({ sample }) {
               </tr>
               <tr>
                 <td className="processing-info-modal__version">txtimport</td>
-                <td>1.8</td>
+                <td>1.6.0</td>
               </tr>
               <tr>
-                <td className="processing-info-modal__version">Geonme Build</td>
-                <td>1.3</td>
+                <td className="processing-info-modal__version">Genome build</td>
+                <td>GRCh38.p12</td>
               </tr>
             </tbody>
           </table>
