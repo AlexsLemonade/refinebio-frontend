@@ -94,12 +94,12 @@ class DataSetPage extends React.Component {
         return <DataSetExpired />;
       }
     } else {
-      // 2. if it's not ready to be downloaded, then allow the user to set an email and receive an alert when its ready
+      // 2. If it's not ready to be downloaded, then allow the user to set an email and receive an alert when its ready
       if (!email_address) {
         if (!this.state.changedEmail) {
           return <DatasetNoEmail {...props} />;
         } else {
-          // 3. Allow the user to change its email if it's already added
+          // 3. Allow the user to change his/her email if it's already added
           return (
             <DataSetWithEmail
               {...props}
@@ -146,7 +146,7 @@ class DatasetNoEmail extends React.Component {
           takes about 15-20 minutes.
         </h1>
         <h2>
-          Enter your email and we will email you the download link when your
+          Enter your email and we will send you the download link when your
           files are ready.
         </h2>
 
