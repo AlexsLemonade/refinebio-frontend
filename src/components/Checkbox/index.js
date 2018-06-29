@@ -1,8 +1,8 @@
 import React from 'react';
 import './Checkbox.scss';
 
-const Checkbox = ({ name, onToggle, checked, children }) => (
-  <div className="checkbox">
+const Checkbox = ({ name, onToggle, checked, children, className }) => (
+  <div className={`checkbox ${className}`}>
     <input
       type="checkbox"
       className="checkbox__input"

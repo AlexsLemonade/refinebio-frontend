@@ -4,7 +4,6 @@ import {
   getSamplesAndExperiments,
   updateDataSet
 } from '../../api/dataSet';
-import { push } from '../routerActions';
 
 /**
  * Removes all experiments with the corresponding accession codes from dataset
@@ -228,12 +227,11 @@ export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
   };
 };
 
-export const startDownload = () => async (dispatch, getState) => {
+export const startDownload = tokenId => async (dispatch, getState) => {
   const { dataSetId, dataSet } = getState().download;
   await Ajax.put(`/dataset/${dataSetId}/`, {
     start: true,
-    data: dataSet
+    data: dataSet,
+    token_id: tokenId
   });
-  // Use `push` action to navigate to the dataset url
-  dispatch(push(`/dataset/${dataSetId}`));
 };

@@ -7,6 +7,7 @@ import './DownloadBar.scss';
 import { startDownload } from '../../state/download/actions';
 import { connect } from 'react-redux';
 import { getDomain } from '../../common/helpers';
+import { Link } from 'react-router-dom';
 
 let DownloadBar = ({ dataSetId, shareUrl, startDownload }) => {
   return (
@@ -43,7 +44,9 @@ let DownloadBar = ({ dataSetId, shareUrl, startDownload }) => {
             <Dropdown options={['None', 'Samples']} selectedOption={'None'} />
           </label>
         </div>
-        <Button text="Download" onClick={startDownload} />
+        <Link className="button" to={`/dataset/${dataSetId}`}>
+          Download
+        </Link>
       </div>
     </div>
   );

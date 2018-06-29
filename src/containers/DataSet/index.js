@@ -3,12 +3,19 @@ import { getAmazonDownloadLinkUrl } from '../../common/helpers';
 import Loader from '../../components/Loader';
 import ProcessingImage from './download-processing.svg';
 import NextStepsImage from './download-next-steps.svg';
+import DownloadImage from './download-dataset.svg';
 import './DataSet.scss';
 import { reduxForm, Field } from 'redux-form';
 import Button from '../../components/Button';
 import { connect } from 'react-redux';
 import { editEmail, fetchDataSet } from '../../state/dataSet/actions';
+import { startDownload } from '../../state/download/actions';
 import ModalManager from '../../components/Modal/ModalManager';
+
+import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
+
+import ViewDownload from '../Downloads/ViewDownload';
+import TermsOfUse from '../../components/TermsOfUse';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -27,8 +34,21 @@ class DataSet extends React.Component {
           isLoading ? (
             <div className="loader" />
           ) : (
-            <div className="dataset__container">
-              <DataSetPage {...this.props.dataSet} />
+            <div>
+              <div className="dataset__container">
+                <div className="dataset__message">
+                  <DataSetPage
+                    dataSetId={dataSetId}
+                    startDownload={this.props.startDownload}
+                    {...this.props.dataSet}
+                  />
+                </div>
+              </div>
+              {dataSetId &&
+                (this.props.dataSet.is_processed ||
+                  !!this.props.dataSet.email_address) && (
+                  <ViewDownload dataSetId={dataSetId} isEmbed={true} />
+                )}
             </div>
           )
         }
@@ -37,35 +57,62 @@ class DataSet extends React.Component {
   }
 }
 DataSet = connect(({ dataSet }) => ({ dataSet }), {
-  fetchDataSet
+  fetchDataSet,
+  startDownload
 })(DataSet);
 export default DataSet;
 
 /**
  *
  */
-function DataSetPage({
-  is_processed,
-  is_available,
-  email_address,
-  s3_bucket,
-  s3_key,
-  ...props
-}) {
-  // 1. Check if the dataset is already processed, if true show a link to the download file
-  if (is_processed) {
-    if (is_available) {
-      return <DataSetReady {...props} />;
+class DataSetPage extends React.Component {
+  state = {
+    changedEmail: false
+  };
+
+  handleEmailChange = () => {
+    this.setState({
+      changedEmail: true
+    });
+  };
+
+  render() {
+    const {
+      is_processed,
+      is_available,
+      email_address,
+      s3_bucket,
+      s3_key,
+      dataSetId,
+      ...props
+    } = this.props;
+    // 1. Check if the dataset is already processed, if true show a link to the download file
+    if (is_processed) {
+      if (is_available) {
+        return <DataSetReady {...props} />;
+      } else {
+        return <DataSetExpired />;
+      }
     } else {
-      return <DataSetExpired />;
-    }
-  } else {
-    // 2. if it's not ready to be downloaded, then allow the user to set an email and receive an alert when its ready
-    if (!email_address) {
-      return <DatasetNoEmail {...props} />;
-    } else {
-      // 3. Allow the user to change its email if it's already added
-      return <DataSetWithEmail {...props} email={email_address} />;
+      // 2. If it's not ready to be downloaded, then allow the user to set an email and receive an alert when its ready
+      if (!email_address) {
+        if (!this.state.changedEmail) {
+          return <DatasetNoEmail {...props} />;
+        } else {
+          // 3. Allow the user to change his/her email if it's already added
+          return (
+            <DataSetWithEmail
+              {...props}
+              email={email_address}
+              handleSubmit={this.handleEmailChange}
+            />
+          );
+        }
+      } else {
+        return (
+          <DataSetProcessing email={email_address} dataSetId={dataSetId} />
+        );
+      }
     }
   }
 }
@@ -73,25 +120,68 @@ function DataSetPage({
 /**
  * This component gets rendereded in the DataSet page, when no email has been assigned
  */
-function DatasetNoEmail({ id }) {
-  return (
-    <div>
-      <h1>
-        We’re putting your download file together. It usually takes 15- 20
-        minutes.
-      </h1>
-      <h2>
-        Enter your email and we will email you when the files are ready for
-        download.
-      </h2>
+class DatasetNoEmail extends React.Component {
+  state = {
+    agreedToTerms: false,
+    token: null
+  };
 
-      <EmailForm dataSetId={id} />
+  componentDidMount() {
+    const token = localStorage.getItem('refinebio-token');
+    if (!!token) {
+      this.setState({ token });
+    }
+  }
 
-      <div className="dataset__image">
-        <img src={ProcessingImage} alt="" />
+  handleAgreedToTerms = () => {
+    this.setState({ agreedToTerms: !this.state.agreedToTerms });
+  };
+
+  render() {
+    const { id, startDownload } = this.props;
+    return (
+      <div>
+        <h1>
+          We're ready to start putting your download files together. It usually
+          takes about 15-20 minutes.
+        </h1>
+        <h2>
+          Enter your email and we will send you the download link when your
+          files are ready.
+        </h2>
+
+        <EmailForm
+          dataSetId={id}
+          isSubmitDisabled={!this.state.agreedToTerms && !this.state.token}
+          onSubmit={async () => {
+            const token = await (await fetch('/token/')).json();
+            await fetch(`/token/${token.id}/`, {
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: JSON.stringify({ ...token, is_activated: true })
+            });
+
+            localStorage.setItem('refinebio-token', token.id);
+            startDownload(token.id);
+          }}
+        />
+        {!this.state.token && (
+          <TermsOfUse
+            agreedToTerms={this.state.agreedToTerms}
+            handleToggle={this.handleAgreedToTerms}
+          />
+        )}
+        <div className="dataset__image">
+          <img
+            src={ProcessingImage}
+            alt="We're processing your download file"
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 /**
@@ -103,7 +193,7 @@ class DataSetWithEmail extends React.Component {
   };
 
   render() {
-    const { id, email } = this.props;
+    const { id, email, handleSubmit } = this.props;
 
     return (
       <div>
@@ -138,13 +228,14 @@ class DataSetWithEmail extends React.Component {
                     onSubmit={() => {
                       hideModal();
                       this._setEmailUpdated();
+                      handleSubmit();
                     }}
                   />
                 </div>
               )}
             </ModalManager>
 
-            <p>If you haven’t recevied it, please check your spam folders.</p>
+            <p>If you haven’t received it, please check your spam folders.</p>
           </section>
           <div className="dataset__way-image">
             <img src={NextStepsImage} alt="" />
@@ -171,22 +262,75 @@ class DataSetWithEmail extends React.Component {
   }
 }
 
-function DataSetReady({ s3_bucket, s3_key }) {
-  const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
+function DataSetProcessing({ email, dataSetId }) {
   return (
     <div className="dataset__way-container">
-      <div>
-        <h1>Your dataset is ready</h1>
-        <a href={downloadLink} className="button">
-          Download
-        </a>
+      <div className="dataset__processed-text">
+        <h1>Your dataset is being processed.</h1>
+        <p>
+          An email with a download link will be sent to <strong>{email}</strong>{' '}
+          when the dataset is ready or you can come back to this page later.
+        </p>
       </div>
-
-      <div className="dataset__way-image">
-        <img src={NextStepsImage} alt="" />
-      </div>
+      <ProcessingDataset loop={true} />
     </div>
   );
+}
+
+class DataSetReady extends React.Component {
+  state = {
+    agreedToTerms: false,
+    hasToken: false
+  };
+
+  componentDidMount() {
+    const token = localStorage.getItem('refinebio-token');
+    if (!!token) {
+      this.setState({ hasToken: true });
+    }
+  }
+
+  handleAgreedToTerms = () => {
+    this.setState({ agreedToTerms: !this.state.agreedToTerms });
+  };
+
+  handleSubmit = async () => {
+    if (!this.state.hasToken) {
+      const token = await (await fetch('/token/')).json();
+      localStorage.setItem('refinebio-token', token.id);
+    }
+    const { s3_bucket, s3_key } = this.props;
+    const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
+    window.location.href = downloadLink;
+  };
+
+  render() {
+    return (
+      <div className="dataset__way-container">
+        <div className="dataset__processed-text">
+          <h1>Your dataset is ready for download!</h1>
+          <div className="dataset__way-container">
+            {!this.state.hasToken && (
+              <TermsOfUse
+                agreedToTerms={this.state.agreedToTerms}
+                handleToggle={this.handleAgreedToTerms}
+              />
+            )}
+            <Button
+              onClick={this.handleSubmit}
+              isDisabled={!this.state.agreedToTerms && !this.state.hasToken}
+            >
+              Download Now
+            </Button>
+          </div>
+        </div>
+
+        <div className="dataset__way-image">
+          <img src={DownloadImage} alt="" />
+        </div>
+      </div>
+    );
+  }
 }
 
 function DataSetExpired() {
@@ -200,7 +344,7 @@ function DataSetExpired() {
 /**
  * This form can be used to edit the email that's associated with a dataset
  */
-let EmailForm = ({ handleSubmit }) => {
+let EmailForm = ({ handleSubmit, isSubmitDisabled }) => {
   return (
     <form className="form-edit-email" onSubmit={handleSubmit}>
       <Field
@@ -210,7 +354,7 @@ let EmailForm = ({ handleSubmit }) => {
         placeholder="jdoe@example.com"
         className="input-text form-edit-email__text"
       />
-      <Button text="Submit" />
+      <Button text="Submit" isDisabled={isSubmitDisabled} />
     </form>
   );
 };
