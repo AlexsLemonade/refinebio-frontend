@@ -52,7 +52,7 @@ export default class SamplesTable extends React.Component {
           return (
             <div>
               <div className="experiment__sample-commands">
-                <div>
+                <div className="experiment__per-page-dropdown">
                   Show
                   <Dropdown
                     options={PAGE_SIZES}

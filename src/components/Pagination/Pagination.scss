@@ -4,6 +4,11 @@
   align-items: center;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+
+  @include tablet {
+    flex-direction: row;
+  }
 
   &__ends {
     font-size: 14px;

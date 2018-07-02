@@ -6,9 +6,11 @@
     width: 90%;
     margin: 0 auto;
 
-    &--flex {
-      display: flex;
-      justify-content: space-between;
+    @include tablet {
+      &--flex {
+        display: flex;
+        justify-content: space-between;
+      }
     }
 
     &--searchbox {
