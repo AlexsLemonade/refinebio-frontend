@@ -21,7 +21,7 @@ const Footer = () => (
         </p>
       </div>
       <div className="footer__right">
-        <div className="footer__flex footer__flex--v-centered">
+        <div className="footer__socials">
           <a
             href="https://secure.squarespace.com/checkout/donate?donatePageId=5b046884575d1f9eea37935b"
             className="button"
