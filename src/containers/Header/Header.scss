@@ -71,6 +71,7 @@
       font-size: 1rem;
       line-height: 1.5;
       padding: 4px 24px;
+      flex: 0 0 auto;
     }
   }
 
@@ -96,16 +97,16 @@
     top: 0;
     left: 0;
     height: 100vh;
+    max-height: 500px;
     width: 100%;
     margin: 0;
     padding: 0;
     list-style: none;
     margin-left: 100%;
-    visibility: hidden;
+    border-bottom: 1px solid $gray;
 
     &--open {
       margin-left: 0;
-      visibility: visible;
     }
 
     @include tablet {
@@ -113,11 +114,18 @@
       background: none;
       height: auto;
       width: auto;
+      margin: 0;
+      flex-direction: row;
+      border: none;
     }
   }
 
   &__burger {
     font-size: 3rem;
+
+    @include tablet {
+      display: none;
+    }
   }
 
   &__menu-close {
@@ -126,6 +134,10 @@
     right: 16px;
     line-height: 1;
     font-size: 2rem;
+
+    @include tablet {
+      display: none;
+    }
   }
 }
 
