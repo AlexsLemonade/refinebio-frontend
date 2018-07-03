@@ -16,7 +16,7 @@ jobs:
       - run: yarn install --ignore-engines
 
       # TODO: Maybe fix this? Or at least delete this comment
-      - run: CI=false REACT_APP_API_HOST=http://api.staging.refine.bio yarn run build
+      - run: CI=false REACT_APP_API_HOST=https://api.staging.refine.bio yarn run build
       - run: pip install awscli --upgrade --user
 
       # I'm not sure why it installs here but it does...
