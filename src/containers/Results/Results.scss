@@ -4,14 +4,19 @@
   position: relative;
 
   &__top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 24px;
+
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 
-  &__container {
-    display: flex;
+  @include tablet {
+    &__container {
+      display: flex;
+    }
   }
 
   &__filters {
