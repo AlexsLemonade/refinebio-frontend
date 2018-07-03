@@ -5,11 +5,9 @@
   background-color: $white;
   box-shadow: 0 3px 20px 0 rgba(0,0,0,0.1);
   padding: 24px;
-  margin: 32px 8px 80px;
+  margin: 32px 0 80px;
 
   @include tablet {
-    margin: 32px 0 80px;
-
     &__header-title {
       flex: 1;
     }
