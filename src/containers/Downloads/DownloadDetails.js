@@ -10,6 +10,7 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
+import { formatSentenceCase } from '../../common/helpers';
 
 export default function DownloadDetails({
   dataSet,
@@ -64,7 +65,9 @@ const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
   return Object.keys(species).map((speciesName, i) => (
     <div className="downloads__sample" key={i}>
       <div className="downloads__sample-info">
-        <h2>{speciesName} Samples</h2>
+        <h2 className="downloads__species-title">
+          {formatSentenceCase(speciesName)} Samples
+        </h2>
         <div className="downloads__sample-stats">
           <p className="downloads__sample-stat">
             {species[speciesName].length}{' '}
