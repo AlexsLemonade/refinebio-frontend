@@ -203,7 +203,7 @@ let SampleTableActions = ({
       handleRemove={() =>
         removeSamplesFromExperiment(
           experiment.accession_code,
-          samples.map(x => x.id)
+          samples.map(x => x.accession_code)
         )
       }
     />
@@ -215,7 +215,7 @@ let SampleTableActions = ({
         addExperiment([
           {
             accession_code: experiment.accession_code,
-            samples: samples
+            samples: samples.map(x => x.accession_code)
           }
         ])
       }
@@ -238,6 +238,6 @@ SampleTableActions = connect(
 function samplesNotInDataSet(samples, accessionCode, dataSet) {
   return samples.filter(x => {
     if (!dataSet[accessionCode]) return true;
-    return dataSet[accessionCode].indexOf(x.id) === -1;
+    return dataSet[accessionCode].indexOf(x.accession_code) === -1;
   });
 }

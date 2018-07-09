@@ -46,7 +46,7 @@ class Download extends Component {
     return (
       <div className="downloads">
         <h1 className="downloads__heading">Download Dataset</h1>
-        {isLoading && !areDetailsFetched ? (
+        {isLoading ? (
           <div className="loader" />
         ) : !Object.keys(dataSet).length ? (
           <div className="downloads__empty">

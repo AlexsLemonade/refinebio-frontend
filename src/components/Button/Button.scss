@@ -30,6 +30,7 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
 
   &:disabled,
   &--disabled {
+    cursor: not-allowed;
     background-color: $button-disabled;
 
     &:hover,
