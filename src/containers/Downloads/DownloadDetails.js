@@ -138,7 +138,9 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
                 className="downloads__sample-icon"
                 alt="Organism Icon"
               />{' '}
-              {experiment.organisms.join(',')}
+              {experiment.organisms
+                .map(organism => formatSentenceCase(organism))
+                .join(',')}
             </div>
           </div>
           <h4>Sample Metadata Fields</h4>
