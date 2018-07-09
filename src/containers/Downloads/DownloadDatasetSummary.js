@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatSentenceCase } from '../../common/helpers';
 
 const DownloadDatasetSummary = props => {
   return (
@@ -28,7 +29,9 @@ function SpeciesRow({ samplesBySpecies, experimentCountBySpecies }) {
     const samples = samplesBySpecies[organism];
     return (
       <tr className="downloads__table-row" key={i}>
-        <td className="downloads__table-cell">{organism}</td>
+        <td className="downloads__table-cell">
+          {formatSentenceCase(organism)}
+        </td>
         <td className="downloads__table-cell downloads__table-cell--value">
           {samples.length}
         </td>

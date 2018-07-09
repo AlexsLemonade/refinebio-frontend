@@ -20,6 +20,10 @@
     align-items: center;
   }
 
+  &__species-title {
+    text-transform: capitalize;
+  }
+
   &__section {
     margin: 1.5rem 0;
   }
