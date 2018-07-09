@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import Loader from '../../components/Loader';
 import { fetchExperiment } from '../../state/experiment/actions';
 import Button from '../../components/Button';
-import { getQueryParamObject } from '../../common/helpers';
+import { getQueryParamObject, formatSentenceCase } from '../../common/helpers';
 import './Experiment.scss';
 
 import AccessionIcon from '../../common/icons/accession.svg';
@@ -37,6 +37,7 @@ let Experiment = ({
 }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = getQueryParamObject(search)['ref'] === 'search';
+  const { organisms = [] } = experiment;
 
   return (
     <Loader fetch={() => fetchExperiment(match.params.id)}>
@@ -96,7 +97,11 @@ let Experiment = ({
                     className="experiment__stats-icon"
                     alt="Organism Icon"
                   />{' '}
-                  {experiment.species}
+                  {organisms.length
+                    ? organisms
+                        .map(organism => formatSentenceCase(organism))
+                        .join(',')
+                    : 'No species.'}
                 </div>
                 <div className="experiment__stats-item">
                   <img

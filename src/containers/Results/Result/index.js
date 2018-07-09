@@ -9,6 +9,7 @@ import './Result.scss';
 import Loader from '../../../components/Loader';
 import { getAllDetailedSamples } from '../../../api/samples';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
+import { formatSentenceCase } from '../../../common/helpers';
 
 export function RemoveFromDatasetButton({
   handleRemove,
@@ -84,7 +85,9 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             className="result__icon"
             alt="organism-icon"
           />{' '}
-          {result.organisms.join(',') || 'No species.'}
+          {result.organisms
+            .map(organism => formatSentenceCase(organism))
+            .join(',') || 'No species.'}
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
