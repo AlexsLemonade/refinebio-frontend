@@ -120,15 +120,13 @@ const Main = ({ searchTerm, fetchResults, push }) => {
                     value=""
                   />
                 </div>
-                <div className="clear">
-                  <input
-                    type="submit"
-                    value="Subscribe"
-                    name="subscribe"
-                    id="mc-embedded-subscribe"
-                    className="button main__mailchimp-button"
-                  />
-                </div>
+                <input
+                  type="submit"
+                  value="Subscribe"
+                  name="subscribe"
+                  id="mc-embedded-subscribe"
+                  className="button main__mailchimp-button"
+                />
               </div>
             </form>
           </div>
