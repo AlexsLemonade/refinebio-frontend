@@ -157,7 +157,12 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
               )}
               modalProps={{ className: 'samples-modal' }}
             >
-              {() => <SamplesTable accessionCodes={experiment.samples} />}
+              {() => (
+                <SamplesTable
+                  accessionCodes={experiment.samples}
+                  experimentAccessionCode={experiment.accession_code}
+                />
+              )}
             </ModalManager>
           )}
         </div>

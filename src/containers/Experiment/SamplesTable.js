@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Button from '../../components/Button';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -11,6 +12,12 @@ import FileIcon from './file.svg';
 import ProcessIcon from './process.svg';
 import { PAGE_SIZES } from '../../constants/table';
 import SampleFieldMetadata from './SampleFieldMetadata';
+import { RemoveFromDatasetButton } from '../../containers/Results/Result';
+import {
+  addExperiment,
+  removeExperiment,
+  removeSamplesFromExperiment
+} from '../../state/download/actions';
 
 import './SamplesTable.scss';
 
@@ -79,7 +86,7 @@ export default class SamplesTable extends React.Component {
   }
 
   fetchData = async (tableState = false) => {
-    const accessionCodes = this.props.accessionCodes;
+    const { accessionCodes, experimentAccessionCode = '' } = this.props;
     const { page, pageSize } = this.state;
     // get the backend ready `order_by` param, based on the sort options from the table
     let orderBy = this._getSortParam(tableState);
@@ -88,11 +95,15 @@ export default class SamplesTable extends React.Component {
 
     let offset = page * pageSize;
 
-    const data = await getAllDetailedSamples({
+    const sampleData = await getAllDetailedSamples({
       accessionCodes,
       orderBy,
       offset,
       limit: pageSize
+    });
+
+    const data = sampleData.map(sample => {
+      return { ...sample, experimentAccessionCode };
     });
 
     // Customize the columns and their order depending on de data
@@ -101,6 +112,7 @@ export default class SamplesTable extends React.Component {
     this.setState({
       data,
       columns,
+      experimentAccessionCode,
       pages: Math.ceil(this.totalSamples / pageSize),
       loading: false
     });
@@ -149,6 +161,12 @@ export default class SamplesTable extends React.Component {
     // Return the final list of columns, the last two are always the same
     return [
       {
+        Header: 'Add/Remove',
+        id: 'add_remove',
+        Cell: AddRemoveCell,
+        minWidth: 250
+      },
+      {
         id: 'id',
         accessor: d => d.id,
         show: false
@@ -160,10 +178,6 @@ export default class SamplesTable extends React.Component {
         sortable: false,
         Cell: ProcessingInformationCell
       }
-      // {
-      //   Header: 'Add/Remove',
-      //   id: 'add_remove'
-      // }
     ];
   }
 
@@ -605,3 +619,19 @@ function TxtimportProtocol() {
     </div>
   );
 }
+
+let AddRemoveCell = props => {
+  console.log(props);
+  const { original: sample } = props;
+
+  return (
+    <Button buttonStyle="secondary" onClick={() => {}}>
+      {JSON.stringify(sample)}
+    </Button>
+  );
+};
+
+AddRemoveCell = connect((state, ownProps) => ({ ...ownProps }), {
+  addExperiment,
+  removeSamplesFromExperiment
+})(AddRemoveCell);
