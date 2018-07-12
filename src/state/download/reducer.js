@@ -77,7 +77,8 @@ export default (state = initialState, action) => {
 
 export function groupSamplesBySpecies({ samples, dataSet }) {
   return Object.keys(dataSet).reduce((species, experimentAccessionCode) => {
-    if (!Object.keys(samples).length) return species;
+    if (!Object.keys(samples).length || !samples[experimentAccessionCode])
+      return species;
     const experiment = dataSet[experimentAccessionCode];
     if (!experiment || !experiment.length) return species;
     experiment.forEach(addedSample => {

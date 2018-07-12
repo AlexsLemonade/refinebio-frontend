@@ -34,6 +34,11 @@ class SamplesTable extends React.Component {
     return this.props.accessionCodes.length;
   }
 
+  removeRow = rowId => {
+    const arrayCopy = this.state.data.filter(row => row.id !== rowId);
+    this.setState({ data: arrayCopy });
+  };
+
   render() {
     const { pageActionComponent } = this.props;
     // `pageActionComponent` is a render prop to add a component at the top right of the table
@@ -172,7 +177,7 @@ class SamplesTable extends React.Component {
         Header: 'Add/Remove',
         id: 'add_remove',
         Cell: AddRemoveCell.bind(this),
-        minWidth: 155,
+        minWidth: 200,
         className: 'samples-table__add-remove'
       },
       {
@@ -629,9 +634,15 @@ function TxtimportProtocol() {
   );
 }
 
-function AddRemoveCell({ original: sample }) {
+function AddRemoveCell({ original: sample, row: { id: rowId } }) {
   const { experimentAccessionCode, accession_code } = sample;
-  const { addExperiment, removeSamplesFromExperiment, dataSet } = this.props;
+  const { removeRow } = this;
+  const {
+    addExperiment,
+    removeSamplesFromExperiment,
+    dataSet,
+    isRowRemovable = false
+  } = this.props;
   const isAdded =
     dataSet[experimentAccessionCode] &&
     dataSet[experimentAccessionCode].includes(accession_code);
@@ -656,9 +667,10 @@ function AddRemoveCell({ original: sample }) {
 
   return (
     <RemoveFromDatasetButton
-      handleRemove={() =>
-        removeSamplesFromExperiment(experimentAccessionCode, [accession_code])
-      }
+      handleRemove={() => {
+        if (isRowRemovable) removeRow(rowId);
+        removeSamplesFromExperiment(experimentAccessionCode, [accession_code]);
+      }}
     />
   );
 }

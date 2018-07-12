@@ -87,6 +87,7 @@ const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
         >
           {() => (
             <SamplesTable
+              isRowRemovable={true}
               accessionCodes={species[speciesName].map(x => x.accession_code)}
               experimentAccessionCodes={species[speciesName].map(
                 x => x.experimentAccessionCode
@@ -163,6 +164,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
             >
               {() => (
                 <SamplesTable
+                  isRowRemovable={true}
                   accessionCodes={addedSamples}
                   experimentAccessionCodes={[experiment.accession_code]}
                 />
