@@ -72,6 +72,12 @@
   .rt-tr.-even {
     background: $table-row--highlight;
   }
+
+  &__add-remove {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 

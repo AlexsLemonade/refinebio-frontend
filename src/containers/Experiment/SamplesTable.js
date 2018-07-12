@@ -21,7 +21,7 @@ import {
 
 import './SamplesTable.scss';
 
-export default class SamplesTable extends React.Component {
+class SamplesTable extends React.Component {
   state = {
     page: 0,
     pages: -1,
@@ -163,8 +163,9 @@ export default class SamplesTable extends React.Component {
       {
         Header: 'Add/Remove',
         id: 'add_remove',
-        Cell: AddRemoveCell,
-        minWidth: 250
+        Cell: AddRemoveCell.bind(this),
+        minWidth: 155,
+        className: 'samples-table__add-remove'
       },
       {
         id: 'id',
@@ -620,18 +621,46 @@ function TxtimportProtocol() {
   );
 }
 
-let AddRemoveCell = props => {
-  console.log(props);
-  const { original: sample } = props;
+function AddRemoveCell({ original: sample }) {
+  const { experimentAccessionCode, accession_code } = sample;
+  const { addExperiment, removeSamplesFromExperiment, dataSet } = this.props;
+  const isAdded =
+    dataSet[experimentAccessionCode] &&
+    dataSet[experimentAccessionCode].includes(accession_code);
+
+  if (!isAdded) {
+    return (
+      <Button
+        buttonStyle="secondary"
+        onClick={() =>
+          addExperiment([
+            {
+              accession_code: experimentAccessionCode,
+              samples: [accession_code]
+            }
+          ])
+        }
+      >
+        Add to Dataset
+      </Button>
+    );
+  }
 
   return (
-    <Button buttonStyle="secondary" onClick={() => {}}>
-      {JSON.stringify(sample)}
-    </Button>
+    <RemoveFromDatasetButton
+      handleRemove={() =>
+        removeSamplesFromExperiment(experimentAccessionCode, [accession_code])
+      }
+    />
   );
-};
+}
 
-AddRemoveCell = connect((state, ownProps) => ({ ...ownProps }), {
-  addExperiment,
-  removeSamplesFromExperiment
-})(AddRemoveCell);
+export default (SamplesTable = connect(
+  ({ download: { dataSet } }) => ({
+    dataSet
+  }),
+  {
+    addExperiment,
+    removeSamplesFromExperiment
+  }
+)(SamplesTable));
