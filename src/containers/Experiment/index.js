@@ -136,7 +136,13 @@ let Experiment = ({
                 </div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">Publication Title</div>
-                  <div>{experiment.publication_title}</div>
+                  <div>
+                    {experiment.publication_title || (
+                      <i className="experiment__not-provided">
+                        No associated publication
+                      </i>
+                    )}
+                  </div>
                 </div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">
