@@ -660,7 +660,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
           ])
         }
       >
-        Add to Dataset
+        Add
       </Button>
     );
   }
