@@ -91,7 +91,11 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
-          {result.samples.length}
+          {result.samples.length
+            ? `${result.samples.length} Sample${
+                result.samples.length > 1 ? 's' : null
+              }`
+            : null}
         </li>
         <li className="result__stat">
           <img
