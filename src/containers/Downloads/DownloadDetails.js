@@ -88,6 +88,9 @@ const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
           {() => (
             <SamplesTable
               accessionCodes={species[speciesName].map(x => x.accession_code)}
+              experimentAccessionCodes={species[speciesName].map(
+                x => x.experimentAccessionCode
+              )}
             />
           )}
         </ModalManager>
@@ -110,6 +113,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
   }
 
   return Object.keys(dataSet).map((id, i) => {
+    const addedSamples = dataSet[id];
     const experiment = experiments[id];
     return (
       <div className="downloads__sample" key={i}>
@@ -130,7 +134,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
                 className="downloads__sample-icon"
                 alt="Sample Icon"
               />{' '}
-              {experiment.samples.length}
+              {addedSamples.length}
             </div>
             <div className="downloads__sample-stat downloads__sample-stat--experiment">
               <img
@@ -146,7 +150,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
           <h4>Sample Metadata Fields</h4>
           <h5>{experiment.metadata ? experiment.metadata.join(', ') : null}</h5>
 
-          {experiment.samples.length > 0 && (
+          {addedSamples.length > 0 && (
             <ModalManager
               component={showModal => (
                 <Button
@@ -159,8 +163,8 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
             >
               {() => (
                 <SamplesTable
-                  accessionCodes={experiment.samples}
-                  experimentAccessionCode={experiment.accession_code}
+                  accessionCodes={addedSamples}
+                  experimentAccessionCodes={[experiment.accession_code]}
                 />
               )}
             </ModalManager>

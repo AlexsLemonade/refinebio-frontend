@@ -76,14 +76,18 @@ export default (state = initialState, action) => {
 };
 
 export function groupSamplesBySpecies({ samples, dataSet }) {
-  return Object.keys(dataSet).reduce((species, id) => {
+  return Object.keys(dataSet).reduce((species, experimentAccessionCode) => {
     if (!Object.keys(samples).length) return species;
-    const experiment = samples[id];
+    const experiment = dataSet[experimentAccessionCode];
     if (!experiment || !experiment.length) return species;
-    experiment.forEach(sample => {
+    experiment.forEach(addedSample => {
+      const sample = samples[experimentAccessionCode].find(
+        sample => sample.accession_code === addedSample
+      );
       const { organism: { name: organismName } } = sample;
+      const modifiedSample = { ...sample, experimentAccessionCode };
       species[organismName] = species[organismName] || [];
-      species[organismName].push(sample);
+      species[organismName].push(modifiedSample);
     });
     return species;
   }, {});

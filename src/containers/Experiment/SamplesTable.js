@@ -86,7 +86,7 @@ class SamplesTable extends React.Component {
   }
 
   fetchData = async (tableState = false) => {
-    const { accessionCodes, experimentAccessionCode = '' } = this.props;
+    const { accessionCodes, experimentAccessionCodes = [] } = this.props;
     const { page, pageSize } = this.state;
     // get the backend ready `order_by` param, based on the sort options from the table
     let orderBy = this._getSortParam(tableState);
@@ -95,16 +95,25 @@ class SamplesTable extends React.Component {
 
     let offset = page * pageSize;
 
-    const sampleData = await getAllDetailedSamples({
+    let data = await getAllDetailedSamples({
       accessionCodes,
       orderBy,
       offset,
       limit: pageSize
     });
 
-    const data = sampleData.map(sample => {
-      return { ...sample, experimentAccessionCode };
-    });
+    if (experimentAccessionCodes.length === 1) {
+      const experimentAccessionCode = experimentAccessionCodes[0];
+
+      data = data.map(sample => {
+        return { ...sample, experimentAccessionCode };
+      });
+    } else if (experimentAccessionCodes.length > 1) {
+      data = data.map((sample, i) => {
+        const experimentAccessionCode = experimentAccessionCodes[i];
+        return { ...sample, experimentAccessionCode };
+      });
+    }
 
     // Customize the columns and their order depending on de data
     let columns = this._getColumns(data);
@@ -112,7 +121,6 @@ class SamplesTable extends React.Component {
     this.setState({
       data,
       columns,
-      experimentAccessionCode,
       pages: Math.ceil(this.totalSamples / pageSize),
       loading: false
     });
