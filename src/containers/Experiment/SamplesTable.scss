@@ -75,12 +75,11 @@
 
   &__add-remove {
     display: flex;
-    justify-content: center;
     align-items: center;
   }
 
   .dataset-remove-button__added-container {
-    flex-direction: column;
+    display: block;
   }
 }
 
