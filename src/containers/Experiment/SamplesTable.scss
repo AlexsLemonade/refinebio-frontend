@@ -72,6 +72,15 @@
   .rt-tr.-even {
     background: $table-row--highlight;
   }
+
+  &__add-remove {
+    display: flex;
+    align-items: center;
+  }
+
+  .dataset-remove-button__added-container {
+    display: block;
+  }
 }
 
 
