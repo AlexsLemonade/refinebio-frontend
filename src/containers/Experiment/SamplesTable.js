@@ -178,7 +178,8 @@ class SamplesTable extends React.Component {
         id: 'add_remove',
         Cell: AddRemoveCell.bind(this),
         width: 190,
-        className: 'samples-table__add-remove'
+        className: 'samples-table__add-remove',
+        show: !!this.props.experimentAccessionCodes.length
       },
       {
         id: 'id',
