@@ -109,7 +109,11 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
       <h3>Description</h3>
       <p className="result__paragraph">{result.description}</p>
       <h3>Publication Title</h3>
-      <p className="result__paragraph">{result.publication_title}</p>
+      <p className="result__paragraph">
+        {result.publication_title || (
+          <i className="result__not-provided">No associated publication</i>
+        )}
+      </p>
 
       <SampleMetadataFields samples={result.samples} />
 
