@@ -12,7 +12,6 @@ import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
-import Anchor from '../../components/Anchor';
 import SamplesTable from './SamplesTable';
 import {
   addExperiment,
@@ -159,24 +158,19 @@ let Experiment = ({
                   <div>{experiment.pubmed_id}</div>
                 </div>
               </div>
-
-              <Anchor name="samples">
-                {() => (
-                  <section className="experiment__section">
-                    <h2 className="experiment__title">Samples</h2>
-                    <SamplesTable
-                      accessionCodes={experiment.samples.map(
-                        x => x.accession_code
-                      )}
-                      experimentAccessionCodes={[experiment.accession_code]}
-                      // Render prop for the button that adds the samples to the dataset
-                      pageActionComponent={samplesDisplayed => (
-                        <SampleTableActions samples={samplesDisplayed} />
-                      )}
-                    />
-                  </section>
-                )}
-              </Anchor>
+              <section className="experiment__section" id="samples">
+                <h2 className="experiment__title">Samples</h2>
+                <SamplesTable
+                  accessionCodes={experiment.samples.map(
+                    x => x.accession_code
+                  )}
+                  experimentAccessionCodes={[experiment.accession_code]}
+                  // Render prop for the button that adds the samples to the dataset
+                  pageActionComponent={samplesDisplayed => (
+                    <SampleTableActions samples={samplesDisplayed} />
+                  )}
+                />
+              </section>
             </div>
           </div>
         )
