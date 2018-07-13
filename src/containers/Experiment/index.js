@@ -109,7 +109,11 @@ let Experiment = ({
                     className="experiment__stats-icon"
                     alt="Sample Icon"
                   />{' '}
-                  {experiment.samples.length} Samples
+                  {experiment.samples.length
+                    ? `${experiment.samples.length} Sample${
+                        experiment.samples.length > 1 ? 's' : null
+                      }`
+                    : null}
                 </div>
                 <div className="experiment__stats-item">
                   <img
