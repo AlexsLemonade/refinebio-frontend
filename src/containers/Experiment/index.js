@@ -12,7 +12,6 @@ import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
-import Anchor from '../../components/Anchor';
 import SamplesTable from './SamplesTable';
 import {
   addExperiment,
