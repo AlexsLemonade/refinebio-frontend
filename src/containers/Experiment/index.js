@@ -161,7 +161,10 @@ let Experiment = ({
               <section className="experiment__section" id="samples">
                 <h2 className="experiment__title">Samples</h2>
                 <SamplesTable
-                  accessionCodes={experiment.samples.map(x => x.accession_code)}
+                  accessionCodes={experiment.samples.map(
+                    x => x.accession_code
+                  )}
+                  experimentAccessionCodes={[experiment.accession_code]}
                   // Render prop for the button that adds the samples to the dataset
                   pageActionComponent={samplesDisplayed => (
                     <SampleTableActions samples={samplesDisplayed} />
