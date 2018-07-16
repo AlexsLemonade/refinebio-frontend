@@ -16,9 +16,11 @@ export async function getSamplesAndExperiments(dataSet) {
 
       experiments[accessionCode] = experiment.results[0];
 
-      // there should only be one result for each experiment response
-      const experimentInfo = experiment.results[0];
-      const { samples: sampleList } = experimentInfo;
+      /*
+      Use sample accessions from dataSet instead of experiment
+      because some experiments may only have a subset of samples added
+      */
+      const sampleList = dataSet[accessionCode];
       const response = await Ajax.get('/samples/', {
         limit: 1000000000000000,
         accession_codes: sampleList.join(',')

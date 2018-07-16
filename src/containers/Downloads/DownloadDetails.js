@@ -10,6 +10,7 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
+import { formatSentenceCase } from '../../common/helpers';
 
 export default function DownloadDetails({
   dataSet,
@@ -64,7 +65,9 @@ const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
   return Object.keys(species).map((speciesName, i) => (
     <div className="downloads__sample" key={i}>
       <div className="downloads__sample-info">
-        <h2>{speciesName} Samples</h2>
+        <h2 className="downloads__species-title">
+          {formatSentenceCase(speciesName)} Samples
+        </h2>
         <div className="downloads__sample-stats">
           <p className="downloads__sample-stat">
             {species[speciesName].length}{' '}
@@ -84,7 +87,11 @@ const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
         >
           {() => (
             <SamplesTable
+              isRowRemovable={true}
               accessionCodes={species[speciesName].map(x => x.accession_code)}
+              experimentAccessionCodes={species[speciesName].map(
+                x => x.experimentAccessionCode
+              )}
             />
           )}
         </ModalManager>
@@ -107,6 +114,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
   }
 
   return Object.keys(dataSet).map((id, i) => {
+    const addedSamples = dataSet[id];
     const experiment = experiments[id];
     return (
       <div className="downloads__sample" key={i}>
@@ -127,7 +135,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
                 className="downloads__sample-icon"
                 alt="Sample Icon"
               />{' '}
-              {experiment.samples.length}
+              {addedSamples.length}
             </div>
             <div className="downloads__sample-stat downloads__sample-stat--experiment">
               <img
@@ -135,13 +143,15 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
                 className="downloads__sample-icon"
                 alt="Organism Icon"
               />{' '}
-              {experiment.organisms.join(',')}
+              {experiment.organisms
+                .map(organism => formatSentenceCase(organism))
+                .join(',')}
             </div>
           </div>
           <h4>Sample Metadata Fields</h4>
           <h5>{experiment.metadata ? experiment.metadata.join(', ') : null}</h5>
 
-          {experiment.samples.length > 0 && (
+          {addedSamples.length > 0 && (
             <ModalManager
               component={showModal => (
                 <Button
@@ -152,7 +162,13 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
               )}
               modalProps={{ className: 'samples-modal' }}
             >
-              {() => <SamplesTable accessionCodes={experiment.samples} />}
+              {() => (
+                <SamplesTable
+                  isRowRemovable={true}
+                  accessionCodes={addedSamples}
+                  experimentAccessionCodes={[experiment.accession_code]}
+                />
+              )}
             </ModalManager>
           )}
         </div>

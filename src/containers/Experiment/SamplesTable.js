@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Button from '../../components/Button';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -11,10 +12,16 @@ import FileIcon from './file.svg';
 import ProcessIcon from './process.svg';
 import { PAGE_SIZES } from '../../constants/table';
 import SampleFieldMetadata from './SampleFieldMetadata';
+import { RemoveFromDatasetButton } from '../../containers/Results/Result';
+import {
+  addExperiment,
+  removeExperiment,
+  removeSamplesFromExperiment
+} from '../../state/download/actions';
 
 import './SamplesTable.scss';
 
-export default class SamplesTable extends React.Component {
+class SamplesTable extends React.Component {
   state = {
     page: 0,
     pages: -1,
@@ -26,6 +33,11 @@ export default class SamplesTable extends React.Component {
   get totalSamples() {
     return this.props.accessionCodes.length;
   }
+
+  removeRow = rowId => {
+    const arrayCopy = this.state.data.filter(row => row.id !== rowId);
+    this.setState({ data: arrayCopy });
+  };
 
   render() {
     const { pageActionComponent } = this.props;
@@ -79,7 +91,7 @@ export default class SamplesTable extends React.Component {
   }
 
   fetchData = async (tableState = false) => {
-    const accessionCodes = this.props.accessionCodes;
+    const { accessionCodes, experimentAccessionCodes = [] } = this.props;
     const { page, pageSize } = this.state;
     // get the backend ready `order_by` param, based on the sort options from the table
     let orderBy = this._getSortParam(tableState);
@@ -88,12 +100,25 @@ export default class SamplesTable extends React.Component {
 
     let offset = page * pageSize;
 
-    const data = await getAllDetailedSamples({
+    let data = await getAllDetailedSamples({
       accessionCodes,
       orderBy,
       offset,
       limit: pageSize
     });
+
+    if (experimentAccessionCodes.length === 1) {
+      const experimentAccessionCode = experimentAccessionCodes[0];
+
+      data = data.map(sample => {
+        return { ...sample, experimentAccessionCode };
+      });
+    } else if (experimentAccessionCodes.length > 1) {
+      data = data.map((sample, i) => {
+        const experimentAccessionCode = experimentAccessionCodes[i];
+        return { ...sample, experimentAccessionCode };
+      });
+    }
 
     // Customize the columns and their order depending on de data
     let columns = this._getColumns(data);
@@ -149,6 +174,14 @@ export default class SamplesTable extends React.Component {
     // Return the final list of columns, the last two are always the same
     return [
       {
+        Header: 'Add/Remove',
+        id: 'add_remove',
+        Cell: AddRemoveCell.bind(this),
+        width: 190,
+        className: 'samples-table__add-remove',
+        show: !!this.props.experimentAccessionCodes.length
+      },
+      {
         id: 'id',
         accessor: d => d.id,
         show: false
@@ -160,10 +193,6 @@ export default class SamplesTable extends React.Component {
         sortable: false,
         Cell: ProcessingInformationCell
       }
-      // {
-      //   Header: 'Add/Remove',
-      //   id: 'add_remove'
-      // }
     ];
   }
 
@@ -605,3 +634,54 @@ function TxtimportProtocol() {
     </div>
   );
 }
+
+function AddRemoveCell({ original: sample, row: { id: rowId } }) {
+  const { experimentAccessionCode, accession_code } = sample;
+  const { removeRow } = this;
+  const {
+    addExperiment,
+    removeSamplesFromExperiment,
+    dataSet,
+    isRowRemovable = false
+  } = this.props;
+  const isAdded =
+    dataSet[experimentAccessionCode] &&
+    dataSet[experimentAccessionCode].includes(accession_code);
+
+  if (!isAdded) {
+    return (
+      <Button
+        buttonStyle="secondary"
+        onClick={() =>
+          addExperiment([
+            {
+              accession_code: experimentAccessionCode,
+              samples: [accession_code]
+            }
+          ])
+        }
+      >
+        Add
+      </Button>
+    );
+  }
+
+  return (
+    <RemoveFromDatasetButton
+      handleRemove={() => {
+        if (isRowRemovable) removeRow(rowId);
+        removeSamplesFromExperiment(experimentAccessionCode, [accession_code]);
+      }}
+    />
+  );
+}
+
+export default (SamplesTable = connect(
+  ({ download: { dataSet } }) => ({
+    dataSet
+  }),
+  {
+    addExperiment,
+    removeSamplesFromExperiment
+  }
+)(SamplesTable));

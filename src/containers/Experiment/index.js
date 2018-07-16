@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import Loader from '../../components/Loader';
 import { fetchExperiment } from '../../state/experiment/actions';
 import Button from '../../components/Button';
-import { getQueryParamObject } from '../../common/helpers';
+import { getQueryParamObject, formatSentenceCase } from '../../common/helpers';
 import './Experiment.scss';
 
 import AccessionIcon from '../../common/icons/accession.svg';
@@ -12,7 +12,6 @@ import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 
-import Anchor from '../../components/Anchor';
 import SamplesTable from './SamplesTable';
 import {
   addExperiment,
@@ -37,6 +36,7 @@ let Experiment = ({
 }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = getQueryParamObject(search)['ref'] === 'search';
+  const { organisms = [] } = experiment;
 
   return (
     <Loader fetch={() => fetchExperiment(match.params.id)}>
@@ -96,7 +96,11 @@ let Experiment = ({
                     className="experiment__stats-icon"
                     alt="Organism Icon"
                   />{' '}
-                  {experiment.species}
+                  {organisms.length
+                    ? organisms
+                        .map(organism => formatSentenceCase(organism))
+                        .join(',')
+                    : 'No species.'}
                 </div>
                 <div className="experiment__stats-item">
                   <img
@@ -104,7 +108,11 @@ let Experiment = ({
                     className="experiment__stats-icon"
                     alt="Sample Icon"
                   />{' '}
-                  {experiment.samples.length} Samples
+                  {experiment.samples.length
+                    ? `${experiment.samples.length} Sample${
+                        experiment.samples.length > 1 ? 's' : null
+                      }`
+                    : null}
                 </div>
                 <div className="experiment__stats-item">
                   <img
@@ -131,7 +139,13 @@ let Experiment = ({
                 </div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">Publication Title</div>
-                  <div>{experiment.publication_title}</div>
+                  <div>
+                    {experiment.publication_title || (
+                      <i className="experiment__not-provided">
+                        No associated publication
+                      </i>
+                    )}
+                  </div>
                 </div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">
@@ -144,23 +158,19 @@ let Experiment = ({
                   <div>{experiment.pubmed_id}</div>
                 </div>
               </div>
-
-              <Anchor name="samples">
-                {() => (
-                  <section className="experiment__section">
-                    <h2 className="experiment__title">Samples</h2>
-                    <SamplesTable
-                      accessionCodes={experiment.samples.map(
-                        x => x.accession_code
-                      )}
-                      // Render prop for the button that adds the samples to the dataset
-                      pageActionComponent={samplesDisplayed => (
-                        <SampleTableActions samples={samplesDisplayed} />
-                      )}
-                    />
-                  </section>
-                )}
-              </Anchor>
+              <section className="experiment__section" id="samples">
+                <h2 className="experiment__title">Samples</h2>
+                <SamplesTable
+                  accessionCodes={experiment.samples.map(
+                    x => x.accession_code
+                  )}
+                  experimentAccessionCodes={[experiment.accession_code]}
+                  // Render prop for the button that adds the samples to the dataset
+                  pageActionComponent={samplesDisplayed => (
+                    <SampleTableActions samples={samplesDisplayed} />
+                  )}
+                />
+              </section>
             </div>
           </div>
         )
@@ -198,7 +208,7 @@ let SampleTableActions = ({
       handleRemove={() =>
         removeSamplesFromExperiment(
           experiment.accession_code,
-          samples.map(x => x.id)
+          samples.map(x => x.accession_code)
         )
       }
     />
@@ -210,7 +220,7 @@ let SampleTableActions = ({
         addExperiment([
           {
             accession_code: experiment.accession_code,
-            samples: samples
+            samples: samples.map(x => x.accession_code)
           }
         ])
       }
@@ -233,6 +243,6 @@ SampleTableActions = connect(
 function samplesNotInDataSet(samples, accessionCode, dataSet) {
   return samples.filter(x => {
     if (!dataSet[accessionCode]) return true;
-    return dataSet[accessionCode].indexOf(x.id) === -1;
+    return dataSet[accessionCode].indexOf(x.accession_code) === -1;
   });
 }

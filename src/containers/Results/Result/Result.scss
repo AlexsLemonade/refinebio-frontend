@@ -71,6 +71,10 @@
   &__paragraph {
     margin-bottom: 1.5rem;
   }
+
+  &__not-provided {
+    color: $gray;
+  }
 }
 
 .dataset-remove-button {

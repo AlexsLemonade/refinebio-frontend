@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { HashLink as Link } from 'react-router-hash-link';
 import Button from '../../../components/Button';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
@@ -9,6 +9,7 @@ import './Result.scss';
 import Loader from '../../../components/Loader';
 import { getAllDetailedSamples } from '../../../api/samples';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
+import { formatSentenceCase } from '../../../common/helpers';
 
 export function RemoveFromDatasetButton({
   handleRemove,
@@ -84,11 +85,17 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             className="result__icon"
             alt="organism-icon"
           />{' '}
-          {result.organisms.join(',') || 'No species.'}
+          {result.organisms
+            .map(organism => formatSentenceCase(organism))
+            .join(',') || 'No species.'}
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
-          {result.samples.length}
+          {result.samples.length
+            ? `${result.samples.length} Sample${
+                result.samples.length > 1 ? 's' : null
+              }`
+            : null}
         </li>
         <li className="result__stat">
           <img
@@ -102,7 +109,11 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
       <h3>Description</h3>
       <p className="result__paragraph">{result.description}</p>
       <h3>Publication Title</h3>
-      <p className="result__paragraph">{result.publication_title}</p>
+      <p className="result__paragraph">
+        {result.publication_title || (
+          <i className="result__not-provided">No associated publication</i>
+        )}
+      </p>
 
       <SampleMetadataFields samples={result.samples} />
 

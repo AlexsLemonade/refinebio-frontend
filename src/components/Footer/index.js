@@ -74,7 +74,7 @@ const Footer = () => (
       <div className="footer__left">
         <ul className="footer__links">
           <li className="footer__link">
-            <Link to="/license">BDS 3-Clause License</Link>
+            <Link to="/license">BSD 3-Clause License</Link>
           </li>
           <li className="footer__link">
             <Link to="/privacy">Privacy</Link>
