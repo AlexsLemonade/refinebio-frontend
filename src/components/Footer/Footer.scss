@@ -1,9 +1,14 @@
 @import '../../common/styles/variables';
 
 .footer {
-  padding: 6.5*8px;
+  margin-top: 3*8px;
+  padding: 2*8px;
   background: linear-gradient(#FFFFFF 0%, #DFE9F3 100%);
   box-shadow: 0 3px 20px 0 rgba(0,0,0,0.1);
+
+  @include tablet {
+    padding: 6.5*8px;
+  }
 
   &__container {
     width: 95%;
@@ -16,33 +21,53 @@
   }
 
   &__flex {
-    display: flex;
-    justify-content: space-between;
 
-    &--v-centered {
-      align-items: center;
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
+
+      &--v-centered {
+        align-items: center;
+      }
     }
   }
 
-  &__left {
-    flex: 3;
-    margin-right: 21*8px;
+  @include tablet {
+    &__left {
+      flex: 3;
+      margin-right: 21*8px;
+    }
+
+    &__right {
+      flex: 2;
+    }
   }
 
-  &__right {
-    flex: 2;
+  &__socials {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2*8px;
   }
 
   &__links {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
+
+    @include tablet {
+      display: flex;
+    }
   }
 
   &__link {
-    margin-right: 3*8px;
+    margin-top: 2*8px;
     color: $gray;
+
+    @include tablet {
+      margin-top: 0;
+      margin-right: 3*8px;
+    }
   }
 
   &__social {
@@ -53,8 +78,12 @@
   &__version {
     color: $gray;
     font-size: 0.75rem;
-    text-align: right;
-    margin: 0;
+    margin-top: 3*8px;
+
+    @include tablet {
+      margin: 0;
+      text-align: right;
+    }
   }
 
   &__author {
