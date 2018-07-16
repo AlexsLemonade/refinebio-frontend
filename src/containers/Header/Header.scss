@@ -4,27 +4,28 @@
   position: sticky;
   top: 0;
   background: $background-color--light;
-  padding: 1.5rem 0;
   z-index: 10;
 
-  &--main {
-    position: relative;
-    color: $white;
-    background: none;
+  @include tablet {
+    padding: 1.5rem 0;
 
-    .header__logo {
-      img {
+    &--main {
+      position: relative;
+      color: $white;
+      background: none;
+
+      .header__logo {
         filter: brightness(0) invert(1);
       }
-    }
 
-    .header__link--button {
-      color: $white;
-    }
+      .header__link--button {
+        color: $white;
+      }
 
-    .header__dataset-count {
-      background: $white;
-      color: $azure;
+      .header__dataset-count {
+        background: $white;
+        color: $azure;
+      }
     }
   }
 
@@ -35,19 +36,30 @@
     width: 95%;
     max-width: 1250px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 8px;
+
+    @include tablet {
+      padding: 0 20px;
+    }
   }
 
   &__logo {
-    color: #002F6C;
-    font-size: 1.5rem;
+    width:  80px;
+
+    @include tablet {
+      width: auto;
+    }
   }
 
   &__link {
     margin: 0 1rem;
+    padding: 0;
     font-weight: 400;
     font-family: 'Rubik', sans-serif;
     font-size: 1rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
 
     &--button {
       position: relative;
@@ -59,6 +71,7 @@
       font-size: 1rem;
       line-height: 1.5;
       padding: 4px 24px;
+      flex: 0 0 auto;
     }
   }
 
@@ -73,6 +86,58 @@
     line-height: 1.5;
     font-size: 0.75rem;
     text-align: center;
+  }
+
+  &__menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: $white;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    max-height: 500px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-left: 100%;
+    border-bottom: 1px solid $gray;
+
+    &--open {
+      margin-left: 0;
+    }
+
+    @include tablet {
+      position: relative;
+      background: none;
+      height: auto;
+      width: auto;
+      margin: 0;
+      flex-direction: row;
+      border: none;
+    }
+  }
+
+  &__burger {
+    font-size: 3rem;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  &__menu-close {
+    position: absolute;
+    top: 13px;
+    right: 16px;
+    line-height: 1;
+    font-size: 2rem;
+
+    @include tablet {
+      display: none;
+    }
   }
 }
 

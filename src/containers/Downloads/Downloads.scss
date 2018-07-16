@@ -9,15 +9,35 @@
     justify-content: space-between;
   }
 
+  &__fieldset {
+    margin-bottom: 2*8px;
+
+    @include tablet {
+      margin-bottom: 0;
+    }
+  }
+
   &__bar {
-    align-items: center;
     border-bottom: 1px solid $gray;
     padding-bottom: 1rem;
+    flex-direction: column-reverse;
+
+    @include tablet {
+      flex-direction: row;
+      align-items: center;
+    }
   }
 
   &__actions {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    margin-bottom: 8px;
+
+    @include tablet {
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 0;
+    }
   }
 
   &__species-title {
@@ -29,10 +49,13 @@
   }
 
   &__cards {
-    display: grid;
-    grid-column-gap: 14px;
-    grid-template-columns: repeat(4, 1fr);
     padding: 0 7px;
+
+    @include tablet {
+      display: grid;
+      grid-column-gap: 14px;
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   &__card {
@@ -94,13 +117,16 @@
   }
 
   &__sample {
-    align-items: center;
     border-bottom: 2px solid $gray;
-    display: flex;
-    justify-content: space-between;
     margin: 0 1.5rem 1.5rem;
     padding-bottom: 1rem;
     text-align: left;
+
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     &:last-of-type {
       border-bottom: 0;
@@ -111,12 +137,17 @@
   &__sample-stats {
     display: flex;
     margin: 0 -2rem 1.5rem;
+    flex-wrap: wrap;
   }
 
   &__sample-stat {
     display: flex;
     align-items: center;
-    margin: 0 2rem;
+    margin: 0.5rem 2rem;
+
+    @include tablet {
+      margin: 0 2rem;
+    }
 
     &--experiment {
       font-family: 'Rubik', sans-serif;
