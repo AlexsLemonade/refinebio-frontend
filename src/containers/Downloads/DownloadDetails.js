@@ -127,7 +127,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
                 className="downloads__sample-icon"
                 alt="Accession Icon"
               />{' '}
-              {experiment.id}
+              {experiment.accession_code}
             </div>
             <div className="downloads__sample-stat">
               <img
