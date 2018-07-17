@@ -10,6 +10,7 @@ import Button from '../../components/Button';
 import { connect } from 'react-redux';
 import { editEmail, fetchDataSet } from '../../state/dataSet/actions';
 import { startDownload } from '../../state/download/actions';
+import { Ajax, asyncFetch } from '../../common/helpers';
 import ModalManager from '../../components/Modal/ModalManager';
 
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
@@ -154,14 +155,9 @@ class DatasetNoEmail extends React.Component {
           dataSetId={id}
           isSubmitDisabled={!this.state.agreedToTerms && !this.state.token}
           onSubmit={async () => {
-            const token = await (await fetch('/token/')).json();
-            await fetch(`/token/${token.id}/`, {
-              method: 'POST',
-              headers: {
-                'content-type': 'application/json'
-              },
-              body: JSON.stringify({ ...token, is_activated: true })
-            });
+            const token = await Ajax.get('/token/');
+            console.log(token);
+            await Ajax.post(`/token/`, { id: token.id, is_activated: true });
 
             localStorage.setItem('refinebio-token', token.id);
             startDownload(token.id);
@@ -296,7 +292,7 @@ class DataSetReady extends React.Component {
 
   handleSubmit = async () => {
     if (!this.state.hasToken) {
-      const token = await (await fetch('/token/')).json();
+      const token = await (await asyncFetch('/token/')).json();
       localStorage.setItem('refinebio-token', token.id);
     }
     const { s3_bucket, s3_key } = this.props;
