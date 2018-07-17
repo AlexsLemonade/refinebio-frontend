@@ -156,7 +156,6 @@ class DatasetNoEmail extends React.Component {
           isSubmitDisabled={!this.state.agreedToTerms && !this.state.token}
           onSubmit={async () => {
             const token = await Ajax.get('/token/');
-            console.log(token);
             await Ajax.post(`/token/`, { id: token.id, is_activated: true });
 
             localStorage.setItem('refinebio-token', token.id);
@@ -292,7 +291,7 @@ class DataSetReady extends React.Component {
 
   handleSubmit = async () => {
     if (!this.state.hasToken) {
-      const token = await (await asyncFetch('/token/')).json();
+      const token = await (await fetch('/token/')).json();
       localStorage.setItem('refinebio-token', token.id);
     }
     const { s3_bucket, s3_key } = this.props;
