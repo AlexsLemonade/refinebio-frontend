@@ -136,7 +136,13 @@ export const addExperiment = experiments => {
     const prevDataSet = getState().download.dataSet;
     const newExperiments = experiments.reduce((result, experiment) => {
       if (experiment.samples.length) {
-        const sampleAccessions = experiment.samples;
+        var sampleAccessions = experiment.samples;
+        // If the samples property is a list of strings we're good.
+        // But if it's instead sample objects, we want to convert it
+        // to only being accession codes.
+        if (typeof sampleAccessions[0] != 'string') {
+          sampleAccessions = sampleAccessions.map(x => x.accession_code);
+        }
         result[experiment.accession_code] = prevDataSet[
           experiment.accession_code
         ]
