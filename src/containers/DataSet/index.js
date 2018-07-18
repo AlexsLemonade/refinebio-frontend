@@ -348,7 +348,7 @@ let EmailForm = ({ handleSubmit, isSubmitDisabled }) => {
         placeholder="jdoe@example.com"
         className="input-text form-edit-email__text"
       />
-      <Button text="Submit" isDisabled={isSubmitDisabled} />
+      <Button text="Start Processing" isDisabled={isSubmitDisabled} />
     </form>
   );
 };
