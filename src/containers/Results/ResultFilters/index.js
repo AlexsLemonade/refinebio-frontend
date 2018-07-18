@@ -65,7 +65,7 @@ const ResultFilters = ({
 };
 
 const filterCategories = [
-  { name: 'organism', queryField: 'organism' },
+  { name: 'organism', queryField: 'organisms__name' },
   { name: 'technology', queryField: 'technology' },
   { name: 'publication', queryField: 'has_publication' }
 ];
