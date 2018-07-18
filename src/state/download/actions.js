@@ -90,7 +90,9 @@ export const removeSpecies = samples => {
       }
     });
 
-    const { download: { dataSet, dataSetId } } = getState();
+    const {
+      download: { dataSet, dataSetId }
+    } = getState();
 
     const newDataSet = Object.keys(dataSet).reduce((result, accessionCode) => {
       const samples = dataSet[accessionCode];
@@ -146,7 +148,14 @@ export const addExperiment = experiments => {
         result[experiment.accession_code] = prevDataSet[
           experiment.accession_code
         ]
-          ? [...prevDataSet[experiment.accession_code], ...sampleAccessions]
+          ? // Remove duplicates from the array, since the backend throws errors
+            // on non-unique accessions
+            [
+              ...new Set([
+                ...prevDataSet[experiment.accession_code],
+                ...sampleAccessions
+              ])
+            ]
           : sampleAccessions;
       }
       return result;
