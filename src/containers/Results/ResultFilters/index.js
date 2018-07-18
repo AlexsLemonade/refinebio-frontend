@@ -5,21 +5,28 @@ import { formatSentenceCase } from '../../../common/helpers';
 
 const FilterCategory = ({
   categoryFilters,
-  categoryName,
+  category,
   toggledFilter,
   appliedFilters
 }) => (
   <section className="result-filters__section">
-    <h3 className="result-filters__title">{categoryName}</h3>
+    <h3 className="result-filters__title">{category.name}</h3>
     {categoryFilters &&
       Object.keys(categoryFilters).map((filter, i) => (
         <Checkbox
           key={i}
           name={filter}
-          onToggle={() => toggledFilter(categoryName, filter)}
+          onToggle={() =>
+            toggledFilter(
+              category.queryField,
+              filter === 'has_publication' ? 'true' : filter
+            )
+          }
           checked={
-            !!appliedFilters[categoryName] &&
-            appliedFilters[categoryName].has(filter)
+            !!appliedFilters[category.queryField] &&
+            appliedFilters[category.queryField].has(
+              filter === 'has_publication' ? 'true' : filter
+            )
           }
         >
           {formatSentenceCase(filter)} ({categoryFilters[filter]})
@@ -42,8 +49,8 @@ const ResultFilters = ({
       {filterCategories.map((category, i) => (
         <FilterCategory
           key={i}
-          categoryFilters={filters[category]}
-          categoryName={category}
+          categoryFilters={filters[category.name]}
+          category={category}
           toggledFilter={toggledFilter}
           appliedFilters={appliedFilters}
         />
@@ -52,6 +59,10 @@ const ResultFilters = ({
   );
 };
 
-const filterCategories = ['organism', 'technology', 'publication'];
+const filterCategories = [
+  { name: 'organism', queryField: 'organism' },
+  { name: 'technology', queryField: 'technology' },
+  { name: 'publication', queryField: 'has_publication' }
+];
 
 export default ResultFilters;

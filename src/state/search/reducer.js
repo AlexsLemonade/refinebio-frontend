@@ -7,7 +7,7 @@ const initialState = {
   pagination: {
     totalResults: 0,
     totalPages: 0,
-    resultsPerPage: 5,
+    resultsPerPage: 10,
     currentPage: 1
   },
   isSearching: false
@@ -31,7 +31,8 @@ export default (state = initialState, action) => {
         currentPage,
         appliedFilters
       } = action.data;
-      const totalPages = Math.round(
+
+      const totalPages = Math.ceil(
         totalResults / state.pagination.resultsPerPage
       );
 
