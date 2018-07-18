@@ -98,7 +98,7 @@ let Experiment = ({
                   />{' '}
                   {organisms.length
                     ? organisms
-                        .map(organism => formatSentenceCase(organism))
+                        .map(organism => formatSentenceCase(organism.name))
                         .join(',')
                     : 'No species.'}
                 </div>
