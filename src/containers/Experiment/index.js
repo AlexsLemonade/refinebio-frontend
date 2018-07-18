@@ -68,7 +68,9 @@ let Experiment = ({
                   {experiment.title || 'No Title.'}
                 </h3>
                 <div>
-                  {!dataSet[experiment.accession_code] ? (
+                  {!dataSet[experiment.accession_code] ||
+                  dataSet[experiment.accession_code].length !==
+                    experiment.samples.length ? (
                     <Button
                       text="Add to Dataset"
                       onClick={() => addExperiment([experiment])}

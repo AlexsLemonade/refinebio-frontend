@@ -36,7 +36,9 @@ export function RemoveFromDatasetButton({
 }
 
 const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
-  const isAdded = !!dataSet[result.accession_code];
+  const isAdded =
+    dataSet[result.accession_code] &&
+    dataSet[result.accession_code].length === result.samples.length;
 
   function handleAddExperiment() {
     addExperiment([result]);
