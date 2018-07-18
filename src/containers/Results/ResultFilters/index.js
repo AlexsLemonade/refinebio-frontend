@@ -12,26 +12,31 @@ const FilterCategory = ({
   <section className="result-filters__section">
     <h3 className="result-filters__title">{category.name}</h3>
     {categoryFilters &&
-      Object.keys(categoryFilters).map((filter, i) => (
-        <Checkbox
-          key={i}
-          name={filter}
-          onToggle={() =>
-            toggledFilter(
-              category.queryField,
-              filter === 'has_publication' ? 'true' : filter
-            )
-          }
-          checked={
-            !!appliedFilters[category.queryField] &&
-            appliedFilters[category.queryField].has(
-              filter === 'has_publication' ? 'true' : filter
-            )
-          }
-        >
-          {formatSentenceCase(filter)} ({categoryFilters[filter]})
-        </Checkbox>
-      ))}
+      Object.keys(categoryFilters).map(
+        (filter, i) =>
+          filter && filter !== 'null' ? ( // Make sure filter is not null
+            // The `filter !== "null"` check is required because a null organism
+            // is not `null`, it is `"null"`
+            <Checkbox
+              key={i}
+              name={filter}
+              onToggle={() =>
+                toggledFilter(
+                  category.queryField,
+                  filter === 'has_publication' ? 'true' : filter
+                )
+              }
+              checked={
+                !!appliedFilters[category.queryField] &&
+                appliedFilters[category.queryField].has(
+                  filter === 'has_publication' ? 'true' : filter
+                )
+              }
+            >
+              {formatSentenceCase(filter)} ({categoryFilters[filter]})
+            </Checkbox>
+          ) : null // Do not display a checkbox if the filter is null
+      )}
   </section>
 );
 
