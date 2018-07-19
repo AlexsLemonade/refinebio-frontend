@@ -26,7 +26,7 @@ class SamplesTable extends React.Component {
     page: 0,
     pages: -1,
     pageSize: 10,
-    columns: this._getColumns(),
+    columns: this._getColumns(this.props.isImmutable),
     data: []
   };
 
@@ -121,7 +121,7 @@ class SamplesTable extends React.Component {
     }
 
     // Customize the columns and their order depending on de data
-    let columns = this._getColumns(data);
+    let columns = this._getColumns(this.props.isImmutable, data);
 
     this.setState({
       data,
@@ -153,7 +153,7 @@ class SamplesTable extends React.Component {
    * - Columns with more values have higher priority
    * @param {Array} data Data that should be displayed in the table
    */
-  _getColumns(data = []) {
+  _getColumns(isImmutable, data = []) {
     // 1. define all columns
     // 2. count the number of samples that have a value for each column
     let columns = SampleFieldMetadata.map(column => ({
@@ -171,17 +171,8 @@ class SamplesTable extends React.Component {
     // 3. Filter out the columns that don't have a value
     columns = columns.filter(column => column.__totalValues > 0);
 
-    // Return the final list of columns, the last two are always the same
-    return [
-      {
-        Header: 'Add/Remove',
-        id: 'add_remove',
-        sortable: false,
-        Cell: AddRemoveCell.bind(this),
-        width: 190,
-        className: 'samples-table__add-remove',
-        show: !!this.props.experimentAccessionCodes.length
-      },
+    // Get the headers that do not depend on isImmutable first
+    let headers = [
       {
         id: 'id',
         accessor: d => d.id,
@@ -195,6 +186,27 @@ class SamplesTable extends React.Component {
         Cell: ProcessingInformationCell
       }
     ];
+
+    // In some instances like the DataSet page we want to hide the Add/Remove
+    // buttons, but otherwise the Add/Remove column should be the first one.
+    // If the list is not immutable, prepend the Add/Remove column to headers
+    if (!isImmutable) {
+      headers = [
+        {
+          Header: 'Add/Remove',
+          id: 'add_remove',
+          sortable: false,
+          Cell: AddRemoveCell.bind(this),
+          width: 190,
+          className: 'samples-table__add-remove',
+          show: !!this.props.experimentAccessionCodes.length
+        },
+        ...headers
+      ];
+    }
+
+    // Return the final list of columns
+    return headers;
   }
 
   /**
@@ -643,12 +655,12 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
     addExperiment,
     removeSamplesFromExperiment,
     dataSet,
-    isRowRemovable = false
+    isRowRemovable = false,
+    isImmutable = false
   } = this.props;
   const isAdded =
     dataSet[experimentAccessionCode] &&
     dataSet[experimentAccessionCode].includes(accession_code);
-
   if (!isAdded) {
     return (
       <Button
@@ -673,6 +685,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
         if (isRowRemovable) removeRow(rowId);
         removeSamplesFromExperiment(experimentAccessionCode, [accession_code]);
       }}
+      remove={!this.props.isImmutable}
     />
   );
 }

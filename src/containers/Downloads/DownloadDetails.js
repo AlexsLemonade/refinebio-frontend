@@ -21,7 +21,8 @@ export default function DownloadDetails({
   samplesBySpecies,
   experimentCountBySpecies,
   totalSamples,
-  totalExperiments
+  totalExperiments,
+  isImmutable = false
 }) {
   return (
     <div>
@@ -41,6 +42,7 @@ export default function DownloadDetails({
             <SpeciesSamples
               samplesBySpecies={samplesBySpecies}
               removeSpecies={removeSpecies}
+              isImmutable={isImmutable}
             />
           </div>
           <div className="downloads__card">
@@ -56,7 +58,11 @@ export default function DownloadDetails({
   );
 }
 
-const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
+const SpeciesSamples = ({
+  samplesBySpecies,
+  removeSpecies,
+  isImmutable = false
+}) => {
   const species = samplesBySpecies;
   if (!species || !Object.keys(species).length) {
     return <p>No samples added to download dataset.</p>;
@@ -92,6 +98,7 @@ const SpeciesSamples = ({ samplesBySpecies, removeSpecies }) => {
               experimentAccessionCodes={species[speciesName].map(
                 x => x.experimentAccessionCode
               )}
+              isImmutable={isImmutable}
             />
           )}
         </ModalManager>
