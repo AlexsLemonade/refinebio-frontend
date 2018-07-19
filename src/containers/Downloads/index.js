@@ -90,9 +90,10 @@ Download = connect(
       areDetailsFetched,
       samples,
       dataSet,
-      experiments
-    },
-    dataSet: { is_processing, is_processed }
+      experiments,
+      is_processing,
+      is_processed
+    }
   }) => ({
     dataSetId,
     isLoading,
