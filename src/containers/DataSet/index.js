@@ -29,6 +29,20 @@ class DataSet extends React.Component {
   render() {
     const dataSetId = this.props.match.params.id;
 
+    // Parse the query string
+    let queryParam = this.props.location.search.substring(1).split('=');
+
+    // Use default values in the case of no query params. (There is always at
+    // least one object in the array because of how the parser works)
+    //
+    // In practice, this should never happen.
+    let aggregation;
+    if (queryParam.length !== 2 || queryParam[0] !== 'aggregation') {
+      aggregation = 'Experiment';
+    } else {
+      aggregation = queryParam[1];
+    }
+
     return (
       <Loader fetch={() => this.props.fetchDataSet(dataSetId)}>
         {({ isLoading }) =>
@@ -41,6 +55,7 @@ class DataSet extends React.Component {
                   <DataSetPage
                     dataSetId={dataSetId}
                     startDownload={this.props.startDownload}
+                    aggregation={aggregation}
                     {...this.props.dataSet}
                   />
                 </div>
@@ -146,7 +161,7 @@ class DatasetNoEmail extends React.Component {
   };
 
   render() {
-    const { id, startDownload } = this.props;
+    const { id, startDownload, aggregation } = this.props;
     return (
       <div>
         <h1>
@@ -165,7 +180,7 @@ class DatasetNoEmail extends React.Component {
             await Ajax.post(`/token/`, { id: token.id, is_activated: true });
 
             localStorage.setItem('refinebio-token', token.id);
-            startDownload(token.id);
+            startDownload(token.id, aggregation);
           }}
         />
         {!this.state.token && (

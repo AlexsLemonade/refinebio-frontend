@@ -248,9 +248,13 @@ export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
   };
 };
 
-export const startDownload = tokenId => async (dispatch, getState) => {
+export const startDownload = (tokenId, aggregation) => async (
+  dispatch,
+  getState
+) => {
   const { dataSetId, dataSet } = getState().download;
   await Ajax.put(`/dataset/${dataSetId}/`, {
+    aggregate_by: aggregation,
     start: true,
     data: dataSet,
     token_id: tokenId

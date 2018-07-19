@@ -22,6 +22,10 @@ import NoDatasetsImage from './../../common/images/no-datasets.svg';
 import { Link } from 'react-router-dom';
 
 class Download extends Component {
+  state = {
+    aggregation: 'Experiment'
+  };
+
   componentDidMount() {
     const { dataSet, dataSetId, fetchDataSetDetails } = this.props;
     if (dataSetId) fetchDataSetDetails(dataSet);
@@ -40,6 +44,10 @@ class Download extends Component {
       fetchDataSetDetails(dataSet);
     }
   }
+
+  handleAggregationChange = aggregation => {
+    this.setState({ aggregation });
+  };
 
   render() {
     const {
@@ -74,7 +82,11 @@ class Download extends Component {
           </div>
         ) : (
           <Fragment>
-            <DownloadBar dataSetId={dataSetId} />
+            <DownloadBar
+              dataSetId={dataSetId}
+              aggregation={this.state.aggregation}
+              aggregationOnChange={this.handleAggregationChange}
+            />
             <DownloadDetails {...this.props} />
           </Fragment>
         )}
