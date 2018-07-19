@@ -22,7 +22,7 @@ import { Link } from 'react-router-dom';
 
 class Download extends Component {
   state = {
-    aggregation: 'All'
+    aggregation: 'Experiment'
   };
 
   componentDidMount() {

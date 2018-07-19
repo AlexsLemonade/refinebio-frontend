@@ -38,7 +38,7 @@ class DataSet extends React.Component {
     // In practice, this should never happen.
     let aggregation;
     if (queryParam.length !== 2 || queryParam[0] !== 'aggregation') {
-      aggregation = 'All';
+      aggregation = 'Experiment';
     } else {
       aggregation = queryParam[1];
     }

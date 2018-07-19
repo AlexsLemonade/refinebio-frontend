@@ -37,7 +37,7 @@ let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
           <label className="downloads__label">
             Aggregate
             <Dropdown
-              options={['All', 'Experiment', 'Species']}
+              options={['Experiment', 'Species']}
               selectedOption={aggregation}
               onChange={aggregationOnChange}
             />
