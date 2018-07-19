@@ -48,7 +48,11 @@ class DataSet extends React.Component {
               {dataSetId &&
                 (this.props.dataSet.is_processed ||
                   !!this.props.dataSet.email_address) && (
-                  <ViewDownload dataSetId={dataSetId} isEmbed={true} />
+                  <ViewDownload
+                    dataSetId={dataSetId}
+                    isEmbed={true}
+                    isImmutable={true}
+                  />
                 )}
             </div>
           )
@@ -57,10 +61,13 @@ class DataSet extends React.Component {
     );
   }
 }
-DataSet = connect(({ dataSet }) => ({ dataSet }), {
-  fetchDataSet,
-  startDownload
-})(DataSet);
+DataSet = connect(
+  ({ dataSet }) => ({ dataSet }),
+  {
+    fetchDataSet,
+    startDownload
+  }
+)(DataSet);
 export default DataSet;
 
 /**
