@@ -18,10 +18,12 @@ export default (state = initialState, action) => {
       };
     }
     case 'DOWNLOAD_DATASET_FETCH_SUCCESS': {
-      const { dataSet } = action.data;
+      const { dataSet, is_processing, is_processed } = action.data;
       return {
         ...state,
         dataSet,
+        is_processing,
+        is_processed,
         isLoading: false
       };
     }
@@ -85,7 +87,9 @@ export function groupSamplesBySpecies({ samples, dataSet }) {
       const sample = samples[experimentAccessionCode].find(
         sample => sample.accession_code === addedSample
       );
-      const { organism: { name: organismName } } = sample;
+      const {
+        organism: { name: organismName }
+      } = sample;
       const modifiedSample = { ...sample, experimentAccessionCode };
       species[organismName] = species[organismName] || [];
       species[organismName].push(modifiedSample);

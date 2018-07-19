@@ -211,14 +211,20 @@ export const fetchDataSet = () => async dispatch => {
       dataSetId
     }
   });
-  const { data } = await getDataSet(dataSetId);
-  dispatch(fetchDataSetSucceeded(data));
+  const { data, is_processing, is_processed } = await getDataSet(dataSetId);
+  dispatch(fetchDataSetSucceeded(data, is_processing, is_processed));
 };
 
-export const fetchDataSetSucceeded = dataSet => ({
+export const fetchDataSetSucceeded = (
+  dataSet,
+  is_processing,
+  is_processed
+) => ({
   type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
   data: {
-    dataSet
+    dataSet,
+    is_processing,
+    is_processed
   }
 });
 
