@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import {
   removeExperiment,
@@ -41,7 +42,17 @@ class Download extends Component {
   }
 
   render() {
-    const { dataSetId, isLoading, areDetailsFetched, dataSet } = this.props;
+    const {
+      dataSetId,
+      isLoading,
+      areDetailsFetched,
+      dataSet,
+      is_processing
+    } = this.props;
+
+    if (is_processing) {
+      return <Redirect to={`/dataset/${dataSetId}`} />;
+    }
 
     return (
       <div className="downloads">
@@ -79,7 +90,8 @@ Download = connect(
       samples,
       dataSet,
       experiments
-    }
+    },
+    dataSet: { is_processing }
   }) => ({
     dataSetId,
     isLoading,
@@ -87,6 +99,7 @@ Download = connect(
     samples,
     dataSet,
     experiments,
+    is_processing,
     samplesBySpecies: groupSamplesBySpecies({
       samples: samples,
       dataSet: dataSet
