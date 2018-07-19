@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { getDomain } from '../../common/helpers';
 import { Link } from 'react-router-dom';
 
-let DownloadBar = ({ dataSetId, shareUrl, startDownload }) => {
+let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
   return (
     <div className="downloads__bar">
       <ModalManager
@@ -25,7 +25,9 @@ let DownloadBar = ({ dataSetId, shareUrl, startDownload }) => {
         {() => (
           <div>
             <h1 className="share-link-modal__title">Sharable Link</h1>
-            <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
+            <InputCopy
+              value={`${getDomain()}/download/${dataSetId}?aggregation=${aggregation.toUpperCase()}`}
+            />
           </div>
         )}
       </ModalManager>
@@ -35,23 +37,26 @@ let DownloadBar = ({ dataSetId, shareUrl, startDownload }) => {
           <label className="downloads__label">
             Aggregate
             <Dropdown
-              options={['Experiments', 'Samples']}
-              selectedOption={'Experiments'}
+              options={['All', 'Experiment', 'Species']}
+              selectedOption={aggregation}
+              onChange={aggregationOnChange}
             />
           </label>
-          <label className="downloads__label">
-            Transformation
-            <Dropdown options={['None', 'Samples']} selectedOption={'None'} />
-          </label>
         </div>
-        <Link className="button" to={`/dataset/${dataSetId}`}>
+        <Link
+          className="button"
+          to={`/dataset/${dataSetId}?aggregation=${aggregation.toUpperCase()}`}
+        >
           Download
         </Link>
       </div>
     </div>
   );
 };
-DownloadBar = connect(state => ({}), {
-  startDownload
-})(DownloadBar);
+DownloadBar = connect(
+  state => ({}),
+  {
+    startDownload
+  }
+)(DownloadBar);
 export default DownloadBar;
