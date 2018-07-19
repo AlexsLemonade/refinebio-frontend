@@ -47,10 +47,11 @@ class Download extends Component {
       isLoading,
       areDetailsFetched,
       dataSet,
-      is_processing
+      is_processing,
+      is_processed
     } = this.props;
 
-    if (is_processing) {
+    if (is_processing || is_processed) {
       return <Redirect to={`/dataset/${dataSetId}`} />;
     }
 
@@ -91,7 +92,7 @@ Download = connect(
       dataSet,
       experiments
     },
-    dataSet: { is_processing }
+    dataSet: { is_processing, is_processed }
   }) => ({
     dataSetId,
     isLoading,
@@ -100,6 +101,7 @@ Download = connect(
     dataSet,
     experiments,
     is_processing,
+    is_processed,
     samplesBySpecies: groupSamplesBySpecies({
       samples: samples,
       dataSet: dataSet
