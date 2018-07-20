@@ -260,16 +260,13 @@ export const startDownload = (tokenId, aggregation) => async (
 };
 
 // Remove all dataset
-export const clearDataSet = () => async (dispatch, getState) => {
+export const clearDataSet = () => async dispatch => {
   dispatch({
     type: 'DOWNLOAD_CLEAR',
     data: {}
   });
 
-  const { dataSetId } = getState().download;
-  if (dataSetId) {
-    localStorage.removeItem(dataSetId);
-  }
+  localStorage.clear();
   const dataSet = {};
   dispatch(clearDataSetSucceeded(dataSet));
 };
