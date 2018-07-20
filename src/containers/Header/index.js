@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
+import Button from '../../components/Button';
 import logo from '../../common/icons/logo.svg';
 import { fetchDataSet } from '../../state/download/actions';
+import { clearDataSet } from '../../state/download/actions';
 import { getTotalSamplesAdded } from '../../state/download/reducer';
 import { withRouter } from 'react-router';
 import './Header.scss';
@@ -16,6 +18,10 @@ class Header extends React.Component {
   componentDidMount() {
     this.props.fetchDataSet();
   }
+
+  //rmDataSet() {
+  //  this.props.clearDataSet();
+  //}
 
   openMenu = () => {
     this.setState({ isMobileMenuOpen: !this.state.isMobileMenuOpen });
@@ -79,6 +85,16 @@ class Header extends React.Component {
                 )}
               </Link>
             </li>
+
+            <li className="header__link">
+              <Button
+                buttonStyle="secondary"
+                text="Clear Dataset"
+                isDisabled={this.props.totalSamples === 0}
+                onClick={this.props.clearDataSet}
+              />
+            </li>
+
             <li className="header__menu-close">
               <button onClick={this.closeMenu}>&times;</button>
             </li>
@@ -97,7 +113,7 @@ function mapStateToProps({ download: { dataSet, isLoading } }) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchDataSet }, dispatch);
+  return bindActionCreators({ fetchDataSet, clearDataSet }, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

@@ -72,6 +72,15 @@ export default (state = initialState, action) => {
         areDetailsFetched: true
       };
     }
+    case 'DOWNLOAD_CLEAR_SUCCESS': {
+      const { dataSet } = action.data;
+      return {
+        ...state,
+        dataSet,
+        isLoading: false
+      };
+    }
+
     default:
       return state;
   }
@@ -87,9 +96,7 @@ export function groupSamplesBySpecies({ samples, dataSet }) {
       const sample = samples[experimentAccessionCode].find(
         sample => sample.accession_code === addedSample
       );
-      const {
-        organism: { name: organismName }
-      } = sample;
+      const { organism: { name: organismName } } = sample;
       const modifiedSample = { ...sample, experimentAccessionCode };
       species[organismName] = species[organismName] || [];
       species[organismName].push(modifiedSample);

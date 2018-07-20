@@ -1,11 +1,19 @@
 import React from 'react';
 import './Checkbox.scss';
 
-const Checkbox = ({ name, onToggle, checked, children, className }) => (
+const Checkbox = ({
+  name,
+  onToggle,
+  checked,
+  children,
+  className,
+  disabled
+}) => (
   <div className={`checkbox ${className}`}>
     <input
       type="checkbox"
       className="checkbox__input"
+      disabled={disabled}
       name={name}
       id={name}
       checked={checked}
