@@ -266,7 +266,7 @@ export const clearDataSet = () => async dispatch => {
     data: {}
   });
 
-  localStorage.clear();
+  localStorage.removeItem('dataSetId');
   const dataSet = {};
   dispatch(clearDataSetSucceeded(dataSet));
 };
