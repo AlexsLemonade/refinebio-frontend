@@ -25,6 +25,17 @@
     &:focus {
       outline: none;
     }
+
+    &:disabled,
+    &--disabled {
+      cursor: not-allowed;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: $button-disabled;
+      }
+    }
   }
 
   &:after {

@@ -11,6 +11,7 @@ import {
   getTotalExperimentsAdded
 } from '../../state/download/reducer';
 import downloadsFilesData from './downloadFilesData';
+import { formatSentenceCase } from '../../common/helpers';
 
 /**
  * This page is displayed when the user views a download that is different from the one that's
@@ -22,21 +23,41 @@ let ViewDownload = ({
   dataSetId,
   isEmbed = false,
   ...props
-}) => (
-  <Loader fetch={fetchDownload}>
-    {({ isLoading }) =>
-      isLoading ? (
-        <div className="loader" />
-      ) : (
-        <div className="downloads">
-          {!isEmbed && <h1 className="downloads__heading">Download Dataset</h1>}
-          {!isEmbed && <DownloadBar dataSetId={dataSetId} />}
-          <DownloadDetails {...props} />
-        </div>
-      )
-    }
-  </Loader>
-);
+}) => {
+  // Parse the query string
+  let queryParam = props.location.search.substring(1).split('=');
+
+  // Use default values in the case of no query params. (There is always at
+  // least one object in the array because of how the parser works)
+  //
+  // In practice, this should never happen.
+  let aggregation;
+  if (queryParam.length !== 2 || queryParam[0] !== 'aggregation') {
+    aggregation = 'Experiment';
+  } else {
+    aggregation = formatSentenceCase(queryParam[1]);
+  }
+
+  return (
+    <Loader fetch={fetchDownload}>
+      {({ isLoading }) =>
+        isLoading ? (
+          <div className="loader" />
+        ) : (
+          <div className="downloads">
+            {!isEmbed && (
+              <h1 className="downloads__heading">Download Dataset</h1>
+            )}
+            {!isEmbed && (
+              <DownloadBar dataSetId={dataSetId} aggregation={aggregation} />
+            )}
+            <DownloadDetails isImmutable={true} {...props} />
+          </div>
+        )
+      }
+    </Loader>
+  );
+};
 ViewDownload = connect(
   ({ viewDownload: { samples, dataSet, experiments } }, ownProps) => ({
     samples,
