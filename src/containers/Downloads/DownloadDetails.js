@@ -50,6 +50,7 @@ export default function DownloadDetails({
               dataSet={dataSet}
               experiments={experiments}
               removeExperiment={removeExperiment}
+              isImmutable={isImmutable}
             />
           </div>
         </TabControl>
@@ -115,7 +116,12 @@ const SpeciesSamples = ({
   ));
 };
 
-const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
+const ExperimentsView = ({
+  dataSet,
+  experiments,
+  removeExperiment,
+  isImmutable = false
+}) => {
   if (!dataSet || !Object.keys(dataSet).length) {
     return <p>No samples added to download dataset.</p>;
   }
@@ -174,6 +180,7 @@ const ExperimentsView = ({ dataSet, experiments, removeExperiment }) => {
                   isRowRemovable={true}
                   accessionCodes={addedSamples}
                   experimentAccessionCodes={[experiment.accession_code]}
+                  isImmutable={isImmutable}
                 />
               )}
             </ModalManager>
