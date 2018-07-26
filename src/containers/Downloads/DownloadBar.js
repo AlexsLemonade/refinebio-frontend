@@ -5,11 +5,17 @@ import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
 import { startDownload } from '../../state/download/actions';
+import { clearDataSet } from '../../state/download/actions';
 import { connect } from 'react-redux';
 import { getDomain } from '../../common/helpers';
 import { Link } from 'react-router-dom';
 
-let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
+let DownloadBar = ({
+  dataSetId,
+  aggregation,
+  aggregationOnChange,
+  clearDataSet
+}) => {
   return (
     <div className="downloads__bar">
       <ModalManager
@@ -28,6 +34,37 @@ let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
             <InputCopy
               value={`${getDomain()}/download/${dataSetId}?aggregation=${aggregation.toUpperCase()}`}
             />
+          </div>
+        )}
+      </ModalManager>
+
+      <ModalManager
+        component={showModal => (
+          <Button
+            buttonStyle="secondary"
+            text="Remove Dataset"
+            onClick={showModal}
+          />
+        )}
+        modalProps={{ center: true }}
+      >
+        {({ hideModal }) => (
+          <div>
+            <h1 className="share-link-modal__title">
+              Are you sure you want to remove the dataset?
+            </h1>
+            <div className="downloads__fieldset">
+              <Button
+                buttonStyle="secondary"
+                text="Yes"
+                onClick={clearDataSet}
+              />
+              <Button
+                buttonStyle="secondary"
+                text="Cancel"
+                onClick={hideModal}
+              />
+            </div>
           </div>
         )}
       </ModalManager>
@@ -53,10 +90,10 @@ let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
     </div>
   );
 };
-DownloadBar = connect(
-  state => ({}),
-  {
-    startDownload
-  }
-)(DownloadBar);
+
+DownloadBar = connect(state => ({}), {
+  startDownload,
+  clearDataSet
+})(DownloadBar);
+
 export default DownloadBar;
