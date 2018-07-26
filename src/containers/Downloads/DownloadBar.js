@@ -50,9 +50,7 @@ let DownloadBar = ({
       >
         {({ hideModal }) => (
           <div>
-            <h1 className="share-link-modal__title">
-              Are you sure you want to remove the dataset?
-            </h1>
+            <h1>Are you sure you want to remove the dataset?</h1>
             <div className="downloads__fieldset">
               <Button
                 buttonStyle="secondary"
