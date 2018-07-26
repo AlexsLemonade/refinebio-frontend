@@ -7,7 +7,6 @@ const Dropdown = ({
   onChange,
   disabled = false
 }) => {
-  console.log(disabled);
   return (
     <div className="dropdown">
       <select

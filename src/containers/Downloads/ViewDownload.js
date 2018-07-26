@@ -22,22 +22,9 @@ let ViewDownload = ({
   fetchDownload,
   dataSetId,
   isEmbed = false,
+  aggregate_by,
   ...props
 }) => {
-  // Parse the query string
-  let queryParam = props.location.search.substring(1).split('=');
-
-  // Use default values in the case of no query params. (There is always at
-  // least one object in the array because of how the parser works)
-  //
-  // In practice, this should never happen.
-  let aggregation;
-  if (queryParam.length !== 2 || queryParam[0] !== 'aggregation') {
-    aggregation = 'Experiment';
-  } else {
-    aggregation = formatSentenceCase(queryParam[1]);
-  }
-
   return (
     <Loader fetch={fetchDownload}>
       {({ isLoading }) =>
@@ -49,7 +36,10 @@ let ViewDownload = ({
               <h1 className="downloads__heading">Download Dataset</h1>
             )}
             {!isEmbed && (
-              <DownloadBar dataSetId={dataSetId} aggregation={aggregation} />
+              <DownloadBar
+                dataSetId={dataSetId}
+                aggregation={formatSentenceCase(aggregate_by)}
+              />
             )}
             <DownloadDetails isImmutable={true} {...props} />
           </div>
@@ -59,10 +49,14 @@ let ViewDownload = ({
   );
 };
 ViewDownload = connect(
-  ({ viewDownload: { samples, dataSet, experiments } }, ownProps) => ({
+  (
+    { viewDownload: { samples, dataSet, experiments, aggregate_by } },
+    ownProps
+  ) => ({
     samples,
     dataSet,
     experiments,
+    aggregate_by,
     dataSetId: ownProps.dataSetId || ownProps.match.params.id,
     filesData: downloadsFilesData(dataSet),
     samplesBySpecies:

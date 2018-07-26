@@ -18,12 +18,18 @@ export default (state = initialState, action) => {
       };
     }
     case 'DOWNLOAD_DATASET_FETCH_SUCCESS': {
-      const { dataSet, is_processing, is_processed } = action.data;
+      const {
+        dataSet,
+        is_processing,
+        is_processed,
+        aggregate_by
+      } = action.data;
       return {
         ...state,
         dataSet,
         is_processing,
         is_processed,
+        aggregate_by,
         isLoading: false
       };
     }
