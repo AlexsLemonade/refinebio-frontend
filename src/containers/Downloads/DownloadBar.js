@@ -54,12 +54,12 @@ let DownloadBar = ({
             <div className="downloads__fieldset">
               <Button
                 buttonStyle="secondary"
-                text="Yes"
+                text="Yes, remove this dataset"
                 onClick={clearDataSet}
               />
               <Button
                 buttonStyle="secondary"
-                text="Cancel"
+                text="No, keep this dataset"
                 onClick={hideModal}
               />
             </div>
