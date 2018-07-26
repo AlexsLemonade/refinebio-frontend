@@ -11,6 +11,7 @@ import {
   getTotalExperimentsAdded
 } from '../../state/download/reducer';
 import downloadsFilesData from './downloadFilesData';
+import { formatSentenceCase } from '../../common/helpers';
 
 /**
  * This page is displayed when the user views a download that is different from the one that's
@@ -21,27 +22,41 @@ let ViewDownload = ({
   fetchDownload,
   dataSetId,
   isEmbed = false,
+  aggregate_by,
   ...props
-}) => (
-  <Loader fetch={fetchDownload}>
-    {({ isLoading }) =>
-      isLoading ? (
-        <div className="loader" />
-      ) : (
-        <div className="downloads">
-          {!isEmbed && <h1 className="downloads__heading">Download Dataset</h1>}
-          {!isEmbed && <DownloadBar dataSetId={dataSetId} />}
-          <DownloadDetails {...props} />
-        </div>
-      )
-    }
-  </Loader>
-);
+}) => {
+  return (
+    <Loader fetch={fetchDownload}>
+      {({ isLoading }) =>
+        isLoading ? (
+          <div className="loader" />
+        ) : (
+          <div className="downloads">
+            {!isEmbed && (
+              <h1 className="downloads__heading">Download Dataset</h1>
+            )}
+            {!isEmbed && (
+              <DownloadBar
+                dataSetId={dataSetId}
+                aggregation={formatSentenceCase(aggregate_by)}
+              />
+            )}
+            <DownloadDetails isImmutable={true} {...props} />
+          </div>
+        )
+      }
+    </Loader>
+  );
+};
 ViewDownload = connect(
-  ({ viewDownload: { samples, dataSet, experiments } }, ownProps) => ({
+  (
+    { viewDownload: { samples, dataSet, experiments, aggregate_by } },
+    ownProps
+  ) => ({
     samples,
     dataSet,
     experiments,
+    aggregate_by,
     dataSetId: ownProps.dataSetId || ownProps.match.params.id,
     filesData: downloadsFilesData(dataSet),
     samplesBySpecies:

@@ -21,9 +21,13 @@ import downloadsFilesData from './downloadFilesData';
 import NoDatasetsImage from './../../common/images/no-datasets.svg';
 import { Link } from 'react-router-dom';
 
+import { editAggregation } from '../../state/dataSet/actions';
+
+import { formatSentenceCase } from '../../common/helpers';
+
 class Download extends Component {
   state = {
-    aggregation: 'Experiment'
+    aggregation: null
   };
 
   componentDidMount() {
@@ -37,15 +41,22 @@ class Download extends Component {
       dataSetId,
       areDetailsFetched,
       fetchDataSetDetails,
-      isLoading
+      isLoading,
+      aggregate_by
     } = this.props;
 
     if (dataSetId && !areDetailsFetched && !isLoading) {
       fetchDataSetDetails(dataSet);
     }
+
+    if (aggregate_by && !this.state.aggregation) {
+      this.setState({ aggregation: formatSentenceCase(aggregate_by) });
+    }
   }
 
   handleAggregationChange = aggregation => {
+    const { dataSetId, editAggregation } = this.props;
+    editAggregation({ dataSetId, aggregation });
     this.setState({ aggregation });
   };
 
@@ -104,7 +115,8 @@ Download = connect(
       dataSet,
       experiments,
       is_processing,
-      is_processed
+      is_processed,
+      aggregate_by
     }
   }) => ({
     dataSetId,
@@ -115,6 +127,7 @@ Download = connect(
     experiments,
     is_processing,
     is_processed,
+    aggregate_by,
     samplesBySpecies: groupSamplesBySpecies({
       samples: samples,
       dataSet: dataSet
@@ -130,7 +143,8 @@ Download = connect(
   {
     removeSpecies,
     removeExperiment,
-    fetchDataSetDetails
+    fetchDataSetDetails,
+    editAggregation
   }
 )(Download);
 

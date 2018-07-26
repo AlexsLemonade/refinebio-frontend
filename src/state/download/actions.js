@@ -211,20 +211,26 @@ export const fetchDataSet = () => async dispatch => {
       dataSetId
     }
   });
-  const { data, is_processing, is_processed } = await getDataSet(dataSetId);
-  dispatch(fetchDataSetSucceeded(data, is_processing, is_processed));
+  const { data, is_processing, is_processed, aggregate_by } = await getDataSet(
+    dataSetId
+  );
+  dispatch(
+    fetchDataSetSucceeded(data, is_processing, is_processed, aggregate_by)
+  );
 };
 
 export const fetchDataSetSucceeded = (
   dataSet,
   is_processing,
-  is_processed
+  is_processed,
+  aggregate_by
 ) => ({
   type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
   data: {
     dataSet,
     is_processing,
-    is_processed
+    is_processed,
+    aggregate_by
   }
 });
 
@@ -248,13 +254,9 @@ export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
   };
 };
 
-export const startDownload = (tokenId, aggregation) => async (
-  dispatch,
-  getState
-) => {
+export const startDownload = tokenId => async (dispatch, getState) => {
   const { dataSetId, dataSet } = getState().download;
   await Ajax.put(`/dataset/${dataSetId}/`, {
-    aggregate_by: aggregation,
     start: true,
     data: dataSet,
     token_id: tokenId

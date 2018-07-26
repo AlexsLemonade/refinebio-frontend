@@ -40,3 +40,21 @@ export const editEmail = ({ dataSetId, email }) => async dispatch => {
   });
   dispatch(updateDataSet({ email_address: email }));
 };
+
+export const editAggregation = ({
+  dataSetId,
+  aggregation
+}) => async dispatch => {
+  const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
+  await asyncFetch(`/dataset/${dataSetId}/`, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      data: dataSet.data,
+      aggregate_by: aggregation.toUpperCase()
+    })
+  });
+  dispatch(updateDataSet({ aggregate_by: aggregation }));
+};
