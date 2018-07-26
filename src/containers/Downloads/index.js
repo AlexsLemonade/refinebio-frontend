@@ -33,6 +33,8 @@ class Download extends Component {
   componentDidMount() {
     const { dataSet, dataSetId, fetchDataSetDetails } = this.props;
     if (dataSetId) fetchDataSetDetails(dataSet);
+
+    document.title = 'refine.bio - Preview Download';
   }
 
   componentDidUpdate() {

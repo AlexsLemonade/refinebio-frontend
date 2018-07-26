@@ -1,8 +1,12 @@
 import React from 'react';
+import Helmet from 'react';
 import './Terms.scss';
 
 const Terms = () => (
   <div className="terms">
+    <Helmet>
+      <title>refine.bio - Terms of Use</title>
+    </Helmet>
     <h1 className="terms__title">Terms of Use</h1>
     <p>
       Welcome to the Alex’s Lemonade Childhood Cancer Data Lab, which is

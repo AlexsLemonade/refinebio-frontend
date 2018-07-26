@@ -9,6 +9,10 @@ class SearchInput extends Component {
     buttonStyle: 'secondary'
   };
 
+  componentDidMount() {
+    document.title = 'refine.bio - Search for harmonized transcriptome data';
+  }
+
   componentWillUpdate = nextProps => {
     if (nextProps.searchTerm !== this.props.searchTerm)
       this.handleInitialize(nextProps.searchTerm);

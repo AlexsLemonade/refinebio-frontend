@@ -61,13 +61,10 @@ class DataSet extends React.Component {
     );
   }
 }
-DataSet = connect(
-  ({ dataSet }) => ({ dataSet }),
-  {
-    fetchDataSet,
-    startDownload
-  }
-)(DataSet);
+DataSet = connect(({ dataSet }) => ({ dataSet }), {
+  fetchDataSet,
+  startDownload
+})(DataSet);
 export default DataSet;
 
 /**
@@ -83,6 +80,10 @@ class DataSetPage extends React.Component {
       changedEmail: true
     });
   };
+
+  componentDidMount() {
+    document.title = 'refine.bio - Download';
+  }
 
   render() {
     const {

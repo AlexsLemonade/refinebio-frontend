@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 class Results extends Component {
   componentDidMount() {
     this.handleInit(this.props);
+    document.title = 'refine.bio - Results';
   }
 
   componentWillReceiveProps(nextProps) {

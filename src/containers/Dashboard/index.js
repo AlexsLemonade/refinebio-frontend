@@ -42,6 +42,10 @@ class Dashboard extends Component {
     );
   };
 
+  componentDidMount() {
+    document.title = 'refine.bio - Dashboard';
+  }
+
   render() {
     const {
       totalLengthOfQueuesByType,
