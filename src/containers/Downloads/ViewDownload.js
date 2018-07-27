@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import Loader from '../../components/Loader';
 import { connect } from 'react-redux';
 import { fetchDataSetDetailsForView } from '../../state/viewDownload/actions';
@@ -32,6 +33,7 @@ let ViewDownload = ({
           <div className="loader" />
         ) : (
           <div className="downloads">
+            <Helmet>refine.bio - Download Dataset</Helmet>
             {!isEmbed && (
               <h1 className="downloads__heading">Download Dataset</h1>
             )}

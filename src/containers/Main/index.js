@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { push } from '../../state/routerActions';
 import { connect } from 'react-redux';
 import { fetchResults } from '../../state/search/actions';
@@ -12,6 +13,9 @@ import StatsPlaceholder from './summary-stats-placeholder.svg';
 const Main = ({ searchTerm, fetchResults, push }) => {
   return (
     <div className="main">
+      <Helmet>
+        <title>refine.bio - Search for harmonized transcriptome data</title>
+      </Helmet>
       <section className="main__section main__section--searchbox">
         <div className="main__container main__container--searchbox">
           <h1 className="main__heading-1">
