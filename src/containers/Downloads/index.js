@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -33,8 +34,6 @@ class Download extends Component {
   componentDidMount() {
     const { dataSet, dataSetId, fetchDataSetDetails } = this.props;
     if (dataSetId) fetchDataSetDetails(dataSet);
-
-    document.title = 'refine.bio - Preview Download';
   }
 
   componentDidUpdate() {
@@ -78,6 +77,9 @@ class Download extends Component {
 
     return (
       <div className="downloads">
+        <Helmet>
+          <title>refine.bio - Download Dataset</title>
+        </Helmet>
         <h1 className="downloads__heading">Download Dataset</h1>
         {isLoading ? (
           <div className="loader" />

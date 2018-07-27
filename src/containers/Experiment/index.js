@@ -41,9 +41,6 @@ let Experiment = ({
 
   return (
     <Loader fetch={() => fetchExperiment(match.params.id)}>
-      <Helmet>
-        <title>refine.bio - Experiment Details</title>
-      </Helmet>
       {({ isLoading }) =>
         isLoading ? (
           <div className="loader" />
@@ -58,6 +55,9 @@ let Experiment = ({
             )}
 
             <div className="experiment">
+              <Helmet>
+                <title>refine.bio - Experiment Details</title>
+              </Helmet>
               <div className="experiment__accession">
                 <img
                   src={AccessionIcon}

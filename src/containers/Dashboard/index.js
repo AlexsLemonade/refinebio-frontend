@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../state/dashboard/actions';
@@ -41,10 +42,6 @@ class Dashboard extends Component {
       5000
     );
   };
-
-  componentDidMount() {
-    document.title = 'refine.bio - Dashboard';
-  }
 
   render() {
     const {
@@ -166,6 +163,9 @@ class Dashboard extends Component {
 
     return (
       <div className="dashboard">
+        <Helmet>
+          <title>refine.bio - Dashboard</title>
+        </Helmet>
         <div className="dashboard__container">
           <TimeRangeSelect
             initialValues={{ timeRange: timeOptions.range }}

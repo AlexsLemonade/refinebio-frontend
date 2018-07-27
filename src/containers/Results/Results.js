@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import Result, { RemoveFromDatasetButton } from './Result';
 import ResultFilters from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
@@ -18,7 +19,6 @@ import { Link } from 'react-router-dom';
 class Results extends Component {
   componentDidMount() {
     this.handleInit(this.props);
-    document.title = 'refine.bio - Results';
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,6 +81,9 @@ class Results extends Component {
 
     return (
       <div className="results">
+        <Helmet>
+          <title>refine.bio - Results</title>
+        </Helmet>
         <BackToTop />
         <div className="results__search">
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
