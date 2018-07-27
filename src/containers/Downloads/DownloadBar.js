@@ -5,17 +5,11 @@ import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
 import { startDownload } from '../../state/download/actions';
-import { clearDataSet } from '../../state/download/actions';
 import { connect } from 'react-redux';
 import { getDomain } from '../../common/helpers';
 import { Link } from 'react-router-dom';
 
-let DownloadBar = ({
-  dataSetId,
-  aggregation,
-  aggregationOnChange,
-  clearDataSet
-}) => {
+let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
   return (
     <div className="downloads__bar">
       <ModalManager
@@ -31,38 +25,7 @@ let DownloadBar = ({
         {() => (
           <div>
             <h1 className="share-link-modal__title">Sharable Link</h1>
-            <InputCopy
-              value={`${getDomain()}/download/${dataSetId}?aggregation=${aggregation.toUpperCase()}`}
-            />
-          </div>
-        )}
-      </ModalManager>
-
-      <ModalManager
-        component={showModal => (
-          <Button
-            buttonStyle="secondary"
-            text="Remove Dataset"
-            onClick={showModal}
-          />
-        )}
-        modalProps={{ center: true }}
-      >
-        {({ hideModal }) => (
-          <div>
-            <h1>Are you sure you want to remove the dataset?</h1>
-            <div className="downloads__fieldset">
-              <Button
-                buttonStyle="secondary"
-                text="Yes, remove this dataset"
-                onClick={clearDataSet}
-              />
-              <Button
-                buttonStyle="secondary"
-                text="No, keep this dataset"
-                onClick={hideModal}
-              />
-            </div>
+            <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
           </div>
         )}
       </ModalManager>
@@ -72,26 +35,28 @@ let DownloadBar = ({
           <label className="downloads__label">
             Aggregate
             <Dropdown
-              options={['Experiment', 'Species']}
+              // If there is no aggregationOnChange function, the DownloadBar
+              // is immutable, so the only option is the current one. This
+              // happens when viewing a shared dataset.
+              options={
+                aggregationOnChange ? ['Experiment', 'Species'] : [aggregation]
+              }
               selectedOption={aggregation}
               onChange={aggregationOnChange}
+              // The dropdown should also be disabled if there is no
+              // aggregationOnChange function
+              disabled={!aggregationOnChange}
             />
           </label>
         </div>
-        <Link
-          className="button"
-          to={`/dataset/${dataSetId}?aggregation=${aggregation.toUpperCase()}`}
-        >
+        <Link className="button" to={`/dataset/${dataSetId}`}>
           Download
         </Link>
       </div>
     </div>
   );
 };
-
 DownloadBar = connect(state => ({}), {
-  startDownload,
-  clearDataSet
+  startDownload
 })(DownloadBar);
-
 export default DownloadBar;
