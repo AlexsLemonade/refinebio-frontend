@@ -50,16 +50,16 @@ export default function DownloadDetails({
           >
             {({ hideModal }) => (
               <div>
-                <h1>Are you sure you want to remove the dataset?</h1>
+                <h1>Are you sure you want to remove all samples?</h1>
                 <div className="downloads__fieldset">
                   <Button
                     buttonStyle="remove"
-                    text="Yes, remove this dataset"
+                    text="Yes, remove all samples"
                     onClick={clearDataSet}
                   />
                   <Button
                     buttonStyle="secondary"
-                    text="No, keep this dataset"
+                    text="No, keep all samples"
                     onClick={hideModal}
                   />
                 </div>
