@@ -90,9 +90,7 @@ export const removeSpecies = samples => {
       }
     });
 
-    const {
-      download: { dataSet, dataSetId }
-    } = getState();
+    const { download: { dataSet, dataSetId } } = getState();
 
     const newDataSet = Object.keys(dataSet).reduce((result, accessionCode) => {
       const samples = dataSet[accessionCode];
@@ -262,3 +260,20 @@ export const startDownload = tokenId => async (dispatch, getState) => {
     token_id: tokenId
   });
 };
+
+// Remove all dataset
+export const clearDataSet = () => async dispatch => {
+  dispatch({
+    type: 'DOWNLOAD_CLEAR',
+    data: {}
+  });
+
+  localStorage.removeItem('dataSetId');
+  const dataSet = {};
+  dispatch(clearDataSetSucceeded(dataSet));
+};
+
+export const clearDataSetSucceeded = dataSet => ({
+  type: 'DOWNLOAD_CLEAR_SUCCESS',
+  data: { dataSet }
+});

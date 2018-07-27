@@ -20,6 +20,7 @@ const FilterCategory = ({
             <Checkbox
               key={i}
               name={filter}
+              disabled={categoryFilters[filter] === 0}
               onToggle={() =>
                 toggledFilter(
                   category.queryField,

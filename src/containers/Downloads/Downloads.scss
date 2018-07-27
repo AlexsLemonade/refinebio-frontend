@@ -134,6 +134,15 @@
     }
   }
 
+  &__sample-header {
+    text-align: left;
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
   &__sample-stats {
     display: flex;
     margin: 0 -2rem 1.5rem;

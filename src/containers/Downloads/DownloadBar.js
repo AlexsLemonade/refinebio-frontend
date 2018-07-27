@@ -56,10 +56,7 @@ let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
     </div>
   );
 };
-DownloadBar = connect(
-  state => ({}),
-  {
-    startDownload
-  }
-)(DownloadBar);
+DownloadBar = connect(state => ({}), {
+  startDownload
+})(DownloadBar);
 export default DownloadBar;
