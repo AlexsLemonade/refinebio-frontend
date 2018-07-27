@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Loader from '../../components/Loader';
@@ -54,6 +55,9 @@ let Experiment = ({
             )}
 
             <div className="experiment">
+              <Helmet>
+                <title>refine.bio - Experiment Details</title>
+              </Helmet>
               <div className="experiment__accession">
                 <img
                   src={AccessionIcon}

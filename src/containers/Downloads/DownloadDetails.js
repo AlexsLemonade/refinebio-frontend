@@ -18,6 +18,7 @@ export default function DownloadDetails({
   experiments,
   removeSpecies,
   removeExperiment,
+  clearDataSet,
   samplesBySpecies,
   experimentCountBySpecies,
   totalSamples,
@@ -35,7 +36,37 @@ export default function DownloadDetails({
       />
 
       <section className="downloads__section">
-        <h2>Samples</h2>
+        <div className="downloads__sample-header">
+          <h2>Samples</h2>
+          <ModalManager
+            component={showModal => (
+              <Button
+                buttonStyle="remove"
+                text="Remove All"
+                onClick={showModal}
+              />
+            )}
+            modalProps={{ center: true }}
+          >
+            {({ hideModal }) => (
+              <div>
+                <h1>Are you sure you want to remove all samples?</h1>
+                <div className="downloads__fieldset">
+                  <Button
+                    buttonStyle="remove"
+                    text="Yes, remove all samples"
+                    onClick={clearDataSet}
+                  />
+                  <Button
+                    buttonStyle="secondary"
+                    text="No, keep all samples"
+                    onClick={hideModal}
+                  />
+                </div>
+              </div>
+            )}
+          </ModalManager>
+        </div>
 
         <TabControl tabs={['Species View', 'Experiments View']}>
           <div className="downloads__card">
