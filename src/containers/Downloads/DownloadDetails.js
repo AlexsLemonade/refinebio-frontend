@@ -36,7 +36,7 @@ export default function DownloadDetails({
       />
 
       <section className="downloads__section">
-        <div className="downloads__fieldset">
+        <div className="downloads__sample-header">
           <h2>Samples</h2>
           <ModalManager
             component={showModal => (
