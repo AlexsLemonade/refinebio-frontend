@@ -42,5 +42,5 @@
     "flow-bin": "^0.68.0",
     "redux-mock-store": "^1.5.1"
   },
-  "proxy": "https://staging.refine.bio/"
+  "proxy": "http://localhost:8000/"
 }
