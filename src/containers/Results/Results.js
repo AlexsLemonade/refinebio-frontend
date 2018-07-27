@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Result, { RemoveFromDatasetButton } from './Result';
+import Result, { RemoveFromDatasetButton, AddToDatasetButton } from './Result';
 import ResultFilters from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
@@ -78,6 +78,14 @@ class Results extends Component {
       0
     );
 
+    const samplesAdded = results.reduce(
+      (sum, result) =>
+        dataSet[result.accession_code]
+          ? sum + dataSet[result.accession_code].length
+          : sum,
+      0
+    );
+
     return (
       <div className="results">
         <BackToTop />
@@ -102,19 +110,18 @@ class Results extends Component {
             <div className="results__list">
               <div className="results__top-bar">
                 {results.length ? <NumberOfResults /> : null}
-                {results.filter(result => !dataSet[result.accession_code])
-                  .length === 0 ? (
+                {totalSamplesOnPage - samplesAdded === 0 ? (
                   <RemoveFromDatasetButton
                     totalAdded={totalSamplesOnPage}
                     handleRemove={this.handlePageRemove}
                   />
                 ) : (
-                  <Button
-                    buttonStyle="secondary"
-                    text="Add Page to Dataset"
-                    onClick={() => {
+                  <AddToDatasetButton
+                    addMessage="Add Page to Dataset"
+                    handleAdd={() => {
                       addExperiment(results);
                     }}
+                    samplesInDataset={samplesAdded}
                   />
                 )}
               </div>
@@ -164,7 +171,11 @@ let NumberOfResults = ({
     </div>
   );
 NumberOfResults = connect(
-  ({ search: { pagination: { totalResults, resultsPerPage } } }) => ({
+  ({
+    search: {
+      pagination: { totalResults, resultsPerPage }
+    }
+  }) => ({
     totalResults,
     resultsPerPage
   }),

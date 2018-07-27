@@ -12,7 +12,10 @@ import FileIcon from './file.svg';
 import ProcessIcon from './process.svg';
 import { PAGE_SIZES } from '../../constants/table';
 import SampleFieldMetadata from './SampleFieldMetadata';
-import { RemoveFromDatasetButton } from '../../containers/Results/Result';
+import {
+  RemoveFromDatasetButton,
+  AddToDatasetButton
+} from '../../containers/Results/Result';
 import {
   addExperiment,
   removeExperiment,
@@ -663,9 +666,9 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
     dataSet[experimentAccessionCode].includes(accession_code);
   if (!isAdded) {
     return (
-      <Button
-        buttonStyle="secondary"
-        onClick={() =>
+      <AddToDatasetButton
+        addMessage={'Add'}
+        handleAdd={() =>
           addExperiment([
             {
               accession_code: experimentAccessionCode,
@@ -673,9 +676,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
             }
           ])
         }
-      >
-        Add
-      </Button>
+      />
     );
   }
 

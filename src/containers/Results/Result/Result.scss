@@ -77,7 +77,8 @@
   }
 }
 
-.dataset-remove-button {
+.dataset-remove-button,
+.dataset-add-button {
   &__added {
     display: flex;
     align-items: center;

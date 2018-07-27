@@ -18,7 +18,7 @@ import {
   removeExperiment,
   removeSamplesFromExperiment
 } from '../../state/download/actions';
-import { RemoveFromDatasetButton } from '../Results/Result';
+import { RemoveFromDatasetButton, AddToDatasetButton } from '../Results/Result';
 
 import { goBack } from '../../state/routerActions';
 
@@ -71,9 +71,13 @@ let Experiment = ({
                   {!dataSet[experiment.accession_code] ||
                   dataSet[experiment.accession_code].length !==
                     experiment.samples.length ? (
-                    <Button
-                      text="Add to Dataset"
-                      onClick={() => addExperiment([experiment])}
+                    <AddToDatasetButton
+                      handleAdd={() => addExperiment([experiment])}
+                      samplesInDataset={
+                        dataSet[experiment.accession_code]
+                          ? dataSet[experiment.accession_code].length
+                          : null
+                      }
                     />
                   ) : (
                     <RemoveFromDatasetButton
@@ -203,7 +207,8 @@ let SampleTableActions = ({
   allSamplesInDataset,
   experiment,
   removeSamplesFromExperiment,
-  addExperiment
+  addExperiment,
+  samplesInDataset
 }) =>
   allSamplesInDataset ? (
     <RemoveFromDatasetButton
@@ -215,10 +220,9 @@ let SampleTableActions = ({
       }
     />
   ) : (
-    <Button
-      text="Add Page to Dataset"
-      buttonStyle="secondary"
-      onClick={() =>
+    <AddToDatasetButton
+      addMessage="Add Page to Dataset"
+      handleAdd={() =>
         addExperiment([
           {
             accession_code: experiment.accession_code,
@@ -226,6 +230,7 @@ let SampleTableActions = ({
           }
         ])
       }
+      samplesInDataset={samplesInDataset}
     />
   );
 SampleTableActions = connect(
@@ -234,7 +239,12 @@ SampleTableActions = connect(
     // should be true if all samples passed are already in the dataset
     allSamplesInDataset:
       samplesNotInDataSet(samples, experiment.accession_code, dataSet)
-        .length === 0
+        .length === 0,
+    samplesInDataset: samplesInDataset(
+      samples,
+      experiment.accession_code,
+      dataSet
+    ).length
   }),
   {
     addExperiment,
@@ -246,5 +256,12 @@ function samplesNotInDataSet(samples, accessionCode, dataSet) {
   return samples.filter(x => {
     if (!dataSet[accessionCode]) return true;
     return dataSet[accessionCode].indexOf(x.accession_code) === -1;
+  });
+}
+
+function samplesInDataset(samples, accessionCode, dataSet) {
+  return samples.filter(x => {
+    if (!dataSet[accessionCode]) return false;
+    return dataSet[accessionCode].indexOf(x.accession_code) !== -1;
   });
 }
