@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { getAmazonDownloadLinkUrl } from '../../common/helpers';
 import Loader from '../../components/Loader';
 import ProcessingImage from './download-processing.svg';
@@ -149,6 +150,9 @@ class DatasetNoEmail extends React.Component {
     const { id, startDownload } = this.props;
     return (
       <div>
+        <Helmet>
+          <title>refine.bio - Download</title>
+        </Helmet>
         <h1>
           We're almost ready to start putting your download files together!
         </h1>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import Result, { RemoveFromDatasetButton } from './Result';
 import ResultFilters from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
@@ -80,6 +81,9 @@ class Results extends Component {
 
     return (
       <div className="results">
+        <Helmet>
+          <title>refine.bio - Results</title>
+        </Helmet>
         <BackToTop />
         <div className="results__search">
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
@@ -164,7 +168,11 @@ let NumberOfResults = ({
     </div>
   );
 NumberOfResults = connect(
-  ({ search: { pagination: { totalResults, resultsPerPage } } }) => ({
+  ({
+    search: {
+      pagination: { totalResults, resultsPerPage }
+    }
+  }) => ({
     totalResults,
     resultsPerPage
   }),
