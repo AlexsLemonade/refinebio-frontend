@@ -22,6 +22,9 @@ let NoMatch = ({ goBack }) => (
     </div>
   </div>
 );
-NoMatch = connect(() => ({}), { goBack })(NoMatch);
+NoMatch = connect(
+  () => ({}),
+  { goBack }
+)(NoMatch);
 
 export default NoMatch;

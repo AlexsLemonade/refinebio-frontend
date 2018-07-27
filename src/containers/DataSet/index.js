@@ -62,10 +62,13 @@ class DataSet extends React.Component {
     );
   }
 }
-DataSet = connect(({ dataSet }) => ({ dataSet }), {
-  fetchDataSet,
-  startDownload
-})(DataSet);
+DataSet = connect(
+  ({ dataSet }) => ({ dataSet }),
+  {
+    fetchDataSet,
+    startDownload
+  }
+)(DataSet);
 export default DataSet;
 
 /**

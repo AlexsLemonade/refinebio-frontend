@@ -141,12 +141,17 @@ const Main = ({ searchTerm, fetchResults, push }) => {
 };
 
 const mapStateToProps = state => {
-  const { search: { searchTerm } } = state;
+  const {
+    search: { searchTerm }
+  } = state;
   return {
     searchTerm
   };
 };
 
-const MainContainer = connect(mapStateToProps, { fetchResults, push })(Main);
+const MainContainer = connect(
+  mapStateToProps,
+  { fetchResults, push }
+)(Main);
 
 export default MainContainer;

@@ -168,7 +168,11 @@ let NumberOfResults = ({
     </div>
   );
 NumberOfResults = connect(
-  ({ search: { pagination: { totalResults, resultsPerPage } } }) => ({
+  ({
+    search: {
+      pagination: { totalResults, resultsPerPage }
+    }
+  }) => ({
     totalResults,
     resultsPerPage
   }),
