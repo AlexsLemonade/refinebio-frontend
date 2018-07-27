@@ -48,6 +48,12 @@ class SamplesTable extends React.Component {
     // Good for a add/remove samples button. It's a function that receives the currently displayed
     // samples as an argument
     const totalPages = Math.ceil(this.totalSamples / this.state.pageSize);
+
+    // Calculate page size options to exclude ones greater than the number of
+    // samples.
+    const pageSizes = PAGE_SIZES.filter(size => size <= this.totalSamples);
+    if (pageSizes.length == 0) pageSizes.push(this.totalSamples);
+
     return (
       <ReactTable
         manual={true}
@@ -62,6 +68,7 @@ class SamplesTable extends React.Component {
         showPagination={false}
         columns={this.state.columns}
         ThComponent={ThComponent}
+        minRows={0}
       >
         {(state, makeTable, instance) => {
           return (
@@ -70,7 +77,7 @@ class SamplesTable extends React.Component {
                 <div className="experiment__per-page-dropdown">
                   Show
                   <Dropdown
-                    options={PAGE_SIZES}
+                    options={pageSizes}
                     selectedOption={this.state.pageSize}
                     onChange={this.handlePageSizeChange}
                   />

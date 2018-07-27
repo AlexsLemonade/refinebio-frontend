@@ -1,7 +1,12 @@
 import React from 'react';
 import './Dropdown.scss';
 
-const Dropdown = ({ options = [], selectedOption = '', onChange }) => {
+const Dropdown = ({
+  options = [],
+  selectedOption = '',
+  onChange,
+  disabled = false
+}) => {
   return (
     <div className="dropdown">
       <select
@@ -10,6 +15,7 @@ const Dropdown = ({ options = [], selectedOption = '', onChange }) => {
         onChange={e =>
           onChange && onChange(options[parseInt(e.target.value, 10)])
         }
+        disabled={disabled}
       >
         {/* Set the value of each option to the index selected, to be able to return the correct selected option
         on the `onChange` handler */}

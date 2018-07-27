@@ -25,9 +25,7 @@ let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
         {() => (
           <div>
             <h1 className="share-link-modal__title">Sharable Link</h1>
-            <InputCopy
-              value={`${getDomain()}/download/${dataSetId}?aggregation=${aggregation.toUpperCase()}`}
-            />
+            <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
           </div>
         )}
       </ModalManager>
@@ -37,16 +35,21 @@ let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
           <label className="downloads__label">
             Aggregate
             <Dropdown
-              options={['Experiment', 'Species']}
+              // If there is no aggregationOnChange function, the DownloadBar
+              // is immutable, so the only option is the current one. This
+              // happens when viewing a shared dataset.
+              options={
+                aggregationOnChange ? ['Experiment', 'Species'] : [aggregation]
+              }
               selectedOption={aggregation}
               onChange={aggregationOnChange}
+              // The dropdown should also be disabled if there is no
+              // aggregationOnChange function
+              disabled={!aggregationOnChange}
             />
           </label>
         </div>
-        <Link
-          className="button"
-          to={`/dataset/${dataSetId}?aggregation=${aggregation.toUpperCase()}`}
-        >
+        <Link className="button" to={`/dataset/${dataSetId}`}>
           Download
         </Link>
       </div>

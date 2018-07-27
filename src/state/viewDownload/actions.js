@@ -9,13 +9,13 @@ export const loadViewDownload = data => ({
 export const fetchDataSetDetailsForView = dataSetId => async dispatch => {
   try {
     // 1. fetch dataset information
-    const { data: dataSet } = await getDataSet(dataSetId);
+    const { data: dataSet, aggregate_by } = await getDataSet(dataSetId);
 
     // 2. fetch details associated with dataset
     const { experiments, samples } = await getSamplesAndExperiments(dataSet);
 
     // 3. store data in `viewDownload` reducer
-    dispatch(loadViewDownload({ dataSet, experiments, samples }));
+    dispatch(loadViewDownload({ dataSet, experiments, samples, aggregate_by }));
   } catch (e) {
     // TODO: check the type of error
     dispatch(replace('/no-match'));
