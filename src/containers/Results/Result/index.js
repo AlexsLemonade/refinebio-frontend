@@ -44,6 +44,7 @@ export function AddToDatasetButton({
     <div className="dataset-add-button">
       <Button
         text={samplesInDataset ? 'Add Remaining' : addMessage}
+        buttonStyle={samplesInDataset ? 'secondary' : null}
         onClick={handleAdd}
       />
       {(samplesInDataset && (
