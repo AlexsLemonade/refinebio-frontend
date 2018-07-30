@@ -9,6 +9,10 @@ class SearchInput extends Component {
     buttonStyle: 'secondary'
   };
 
+  componentDidMount() {
+    this.handleInitialize(this.props.searchTerm);
+  }
+
   componentWillUpdate = nextProps => {
     if (nextProps.searchTerm !== this.props.searchTerm)
       this.handleInitialize(nextProps.searchTerm);
