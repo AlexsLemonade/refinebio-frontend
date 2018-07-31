@@ -157,7 +157,7 @@ let Experiment = ({
                       </a>
                     )) || (
                       <i className="experiment__not-provided">
-                        No associated Pubmed ID
+                        No associated PubMed ID
                       </i>
                     )}
                   </div>
@@ -165,7 +165,18 @@ let Experiment = ({
                 <div className="experiment__row">
                   <div className="experiment__row-label">Publication Title</div>
                   <div>
-                    {experiment.publication_title || (
+                    {(experiment.publication_title && (
+                      <a
+                        href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                          experiment.pubmed_id
+                        }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="button button--link"
+                      >
+                        {experiment.publication_title}
+                      </a>
+                    )) || (
                       <i className="experiment__not-provided">
                         No associated publication
                       </i>
