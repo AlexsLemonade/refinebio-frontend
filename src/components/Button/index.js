@@ -7,7 +7,8 @@ const Button = ({
   onClick,
   isDisabled = false,
   className,
-  children
+  children,
+  style = null
 }) => {
   const buttonStyleClass = buttonStyle ? `button--${buttonStyle}` : '';
   return (
@@ -15,6 +16,7 @@ const Button = ({
       className={`button ${buttonStyleClass} ${className || ''}`}
       onClick={onClick}
       disabled={isDisabled}
+      style={style}
     >
       {text || children}
     </button>

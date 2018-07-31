@@ -128,9 +128,14 @@ class Pagination extends Component {
                 min="1"
                 onChange={this.handleInputChange.bind(this)}
                 value={this.state.pageNumber}
-                style={{ marginRight: '8px' }}
               />
-              <Button buttonStyle="transparent" text="Go" />
+              <Button
+                // Adjust the vertical-align slightly to center the button on
+                // the input above, and add a margin to space them out.
+                style={{ verticalAlign: '-1.2px', marginLeft: '8px' }}
+                buttonStyle="secondary"
+                text="Go"
+              />
             </label>
           </form>
         </div>
