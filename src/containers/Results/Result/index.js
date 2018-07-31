@@ -38,13 +38,14 @@ export function RemoveFromDatasetButton({
 export function AddToDatasetButton({
   handleAdd,
   samplesInDataset,
-  addMessage = 'Add to Dataset'
+  addMessage = 'Add to Dataset',
+  buttonStyle = null
 }) {
   return (
     <div className="dataset-add-button">
       <Button
         text={samplesInDataset ? 'Add Remaining' : addMessage}
-        buttonStyle={samplesInDataset ? 'secondary' : null}
+        buttonStyle={samplesInDataset ? 'secondary' : buttonStyle}
         onClick={handleAdd}
       />
       {(samplesInDataset && (

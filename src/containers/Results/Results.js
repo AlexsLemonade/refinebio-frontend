@@ -126,6 +126,7 @@ class Results extends Component {
                       addExperiment(results);
                     }}
                     samplesInDataset={samplesAdded}
+                    buttonStyle="secondary"
                   />
                 )}
               </div>

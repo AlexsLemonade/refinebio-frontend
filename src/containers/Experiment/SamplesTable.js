@@ -683,6 +683,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
             }
           ])
         }
+        buttonStyle={'secondary'}
       />
     );
   }

@@ -234,7 +234,7 @@ let SampleTableActions = ({
           }
         ])
       }
-      samplesInDataset={samplesInDataset}
+      buttonStyle="secondary"
     />
   );
 SampleTableActions = connect(
