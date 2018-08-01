@@ -87,11 +87,6 @@ export function fetchResultsSucceeded(
       queryObj.p = currentPage;
     }
 
-    dispatch(
-      push({
-        search: `${getQueryString({ ...queryObj, ...filtersObj })}`
-      })
-    );
     dispatch({
       type: 'SEARCH_RESULTS_FETCH_SUCCESS',
       data: {
