@@ -5,13 +5,14 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case 'LOAD_VIEW_DOWNLOAD': {
-      const { dataSet, experiments, samples, aggregate_by } = data;
+      const { dataSet, experiments, samples, aggregate_by, scale_by } = data;
       return {
         ...state,
         dataSet,
         experiments,
         samples,
-        aggregate_by
+        aggregate_by,
+        scale_by
       };
     }
     default:

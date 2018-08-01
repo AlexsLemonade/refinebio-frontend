@@ -24,6 +24,7 @@ let ViewDownload = ({
   dataSetId,
   isEmbed = false,
   aggregate_by,
+  scale_by,
   ...props
 }) => {
   return (
@@ -41,6 +42,7 @@ let ViewDownload = ({
               <DownloadBar
                 dataSetId={dataSetId}
                 aggregation={formatSentenceCase(aggregate_by)}
+                transformation={formatSentenceCase(scale_by)}
               />
             )}
             <DownloadDetails isImmutable={true} {...props} />
@@ -52,13 +54,14 @@ let ViewDownload = ({
 };
 ViewDownload = connect(
   (
-    { viewDownload: { samples, dataSet, experiments, aggregate_by } },
+    { viewDownload: { samples, dataSet, experiments, aggregate_by, scale_by } },
     ownProps
   ) => ({
     samples,
     dataSet,
     experiments,
     aggregate_by,
+    scale_by,
     dataSetId: ownProps.dataSetId || ownProps.match.params.id,
     filesData: downloadsFilesData(dataSet),
     samplesBySpecies:

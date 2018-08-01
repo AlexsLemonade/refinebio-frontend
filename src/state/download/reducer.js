@@ -22,7 +22,8 @@ export default (state = initialState, action) => {
         dataSet,
         is_processing,
         is_processed,
-        aggregate_by
+        aggregate_by,
+        scale_by
       } = action.data;
       return {
         ...state,
@@ -30,6 +31,7 @@ export default (state = initialState, action) => {
         is_processing,
         is_processed,
         aggregate_by,
+        scale_by,
         isLoading: false
       };
     }
