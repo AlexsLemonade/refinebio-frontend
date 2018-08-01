@@ -1,24 +1,29 @@
 // COLORS - light to dark
-$white: #FFF;
-$whisper: #FDFDFD;
-$gallery: #D8D8D8;
+$white: #fff;
+$whisper: #fdfdfd;
+$gallery: #d8d8d8;
 $gray: #979797;
-$dusty-gray: #9B9B9B;
+$dusty-gray: #9b9b9b;
 $tundora: #444;
 $black: #000;
 
-$azure: #386DB0;
+$azure: #386db0;
 
-$success: #41A36D;
+$success: #41a36d;
 
 // Text
 $link-color: $azure;
+$link-visited: #643b8a;
 
 // FUNCTIONAL COLORS
 $font-color: $black;
 $background-color--light: $whisper;
-$background-color--highlight: #F2F2F2;
-$background-color--blue-gradient: linear-gradient(180deg, rgba(12,52,131,0.94) 0%, #4B6DB1 100%);
+$background-color--highlight: #f2f2f2;
+$background-color--blue-gradient: linear-gradient(
+  180deg,
+  rgba(12, 52, 131, 0.94) 0%,
+  #4b6db1 100%
+);
 
 $border-color: $gray;
 
@@ -28,27 +33,24 @@ $mobile: '600px';
 // SPACING
 $container-spacing: 32px;
 
-
 // FORM ELEMENTS
 $input-normal: $dusty-gray;
 $input-hover: $input-normal;
-$input-focus: #386DB0;
+$input-focus: #386db0;
 
 // BUTTONS
 $button-disabled: $dusty-gray;
 
 // TABLE
-$table-header-background: #CACACA;
+$table-header-background: #cacaca;
 $table-header-border-color: #979797;
 
 $table-border-color: #979797;
 
-$table-row--highlight: #F2F2F2;
+$table-row--highlight: #f2f2f2;
 
-
-
-$processed-ccdl: #41A36D;
-$processed-submitter: #DACE00;
+$processed-ccdl: #41a36d;
+$processed-submitter: #dace00;
 
 // Media queries
 $tablet-width: 768px;
