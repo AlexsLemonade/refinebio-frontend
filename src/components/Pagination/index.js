@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getRange } from '../../common/helpers';
 import './Pagination.scss';
+import Button from '../Button';
 
 class Pagination extends Component {
   constructor(props) {
@@ -13,13 +14,15 @@ class Pagination extends Component {
   handleJumpPageSubmit(e) {
     const { totalPages, onPaginate } = this.props;
     e.preventDefault();
-    if (this.state.pageNumber <= totalPages) {
+    if (this.state.pageNumber && this.state.pageNumber <= totalPages) {
       onPaginate(this.state.pageNumber);
     }
   }
 
   handleInputChange(e) {
-    const { target: { value } } = e;
+    const {
+      target: { value }
+    } = e;
     this.setState({ pageNumber: value });
   }
 
@@ -125,6 +128,13 @@ class Pagination extends Component {
                 min="1"
                 onChange={this.handleInputChange.bind(this)}
                 value={this.state.pageNumber}
+              />
+              <Button
+                // Adjust the vertical-align slightly to center the button on
+                // the input above, and add a margin to space them out.
+                style={{ verticalAlign: '-1.2px', marginLeft: '8px' }}
+                buttonStyle="secondary"
+                text="Go"
               />
             </label>
           </form>
