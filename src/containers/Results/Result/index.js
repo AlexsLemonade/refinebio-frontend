@@ -35,6 +35,30 @@ export function RemoveFromDatasetButton({
   );
 }
 
+export function AddToDatasetButton({
+  handleAdd,
+  samplesInDataset,
+  addMessage = 'Add to Dataset',
+  buttonStyle = null
+}) {
+  return (
+    <div className="dataset-add-button">
+      <Button
+        text={samplesInDataset ? 'Add Remaining' : addMessage}
+        buttonStyle={samplesInDataset ? 'secondary' : buttonStyle}
+        onClick={handleAdd}
+      />
+      {(samplesInDataset && (
+        <p className="dataset-add-button__info-text">
+          <i className="ion-information-circled dataset-add-button__info-icon" />{' '}
+          {samplesInDataset} Samples are already in Dataset
+        </p>
+      )) ||
+        null}
+    </div>
+  );
+}
+
 const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
   const isAdded =
     dataSet[result.accession_code] &&
@@ -68,7 +92,14 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
           </Link>
         </div>
         {!isAdded ? (
-          <Button text="Add to Dataset" onClick={handleAddExperiment} />
+          <AddToDatasetButton
+            handleAdd={handleAddExperiment}
+            samplesInDataset={
+              dataSet[result.accession_code]
+                ? dataSet[result.accession_code].length
+                : null
+            }
+          />
         ) : (
           <RemoveFromDatasetButton
             handleRemove={handleRemoveExperiment}
