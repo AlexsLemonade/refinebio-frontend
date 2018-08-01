@@ -123,28 +123,37 @@ Download = connect(
       is_processed,
       aggregate_by
     }
-  }) => ({
-    dataSetId,
-    isLoading,
-    areDetailsFetched,
-    samples,
-    dataSet,
-    experiments,
-    is_processing,
-    is_processed,
-    aggregate_by,
-    samplesBySpecies: groupSamplesBySpecies({
-      samples: samples,
-      dataSet: dataSet
-    }),
-    filesData: downloadsFilesData(dataSet),
-    totalSamples: getTotalSamplesAdded({ dataSet }),
-    totalExperiments: getTotalExperimentsAdded({ dataSet }),
-    experimentCountBySpecies: getExperimentCountBySpecies({
+  }) => {
+    // If areDetailsFetched is false, either samples is already {} or the local dataset has more
+    // samples in it than the stored version of the remote one. The remote one will be refetched
+    // on load, but this makes sure that no errors happen due to an out of date local version.
+    if (!areDetailsFetched) {
+      samples = {};
+    }
+
+    return {
+      dataSetId,
+      isLoading,
+      areDetailsFetched,
+      samples,
+      dataSet,
       experiments,
-      dataSet
-    })
-  }),
+      is_processing,
+      is_processed,
+      aggregate_by,
+      samplesBySpecies: groupSamplesBySpecies({
+        samples: samples,
+        dataSet: dataSet
+      }),
+      filesData: downloadsFilesData(dataSet),
+      totalSamples: getTotalSamplesAdded({ dataSet }),
+      totalExperiments: getTotalExperimentsAdded({ dataSet }),
+      experimentCountBySpecies: getExperimentCountBySpecies({
+        experiments,
+        dataSet
+      })
+    };
+  },
   {
     removeSpecies,
     removeExperiment,
