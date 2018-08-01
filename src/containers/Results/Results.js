@@ -189,7 +189,7 @@ NumberOfResults = connect(
   { pure: false }
 )(NumberOfResults);
 
-const EmptyStates = ({ searchTerm }) => {
+const EmptyStates = ({ searchTerm, appliedFilters }) => {
   const title = !!searchTerm ? 'No matching results' : 'Try searching for';
   const imageSrc = !!searchTerm ? GhostSampleImage : StartSearchingImage;
   const imageAlt = !!searchTerm ? 'No matching results' : 'Start searching';
@@ -198,12 +198,16 @@ const EmptyStates = ({ searchTerm }) => {
     <div className="results__no-results">
       <h2>{title}</h2>
       {!!searchTerm ? (
-        <h3>
-          Try another term or{' '}
-          <Link className="link" to={`/results?q=${searchTerm}`}>
-            Clear Filters
-          </Link>
-        </h3>
+        !!appliedFilters ? (
+          <h3>
+            Try another term or{' '}
+            <Link className="link" to={`/results?q=${searchTerm}`}>
+              Clear Filters
+            </Link>
+          </h3>
+        ) : (
+          <h3>Try another term</h3>
+        )
       ) : (
         <div className="results__suggestions">
           <Link className="link results__suggestion" to="/results?q=Notch">
