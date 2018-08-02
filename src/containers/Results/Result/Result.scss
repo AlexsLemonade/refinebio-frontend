@@ -2,12 +2,12 @@
 
 .result {
   background: $whisper;
-  margin-bottom: 3*8px;
-  box-shadow: 0 3px 20px 0 rgba($black,0.1);
+  margin-bottom: 3 * 8px;
+  box-shadow: 0 3px 20px 0 rgba($black, 0.1);
   padding: 24px;
 
   @include tablet {
-    margin-bottom: 6*8px;
+    margin-bottom: 6 * 8px;
   }
 
   &__accession {
@@ -56,7 +56,6 @@
   &__stat {
     font-family: 'Rubik', sans-serif;
     font-size: 0.9rem;
-    line-height: 1;
     flex: 1 1 45%;
     display: flex;
     align-items: center;
@@ -105,7 +104,7 @@
     display: inline-block;
     font-size: 1rem;
     transform: rotate(15deg);
-    color: #002F6C;
+    color: #002f6c;
   }
 
   &__info-text {

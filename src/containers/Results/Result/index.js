@@ -136,7 +136,7 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             className="result__icon"
             alt="MicroArray Badge Icon"
           />{' '}
-          {result.platforms.filter(platform => !!platform).join(',')}
+          {result.pretty_platforms.filter(platform => !!platform).join(',')}
         </li>
       </ul>
       <h3>Description</h3>
