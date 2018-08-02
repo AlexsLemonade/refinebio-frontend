@@ -13,6 +13,7 @@ import {
 } from '../../state/download/reducer';
 import downloadsFilesData from './downloadFilesData';
 import { formatSentenceCase } from '../../common/helpers';
+import { getTransformationOptionFromName } from './transformation';
 
 /**
  * This page is displayed when the user views a download that is different from the one that's
@@ -42,7 +43,9 @@ let ViewDownload = ({
               <DownloadBar
                 dataSetId={dataSetId}
                 aggregation={formatSentenceCase(aggregate_by)}
-                transformation={formatSentenceCase(scale_by)}
+                transformation={getTransformationOptionFromName(
+                  formatSentenceCase(scale_by)
+                )}
               />
             )}
             <DownloadDetails isImmutable={true} {...props} />

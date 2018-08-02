@@ -29,6 +29,10 @@ import {
 } from '../../state/dataSet/actions';
 
 import { formatSentenceCase } from '../../common/helpers';
+import {
+  getTransformationNameFromOption,
+  getTransformationOptionFromName
+} from './transformation';
 
 class Download extends Component {
   state = {
@@ -61,7 +65,11 @@ class Download extends Component {
     }
 
     if (scale_by && !this.state.transformation) {
-      this.setState({ transformation: formatSentenceCase(scale_by) });
+      this.setState({
+        transformation: getTransformationOptionFromName(
+          formatSentenceCase(scale_by)
+        )
+      });
     }
   }
 
@@ -73,7 +81,10 @@ class Download extends Component {
 
   handleTransformationChange = transformation => {
     const { dataSetId, editTransformation } = this.props;
-    editTransformation({ dataSetId, transformation });
+    editTransformation({
+      dataSetId,
+      transformation: getTransformationNameFromOption(transformation)
+    });
     this.setState({ transformation });
   };
 

@@ -85,7 +85,7 @@ let DownloadBar = ({
               // happens when viewing a shared dataset.
               options={
                 transformationOnChange
-                  ? ['None', 'Standard', 'Minmax']
+                  ? ['None', 'Z-score', 'Zero to One']
                   : [transformation]
               }
               selectedOption={transformation}
