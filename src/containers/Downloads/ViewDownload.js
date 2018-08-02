@@ -33,10 +33,8 @@ let ViewDownload = ({
           <div className="loader" />
         ) : (
           <div className="downloads">
-            <Helmet>refine.bio - Download Dataset</Helmet>
-            {!isEmbed && (
-              <h1 className="downloads__heading">Download Dataset</h1>
-            )}
+            <Helmet>refine.bio - Shared Dataset</Helmet>
+            {!isEmbed && <h1 className="downloads__heading">Shared Dataset</h1>}
             {!isEmbed && (
               <DownloadBar
                 dataSetId={dataSetId}

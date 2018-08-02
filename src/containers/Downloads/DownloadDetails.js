@@ -44,6 +44,7 @@ export default function DownloadDetails({
                 buttonStyle="remove"
                 text="Remove All"
                 onClick={showModal}
+                isDisabled={isImmutable}
               />
             )}
             modalProps={{ center: true }}
