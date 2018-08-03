@@ -1,7 +1,7 @@
 @import '../../common/styles/variables';
 
 .downloads {
-  margin-bottom: 9*8px;
+  margin-bottom: 9 * 8px;
 
   &__bar,
   &__fieldset {
@@ -10,7 +10,7 @@
   }
 
   &__fieldset {
-    margin-bottom: 2*8px;
+    margin-bottom: 2 * 8px;
 
     @include tablet {
       margin-bottom: 0;
@@ -45,7 +45,7 @@
   }
 
   &__section {
-    margin: 1.5rem 0;
+    margin: 2rem 0;
   }
 
   &__cards {
@@ -191,16 +191,13 @@
   }
 
   &__empty-heading {
-    margin: 8*8px 0 2*8px;
+    margin: 8 * 8px 0 2 * 8px;
   }
 
   &__empty-image {
-    margin-top: 7.5*8px;
+    margin-top: 7.5 * 8px;
   }
 }
-
-
-
 
 .samples-modal {
   max-width: 950px;
