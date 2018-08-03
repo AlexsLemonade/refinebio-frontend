@@ -124,8 +124,11 @@ class SamplesTable extends React.Component {
         return { ...sample, experimentAccessionCode };
       });
     } else if (experimentAccessionCodes.length > 1) {
-      data = data.map((sample, i) => {
-        const experimentAccessionCode = experimentAccessionCodes[i];
+      data = data.map(sample => {
+        const experimentAccessionCode =
+          experimentAccessionCodes[
+            accessionCodes.indexOf(sample.accession_code)
+          ];
         return { ...sample, experimentAccessionCode };
       });
     }
