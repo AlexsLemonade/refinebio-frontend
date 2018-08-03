@@ -6,8 +6,6 @@ import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
 import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
-import Loader from '../../../components/Loader';
-import { getAllDetailedSamples } from '../../../api/samples';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
 import { formatSentenceCase } from '../../../common/helpers';
 
@@ -71,6 +69,10 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
   function handleRemoveExperiment() {
     removeExperiment([result.accession_code]);
   }
+
+  const metadataFields = SampleFieldMetadata.filter(field =>
+    result.sample_metadata.includes(field.id)
+  ).map(field => field.Header);
 
   return (
     <div className="result">
@@ -147,8 +149,12 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
           <i className="result__not-provided">No associated publication</i>
         )}
       </p>
-
-      <SampleMetadataFields samples={result.samples} />
+      <h3>Sample Metadata Fields</h3>
+      <p className="result__paragraph">
+        {(metadataFields && metadataFields.join(', ')) || (
+          <i className="result__not-provided">No sample metadata fields</i>
+        )}
+      </p>
 
       <Link
         className="button button--secondary"
@@ -161,32 +167,3 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
 };
 
 export default Result;
-
-/**
- * This component receives a list of samples, and renders the names of the fields that have values
- * for those samples. It does so, by requesting the details of the first 10 samples and then showing
- * the names of the fields that have any value associated.
- */
-function SampleMetadataFields({ samples }) {
-  // request the details of the first 10 samples, and show the names of the fields that have any value
-  return (
-    <Loader fetch={() => getAllDetailedSamples({ ids: samples.slice(0, 10) })}>
-      {({ isLoading, data }) =>
-        !isLoading &&
-        data &&
-        data.length > 0 && (
-          <React.Fragment>
-            <h3>Sample Metadata Fields</h3>
-            <p className="result__paragraph">
-              {SampleFieldMetadata.filter(({ accessor }) =>
-                data.some(sample => !!accessor(sample))
-              )
-                .map(({ Header }) => Header)
-                .join(', ')}
-            </p>
-          </React.Fragment>
-        )
-      }
-    </Loader>
-  );
-}

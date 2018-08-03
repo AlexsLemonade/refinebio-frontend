@@ -12,6 +12,8 @@ import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
 import { formatSentenceCase } from '../../common/helpers';
 
+import SampleFieldMetadata from '../Experiment/SampleFieldMetadata';
+
 export default function DownloadDetails({
   dataSet,
   filesData,
@@ -160,6 +162,9 @@ const ExperimentsView = ({
   return Object.keys(dataSet).map((id, i) => {
     const addedSamples = dataSet[id];
     const experiment = experiments[id];
+    const metadataFields = SampleFieldMetadata.filter(field =>
+      experiment.sample_metadata.includes(field.id)
+    ).map(field => field.Header);
     return (
       <div className="downloads__sample" key={i}>
         <div className="downloads__dataSet-info">
@@ -193,7 +198,7 @@ const ExperimentsView = ({
             </div>
           </div>
           <h4>Sample Metadata Fields</h4>
-          <h5>{experiment.metadata ? experiment.metadata.join(', ') : null}</h5>
+          <h5>{metadataFields ? metadataFields.join(', ') : null}</h5>
 
           {addedSamples.length > 0 && (
             <ModalManager
