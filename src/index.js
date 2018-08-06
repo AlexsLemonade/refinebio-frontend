@@ -5,6 +5,11 @@ import App from './components/App';
 
 import registerServiceWorker from './registerServiceWorker';
 
+import smoothscroll from 'smoothscroll-polyfill';
+
+// kick off the polyfill!
+smoothscroll.polyfill();
+
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
 

@@ -25,6 +25,61 @@ import {
 import './SamplesTable.scss';
 
 class SamplesTable extends React.Component {
+  componentDidMount() {
+    document
+      .querySelector('.samples-table__scroll-right')
+      .addEventListener('click', this.scrollRight);
+
+    document
+      .querySelector('.samples-table__scroll-left')
+      .addEventListener('click', this.scrollLeft);
+
+    this.disableScrollButtonsIfNecessary();
+  }
+
+  componentDidUpdate() {
+    this.disableScrollButtonsIfNecessary();
+  }
+
+  getMaxScrollPosition = () => {
+    const element = document.querySelector('.rt-table');
+    return element.scrollWidth - element.clientWidth;
+  };
+
+  disableScrollButtonsIfNecessary = () => {
+    if (this.getMaxScrollPosition() == 0) {
+      document
+        .querySelector('.samples-table__scroll-right')
+        .classList.add('samples-table__scroll--disabled');
+      document
+        .querySelector('.samples-table__scroll-left')
+        .classList.add('samples-table__scroll--disabled');
+    } else {
+      document
+        .querySelector('.samples-table__scroll-right')
+        .classList.remove('samples-table__scroll--disabled');
+      document
+        .querySelector('.samples-table__scroll-left')
+        .classList.remove('samples-table__scroll--disabled');
+    }
+  };
+
+  scrollLeft = () => {
+    document.querySelector('.rt-table').scrollBy({
+      top: 0,
+      left: -100,
+      behavior: 'smooth'
+    });
+  };
+
+  scrollRight = () => {
+    document.querySelector('.rt-table').scrollBy({
+      top: 0,
+      left: 100,
+      behavior: 'smooth'
+    });
+  };
+
   state = {
     page: 0,
     pages: -1,
@@ -86,8 +141,15 @@ class SamplesTable extends React.Component {
                 {pageActionComponent &&
                   pageActionComponent(state.pageRows.map(x => x._original))}
               </div>
-              <div className="experiment__table-container">{makeTable()}</div>
-
+              <div className="experiment__table-container">
+                <div className="samples-table__scroll-left">
+                  <div className="samples-table__scroll-button">{'<'}</div>
+                </div>
+                {makeTable()}
+                <div className="samples-table__scroll-right">
+                  <div className="samples-table__scroll-button">{'>'}</div>
+                </div>
+              </div>
               <Pagination
                 onPaginate={this.handlePagination}
                 totalPages={totalPages}
