@@ -91,6 +91,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    &.samples-table__scroll--disabled {
+      display: none;
+    }
   }
 
   &__scroll-left {
@@ -113,12 +116,6 @@
     align-items: center;
     @include noselect;
     z-index: 2;
-    .samples-table__scroll--disabled > & {
-      background-color: $button-disabled;
-      &:hover {
-        cursor: not-allowed;
-      }
-    }
   }
 }
 

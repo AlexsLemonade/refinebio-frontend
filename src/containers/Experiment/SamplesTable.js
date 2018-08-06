@@ -34,7 +34,9 @@ class SamplesTable extends React.Component {
       .querySelector('.samples-table__scroll-left')
       .addEventListener('click', this.scrollLeft);
 
-    this.disableScrollButtonsIfNecessary();
+    document
+      .querySelector('.rt-table')
+      .addEventListener('scroll', this.disableScrollButtonsIfNecessary);
   }
 
   componentDidUpdate() {
@@ -47,19 +49,24 @@ class SamplesTable extends React.Component {
   };
 
   disableScrollButtonsIfNecessary = () => {
-    if (this.getMaxScrollPosition() == 0) {
-      document
-        .querySelector('.samples-table__scroll-right')
-        .classList.add('samples-table__scroll--disabled');
+    const element = document.querySelector('.rt-table');
+    if (element.scrollLeft <= 0) {
       document
         .querySelector('.samples-table__scroll-left')
         .classList.add('samples-table__scroll--disabled');
     } else {
       document
-        .querySelector('.samples-table__scroll-right')
-        .classList.remove('samples-table__scroll--disabled');
-      document
         .querySelector('.samples-table__scroll-left')
+        .classList.remove('samples-table__scroll--disabled');
+    }
+
+    if (element.scrollLeft >= this.getMaxScrollPosition()) {
+      document
+        .querySelector('.samples-table__scroll-right')
+        .classList.add('samples-table__scroll--disabled');
+    } else {
+      document
+        .querySelector('.samples-table__scroll-right')
         .classList.remove('samples-table__scroll--disabled');
     }
   };
@@ -108,6 +115,10 @@ class SamplesTable extends React.Component {
     // samples.
     const pageSizes = PAGE_SIZES.filter(size => size <= this.totalSamples);
     if (pageSizes.length == 0) pageSizes.push(this.totalSamples);
+
+    if (this.state.mounted) {
+      this.disableScrollButtonsIfNecessary();
+    }
 
     return (
       <ReactTable
