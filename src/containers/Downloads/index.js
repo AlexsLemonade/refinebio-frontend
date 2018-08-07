@@ -23,13 +23,21 @@ import downloadsFilesData from './downloadFilesData';
 import NoDatasetsImage from './../../common/images/no-datasets.svg';
 import { Link } from 'react-router-dom';
 
-import { editAggregation } from '../../state/dataSet/actions';
+import {
+  editAggregation,
+  editTransformation
+} from '../../state/dataSet/actions';
 
 import { formatSentenceCase } from '../../common/helpers';
+import {
+  getTransformationNameFromOption,
+  getTransformationOptionFromName
+} from './transformation';
 
 class Download extends Component {
   state = {
-    aggregation: null
+    aggregation: null,
+    transformation: null
   };
 
   componentDidMount() {
@@ -44,7 +52,8 @@ class Download extends Component {
       areDetailsFetched,
       fetchDataSetDetails,
       isLoading,
-      aggregate_by
+      aggregate_by,
+      scale_by
     } = this.props;
 
     if (dataSetId && !areDetailsFetched && !isLoading) {
@@ -54,12 +63,29 @@ class Download extends Component {
     if (aggregate_by && !this.state.aggregation) {
       this.setState({ aggregation: formatSentenceCase(aggregate_by) });
     }
+
+    if (scale_by && !this.state.transformation) {
+      this.setState({
+        transformation: getTransformationOptionFromName(
+          formatSentenceCase(scale_by)
+        )
+      });
+    }
   }
 
   handleAggregationChange = aggregation => {
     const { dataSetId, editAggregation } = this.props;
     editAggregation({ dataSetId, aggregation });
     this.setState({ aggregation });
+  };
+
+  handleTransformationChange = transformation => {
+    const { dataSetId, editTransformation } = this.props;
+    editTransformation({
+      dataSetId,
+      transformation: getTransformationNameFromOption(transformation)
+    });
+    this.setState({ transformation });
   };
 
   render() {
@@ -102,6 +128,8 @@ class Download extends Component {
               dataSetId={dataSetId}
               aggregation={this.state.aggregation}
               aggregationOnChange={this.handleAggregationChange}
+              transformation={this.state.transformation}
+              transformationOnChange={this.handleTransformationChange}
             />
             <DownloadDetails {...this.props} />
           </Fragment>
@@ -121,7 +149,8 @@ Download = connect(
       experiments,
       is_processing,
       is_processed,
-      aggregate_by
+      aggregate_by,
+      scale_by
     }
   }) => {
     // If areDetailsFetched is false, either samples is already {} or the local dataset has more
@@ -141,6 +170,7 @@ Download = connect(
       is_processing,
       is_processed,
       aggregate_by,
+      scale_by,
       samplesBySpecies: groupSamplesBySpecies({
         samples: samples,
         dataSet: dataSet
@@ -159,7 +189,8 @@ Download = connect(
     removeExperiment,
     clearDataSet,
     fetchDataSetDetails,
-    editAggregation
+    editAggregation,
+    editTransformation
   }
 )(Download);
 

@@ -8,8 +8,15 @@ import { startDownload } from '../../state/download/actions';
 import { connect } from 'react-redux';
 import { getDomain } from '../../common/helpers';
 import { Link } from 'react-router-dom';
+import HelpIcon from '../../common/icons/help.svg';
 
-let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
+let DownloadBar = ({
+  dataSetId,
+  aggregation,
+  aggregationOnChange,
+  transformation,
+  transformationOnChange
+}) => {
   return (
     <div className="downloads__bar">
       <ModalManager
@@ -34,6 +41,17 @@ let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
         <div className="downloads__fieldset">
           <label className="downloads__label">
             Aggregate
+            <a
+              href="https://refine.bio" // XXX: replace with link to docs
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                className="downloads__help-icon"
+                src={HelpIcon}
+                alt="What does aggregate mean?"
+              />
+            </a>
             <Dropdown
               // If there is no aggregationOnChange function, the DownloadBar
               // is immutable, so the only option is the current one. This
@@ -48,6 +66,35 @@ let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
               disabled={!aggregationOnChange}
             />
           </label>
+          <label className="downloads__label">
+            Transformation
+            <a
+              href="https://refine.bio" // XXX: replace with link to docs
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                className="downloads__help-icon"
+                src={HelpIcon}
+                alt="What does transformation mean?"
+              />
+            </a>
+            <Dropdown
+              // If there is no transformationOnChange function, the DownloadBar
+              // is immutable, so the only option is the current one. This
+              // happens when viewing a shared dataset.
+              options={
+                transformationOnChange
+                  ? ['None', 'Z-score', 'Zero to One']
+                  : [transformation]
+              }
+              selectedOption={transformation}
+              onChange={transformationOnChange}
+              // The dropdown should also be disabled if there is no
+              // transformationOnChange function
+              disabled={!transformationOnChange}
+            />
+          </label>
         </div>
         <Link className="button" to={`/dataset/${dataSetId}`}>
           Download
@@ -56,7 +103,10 @@ let DownloadBar = ({ dataSetId, aggregation, aggregationOnChange }) => {
     </div>
   );
 };
-DownloadBar = connect(state => ({}), {
-  startDownload
-})(DownloadBar);
+DownloadBar = connect(
+  state => ({}),
+  {
+    startDownload
+  }
+)(DownloadBar);
 export default DownloadBar;

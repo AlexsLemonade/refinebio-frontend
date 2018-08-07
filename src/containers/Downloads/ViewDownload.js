@@ -13,6 +13,7 @@ import {
 } from '../../state/download/reducer';
 import downloadsFilesData from './downloadFilesData';
 import { formatSentenceCase } from '../../common/helpers';
+import { getTransformationOptionFromName } from './transformation';
 
 /**
  * This page is displayed when the user views a download that is different from the one that's
@@ -24,6 +25,7 @@ let ViewDownload = ({
   dataSetId,
   isEmbed = false,
   aggregate_by,
+  scale_by,
   ...props
 }) => {
   return (
@@ -39,6 +41,9 @@ let ViewDownload = ({
               <DownloadBar
                 dataSetId={dataSetId}
                 aggregation={formatSentenceCase(aggregate_by)}
+                transformation={getTransformationOptionFromName(
+                  formatSentenceCase(scale_by)
+                )}
               />
             )}
             <DownloadDetails isImmutable={true} {...props} />
@@ -50,13 +55,14 @@ let ViewDownload = ({
 };
 ViewDownload = connect(
   (
-    { viewDownload: { samples, dataSet, experiments, aggregate_by } },
+    { viewDownload: { samples, dataSet, experiments, aggregate_by, scale_by } },
     ownProps
   ) => ({
     samples,
     dataSet,
     experiments,
     aggregate_by,
+    scale_by,
     dataSetId: ownProps.dataSetId || ownProps.match.params.id,
     filesData: downloadsFilesData(dataSet),
     samplesBySpecies:

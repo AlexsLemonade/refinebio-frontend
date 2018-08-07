@@ -90,7 +90,9 @@ export const removeSpecies = samples => {
       }
     });
 
-    const { download: { dataSet, dataSetId } } = getState();
+    const {
+      download: { dataSet, dataSetId }
+    } = getState();
 
     const newDataSet = Object.keys(dataSet).reduce((result, accessionCode) => {
       const samples = dataSet[accessionCode];
@@ -209,11 +211,21 @@ export const fetchDataSet = () => async dispatch => {
       dataSetId
     }
   });
-  const { data, is_processing, is_processed, aggregate_by } = await getDataSet(
-    dataSetId
-  );
+  const {
+    data,
+    is_processing,
+    is_processed,
+    aggregate_by,
+    scale_by
+  } = await getDataSet(dataSetId);
   dispatch(
-    fetchDataSetSucceeded(data, is_processing, is_processed, aggregate_by)
+    fetchDataSetSucceeded(
+      data,
+      is_processing,
+      is_processed,
+      aggregate_by,
+      scale_by
+    )
   );
 };
 
@@ -221,14 +233,16 @@ export const fetchDataSetSucceeded = (
   dataSet,
   is_processing,
   is_processed,
-  aggregate_by
+  aggregate_by,
+  scale_by
 ) => ({
   type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
   data: {
     dataSet,
     is_processing,
     is_processed,
-    aggregate_by
+    aggregate_by,
+    scale_by
   }
 });
 

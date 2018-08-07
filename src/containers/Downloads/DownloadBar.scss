@@ -1,11 +1,14 @@
-
 .share-link-modal {
-    padding: 40px 80px;
-    max-width: 625px;
+  padding: 40px 80px;
+  max-width: 625px;
 
-    &__title {
-        margin-bottom: 16px;
-    }
+  &__title {
+    margin-bottom: 16px;
+  }
 }
 
-
+.downloads__help-icon {
+  vertical-align: super;
+  width: 16px;
+  height: 16px;
+}

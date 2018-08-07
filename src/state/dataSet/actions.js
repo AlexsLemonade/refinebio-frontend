@@ -58,3 +58,21 @@ export const editAggregation = ({
   });
   dispatch(updateDataSet({ aggregate_by: aggregation }));
 };
+
+export const editTransformation = ({
+  dataSetId,
+  transformation
+}) => async dispatch => {
+  const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
+  await asyncFetch(`/dataset/${dataSetId}/`, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      data: dataSet.data,
+      scale_by: transformation.toUpperCase()
+    })
+  });
+  dispatch(updateDataSet({ scale_by: transformation }));
+};
