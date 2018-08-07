@@ -187,7 +187,18 @@ let Experiment = ({
                   <div className="experiment__row-label">
                     Submitter’s Institution
                   </div>
-                  <div>{experiment.submitter_institution}</div>
+                  <div>
+                    <a
+                      href={`/results?q=${encodeURIComponent(
+                        experiment.submitter_institution
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="button button--link"
+                    >
+                      {experiment.submitter_institution}
+                    </a>
+                  </div>
                 </div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">Authors</div>
