@@ -37,6 +37,17 @@ class SamplesTable extends React.Component {
     document
       .querySelector('.rt-table')
       .addEventListener('scroll', this.disableScrollButtonsIfNecessary);
+
+    // This is apparently the idiomatic way to trigger a callback if a specific attribute changed.
+    // This detects resizing on the react-table because while the table is resizing the inline
+    // style for max-width changes on '.rt-thead'.
+    this.state.resizeObserver = new MutationObserver(
+      this.disableScrollButtonsIfNecessary
+    );
+    this.state.resizeObserver.observe(document.querySelector('.rt-thead'), {
+      attributes: true,
+      attributeFilter: ['style']
+    });
   }
 
   componentDidUpdate() {
