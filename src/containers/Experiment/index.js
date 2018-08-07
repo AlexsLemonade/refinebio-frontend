@@ -190,8 +190,33 @@ let Experiment = ({
                   <div>{experiment.submitter_institution}</div>
                 </div>
                 <div className="experiment__row">
-                  <div className="experiment__row-label">Submitter</div>
-                  <div>{experiment.pubmed_id}</div>
+                  <div className="experiment__row-label">Authors</div>
+                  <div>
+                    {experiment.publication_authors.length > 0 ? (
+                      experiment.publication_authors
+                        .map(author => (
+                          <a
+                            href={`/results?q=${encodeURIComponent(author)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="button button--link"
+                          >
+                            {author}
+                          </a>
+                        ))
+                        .reduce((previous, current) => (
+                          <React.Fragment>
+                            {previous}
+                            {', '}
+                            {current}
+                          </React.Fragment>
+                        ))
+                    ) : (
+                      <i className="experiment__not-provided">
+                        No associated authors
+                      </i>
+                    )}
+                  </div>
                 </div>
               </div>
               <section className="experiment__section" id="samples">
