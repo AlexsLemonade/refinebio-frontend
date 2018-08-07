@@ -23,7 +23,7 @@ export default function downloadsFilesData(dataSet = {}) {
         title: `${totalExperiments} Gene Expression Matrices`,
         description: '1 file per Experiment',
         size: formatBytes(geneExpressionSize),
-        format: 'PCL'
+        format: 'tsv'
       },
       {
         title: `${totalExperiments} Sample Metadata Files`,
