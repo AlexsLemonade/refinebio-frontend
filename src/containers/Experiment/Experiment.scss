@@ -3,7 +3,7 @@
 .experiment {
   border-radius: 3px;
   background-color: $white;
-  box-shadow: 0 3px 20px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
   padding: 24px;
   margin: 32px 0 80px;
 
@@ -58,19 +58,19 @@
   }
 
   &__row {
-    padding: 3*8px;
+    padding: 3 * 8px;
     margin-left: -24px;
     margin-right: -24px;
 
     @include tablet {
       padding-top: 16px;
       padding-bottom: 16px;
-      padding-right: 19*8px;
+      padding-right: 19 * 8px;
       display: flex;
       flex-direction: row;
     }
 
-    &:nth-child(2n+1) {
+    &:nth-child(2n + 1) {
       background-color: $background-color--highlight;
     }
   }
@@ -110,6 +110,7 @@
   }
 
   &__table-container {
+    position: relative;
     margin-bottom: 16px;
   }
 
@@ -117,7 +118,6 @@
     color: $dusty-gray;
   }
 }
-
 
 // first two columns sticky
 //
