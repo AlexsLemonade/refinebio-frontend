@@ -147,12 +147,40 @@ let Experiment = ({
                 </div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">PubMed ID</div>
-                  <div>{experiment.pubmed_id}</div>
+                  <div>
+                    {(experiment.pubmed_id && (
+                      <a
+                        href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                          experiment.pubmed_id
+                        }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="button button--link"
+                      >
+                        {experiment.pubmed_id}
+                      </a>
+                    )) || (
+                      <i className="experiment__not-provided">
+                        No associated PubMed ID
+                      </i>
+                    )}
+                  </div>
                 </div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">Publication Title</div>
                   <div>
-                    {experiment.publication_title || (
+                    {(experiment.publication_title && (
+                      <a
+                        href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                          experiment.pubmed_id
+                        }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="button button--link"
+                      >
+                        {experiment.publication_title}
+                      </a>
+                    )) || (
                       <i className="experiment__not-provided">
                         No associated publication
                       </i>
@@ -163,11 +191,47 @@ let Experiment = ({
                   <div className="experiment__row-label">
                     Submitter’s Institution
                   </div>
-                  <div>{experiment.submitter_institution}</div>
+                  <div>
+                    <a
+                      href={`/results?q=${encodeURIComponent(
+                        experiment.submitter_institution
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="button button--link"
+                    >
+                      {experiment.submitter_institution}
+                    </a>
+                  </div>
                 </div>
                 <div className="experiment__row">
-                  <div className="experiment__row-label">Submitter</div>
-                  <div>{experiment.pubmed_id}</div>
+                  <div className="experiment__row-label">Authors</div>
+                  <div>
+                    {experiment.publication_authors.length > 0 ? (
+                      experiment.publication_authors
+                        .map(author => (
+                          <a
+                            href={`/results?q=${encodeURIComponent(author)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="button button--link"
+                          >
+                            {author}
+                          </a>
+                        ))
+                        .reduce((previous, current) => (
+                          <React.Fragment>
+                            {previous}
+                            {', '}
+                            {current}
+                          </React.Fragment>
+                        ))
+                    ) : (
+                      <i className="experiment__not-provided">
+                        No associated authors
+                      </i>
+                    )}
+                  </div>
                 </div>
               </div>
               <section className="experiment__section" id="samples">
