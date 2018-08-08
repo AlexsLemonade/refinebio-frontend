@@ -1,7 +1,7 @@
 @import '../../common/styles/variables';
 
 .downloads {
-  margin-bottom: 9*8px;
+  margin-bottom: 9 * 8px;
 
   &__bar,
   &__fieldset {
@@ -10,7 +10,7 @@
   }
 
   &__fieldset {
-    margin-bottom: 2*8px;
+    margin-bottom: 2 * 8px;
 
     @include tablet {
       margin-bottom: 0;
@@ -183,6 +183,10 @@
     margin-bottom: 0.5rem;
   }
 
+  &__experiment-metadata {
+    margin: 0 0 1.5rem;
+  }
+
   &__empty {
     display: flex;
     flex-direction: column;
@@ -191,16 +195,13 @@
   }
 
   &__empty-heading {
-    margin: 8*8px 0 2*8px;
+    margin: 8 * 8px 0 2 * 8px;
   }
 
   &__empty-image {
-    margin-top: 7.5*8px;
+    margin-top: 7.5 * 8px;
   }
 }
-
-
-
 
 .samples-modal {
   max-width: 950px;

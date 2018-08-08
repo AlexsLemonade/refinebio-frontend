@@ -197,8 +197,16 @@ const ExperimentsView = ({
                 .join(',')}
             </div>
           </div>
-          <h4>Sample Metadata Fields</h4>
-          <h5>{metadataFields ? metadataFields.join(', ') : null}</h5>
+          <div className="downloads__experiment-metadata">
+            <h4>Sample Metadata Fields</h4>
+            <h5>
+              {metadataFields && metadataFields.length ? (
+                metadataFields.join(', ')
+              ) : (
+                <i class="result__not-provided">No sample metadata fields</i>
+              )}
+            </h5>
+          </div>
 
           {addedSamples.length > 0 && (
             <ModalManager
