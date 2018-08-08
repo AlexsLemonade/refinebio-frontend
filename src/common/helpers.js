@@ -84,7 +84,12 @@ export function formatSentenceCase(str) {
 
 // Helper methods to ease working with ajax functions
 export const Ajax = {
-  get: (url, params = false) => {
+  get: (url, params = false, stringParams = []) => {
+    if (stringParams.length > 0) {
+      return asyncFetch(
+        `${url}?${getQueryString(params)}&${stringParams.join('&')}`
+      );
+    }
     if (params) {
       return asyncFetch(`${url}?${getQueryString(params)}`);
     }
