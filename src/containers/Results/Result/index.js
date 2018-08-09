@@ -7,7 +7,7 @@ import SampleIcon from '../../../common/icons/sample.svg';
 import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
-import { formatSentenceCase } from '../../../common/helpers';
+import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 
 export function RemoveFromDatasetButton({
   handleRemove,
@@ -70,9 +70,7 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
     removeExperiment([result.accession_code]);
   }
 
-  const metadataFields = SampleFieldMetadata.filter(field =>
-    result.sample_metadata.includes(field.id)
-  ).map(field => field.Header);
+  const metadataFields = getMetadataFields(result);
 
   return (
     <div className="result">

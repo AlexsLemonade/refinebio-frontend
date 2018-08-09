@@ -10,7 +10,7 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
-import { formatSentenceCase } from '../../common/helpers';
+import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 
 import SampleFieldMetadata from '../Experiment/SampleFieldMetadata';
 
@@ -162,9 +162,7 @@ const ExperimentsView = ({
   return Object.keys(dataSet).map((id, i) => {
     const addedSamples = dataSet[id];
     const experiment = experiments[id];
-    const metadataFields = SampleFieldMetadata.filter(field =>
-      experiment.sample_metadata.includes(field.id)
-    ).map(field => field.Header);
+    const metadataFields = getMetadataFields(experiment);
     return (
       <div className="downloads__sample" key={i}>
         <div className="downloads__dataSet-info">
