@@ -1,3 +1,5 @@
+import SampleFieldMetadata from '../containers/Experiment/SampleFieldMetadata';
+
 /**
  * Generates a query string from a query object
  * @param {object} queryObj
@@ -107,3 +109,8 @@ export const Ajax = {
       body: JSON.stringify(params)
     })
 };
+
+export const getMetadataFields = experiment =>
+  SampleFieldMetadata.filter(field =>
+    experiment.sample_metadata.includes(field.id)
+  ).map(field => field.Header);
