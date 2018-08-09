@@ -6,7 +6,19 @@
 export function getQueryString(queryObj) {
   return Object.keys(queryObj)
     .filter(key => queryObj[key] !== undefined)
-    .map(key => `${key}=${encodeURI(queryObj[key])}`)
+    .reduce((accum, key) => {
+      // For some query parameters, the key points to an array of values.
+      // In those instances we want a separate param for each value,
+      // otherwise we just want the one param for the value.
+      if (typeof key === 'string') {
+        accum.push(`${key}=${encodeURI(queryObj[key])}`);
+        return accum;
+      } else {
+        return accum.concat(
+          key.map(key => `${key}=${encodeURI(queryObj[key])}`)
+        );
+      }
+    }, [])
     .join('&');
 }
 
@@ -84,12 +96,7 @@ export function formatSentenceCase(str) {
 
 // Helper methods to ease working with ajax functions
 export const Ajax = {
-  get: (url, params = false, stringParams = []) => {
-    if (stringParams.length > 0) {
-      return asyncFetch(
-        `${url}?${getQueryString(params)}&${stringParams.join('&')}`
-      );
-    }
+  get: (url, params = false) => {
     if (params) {
       return asyncFetch(`${url}?${getQueryString(params)}`);
     }

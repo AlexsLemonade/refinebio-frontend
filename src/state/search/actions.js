@@ -22,30 +22,20 @@ export function fetchResults(searchTerm = '', pageNum = 1, filters) {
       : {};
 
     if (!filters) {
-      /**
-       * Convert to an object without Sets for use with getQueryString
-       */
       filtersObj = Object.keys(appliedFilters).reduce((result, filterType) => {
         const filtersArr = Array.from(appliedFilters[filterType]);
-        if (filtersArr.length) {
-          result = result.concat(
-            filtersArr.map(filter => `${filterType}=${filter}`)
-          );
-        }
+        if (filtersArr.length) result[filterType] = filtersArr;
         return result;
-      }, []);
+      }, {});
     }
 
     try {
-      const resultsJSON = await Ajax.get(
-        '/search/',
-        {
-          search: searchTerm,
-          limit: resultsPerPage,
-          offset: (currentPage - 1) * resultsPerPage
-        },
-        filtersObj
-      );
+      const resultsJSON = await Ajax.get('/search/', {
+        search: searchTerm,
+        limit: resultsPerPage,
+        offset: (currentPage - 1) * resultsPerPage,
+        ...filtersObj
+      });
       const { results, count, filters } = resultsJSON;
 
       dispatch(
@@ -60,6 +50,7 @@ export function fetchResults(searchTerm = '', pageNum = 1, filters) {
         )
       );
     } catch (error) {
+      console.log(error);
       dispatch(fetchResultsErrored());
     }
   };
