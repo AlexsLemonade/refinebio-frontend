@@ -149,7 +149,9 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
       </p>
       <h3>Sample Metadata Fields</h3>
       <p className="result__paragraph">
-        {(metadataFields && metadataFields.join(', ')) || (
+        {metadataFields && metadataFields.length ? (
+          metadataFields.join(', ')
+        ) : (
           <i className="result__not-provided">No sample metadata fields</i>
         )}
       </p>
