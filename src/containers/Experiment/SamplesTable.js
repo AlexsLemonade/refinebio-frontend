@@ -384,7 +384,7 @@ function ProcessingInformationCell({ original: sample, ...props }) {
     } else if (pipelines.includes(PIPELINES.IlluminaSCAN)) {
       return <ScanModal sample={sample} scanType={PIPELINES.IlluminaSCAN} />;
     } else if (pipelines.includes(PIPELINES.SubmitterProcessed)) {
-      return <SumitterProcessedModal sample={sample} />;
+      return <SubmitterProcessedModal sample={sample} />;
     }
   } else if (pipelines.length === 2) {
     if (
@@ -398,7 +398,7 @@ function ProcessingInformationCell({ original: sample, ...props }) {
   return <div>{pipelines.join(', ')}</div>;
 }
 
-function SumitterProcessedModal({ sample }) {
+function SubmitterProcessedModal({ sample }) {
   return (
     <ModalManager
       component={showModal => (
