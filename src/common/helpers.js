@@ -114,3 +114,25 @@ export const getMetadataFields = experiment =>
   SampleFieldMetadata.filter(field =>
     experiment.sample_metadata.includes(field.id)
   ).map(field => field.Header);
+
+// Takes in arrays of samples and experiments as formatted by the serializer
+// and turns them both into objects where the keys are experiment accession
+// codes
+export const formatSamplesAndExperiments = (data, samples, experiments) => {
+  experiments = experiments.reduce((accum, experiment) => {
+    accum[experiment.accession_code] = experiment;
+    return accum;
+  }, {});
+
+  let proper_samples = {};
+
+  Object.keys(data).map(accession_code => {
+    const sampleList = data[accession_code];
+    proper_samples[accession_code] = samples.filter(sample =>
+      sampleList.includes(sample.accession_code)
+    );
+  });
+
+  samples = proper_samples;
+  return [samples, experiments];
+};

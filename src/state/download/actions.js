@@ -1,7 +1,7 @@
-import { Ajax } from '../../common/helpers';
+import { Ajax, formatSamplesAndExperiments } from '../../common/helpers';
 import {
   getDataSet,
-  getSamplesAndExperiments,
+  getDataSetDetails,
   updateDataSet
 } from '../../api/dataSet';
 
@@ -246,25 +246,67 @@ export const fetchDataSetSucceeded = (
   }
 });
 
-export const fetchDataSetDetails = dataSet => {
-  return async dispatch => {
-    dispatch({
-      type: 'DOWNLOAD_FETCH_DETAILS'
-    });
-    const { experiments, samples } = await getSamplesAndExperiments(dataSet);
-    dispatch(fetchDataSetDetailsSucceeded(experiments, samples));
-  };
+export const fetchDataSetDetails = () => async dispatch => {
+  const dataSetId = localStorage.getItem('dataSetId');
+  if (!dataSetId) {
+    return;
+  }
+
+  dispatch({
+    type: 'DOWNLOAD_FETCH_DETAILS',
+    data: {
+      dataSetId
+    }
+  });
+  let {
+    data,
+    is_processing,
+    is_processed,
+    aggregate_by,
+    scale_by,
+    samples,
+    experiments
+  } = await getDataSetDetails(dataSetId);
+
+  [samples, experiments] = formatSamplesAndExperiments(
+    data,
+    samples,
+    experiments
+  );
+
+  dispatch(
+    fetchDataSetDetailsSucceeded(
+      data,
+      is_processing,
+      is_processed,
+      aggregate_by,
+      scale_by,
+      samples,
+      experiments
+    )
+  );
 };
 
-export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
-  return {
-    type: 'DOWNLOAD_FETCH_DETAILS_SUCCESS',
-    data: {
-      experiments,
-      samples
-    }
-  };
-};
+export const fetchDataSetDetailsSucceeded = (
+  dataSet,
+  is_processing,
+  is_processed,
+  aggregate_by,
+  scale_by,
+  samples,
+  experiments
+) => ({
+  type: 'DOWNLOAD_FETCH_DETAILS_SUCCESS',
+  data: {
+    dataSet,
+    is_processing,
+    is_processed,
+    aggregate_by,
+    scale_by,
+    samples,
+    experiments
+  }
+});
 
 export const startDownload = tokenId => async (dispatch, getState) => {
   const { dataSetId, dataSet } = getState().download;

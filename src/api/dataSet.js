@@ -4,6 +4,10 @@ export async function getDataSet(dataSetId) {
   return await Ajax.get(`/dataset/${dataSetId}/`);
 }
 
+export async function getDataSetDetails(dataSetId) {
+  return await Ajax.get(`/dataset/${dataSetId}/?details=true`);
+}
+
 export async function getSamplesAndExperiments(dataSet) {
   const experiments = {},
     samples = {};

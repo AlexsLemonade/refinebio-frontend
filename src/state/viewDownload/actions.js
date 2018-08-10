@@ -1,5 +1,6 @@
-import { getDataSet, getSamplesAndExperiments } from '../../api/dataSet';
+import { getDataSetDetails } from '../../api/dataSet';
 import { replace } from '../../state/routerActions';
+import { formatSamplesAndExperiments } from '../../common/helpers';
 
 export const loadViewDownload = data => ({
   type: 'LOAD_VIEW_DOWNLOAD',
@@ -9,12 +10,20 @@ export const loadViewDownload = data => ({
 export const fetchDataSetDetailsForView = dataSetId => async dispatch => {
   try {
     // 1. fetch dataset information
-    const { data: dataSet, aggregate_by, scale_by } = await getDataSet(
-      dataSetId
-    );
+    let {
+      data: dataSet,
+      aggregate_by,
+      scale_by,
+      experiments,
+      samples
+    } = await getDataSetDetails(dataSetId);
 
-    // 2. fetch details associated with dataset
-    const { experiments, samples } = await getSamplesAndExperiments(dataSet);
+    // 2. Format the output
+    [samples, experiments] = formatSamplesAndExperiments(
+      dataSet,
+      samples,
+      experiments
+    );
 
     // 3. store data in `viewDownload` reducer
     dispatch(
