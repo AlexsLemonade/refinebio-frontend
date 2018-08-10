@@ -277,11 +277,18 @@ export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
 
 export const startDownload = tokenId => async (dispatch, getState) => {
   const { dataSetId, dataSet } = getState().download;
-  await Ajax.put(`/dataset/${dataSetId}/`, {
-    start: true,
-    data: dataSet,
-    token_id: tokenId
-  });
+  try {
+    await Ajax.put(`/dataset/${dataSetId}/`, {
+      start: true,
+      data: dataSet,
+      token_id: tokenId
+    });
+  } catch (e) {
+    await dispatch(reportError(e));
+    return;
+  }
+
+  await dispatch(clearDataSet());
 };
 
 // Remove all dataset
