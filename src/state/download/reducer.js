@@ -86,6 +86,7 @@ export default (state = initialState, action) => {
       const { dataSet } = action.data;
       return {
         ...state,
+        dataSetId: null,
         dataSet,
         isLoading: false
       };

@@ -1,7 +1,8 @@
 const localStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),
-  clear: jest.fn()
+  clear: jest.fn(),
+  removeItem: jest.fn(),
 };
 // ref https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#srcsetuptestsjs-1
 global.localStorage = localStorageMock;
