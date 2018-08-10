@@ -4,6 +4,7 @@ import {
   getSamplesAndExperiments,
   updateDataSet
 } from '../../api/dataSet';
+import reportError from '../reportError';
 
 /**
  * Removes all experiments with the corresponding accession codes from dataset
@@ -211,22 +212,30 @@ export const fetchDataSet = () => async dispatch => {
       dataSetId
     }
   });
-  const {
-    data,
-    is_processing,
-    is_processed,
-    aggregate_by,
-    scale_by
-  } = await getDataSet(dataSetId);
-  dispatch(
-    fetchDataSetSucceeded(
+  try {
+    const {
       data,
       is_processing,
       is_processed,
       aggregate_by,
       scale_by
-    )
-  );
+    } = await getDataSet(dataSetId);
+
+    dispatch(
+      fetchDataSetSucceeded(
+        data,
+        is_processing,
+        is_processed,
+        aggregate_by,
+        scale_by
+      )
+    );
+  } catch (e) {
+    // Check if there was any error fetching the dataset, in which case restart it's status
+    await dispatch(clearDataSet());
+    // Also report the error
+    await dispatch(reportError(e));
+  }
 };
 
 export const fetchDataSetSucceeded = (
