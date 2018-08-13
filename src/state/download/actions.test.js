@@ -1,5 +1,5 @@
 
-import {fetchDataSet} from './actions';
+import {fetchDataSet, startDownload} from './actions';
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { REPORT_ERROR } from '../reportError';
@@ -39,7 +39,25 @@ describe('fetchDataSet', () => {
 
     await store.dispatch(fetchDataSet());
 
-    expect(store.getActions().map((x)=> x.type)).toEqual(["DOWNLOAD_DATASET_FETCH", "DOWNLOAD_CLEAR", "DOWNLOAD_CLEAR_SUCCESS", REPORT_ERROR]);
+    expect(store.getActions().map((x)=> x.type)).toEqual(["DOWNLOAD_DATASET_FETCH", "DOWNLOAD_CLEAR", REPORT_ERROR]);
+  });
+});
+
+
+describe('startDownload', () => {
+  it('current dataset is removed after download is started', async () => {
+    const DataSetId = "08c429ab-01dd-43c7-b51a-c850ad4b9902";
+    const DataSet = {"id":DataSetId,"data":{}};
+
+    global.fetch = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve({ ok: true, json: () => Promise.resolve(DataSet) }));
+
+    const store = mockStore({ download: {dataSetId: DataSetId, dataSet: DataSet }});
+
+    await store.dispatch(startDownload('some token id'));
+    
+    expect(store.getActions().map((x)=> x.type)).toEqual(["DOWNLOAD_CLEAR"]);
   });
 });
 

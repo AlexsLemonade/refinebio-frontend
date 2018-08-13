@@ -291,19 +291,14 @@ export const startDownload = tokenId => async (dispatch, getState) => {
   await dispatch(clearDataSet());
 };
 
+
 // Remove all dataset
 export const clearDataSet = () => async dispatch => {
+  localStorage.removeItem('dataSetId');
+
   dispatch({
     type: 'DOWNLOAD_CLEAR',
-    data: {}
   });
-
-  localStorage.removeItem('dataSetId');
-  const dataSet = {};
-  dispatch(clearDataSetSucceeded(dataSet));
 };
 
-export const clearDataSetSucceeded = dataSet => ({
-  type: 'DOWNLOAD_CLEAR_SUCCESS',
-  data: { dataSet }
-});
+
