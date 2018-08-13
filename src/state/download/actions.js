@@ -5,36 +5,22 @@ import {
   updateDataSet
 } from '../../api/dataSet';
 import reportError from '../reportError';
+import DataSetManager from './DataSetManager';
 
 /**
  * Removes all experiments with the corresponding accession codes from dataset
  * @param {array} accessionCodes
  */
-export const removeExperiment = accessionCodes => {
-  return async (dispatch, getState) => {
-    dispatch({
-      type: 'DOWNLOAD_REMOVE_EXPERIMENT',
-      data: {
-        accessionCodes
-      }
-    });
+export const removeExperiment = accessionCodes => async (dispatch, getState) => {
     const { dataSet, dataSetId } = getState().download;
-    const newDataSet = Object.keys(dataSet).reduce((result, key) => {
-      const shouldRemove = accessionCodes.some(
-        accessionCode => accessionCode === key
-      );
-      if (!shouldRemove) result[key] = dataSet[key];
-      return result;
-    }, {});
-
+    const newDataSet = (new DataSetManager(dataSet)).removeExperiment(accessionCodes);
     try {
       const response = await updateDataSet(dataSetId, newDataSet);
       dispatch(removeExperimentSucceeded(response.data));
     } catch (error) {
-      console.log(error);
+      dispatch(reportError(error));
     }
   };
-};
 
 export const removeExperimentSucceeded = dataSet => {
   return {
@@ -48,63 +34,25 @@ export const removeExperimentSucceeded = dataSet => {
 export const removeSamplesFromExperiment = (
   accessionCode,
   sampleAccessions
-) => {
-  return async (dispatch, getState) => {
-    dispatch({
-      type: 'DOWNLOAD_REMOVE_EXPERIMENT',
-      data: {
-        accessionCode,
-        sampleAccessions
-      }
-    });
+) => async (dispatch, getState) => {
     const { dataSet, dataSetId } = getState().download;
-    const filteredSamples = dataSet[accessionCode].filter(
-      sample => sampleAccessions.indexOf(sample) === -1
-    );
-    const newDataSet = { ...dataSet };
-    if (filteredSamples.length) {
-      newDataSet[accessionCode] = filteredSamples;
-    } else {
-      delete newDataSet[accessionCode];
-    }
-
+    const newDataSet = (new DataSetManager(dataSet)).removeSamplesFromExperiment(accessionCode, sampleAccessions);
     try {
       const response = await updateDataSet(dataSetId, newDataSet);
       dispatch(removeExperimentSucceeded(response.data));
     } catch (error) {
-      console.log(error);
+      dispatch(reportError(error));      
     }
   };
-};
 
 /**
  * Removes all samples with corresponding ids from each experiment in dataset
  * @param {array} samples
  */
-export const removeSpecies = samples => {
-  return async (dispatch, getState) => {
-    const sampleAccessions = samples.map(sample => sample.accession_code);
-    dispatch({
-      type: 'DOWNLOAD_REMOVE_SPECIES',
-      data: {
-        sampleAccessions
-      }
-    });
-
-    const {
-      download: { dataSet, dataSetId }
-    } = getState();
-
-    const newDataSet = Object.keys(dataSet).reduce((result, accessionCode) => {
-      const samples = dataSet[accessionCode];
-
-      const filteredSamples = samples.filter(sample => {
-        return sampleAccessions.indexOf(sample) === -1;
-      });
-      if (filteredSamples.length) result[accessionCode] = filteredSamples;
-      return result;
-    }, {});
-
+export const removeSpecies = samples => async (dispatch, getState) => {
+    const { dataSet, dataSetId } = getState().download;
+    const sampleAccessions = samples.map(sample => sample.accession_code);    
+    const newDataSet = (new DataSetManager(dataSet)).removeSpecies(sampleAccessions);
     try {
       const response = await updateDataSet(dataSetId, newDataSet);
       dispatch(removeSpeciesSucceeded(response.data));
@@ -112,7 +60,6 @@ export const removeSpecies = samples => {
       console.log(error);
     }
   };
-};
 
 export const removeSpeciesSucceeded = dataSet => {
   return {
@@ -135,8 +82,8 @@ export const addExperiment = experiments => {
         experiments
       }
     });
-    const dataSetId = getState().download.dataSetId;
-    const prevDataSet = getState().download.dataSet;
+    const { dataSet: prevDataSet, dataSetId } = getState().download;
+
     const newExperiments = experiments.reduce((result, experiment) => {
       if (experiment.samples.length) {
         var sampleAccessions = experiment.samples;
@@ -202,6 +149,7 @@ export const addExperimentSucceeded = (dataSetId, dataSet) => {
  */
 export const fetchDataSet = () => async dispatch => {
   const dataSetId = localStorage.getItem('dataSetId');
+
   if (!dataSetId) {
     return;
   }
