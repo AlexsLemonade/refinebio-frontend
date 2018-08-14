@@ -290,14 +290,7 @@ let SampleTableActions = ({
   ) : (
     <AddToDatasetButton
       addMessage="Add Page to Dataset"
-      handleAdd={() =>
-        addExperiment([
-          {
-            accession_code: experiment.accession_code,
-            samples: samples.map(x => x.accession_code)
-          }
-        ])
-      }
+      handleAdd={() => addExperiment([experiment])}
       buttonStyle="secondary"
     />
   );

@@ -71,40 +71,41 @@ export const removeSpeciesSucceeded = dataSet => {
   };
 };
 
+export const createOrUpdateDataSet = ({data, dataSetId = null}) => async (dispatch) => {
+  let response = !dataSetId
+    ?  await Ajax.post('/dataset/create/', {
+      data
+    })
+    : await updateDataSet(dataSetId, data);
+
+    return {
+      dataSetId: response.id, 
+      data: response.data
+    };
+}
+
 /**
  * Takes an array of experiment objects and adds to users dataset via endpoint
  * @param {array} experiments
  */
-export const addExperiment = experiments => {
-  return async (dispatch, getState) => {
+export const addExperiment = experiments => async (dispatch, getState) => {
     dispatch({
       type: 'DOWNLOAD_ADD_EXPERIMENT',
       data: {
         experiments
       }
     });
+
     const { dataSet, dataSetId } = getState().download;
-    const bodyData = (new DataSetManager(dataSet)).addExperiment(experiments);
+    const data = (new DataSetManager(dataSet)).addExperiment(experiments);
 
     try {
-      let response;
-      if (!dataSetId) {
-        response = await Ajax.post('/dataset/create/', {
-          data: bodyData
-        });
-
-        const { id } = response;
-        localStorage.setItem('dataSetId', id);
-      } else {
-        response = await updateDataSet(dataSetId, bodyData);
-      }
-      const { data, id } = response;
-      dispatch(addExperimentSucceeded(id, data));
+      const {dataSetId: updatedDataSetId, data: updatedDataSet} = await dispatch(createOrUpdateDataSet({dataSetId, data}));
+      dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
     } catch (err) {
-      console.log(err);
+      dispatch(reportError(err));
     }
   };
-};
 
 export const addExperimentSucceeded = (dataSetId, dataSet) => {
   return {
