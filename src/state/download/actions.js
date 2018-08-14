@@ -32,35 +32,20 @@ export const removeExperimentSucceeded = dataSet => {
   };
 };
 
-export const removeSamplesFromExperiment = (
-  accessionCode,
-  sampleAccessions
-) => async (dispatch, getState) => {
-    const { dataSet, dataSetId } = getState().download;
-    const newDataSet = (new DataSetManager(dataSet)).removeSamplesFromExperiment(accessionCode, sampleAccessions);
-    try {
-      const response = await updateDataSet(dataSetId, newDataSet);
-      dispatch(removeExperimentSucceeded(response.data));
-    } catch (error) {
-      dispatch(reportError(error));      
-    }
-  };
-
 /**
  * Removes all samples with corresponding ids from each experiment in dataset
  * @param {array} samples
  */
-export const removeSpecies = samples => async (dispatch, getState) => {
-    const { dataSet, dataSetId } = getState().download;
-    const sampleAccessions = samples.map(sample => sample.accession_code);    
-    const newDataSet = (new DataSetManager(dataSet)).removeSpecies(sampleAccessions);
-    try {
-      const response = await updateDataSet(dataSetId, newDataSet);
-      dispatch(removeSpeciesSucceeded(response.data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+export const removeSamples = samples => async (dispatch, getState) => {
+  const { dataSet, dataSetId } = getState().download;
+  const newDataSet = (new DataSetManager(dataSet)).removeSamples(samples);
+  try {
+    const response = await updateDataSet(dataSetId, newDataSet);
+    dispatch(removeSpeciesSucceeded(response.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const removeSpeciesSucceeded = dataSet => {
   return {
@@ -73,15 +58,15 @@ export const removeSpeciesSucceeded = dataSet => {
 
 export const createOrUpdateDataSet = ({data, dataSetId = null}) => async (dispatch) => {
   let response = !dataSetId
-    ?  await Ajax.post('/dataset/create/', {
+    ? await Ajax.post('/dataset/create/', {
       data
     })
     : await updateDataSet(dataSetId, data);
 
-    return {
-      dataSetId: response.id, 
-      data: response.data
-    };
+  return {
+    dataSetId: response.id, 
+    data: response.data
+  };
 }
 
 /**

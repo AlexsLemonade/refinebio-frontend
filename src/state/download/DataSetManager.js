@@ -20,27 +20,9 @@ export default class DataSetManager {
     return result;
   }
 
-  removeSamplesFromExperiment(experimentAccessionCode, sampleAccessions) {
+  removeSamples(samples) {
     const dataSet = this.dataSet;
-
-    // get the samples that weren't removed
-    const filteredSamples = dataSet[experimentAccessionCode].filter(
-      sample => sampleAccessions.indexOf(sample) === -1
-    );
-    
-    const newDataSet = { ...dataSet };
-
-    if (filteredSamples.length > 0) {
-      newDataSet[experimentAccessionCode] = filteredSamples;
-    } else {
-      delete newDataSet[experimentAccessionCode];
-    }
-
-    return newDataSet;
-  }
-
-  removeSpecies(sampleAccessions) {
-    const dataSet = this.dataSet;
+    const sampleAccessions = samples.map(sample => sample.accession_code);
 
     const newDataSet = Object.keys(dataSet).reduce((result, accessionCode) => {
       const filteredSamples = dataSet[accessionCode].filter(sample => {
@@ -65,7 +47,7 @@ export default class DataSetManager {
     for (let experiment of experiments) {
       if (experiment.samples.length === 0) continue;
       let sampleAccessions = experiment.samples
-        .filter(x => x.is_processed)
+        //.filter(x => x.is_processed)
         .map(x => x.accession_code);
       newDataSetExperiments[experiment.accession_code] = sampleAccessions;
 

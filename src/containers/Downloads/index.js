@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import {
   removeExperiment,
-  removeSpecies,
+  removeSamples,
   clearDataSet,
   fetchDataSetDetails
 } from '../../state/download/actions';
@@ -185,7 +185,7 @@ Download = connect(
     };
   },
   {
-    removeSpecies,
+    removeSamples,
     removeExperiment,
     clearDataSet,
     fetchDataSetDetails,

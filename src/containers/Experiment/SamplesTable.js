@@ -18,7 +18,7 @@ import {
 import {
   addExperiment,
   removeExperiment,
-  removeSamplesFromExperiment
+  removeSamples
 } from '../../state/download/actions';
 import ProcessingInformationCell from './ProcessingInformationCell';
 
@@ -367,7 +367,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
   const { removeRow } = this;
   const {
     addExperiment,
-    removeSamplesFromExperiment,
+    removeSamples,
     dataSet,
     isRowRemovable = false,
     isImmutable = false
@@ -402,7 +402,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
     <RemoveFromDatasetButton
       handleRemove={() => {
         if (isRowRemovable) removeRow(rowId);
-        removeSamplesFromExperiment(experimentAccessionCode, [accession_code]);
+        removeSamples([accession_code]);
       }}
       remove={!this.props.isImmutable}
     />
@@ -415,6 +415,6 @@ export default (SamplesTable = connect(
   }),
   {
     addExperiment,
-    removeSamplesFromExperiment
+    removeSamples
   }
 )(SamplesTable));

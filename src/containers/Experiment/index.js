@@ -17,7 +17,7 @@ import SamplesTable from './SamplesTable';
 import {
   addExperiment,
   removeExperiment,
-  removeSamplesFromExperiment
+  removeSamples
 } from '../../state/download/actions';
 import { RemoveFromDatasetButton, AddToDatasetButton } from '../Results/Result';
 
@@ -28,7 +28,7 @@ let Experiment = ({
   experiment,
   addExperiment,
   removeExperiment,
-  removeSamplesFromExperiment,
+  removeSamples,
   addSamplesToDataset,
   dataSet,
   match,
@@ -258,7 +258,7 @@ Experiment = connect(
     fetchExperiment,
     addExperiment,
     removeExperiment,
-    removeSamplesFromExperiment,
+    removeSamples,
     goBack
   }
 )(Experiment);
@@ -274,17 +274,14 @@ let SampleTableActions = ({
   samples,
   allSamplesInDataset,
   experiment,
-  removeSamplesFromExperiment,
+  removeSamples,
   addExperiment,
   samplesInDataset
 }) =>
   allSamplesInDataset ? (
     <RemoveFromDatasetButton
       handleRemove={() =>
-        removeSamplesFromExperiment(
-          experiment.accession_code,
-          samples.map(x => x.accession_code)
-        )
+        removeSamples(samples)
       }
     />
   ) : (
@@ -309,7 +306,7 @@ SampleTableActions = connect(
   }),
   {
     addExperiment,
-    removeSamplesFromExperiment
+    removeSamples
   }
 )(SampleTableActions);
 
