@@ -21,7 +21,7 @@ import {
   removeSamples
 } from '../../state/download/actions';
 import ProcessingInformationCell from './ProcessingInformationCell';
-
+import DataSetSampleActions from './DataSetSampleActions';
 import './SamplesTable.scss';
 
 class SamplesTable extends React.Component {
@@ -384,41 +384,16 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
     isRowRemovable = false,
     isImmutable = false
   } = this.props;
-  const isAdded =
-    dataSet[experimentAccessionCode] &&
-    dataSet[experimentAccessionCode].includes(accession_code);
 
   if (!sample.is_processed) {
     return <p className="dataset-add-button__info-text">
         <i className="ion-information-circled dataset-add-button__info-icon" />{' '}
         Sample not processed <a href="#" className="button--link">Learn More</a>
       </p>;
-  } else if (!isAdded) {
-    return (
-      <AddToDatasetButton
-        addMessage={'Add'}
-        handleAdd={() =>
-          addExperiment([
-            {
-              accession_code: experimentAccessionCode,
-              samples: [accession_code]
-            }
-          ])
-        }
-        buttonStyle={'secondary'}
-      />
-    );
   }
 
-  return (
-    <RemoveFromDatasetButton
-      handleRemove={() => {
-        if (isRowRemovable) removeRow(rowId);
-        removeSamples([accession_code]);
-      }}
-      remove={!this.props.isImmutable}
-    />
-  );
+  return <DataSetSampleActions samples={[sample]} experiment={{accession_code: experimentAccessionCode}}
+                               meta={{addText: 'Add', buttonStyle: 'secondary'}} />
 }
 
 

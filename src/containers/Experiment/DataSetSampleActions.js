@@ -1,7 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { RemoveFromDatasetButton, AddToDatasetButton } from '../Results/Result';
 import Button from '../../components/Button';
 import {
   addExperiment,
@@ -51,7 +50,8 @@ DataSetSampleActions = connect(
   ({ download: { dataSet } }, { samples, meta = {} }) => ({
     stats: new DataSetStats(dataSet, samples),
     meta: {
-      addText: 'Add to Dataset', buttonStyle: null,
+      addText: 'Add to Dataset', 
+      buttonStyle: null,
       // allow extending default properties with meta
       ...meta,
     }
@@ -106,4 +106,52 @@ class DataSetStats {
   getSamplesInDataSet() {
     return this.samples.filter(x => x.is_processed && this._sampleInDataSet(x));
   }
+}
+
+export function RemoveFromDatasetButton({
+  handleRemove,
+  totalAdded,
+  samplesInDataset
+}) {
+  return (
+    <div className="dataset-remove-button">
+      <div className="dataset-remove-button__added-container">
+        <span className="dataset-remove-button__added">
+          <i className="ion-checkmark-circled dataset-remove-button__added-icon" />
+          {totalAdded && `${totalAdded} Samples`} Added to Dataset
+        </span>
+        <Button buttonStyle="plain" text="Remove" onClick={handleRemove} />
+      </div>
+      {samplesInDataset && (
+        <p className="dataset-remove-button__info-text">
+          <i className="ion-information-circled dataset-remove-button__info-icon" />{' '}
+          {samplesInDataset} Samples are already in Dataset
+        </p>
+      )}
+    </div>
+  );
+}
+
+export function AddToDatasetButton({
+  handleAdd,
+  samplesInDataset,
+  addMessage = 'Add to Dataset',
+  buttonStyle = null
+}) {
+  return (
+    <div className="dataset-add-button">
+      <Button
+        text={samplesInDataset ? 'Add Remaining' : addMessage}
+        buttonStyle={samplesInDataset ? 'secondary' : buttonStyle}
+        onClick={handleAdd}
+      />
+      {(samplesInDataset && (
+        <p className="dataset-add-button__info-text">
+          <i className="ion-information-circled dataset-add-button__info-icon" />{' '}
+          {samplesInDataset} Samples are already in Dataset
+        </p>
+      )) ||
+        null}
+    </div>
+  );
 }

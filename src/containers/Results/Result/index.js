@@ -8,60 +8,9 @@ import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
-
-export function RemoveFromDatasetButton({
-  handleRemove,
-  totalAdded,
-  samplesInDataset
-}) {
-  return (
-    <div className="dataset-remove-button">
-      <div className="dataset-remove-button__added-container">
-        <span className="dataset-remove-button__added">
-          <i className="ion-checkmark-circled dataset-remove-button__added-icon" />
-          {totalAdded && `${totalAdded} Samples`} Added to Dataset
-        </span>
-        <Button buttonStyle="plain" text="Remove" onClick={handleRemove} />
-      </div>
-      {samplesInDataset && (
-        <p className="dataset-remove-button__info-text">
-          <i className="ion-information-circled dataset-remove-button__info-icon" />{' '}
-          {samplesInDataset} Samples are already in Dataset
-        </p>
-      )}
-    </div>
-  );
-}
-
-export function AddToDatasetButton({
-  handleAdd,
-  samplesInDataset,
-  addMessage = 'Add to Dataset',
-  buttonStyle = null
-}) {
-  return (
-    <div className="dataset-add-button">
-      <Button
-        text={samplesInDataset ? 'Add Remaining' : addMessage}
-        buttonStyle={samplesInDataset ? 'secondary' : buttonStyle}
-        onClick={handleAdd}
-      />
-      {(samplesInDataset && (
-        <p className="dataset-add-button__info-text">
-          <i className="ion-information-circled dataset-add-button__info-icon" />{' '}
-          {samplesInDataset} Samples are already in Dataset
-        </p>
-      )) ||
-        null}
-    </div>
-  );
-}
+import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
 
 const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
-  const isAdded =
-    dataSet[result.accession_code] &&
-    dataSet[result.accession_code].length === result.samples.length;
-
   function handleAddExperiment() {
     addExperiment([result]);
   }
@@ -91,25 +40,8 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             <h2 className="result__title">{result.title || 'No title.'}</h2>
           </Link>
         </div>
-        {!isAdded ? (
-          <AddToDatasetButton
-            handleAdd={handleAddExperiment}
-            samplesInDataset={
-              dataSet[result.accession_code]
-                ? dataSet[result.accession_code].length
-                : null
-            }
-          />
-        ) : (
-          <RemoveFromDatasetButton
-            handleRemove={handleRemoveExperiment}
-            samplesInDataset={
-              dataSet[result.accession_code].length !== result.samples.length
-                ? dataSet[result.accession_code].length
-                : null
-            }
-          />
-        )}
+
+        <DataSetSampleActions samples={result.samples} experiment={result} />
       </div>
       <ul className="result__stats">
         <li className="result__stat">

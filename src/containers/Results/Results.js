@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import Result, { RemoveFromDatasetButton, AddToDatasetButton } from './Result';
+import Result from './Result';
 import ResultFilters from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
@@ -15,6 +15,7 @@ import { PAGE_SIZES } from '../../constants/table';
 import StartSearchingImage from '../../common/images/start-searching.svg';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
+import { RemoveFromDatasetButton, AddToDatasetButton } from "../Experiment/DataSetSampleActions";
 
 class Results extends Component {
   componentDidMount() {
