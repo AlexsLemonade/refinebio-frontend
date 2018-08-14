@@ -19,7 +19,7 @@ import {
   removeExperiment,
   removeSamples
 } from '../../state/download/actions';
-import { RemoveFromDatasetButton, AddToDatasetButton } from '../Results/Result';
+import DataSetSampleActions from './DataSetSampleActions';
 
 import { goBack } from '../../state/routerActions';
 
@@ -72,30 +72,7 @@ let Experiment = ({
                   {experiment.title || 'No Title.'}
                 </h3>
                 <div>
-                  {!dataSet[experiment.accession_code] ||
-                  dataSet[experiment.accession_code].length !==
-                    experiment.samples.length ? (
-                    <AddToDatasetButton
-                      handleAdd={() => addExperiment([experiment])}
-                      samplesInDataset={
-                        dataSet[experiment.accession_code]
-                          ? dataSet[experiment.accession_code].length
-                          : null
-                      }
-                    />
-                  ) : (
-                    <RemoveFromDatasetButton
-                      handleRemove={() =>
-                        removeExperiment([experiment.accession_code])
-                      }
-                      samplesInDataset={
-                        dataSet[experiment.accession_code].length !==
-                        experiment.samples.length
-                          ? dataSet[experiment.accession_code].length
-                          : null
-                      }
-                    />
-                  )}
+                  <DataSetSampleActions samples={experiment.samples} experiment={experiment} />
                 </div>
               </div>
 
@@ -241,7 +218,10 @@ let Experiment = ({
                   experimentAccessionCodes={[experiment.accession_code]}
                   // Render prop for the button that adds the samples to the dataset
                   pageActionComponent={samplesDisplayed => (
-                    <SampleTableActions samples={samplesDisplayed} />
+                    <DataSetSampleActions samples={samplesDisplayed} experiment={experiment} 
+                    meta={{
+                      buttonStyle: 'secondary',
+                      addText: 'Add Page to Dataset'}}/>
                   )}
                 />
               </section>
@@ -264,62 +244,3 @@ Experiment = connect(
 )(Experiment);
 
 export default Experiment;
-
-/**
- * This component is used for the top-right part of the Samples table, manages adding a set of samples
- * to the current dataset. Sample usage:
- * <SampleTableActions samples={samplesDisplayed} />
- */
-let SampleTableActions = ({
-  samples,
-  allSamplesInDataset,
-  experiment,
-  removeSamples,
-  addExperiment,
-  samplesInDataset
-}) =>
-  allSamplesInDataset ? (
-    <RemoveFromDatasetButton
-      handleRemove={() =>
-        removeSamples(samples)
-      }
-    />
-  ) : (
-    <AddToDatasetButton
-      addMessage="Add Page to Dataset"
-      handleAdd={() => addExperiment([experiment])}
-      buttonStyle="secondary"
-    />
-  );
-SampleTableActions = connect(
-  ({ experiment, download: { dataSet } }, { samples }) => ({
-    experiment,
-    // should be true if all samples passed are already in the dataset
-    allSamplesInDataset:
-      samplesNotInDataSet(samples, experiment.accession_code, dataSet)
-        .length === 0,
-    samplesInDataset: samplesInDataset(
-      samples,
-      experiment.accession_code,
-      dataSet
-    ).length
-  }),
-  {
-    addExperiment,
-    removeSamples
-  }
-)(SampleTableActions);
-
-function samplesNotInDataSet(samples, accessionCode, dataSet) {
-  return samples.filter(x => {
-    if (!dataSet[accessionCode]) return true;
-    return dataSet[accessionCode].indexOf(x.accession_code) === -1;
-  });
-}
-
-function samplesInDataset(samples, accessionCode, dataSet) {
-  return samples.filter(x => {
-    if (!dataSet[accessionCode]) return false;
-    return dataSet[accessionCode].indexOf(x.accession_code) !== -1;
-  });
-}

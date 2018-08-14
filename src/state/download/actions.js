@@ -13,15 +13,15 @@ import DataSetManager from './DataSetManager';
  * @param {array} accessionCodes
  */
 export const removeExperiment = accessionCodes => async (dispatch, getState) => {
-    const { dataSet, dataSetId } = getState().download;
-    const newDataSet = (new DataSetManager(dataSet)).removeExperiment(accessionCodes);
-    try {
-      const response = await updateDataSet(dataSetId, newDataSet);
-      dispatch(removeExperimentSucceeded(response.data));
-    } catch (error) {
-      dispatch(reportError(error));
-    }
-  };
+  const { dataSet, dataSetId } = getState().download;
+  const newDataSet = (new DataSetManager(dataSet)).removeExperiment(accessionCodes);
+  try {
+    const response = await updateDataSet(dataSetId, newDataSet);
+    dispatch(removeExperimentSucceeded(response.data));
+  } catch (error) {
+    dispatch(reportError(error));
+  }
+};
 
 export const removeExperimentSucceeded = dataSet => {
   return {
@@ -33,7 +33,7 @@ export const removeExperimentSucceeded = dataSet => {
 };
 
 /**
- * Removes all samples with corresponding ids from each experiment in dataset
+ * Removes all samples with corresponding ids from each experiment in dataset.
  * @param {array} samples
  */
 export const removeSamples = samples => async (dispatch, getState) => {
@@ -56,6 +56,9 @@ export const removeSpeciesSucceeded = dataSet => {
   };
 };
 
+/**
+ * Updates a DataSet with the given data in the backend. A new one is created if it doesn't exist.
+ */
 export const createOrUpdateDataSet = ({data, dataSetId = null}) => async (dispatch) => {
   let response = !dataSetId
     ? await Ajax.post('/dataset/create/', {
@@ -74,23 +77,23 @@ export const createOrUpdateDataSet = ({data, dataSetId = null}) => async (dispat
  * @param {array} experiments
  */
 export const addExperiment = experiments => async (dispatch, getState) => {
-    dispatch({
-      type: 'DOWNLOAD_ADD_EXPERIMENT',
-      data: {
-        experiments
-      }
-    });
-
-    const { dataSet, dataSetId } = getState().download;
-    const data = (new DataSetManager(dataSet)).addExperiment(experiments);
-
-    try {
-      const {dataSetId: updatedDataSetId, data: updatedDataSet} = await dispatch(createOrUpdateDataSet({dataSetId, data}));
-      dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
-    } catch (err) {
-      dispatch(reportError(err));
+  dispatch({
+    type: 'DOWNLOAD_ADD_EXPERIMENT',
+    data: {
+      experiments
     }
-  };
+  });
+
+  const { dataSet, dataSetId } = getState().download;
+  const data = (new DataSetManager(dataSet)).addExperiment(experiments);
+
+  try {
+    const {dataSetId: updatedDataSetId, data: updatedDataSet} = await dispatch(createOrUpdateDataSet({dataSetId, data}));
+    dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
+  } catch (err) {
+    dispatch(reportError(err));
+  }
+};
 
 export const addExperimentSucceeded = (dataSetId, dataSet) => {
   return {
@@ -119,6 +122,7 @@ export const fetchDataSet = () => async dispatch => {
       dataSetId
     }
   });
+
   try {
     const {
       data,

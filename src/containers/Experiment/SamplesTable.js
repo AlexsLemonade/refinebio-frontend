@@ -331,6 +331,18 @@ class SamplesTable extends React.Component {
     return orderBy;
   }
 }
+SamplesTable = connect(
+  ({ download: { dataSet } }) => ({
+    dataSet
+  }),
+  {
+    addExperiment,
+    removeSamples
+  }
+)(SamplesTable);
+export default SamplesTable;
+
+
 
 /**
  * Component used for the cells of the header in the SamplesTable
@@ -409,12 +421,4 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
   );
 }
 
-export default (SamplesTable = connect(
-  ({ download: { dataSet } }) => ({
-    dataSet
-  }),
-  {
-    addExperiment,
-    removeSamples
-  }
-)(SamplesTable));
+
