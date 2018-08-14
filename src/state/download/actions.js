@@ -7,6 +7,7 @@ import {
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
 
+
 /**
  * Removes all experiments with the corresponding accession codes from dataset
  * @param {array} accessionCodes
@@ -82,36 +83,8 @@ export const addExperiment = experiments => {
         experiments
       }
     });
-    const { dataSet: prevDataSet, dataSetId } = getState().download;
-
-    const newExperiments = experiments.reduce((result, experiment) => {
-      if (experiment.samples.length) {
-        var sampleAccessions = experiment.samples;
-        // If the samples property is a list of strings we're good.
-        // But if it's instead sample objects, we want to convert it
-        // to only being accession codes.
-        if (typeof sampleAccessions[0] != 'string') {
-          sampleAccessions = sampleAccessions.map(x => x.accession_code);
-        }
-        result[experiment.accession_code] = prevDataSet[
-          experiment.accession_code
-        ]
-          ? // Remove duplicates from the array, since the backend throws errors
-            // on non-unique accessions
-            [
-              ...new Set([
-                ...prevDataSet[experiment.accession_code],
-                ...sampleAccessions
-              ])
-            ]
-          : sampleAccessions;
-      }
-      return result;
-    }, {});
-    const bodyData = {
-      ...prevDataSet,
-      ...newExperiments
-    };
+    const { dataSet, dataSetId } = getState().download;
+    const bodyData = (new DataSetManager(dataSet)).addExperiment(experiments);
 
     try {
       let response;
