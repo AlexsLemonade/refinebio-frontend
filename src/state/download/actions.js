@@ -274,19 +274,19 @@ export const fetchDataSetDetails = () => async dispatch => {
   experiments = formatExperiments(experiments);
 
   dispatch(
-    fetchDataSetDetailsSucceeded(
-      data,
+    fetchDataSetDetailsSucceeded({
+      dataSet: data,
       is_processing,
       is_processed,
       aggregate_by,
       scale_by,
       samples,
       experiments
-    )
+    })
   );
 };
 
-export const fetchDataSetDetailsSucceeded = (
+export const fetchDataSetDetailsSucceeded = ({
   dataSet,
   is_processing,
   is_processed,
@@ -294,7 +294,7 @@ export const fetchDataSetDetailsSucceeded = (
   scale_by,
   samples,
   experiments
-) => ({
+}) => ({
   type: 'DOWNLOAD_FETCH_DETAILS_SUCCESS',
   data: {
     dataSet,
