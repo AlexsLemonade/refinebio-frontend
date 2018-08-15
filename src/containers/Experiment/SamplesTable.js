@@ -386,9 +386,12 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
   } = this.props;
 
   if (!sample.is_processed) {
-    return <p className="dataset-add-button__info-text">
-        <i className="ion-information-circled dataset-add-button__info-icon" />{' '}
-        Sample not processed <a href="#" className="button--link">Learn More</a>
+    return <p className="sample-not-processed">
+        <i className="ion-information-circled sample-not-processed__info-icon" />
+        <div className="sample-not-processed__text">
+          <div className="nowrap">Sample not processed</div>
+          <a href="/docs" className="button--link" target="_blank">Learn More</a>        
+        </div>
       </p>;
   }
 

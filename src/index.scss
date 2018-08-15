@@ -96,5 +96,9 @@ fieldset {
   color: $success;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';
