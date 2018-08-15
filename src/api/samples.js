@@ -23,7 +23,8 @@ export async function getAllDetailedSamples({
 }) {
   if (accessionCodes && accessionCodes.length) {
     let { results } = await Ajax.get('/samples/', {
-      accession_codes: accessionCodes,
+      // send the accession codes as a string, otherwise they will be converted to an array parameter
+      accession_codes: accessionCodes.join(','),
       offset,
       limit,
       order_by: orderBy
