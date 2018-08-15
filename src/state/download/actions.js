@@ -1,8 +1,10 @@
-import { Ajax, formatSamplesAndExperiments } from '../../common/helpers';
+import { Ajax } from '../../common/helpers';
 import {
   getDataSet,
   getDataSetDetails,
-  updateDataSet
+  updateDataSet,
+  formatSamples,
+  formatExperiments,
 } from '../../api/dataSet';
 
 /**
@@ -268,11 +270,8 @@ export const fetchDataSetDetails = () => async dispatch => {
     experiments
   } = await getDataSetDetails(dataSetId);
 
-  [samples, experiments] = formatSamplesAndExperiments(
-    data,
-    samples,
-    experiments
-  );
+  samples = formatSamples(data, samples);
+  experiments = formatExperiments(experiments);
 
   dispatch(
     fetchDataSetDetailsSucceeded(

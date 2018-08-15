@@ -5,39 +5,34 @@ export async function getDataSet(dataSetId) {
 }
 
 export async function getDataSetDetails(dataSetId) {
-  return await Ajax.get(`/dataset/${dataSetId}/?details=true`);
-}
-
-export async function getSamplesAndExperiments(dataSet) {
-  const experiments = {},
-    samples = {};
-
-  await Promise.all(
-    Object.keys(dataSet).map(async accessionCode => {
-      const experiment = await Ajax.get('/experiments/', {
-        accession_code: accessionCode
-      });
-
-      experiments[accessionCode] = experiment.results[0];
-
-      /*
-      Use sample accessions from dataSet instead of experiment
-      because some experiments may only have a subset of samples added
-      */
-      const sampleList = dataSet[accessionCode];
-      const response = await Ajax.get('/samples/', {
-        limit: 1000000000000000,
-        accession_codes: sampleList.join(',')
-      });
-      const sampleInfo = response.results;
-
-      samples[accessionCode] = sampleInfo;
-    })
-  );
-
-  return { experiments, samples };
+  return await Ajax.get(`/dataset/${dataSetId}/`, {details: true});
 }
 
 export async function updateDataSet(dataSetId, dataSet) {
   return await Ajax.put(`/dataset/${dataSetId}/`, { data: dataSet });
 }
+
+
+
+// Takes in arrays of samples and experiments as formatted by the serializer
+// and turns them into objects where the keys are experiment accession codes
+
+export function formatExperiments(experiments) {
+  return experiments.reduce((accum, experiment) => {
+    accum[experiment.accession_code] = experiment;
+    return accum;
+  }, {});
+}
+
+export function formatSamples(data, samples) {
+  let result = {};
+
+  for (let accession_code in data) {
+    result[accession_code] = samples.filter(sample =>
+      data[accession_code].includes(sample.accession_code)
+    );
+  }
+
+  return result;
+}
+

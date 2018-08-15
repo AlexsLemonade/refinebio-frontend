@@ -1,6 +1,6 @@
-import { getDataSetDetails } from '../../api/dataSet';
+import { getDataSetDetails, formatSamples, formatExperiments } from '../../api/dataSet';
 import { replace } from '../../state/routerActions';
-import { formatSamplesAndExperiments } from '../../common/helpers';
+import {  } from '../../common/helpers';
 
 export const loadViewDownload = data => ({
   type: 'LOAD_VIEW_DOWNLOAD',
@@ -19,11 +19,8 @@ export const fetchDataSetDetailsForView = dataSetId => async dispatch => {
     } = await getDataSetDetails(dataSetId);
 
     // 2. Format the output
-    [samples, experiments] = formatSamplesAndExperiments(
-      dataSet,
-      samples,
-      experiments
-    );
+    samples = formatSamples(dataSet, samples);
+    experiments = formatExperiments(experiments);
 
     // 3. store data in `viewDownload` reducer
     dispatch(
