@@ -1,5 +1,5 @@
 import { push } from '../routerActions';
-import { getQueryString, Ajax } from '../../common/helpers';
+import { Ajax } from '../../common/helpers';
 
 export function fetchResults(searchTerm = '', pageNum = 1, filters) {
   return async (dispatch, getState) => {

@@ -10,13 +10,13 @@ export function getQueryString(queryObj) {
       // For some query parameters, the key points to an array of values.
       // In those instances we want a separate param for each value,
       // otherwise we just want the one param for the value.
-      if (typeof key === 'string') {
+      if (Array.isArray(queryObj[key])) {
+        return accum.concat(
+          queryObj[key].map(value => `${key}=${encodeURI(value)}`)
+        );
+      } else {
         accum.push(`${key}=${encodeURI(queryObj[key])}`);
         return accum;
-      } else {
-        return accum.concat(
-          key.map(key => `${key}=${encodeURI(queryObj[key])}`)
-        );
       }
     }, [])
     .join('&');

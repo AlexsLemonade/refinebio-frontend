@@ -10,6 +10,14 @@ describe('getQueryString', () => {
   it('encoding string', () => {
     expect(getQueryString({ a: '1 2' })).toBe('a=1%202');
   });
+
+  it('with array', ()=>{
+    expect(getQueryString({ a: [1, 2] })).toBe('a=1&a=2');
+  });
+
+  it('combine arrays and numbers', () => {
+    expect(getQueryString({ a: [1, 2, 3], b: false })).toBe('a=1&a=2&a=3&b=false');    
+  })
 });
 
 it('getQueryParamObject parses query', () => {
