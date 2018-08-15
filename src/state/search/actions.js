@@ -1,5 +1,5 @@
 import { push } from '../routerActions';
-import { Ajax } from '../../common/helpers';
+import { getQueryString, Ajax } from '../../common/helpers';
 
 export function fetchResults(searchTerm = '', pageNum = 1, filters) {
   return async (dispatch, getState) => {
@@ -76,6 +76,11 @@ export function fetchResultsSucceeded(
       queryObj.p = currentPage;
     }
 
+    dispatch(
+      push({
+        search: `${getQueryString({ ...queryObj, ...filtersObj })}`
+      })
+    );
     dispatch({
       type: 'SEARCH_RESULTS_FETCH_SUCCESS',
       data: {
