@@ -34,6 +34,13 @@ let DataSetSampleActions = ({
         removeSamples(stats.getSamplesInDataSet())
       }
     />;
+  } else if (stats.getSamplesInDataSet().length > 0) {
+    return <AddRemainingSamples 
+      totalSamplesInDataset={stats.getSamplesInDataSet().length} 
+      handleAdd={() => addExperiment([{
+        accession_code: experiment.accession_code,
+        samples
+      }])} />
   }
   
   // if there're processed samples that aren't part of the current dataset, show the button to add samples
@@ -153,6 +160,22 @@ export function AddToDatasetButton({
         </p>
       )) ||
         null}
+    </div>
+  );
+}
+
+function AddRemainingSamples({handleAdd, totalSamplesInDataset}) {
+  return (
+    <div className="dataset-add-button">
+      <Button
+        text={'Add Remaining'}
+        buttonStyle="secondary"
+        onClick={handleAdd}
+      />
+      <p className="dataset-add-button__info-text">
+        <i className="ion-information-circled dataset-add-button__info-icon" />{' '}
+        {totalSamplesInDataset} Samples are already in Dataset
+      </p>
     </div>
   );
 }
