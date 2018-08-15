@@ -7,6 +7,17 @@ import {
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
 
+/**
+ * Saves an updated copy of the given dataset in the store
+ */
+export const downloadUpdateDataSet = dataSet => {
+  return {
+    type: 'DOWNLOAD_UPDATE_DATASET',
+    data: {
+      dataSet
+    }
+  };
+};
 
 /**
  * Removes all experiments with the corresponding accession codes from dataset
@@ -17,19 +28,10 @@ export const removeExperiment = accessionCodes => async (dispatch, getState) => 
   const newDataSet = (new DataSetManager(dataSet)).removeExperiment(accessionCodes);
   try {
     const response = await updateDataSet(dataSetId, newDataSet);
-    dispatch(removeExperimentSucceeded(response.data));
+    dispatch(downloadUpdateDataSet(response.data));
   } catch (error) {
     dispatch(reportError(error));
   }
-};
-
-export const removeExperimentSucceeded = dataSet => {
-  return {
-    type: 'DOWNLOAD_REMOVE_EXPERIMENT_SUCCESS',
-    data: {
-      dataSet
-    }
-  };
 };
 
 /**
@@ -41,19 +43,10 @@ export const removeSamples = samples => async (dispatch, getState) => {
   const newDataSet = (new DataSetManager(dataSet)).removeSamples(samples);
   try {
     const response = await updateDataSet(dataSetId, newDataSet);
-    dispatch(removeSpeciesSucceeded(response.data));
+    dispatch(downloadUpdateDataSet(response.data));
   } catch (error) {
-    console.log(error);
+    dispatch(reportError(error));
   }
-};
-
-export const removeSpeciesSucceeded = dataSet => {
-  return {
-    type: 'DOWNLOAD_REMOVE_SPECIES_SUCCESS',
-    data: {
-      dataSet
-    }
-  };
 };
 
 /**
