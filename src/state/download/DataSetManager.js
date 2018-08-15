@@ -47,7 +47,7 @@ export default class DataSetManager {
     for (let experiment of experiments) {
       if (experiment.samples.length === 0) continue;
       let sampleAccessions = experiment.samples
-        // .filter(x => x.is_processed) // filter out unprocessed samples
+        .filter(x => x.is_processed) // filter out unprocessed samples
         .map(x => x.accession_code);
       newDataSetExperiments[experiment.accession_code] = sampleAccessions;
 

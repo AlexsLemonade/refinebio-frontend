@@ -19,7 +19,7 @@ let DataSetSampleActions = ({
   removeSamples,
   addExperiment,
   stats,
-  meta
+  meta,
 }) => {
   if (!stats.anyProcessedSamples()) {
     // if there're no processed samples to be added, then just show the add button disabled
@@ -68,7 +68,7 @@ export default DataSetSampleActions;
  * Contains helper methods to calculate stats between a dataset and a list of samples
  * eg, how many processed samples are already in the dataset
  */
-class DataSetStats {
+export class DataSetStats {
   constructor(dataSet, samples) {
     this.dataSet = dataSet;
     this.samples = samples;
@@ -83,16 +83,17 @@ class DataSetStats {
   }
 
   allProcessedInDataSet() {
-    return this.getProcessedSamples().every(x => this._sampleInDataSet(x));
+    return this.getProcessedSamples().every(x => this.sampleInDataSet(x));
   }
 
   /**
    * Returns true if a given sample is in the dataset
    * @param {any} sample Sample object, with key `accession_code`
    */
-  _sampleInDataSet(sample) {
-    for (let id in this.dataSet) {
-      if (this.dataSet.some(x => x.accession_code === sample.accession_code)) {
+  sampleInDataSet(sample) {
+    for (let experimentId in this.dataSet) {
+      // check if the passed sample is part of the experiment
+      if (this.dataSet[experimentId].some(sampleAccessionCode => sampleAccessionCode === sample.accession_code)) {
         return true;
       }
     }
@@ -104,7 +105,7 @@ class DataSetStats {
   }
 
   getSamplesInDataSet() {
-    return this.samples.filter(x => x.is_processed && this._sampleInDataSet(x));
+    return this.samples.filter(x => x.is_processed && this.sampleInDataSet(x));
   }
 }
 

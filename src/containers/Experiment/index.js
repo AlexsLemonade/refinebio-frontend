@@ -219,9 +219,7 @@ let Experiment = ({
                   // Render prop for the button that adds the samples to the dataset
                   pageActionComponent={samplesDisplayed => (
                     <DataSetSampleActions samples={samplesDisplayed} experiment={experiment} 
-                    meta={{
-                      buttonStyle: 'secondary',
-                      addText: 'Add Page to Dataset'}}/>
+                      meta={{buttonStyle: 'secondary', addText: 'Add Page to Dataset'}}/>
                   )}
                 />
               </section>
