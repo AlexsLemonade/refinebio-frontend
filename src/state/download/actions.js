@@ -89,6 +89,7 @@ export const addExperiment = experiments => async (dispatch, getState) => {
 
   try {
     const {dataSetId: updatedDataSetId, data: updatedDataSet} = await dispatch(createOrUpdateDataSet({dataSetId, data}));
+    localStorage.setItem('dataSetId', updatedDataSetId);
     dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
   } catch (err) {
     dispatch(reportError(err));
