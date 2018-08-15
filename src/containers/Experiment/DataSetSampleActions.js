@@ -20,6 +20,9 @@ let DataSetSampleActions = ({
   addExperiment,
   stats,
   meta,
+  // in some cases we don't want to show the AddRemaining state, like for example adding
+  // the current samples in a table
+  enableAddRemaining = true,
 }) => {
   if (!stats.anyProcessedSamples()) {
     // if there're no processed samples to be added, then just show the add button disabled
@@ -34,7 +37,7 @@ let DataSetSampleActions = ({
         removeSamples(stats.getSamplesInDataSet())
       }
     />;
-  } else if (stats.getSamplesInDataSet().length > 0) {
+  } else if (enableAddRemaining && stats.getSamplesInDataSet().length > 0) {
     return <AddRemainingSamples 
       totalSamplesInDataset={stats.getSamplesInDataSet().length} 
       handleAdd={() => addExperiment([{
