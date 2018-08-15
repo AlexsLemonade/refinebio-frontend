@@ -12,8 +12,6 @@ import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 
-import SampleFieldMetadata from '../Experiment/SampleFieldMetadata';
-
 export default function DownloadDetails({
   dataSet,
   filesData,

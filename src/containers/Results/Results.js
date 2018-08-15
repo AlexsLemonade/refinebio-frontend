@@ -4,7 +4,6 @@ import Result from './Result';
 import ResultFilters from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
-import Button from '../../components/Button';
 import BackToTop from '../../components/BackToTop';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';

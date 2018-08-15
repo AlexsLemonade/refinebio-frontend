@@ -1,24 +1,14 @@
 import React from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
-import Button from '../../../components/Button';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
 import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
-import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
 
 const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
-  function handleAddExperiment() {
-    addExperiment([result]);
-  }
-
-  function handleRemoveExperiment() {
-    removeExperiment([result.accession_code]);
-  }
-
   const metadataFields = getMetadataFields(result);
 
   return (

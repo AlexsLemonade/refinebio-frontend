@@ -1,7 +1,6 @@
 
 
 import React from 'react';
-import { connect } from 'react-redux';
 import Button from '../../components/Button';
 import ModalManager from '../../components/Modal/ModalManager';
 

@@ -1,23 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Button from '../../components/Button';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import { getAllDetailedSamples } from '../../api/samples';
-import ModalManager from '../../components/Modal/ModalManager';
 
 import { PAGE_SIZES } from '../../constants/table';
 import SampleFieldMetadata from './SampleFieldMetadata';
 import {
-  RemoveFromDatasetButton,
-  AddToDatasetButton
-} from '../../containers/Results/Result';
-import {
   addExperiment,
-  removeExperiment,
   removeSamples
 } from '../../state/download/actions';
 import ProcessingInformationCell from './ProcessingInformationCell';
@@ -125,7 +118,7 @@ class SamplesTable extends React.Component {
     // Calculate page size options to exclude ones greater than the number of
     // samples.
     const pageSizes = PAGE_SIZES.filter(size => size <= this.totalSamples);
-    if (pageSizes.length == 0) pageSizes.push(this.totalSamples);
+    if (pageSizes.length === 0) pageSizes.push(this.totalSamples);
 
     // TODO: remove this call https://github.com/AlexsLemonade/refinebio-frontend/issues/239
     if (this.state.mounted) {
@@ -375,15 +368,7 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
 }
 
 function AddRemoveCell({ original: sample, row: { id: rowId } }) {
-  const { experimentAccessionCode, accession_code } = sample;
-  const { removeRow } = this;
-  const {
-    addExperiment,
-    removeSamples,
-    dataSet,
-    isRowRemovable = false,
-    isImmutable = false
-  } = this.props;
+  const { experimentAccessionCode } = sample;
 
   if (!sample.is_processed) {
     return <p className="sample-not-processed">

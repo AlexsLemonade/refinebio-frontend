@@ -11,7 +11,7 @@ import Button from '../../components/Button';
 import { connect } from 'react-redux';
 import { editEmail, fetchDataSet } from '../../state/dataSet/actions';
 import { startDownload } from '../../state/download/actions';
-import { Ajax, asyncFetch } from '../../common/helpers';
+import { Ajax } from '../../common/helpers';
 import ModalManager from '../../components/Modal/ModalManager';
 
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';

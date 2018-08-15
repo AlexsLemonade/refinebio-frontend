@@ -1,10 +1,8 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
 import {
   addExperiment,
-  removeExperiment,
   removeSamples
 } from '../../state/download/actions';
 
