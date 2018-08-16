@@ -142,3 +142,24 @@
   }
 }
 
+.header--inverted {
+  color: $white;
+  background-color: rgba(12,52,131,0.94);
+
+  .header__burger {
+    color: $white;
+  }
+
+  .header__logo {
+    filter: brightness(0) invert(1);
+  }
+
+  .header__link--button {
+    color: $white;
+  }
+
+  .header__dataset-count {
+    background: $white;
+    color: $azure;
+  }
+}

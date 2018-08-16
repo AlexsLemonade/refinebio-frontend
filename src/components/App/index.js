@@ -18,6 +18,7 @@ import License from '../../components/Terms/License';
 import store from '../../configureStore';
 import { Provider } from 'react-redux';
 import ErrorBoundary from '../../containers/ErrorBoundary';
+import About from '../About';
 
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
@@ -35,6 +36,8 @@ const AppContent = () => (
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/license" component={License} />
+
+      <Route path="/about" component={About} />
 
       {/* Custom route to be able to redirect to the 404 page */}
       <Route path="/not-found" component={NoMatch} />

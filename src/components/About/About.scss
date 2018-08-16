@@ -1,0 +1,105 @@
+
+@import '../../common/styles/variables';
+
+// conditionally change the layout when the about page is active
+.layout.page-about {
+  .layout__content {
+    margin-top: 0;
+  }
+}
+
+.about {
+  padding-bottom: 152px;
+  
+  &__header {
+    position: relative;
+    background: linear-gradient(179.93deg, rgba(12,52,131,0.94) 0%, rgba(25,64,142,0.95) 16.45%, #6B8CCE 43.03%, #A2B6DF 69.1%, #A2B6DF 100%);
+    margin-left: -8px;
+    margin-right: -8px;
+    padding: 80px 20px 21*8px 20px;
+    overflow: hidden;
+  }
+
+  &__header-bg {
+    position: absolute;
+    width: 880px;
+    left: 50%;
+    margin-left: -440px;
+    opacity: 0.1;
+    bottom: 0;
+  }
+
+  &__tagline {
+    color: $whisper;
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+  }
+
+  &__section {
+    margin-bottom: 40px;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  &__section-divider {
+    border-top: 3px solid #F2F2F2;
+    padding-top: 40px;
+  }
+
+  &__top-box {
+    margin-top: -14*8px;
+    position: relative;
+  }
+
+  &__top-box-tagline {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  &__stat-container {
+    text-align: center;
+  }
+
+  &__stat {
+    font-size: 2.3rem;
+    color: $azure;
+  }
+
+
+  &__info-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__info-item-image {
+    max-width: 200px;
+    margin-bottom: 24px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+
+  &__info-item-title {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  &__info-item-text {
+    font-size: 16px;
+
+  }
+}
+
+
+.box {
+  border-radius: 8px;	
+  background-color: $whisper;	
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  padding: 16px;
+}
+
