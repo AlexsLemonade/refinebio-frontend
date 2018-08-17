@@ -20,11 +20,19 @@ describe('getQueryString', () => {
   })
 });
 
-it('getQueryParamObject parses query', () => {
-  expect(getQueryParamObject('a=0&b=false&c=1')).toEqual({
-    a: '0',
-    b: 'false',
-    c: '1'
+describe('getQueryParamObject', () => {
+  it('parses query', () => {
+    expect(getQueryParamObject('a=0&b=false&c=1')).toEqual({
+      a: '0',
+      b: 'false',
+      c: '1'
+    });
+  });
+
+  it('parses query with array parameters', () => {
+    expect(getQueryParamObject('a=1&a=2&a=3')).toEqual({
+      a: ['1', '2', '3'],
+    });
   });
 });
 

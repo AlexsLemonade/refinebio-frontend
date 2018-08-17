@@ -35,7 +35,18 @@ export function getQueryParamObject(queryString) {
   const queryObj = {};
   queryString.split('&').forEach(queryParam => {
     const [key, value] = queryParam.split('=');
-    queryObj[key] = value;
+    // check if the parameter has already been seen, in which case we have to parse it as an array
+    if (!!queryObj[key]) {
+      if (!Array.isArray(queryObj[key])) {
+        // save the parameter as an array
+        queryObj[key] = [queryObj[key], value];
+      } else {
+        // if it's already an array just add it
+        queryObj[key].push(value);
+      }
+    } else {
+      queryObj[key] = value;
+    }
   });
   return queryObj;
 }
