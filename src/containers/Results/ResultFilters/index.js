@@ -29,7 +29,7 @@ const FilterCategory = ({
               }
               checked={
                 !!appliedFilters[category.queryField] &&
-                appliedFilters[category.queryField].has(
+                appliedFilters[category.queryField].includes(
                   filter === 'has_publication' ? 'true' : filter
                 )
               }

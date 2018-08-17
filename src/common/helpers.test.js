@@ -19,7 +19,7 @@ describe('getQueryString', () => {
     expect(getQueryString({ a: [1, 2, 3], b: false })).toBe('a=1&a=2&a=3&b=false');    
   })
 });
-
+                                  
 describe('getQueryParamObject', () => {
   it('parses query', () => {
     expect(getQueryParamObject('a=0&b=false&c=1')).toEqual({
