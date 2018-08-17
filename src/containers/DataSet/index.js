@@ -90,8 +90,6 @@ class DataSetPage extends React.Component {
       is_processed,
       is_available,
       email_address,
-      s3_bucket,
-      s3_key,
       dataSetId,
       ...props
     } = this.props;
