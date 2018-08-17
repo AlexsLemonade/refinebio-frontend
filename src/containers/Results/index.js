@@ -30,6 +30,7 @@ class Results extends Component {
       this.handleInit();
     }
 
+    // reset scroll position when the results change
     if (prevProps.results !== this.props.results) {
       window.scrollTo(0, 0);
     }
@@ -68,8 +69,7 @@ class Results extends Component {
   };
 
   handlePagination = page => {
-    // keep the same query and filters, and just update the page
-    this.props.navigateToResults({query: this.state.query, page, filters: this.state.filters});
+    this.props.updatePage(page);
   };
 
   handlePageRemove = () => {

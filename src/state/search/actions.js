@@ -72,7 +72,7 @@ export function toggledFilter(filterType, filterValue) {
   };
 }
 
-export function getPage(page) {
+export function updatePage(page) {
   return async (dispatch, getState) => {
     const {searchTerm, appliedFilters, pagination: {resultsPerPage}} = getState().search;
     dispatch(navigateToResults({query: searchTerm, page, filters: appliedFilters, size: resultsPerPage}));
