@@ -2,8 +2,13 @@ import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 
-// 
-export const navigateToResults = ({query, page, size, filters}) =>{
+// This action updates the current search url with new paramters, which in turn triggers a call
+// to `fethResults` from the view. Components wanting to modify the search results should call this
+// (or an action that call this) in order to update the search page. This way we ensure the flow is
+// in a single direction, for example:
+// new seach term -> triggers url change -> call fetchResults -> updates page
+// Without this it's harder to keep the url in sync with the results.
+const navigateToResults = ({query, page, size, filters}) =>{
   const urlParams = {
     q: query, 
     p: page > 1 ? page : undefined, 
@@ -27,30 +32,21 @@ export function fetchResults({query, page = 1, size=10, filters}) {
       });
 
       dispatch({
-        type: 'SEARCH_RESULTS_FETCH_SUCCESS',
+        type: 'SEARCH_RESULTS_FETCH',
         data: {
           searchTerm: query,
           results: !!query ? results : [],
           filters: filterData,
           totalResults,
 
-          // these could be removed
+          // these values come from the url, and are stored in redux after each search
+          // to ease performing new searches from the action creators. Changes in the filters for
+          // example keep the other parameters
           resultsPerPage: size,
           currentPage: page,
           appliedFilters: filters
         }
       });
-    } catch (error) {
-      dispatch(reportError(error));
-    }
-  };
-}
-
-export function fetchOrganisms(searchTerm) {
-  return async dispatch => {
-    try {
-      const organisms = await Ajax.get(`/organisms/`);
-      return organisms;
     } catch (error) {
       dispatch(reportError(error));
     }
@@ -86,6 +82,17 @@ export const updateResultsPerPage = resultsPerPage => async (dispatch, getState)
 
 
 
+
+export function fetchOrganisms() {
+  return async dispatch => {
+    try {
+      const organisms = await Ajax.get(`/organisms/`);
+      return organisms;
+    } catch (error) {
+      dispatch(reportError(error));
+    }
+  };
+}
 
 
 

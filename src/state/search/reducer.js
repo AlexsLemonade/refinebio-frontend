@@ -1,21 +1,19 @@
 const initialState = {
+  searchTerm: '',
   results: [],
-  organisms: [],
   filters: {},
   appliedFilters: {},
-  searchTerm: '',
   pagination: {
     totalResults: 0,
     totalPages: 0,
     resultsPerPage: 10,
     currentPage: 1
   },
-  isSearching: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'SEARCH_RESULTS_FETCH_SUCCESS': {
+    case 'SEARCH_RESULTS_FETCH': {
       const {
         searchTerm,
         results,
@@ -43,13 +41,6 @@ export default (state = initialState, action) => {
           currentPage,
           resultsPerPage,
         },
-      };
-    }
-    case 'SEARCH_ORGANISMS_FETCH_SUCCESS': {
-      const { organisms } = action.data;
-      return {
-        ...state,
-        organisms
       };
     }
     default:
