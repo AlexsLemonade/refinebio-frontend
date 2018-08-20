@@ -63,7 +63,7 @@ function estimateGeneExpressionSize(dataSet) {
   let totalSize = 0;
 
   // calculate the size of each one of the experiments
-  for (let experimentId in dataSet) {
+  for (let experimentId of Object.keys(dataSet)) {
     let experimentSamples = dataSet[experimentId];
     // Need size of gene column for the first matrix.
     let experimentSize =(experimentSamples.length + 1) * 0.5 * estimateMatrixSizeOfSample(experimentSamples[0]);

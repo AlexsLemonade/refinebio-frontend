@@ -24,7 +24,7 @@ describe('DataSetStats', () => {
     expect(processedSamples.map(x => x.accession_code)).toEqual(['s1', 's2', 's3']);
   });
 
-  it('check sample in dataset', () => {
+  it('checks sample in dataset', () => {
     let dataset = {e1: ['s1']};
     let sample = {accession_code: 's1', is_processed: true};
     let result = new DataSetStats(dataset, samples).sampleInDataSet(sample);

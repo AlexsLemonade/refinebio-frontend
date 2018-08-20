@@ -92,7 +92,6 @@ class Download extends Component {
     const {
       dataSetId,
       isLoading,
-      areDetailsFetched,
       dataSet,
       is_processing,
       is_processed
