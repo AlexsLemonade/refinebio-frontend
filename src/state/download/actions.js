@@ -4,7 +4,7 @@ import {
   getDataSetDetails,
   updateDataSet,
   formatSamples,
-  formatExperiments,
+  formatExperiments
 } from '../../api/dataSet';
 
 /**
@@ -221,23 +221,23 @@ export const fetchDataSet = () => async dispatch => {
     scale_by
   } = await getDataSet(dataSetId);
   dispatch(
-    fetchDataSetSucceeded(
-      data,
+    fetchDataSetSucceeded({
+      dataSet: data,
       is_processing,
       is_processed,
       aggregate_by,
       scale_by
-    )
+    })
   );
 };
 
-export const fetchDataSetSucceeded = (
+export const fetchDataSetSucceeded = ({
   dataSet,
   is_processing,
   is_processed,
   aggregate_by,
   scale_by
-) => ({
+}) => ({
   type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
   data: {
     dataSet,
