@@ -1,3 +1,5 @@
+import SampleFieldMetadata from '../containers/Experiment/SampleFieldMetadata';
+
 /**
  * Generates a query string from a query object
  * @param {object} queryObj
@@ -77,13 +79,22 @@ export async function asyncFetch(url, params = false) {
   const fullURL = process.env.REACT_APP_API_HOST
     ? `${process.env.REACT_APP_API_HOST}${url}`
     : url;
-  const response = await (!!params ? fetch(fullURL, params) : fetch(fullURL));
+
+  let response;
+  try {
+    response = await (!!params ? fetch(fullURL, params) : fetch(fullURL));
+  } catch (e) {
+    throw new Error(`Fatal error fetching ${url}`);
+  }
 
   /**
    * You only get an exception (rejection) when there's a network problem.
    * When the server answers, you have to check whether it's good or not.
    */
-  if (!response.ok) throw new Error(response.status);
+  if (!response.ok) {
+    debugger;
+    throw new Error(response.status);
+  }
   return await response.json();
 }
 
@@ -130,3 +141,8 @@ export const Ajax = {
       body: JSON.stringify(params)
     })
 };
+
+export const getMetadataFields = experiment =>
+  SampleFieldMetadata.filter(field =>
+    experiment.sample_metadata.includes(field.id)
+  ).map(field => field.Header);

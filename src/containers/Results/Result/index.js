@@ -1,76 +1,15 @@
 import React from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
-import Button from '../../../components/Button';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
 import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
-import Loader from '../../../components/Loader';
-import { getAllDetailedSamples } from '../../../api/samples';
-import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
-import { formatSentenceCase } from '../../../common/helpers';
-
-export function RemoveFromDatasetButton({
-  handleRemove,
-  totalAdded,
-  samplesInDataset
-}) {
-  return (
-    <div className="dataset-remove-button">
-      <div className="dataset-remove-button__added-container">
-        <span className="dataset-remove-button__added">
-          <i className="ion-checkmark-circled dataset-remove-button__added-icon" />
-          {totalAdded && `${totalAdded} Samples`} Added to Dataset
-        </span>
-        <Button buttonStyle="plain" text="Remove" onClick={handleRemove} />
-      </div>
-      {samplesInDataset && (
-        <p className="dataset-remove-button__info-text">
-          <i className="ion-information-circled dataset-remove-button__info-icon" />{' '}
-          {samplesInDataset} Samples are already in Dataset
-        </p>
-      )}
-    </div>
-  );
-}
-
-export function AddToDatasetButton({
-  handleAdd,
-  samplesInDataset,
-  addMessage = 'Add to Dataset',
-  buttonStyle = null
-}) {
-  return (
-    <div className="dataset-add-button">
-      <Button
-        text={samplesInDataset ? 'Add Remaining' : addMessage}
-        buttonStyle={samplesInDataset ? 'secondary' : buttonStyle}
-        onClick={handleAdd}
-      />
-      {(samplesInDataset && (
-        <p className="dataset-add-button__info-text">
-          <i className="ion-information-circled dataset-add-button__info-icon" />{' '}
-          {samplesInDataset} Samples are already in Dataset
-        </p>
-      )) ||
-        null}
-    </div>
-  );
-}
+import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
+import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
 
 const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
-  const isAdded =
-    dataSet[result.accession_code] &&
-    dataSet[result.accession_code].length === result.samples.length;
-
-  function handleAddExperiment() {
-    addExperiment([result]);
-  }
-
-  function handleRemoveExperiment() {
-    removeExperiment([result.accession_code]);
-  }
+  const metadataFields = getMetadataFields(result);
 
   return (
     <div className="result">
@@ -91,25 +30,8 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             <h2 className="result__title">{result.title || 'No title.'}</h2>
           </Link>
         </div>
-        {!isAdded ? (
-          <AddToDatasetButton
-            handleAdd={handleAddExperiment}
-            samplesInDataset={
-              dataSet[result.accession_code]
-                ? dataSet[result.accession_code].length
-                : null
-            }
-          />
-        ) : (
-          <RemoveFromDatasetButton
-            handleRemove={handleRemoveExperiment}
-            samplesInDataset={
-              dataSet[result.accession_code].length !== result.samples.length
-                ? dataSet[result.accession_code].length
-                : null
-            }
-          />
-        )}
+
+        <DataSetSampleActions samples={result.samples} experiment={result} />
       </div>
       <ul className="result__stats">
         <li className="result__stat">
@@ -147,8 +69,14 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
           <i className="result__not-provided">No associated publication</i>
         )}
       </p>
-
-      <SampleMetadataFields samples={result.samples} />
+      <h3>Sample Metadata Fields</h3>
+      <p className="result__paragraph">
+        {metadataFields && metadataFields.length ? (
+          metadataFields.join(', ')
+        ) : (
+          <i className="result__not-provided">No sample metadata fields</i>
+        )}
+      </p>
 
       <Link
         className="button button--secondary"
@@ -161,32 +89,3 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
 };
 
 export default Result;
-
-/**
- * This component receives a list of samples, and renders the names of the fields that have values
- * for those samples. It does so, by requesting the details of the first 10 samples and then showing
- * the names of the fields that have any value associated.
- */
-function SampleMetadataFields({ samples }) {
-  // request the details of the first 10 samples, and show the names of the fields that have any value
-  return (
-    <Loader fetch={() => getAllDetailedSamples({ ids: samples.slice(0, 10) })}>
-      {({ isLoading, data }) =>
-        !isLoading &&
-        data &&
-        data.length > 0 && (
-          <React.Fragment>
-            <h3>Sample Metadata Fields</h3>
-            <p className="result__paragraph">
-              {SampleFieldMetadata.filter(({ accessor }) =>
-                data.some(sample => !!accessor(sample))
-              )
-                .map(({ Header }) => Header)
-                .join(', ')}
-            </p>
-          </React.Fragment>
-        )
-      }
-    </Loader>
-  );
-}

@@ -10,13 +10,13 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
-import { formatSentenceCase } from '../../common/helpers';
+import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 
 export default function DownloadDetails({
   dataSet,
   filesData,
   experiments,
-  removeSpecies,
+  removeSamples,
   removeExperiment,
   clearDataSet,
   samplesBySpecies,
@@ -74,7 +74,7 @@ export default function DownloadDetails({
           <div className="downloads__card">
             <SpeciesSamples
               samplesBySpecies={samplesBySpecies}
-              removeSpecies={removeSpecies}
+              removeSamples={removeSamples}
               isImmutable={isImmutable}
             />
           </div>
@@ -94,7 +94,7 @@ export default function DownloadDetails({
 
 const SpeciesSamples = ({
   samplesBySpecies,
-  removeSpecies,
+  removeSamples,
   isImmutable = false
 }) => {
   const species = samplesBySpecies;
@@ -138,11 +138,11 @@ const SpeciesSamples = ({
         </ModalManager>
       </div>
 
-      {removeSpecies && (
+      {removeSamples && (
         <Button
           text="Remove"
           buttonStyle="remove"
-          onClick={() => removeSpecies(species[speciesName])}
+          onClick={() => removeSamples(species[speciesName])}
         />
       )}
     </div>
@@ -162,6 +162,7 @@ const ExperimentsView = ({
   return Object.keys(dataSet).map((id, i) => {
     const addedSamples = dataSet[id];
     const experiment = experiments[id];
+    const metadataFields = getMetadataFields(experiment);
     return (
       <div className="downloads__sample" key={i}>
         <div className="downloads__dataSet-info">
@@ -194,8 +195,16 @@ const ExperimentsView = ({
                 .join(',')}
             </div>
           </div>
-          <h4>Sample Metadata Fields</h4>
-          <h5>{experiment.metadata ? experiment.metadata.join(', ') : null}</h5>
+          <div className="downloads__experiment-metadata">
+            <h4>Sample Metadata Fields</h4>
+            <h5>
+              {metadataFields && metadataFields.length ? (
+                metadataFields.join(', ')
+              ) : (
+                <i class="result__not-provided">No sample metadata fields</i>
+              )}
+            </h5>
+          </div>
 
           {addedSamples.length > 0 && (
             <ModalManager

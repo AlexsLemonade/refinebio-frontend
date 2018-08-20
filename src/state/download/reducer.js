@@ -52,14 +52,7 @@ export default (state = initialState, action) => {
         isLoading: false
       };
     }
-    case 'DOWNLOAD_REMOVE_EXPERIMENT_SUCCESS': {
-      const { dataSet } = action.data;
-      return {
-        ...state,
-        dataSet
-      };
-    }
-    case 'DOWNLOAD_REMOVE_SPECIES_SUCCESS': {
+    case 'DOWNLOAD_UPDATE_DATASET': {
       const { dataSet } = action.data;
       return {
         ...state,
@@ -82,11 +75,11 @@ export default (state = initialState, action) => {
         areDetailsFetched: true
       };
     }
-    case 'DOWNLOAD_CLEAR_SUCCESS': {
-      const { dataSet } = action.data;
+    case 'DOWNLOAD_CLEAR': {
       return {
         ...state,
-        dataSet,
+        dataSetId: null,
+        dataSet: {},
         isLoading: false
       };
     }

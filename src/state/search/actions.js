@@ -8,23 +8,27 @@ import reportError from '../reportError';
 // in a single direction, for example:
 // new seach term -> triggers url change -> call fetchResults -> updates page
 // Without this it's harder to keep the url in sync with the results.
-const navigateToResults = ({query, page, size, filters}) =>{
+const navigateToResults = ({ query, page, size, filters }) => {
   const urlParams = {
-    q: query, 
-    p: page > 1 ? page : undefined, 
-    size: size !== 10 ? size : undefined, 
+    q: query,
+    p: page > 1 ? page : undefined,
+    size: size !== 10 ? size : undefined,
     ...filters
   };
 
   return push({
     search: `${getQueryString(urlParams)}`
   });
-}
+};
 
-export function fetchResults({query, page = 1, size=10, filters}) {
+export function fetchResults({ query, page = 1, size = 10, filters }) {
   return async (dispatch, getState) => {
     try {
-      const { results, count: totalResults, filters: filterData } = await Ajax.get('/search/', {
+      const {
+        results,
+        count: totalResults,
+        filters: filterData
+      } = await Ajax.get('/search/', {
         search: query,
         limit: size,
         offset: (page - 1) * size,
@@ -53,35 +57,81 @@ export function fetchResults({query, page = 1, size=10, filters}) {
   };
 }
 
-export const triggerSearch = (searchTerm) => (dispatch, getState) => {
-  const {pagination: {resultsPerPage}} = getState().search;
+export const triggerSearch = searchTerm => (dispatch, getState) => {
+  const {
+    pagination: { resultsPerPage }
+  } = getState().search;
   // when a new search is performed, remove the filters, and go back to the first page
-  dispatch(navigateToResults({query: searchTerm, page: 1, filters: {}, size: resultsPerPage}));
-}
+  dispatch(
+    navigateToResults({
+      query: searchTerm,
+      page: 1,
+      filters: {},
+      size: resultsPerPage
+    })
+  );
+};
 
 export function toggledFilter(filterType, filterValue) {
   return (dispatch, getState) => {
-    const {searchTerm, appliedFilters, pagination: {resultsPerPage}} = getState().search;
-    const newFilters = toggleFilterHelper(appliedFilters, filterType, filterValue);
+    const {
+      searchTerm,
+      appliedFilters,
+      pagination: { resultsPerPage }
+    } = getState().search;
+    const newFilters = toggleFilterHelper(
+      appliedFilters,
+      filterType,
+      filterValue
+    );
     // reset to the first page when a filter is applied
-    dispatch(navigateToResults({query: searchTerm, page: 1, filters: newFilters, size: resultsPerPage}));
+    dispatch(
+      navigateToResults({
+        query: searchTerm,
+        page: 1,
+        filters: newFilters,
+        size: resultsPerPage
+      })
+    );
   };
 }
 
 export function updatePage(page) {
   return async (dispatch, getState) => {
-    const {searchTerm, appliedFilters, pagination: {resultsPerPage}} = getState().search;
-    dispatch(navigateToResults({query: searchTerm, page, filters: appliedFilters, size: resultsPerPage}));
+    const {
+      searchTerm,
+      appliedFilters,
+      pagination: { resultsPerPage }
+    } = getState().search;
+    dispatch(
+      navigateToResults({
+        query: searchTerm,
+        page,
+        filters: appliedFilters,
+        size: resultsPerPage
+      })
+    );
   };
 }
 
-export const updateResultsPerPage = resultsPerPage => async (dispatch, getState) => {
-  const {searchTerm, appliedFilters, pagination: {currentPage}} = getState().search;
-  dispatch(navigateToResults({query: searchTerm, page: currentPage, filters: appliedFilters, size: resultsPerPage}));
+export const updateResultsPerPage = resultsPerPage => async (
+  dispatch,
+  getState
+) => {
+  const {
+    searchTerm,
+    appliedFilters,
+    pagination: { currentPage }
+  } = getState().search;
+  dispatch(
+    navigateToResults({
+      query: searchTerm,
+      page: currentPage,
+      filters: appliedFilters,
+      size: resultsPerPage
+    })
+  );
 };
-
-
-
 
 export function fetchOrganisms() {
   return async dispatch => {
@@ -93,8 +143,6 @@ export function fetchOrganisms() {
     }
   };
 }
-
-
 
 /**
  * Takes an array with specifications of active filters and toggles one of the filters.
@@ -121,9 +169,6 @@ export function toggleFilterHelper(filters, type, value) {
 
   return {
     ...filters,
-    [type]: appliedFilterType,
+    [type]: appliedFilterType
   };
 }
-
-
-
