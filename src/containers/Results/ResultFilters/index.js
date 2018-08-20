@@ -41,11 +41,7 @@ const FilterCategory = ({
   </section>
 );
 
-const ResultFilters = ({
-  toggledFilter,
-  filters,
-  appliedFilters
-}) => {
+const ResultFilters = ({ toggledFilter, filters, appliedFilters }) => {
   return (
     <div className="result-filters">
       <div className="result-filters__title-container">

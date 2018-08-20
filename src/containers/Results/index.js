@@ -18,7 +18,7 @@ import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
 
 class Results extends Component {
-  state = {isLoading: true, query: '', filters: {}};
+  state = { isLoading: true, query: '', filters: {} };
 
   componentDidMount() {
     this.updateResults();
@@ -40,7 +40,9 @@ class Results extends Component {
    */
   async updateResults() {
     const { location } = this.props;
-    let { q: query, p: page, size, ...filters } = getQueryParamObject(location.search);
+    let { q: query, p: page, size, ...filters } = getQueryParamObject(
+      location.search
+    );
 
     // for consistency, ensure all values in filters are arrays
     // the method `getQueryParamObject` will return a single value for parameters that only
@@ -56,10 +58,10 @@ class Results extends Component {
     page = parseInt(page || 1, 10);
     size = parseInt(size || 10, 10);
 
-    this.setState({query, filters, isLoading: true});    
-    await this.props.fetchResults({query, page, size, filters});
-    this.setState({isLoading: false});
-  };
+    this.setState({ query, filters, isLoading: true });
+    await this.props.fetchResults({ query, page, size, filters });
+    this.setState({ isLoading: false });
+  }
 
   handleSubmit = values => {
     // When a new search is made, return to the first page and clear the filters
@@ -168,13 +170,7 @@ class Results extends Component {
 }
 Results = connect(
   ({
-    search: {
-      results,
-      filters,
-      pagination,
-      searchTerm,
-      isSearching
-    },
+    search: { results, filters, pagination, searchTerm, isSearching },
     download: { dataSet }
   }) => ({
     results,
@@ -182,17 +178,15 @@ Results = connect(
     pagination,
     searchTerm,
     dataSet,
-    isLoading: isSearching,
-  }), {
-  ...resultsActions,
-  ...downloadActions
-})(Results);
+    isLoading: isSearching
+  }),
+  {
+    ...resultsActions,
+    ...downloadActions
+  }
+)(Results);
 
 export default Results;
-
-
-
-
 
 let NumberOfResults = ({
   resultsPerPage,
@@ -224,7 +218,7 @@ NumberOfResults = connect(
     totalResults,
     resultsPerPage
   }),
-  { updateResultsPerPage },
+  { updateResultsPerPage }
 )(NumberOfResults);
 
 const EmptyStates = ({ searchTerm, appliedFilters }) => {
@@ -270,6 +264,3 @@ const EmptyStates = ({ searchTerm, appliedFilters }) => {
     </div>
   );
 };
-
-
-
