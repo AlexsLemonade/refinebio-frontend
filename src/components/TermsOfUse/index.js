@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Checkbox from '../Checkbox';
 import { Link } from 'react-router-dom';
-import Button from '../Button';
 import './TermsOfUse.scss';
 
 class TermsOfUse extends Component {

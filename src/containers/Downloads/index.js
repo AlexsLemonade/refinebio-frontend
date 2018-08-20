@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import {
   removeExperiment,
-  removeSpecies,
+  removeSamples,
   clearDataSet,
   fetchDataSetDetails
 } from '../../state/download/actions';
@@ -92,7 +92,6 @@ class Download extends Component {
     const {
       dataSetId,
       isLoading,
-      areDetailsFetched,
       dataSet,
       is_processing,
       is_processed
@@ -185,7 +184,7 @@ Download = connect(
     };
   },
   {
-    removeSpecies,
+    removeSamples,
     removeExperiment,
     clearDataSet,
     fetchDataSetDetails,
