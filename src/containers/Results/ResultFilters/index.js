@@ -43,7 +43,6 @@ const FilterCategory = ({
 
 const ResultFilters = ({
   toggledFilter,
-  organisms,
   filters,
   appliedFilters
 }) => {

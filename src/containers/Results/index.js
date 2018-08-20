@@ -7,11 +7,10 @@ import Result, { RemoveFromDatasetButton, AddToDatasetButton } from './Result';
 import ResultFilters from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
-import Button from '../../components/Button';
 import BackToTop from '../../components/BackToTop';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
-import { updateResultsPerPage, triggerSearch } from '../../state/search/actions';
+import { updateResultsPerPage } from '../../state/search/actions';
 import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../constants/table';
 import StartSearchingImage from '../../common/images/start-searching.svg';
@@ -19,30 +18,32 @@ import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
 
 class Results extends Component {
-  state = {isLoading: true, query: '', page: 1, filters: {}};
+  state = {isLoading: true, query: '', filters: {}};
 
   componentDidMount() {
-    this.handleInit();
+    this.updateResults();
   }
 
-  componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {
     if (prevProps.location.search !== this.props.location.search) {
-      this.handleInit();
-    }
+      // trigger a new search whenever the url changes, to ensure the results and the url
+      // are in sync
+      await this.updateResults();
 
-    // reset scroll position when the results change
-    if (prevProps.results !== this.props.results) {
+      // reset scroll position when the results change
       window.scrollTo(0, 0);
     }
   }
 
-  async handleInit() {
+  /**
+   * Reads the search query and other parameters from the url and submits a new request to update the results.
+   */
+  async updateResults() {
     const { location } = this.props;
-    const queryObject = getQueryParamObject(location.search.substr(1));
-    let { q: query, p: page, size, ...filters } = queryObject;
+    let { q: query, p: page, size, ...filters } = getQueryParamObject(location.search);
 
     // for consistency, ensure all values in filters are arrays
-    // the method getQueryParamObject will return a single value for parameters that only
+    // the method `getQueryParamObject` will return a single value for parameters that only
     // appear once in the url
     for (let key of Object.keys(filters)) {
       if (!Array.isArray(filters[key])) {
@@ -56,11 +57,8 @@ class Results extends Component {
     size = parseInt(size || 10, 10);
 
     this.setState({query, page, filters, isLoading: true});    
-
     await this.props.fetchResults({query, page, size, filters});
-    const organisms = await this.props.fetchOrganisms();
-
-    this.setState({organisms, isLoading: false});
+    this.setState({isLoading: false});
   };
 
   handleSubmit = values => {
@@ -123,7 +121,6 @@ class Results extends Component {
           <div className="results__container">
             <div className="results__filters">
               <ResultFilters
-                organisms={this.state.organisms}
                 toggledFilter={toggledFilter}
                 filters={filtersData}
                 appliedFilters={this.state.filters}
