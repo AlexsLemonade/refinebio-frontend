@@ -214,3 +214,22 @@
     flex-grow: 1;
   }
 }
+
+
+
+.sample-not-processed {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.875rem;
+  align-items: center;
+
+  &__info-icon {
+    font-size: 1.5rem;
+  }
+
+  &__text {
+    margin-left: 6px;
+  }
+}
+
+

@@ -11,7 +11,7 @@ import Button from '../../components/Button';
 import { connect } from 'react-redux';
 import { editEmail, fetchDataSet } from '../../state/dataSet/actions';
 import { startDownload } from '../../state/download/actions';
-import { Ajax, asyncFetch } from '../../common/helpers';
+import { Ajax } from '../../common/helpers';
 import ModalManager from '../../components/Modal/ModalManager';
 
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
@@ -26,41 +26,37 @@ import TermsOfUse from '../../components/TermsOfUse';
  * - Expired: Download files expire after some time
  * Related discussion https://github.com/AlexsLemonade/refinebio-frontend/issues/27
  */
-class DataSet extends React.Component {
-  render() {
-    const dataSetId = this.props.match.params.id;
-
-    return (
-      <Loader fetch={() => this.props.fetchDataSet(dataSetId)}>
-        {({ isLoading }) =>
-          isLoading ? (
-            <div className="loader" />
-          ) : (
-            <div>
-              <div className="dataset__container">
-                <div className="dataset__message">
-                  <DataSetPage
-                    dataSetId={dataSetId}
-                    startDownload={this.props.startDownload}
-                    {...this.props.dataSet}
-                  />
-                </div>
+function DataSet({startDownload, dataSet, fetchDataSet, match: {params: {id:dataSetId}}}) {
+  return (
+    <Loader fetch={() => fetchDataSet(dataSetId)}>
+      {({ isLoading }) =>
+        isLoading ? (
+          <div className="loader" />
+        ) : (
+          <div>
+            <div className="dataset__container">
+              <div className="dataset__message">
+                <DataSetPage
+                  dataSetId={dataSetId}
+                  startDownload={startDownload}
+                  {...dataSet}
+                />
               </div>
-              {dataSetId &&
-                (this.props.dataSet.is_processed ||
-                  !!this.props.dataSet.email_address) && (
-                  <ViewDownload
-                    dataSetId={dataSetId}
-                    isEmbed={true}
-                    isImmutable={true}
-                  />
-                )}
             </div>
-          )
-        }
-      </Loader>
-    );
-  }
+            {dataSetId &&
+              (dataSet.is_processed ||
+                !!dataSet.email_address) && (
+                <ViewDownload
+                  dataSetId={dataSetId}
+                  isEmbed={true}
+                  isImmutable={true}
+                />
+              )}
+          </div>
+        )
+      }
+    </Loader>
+  );
 }
 DataSet = connect(
   ({ dataSet }) => ({ dataSet }),
@@ -90,8 +86,6 @@ class DataSetPage extends React.Component {
       is_processed,
       is_available,
       email_address,
-      s3_bucket,
-      s3_key,
       dataSetId,
       ...props
     } = this.props;

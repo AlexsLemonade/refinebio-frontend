@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import AppError from '../AppError';
-import Layout from '../../components/Layout';
 import reportError from '../../state/reportError';
 import { withRouter } from 'react-router';
 
