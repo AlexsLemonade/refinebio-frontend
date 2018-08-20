@@ -8,7 +8,19 @@ import SampleFieldMetadata from '../containers/Experiment/SampleFieldMetadata';
 export function getQueryString(queryObj) {
   return Object.keys(queryObj)
     .filter(key => queryObj[key] !== undefined)
-    .map(key => `${key}=${encodeURI(queryObj[key])}`)
+    .reduce((accum, key) => {
+      // For some query parameters, the key points to an array of values.
+      // In those instances we want a separate param for each value,
+      // otherwise we just want the one param for the value.
+      if (Array.isArray(queryObj[key])) {
+        return accum.concat(
+          queryObj[key].map(value => `${key}=${encodeURI(value)}`)
+        );
+      } else {
+        accum.push(`${key}=${encodeURI(queryObj[key])}`);
+        return accum;
+      }
+    }, [])
     .join('&');
 }
 
@@ -25,7 +37,18 @@ export function getQueryParamObject(queryString) {
   const queryObj = {};
   queryString.split('&').forEach(queryParam => {
     const [key, value] = queryParam.split('=');
-    queryObj[key] = value;
+    // check if the parameter has already been seen, in which case we have to parse it as an array
+    if (!!queryObj[key]) {
+      if (!Array.isArray(queryObj[key])) {
+        // save the parameter as an array
+        queryObj[key] = [queryObj[key], value];
+      } else {
+        // if it's already an array just add it
+        queryObj[key].push(value);
+      }
+    } else {
+      queryObj[key] = value;
+    }
   });
   return queryObj;
 }

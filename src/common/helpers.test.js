@@ -10,13 +10,29 @@ describe('getQueryString', () => {
   it('encoding string', () => {
     expect(getQueryString({ a: '1 2' })).toBe('a=1%202');
   });
-});
 
-it('getQueryParamObject parses query', () => {
-  expect(getQueryParamObject('a=0&b=false&c=1')).toEqual({
-    a: '0',
-    b: 'false',
-    c: '1'
+  it('with array', ()=>{
+    expect(getQueryString({ a: [1, 2] })).toBe('a=1&a=2');
+  });
+
+  it('combine arrays and numbers', () => {
+    expect(getQueryString({ a: [1, 2, 3], b: false })).toBe('a=1&a=2&a=3&b=false');    
+  })
+});
+                                  
+describe('getQueryParamObject', () => {
+  it('parses query', () => {
+    expect(getQueryParamObject('a=0&b=false&c=1')).toEqual({
+      a: '0',
+      b: 'false',
+      c: '1'
+    });
+  });
+
+  it('parses query with array parameters', () => {
+    expect(getQueryParamObject('a=1&a=2&a=3')).toEqual({
+      a: ['1', '2', '3'],
+    });
   });
 });
 

@@ -1,161 +1,116 @@
-import { Ajax } from '../../common/helpers';
+import { push } from '../routerActions';
+import { getQueryString, Ajax } from '../../common/helpers';
+import reportError from '../reportError';
 
-export function fetchResults(searchTerm = '', pageNum = 1, filters) {
+// This action updates the current search url with new paramters, which in turn triggers a call
+// to `fethResults` from the view. Components wanting to modify the search results should call this
+// (or an action that call this) in order to update the search page. This way we ensure the flow is
+// in a single direction, for example:
+// new seach term -> triggers url change -> call fetchResults -> updates page
+// Without this it's harder to keep the url in sync with the results.
+const navigateToResults = ({ query, page, size, filters }) => {
+  const urlParams = {
+    q: query,
+    p: page > 1 ? page : undefined,
+    size: size !== 10 ? size : undefined,
+    ...filters
+  };
+
+  return push({
+    search: `${getQueryString(urlParams)}`
+  });
+};
+
+export function fetchResults({ query, page = 1, size = 10, filters }) {
   return async (dispatch, getState) => {
-    dispatch({
-      type: 'SEARCH_RESULTS_FETCH',
-      data: {
-        searchTerm
-      }
-    });
-
-    const {
-      pagination: { resultsPerPage },
-      appliedFilters
-    } = getState().search;
-    const currentPage = parseInt(pageNum, 10);
-
-    let filtersObj = filters;
-    let filtersToApply = Object.keys(appliedFilters).length
-      ? appliedFilters
-      : {};
-
-    if (!filters) {
-      /**
-       * Convert to an object without Sets for use with getQueryString
-       */
-      filtersObj = Object.keys(appliedFilters).reduce((result, filterType) => {
-        const filtersArr = Array.from(appliedFilters[filterType]);
-        if (filtersArr.length) result[filterType] = filtersArr;
-        return result;
-      }, {});
-    } else {
-      /**
-       * Convert to an object with Sets for reducer
-       */
-      filtersToApply = Object.keys(filters).reduce((result, filterType) => {
-        const filtersArr = filters[filterType].split(',');
-        result[filterType] = new Set(filtersArr);
-        return result;
-      }, {});
-    }
-
     try {
-      const resultsJSON = await Ajax.get('/search/', {
-        search: searchTerm,
-        limit: resultsPerPage,
-        offset: (currentPage - 1) * resultsPerPage,
-        ...filtersObj
+      const {
+        results,
+        count: totalResults,
+        filters: filterData
+      } = await Ajax.get('/search/', {
+        search: query,
+        limit: size,
+        offset: (page - 1) * size,
+        ...filters
       });
-      const { results, count, filters } = resultsJSON;
 
-      dispatch(
-        fetchResultsSucceeded(
-          results,
-          filters,
-          count,
-          currentPage,
-          searchTerm,
-          filtersObj,
-          filtersToApply
-        )
-      );
+      dispatch({
+        type: 'SEARCH_RESULTS_FETCH',
+        data: {
+          searchTerm: query,
+          results: !!query ? results : [],
+          filters: filterData,
+          totalResults,
+
+          // these values come from the url, and are stored in redux after each search
+          // to ease performing new searches from the action creators. Changes in the filters for
+          // example keep the other parameters
+          resultsPerPage: size,
+          currentPage: page,
+          appliedFilters: filters
+        }
+      });
     } catch (error) {
-      dispatch(fetchResultsErrored());
+      dispatch(reportError(error));
     }
   };
 }
 
-export function fetchResultsSucceeded(
-  results,
-  filters,
-  totalResults,
-  currentPage,
-  searchTerm,
-  filtersObj,
-  appliedFilters
-) {
-  return dispatch => {
-    const queryObj = {};
-
-    if (searchTerm) {
-      queryObj.q = searchTerm;
-    }
-
-    if (currentPage > 1) {
-      queryObj.p = currentPage;
-    }
-
-    dispatch({
-      type: 'SEARCH_RESULTS_FETCH_SUCCESS',
-      data: {
-        results: !!searchTerm ? results : [],
-        filters,
-        totalResults,
-        currentPage,
-        appliedFilters
-      }
-    });
-  };
-}
-
-export function fetchResultsErrored() {
-  return {
-    type: 'SEARCH_RESULTS_FETCH_ERROR'
-  };
-}
-
-export function fetchOrganisms(searchTerm) {
-  return async dispatch => {
-    dispatch({
-      type: 'SEARCH_ORGANISMS_FETCH'
-    });
-
-    try {
-      const results = await Ajax.get(`/organisms/`);
-
-      dispatch(fetchOrganismsSucceeded(results));
-    } catch (error) {}
-  };
-}
-
-export function fetchOrganismsSucceeded(organisms) {
-  return {
-    type: 'SEARCH_ORGANISMS_FETCH_SUCCESS',
-    data: {
-      organisms
-    }
-  };
-}
-
-export function fetchOrganismsErrored() {
-  return {
-    type: 'SEARCH_ORGANISMS_FETCH_ERROR'
-  };
-}
+export const triggerSearch = searchTerm => (dispatch, getState) => {
+  const {
+    pagination: { resultsPerPage }
+  } = getState().search;
+  // when a new search is performed, remove the filters, and go back to the first page
+  dispatch(
+    navigateToResults({
+      query: searchTerm,
+      page: 1,
+      filters: {},
+      size: resultsPerPage
+    })
+  );
+};
 
 export function toggledFilter(filterType, filterValue) {
   return (dispatch, getState) => {
-    dispatch({
-      type: 'SEARCH_FILTER_TOGGLE',
-      data: {
-        filterType,
-        filterValue
-      }
-    });
-    const searchTerm = getState().search.searchTerm;
-    dispatch(fetchResults(searchTerm));
+    const {
+      searchTerm,
+      appliedFilters,
+      pagination: { resultsPerPage }
+    } = getState().search;
+    const newFilters = toggleFilterHelper(
+      appliedFilters,
+      filterType,
+      filterValue
+    );
+    // reset to the first page when a filter is applied
+    dispatch(
+      navigateToResults({
+        query: searchTerm,
+        page: 1,
+        filters: newFilters,
+        size: resultsPerPage
+      })
+    );
   };
 }
 
-export function getPage(pageNum) {
+export function updatePage(page) {
   return async (dispatch, getState) => {
-    dispatch({
-      type: 'SEARCH_GET_PAGE'
-    });
-    const { searchTerm } = getState().search;
-
-    await dispatch(fetchResults(searchTerm, parseInt(pageNum, 10)));
+    const {
+      searchTerm,
+      appliedFilters,
+      pagination: { resultsPerPage }
+    } = getState().search;
+    dispatch(
+      navigateToResults({
+        query: searchTerm,
+        page,
+        filters: appliedFilters,
+        size: resultsPerPage
+      })
+    );
   };
 }
 
@@ -163,11 +118,57 @@ export const updateResultsPerPage = resultsPerPage => async (
   dispatch,
   getState
 ) => {
-  dispatch({
-    type: 'UPDATE_PAGE_SIZE',
-    data: resultsPerPage
-  });
-  const { searchTerm } = getState().search;
-
-  await dispatch(fetchResults(searchTerm));
+  const {
+    searchTerm,
+    appliedFilters,
+    pagination: { currentPage }
+  } = getState().search;
+  dispatch(
+    navigateToResults({
+      query: searchTerm,
+      page: currentPage,
+      filters: appliedFilters,
+      size: resultsPerPage
+    })
+  );
 };
+
+export function fetchOrganisms() {
+  return async dispatch => {
+    try {
+      const organisms = await Ajax.get(`/organisms/`);
+      return organisms;
+    } catch (error) {
+      dispatch(reportError(error));
+    }
+  };
+}
+
+/**
+ * Takes an array with specifications of active filters and toggles one of the filters.
+ * @param {any} filters Filters object, where the keys are the name of the filter
+ *                      And the values are the active filters.
+ * @param {string} type name of the filter to be toggled
+ * @param {string} value value of the filter
+ */
+export function toggleFilterHelper(filters, type, value) {
+  const prevFilterValue = filters[type];
+
+  // modify the filter's object value
+  let appliedFilterType;
+  if (!prevFilterValue) {
+    // if it doesn't exist, create the add the filter
+    appliedFilterType = [value];
+  } else if (prevFilterValue.includes(value)) {
+    // if the filter is active, remove it from the list
+    appliedFilterType = prevFilterValue.filter(x => x !== value);
+  } else {
+    // otherwise just add it
+    appliedFilterType = [...prevFilterValue, value];
+  }
+
+  return {
+    ...filters,
+    [type]: appliedFilterType
+  };
+}

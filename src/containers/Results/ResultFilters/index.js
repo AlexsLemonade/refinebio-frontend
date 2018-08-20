@@ -29,7 +29,7 @@ const FilterCategory = ({
               }
               checked={
                 !!appliedFilters[category.queryField] &&
-                appliedFilters[category.queryField].has(
+                appliedFilters[category.queryField].includes(
                   filter === 'has_publication' ? 'true' : filter
                 )
               }
@@ -41,12 +41,7 @@ const FilterCategory = ({
   </section>
 );
 
-const ResultFilters = ({
-  toggledFilter,
-  organisms,
-  filters,
-  appliedFilters
-}) => {
+const ResultFilters = ({ toggledFilter, filters, appliedFilters }) => {
   return (
     <div className="result-filters">
       <div className="result-filters__title-container">
