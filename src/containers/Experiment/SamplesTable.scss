@@ -214,3 +214,12 @@
     flex-grow: 1;
   }
 }
+
+.metadata-modal {
+  padding: 20px;
+  max-width: 108 * 8px;
+
+  &__json-code {
+    background-color: LightCyan;
+  }
+}

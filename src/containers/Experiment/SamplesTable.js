@@ -10,6 +10,7 @@ import { getAllDetailedSamples } from '../../api/samples';
 import ModalManager from '../../components/Modal/ModalManager';
 import FileIcon from './file.svg';
 import ProcessIcon from './process.svg';
+import InfoIcon from '../../common/icons/info-badge.svg';
 import { PAGE_SIZES } from '../../constants/table';
 import SampleFieldMetadata from './SampleFieldMetadata';
 import {
@@ -281,6 +282,12 @@ class SamplesTable extends React.Component {
         id: 'processing_information',
         sortable: false,
         Cell: ProcessingInformationCell
+      },
+      {
+        Header: 'Additional Metadata',
+        id: 'additional_metadata',
+        sortable: false,
+        Cell: MetadataCell
       }
     ];
 
@@ -328,6 +335,34 @@ class SamplesTable extends React.Component {
     }
     return orderBy;
   }
+}
+
+/**
+ * Component that renders the content in "Additional Metadata" column
+ */
+function MetadataCell({ original: sample }) {
+  //let allKeys = Object.keys(sample.annotations[0].data).join(",");
+  let annotations = sample.annotations
+    .map(entry => JSON.stringify(entry.data, null, 2))
+    .join('\n');
+  return (
+    <ModalManager
+      component={showModal => (
+        <Button text="View" buttonStyle="link" onClick={showModal} />
+      )}
+      modalProps={{ className: 'metadata-modal' }}
+    >
+      {() => (
+        <section>
+          <h1>Additional Metadata</h1>
+          <img src={InfoIcon} alt="" /> Included in Download
+          <div className="metadata-modal__json-code">
+            <pre>{annotations}</pre>
+          </div>
+        </section>
+      )}
+    </ModalManager>
+  );
 }
 
 /**
