@@ -56,7 +56,7 @@ class Results extends Component {
     page = parseInt(page || 1, 10);
     size = parseInt(size || 10, 10);
 
-    this.setState({query, page, filters, isLoading: true});    
+    this.setState({query, filters, isLoading: true});    
     await this.props.fetchResults({query, page, size, filters});
     this.setState({isLoading: false});
   };
