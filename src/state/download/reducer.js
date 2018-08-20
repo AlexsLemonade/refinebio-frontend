@@ -82,12 +82,11 @@ export default (state = initialState, action) => {
         areDetailsFetched: true
       };
     }
-    case 'DOWNLOAD_CLEAR_SUCCESS': {
-      const { dataSet } = action.data;
+    case 'DOWNLOAD_CLEAR': {
       return {
         ...state,
         dataSetId: null,
-        dataSet,
+        dataSet: {},
         isLoading: false
       };
     }
