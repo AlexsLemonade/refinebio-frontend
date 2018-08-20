@@ -60,17 +60,32 @@ export default (state = initialState, action) => {
       };
     }
     case 'DOWNLOAD_FETCH_DETAILS': {
+      const { dataSetId } = action.data;
       return {
         ...state,
+        dataSetId,
         isLoading: true
       };
     }
     case 'DOWNLOAD_FETCH_DETAILS_SUCCESS': {
-      const { experiments, samples } = action.data;
+      const {
+        dataSet,
+        is_processing,
+        is_processed,
+        aggregate_by,
+        scale_by,
+        samples,
+        experiments
+      } = action.data;
       return {
         ...state,
-        experiments,
+        dataSet,
+        is_processing,
+        is_processed,
+        aggregate_by,
+        scale_by,
         samples,
+        experiments,
         isLoading: false,
         areDetailsFetched: true
       };

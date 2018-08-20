@@ -1,8 +1,10 @@
 import { Ajax } from '../../common/helpers';
 import {
   getDataSet,
-  getSamplesAndExperiments,
-  updateDataSet
+  getDataSetDetails,
+  updateDataSet,
+  formatSamples,
+  formatExperiments
 } from '../../api/dataSet';
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
@@ -23,9 +25,14 @@ export const downloadUpdateDataSet = dataSet => {
  * Removes all experiments with the corresponding accession codes from dataset
  * @param {array} accessionCodes
  */
-export const removeExperiment = accessionCodes => async (dispatch, getState) => {
+export const removeExperiment = accessionCodes => async (
+  dispatch,
+  getState
+) => {
   const { dataSet, dataSetId } = getState().download;
-  const newDataSet = (new DataSetManager(dataSet)).removeExperiment(accessionCodes);
+  const newDataSet = new DataSetManager(dataSet).removeExperiment(
+    accessionCodes
+  );
   try {
     const response = await updateDataSet(dataSetId, newDataSet);
     dispatch(downloadUpdateDataSet(response.data));
@@ -40,7 +47,7 @@ export const removeExperiment = accessionCodes => async (dispatch, getState) => 
  */
 export const removeSamples = samples => async (dispatch, getState) => {
   const { dataSet, dataSetId } = getState().download;
-  const newDataSet = (new DataSetManager(dataSet)).removeSamples(samples);
+  const newDataSet = new DataSetManager(dataSet).removeSamples(samples);
   try {
     const response = await updateDataSet(dataSetId, newDataSet);
     dispatch(downloadUpdateDataSet(response.data));
@@ -52,18 +59,21 @@ export const removeSamples = samples => async (dispatch, getState) => {
 /**
  * Updates a DataSet with the given data in the backend. A new one is created if it doesn't exist.
  */
-export const createOrUpdateDataSet = ({data, dataSetId = null}) => async (dispatch) => {
+export const createOrUpdateDataSet = ({
+  data,
+  dataSetId = null
+}) => async dispatch => {
   let response = !dataSetId
     ? await Ajax.post('/dataset/create/', {
-      data
-    })
+        data
+      })
     : await updateDataSet(dataSetId, data);
 
   return {
-    dataSetId: response.id, 
+    dataSetId: response.id,
     data: response.data
   };
-}
+};
 
 /**
  * Takes an array of experiment objects and adds to users dataset via endpoint
@@ -78,10 +88,13 @@ export const addExperiment = experiments => async (dispatch, getState) => {
   });
 
   const { dataSet, dataSetId } = getState().download;
-  const data = (new DataSetManager(dataSet)).addExperiment(experiments);
+  const data = new DataSetManager(dataSet).addExperiment(experiments);
 
   try {
-    const {dataSetId: updatedDataSetId, data: updatedDataSet} = await dispatch(createOrUpdateDataSet({dataSetId, data}));
+    const {
+      dataSetId: updatedDataSetId,
+      data: updatedDataSet
+    } = await dispatch(createOrUpdateDataSet({ dataSetId, data }));
     localStorage.setItem('dataSetId', updatedDataSetId);
     dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
   } catch (err) {
@@ -127,13 +140,13 @@ export const fetchDataSet = () => async dispatch => {
     } = await getDataSet(dataSetId);
 
     dispatch(
-      fetchDataSetSucceeded(
-        data,
+      fetchDataSetSucceeded({
+        dataSet: data,
         is_processing,
         is_processed,
         aggregate_by,
         scale_by
-      )
+      })
     );
   } catch (e) {
     // Check if there was any error fetching the dataset, in which case restart it's status
@@ -143,13 +156,13 @@ export const fetchDataSet = () => async dispatch => {
   }
 };
 
-export const fetchDataSetSucceeded = (
+export const fetchDataSetSucceeded = ({
   dataSet,
   is_processing,
   is_processed,
   aggregate_by,
   scale_by
-) => ({
+}) => ({
   type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
   data: {
     dataSet,
@@ -160,25 +173,64 @@ export const fetchDataSetSucceeded = (
   }
 });
 
-export const fetchDataSetDetails = dataSet => {
-  return async dispatch => {
-    dispatch({
-      type: 'DOWNLOAD_FETCH_DETAILS'
-    });
-    const { experiments, samples } = await getSamplesAndExperiments(dataSet);
-    dispatch(fetchDataSetDetailsSucceeded(experiments, samples));
-  };
+export const fetchDataSetDetails = () => async dispatch => {
+  const dataSetId = localStorage.getItem('dataSetId');
+  if (!dataSetId) {
+    return;
+  }
+
+  dispatch({
+    type: 'DOWNLOAD_FETCH_DETAILS',
+    data: {
+      dataSetId
+    }
+  });
+  let {
+    data,
+    is_processing,
+    is_processed,
+    aggregate_by,
+    scale_by,
+    samples,
+    experiments
+  } = await getDataSetDetails(dataSetId);
+
+  samples = formatSamples(data, samples);
+  experiments = formatExperiments(experiments);
+
+  dispatch(
+    fetchDataSetDetailsSucceeded({
+      dataSet: data,
+      is_processing,
+      is_processed,
+      aggregate_by,
+      scale_by,
+      samples,
+      experiments
+    })
+  );
 };
 
-export const fetchDataSetDetailsSucceeded = (experiments, samples) => {
-  return {
-    type: 'DOWNLOAD_FETCH_DETAILS_SUCCESS',
-    data: {
-      experiments,
-      samples
-    }
-  };
-};
+export const fetchDataSetDetailsSucceeded = ({
+  dataSet,
+  is_processing,
+  is_processed,
+  aggregate_by,
+  scale_by,
+  samples,
+  experiments
+}) => ({
+  type: 'DOWNLOAD_FETCH_DETAILS_SUCCESS',
+  data: {
+    dataSet,
+    is_processing,
+    is_processed,
+    aggregate_by,
+    scale_by,
+    samples,
+    experiments
+  }
+});
 
 export const startDownload = tokenId => async (dispatch, getState) => {
   const { dataSetId, dataSet } = getState().download;
@@ -196,14 +248,11 @@ export const startDownload = tokenId => async (dispatch, getState) => {
   await dispatch(clearDataSet());
 };
 
-
 // Remove all dataset
 export const clearDataSet = () => async dispatch => {
   localStorage.removeItem('dataSetId');
 
   dispatch({
-    type: 'DOWNLOAD_CLEAR',
+    type: 'DOWNLOAD_CLEAR'
   });
 };
-
-
