@@ -1,4 +1,3 @@
-
 @import '../../common/styles/variables';
 
 // conditionally change the layout when the about page is active
@@ -10,13 +9,20 @@
 
 .about {
   padding-bottom: 152px;
-  
+
   &__header {
     position: relative;
-    background: linear-gradient(179.93deg, rgba(12,52,131,0.94) 0%, rgba(25,64,142,0.95) 16.45%, #6B8CCE 43.03%, #A2B6DF 69.1%, #A2B6DF 100%);
+    background: linear-gradient(
+      179.93deg,
+      rgba(12, 52, 131, 0.94) 0%,
+      rgba(25, 64, 142, 0.95) 16.45%,
+      #6b8cce 43.03%,
+      #a2b6df 69.1%,
+      #a2b6df 100%
+    );
     margin-left: -8px;
     margin-right: -8px;
-    padding: 80px 20px 21*8px 20px;
+    padding: 80px 20px 21 * 8px 20px;
     overflow: hidden;
   }
 
@@ -45,18 +51,19 @@
   }
 
   &__section-divider {
-    border-top: 3px solid #F2F2F2;
+    border-top: 3px solid #f2f2f2;
     padding-top: 40px;
   }
 
   &__top-box {
-    margin-top: -14*8px;
+    margin-top: -14 * 8px;
     position: relative;
   }
 
   &__top-box-tagline {
     font-size: 20px;
     text-align: center;
+    margin-bottom: 24px;
   }
 
   &__stat-container {
@@ -67,7 +74,6 @@
     font-size: 2.3rem;
     color: $azure;
   }
-
 
   &__info-item {
     display: flex;
@@ -91,15 +97,51 @@
 
   &__info-item-text {
     font-size: 16px;
+  }
 
+  &__section-created {
+    margin-bottom: 56px;
+
+    &__title {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    &__logo-container {
+      text-align: center;
+    }
+
+    &__logo {
+      &:first-child {
+        margin-bottom: 50px;
+      }
+    }
+  }
+
+  &__section-donate {
+    margin-bottom: 11 * 8px;
+
+    &__container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__title {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    &__action {
+      text-align: center;
+    }
   }
 }
 
-
 .box {
-  border-radius: 8px;	
-  background-color: $whisper;	
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  border-radius: 8px;
+  background-color: $whisper;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   padding: 16px;
 }
-
