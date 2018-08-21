@@ -28,11 +28,15 @@ class Header extends React.Component {
   };
 
   render() {
-    const { location: { pathname } } = this.props;
+    const {
+      location: { pathname }
+    } = this.props;
 
     return (
       <header
-        className={`header js-header ${pathname === '/' ? 'header--main' : ''} ${ this.invertColors() ? 'header--inverted' : ''}`}
+        className={`header js-header ${
+          pathname === '/' ? 'header--main' : ''
+        } ${this.invertColors() ? 'header--inverted header--scroll' : ''}`}
       >
         <div className="header__container">
           <Link to="/">
@@ -102,8 +106,10 @@ Header = connect(
   ({ download: { dataSet, isLoading } }) => ({
     totalSamples: getTotalSamplesAdded({ dataSet }),
     isLoading
-  }), { 
-    fetchDataSet 
-  })(Header);
+  }),
+  {
+    fetchDataSet
+  }
+)(Header);
 Header = withRouter(Header);
 export default Header;

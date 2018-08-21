@@ -163,3 +163,8 @@
     color: $azure;
   }
 }
+
+// disable stick
+.header--scroll {
+  position: relative;
+}

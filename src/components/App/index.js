@@ -37,8 +37,6 @@ const AppContent = () => (
       <Route path="/terms" component={Terms} />
       <Route path="/license" component={License} />
 
-      <Route path="/about" component={About} />
-
       {/* Custom route to be able to redirect to the 404 page */}
       <Route path="/not-found" component={NoMatch} />
       <Route path="*" component={NoMatch} />
@@ -55,6 +53,8 @@ const App = () => {
           <ErrorBoundary>
             <Switch>
               <Route exact path="/" component={Main} />
+              <Route exact path="/about" component={About} />
+
               <Route path="/" component={AppContent} />
             </Switch>
           </ErrorBoundary>
