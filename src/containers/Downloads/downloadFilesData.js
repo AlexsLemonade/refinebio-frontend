@@ -2,7 +2,20 @@
  * Returns file information estimations for a dataset, used as a helper method for the downloads page
  * ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/25#issuecomment-395870627
  */
-export default function downloadsFilesData(dataSet = {}) {
+export default function downloadsFilesData({
+  dataSet = {},
+  aggregate_by,
+  scale_by
+}) {
+  if (aggregate_by === 'EXPERIMENT') {
+    return downloadsFilesDataByExperiment(dataSet);
+  } else if (aggregate_by === 'SPECIES') {
+  }
+
+  return false;
+}
+
+function downloadsFilesDataByExperiment(dataSet) {
   const totalExperiments = Object.keys(dataSet).length;
   const geneExpressionSize = estimateGeneExpressionSize(dataSet);
   const sampleMetadataSize = estimateSampleMetadataSize(dataSet);
@@ -66,7 +79,10 @@ function estimateGeneExpressionSize(dataSet) {
   for (let experimentId of Object.keys(dataSet)) {
     let experimentSamples = dataSet[experimentId];
     // Need size of gene column for the first matrix.
-    let experimentSize =(experimentSamples.length + 1) * 0.5 * estimateMatrixSizeOfSample(experimentSamples[0]);
+    let experimentSize =
+      (experimentSamples.length + 1) *
+      0.5 *
+      estimateMatrixSizeOfSample(experimentSamples[0]);
     totalSize = totalSize + experimentSize;
   }
 

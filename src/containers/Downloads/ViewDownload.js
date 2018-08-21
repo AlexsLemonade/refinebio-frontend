@@ -11,7 +11,6 @@ import {
   getExperimentCountBySpecies,
   getTotalExperimentsAdded
 } from '../../state/download/reducer';
-import downloadsFilesData from './downloadFilesData';
 import { formatSentenceCase } from '../../common/helpers';
 import { getTransformationOptionFromName } from './transformation';
 
@@ -46,7 +45,12 @@ let ViewDownload = ({
                 )}
               />
             )}
-            <DownloadDetails isImmutable={true} {...props} />
+            <DownloadDetails
+              isImmutable={true}
+              aggregate_by={aggregate_by}
+              scale_by={scale_by}
+              {...props}
+            />
           </div>
         )
       }
@@ -64,7 +68,6 @@ ViewDownload = connect(
     aggregate_by,
     scale_by,
     dataSetId: ownProps.dataSetId || ownProps.match.params.id,
-    filesData: downloadsFilesData(dataSet),
     samplesBySpecies:
       samples && dataSet
         ? groupSamplesBySpecies({

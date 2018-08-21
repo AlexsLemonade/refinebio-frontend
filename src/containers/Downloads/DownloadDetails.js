@@ -11,6 +11,7 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
+import downloadsFilesData from './downloadFilesData';
 
 export default function DownloadDetails({
   dataSet,
@@ -23,11 +24,19 @@ export default function DownloadDetails({
   experimentCountBySpecies,
   totalSamples,
   totalExperiments,
-  isImmutable = false
+  isImmutable = false,
+  aggregate_by,
+  scale_by
 }) {
+  const fileData = downloadsFilesData({
+    dataSet,
+    aggregate_by,
+    scale_by
+  });
   return (
     <div>
-      {filesData && <DownloadFileSummary summaryData={filesData} />}
+      {fileData && <DownloadFileSummary summaryData={fileData} />}
+
       <DownloadDatasetSummary
         samplesBySpecies={samplesBySpecies}
         totalSamples={totalSamples}

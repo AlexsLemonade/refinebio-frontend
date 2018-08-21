@@ -7,7 +7,9 @@ import {
   removeExperiment,
   removeSamples,
   clearDataSet,
-  fetchDataSetDetails
+  fetchDataSetDetails,
+  editAggregation,
+  editTransformation
 } from '../../state/download/actions';
 import {
   groupSamplesBySpecies,
@@ -19,14 +21,8 @@ import {
 import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
-import downloadsFilesData from './downloadFilesData';
 import NoDatasetsImage from './../../common/images/no-datasets.svg';
 import { Link } from 'react-router-dom';
-
-import {
-  editAggregation,
-  editTransformation
-} from '../../state/dataSet/actions';
 
 import { formatSentenceCase } from '../../common/helpers';
 import {
@@ -174,7 +170,6 @@ Download = connect(
         samples: samples,
         dataSet: dataSet
       }),
-      filesData: downloadsFilesData(dataSet),
       totalSamples: getTotalSamplesAdded({ dataSet }),
       totalExperiments: getTotalExperimentsAdded({ dataSet }),
       experimentCountBySpecies: getExperimentCountBySpecies({
