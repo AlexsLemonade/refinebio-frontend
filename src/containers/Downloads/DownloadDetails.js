@@ -12,13 +12,11 @@ import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 
-import SampleFieldMetadata from '../Experiment/SampleFieldMetadata';
-
 export default function DownloadDetails({
   dataSet,
   filesData,
   experiments,
-  removeSpecies,
+  removeSamples,
   removeExperiment,
   clearDataSet,
   samplesBySpecies,
@@ -76,7 +74,7 @@ export default function DownloadDetails({
           <div className="downloads__card">
             <SpeciesSamples
               samplesBySpecies={samplesBySpecies}
-              removeSpecies={removeSpecies}
+              removeSamples={removeSamples}
               isImmutable={isImmutable}
             />
           </div>
@@ -96,7 +94,7 @@ export default function DownloadDetails({
 
 const SpeciesSamples = ({
   samplesBySpecies,
-  removeSpecies,
+  removeSamples,
   isImmutable = false
 }) => {
   const species = samplesBySpecies;
@@ -140,11 +138,11 @@ const SpeciesSamples = ({
         </ModalManager>
       </div>
 
-      {removeSpecies && (
+      {removeSamples && (
         <Button
           text="Remove"
           buttonStyle="remove"
-          onClick={() => removeSpecies(species[speciesName])}
+          onClick={() => removeSamples(species[speciesName])}
         />
       )}
     </div>

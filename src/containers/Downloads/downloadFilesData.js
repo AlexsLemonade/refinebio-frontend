@@ -66,12 +66,10 @@ function estimateGeneExpressionSize(dataSet) {
   for (let experimentId of Object.keys(dataSet)) {
     let experimentSamples = dataSet[experimentId];
     // Need size of gene column for the first matrix.
-    let experimentSize = 0.5 * estimateMatrixSizeOfSample(experimentSamples[0]);
-    for (let sampleId of experimentSamples) {
-      // Need size of value column for every sample.
-      let experimentSize =
-        experimentSize + 0.5 * estimateMatrixSizeOfSample(experimentSamples[0]);
-    }
+    let experimentSize =
+      (experimentSamples.length + 1) *
+      0.5 *
+      estimateMatrixSizeOfSample(experimentSamples[0]);
     totalSize = totalSize + experimentSize;
   }
 
@@ -103,7 +101,7 @@ function estimateExperimentMetadataSize(dataSet) {
  * @param {*} decimals
  */
 function formatBytes(bytes, decimals = 2) {
-  if (bytes == 0) return '0 Bytes';
+  if (bytes === 0) return '0 Bytes';
   let k = 1024,
     dm = decimals,
     sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],

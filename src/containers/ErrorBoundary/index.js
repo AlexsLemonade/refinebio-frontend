@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import AppError from '../AppError';
-import Layout from '../../components/Layout';
 import reportError from '../../state/reportError';
 import { withRouter } from 'react-router';
 
@@ -47,7 +46,10 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
-ErrorBoundary = connect(state => ({}), { reportError })(ErrorBoundary);
+ErrorBoundary = connect(
+  state => ({}),
+  { reportError }
+)(ErrorBoundary);
 ErrorBoundary = withRouter(ErrorBoundary);
 
 export default ErrorBoundary;

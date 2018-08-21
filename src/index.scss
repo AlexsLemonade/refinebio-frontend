@@ -67,7 +67,7 @@ fieldset {
   perspective: 120px;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     left: 25px;
     top: 25px;
@@ -88,12 +88,16 @@ fieldset {
   }
 
   100% {
-    transform: rotateY(180deg)  rotateX(180deg);
+    transform: rotateY(180deg) rotateX(180deg);
   }
 }
 
 .color-success {
   color: $success;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
 @import 'common/styles/type';
