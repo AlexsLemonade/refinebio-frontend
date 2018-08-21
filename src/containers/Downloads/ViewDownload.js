@@ -4,7 +4,7 @@ import Loader from '../../components/Loader';
 import { connect } from 'react-redux';
 import { fetchDataSetDetailsForView } from '../../state/viewDownload/actions';
 import DownloadDetails from './DownloadDetails';
-import DownloadBar from './DownloadBar';
+import { ShareDatasetButton } from './DownloadBar';
 import {
   groupSamplesBySpecies,
   getTotalSamplesAdded,
@@ -12,8 +12,6 @@ import {
   getTotalExperimentsAdded
 } from '../../state/download/reducer';
 import downloadsFilesData from './downloadFilesData';
-import { formatSentenceCase } from '../../common/helpers';
-import { getTransformationOptionFromName } from './transformation';
 
 /**
  * This page is displayed when the user views a download that is different from the one that's
@@ -37,15 +35,9 @@ let ViewDownload = ({
           <div className="downloads">
             <Helmet>refine.bio - Shared Dataset</Helmet>
             {!isEmbed && <h1 className="downloads__heading">Shared Dataset</h1>}
-            {!isEmbed && (
-              <DownloadBar
-                dataSetId={dataSetId}
-                aggregation={formatSentenceCase(aggregate_by)}
-                transformation={getTransformationOptionFromName(
-                  formatSentenceCase(scale_by)
-                )}
-              />
-            )}
+            <div className="downloads__bar">
+              <ShareDatasetButton dataSetId={dataSetId} />
+            </div>
             <DownloadDetails isImmutable={true} {...props} />
           </div>
         )
