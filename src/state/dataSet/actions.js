@@ -98,3 +98,16 @@ export const regenerateDataSet = () => async (dispatch, getState) => {
     dispatch(reportError(e));
   }
 };
+
+export const startDownload = tokenId => async (dispatch, getState) => {
+  const { id, data } = getState().dataSet;
+  try {
+    await Ajax.put(`/dataset/${id}/`, {
+      start: true,
+      data,
+      token_id: tokenId
+    });
+  } catch (e) {
+    await dispatch(reportError(e));
+  }
+};

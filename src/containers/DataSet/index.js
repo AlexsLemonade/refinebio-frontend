@@ -14,9 +14,9 @@ import { connect } from 'react-redux';
 import {
   editEmail,
   fetchDataSet,
-  regenerateDataSet
+  regenerateDataSet,
+  startDownload
 } from '../../state/dataSet/actions';
-import { startDownload } from '../../state/download/actions';
 import { Ajax } from '../../common/helpers';
 import ModalManager from '../../components/Modal/ModalManager';
 
