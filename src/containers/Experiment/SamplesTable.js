@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -8,6 +9,7 @@ import Dropdown from '../../components/Dropdown';
 import { getAllDetailedSamples } from '../../api/samples';
 
 import ModalManager from '../../components/Modal/ModalManager';
+import Button from '../../components/Button';
 import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../constants/table';
@@ -165,6 +167,13 @@ class SamplesTable extends React.Component {
                 <div className="samples-table__scroll-right">
                   <div className="samples-table__scroll-button">{'>'}</div>
                 </div>
+              </div>
+              <div>
+                <img src={InfoIcon} className="info-icon" alt="" /> Some fileds
+                may be harmonized.{' '}
+                <Link to="/docs" className="link">
+                  Learn more
+                </Link>
               </div>
               <Pagination
                 onPaginate={this.handlePagination}
@@ -345,10 +354,9 @@ export default SamplesTable;
  * Component that renders the content in "Additional Metadata" column
  */
 function MetadataCell({ original: sample }) {
-  //let allKeys = Object.keys(sample.annotations[0].data).join(",");
-  let annotations = sample.annotations
-    .map(entry => JSON.stringify(entry.data, null, 2))
-    .join('\n');
+  let annotations = sample.annotations.map(entry =>
+    JSON.stringify(entry.data, null, 2)
+  );
   return (
     <ModalManager
       component={showModal => (
@@ -358,10 +366,17 @@ function MetadataCell({ original: sample }) {
     >
       {() => (
         <section>
-          <h1>Additional Metadata</h1>
-          <img src={InfoIcon} alt="" /> Included in Download
-          <div className="metadata-modal__json-code">
-            <pre>{annotations}</pre>
+          <h1 className="metadata-modal__title">Additional Metadata</h1>
+          <div className="metadata-modal__subtitle">
+            <img className="info-icon" src={InfoIcon} alt="" /> Included in
+            Download
+          </div>
+          <div className="metadata-modal__annotations">
+            {annotations.map(meta => (
+              <div>
+                <pre>{meta}</pre>
+              </div>
+            ))}
           </div>
         </section>
       )}
@@ -371,7 +386,8 @@ function MetadataCell({ original: sample }) {
 
 /**
  * Component used for the cells of the header in the SamplesTable
- * Used the default value as guide here https://github.com/react-tools/react-table/blob/8f062550aad1377618b30f4a4f129a6b1012acf8/src/defaultProps.js#L199-L212
+ * Used the default value as guide here:
+ * https://github.com/react-tools/react-table/blob/8f062550aad1377618b30f4a4f129a6b1012acf8/src/defaultProps.js#L199-L212
  */
 function ThComponent({ toggleSort, className, children, ...rest }) {
   return (
