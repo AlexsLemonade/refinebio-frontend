@@ -1,6 +1,6 @@
-import { asyncFetch } from '../../common/helpers';
+import { asyncFetch, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
-import { replace } from '../../state/routerActions';
+import { replace, push } from '../../state/routerActions';
 
 export const loadDataSet = dataSet => ({
   type: 'LOAD_DATASET',
@@ -75,4 +75,26 @@ export const editTransformation = ({
     })
   });
   dispatch(updateDataSet({ scale_by: transformation }));
+};
+
+/**
+ * Once generated the datasets are immutable on the server, so to be able to re-generate one we have
+ * to create a new dataset and redirect to the associated page.
+ */
+export const regenerateDataSet = () => async (dispatch, getState) => {
+  let { data, aggregate_by, scale_by } = getState().dataSet;
+
+  try {
+    // create a new dataset
+    let { id: dataSetId } = await Ajax.post('/dataset/create/', {
+      data,
+      aggregate_by,
+      scale_by
+    });
+
+    // redirect to the new dataset page, where the user will be able to add an email
+    dispatch(push(`/dataset/${dataSetId}`));
+  } catch (e) {
+    dispatch(reportError(e));
+  }
 };

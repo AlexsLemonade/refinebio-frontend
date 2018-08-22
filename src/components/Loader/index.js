@@ -17,7 +17,28 @@ export default class Loader extends React.Component {
     data: null
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this._fetchData();
+  }
+
+  componentDidUpdate(prevProps) {
+    // the property `updateProps` can be used to easily refresh the data in the loader
+    // just add values that should trigger an update, and the component will take care
+    // when they change
+    if (prevProps.updateProps !== this.props.updateProps) {
+      this._fetchData();
+    }
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  render() {
+    return this.props.children(this.state);
+  }
+
+  async _fetchData() {
     this.setState({ isLoading: true });
     const data = await this.props.fetch();
 
@@ -33,13 +54,5 @@ export default class Loader extends React.Component {
        */
       this.setState({ isLoading: false, data });
     }
-  }
-
-  componentWillUnmount() {
-    this._mounted = false;
-  }
-
-  render() {
-    return this.props.children(this.state);
   }
 }

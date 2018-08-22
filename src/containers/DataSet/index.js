@@ -11,7 +11,11 @@ import './DataSet.scss';
 import { reduxForm, Field } from 'redux-form';
 import Button from '../../components/Button';
 import { connect } from 'react-redux';
-import { editEmail, fetchDataSet } from '../../state/dataSet/actions';
+import {
+  editEmail,
+  fetchDataSet,
+  regenerateDataSet
+} from '../../state/dataSet/actions';
 import { startDownload } from '../../state/download/actions';
 import { Ajax } from '../../common/helpers';
 import ModalManager from '../../components/Modal/ModalManager';
@@ -37,7 +41,7 @@ function DataSet({
   }
 }) {
   return (
-    <Loader fetch={() => fetchDataSet(dataSetId)}>
+    <Loader updateProps={dataSetId} fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
         isLoading ? (
           <div className="loader" />
@@ -342,25 +346,29 @@ class DataSetReady extends React.Component {
   }
 }
 
-function DataSetExpired() {
-  return (
-    <div className="dataset__way-container">
-      <div className="dataset__processed-text">
-        <h1 className="dataset__way-title">Download Expired! </h1>
-        <div className="dataset__way-subtitle">
-          The download files for this dataset isn’t available anymore
-        </div>
-        <div className="dataset__way-container">
-          <Button>Regenerate Files</Button>
-        </div>
+let DataSetExpired = ({ regenerateDataSet }) => (
+  <div className="dataset__way-container">
+    <div className="dataset__processed-text">
+      <h1 className="dataset__way-title">Download Expired! </h1>
+      <div className="dataset__way-subtitle">
+        The download files for this dataset isn’t available anymore
       </div>
-
-      <div className="dataset__way-image">
-        <img src={DownloadExpiredImage} alt="" />
+      <div className="dataset__way-container">
+        <Button onClick={regenerateDataSet}>Regenerate Files</Button>
       </div>
     </div>
-  );
-}
+
+    <div className="dataset__way-image">
+      <img src={DownloadExpiredImage} alt="" />
+    </div>
+  </div>
+);
+DataSetExpired = connect(
+  () => ({}),
+  {
+    regenerateDataSet
+  }
+)(DataSetExpired);
 
 /**
  * This form can be used to edit the email that's associated with a dataset
