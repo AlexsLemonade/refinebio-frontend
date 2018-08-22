@@ -201,6 +201,18 @@
   &__empty-image {
     margin-top: 7.5 * 8px;
   }
+
+  &__species-filters {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    margin-left: 24px;
+    margin-bottom: 16px;
+  }
+
+  &__species-filter-item {
+    margin-right: 16px;
+  }
 }
 
 .samples-modal {

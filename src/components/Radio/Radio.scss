@@ -1,6 +1,6 @@
 @import '../../common/styles/variables';
 
-.checkbox {
+.radio {
   display: flex;
   align-items: center;
   margin-top: 8px;
@@ -10,18 +10,17 @@
     left: -9999px;
     opacity: 0;
 
-    & + .checkbox__label:after {
+    & + .radio__label:after {
       content: none;
     }
 
     &:checked {
-      & + .checkbox__label {
+      & + .radio__label {
         &:after {
           content: '';
         }
 
         &:before {
-          background-color: $azure;
         }
       }
     }
@@ -42,7 +41,7 @@
       height: 16px;
       width: 16px;
       border: 1px solid $gray;
-      border-radius: 3px;
+      border-radius: 50%;
       top: 3px;
       left: 0;
     }
@@ -50,13 +49,12 @@
     &:after {
       content: '';
       display: block;
-      height: 4px;
+      height: 8px;
       width: 8px;
-      border-left: 2px solid $white;
-      border-bottom: 2px solid $white;
-      transform: rotate(-45deg);
-      left: 4px;
+      background-color: $azure;
+      left: 5px;
       top: 8px;
+      border-radius: 50%;
     }
 
     &:hover {
