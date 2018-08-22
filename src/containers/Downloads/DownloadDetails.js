@@ -271,6 +271,14 @@ class ExperimentsView extends React.Component {
   }
 
   _renderFilters() {
+    let organismsList = Object.keys(this.props.dataSet)
+      .map(id => this.props.experiments[id].organisms)
+      // flatten array https://stackoverflow.com/a/33680003/763705
+      .reduce((accum, organisms) => accum.concat(organisms), []);
+
+    // https://stackoverflow.com/a/14438954/763705
+    const uniqueOrganisms = [...new Set(organismsList)];
+
     return (
       <div className="downloads__species-filters">
         <div className="downloads__species-filter-item">Show</div>
@@ -282,19 +290,16 @@ class ExperimentsView extends React.Component {
             All Species
           </Radio>
         </div>
-        {Object.keys(this.props.dataSet)
-          .map(id => this.props.experiments[id].organisms)
-          .filter(organisms => organisms.length === 1)
-          .map(organisms => (
-            <div className="downloads__species-filter-item">
-              <Radio
-                checked={this.state.organism === organisms[0]}
-                onClick={() => this.setState({ organism: organisms[0] })}
-              >
-                {formatSentenceCase(organisms[0])}
-              </Radio>
-            </div>
-          ))}
+        {uniqueOrganisms.map(organism => (
+          <div className="downloads__species-filter-item">
+            <Radio
+              checked={this.state.organism === organism}
+              onClick={() => this.setState({ organism: organism })}
+            >
+              {formatSentenceCase(organism)}
+            </Radio>
+          </div>
+        ))}
       </div>
     );
   }
