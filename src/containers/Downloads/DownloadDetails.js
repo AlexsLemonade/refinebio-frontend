@@ -279,6 +279,10 @@ class ExperimentsView extends React.Component {
     // https://stackoverflow.com/a/14438954/763705
     const uniqueOrganisms = [...new Set(organismsList)];
 
+    if (uniqueOrganisms.length <= 1) {
+      return;
+    }
+
     return (
       <div className="downloads__species-filters">
         <div className="downloads__species-filter-item">Show</div>
