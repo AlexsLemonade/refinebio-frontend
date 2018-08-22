@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -7,12 +8,13 @@ import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import { getAllDetailedSamples } from '../../api/samples';
 
+import ModalManager from '../../components/Modal/ModalManager';
+import Button from '../../components/Button';
+import InfoIcon from '../../common/icons/info-badge.svg';
+
 import { PAGE_SIZES } from '../../constants/table';
 import SampleFieldMetadata from './SampleFieldMetadata';
-import {
-  addExperiment,
-  removeSamples
-} from '../../state/download/actions';
+import { addExperiment, removeSamples } from '../../state/download/actions';
 import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from './DataSetSampleActions';
 import './SamplesTable.scss';
@@ -166,6 +168,13 @@ class SamplesTable extends React.Component {
                   <div className="samples-table__scroll-button">{'>'}</div>
                 </div>
               </div>
+              <div>
+                <img src={InfoIcon} className="info-icon" alt="" /> Some fileds
+                may be harmonized.{' '}
+                <Link to="/docs" className="link">
+                  Learn more
+                </Link>
+              </div>
               <Pagination
                 onPaginate={this.handlePagination}
                 totalPages={totalPages}
@@ -276,6 +285,12 @@ class SamplesTable extends React.Component {
         id: 'processing_information',
         sortable: false,
         Cell: ProcessingInformationCell
+      },
+      {
+        Header: 'Additional Metadata',
+        id: 'additional_metadata',
+        sortable: false,
+        Cell: MetadataCell
       }
     ];
 
@@ -335,11 +350,44 @@ SamplesTable = connect(
 )(SamplesTable);
 export default SamplesTable;
 
-
+/**
+ * Component that renders the content in "Additional Metadata" column
+ */
+function MetadataCell({ original: sample }) {
+  let annotations = sample.annotations.map(entry =>
+    JSON.stringify(entry.data, null, 2)
+  );
+  return (
+    <ModalManager
+      component={showModal => (
+        <Button text="View" buttonStyle="link" onClick={showModal} />
+      )}
+      modalProps={{ className: 'metadata-modal' }}
+    >
+      {() => (
+        <section>
+          <h1 className="metadata-modal__title">Additional Metadata</h1>
+          <div className="metadata-modal__subtitle">
+            <img className="info-icon" src={InfoIcon} alt="" /> Included in
+            Download
+          </div>
+          <div className="metadata-modal__annotations">
+            {annotations.map(meta => (
+              <div>
+                <pre>{meta}</pre>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+    </ModalManager>
+  );
+}
 
 /**
  * Component used for the cells of the header in the SamplesTable
- * Used the default value as guide here https://github.com/react-tools/react-table/blob/8f062550aad1377618b30f4a4f129a6b1012acf8/src/defaultProps.js#L199-L212
+ * Used the default value as guide here:
+ * https://github.com/react-tools/react-table/blob/8f062550aad1377618b30f4a4f129a6b1012acf8/src/defaultProps.js#L199-L212
  */
 function ThComponent({ toggleSort, className, children, ...rest }) {
   return (
@@ -371,17 +419,24 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
   const { experimentAccessionCode } = sample;
 
   if (!sample.is_processed) {
-    return <p className="sample-not-processed">
+    return (
+      <p className="sample-not-processed">
         <i className="ion-information-circled sample-not-processed__info-icon" />
         <div className="sample-not-processed__text">
           <div className="nowrap">Sample not processed</div>
-          <a href="/docs" className="button--link" target="_blank">Learn More</a>        
+          <a href="/docs" className="button--link" target="_blank">
+            Learn More
+          </a>
         </div>
-      </p>;
+      </p>
+    );
   }
 
-  return <DataSetSampleActions samples={[sample]} experiment={{accession_code: experimentAccessionCode}}
-                               meta={{addText: 'Add', buttonStyle: 'secondary'}} />
+  return (
+    <DataSetSampleActions
+      samples={[sample]}
+      experiment={{ accession_code: experimentAccessionCode }}
+      meta={{ addText: 'Add', buttonStyle: 'secondary' }}
+    />
+  );
 }
-
-

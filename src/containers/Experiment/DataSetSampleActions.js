@@ -1,10 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
-import {
-  addExperiment,
-  removeSamples
-} from '../../state/download/actions';
+import { addExperiment, removeSamples } from '../../state/download/actions';
 
 /**
  * Given a dataset and a set of samples, this component renders the correct buttons
@@ -20,48 +17,63 @@ let DataSetSampleActions = ({
   meta,
   // in some cases we don't want to show the AddRemaining state, like for example adding
   // the current samples in a table
-  enableAddRemaining = true,
+  enableAddRemaining = true
 }) => {
   if (!stats.anyProcessedSamples()) {
     // if there're no processed samples to be added, then just show the add button disabled
-    return <Button
-      text={meta.addText}
-      isDisabled={true}
+    return (
+      <Button
+        text={meta.addText}
+        isDisabled={true}
+        buttonStyle={meta.buttonStyle}
+      />
+    );
+  } else if (stats.allProcessedInDataSet()) {
+    return (
+      <RemoveFromDatasetButton
+        handleRemove={() => removeSamples(stats.getSamplesInDataSet())}
+      />
+    );
+  } else if (enableAddRemaining && stats.getSamplesInDataSet().length > 0) {
+    return (
+      <AddRemainingSamples
+        totalSamplesInDataset={stats.getSamplesInDataSet().length}
+        handleAdd={() =>
+          addExperiment([
+            {
+              accession_code: experiment.accession_code,
+              samples
+            }
+          ])
+        }
+      />
+    );
+  }
+
+  // if there're processed samples that aren't part of the current dataset, show the button to add samples
+  return (
+    <AddToDatasetButton
+      addMessage={meta.addText}
+      handleAdd={() =>
+        addExperiment([
+          {
+            accession_code: experiment.accession_code,
+            samples
+          }
+        ])
+      }
       buttonStyle={meta.buttonStyle}
     />
-  } else if (stats.allProcessedInDataSet()) {
-    return <RemoveFromDatasetButton
-      handleRemove={() =>
-        removeSamples(stats.getSamplesInDataSet())
-      }
-    />;
-  } else if (enableAddRemaining && stats.getSamplesInDataSet().length > 0) {
-    return <AddRemainingSamples 
-      totalSamplesInDataset={stats.getSamplesInDataSet().length} 
-      handleAdd={() => addExperiment([{
-        accession_code: experiment.accession_code,
-        samples
-      }])} />
-  }
-  
-  // if there're processed samples that aren't part of the current dataset, show the button to add samples
-  return <AddToDatasetButton
-    addMessage={meta.addText}
-    handleAdd={() => addExperiment([{
-      accession_code: experiment.accession_code,
-      samples
-    }])}
-    buttonStyle={meta.buttonStyle}
-  />;
-}
+  );
+};
 DataSetSampleActions = connect(
   ({ download: { dataSet } }, { samples, meta = {} }) => ({
     stats: new DataSetStats(dataSet, samples),
     meta: {
-      addText: 'Add to Dataset', 
+      addText: 'Add to Dataset',
       buttonStyle: null,
       // allow extending default properties with meta
-      ...meta,
+      ...meta
     }
   }),
   {
@@ -70,7 +82,6 @@ DataSetSampleActions = connect(
   }
 )(DataSetSampleActions);
 export default DataSetSampleActions;
-
 
 /**
  * Contains helper methods to calculate stats between a dataset and a list of samples
@@ -101,7 +112,11 @@ export class DataSetStats {
   sampleInDataSet(sample) {
     for (let experimentId in this.dataSet) {
       // check if the passed sample is part of the experiment
-      if (this.dataSet[experimentId].some(sampleAccessionCode => sampleAccessionCode === sample.accession_code)) {
+      if (
+        this.dataSet[experimentId].some(
+          sampleAccessionCode => sampleAccessionCode === sample.accession_code
+        )
+      ) {
         return true;
       }
     }
@@ -148,16 +163,12 @@ export function AddToDatasetButton({
 }) {
   return (
     <div className="dataset-add-button">
-      <Button
-        text={addMessage}
-        buttonStyle={buttonStyle}
-        onClick={handleAdd}
-      />
+      <Button text={addMessage} buttonStyle={buttonStyle} onClick={handleAdd} />
     </div>
   );
 }
 
-function AddRemainingSamples({handleAdd, totalSamplesInDataset}) {
+function AddRemainingSamples({ handleAdd, totalSamplesInDataset }) {
   return (
     <div className="dataset-add-button">
       <Button
@@ -172,4 +183,3 @@ function AddRemainingSamples({handleAdd, totalSamplesInDataset}) {
     </div>
   );
 }
-
