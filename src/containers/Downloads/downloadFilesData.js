@@ -112,9 +112,7 @@ function estimateGeneExpressionSize(dataSet) {
     let experimentSamples = dataSet[experimentId];
     // Need size of gene column for the first matrix.
     let experimentSize =
-      (experimentSamples.length + 1) *
-      0.5 *
-      estimateMatrixSizeOfSample(experimentSamples[0]);
+      (experimentSamples.length + 1) * 0.5 * estimateMatrixSizeOfSample();
     totalSize = totalSize + experimentSize;
   }
 
@@ -126,9 +124,7 @@ function estimateSampleMetadataSize(dataSet) {
   // Count the total number of samples, and multiply it with the average sample size
   for (let experimentId of Object.keys(dataSet)) {
     let experimentSamples = dataSet[experimentId];
-    for (let sampleId of experimentSamples) {
-      result = result + sampleMetadata(sampleId);
-    }
+    result = result + sampleMetadata() * Object.keys(experimentSamples).length;
   }
   return result;
 }
