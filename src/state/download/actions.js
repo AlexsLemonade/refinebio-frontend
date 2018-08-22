@@ -140,6 +140,12 @@ export const fetchDataSet = () => async dispatch => {
       expires_on
     } = await getDataSet(dataSetId);
 
+    if (is_processing || is_processed) {
+      // if for any reason the user ends up in a state where the current dataset is already processed
+      // we should clear it, since this dataset is immutable
+      return await dispatch(clearDataSet());
+    }
+
     dispatch(
       fetchDataSetSucceeded({
         dataSet: data,
