@@ -49,6 +49,28 @@ describe('fetchDataSet', () => {
       REPORT_ERROR
     ]);
   });
+
+  it('current dataset is removed if its processed', async () => {
+    const DataSetId = '08c429ab-01dd-43c7-b51a-c850ad4b9902';
+    const DataSet = { id: DataSetId, data: {}, is_processed: true };
+
+    global.localStorage.getItem.mockReturnValueOnce(DataSetId);
+    global.fetch = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve({ ok: true, json: () => Promise.resolve(DataSet) })
+      );
+
+    const store = mockStore({});
+
+    await store.dispatch(fetchDataSet());
+
+    expect(global.fetch.mock.calls[0]).toEqual([`/dataset/${DataSetId}/`]);
+    expect(store.getActions().map(x => x.type)).toEqual([
+      'DOWNLOAD_DATASET_FETCH',
+      'DOWNLOAD_CLEAR'
+    ]);
+  });
 });
 
 describe('startDownload', () => {
