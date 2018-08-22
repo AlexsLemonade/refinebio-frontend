@@ -1,10 +1,12 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import moment from 'moment';
 import { getAmazonDownloadLinkUrl } from '../../common/helpers';
 import Loader from '../../components/Loader';
 import ProcessingImage from './download-processing.svg';
 import NextStepsImage from './download-next-steps.svg';
 import DownloadImage from './download-dataset.svg';
+import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
 import { reduxForm, Field } from 'redux-form';
 import Button from '../../components/Button';
@@ -26,7 +28,14 @@ import TermsOfUse from '../../components/TermsOfUse';
  * - Expired: Download files expire after some time
  * Related discussion https://github.com/AlexsLemonade/refinebio-frontend/issues/27
  */
-function DataSet({startDownload, dataSet, fetchDataSet, match: {params: {id:dataSetId}}}) {
+function DataSet({
+  startDownload,
+  dataSet,
+  fetchDataSet,
+  match: {
+    params: { id: dataSetId }
+  }
+}) {
   return (
     <Loader fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
@@ -44,8 +53,7 @@ function DataSet({startDownload, dataSet, fetchDataSet, match: {params: {id:data
               </div>
             </div>
             {dataSetId &&
-              (dataSet.is_processed ||
-                !!dataSet.email_address) && (
+              (dataSet.is_processed || !!dataSet.email_address) && (
                 <ViewDownload
                   dataSetId={dataSetId}
                   isEmbed={true}
@@ -87,11 +95,13 @@ class DataSetPage extends React.Component {
       is_available,
       email_address,
       dataSetId,
+      expires_on,
       ...props
     } = this.props;
     // 1. Check if the dataset is already processed, if true show a link to the download file
     if (is_processed) {
-      if (is_available) {
+      const isExpired = moment(expires_on, '').isBefore(Date.now());
+      if (is_available && !isExpired) {
         return <DataSetReady {...props} />;
       } else {
         return <DataSetExpired />;
@@ -334,8 +344,20 @@ class DataSetReady extends React.Component {
 
 function DataSetExpired() {
   return (
-    <div>
-      <h1>Sorry this data set expired.</h1>
+    <div className="dataset__way-container">
+      <div className="dataset__processed-text">
+        <h1 className="dataset__way-title">Download Expired! </h1>
+        <div className="dataset__way-subtitle">
+          The download files for this dataset isn’t available anymore
+        </div>
+        <div className="dataset__way-container">
+          <Button>Regenerate Files</Button>
+        </div>
+      </div>
+
+      <div className="dataset__way-image">
+        <img src={DownloadExpiredImage} alt="" />
+      </div>
     </div>
   );
 }

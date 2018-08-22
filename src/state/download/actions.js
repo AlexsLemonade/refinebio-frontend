@@ -136,7 +136,8 @@ export const fetchDataSet = () => async dispatch => {
       is_processing,
       is_processed,
       aggregate_by,
-      scale_by
+      scale_by,
+      expires_on
     } = await getDataSet(dataSetId);
 
     dispatch(
@@ -145,7 +146,8 @@ export const fetchDataSet = () => async dispatch => {
         is_processing,
         is_processed,
         aggregate_by,
-        scale_by
+        scale_by,
+        expires_on
       })
     );
   } catch (e) {
@@ -161,7 +163,8 @@ export const fetchDataSetSucceeded = ({
   is_processing,
   is_processed,
   aggregate_by,
-  scale_by
+  scale_by,
+  expires_on
 }) => ({
   type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
   data: {
@@ -169,7 +172,8 @@ export const fetchDataSetSucceeded = ({
     is_processing,
     is_processed,
     aggregate_by,
-    scale_by
+    scale_by,
+    expires_on
   }
 });
 
