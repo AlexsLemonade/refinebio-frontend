@@ -104,7 +104,7 @@ class DataSetPage extends React.Component {
     } = this.props;
     // 1. Check if the dataset is already processed, if true show a link to the download file
     if (is_processed) {
-      const isExpired = moment(expires_on, '').isBefore(Date.now());
+      const isExpired = moment(expires_on).isBefore(Date.now());
       if (is_available && !isExpired) {
         return <DataSetReady {...props} />;
       } else {
