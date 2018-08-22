@@ -1,12 +1,9 @@
-
-
 import React from 'react';
 import Button from '../../components/Button';
 import ModalManager from '../../components/Modal/ModalManager';
 
 import FileIcon from './file.svg';
 import ProcessIcon from './process.svg';
-
 
 // Pipeline names ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/22#issuecomment-394010812
 const PIPELINES = {
@@ -20,7 +17,10 @@ const PIPELINES = {
   MultiQC: 'MultiQC'
 };
 
-export default function ProcessingInformationCell({ original: sample, ...props }) {
+export default function ProcessingInformationCell({
+  original: sample,
+  ...props
+}) {
   let { pipelines } = sample;
 
   // Logic to decide which pipeline modal dialog should be displayed. On Keytar Kurt we're only supporting 4 types of

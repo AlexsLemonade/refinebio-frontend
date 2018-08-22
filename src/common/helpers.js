@@ -146,4 +146,3 @@ export const getMetadataFields = experiment =>
   SampleFieldMetadata.filter(field =>
     experiment.sample_metadata.includes(field.id)
   ).map(field => field.Header);
-

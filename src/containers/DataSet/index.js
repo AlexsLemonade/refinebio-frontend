@@ -26,7 +26,14 @@ import TermsOfUse from '../../components/TermsOfUse';
  * - Expired: Download files expire after some time
  * Related discussion https://github.com/AlexsLemonade/refinebio-frontend/issues/27
  */
-function DataSet({startDownload, dataSet, fetchDataSet, match: {params: {id:dataSetId}}}) {
+function DataSet({
+  startDownload,
+  dataSet,
+  fetchDataSet,
+  match: {
+    params: { id: dataSetId }
+  }
+}) {
   return (
     <Loader fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
@@ -44,8 +51,7 @@ function DataSet({startDownload, dataSet, fetchDataSet, match: {params: {id:data
               </div>
             </div>
             {dataSetId &&
-              (dataSet.is_processed ||
-                !!dataSet.email_address) && (
+              (dataSet.is_processed || !!dataSet.email_address) && (
                 <ViewDownload
                   dataSetId={dataSetId}
                   isEmbed={true}
