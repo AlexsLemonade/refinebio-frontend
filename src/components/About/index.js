@@ -14,7 +14,11 @@ function About() {
     <div>
       <div className="about">
         <div className="about__header">
-          <img src={circusPlot} className="about__header-bg" />
+          <img
+            src={circusPlot}
+            className="about__header-bg"
+            alt="Circus Plot"
+          />
           <h1 className="about__tagline">
             Fighting childhood cancer, thousands of datasets at a time
           </h1>
@@ -51,7 +55,11 @@ function About() {
 
         <div className="about__section about__info-item about__info-item--right">
           <div>
-            <img src={savingTimes} className="about__info-item-image" />
+            <img
+              src={savingTimes}
+              className="about__info-item-image"
+              alt="Saving Time to Save Lives"
+            />
           </div>
 
           <div>
@@ -73,7 +81,11 @@ function About() {
 
         <div className="about__section about__info-item">
           <div>
-            <img src={oneRepo} className="about__info-item-image" />
+            <img
+              src={oneRepo}
+              className="about__info-item-image"
+              alt="One Language, One Repository"
+            />
           </div>
 
           <div>
@@ -93,7 +105,11 @@ function About() {
 
         <div className="about__section about__info-item about__info-item--right">
           <div>
-            <img src={betterMed} className="about__info-item-image" />
+            <img
+              src={betterMed}
+              className="about__info-item-image"
+              alt="Better Medicine Through Machine Learning"
+            />
           </div>
 
           <div>
@@ -126,6 +142,7 @@ function About() {
                 className="img-responsive"
                 width="186"
                 height="200"
+                alt="ALSF Logo"
               />
             </div>
 
@@ -135,6 +152,7 @@ function About() {
                 className="img-responsive"
                 width="319"
                 height="156"
+                alt="CCDL Logo"
               />
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import {
   removeExperiment,
@@ -84,17 +84,7 @@ class Download extends Component {
   };
 
   render() {
-    const {
-      dataSetId,
-      isLoading,
-      dataSet,
-      is_processing,
-      is_processed
-    } = this.props;
-
-    if (is_processing || is_processed) {
-      return <Redirect to={`/dataset/${dataSetId}`} />;
-    }
+    const { dataSetId, isLoading, dataSet } = this.props;
 
     return (
       <div className="downloads">

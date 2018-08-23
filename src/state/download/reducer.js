@@ -1,3 +1,4 @@
+
 const initialState = {
   dataSetId: null,
   dataSet: {},
@@ -23,7 +24,8 @@ export default (state = initialState, action) => {
         is_processing,
         is_processed,
         aggregate_by,
-        scale_by
+        scale_by,
+        expires_on
       } = action.data;
       return {
         ...state,
@@ -32,6 +34,7 @@ export default (state = initialState, action) => {
         is_processed,
         aggregate_by,
         scale_by,
+        expires_on,
         isLoading: false
       };
     }

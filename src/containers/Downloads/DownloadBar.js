@@ -4,7 +4,6 @@ import Dropdown from '../../components/Dropdown';
 import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
-import { connect } from 'react-redux';
 import { getDomain } from '../../common/helpers';
 import { Link } from 'react-router-dom';
 import HelpIcon from '../../common/icons/help.svg';
