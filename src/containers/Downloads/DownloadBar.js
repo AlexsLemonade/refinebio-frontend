@@ -27,6 +27,7 @@ let DownloadBar = ({
               href="https://refine.bio" // XXX: replace with link to docs
               target="_blank"
               rel="noopener noreferrer"
+              title="What is this?"
             >
               <img
                 className="downloads__help-icon"
@@ -54,6 +55,7 @@ let DownloadBar = ({
               href="https://refine.bio" // XXX: replace with link to docs
               target="_blank"
               rel="noopener noreferrer"
+              title="What is this?"
             >
               <img
                 className="downloads__help-icon"
