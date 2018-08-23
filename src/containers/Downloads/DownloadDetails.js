@@ -222,7 +222,7 @@ class ExperimentsView extends React.Component {
                         className="downloads__sample-icon"
                         alt="Sample Icon"
                       />{' '}
-                      {addedSamples.length}
+                      {addedSamples.length} Samples
                     </div>
                     <div className="downloads__sample-stat downloads__sample-stat--experiment">
                       <img
