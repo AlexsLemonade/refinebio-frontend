@@ -214,3 +214,50 @@
     flex-grow: 1;
   }
 }
+
+.info-icon {
+  vertical-align: sub;
+}
+
+.metadata-modal {
+  padding: 56px 24px 56px 56px;
+  max-width: 108 * 8px;
+  overflow: hidden;
+
+  &__title {
+    margin-bottom: 4px;
+  }
+
+  &__subtitle {
+    margin-top: 4px;
+  }
+
+  &__annotations {
+    overflow: auto;
+    height: 700px;
+    border-radius: 2px;
+    color: #fdfdfd;
+    font-family: 'Oxygen Mono';
+    background-color: #4a4a4a;
+  }
+
+  pre {
+    padding: 8px;
+    white-space: pre-wrap;
+  }
+}
+
+.sample-not-processed {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.875rem;
+  align-items: center;
+
+  &__info-icon {
+    font-size: 1.5rem;
+  }
+
+  &__text {
+    margin-left: 6px;
+  }
+}

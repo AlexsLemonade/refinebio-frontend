@@ -52,14 +52,7 @@ export default (state = initialState, action) => {
         isLoading: false
       };
     }
-    case 'DOWNLOAD_REMOVE_EXPERIMENT_SUCCESS': {
-      const { dataSet } = action.data;
-      return {
-        ...state,
-        dataSet
-      };
-    }
-    case 'DOWNLOAD_REMOVE_SPECIES_SUCCESS': {
+    case 'DOWNLOAD_UPDATE_DATASET': {
       const { dataSet } = action.data;
       return {
         ...state,
@@ -67,27 +60,41 @@ export default (state = initialState, action) => {
       };
     }
     case 'DOWNLOAD_FETCH_DETAILS': {
+      const { dataSetId } = action.data;
       return {
         ...state,
+        dataSetId,
         isLoading: true
       };
     }
     case 'DOWNLOAD_FETCH_DETAILS_SUCCESS': {
-      const { experiments, samples } = action.data;
+      const {
+        dataSet,
+        is_processing,
+        is_processed,
+        aggregate_by,
+        scale_by,
+        samples,
+        experiments
+      } = action.data;
       return {
         ...state,
-        experiments,
+        dataSet,
+        is_processing,
+        is_processed,
+        aggregate_by,
+        scale_by,
         samples,
+        experiments,
         isLoading: false,
         areDetailsFetched: true
       };
     }
-    case 'DOWNLOAD_CLEAR_SUCCESS': {
-      const { dataSet } = action.data;
+    case 'DOWNLOAD_CLEAR': {
       return {
         ...state,
         dataSetId: null,
-        dataSet,
+        dataSet: {},
         isLoading: false
       };
     }
