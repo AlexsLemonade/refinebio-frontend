@@ -1,4 +1,5 @@
 import { asyncFetch, Ajax } from '../../common/helpers';
+import { Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { replace, push } from '../../state/routerActions';
 
@@ -18,7 +19,7 @@ export const updateDataSet = props => ({
  */
 export const fetchDataSet = dataSetId => async dispatch => {
   try {
-    const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
+    const dataSet = await Ajax.get(`/dataset/${dataSetId}/`);
     dispatch(loadDataSet(dataSet));
   } catch (e) {
     dispatch(reportError(e));
@@ -27,54 +28,12 @@ export const fetchDataSet = dataSetId => async dispatch => {
 };
 
 export const editEmail = ({ dataSetId, email }) => async dispatch => {
-  const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
-  await asyncFetch(`/dataset/${dataSetId}/`, {
-    method: 'PUT',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      data: dataSet.data,
-      email_address: email
-    })
+  const dataSet = await Ajax.get(`/dataset/${dataSetId}/`);
+  await Ajax.put(`/dataset/${dataSetId}/`, {
+    data: dataSet.data,
+    email_address: email
   });
   dispatch(updateDataSet({ email_address: email }));
-};
-
-export const editAggregation = ({
-  dataSetId,
-  aggregation
-}) => async dispatch => {
-  const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
-  await asyncFetch(`/dataset/${dataSetId}/`, {
-    method: 'PUT',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      data: dataSet.data,
-      aggregate_by: aggregation.toUpperCase()
-    })
-  });
-  dispatch(updateDataSet({ aggregate_by: aggregation }));
-};
-
-export const editTransformation = ({
-  dataSetId,
-  transformation
-}) => async dispatch => {
-  const dataSet = await asyncFetch(`/dataset/${dataSetId}/`);
-  await asyncFetch(`/dataset/${dataSetId}/`, {
-    method: 'PUT',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      data: dataSet.data,
-      scale_by: transformation.toUpperCase()
-    })
-  });
-  dispatch(updateDataSet({ scale_by: transformation }));
 };
 
 /**

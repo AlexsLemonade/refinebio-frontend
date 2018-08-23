@@ -8,6 +8,9 @@ body,
   height: 100%;
   color: $font-color;
   overflow-x: hidden;
+
+  // momentum scrolling on ios https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
@@ -76,6 +79,11 @@ fieldset {
     background-color: $azure;
     animation: flip 1s infinite;
   }
+}
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
 }
 
 @keyframes flip {

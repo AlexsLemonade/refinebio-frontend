@@ -183,6 +183,60 @@ export const fetchDataSetSucceeded = ({
   }
 });
 
+export const editAggregation = ({ dataSetId, aggregation }) => async (
+  dispatch,
+  getState
+) => {
+  const dataSet = getState().download.dataSet;
+  const {
+    data,
+    is_processing,
+    is_processed,
+    aggregate_by,
+    scale_by
+  } = await Ajax.put(`/dataset/${dataSetId}/`, {
+    data: dataSet,
+    aggregate_by: aggregation.toUpperCase()
+  });
+
+  dispatch(
+    fetchDataSetSucceeded({
+      dataSet: data,
+      is_processing,
+      is_processed,
+      aggregate_by,
+      scale_by
+    })
+  );
+};
+
+export const editTransformation = ({ dataSetId, transformation }) => async (
+  dispatch,
+  getState
+) => {
+  const dataSet = getState().download.dataSet;
+  const {
+    data,
+    is_processing,
+    is_processed,
+    aggregate_by,
+    scale_by
+  } = await Ajax.put(`/dataset/${dataSetId}/`, {
+    data: dataSet,
+    scale_by: transformation.toUpperCase()
+  });
+
+  dispatch(
+    fetchDataSetSucceeded({
+      dataSet: data,
+      is_processing,
+      is_processed,
+      aggregate_by,
+      scale_by
+    })
+  );
+};
+
 export const fetchDataSetDetails = () => async dispatch => {
   const dataSetId = localStorage.getItem('dataSetId');
   if (!dataSetId) {

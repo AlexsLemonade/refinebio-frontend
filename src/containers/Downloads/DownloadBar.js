@@ -4,7 +4,6 @@ import Dropdown from '../../components/Dropdown';
 import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
-import { startDownload } from '../../state/download/actions';
 import { connect } from 'react-redux';
 import { getDomain } from '../../common/helpers';
 import { Link } from 'react-router-dom';
@@ -19,23 +18,7 @@ let DownloadBar = ({
 }) => {
   return (
     <div className="downloads__bar">
-      <ModalManager
-        component={showModal => (
-          <Button
-            buttonStyle="secondary"
-            text="Share Dataset"
-            onClick={showModal}
-          />
-        )}
-        modalProps={{ center: true, className: 'share-link-modal' }}
-      >
-        {() => (
-          <div>
-            <h1 className="share-link-modal__title">Sharable Link</h1>
-            <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
-          </div>
-        )}
-      </ModalManager>
+      <ShareDatasetButton dataSetId={dataSetId} />
 
       <div className="downloads__actions">
         <div className="downloads__fieldset">
@@ -103,10 +86,26 @@ let DownloadBar = ({
     </div>
   );
 };
-DownloadBar = connect(
-  state => ({}),
-  {
-    startDownload
-  }
-)(DownloadBar);
 export default DownloadBar;
+
+export function ShareDatasetButton({ dataSetId }) {
+  return (
+    <ModalManager
+      component={showModal => (
+        <Button
+          buttonStyle="secondary"
+          text="Share Dataset"
+          onClick={showModal}
+        />
+      )}
+      modalProps={{ center: true, className: 'share-link-modal' }}
+    >
+      {() => (
+        <div>
+          <h1 className="share-link-modal__title">Sharable Link</h1>
+          <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
+        </div>
+      )}
+    </ModalManager>
+  );
+}

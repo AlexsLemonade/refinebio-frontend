@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="421px" height="360px" viewBox="0 0 421 360" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>one repo</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="linearGradient-1">
+            <stop stop-color="#808080" stop-opacity="0.25" offset="0%"></stop>
+            <stop stop-color="#808080" stop-opacity="0.12" offset="54%"></stop>
+            <stop stop-color="#808080" stop-opacity="0.1" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="linearGradient-2">
+            <stop stop-color="#B3B3B3" stop-opacity="0.25" offset="0%"></stop>
+            <stop stop-color="#B3B3B3" stop-opacity="0.1" offset="54%"></stop>
+            <stop stop-color="#B3B3B3" stop-opacity="0.05" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="About-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="about-page-copy-4" transform="translate(-184.000000, -1311.000000)">
+            <g id="one-repo" transform="translate(184.000000, 1311.000000)">
+                <g id="undraw_create_f05x">
+                    <g>
+                        <path d="M313.8,164 C313.8,164 326.6,116.682464 301,68" id="Shape" stroke="#E0E0E0" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"></path>
+                        <path d="M139.1139,149 C143.573915,130.611035 144.9056,92.2748721 86,76" id="Shape" stroke="#E0E0E0" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"></path>
+                        <rect id="Rectangle-path" fill="url(#linearGradient-1)" fill-rule="nonzero" x="32" y="161" width="367" height="199"></rect>
+                        <rect id="Rectangle-path" fill="#386DB0" fill-rule="nonzero" x="35" y="164" width="361" height="191"></rect>
+                        <circle id="Oval" fill="url(#linearGradient-2)" fill-rule="nonzero" cx="105.5" cy="193.5" r="17.5"></circle>
+                        <circle id="Oval" fill="#E7F1FD" fill-rule="nonzero" cx="105" cy="194" r="16"></circle>
+                        <rect id="Rectangle-path" fill="#E9F0F8" fill-rule="nonzero" opacity="0.830915179" x="142" y="188" width="89" height="9"></rect>
+                        <rect id="Rectangle-path" fill="#E9F0F8" fill-rule="nonzero" opacity="0.830915179" x="105" y="247" width="223" height="9"></rect>
+                        <rect id="Rectangle-path" fill="#E9F0F8" fill-rule="nonzero" opacity="0.830915179" x="105" y="226" width="223" height="9"></rect>
+                        <rect id="Rectangle-path" fill="#E9F0F8" fill-rule="nonzero" opacity="0.830915179" x="105" y="266" width="223" height="9"></rect>
+                        <rect id="Rectangle-path" fill="#E9F0F8" fill-rule="nonzero" opacity="0.830915179" x="105" y="287" width="223" height="9"></rect>
+                        <rect id="Rectangle-path" fill="#E9F0F8" fill-rule="nonzero" opacity="0.830915179" x="105" y="306" width="223" height="9"></rect>
+                        <rect id="Rectangle-path" fill="#E9F0F8" fill-rule="nonzero" opacity="0.830915179" x="105" y="326" width="223" height="9"></rect>
+                        <path d="M70.9456674,151 C71.3094166,141.252221 70.0458669,126.680149 61,117" id="Shape" stroke="#BDBDBD" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"></path>
+                        <path d="M274.945667,154 C275.309417,144.252221 274.045867,129.680149 265,120" id="Shape" stroke="#E0E0E0" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"></path>
+                        <path d="M360.054333,151 C359.690583,141.252221 360.954133,126.680149 370,117" id="Shape" stroke="#BDBDBD" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"></path>
+                        <rect id="Rectangle-path" fill="#F1EFBB" fill-rule="nonzero" opacity="0.7" x="0" y="52" width="50" height="27"></rect>
+                        <rect id="Rectangle-path" fill="#EAF6F0" fill-rule="nonzero" opacity="0.7" x="275" y="34" width="50" height="27"></rect>
+                        <rect id="Rectangle-path" fill="#DDEBFD" fill-rule="nonzero" opacity="0.7" x="233" y="82" width="50" height="27"></rect>
+                        <rect id="Rectangle-path" fill="#F9E2DF" fill-rule="nonzero" x="37" y="57" width="82" height="44"></rect>
+                        <rect id="Rectangle-path" fill="#E6F0FC" fill-rule="nonzero" x="339" y="60" width="82" height="44"></rect>
+                        <rect id="Rectangle-path" fill="#C8E5D6" fill-rule="nonzero" x="154" y="0" width="82" height="44"></rect>
+                        <path d="M190.801515,150 C193.477517,140.364568 195.21932,124.968628 186.732944,109.076481 C176.255936,89.4492516 185.676512,70.3272504 191.032882,62" id="Shape" stroke="#BDBDBD" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
