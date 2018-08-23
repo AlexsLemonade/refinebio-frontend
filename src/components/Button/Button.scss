@@ -108,4 +108,9 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
       color: $default-hover;
     }
   }
+
+  &--large {
+    font-size: 16px;
+    padding: 8px 32px;
+  }
 }

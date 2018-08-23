@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1345px" height="610px" viewBox="0 0 1345 610" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>viz</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="About-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-2" transform="translate(-1659.000000, -622.000000)" fill-rule="nonzero">
+            <g id="Bitmap-+-Bitmap-Mask" transform="translate(1626.000000, 592.000000)">
+                <g id="viz" style="mix-blend-mode: luminosity;" transform="translate(672.997779, 409.016072) rotate(-9.000000) translate(-672.997779, -409.016072) translate(62.997779, 91.516072)">
+                    <path d="M1214.82045,634.618329 C1218.2375,610.686025 1220,586.280477 1220,561.5 C1220,251.392113 943.983548,0 603.5,0 C306.716947,0 58.9144874,191.001853 0.193417583,445.403617" id="Oval-2" stroke="#386DB0" stroke-width="115" stroke-dasharray="10,25,15"></path>
+                    <path d="M1107.88034,566.699187 C1107.88034,500.103446 1091.28134,437.037893 1061.64514,380.745779 M1052.80943,364.821076 C973.337342,228.692129 815.996683,136 634.880336,136 C394.907778,136 196.674116,298.723665 166,509.602596" id="Oval-2" stroke="#AAC4E4" stroke-width="91" stroke-dasharray="15,20,7" transform="translate(636.940168, 351.349593) rotate(4.000000) translate(-636.940168, -351.349593) "></path>
+                    <path d="M809.143242,392.689093 C791.781038,373.00941 771.073194,355.875239 747.804255,342" id="Oval-2" stroke="#999999" stroke-width="131" stroke-dasharray="18,20,12,8"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
