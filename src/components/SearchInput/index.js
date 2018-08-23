@@ -36,7 +36,11 @@ class SearchInput extends Component {
           name="search"
           className="search-input__textbox"
         />
-        <Button text="Search" buttonStyle={buttonStyle} />
+        <Button
+          text="Search"
+          buttonStyle={buttonStyle}
+          className="search-input__button"
+        />
       </form>
     );
   }
