@@ -27,10 +27,6 @@ class Header extends React.Component {
   };
 
   render() {
-    const {
-      location: { pathname }
-    } = this.props;
-
     return (
       <header
         className={`header js-header ${
