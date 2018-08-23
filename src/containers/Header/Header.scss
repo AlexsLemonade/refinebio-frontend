@@ -44,7 +44,7 @@
   }
 
   &__logo {
-    width:  80px;
+    width: 80px;
 
     @include tablet {
       width: auto;
@@ -61,19 +61,7 @@
     display: flex;
     align-items: center;
     min-width: fit-content;
-
-    &--button {
-      position: relative;
-      background: none;
-      border-radius: 3px;
-      border: 1px solid currentColor;
-      color: $azure;
-      font-family: 'Lato', sans-serif;
-      font-size: 1rem;
-      line-height: 1.5;
-      padding: 4px 24px;
-      flex: 0 0 auto;
-    }
+    position: relative;
   }
 
   &__dataset-count {
@@ -144,7 +132,7 @@
 
 .header--inverted {
   color: $white;
-  background-color: rgba(12,52,131,0.94);
+  background-color: rgba(12, 52, 131, 0.94);
 
   .header__burger {
     color: $white;
