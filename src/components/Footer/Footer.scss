@@ -1,12 +1,12 @@
 @import '../../common/styles/variables';
 
 .footer {
-  padding: 2*8px;
-  background: linear-gradient(#FFFFFF 0%, #DFE9F3 100%);
-  box-shadow: 0 3px 20px 0 rgba(0,0,0,0.1);
+  padding: 2 * 8px;
+  background: linear-gradient(#ffffff 0%, #dfe9f3 100%);
+  box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
 
   @include tablet {
-    padding: 6.5*8px;
+    padding: 6.5 * 8px;
   }
 
   &__container {
@@ -15,12 +15,11 @@
     margin: 0 auto;
 
     &--main {
-      margin-bottom: 5*8px;
+      margin-bottom: 5 * 8px;
     }
   }
 
   &__flex {
-
     @include tablet {
       display: flex;
       justify-content: space-between;
@@ -34,7 +33,7 @@
   @include tablet {
     &__left {
       flex: 3;
-      margin-right: 21*8px;
+      margin-right: 21 * 8px;
     }
 
     &__right {
@@ -46,7 +45,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 2*8px;
+    margin-top: 2 * 8px;
   }
 
   &__links {
@@ -60,24 +59,41 @@
   }
 
   &__link {
-    margin-top: 2*8px;
+    margin-top: 2 * 8px;
     color: $gray;
 
     @include tablet {
       margin-top: 0;
-      margin-right: 3*8px;
+      margin-right: 3 * 8px;
     }
   }
 
-  &__social {
-    font-size: 4*8px;
+  &__link-twitter {
+    font-size: 4 * 8px;
     color: $gray;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: #55acee;
+    }
+  }
+
+  &__link-github {
+    font-size: 4 * 8px;
+    color: $gray;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: #161614;
+    }
   }
 
   &__version {
     color: $gray;
     font-size: 0.75rem;
-    margin-top: 3*8px;
+    margin-top: 3 * 8px;
 
     @include tablet {
       margin: 0;
@@ -86,7 +102,7 @@
   }
 
   &__author {
-    margin-top: 5*8px;
+    margin-top: 5 * 8px;
   }
 
   &__icon {
