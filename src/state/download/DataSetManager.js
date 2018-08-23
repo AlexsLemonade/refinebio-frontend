@@ -1,5 +1,3 @@
-
-
 /**
  * Receives the current state of a data set, and provides methods to modify it.
  * The goal of this class is to keep this logic sepparated from the action creators.
@@ -28,7 +26,7 @@ export default class DataSetManager {
       const filteredSamples = dataSet[accessionCode].filter(sample => {
         return sampleAccessions.indexOf(sample) === -1;
       });
-      
+
       if (filteredSamples.length > 0) {
         result[accessionCode] = filteredSamples;
       }
@@ -40,7 +38,7 @@ export default class DataSetManager {
 
   /**
    * Adds a set of experiments to the current dataset
-   * @param {array<{accession_code, samples}>} experiments 
+   * @param {array<{accession_code, samples}>} experiments
    */
   addExperiment(experiments) {
     let newDataSetExperiments = {};
@@ -71,5 +69,3 @@ export default class DataSetManager {
     };
   }
 }
-
-

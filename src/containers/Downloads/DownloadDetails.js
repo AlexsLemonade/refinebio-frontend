@@ -23,11 +23,21 @@ export default function DownloadDetails({
   experimentCountBySpecies,
   totalSamples,
   totalExperiments,
-  isImmutable = false
+  isImmutable = false,
+  isEmbed = false,
+  aggregate_by,
+  scale_by
 }) {
   return (
     <div>
-      {filesData && <DownloadFileSummary summaryData={filesData} />}
+      {filesData && (
+        <DownloadFileSummary
+          summaryData={filesData}
+          aggregate_by={aggregate_by}
+          scale_by={scale_by}
+          isEmbed={isEmbed}
+        />
+      )}
       <DownloadDatasetSummary
         samplesBySpecies={samplesBySpecies}
         totalSamples={totalSamples}

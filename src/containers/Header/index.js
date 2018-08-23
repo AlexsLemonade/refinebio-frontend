@@ -28,11 +28,15 @@ class Header extends React.Component {
   };
 
   render() {
-    const { location: { pathname } } = this.props;
+    const {
+      location: { pathname }
+    } = this.props;
 
     return (
       <header
-        className={`header js-header ${pathname === '/' && 'header--main'}`}
+        className={`header js-header ${
+          pathname === '/' ? 'header--main' : ''
+        } ${this.invertColors() ? 'header--inverted header--scroll' : ''}`}
       >
         <div className="header__container">
           <Link to="/">
@@ -87,17 +91,25 @@ class Header extends React.Component {
       </header>
     );
   }
+
+  /**
+   * In general this is a bad approach, where the header component knows about other pages.
+   * But in the future we'll unify the header styles and have a single color. So it doesn't make
+   * much sense to invest a lot of time improving this.
+   */
+  invertColors() {
+    return this.props.location.pathname === '/about';
+  }
 }
 
-function mapStateToProps({ download: { dataSet, isLoading } }) {
-  return {
+Header = connect(
+  ({ download: { dataSet, isLoading } }) => ({
     totalSamples: getTotalSamplesAdded({ dataSet }),
     isLoading
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchDataSet }, dispatch);
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
+  }),
+  {
+    fetchDataSet
+  }
+)(Header);
+Header = withRouter(Header);
+export default Header;

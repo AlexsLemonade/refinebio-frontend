@@ -38,7 +38,13 @@ let ViewDownload = ({
             <div className="downloads__bar">
               <ShareDatasetButton dataSetId={dataSetId} />
             </div>
-            <DownloadDetails isImmutable={true} {...props} />
+            <DownloadDetails
+              isImmutable={true}
+              isEmbed={isEmbed}
+              aggregate_by={aggregate_by}
+              scale_by={scale_by}
+              {...props}
+            />
           </div>
         )
       }
