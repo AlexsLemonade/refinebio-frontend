@@ -27,7 +27,7 @@ export const fetchDataSet = dataSetId => async dispatch => {
 };
 
 export const editEmail = ({ dataSetId, email }) => async dispatch => {
-  const dataSet = await Ajax.put(`/dataset/${dataSetId}/`);
+  const dataSet = await Ajax.get(`/dataset/${dataSetId}/`);
   await Ajax.put(`/dataset/${dataSetId}/`, {
     data: dataSet.data,
     email_address: email

@@ -11,9 +11,6 @@ import {
   getExperimentCountBySpecies,
   getTotalExperimentsAdded
 } from '../../state/download/reducer';
-import { formatSentenceCase } from '../../common/helpers';
-import { getTransformationOptionFromName } from './transformation';
-import downloadsFilesData from './downloadFilesData';
 
 /**
  * This page is displayed when the user views a download that is different from the one that's

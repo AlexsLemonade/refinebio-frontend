@@ -4,7 +4,6 @@ import Dropdown from '../../components/Dropdown';
 import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
-import { startDownload } from '../../state/download/actions';
 import { connect } from 'react-redux';
 import { getDomain } from '../../common/helpers';
 import { Link } from 'react-router-dom';
@@ -87,12 +86,6 @@ let DownloadBar = ({
     </div>
   );
 };
-DownloadBar = connect(
-  state => ({}),
-  {
-    startDownload
-  }
-)(DownloadBar);
 export default DownloadBar;
 
 export function ShareDatasetButton({ dataSetId }) {

@@ -19,7 +19,6 @@ import Radio from '../../components/Radio';
 
 export default function DownloadDetails({
   dataSet,
-  filesData,
   experiments,
   removeSamples,
   removeExperiment,
@@ -39,9 +38,9 @@ export default function DownloadDetails({
       : downloadsFilesDataByExperiment(dataSet);
   return (
     <div>
-      {filesData && (
+      {fileData && (
         <DownloadFileSummary
-          summaryData={filesData}
+          summaryData={fileData}
           aggregate_by={aggregate_by}
           scale_by={scale_by}
           isEmbed={isEmbed}
