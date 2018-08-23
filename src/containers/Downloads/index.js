@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import {
   removeExperiment,
@@ -21,7 +21,6 @@ import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
 import downloadsFilesData from './downloadFilesData';
 import NoDatasetsImage from './../../common/images/no-datasets.svg';
-import { Link } from 'react-router-dom';
 
 import {
   editAggregation,
