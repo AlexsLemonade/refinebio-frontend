@@ -1,8 +1,53 @@
 /**
+ * Calculates estimates for file sizes when the samples are aggregated by specie
+ */
+export function downloadsFilesDataBySpecies(dataSet, samplesBySpecies) {
+  const totalExperiments = Object.keys(dataSet).length;
+  const totalSpecies = Object.keys(samplesBySpecies).length;
+  const geneExpressionSize = estimateGeneExpressionSize(samplesBySpecies);
+  const sampleMetadataSize = estimateSampleMetadataSize(dataSet);
+  const qualityReportSize = estimateSpecieMetadataSize(dataSet);
+
+  const allMetadataFileSize = sampleMetadataSize + qualityReportSize;
+
+  const totalSize =
+    geneExpressionSize +
+    sampleMetadataSize +
+    qualityReportSize +
+    allMetadataFileSize;
+
+  const data = {
+    total: formatBytes(totalSize),
+    files: [
+      {
+        title: `${totalSpecies} Gene Expression Matrices`,
+        description: '1 file per Species',
+        size: formatBytes(geneExpressionSize),
+        format: 'tsv'
+      },
+      {
+        title: `${totalExperiments} Sample Metadata Files`,
+        description: '1 file per Experiment',
+        size: formatBytes(sampleMetadataSize),
+        format: 'tsv'
+      },
+      {
+        title: `${totalSpecies} Species Metadata`,
+        description: '1 file per Species',
+        size: formatBytes(qualityReportSize),
+        format: 'json'
+      }
+    ]
+  };
+
+  return data;
+}
+
+/**
  * Returns file information estimations for a dataset, used as a helper method for the downloads page
  * ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/25#issuecomment-395870627
  */
-export default function downloadsFilesData(dataSet = {}) {
+export function downloadsFilesDataByExperiment(dataSet) {
   const totalExperiments = Object.keys(dataSet).length;
   const geneExpressionSize = estimateGeneExpressionSize(dataSet);
   const sampleMetadataSize = estimateSampleMetadataSize(dataSet);
@@ -44,13 +89,13 @@ export default function downloadsFilesData(dataSet = {}) {
 }
 
 // TODO add a better estimation of the size of each sample metadata
-function sampleMetadata(sampleId) {
+function sampleMetadata() {
   const SAMPLE_SIZE = 5 * 1024;
   return SAMPLE_SIZE;
 }
 
 // TODO add correct estimate for the matrix of a sample
-function estimateMatrixSizeOfSample(sampleId) {
+function estimateMatrixSizeOfSample() {
   return 20 * 256;
 }
 
@@ -67,9 +112,7 @@ function estimateGeneExpressionSize(dataSet) {
     let experimentSamples = dataSet[experimentId];
     // Need size of gene column for the first matrix.
     let experimentSize =
-      (experimentSamples.length + 1) *
-      0.5 *
-      estimateMatrixSizeOfSample(experimentSamples[0]);
+      (experimentSamples.length + 1) * 0.5 * estimateMatrixSizeOfSample();
     totalSize = totalSize + experimentSize;
   }
 
@@ -81,9 +124,7 @@ function estimateSampleMetadataSize(dataSet) {
   // Count the total number of samples, and multiply it with the average sample size
   for (let experimentId of Object.keys(dataSet)) {
     let experimentSamples = dataSet[experimentId];
-    for (let sampleId of experimentSamples) {
-      result = result + sampleMetadata(sampleId);
-    }
+    result = result + sampleMetadata() * Object.keys(experimentSamples).length;
   }
   return result;
 }
@@ -92,6 +133,11 @@ function estimateExperimentMetadataSize(dataSet) {
   // TODO Estimated size of experiment metadata file
   const EXPERIMENT_SIZE = 4048;
   return Object.keys(dataSet).length * EXPERIMENT_SIZE;
+}
+
+function estimateSpecieMetadataSize(samplesBySpecies) {
+  const SAMPLE_SIZE = 2048;
+  return Object.keys(samplesBySpecies).length * SAMPLE_SIZE;
 }
 
 /**

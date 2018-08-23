@@ -147,7 +147,7 @@ class DatasetNoEmail extends React.Component {
   };
 
   render() {
-    const { id, startDownload } = this.props;
+    const { id } = this.props;
     return (
       <div>
         <Helmet>
@@ -164,13 +164,7 @@ class DatasetNoEmail extends React.Component {
         <EmailForm
           dataSetId={id}
           isSubmitDisabled={!this.state.agreedToTerms && !this.state.token}
-          onSubmit={async () => {
-            const token = await Ajax.get('/token/');
-            await Ajax.post(`/token/`, { id: token.id, is_activated: true });
-
-            localStorage.setItem('refinebio-token', token.id);
-            startDownload(token.id);
-          }}
+          onSubmit={() => this._submitEmailForm()}
         />
         {!this.state.token && (
           <TermsOfUse
@@ -186,6 +180,15 @@ class DatasetNoEmail extends React.Component {
         </div>
       </div>
     );
+  }
+
+  async _submitEmailForm() {
+    debugger;
+    const token = await Ajax.get('/token/');
+    await Ajax.post(`/token/`, { id: token.id, is_activated: true });
+
+    localStorage.setItem('refinebio-token', token.id);
+    this.props.startDownload(token.id);
   }
 }
 

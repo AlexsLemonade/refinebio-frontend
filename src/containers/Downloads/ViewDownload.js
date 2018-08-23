@@ -11,7 +11,6 @@ import {
   getExperimentCountBySpecies,
   getTotalExperimentsAdded
 } from '../../state/download/reducer';
-import downloadsFilesData from './downloadFilesData';
 
 /**
  * This page is displayed when the user views a download that is different from the one that's
@@ -62,7 +61,6 @@ ViewDownload = connect(
     aggregate_by,
     scale_by,
     dataSetId: ownProps.dataSetId || ownProps.match.params.id,
-    filesData: downloadsFilesData(dataSet),
     samplesBySpecies:
       samples && dataSet
         ? groupSamplesBySpecies({
