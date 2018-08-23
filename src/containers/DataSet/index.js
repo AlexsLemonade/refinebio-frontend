@@ -26,14 +26,14 @@ import TermsOfUse from '../../components/TermsOfUse';
  * - Expired: Download files expire after some time
  * Related discussion https://github.com/AlexsLemonade/refinebio-frontend/issues/27
  */
-function DataSet({
+let DataSet = ({
   startDownload,
   dataSet,
   fetchDataSet,
   match: {
     params: { id: dataSetId }
   }
-}) {
+}) => {
   return (
     <Loader fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
@@ -63,7 +63,7 @@ function DataSet({
       }
     </Loader>
   );
-}
+};
 DataSet = connect(
   ({ dataSet }) => ({ dataSet }),
   {
