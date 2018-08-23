@@ -1,28 +1,29 @@
 import React from 'react';
-import './Checkbox.scss';
+import './Radio.scss';
 
-const Checkbox = ({
+const Radio = ({
   name,
   onToggle,
   checked,
   children,
   className,
-  disabled
+  disabled,
+  onClick
 }) => (
-  <div className={`checkbox ${!!className ? className : ''}`}>
+  <div className={`radio ${!!className ? className : ''}`}>
     <input
-      type="checkbox"
-      className="checkbox__input"
+      type="radio"
+      className="radio__input"
       disabled={disabled}
       name={name}
       id={name}
       checked={checked}
       onChange={onToggle}
     />
-    <label className="checkbox__label" htmlFor={name}>
+    <label className="radio__label" htmlFor={name} onClick={onClick}>
       {children ? children : name}
     </label>
   </div>
 );
 
-export default Checkbox;
+export default Radio;

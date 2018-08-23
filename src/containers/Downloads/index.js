@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import {
   removeExperiment,
@@ -22,7 +22,6 @@ import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
 import NoDatasetsImage from './../../common/images/no-datasets.svg';
-import { Link } from 'react-router-dom';
 
 import { formatSentenceCase } from '../../common/helpers';
 import {

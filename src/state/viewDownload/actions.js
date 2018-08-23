@@ -1,6 +1,10 @@
-import { getDataSetDetails, formatSamples, formatExperiments } from '../../api/dataSet';
+import {
+  getDataSetDetails,
+  formatSamples,
+  formatExperiments
+} from '../../api/dataSet';
 import { replace } from '../../state/routerActions';
-import {  } from '../../common/helpers';
+import {} from '../../common/helpers';
 
 export const loadViewDownload = data => ({
   type: 'LOAD_VIEW_DOWNLOAD',

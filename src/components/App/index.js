@@ -18,6 +18,7 @@ import License from '../../components/Terms/License';
 import store from '../../configureStore';
 import { Provider } from 'react-redux';
 import ErrorBoundary from '../../containers/ErrorBoundary';
+import About from '../About';
 
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
@@ -52,6 +53,8 @@ const App = () => {
           <ErrorBoundary>
             <Switch>
               <Route exact path="/" component={Main} />
+              <Route exact path="/about" component={About} />
+
               <Route path="/" component={AppContent} />
             </Switch>
           </ErrorBoundary>

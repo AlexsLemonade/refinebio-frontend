@@ -58,6 +58,13 @@
     }
   }
 
+  &__file-modifier {
+    margin-right: 48px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
   &__card {
     background-color: $whisper;
     box-shadow: 0 3px 20px 0 rgba($black, 0.1);
@@ -200,6 +207,18 @@
 
   &__empty-image {
     margin-top: 7.5 * 8px;
+  }
+
+  &__species-filters {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    margin-left: 24px;
+    margin-bottom: 16px;
+  }
+
+  &__species-filter-item {
+    margin-right: 16px;
   }
 }
 

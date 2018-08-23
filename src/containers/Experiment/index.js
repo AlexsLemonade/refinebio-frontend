@@ -71,7 +71,10 @@ let Experiment = ({
                   {experiment.title || 'No Title.'}
                 </h3>
                 <div>
-                  <DataSetSampleActions samples={experiment.samples} experiment={experiment} />
+                  <DataSetSampleActions
+                    samples={experiment.samples}
+                    experiment={experiment}
+                  />
                 </div>
               </div>
 
@@ -217,9 +220,15 @@ let Experiment = ({
                   experimentAccessionCodes={[experiment.accession_code]}
                   // Render prop for the button that adds the samples to the dataset
                   pageActionComponent={samplesDisplayed => (
-                    <DataSetSampleActions samples={samplesDisplayed} experiment={experiment} 
+                    <DataSetSampleActions
+                      samples={samplesDisplayed}
+                      experiment={experiment}
                       enableAddRemaining={false}
-                      meta={{buttonStyle: 'secondary', addText: 'Add Page to Dataset'}}/>
+                      meta={{
+                        buttonStyle: 'secondary',
+                        addText: 'Add Page to Dataset'
+                      }}
+                    />
                   )}
                 />
               </section>

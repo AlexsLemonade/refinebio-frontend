@@ -1,4 +1,3 @@
-
 import createHistory from 'history/createBrowserHistory';
 
 // Thanks to https://github.com/fabe/gatsby-universal/issues/4
@@ -31,4 +30,3 @@ if (typeof document !== 'undefined') {
 }
 
 export default history;
-

@@ -19,23 +19,7 @@ let DownloadBar = ({
 }) => {
   return (
     <div className="downloads__bar">
-      <ModalManager
-        component={showModal => (
-          <Button
-            buttonStyle="secondary"
-            text="Share Dataset"
-            onClick={showModal}
-          />
-        )}
-        modalProps={{ center: true, className: 'share-link-modal' }}
-      >
-        {() => (
-          <div>
-            <h1 className="share-link-modal__title">Sharable Link</h1>
-            <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
-          </div>
-        )}
-      </ModalManager>
+      <ShareDatasetButton dataSetId={dataSetId} />
 
       <div className="downloads__actions">
         <div className="downloads__fieldset">
@@ -110,3 +94,25 @@ DownloadBar = connect(
   }
 )(DownloadBar);
 export default DownloadBar;
+
+export function ShareDatasetButton({ dataSetId }) {
+  return (
+    <ModalManager
+      component={showModal => (
+        <Button
+          buttonStyle="secondary"
+          text="Share Dataset"
+          onClick={showModal}
+        />
+      )}
+      modalProps={{ center: true, className: 'share-link-modal' }}
+    >
+      {() => (
+        <div>
+          <h1 className="share-link-modal__title">Sharable Link</h1>
+          <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
+        </div>
+      )}
+    </ModalManager>
+  );
+}
