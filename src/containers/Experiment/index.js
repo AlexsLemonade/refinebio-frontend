@@ -134,7 +134,7 @@ let Experiment = ({
                         }`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="button button--link"
+                        className="link"
                       >
                         {experiment.pubmed_id}
                       </a>
@@ -155,7 +155,7 @@ let Experiment = ({
                         }`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="button button--link"
+                        className="link"
                       >
                         {experiment.publication_title}
                       </a>
@@ -175,9 +175,8 @@ let Experiment = ({
                       href={`/results?q=${encodeURIComponent(
                         experiment.submitter_institution
                       )}`}
-                      target="_blank"
                       rel="noopener noreferrer"
-                      className="button button--link"
+                      className="link"
                     >
                       {experiment.submitter_institution}
                     </a>
@@ -191,9 +190,8 @@ let Experiment = ({
                         .map(author => (
                           <a
                             href={`/results?q=${encodeURIComponent(author)}`}
-                            target="_blank"
                             rel="noopener noreferrer"
-                            className="button button--link"
+                            className="link"
                           >
                             {author}
                           </a>
