@@ -1,9 +1,5 @@
 @import '../../common/styles/variables';
 
-// conditionally change the layout when the about page is active
-.page-about {
-}
-
 .about {
   padding-bottom: 152px;
   display: flex;
@@ -47,21 +43,29 @@
     margin-right: -8px;
     padding: 80px 20px 21 * 8px 20px;
     width: 100%;
+    overflow: hidden;
+
+    @include desktop() {
+      overflow: visible;
+    }
   }
 
   &__header-bg {
     position: absolute;
     width: 880px;
     left: 50%;
-    margin-left: -440px;
+    transform: translateX(-50%);
     opacity: 0.1;
     bottom: 0;
-    z-index: 20;
     pointer-events: none;
+
+    @include tablet() {
+      z-index: 20;
+    }
 
     @include desktop() {
       width: 1348px;
-      margin-left: (-1348px/2);
+      max-width: 100%;
     }
   }
 
@@ -70,9 +74,12 @@
     font-size: 2rem;
     font-weight: 500;
     text-align: center;
-    z-index: 30;
     position: relative;
     text-shadow: 0 3px 19px rgba(0, 0, 0, 0.5);
+
+    @include tablet() {
+      z-index: 30;
+    }
 
     @include desktop() {
       font-size: 55px;
@@ -86,7 +93,10 @@
   &__top-box {
     margin-top: -14 * 8px;
     position: relative;
-    z-index: 30;
+
+    @include tablet() {
+      z-index: 30;
+    }
   }
 
   &__top-box-tagline {

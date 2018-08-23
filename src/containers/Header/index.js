@@ -34,8 +34,8 @@ class Header extends React.Component {
     return (
       <header
         className={`header js-header ${
-          pathname === '/' ? 'header--main' : ''
-        } ${this.invertColors() ? 'header--inverted header--scroll' : ''}`}
+          this.invertColors() ? 'header--inverted header--scroll' : ''
+        }`}
       >
         <div className="header__container">
           <Link to="/">
@@ -97,7 +97,7 @@ class Header extends React.Component {
    * much sense to invest a lot of time improving this.
    */
   invertColors() {
-    return this.props.location.pathname === '/about';
+    return ['/', '/about'].includes(this.props.location.pathname);
   }
 }
 
