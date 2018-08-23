@@ -1,4 +1,3 @@
-import { asyncFetch, Ajax } from '../../common/helpers';
 import { Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { replace, push } from '../../state/routerActions';
