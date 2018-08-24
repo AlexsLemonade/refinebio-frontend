@@ -54,7 +54,7 @@ p {
 
   &:hover {
     color: lighten($azure, 10%);
-    border-bottom: 1px solid currentColor;
+    text-decoration: underline;
   }
 
   &:focus,

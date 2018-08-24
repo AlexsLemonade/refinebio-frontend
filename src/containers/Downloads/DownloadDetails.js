@@ -16,6 +16,7 @@ import {
   downloadsFilesDataByExperiment
 } from './downloadFilesData';
 import Radio from '../../components/Radio';
+import { Link } from 'react-router-dom';
 
 export default function DownloadDetails({
   dataSet,
@@ -204,9 +205,12 @@ class ExperimentsView extends React.Component {
             return (
               <div className="downloads__sample" key={i}>
                 <div className="downloads__dataSet-info">
-                  <h2 className="downloads__experiment-title">
+                  <Link
+                    to={`/experiments/${experiment.id}`}
+                    className="downloads__experiment-title link"
+                  >
                     {experiment.title}
-                  </h2>
+                  </Link>
                   <div className="downloads__sample-stats">
                     <div className="downloads__sample-stat">
                       <img
