@@ -22,6 +22,7 @@
       background-color: #fdfdfd;
       box-shadow: 0 4px 21px 0 rgba(0, 0, 0, 0.2);
       padding: 3 * 8px;
+      margin-bottom: 24px;
 
       @include tablet {
         padding: 12 * 8px 0 8.5 * 8px;
@@ -73,6 +74,7 @@
 
     &--searchbox {
       position: relative;
+      overflow: hidden;
 
       @include tablet {
         padding: 10 * 8px 0 0;
@@ -81,9 +83,9 @@
       &:before {
         content: '';
         position: absolute;
-        top: -50%;
+        top: 0;
         left: 50%;
-        height: 120%;
+        height: 90%;
         width: 120%;
         transform: translateX(-50%);
         background: $background-color--blue-gradient;

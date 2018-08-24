@@ -11,6 +11,7 @@ import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
+import BackToTop from '../../components/BackToTop';
 
 import SamplesTable from './SamplesTable';
 import {
@@ -57,6 +58,7 @@ let Experiment = ({
               <Helmet>
                 <title>refine.bio - Experiment Details</title>
               </Helmet>
+              <BackToTop />        
               <div className="experiment__accession">
                 <img
                   src={AccessionIcon}

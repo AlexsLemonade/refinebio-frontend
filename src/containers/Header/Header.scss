@@ -8,25 +8,6 @@
 
   @include tablet {
     padding: 1.5rem 0;
-
-    &--main {
-      position: relative;
-      color: $white;
-      background: none;
-
-      .header__logo {
-        filter: brightness(0) invert(1);
-      }
-
-      .header__link--button {
-        color: $white;
-      }
-
-      .header__dataset-count {
-        background: $white;
-        color: $azure;
-      }
-    }
   }
 
   &__container {
@@ -78,8 +59,8 @@
   }
 
   &__menu {
+    display: none;
     position: absolute;
-    display: flex;
     flex-direction: column;
     align-items: center;
     background: $white;
@@ -96,9 +77,11 @@
 
     &--open {
       margin-left: 0;
+      display: flex;
     }
 
     @include tablet {
+      display: flex;
       position: relative;
       background: none;
       height: auto;
@@ -131,24 +114,27 @@
 }
 
 .header--inverted {
-  color: $white;
   background-color: rgba(12, 52, 131, 0.94);
-
-  .header__burger {
-    color: $white;
-  }
 
   .header__logo {
     filter: brightness(0) invert(1);
   }
 
-  .header__link--button {
+  .header__burger {
     color: $white;
   }
 
-  .header__dataset-count {
-    background: $white;
-    color: $azure;
+  @include tablet() {
+    color: $white;
+
+    .header__link--button {
+      color: $white;
+    }
+
+    .header__dataset-count {
+      background: $white;
+      color: $azure;
+    }
   }
 }
 
