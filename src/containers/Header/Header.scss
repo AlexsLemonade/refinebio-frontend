@@ -124,10 +124,14 @@
     color: $white;
   }
 
+  .header__link-button {
+    position: relative;
+  }
+
   @include tablet() {
     color: $white;
 
-    .header__link--button {
+    .header__link-button {
       color: $white;
     }
 

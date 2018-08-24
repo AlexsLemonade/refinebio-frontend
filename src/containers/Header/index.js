@@ -67,7 +67,7 @@ class Header extends React.Component {
             </li>
             <li className="header__link">
               <Link
-                className="button button--secondary pos-relative"
+                className="button button--secondary header__link-button"
                 to="/download"
               >
                 <span onClick={this.closeMenu}>Download Dataset</span>
