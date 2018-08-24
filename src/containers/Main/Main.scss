@@ -185,6 +185,8 @@
     background: $white;
     color: $azure;
     border: none;
+    padding-top: 7px;
+    padding-bottom: 7px;
   }
 
   &__stats-placeholder {
@@ -193,5 +195,14 @@
     display: block;
     margin-right: auto;
     max-width: 100%;
+  }
+
+  &__blurp-text {
+    font-size: 16px;
+    margin-bottom: 1rem;
+
+    @include tablet() {
+      font-size: 22px;
+    }
   }
 }

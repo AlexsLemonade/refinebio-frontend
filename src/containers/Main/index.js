@@ -96,7 +96,11 @@ const Main = ({ searchTerm, fetchResults, push }) => {
       )}
       <section className="main__section main__section--blue-gradient">
         <div className="main__container">
-          <h1 className="main__heading-1">Sign Up for Updates</h1>
+          <div className="main__heading-1">Sign Up for Updates</div>
+          <div className="main__blurp-text">
+            Be the first to know about new features, compendia releases, and
+            more!
+          </div>
           {/* Mailchimp Form Embed */}
           <div id="mc_embed_signup">
             <form

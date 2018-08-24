@@ -34,7 +34,7 @@ class SearchInput extends Component {
         <Field
           component={InputField}
           name="search"
-          className="search-input__textbox"
+          className="input-text input-lg search-input__textbox"
         />
         <Button
           text="Search"
