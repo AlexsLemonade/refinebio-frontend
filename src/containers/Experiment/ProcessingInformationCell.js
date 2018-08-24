@@ -22,7 +22,6 @@ export default function ProcessingInformationCell({
   ...props
 }) {
   let { pipelines } = sample;
-
   // Logic to decide which pipeline modal dialog should be displayed. On Keytar Kurt we're only supporting 4 types of
   // pipelines. In the future when we add more, we might want to refactor these modal dialogs
   // ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/22#issuecomment-394408631
@@ -43,7 +42,11 @@ export default function ProcessingInformationCell({
     }
   }
 
-  return <div>{pipelines.join(', ')}</div>;
+  if (pipelines.length > 0) {
+    return <div>{pipelines.join(', ')}</div>;
+  } else {
+    return <div className="experiment__not-provided">N/A</div>;
+  }
 }
 
 function SubmitterProcessedModal({ sample }) {

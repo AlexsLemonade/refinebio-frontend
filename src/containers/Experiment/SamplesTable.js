@@ -262,7 +262,8 @@ class SamplesTable extends React.Component {
       __totalValues: data.reduce(
         (total, sample) => total + (!!column.accessor(sample) ? 1 : 0),
         0
-      )
+      ),
+      Cell: CustomCell
     }));
 
     columns = columns.sort(
@@ -349,6 +350,17 @@ SamplesTable = connect(
   }
 )(SamplesTable);
 export default SamplesTable;
+
+/**
+ * Custom cell component used to display N/A when there's no value
+ */
+function CustomCell({ value }) {
+  if (!value) {
+    return <div className="experiment__not-provided">N/A</div>;
+  }
+
+  return value;
+}
 
 /**
  * Component that renders the content in "Additional Metadata" column
