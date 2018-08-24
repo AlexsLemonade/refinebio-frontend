@@ -3,12 +3,10 @@ import Button from '../../components/Button';
 import './BackToTop.scss';
 
 class BackToTop extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeClass: false
-    };
-  }
+  state = {
+    activeClass: false
+  };
+
   handleScroll = () => {
     if (window.pageYOffset >= window.innerHeight / 2) {
       this.setState({
@@ -20,12 +18,15 @@ class BackToTop extends Component {
       });
     }
   };
+
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
   }
+
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   }
+
   render() {
     return (
       <Button

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import BackToTop from '../../components/BackToTop';
 
 import {
   removeExperiment,
@@ -91,6 +92,7 @@ class Download extends Component {
         <Helmet>
           <title>refine.bio - Download Dataset</title>
         </Helmet>
+        <BackToTop />
         <h1 className="downloads__heading">Download Dataset</h1>
         {isLoading ? (
           <div className="loader" />
