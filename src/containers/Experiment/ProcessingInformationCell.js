@@ -45,7 +45,7 @@ export default function ProcessingInformationCell({
   if (pipelines.length > 0) {
     return <div>{pipelines.join(', ')}</div>;
   } else {
-    return <div className="experiment__not-provided">N/A</div>;
+    return <div className="experiment__not-provided">NA</div>;
   }
 }
 

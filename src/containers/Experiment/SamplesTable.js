@@ -356,7 +356,7 @@ export default SamplesTable;
  */
 function CustomCell({ value }) {
   if (!value) {
-    return <div className="experiment__not-provided">N/A</div>;
+    return <div className="experiment__not-provided">NA</div>;
   }
 
   return value;
