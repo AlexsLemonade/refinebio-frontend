@@ -22,10 +22,17 @@ import {
 } from '../Experiment/DataSetSampleActions';
 
 class Results extends Component {
-  state = { isLoading: true, query: '', filters: {} };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: !props.results,
+      query: '',
+      filters: {}
+    };
+  }
 
   componentDidMount() {
-    this.updateResults();
+    this.updateResults(true);
   }
 
   async componentDidUpdate(prevProps) {
@@ -42,7 +49,7 @@ class Results extends Component {
   /**
    * Reads the search query and other parameters from the url and submits a new request to update the results.
    */
-  async updateResults() {
+  async updateResults(checkPreviousResults = false) {
     const { location } = this.props;
     let { q: query, p: page, size, ...filters } = getQueryParamObject(
       location.search
@@ -62,7 +69,20 @@ class Results extends Component {
     page = parseInt(page || 1, 10);
     size = parseInt(size || 10, 10);
 
-    this.setState({ query, filters, isLoading: true });
+    this.setState({ query, filters });
+
+    // Check if we already have these results fetched, in which case we don't need to make an additional request
+    // this can only happen when the component is initially mounted.
+    if (
+      checkPreviousResults &&
+      this.props.results &&
+      this.props.results.length > 0 &&
+      query === this.props.searchTerm
+    ) {
+      return;
+    }
+
+    this.setState({ isLoading: true });
     await this.props.fetchResults({ query, page, size, filters });
     this.setState({ isLoading: false });
   }
