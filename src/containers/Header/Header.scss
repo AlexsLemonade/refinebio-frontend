@@ -133,6 +133,14 @@
 
     .header__link-button {
       color: $white;
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: $azure;
+        border-color: $white;
+        background-color: $white;
+      }
     }
 
     .header__dataset-count {
