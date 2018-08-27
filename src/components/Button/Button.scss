@@ -46,13 +46,6 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
     color: $azure;
     border: 1px solid currentColor;
 
-    &:hover,
-    &:focus,
-    &:active {
-      border-color: $black;
-      background-color: $black;
-    }
-
     &:disabled,
     &:disabled:hover,
     &:disabled:active,
@@ -66,6 +59,13 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
   &--remove {
     @extend .button--secondary;
     color: $black;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: $black;
+      background-color: $black;
+    }
   }
 
   &--transparent {
