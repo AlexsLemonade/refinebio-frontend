@@ -24,10 +24,10 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             {result.accession_code}
           </div>
           <Link
-            className="button button--link"
+            className="link result__title"
             to={`/experiments/${result.id}?ref=search`}
           >
-            <h2 className="result__title">{result.title || 'No title.'}</h2>
+            {result.title || 'No title.'}
           </Link>
         </div>
 

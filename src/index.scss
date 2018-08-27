@@ -112,5 +112,9 @@ fieldset {
   white-space: nowrap;
 }
 
+.pos-relative {
+  position: relative;
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';
