@@ -27,9 +27,13 @@
   }
 
   &__sort {
-    display: flex;
     flex-direction: column;
     margin-left: 8px;
+    display: none;
+
+    .rt-th.-cursor-pointer & {
+      display: flex;
+    }
 
     .rt-th.-sort-asc & {
       display: none;
@@ -48,7 +52,7 @@
       display: none;
     }
 
-    .rt-th.-sort-desc & {
+    .rt-th.-sort-desc.-cursor-pointer & {
       display: block;
     }
   }
@@ -57,12 +61,12 @@
     display: none;
     margin-left: 8px;
 
-    .rt-th.-sort-asc & {
+    .rt-th.-sort-asc.-cursor-pointer & {
       display: block;
     }
 
     .rt-th.-sort-desc & {
-      display: noneß;
+      display: none;
     }
   }
 
