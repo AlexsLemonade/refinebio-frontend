@@ -18,6 +18,14 @@
     }
   }
 
+  .rt-tbody {
+    min-height: 100px;
+  }
+
+  .rt-noData {
+    margin-top: 16px;
+  }
+
   &__sort {
     display: flex;
     flex-direction: column;
