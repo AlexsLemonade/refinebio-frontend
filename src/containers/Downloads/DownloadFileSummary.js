@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatSentenceCase } from '../../common/helpers';
+import { getTransformationOptionFromName } from './transformation';
 
 const DownloadFileSummary = ({
   summaryData,
@@ -17,7 +18,8 @@ const DownloadFileSummary = ({
             Aggregated by: {formatSentenceCase(aggregate_by)}
           </div>
           <div className="downloads__file-modifier">
-            Transformation: {formatSentenceCase(scale_by)}
+            Transformation:{' '}
+            {formatSentenceCase(getTransformationOptionFromName(scale_by))}
           </div>
         </div>
       )}

@@ -96,6 +96,22 @@ export function toggledFilter(filterType, filterValue) {
   };
 }
 
+export const clearFilters = () => async (dispatch, getState) => {
+  const {
+    searchTerm,
+    pagination: { resultsPerPage }
+  } = getState().search;
+  // reset to the first page when a filter is applied
+  dispatch(
+    navigateToResults({
+      query: searchTerm,
+      page: 1,
+      filters: {},
+      size: resultsPerPage
+    })
+  );
+};
+
 export function updatePage(page) {
   return async (dispatch, getState) => {
     const {
