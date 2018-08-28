@@ -16,7 +16,7 @@ import { PAGE_SIZES } from '../../constants/table';
 import StartSearchingImage from '../../common/images/start-searching.svg';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
-import {
+import DataSetSampleActions, {
   RemoveFromDatasetButton,
   AddToDatasetButton
 } from '../Experiment/DataSetSampleActions';
@@ -126,6 +126,16 @@ class Results extends Component {
       0
     );
 
+    const samplesAsDataSet = results.reduce((data, result) => {
+      data[result.accession_code] = result.processed_samples.map(
+        accession_code => ({
+          accession_code,
+          is_processed: true
+        })
+      );
+      return data;
+    }, {});
+
     return (
       <div className="results">
         <Helmet>
@@ -144,27 +154,13 @@ class Results extends Component {
         ) : (
           <div className="results__container">
             <div className="results__filters">
-              <ResultFilters appliedFilters={this.state.filters}
-              />
+              <ResultFilters appliedFilters={this.state.filters} />
             </div>
             <div className="results__list">
               <div className="results__top-bar">
                 {results.length ? <NumberOfResults /> : null}
-                {totalSamplesOnPage - samplesAdded === 0 ? (
-                  <RemoveFromDatasetButton
-                    totalAdded={totalSamplesOnPage}
-                    handleRemove={this.handlePageRemove}
-                  />
-                ) : (
-                  <AddToDatasetButton
-                    addMessage="Add Page to Dataset"
-                    handleAdd={() => {
-                      addExperiment(results);
-                    }}
-                    samplesInDataset={samplesAdded}
-                    buttonStyle="secondary"
-                  />
-                )}
+
+                <DataSetSampleActions data={samplesAsDataSet} />
               </div>
               {results.map((result, i) => (
                 <Result
@@ -185,6 +181,10 @@ class Results extends Component {
         )}
       </div>
     );
+  }
+
+  _getAllProcessedSamples() {
+    return [...new Set(this.props.results.map(x => x.processed_samples))];
   }
 }
 Results = connect(

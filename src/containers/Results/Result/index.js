@@ -32,13 +32,16 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
         </div>
 
         <DataSetSampleActions
-          // convert the `processed_samples` list into the object with sample fields that
-          // `DataSetSampleActions` is expecting.
-          samples={result.processed_samples.map(accession_code => ({
-            accession_code,
-            is_processed: true
-          }))}
-          experiment={result}
+          data={{
+            // convert the `processed_samples` list into the object with sample fields that
+            // `DataSetSampleActions` is expecting.
+            [result.accession_code]: result.processed_samples.map(
+              accession_code => ({
+                accession_code,
+                is_processed: true
+              })
+            )
+          }}
         />
       </div>
       <ul className="result__stats">

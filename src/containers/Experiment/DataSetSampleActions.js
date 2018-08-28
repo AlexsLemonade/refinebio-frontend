@@ -7,69 +7,92 @@ import DataSetStats from './DataSetStats';
 /**
  * Given a dataset and a set of samples, this component renders the correct buttons
  * to add/remove the samples from the dataset.
- * <DataSetSampleActions samples={samplesDisplayed} experiment={...} />
+ *
+ * <DataSetSampleActions data={{
+ *    [EXPERIMENT_ACCESSION_CODE]: [SAMPLES ...]
+ *    ...
+ * }} />
+ *
+ * `data` can be viewed as a slice of a dataSet.
  */
-let DataSetSampleActions = ({
-  samples,
-  experiment,
-  removeSamples,
-  addExperiment,
-  stats,
-  meta,
-  // in some cases we don't want to show the AddRemaining state, like for example adding
-  // the current samples in a table
-  enableAddRemaining = true
-}) => {
-  if (!stats.anyProcessedSamples()) {
-    // if there're no processed samples to be added, then just show the add button disabled
+class DataSetSampleActions extends React.Component {
+  render() {
+    const {
+      data,
+      dataSet,
+      removeSamples,
+      addExperiment,
+      meta,
+      // in some cases we don't want to show the AddRemaining state, like for example adding
+      // the current samples in a table
+      enableAddRemaining = true
+    } = this.props;
+
+    const stats = new DataSetStats(dataSet, this._getAllSamples());
+
+    if (!stats.anyProcessedSamples()) {
+      // if there're no processed samples to be added, then just show the add button disabled
+      return (
+        <Button
+          text={meta.addText}
+          isDisabled={true}
+          buttonStyle={meta.buttonStyle}
+        />
+      );
+    } else if (stats.allProcessedInDataSet()) {
+      return (
+        <RemoveFromDatasetButton
+          handleRemove={() => removeSamples(stats.getSamplesInDataSet())}
+        />
+      );
+    } else if (enableAddRemaining && stats.getSamplesInDataSet().length > 0) {
+      return (
+        <AddRemainingSamples
+          totalSamplesInDataset={stats.getSamplesInDataSet().length}
+          handleAdd={() =>
+            addExperiment(
+              Object.keys(data).map(accession_code => ({
+                accession_code,
+                samples: data[accession_code]
+              }))
+            )
+          }
+        />
+      );
+    }
+
+    // if there're processed samples that aren't part of the current dataset, show the button to add samples
     return (
-      <Button
-        text={meta.addText}
-        isDisabled={true}
-        buttonStyle={meta.buttonStyle}
-      />
-    );
-  } else if (stats.allProcessedInDataSet()) {
-    return (
-      <RemoveFromDatasetButton
-        handleRemove={() => removeSamples(stats.getSamplesInDataSet())}
-      />
-    );
-  } else if (enableAddRemaining && stats.getSamplesInDataSet().length > 0) {
-    return (
-      <AddRemainingSamples
-        totalSamplesInDataset={stats.getSamplesInDataSet().length}
+      <AddToDatasetButton
+        addMessage={meta.addText}
         handleAdd={() =>
-          addExperiment([
-            {
-              accession_code: experiment.accession_code,
-              samples
-            }
-          ])
+          addExperiment(
+            Object.keys(data).map(accession_code => ({
+              accession_code,
+              samples: data[accession_code]
+            }))
+          )
         }
+        buttonStyle={meta.buttonStyle}
       />
     );
   }
 
-  // if there're processed samples that aren't part of the current dataset, show the button to add samples
-  return (
-    <AddToDatasetButton
-      addMessage={meta.addText}
-      handleAdd={() =>
-        addExperiment([
-          {
-            accession_code: experiment.accession_code,
-            samples
-          }
-        ])
-      }
-      buttonStyle={meta.buttonStyle}
-    />
-  );
-};
+  _getAllSamples() {
+    if (!this.props.data) return [];
+    // return all samples in all given experiments
+    return [
+      ...new Set(
+        Object.keys(this.props.data)
+          .map(accessionCode => this.props.data[accessionCode])
+          .reduce((a, b) => a.concat(b))
+      )
+    ];
+  }
+}
 DataSetSampleActions = connect(
-  ({ download: { dataSet } }, { samples, meta = {} }) => ({
-    stats: new DataSetStats(dataSet, samples),
+  ({ download: { dataSet } }, { meta = {} }) => ({
+    dataSet,
     meta: {
       addText: 'Add to Dataset',
       buttonStyle: null,
