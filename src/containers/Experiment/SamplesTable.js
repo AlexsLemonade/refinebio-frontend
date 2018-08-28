@@ -458,8 +458,9 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
 
   return (
     <DataSetSampleActions
-      samples={[sample]}
-      experiment={{ accession_code: experimentAccessionCode }}
+      data={{
+        [experimentAccessionCode]: [sample]
+      }}
       meta={{ addText: 'Add', buttonStyle: 'secondary' }}
     />
   );

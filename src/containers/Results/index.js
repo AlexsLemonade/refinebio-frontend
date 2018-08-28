@@ -160,7 +160,14 @@ class Results extends Component {
               <div className="results__top-bar">
                 {results.length ? <NumberOfResults /> : null}
 
-                <DataSetSampleActions data={samplesAsDataSet} />
+                <DataSetSampleActions
+                  data={samplesAsDataSet}
+                  enableAddRemaining={false}
+                  meta={{
+                    buttonStyle: 'secondary',
+                    addText: 'Add Page to Dataset'
+                  }}
+                />
               </div>
               {results.map((result, i) => (
                 <Result
