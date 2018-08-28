@@ -42,7 +42,7 @@ const store = createStore(
 store.subscribe(
   throttle(() => {
     const state = store.getState();
-    if (state.download.dataSetId) {
+    if (state.download && state.download.dataSetId) {
       localStorage.setItem('dataSetId', state.download.dataSetId);
     } else {
       localStorage.removeItem('dataSetId');
@@ -79,11 +79,15 @@ function routerMiddleware(history) {
  * enough.
  *
  * Inspired from https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage
+ *
+ * In general it might not be a good idea to have to store know about `dataSetId` which is something
+ * specific of a reducer. In the future we could add a new reducer with the data that the application needs
+ *
  */
 function loadInitialState() {
   return {
     download: {
-      dataSetId: localStorage.getItem('dataSetId') || undefined
+      dataSetId: localStorage.getItem('dataSetId')
     }
   };
 }
