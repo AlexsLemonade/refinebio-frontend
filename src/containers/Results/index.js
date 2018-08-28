@@ -86,10 +86,8 @@ class Results extends Component {
     const searchTerm = this.state.query;
     const {
       results,
-      toggledFilter,
       addExperiment,
       removeExperiment,
-      filters: filtersData,
       dataSet,
       isLoading,
       pagination: { totalPages, currentPage }
@@ -126,10 +124,7 @@ class Results extends Component {
         ) : (
           <div className="results__container">
             <div className="results__filters">
-              <ResultFilters
-                toggledFilter={toggledFilter}
-                filters={filtersData}
-                appliedFilters={this.state.filters}
+              <ResultFilters appliedFilters={this.state.filters}
               />
             </div>
             <div className="results__list">
@@ -178,7 +173,6 @@ Results = connect(
     download: { dataSet }
   }) => ({
     results,
-    filters,
     pagination,
     searchTerm,
     dataSet,

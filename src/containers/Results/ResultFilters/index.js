@@ -2,6 +2,9 @@ import React from 'react';
 import './ResultFilters.scss';
 import Checkbox from '../../../components/Checkbox';
 import { formatSentenceCase } from '../../../common/helpers';
+import Button from '../../../components/Button';
+import { connect } from 'react-redux';
+import { toggledFilter, clearFilters } from '../../../state/search/actions';
 
 const FilterCategory = ({
   categoryFilters,
@@ -41,11 +44,20 @@ const FilterCategory = ({
   </section>
 );
 
-const ResultFilters = ({ toggledFilter, filters, appliedFilters }) => {
+let ResultFilters = ({
+  toggledFilter,
+  filters,
+  appliedFilters,
+  clearFilters
+}) => {
   return (
     <div className="result-filters">
       <div className="result-filters__title-container">
         <h2 className="result-filters__title">Filters</h2>
+
+        <Button onClick={clearFilters} buttonStyle="link">
+          clear all
+        </Button>
       </div>
       {filterCategories.map((category, i) => (
         <FilterCategory
@@ -59,6 +71,13 @@ const ResultFilters = ({ toggledFilter, filters, appliedFilters }) => {
     </div>
   );
 };
+ResultFilters = connect(
+  ({ search: { filters } }) => ({ filters }),
+  {
+    toggledFilter,
+    clearFilters
+  }
+)(ResultFilters);
 
 const filterCategories = [
   { name: 'organism', queryField: 'organisms__name' },

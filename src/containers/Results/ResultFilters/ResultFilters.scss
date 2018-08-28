@@ -1,6 +1,13 @@
 @import '../../../common/styles/variables';
 
 .result-filters {
+  &__title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
   &__title {
     text-transform: capitalize;
     margin-bottom: 0;
