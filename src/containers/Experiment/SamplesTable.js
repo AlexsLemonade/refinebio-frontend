@@ -432,7 +432,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
 
   if (!sample.is_processed) {
     return (
-      <p className="sample-not-processed">
+      <div className="sample-not-processed">
         <i className="ion-information-circled sample-not-processed__info-icon" />
         <div className="sample-not-processed__text">
           <div className="nowrap">Sample not processed</div>
@@ -440,7 +440,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
             Learn More
           </a>
         </div>
-      </p>
+      </div>
     );
   }
 

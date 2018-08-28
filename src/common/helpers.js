@@ -92,7 +92,6 @@ export async function asyncFetch(url, params = false) {
    * When the server answers, you have to check whether it's good or not.
    */
   if (!response.ok) {
-    debugger;
     throw new Error(response.status);
   }
   return await response.json();

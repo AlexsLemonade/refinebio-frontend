@@ -8,7 +8,7 @@ import './Result.scss';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
 
-const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
+const Result = ({ result, addExperiment, removeExperiment }) => {
   const metadataFields = getMetadataFields(result);
 
   return (

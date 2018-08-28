@@ -1,4 +1,3 @@
-
 const initialState = {
   dataSetId: null,
   dataSet: {},
@@ -108,6 +107,8 @@ export default (state = initialState, action) => {
 };
 
 export function groupSamplesBySpecies({ samples, dataSet }) {
+  if (!dataSet || !samples) return {};
+
   return Object.keys(dataSet).reduce((species, experimentAccessionCode) => {
     if (!Object.keys(samples).length || !samples[experimentAccessionCode])
       return species;
@@ -129,7 +130,7 @@ export function groupSamplesBySpecies({ samples, dataSet }) {
 }
 
 export function getExperimentCountBySpecies({ experiments, dataSet }) {
-  if (!dataSet) return {};
+  if (!dataSet || !experiments) return {};
 
   return Object.keys(dataSet).reduce((species, accessionCode) => {
     const experimentInfo = experiments[accessionCode];
@@ -145,6 +146,7 @@ export function getExperimentCountBySpecies({ experiments, dataSet }) {
 
 export function getTotalSamplesAdded({ dataSet }) {
   if (!dataSet) return 0;
+
   return Object.keys(dataSet).reduce((sum, accessionCode) => {
     return sum + dataSet[accessionCode].length;
   }, 0);

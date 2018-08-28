@@ -90,7 +90,6 @@ class Results extends Component {
       addExperiment,
       removeExperiment,
       filters: filtersData,
-      dataSet,
       isLoading,
       pagination: { totalPages, currentPage }
     } = this.props;
@@ -100,13 +99,7 @@ class Results extends Component {
       0
     );
 
-    const samplesAdded = results.reduce(
-      (sum, result) =>
-        dataSet[result.accession_code]
-          ? sum + dataSet[result.accession_code].length
-          : sum,
-      0
-    );
+    const samplesAdded = this._calculateSamplesAdded();
 
     return (
       <div className="results">
@@ -157,7 +150,6 @@ class Results extends Component {
                   result={result}
                   addExperiment={addExperiment}
                   removeExperiment={removeExperiment}
-                  dataSet={dataSet}
                 />
               ))}
               <Pagination
@@ -169,6 +161,19 @@ class Results extends Component {
           </div>
         )}
       </div>
+    );
+  }
+
+  _calculateSamplesAdded() {
+    const { dataSet, results } = this.props;
+    if (!dataSet) return 0;
+
+    return results.reduce(
+      (sum, result) =>
+        dataSet[result.accession_code]
+          ? sum + dataSet[result.accession_code].length
+          : sum,
+      0
     );
   }
 }
