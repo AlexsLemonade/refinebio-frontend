@@ -251,22 +251,20 @@ class ExperimentSamplesTable extends React.Component {
       <SamplesTable
         accessionCodes={this._getSamplesToBeDisplayed()}
         experimentAccessionCodes={[experiment.accession_code]}
-        noDataText={
-          this.state.showOnlyAddedSamples
-            ? 'No samples in the dataset currently'
-            : 'This '
-        }
         // Render prop for the button that adds the samples to the dataset
         pageActionComponent={samplesDisplayed => (
           <div className="experiment__sample-actions">
             <Checkbox
-              name="asd"
+              name="samples-dataset"
               checked={this.state.showOnlyAddedSamples}
               onToggle={() =>
                 this.setState({
                   showOnlyAddedSamples: !this.state.showOnlyAddedSamples,
                   onlyAddedSamples: this._getAddedSamples()
                 })
+              }
+              disabled={
+                !this.state.showOnlyAddedSamples && !this._anySampleInDataSet()
               }
             >
               Show only samples added to dataset
@@ -284,6 +282,14 @@ class ExperimentSamplesTable extends React.Component {
         )}
       />
     );
+  }
+
+  _anySampleInDataSet() {
+    const { experiment, dataSet } = this.props;
+    return new DataSetStats(
+      dataSet,
+      experiment.samples
+    ).anyProcessedInDataSet();
   }
 
   _getAddedSamples() {

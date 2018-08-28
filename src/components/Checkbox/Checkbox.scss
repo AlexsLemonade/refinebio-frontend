@@ -73,4 +73,15 @@
       }
     }
   }
+
+  &--disabled {
+    color: $disabled-color;
+    pointer-events: none;
+
+    .checkbox__label {
+      &:before {
+        background-color: $check-disabled;
+      }
+    }
+  }
 }

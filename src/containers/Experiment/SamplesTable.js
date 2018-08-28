@@ -148,6 +148,7 @@ class SamplesTable extends React.Component {
         columns={this.state.columns}
         ThComponent={ThComponent}
         minRows={0}
+        noDataText={this.props.noDataText}
       >
         {(state, makeTable, instance) => {
           return (

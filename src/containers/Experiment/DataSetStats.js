@@ -20,6 +20,10 @@ export default class DataSetStats {
     return this.getProcessedSamples().every(x => this.sampleInDataSet(x));
   }
 
+  anyProcessedInDataSet() {
+    return this.getProcessedSamples().some(x => this.sampleInDataSet(x));
+  }
+
   /**
    * Returns true if a given sample is in the dataset
    * @param {any} sample Sample object, with key `accession_code`
