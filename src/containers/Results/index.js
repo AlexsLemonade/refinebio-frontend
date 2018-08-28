@@ -16,10 +16,7 @@ import { PAGE_SIZES } from '../../constants/table';
 import StartSearchingImage from '../../common/images/start-searching.svg';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
-import DataSetSampleActions, {
-  RemoveFromDatasetButton,
-  AddToDatasetButton
-} from '../Experiment/DataSetSampleActions';
+import DataSetSampleActions from '../Experiment/DataSetSampleActions';
 
 class Results extends Component {
   constructor(props) {
@@ -112,19 +109,6 @@ class Results extends Component {
       isLoading,
       pagination: { totalPages, currentPage }
     } = this.props;
-
-    const totalSamplesOnPage = results.reduce(
-      (sum, result) => sum + result.samples.length,
-      0
-    );
-
-    const samplesAdded = results.reduce(
-      (sum, result) =>
-        dataSet[result.accession_code]
-          ? sum + dataSet[result.accession_code].length
-          : sum,
-      0
-    );
 
     const samplesAsDataSet = results.reduce((data, result) => {
       data[result.accession_code] = result.processed_samples.map(
