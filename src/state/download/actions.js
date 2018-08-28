@@ -8,6 +8,7 @@ import {
 } from '../../api/dataSet';
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
+import { getDataSetId } from './reducer';
 
 /**
  * Saves an updated copy of the given dataset in the store
@@ -95,7 +96,6 @@ export const addExperiment = experiments => async (dispatch, getState) => {
       dataSetId: updatedDataSetId,
       data: updatedDataSet
     } = await dispatch(createOrUpdateDataSet({ dataSetId, data }));
-    localStorage.setItem('dataSetId', updatedDataSetId);
     dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
   } catch (err) {
     dispatch(reportError(err));
@@ -116,8 +116,8 @@ export const addExperimentSucceeded = (dataSetId, dataSet) => {
  * If a dataSetId exists in localStorage,
  * use it to fetch dataset from endpoint
  */
-export const fetchDataSet = () => async dispatch => {
-  const dataSetId = localStorage.getItem('dataSetId');
+export const fetchDataSet = () => async (dispatch, getState) => {
+  const dataSetId = getDataSetId(getState());
 
   if (!dataSetId) {
     return;
@@ -237,8 +237,8 @@ export const editTransformation = ({ dataSetId, transformation }) => async (
   );
 };
 
-export const fetchDataSetDetails = () => async dispatch => {
-  const dataSetId = localStorage.getItem('dataSetId');
+export const fetchDataSetDetails = () => async (dispatch, getState) => {
+  const dataSetId = getDataSetId(getState());
   if (!dataSetId) {
     return;
   }
@@ -313,10 +313,6 @@ export const startDownload = tokenId => async (dispatch, getState) => {
 };
 
 // Remove all dataset
-export const clearDataSet = () => async dispatch => {
-  localStorage.removeItem('dataSetId');
-
-  dispatch({
-    type: 'DOWNLOAD_CLEAR'
-  });
-};
+export const clearDataSet = () => ({
+  type: 'DOWNLOAD_CLEAR'
+});

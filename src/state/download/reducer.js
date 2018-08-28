@@ -106,6 +106,9 @@ export default (state = initialState, action) => {
   }
 };
 
+// Returns the dataset id stored in the state.
+export const getDataSetId = state => state.download && state.download.dataSetId;
+
 export function groupSamplesBySpecies({ samples, dataSet }) {
   if (!dataSet || !samples) return {};
 
