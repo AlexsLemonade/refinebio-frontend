@@ -296,8 +296,6 @@ class ExperimentSamplesTable extends React.Component {
   }
 
   _getSamplesToBeDisplayed() {
-    const { experiment, dataSet } = this.props;
-
     if (this.state.showOnlyAddedSamples) {
       // show only the samples that are present in the dataset
       return this.state.onlyAddedSamples;

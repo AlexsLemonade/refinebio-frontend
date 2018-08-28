@@ -132,29 +132,13 @@ const SpeciesSamples = ({
               </p>
             </div>
 
-            <ModalManager
-              component={showModal => (
-                <Button
-                  text="View Samples"
-                  buttonStyle="secondary"
-                  onClick={showModal}
-                />
+            <ViewSamplesButtonModal
+              accessionCodes={species[speciesName].map(x => x.accession_code)}
+              experimentAccessionCodes={species[speciesName].map(
+                x => x.experimentAccessionCode
               )}
-              modalProps={{ className: 'samples-modal' }}
-            >
-              {() => (
-                <SamplesTable
-                  isRowRemovable={true}
-                  accessionCodes={species[speciesName].map(
-                    x => x.accession_code
-                  )}
-                  experimentAccessionCodes={species[speciesName].map(
-                    x => x.experimentAccessionCode
-                  )}
-                  isImmutable={isImmutable}
-                />
-              )}
-            </ModalManager>
+              isImmutable={isImmutable}
+            />
           </div>
 
           {removeSamples && (
@@ -253,25 +237,11 @@ class ExperimentsView extends React.Component {
                   </div>
 
                   {addedSamples.length > 0 && (
-                    <ModalManager
-                      component={showModal => (
-                        <Button
-                          text="View Samples"
-                          buttonStyle="secondary"
-                          onClick={showModal}
-                        />
-                      )}
-                      modalProps={{ className: 'samples-modal' }}
-                    >
-                      {() => (
-                        <SamplesTable
-                          isRowRemovable={true}
-                          accessionCodes={addedSamples}
-                          experimentAccessionCodes={[experiment.accession_code]}
-                          isImmutable={isImmutable}
-                        />
-                      )}
-                    </ModalManager>
+                    <ViewSamplesButtonModal
+                      accessionCodes={addedSamples}
+                      experimentAccessionCodes={[experiment.accession_code]}
+                      isImmutable={isImmutable}
+                    />
                   )}
                 </div>
                 {removeExperiment && (
@@ -326,6 +296,46 @@ class ExperimentsView extends React.Component {
           </div>
         ))}
       </div>
+    );
+  }
+}
+
+/**
+ * ViewSamples button, that when clicked shows a modal with a SamplesTable.
+ *
+ * When the modal is displayed, a snapshot of the samples is saved. So that the list it's not refreshed
+ * while the modal is being displayed.
+ */
+class ViewSamplesButtonModal extends React.Component {
+  state = {
+    accessionCodes: []
+  };
+
+  render() {
+    return (
+      <ModalManager
+        component={showModal => (
+          <Button
+            text="View Samples"
+            buttonStyle="secondary"
+            onClick={() => {
+              // copy the list of accession codes before displaying the modal dialog. So that the list doesn't get
+              // modified if the user adds/removes any sample
+              this.setState({ accessionCodes: [...this.props.accessionCodes] });
+              showModal();
+            }}
+          />
+        )}
+        modalProps={{ className: 'samples-modal' }}
+      >
+        {() => (
+          <SamplesTable
+            accessionCodes={this.state.accessionCodes}
+            experimentAccessionCodes={this.props.experimentAccessionCodes}
+            isImmutable={this.props.isImmutable}
+          />
+        )}
+      </ModalManager>
     );
   }
 }
