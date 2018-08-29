@@ -366,6 +366,10 @@ function CustomCell({ value }) {
  * Component that renders the content in "Additional Metadata" column
  */
 function MetadataCell({ original: sample }) {
+  if (sample.annotations.length === 0) {
+    return CustomCell({});
+  }
+
   let annotations = sample.annotations.map(entry =>
     JSON.stringify(entry.data, null, 2)
   );
