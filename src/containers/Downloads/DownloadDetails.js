@@ -321,7 +321,9 @@ class ViewSamplesButtonModal extends React.Component {
             onClick={() => {
               // copy the list of accession codes before displaying the modal dialog. So that the list doesn't get
               // modified if the user adds/removes any sample
-              this.setState({ accessionCodes: [...this.props.accessionCodes] });
+              this.setState((prevState, prevProps) => ({
+                accessionCodes: [...prevProps.accessionCodes]
+              }));
               showModal();
             }}
           />
