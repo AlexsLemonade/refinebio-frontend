@@ -74,15 +74,15 @@ function routerMiddleware(history) {
 
 /**
  * Loads the state from the localStorage, here are the keys that we're interested in persisting.
- * In the future if this get's more complicated, we can consider using https://github.com/rt2zz/redux-persist
+ * In the future if this gets more complicated, we can consider using https://github.com/rt2zz/redux-persist
  * For now, just loading these keys here and persisting them in `store.subscribe` should be good
  * enough.
  *
  * Inspired from https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage
  *
- * In general it might not be a good idea to have to store know about `dataSetId` which is something
+ * In general it might not be a good idea to have the store know about `dataSetId` which is something
  * specific of a reducer. In the future we could add a new reducer with the data that the application needs
- *
+ * saved
  */
 function loadInitialState() {
   return {
