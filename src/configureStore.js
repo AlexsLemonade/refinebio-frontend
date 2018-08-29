@@ -5,22 +5,11 @@ import thunk from 'redux-thunk';
 import history from './history';
 import { CALL_HISTORY_METHOD } from './state/routerActions';
 import { REPORT_ERROR } from './state/reportError';
+import throttle from 'lodash/throttle';
 
 declare var Raven: any;
 
-const initialState = {};
-
-const customMiddleware = store => next => action => {
-  const { type, data, meta } = action;
-  if (process.env.NODE_ENV === 'development') {
-    console.log({
-      type,
-      ...data,
-      ...meta
-    });
-  }
-  return next(action);
-};
+const initialState = loadInitialState();
 
 const errorMiddleware = () => next => action => {
   if (action.type !== REPORT_ERROR) {
@@ -46,13 +35,19 @@ const store = createStore(
   rootReducer,
   initialState,
   composeEnhancers(
-    applyMiddleware(
-      thunk,
-      customMiddleware,
-      routerMiddleware(history),
-      errorMiddleware
-    )
+    applyMiddleware(thunk, routerMiddleware(history), errorMiddleware)
   )
+);
+
+store.subscribe(
+  throttle(() => {
+    const state = store.getState();
+    if (state.download && state.download.dataSetId) {
+      localStorage.setItem('dataSetId', state.download.dataSetId);
+    } else {
+      localStorage.removeItem('dataSetId');
+    }
+  }, 1000)
 );
 
 export default store;
@@ -70,7 +65,29 @@ function routerMiddleware(history) {
       return next(action);
     }
 
-    const { payload: { method, args } } = action;
+    const {
+      payload: { method, args }
+    } = action;
     history[method](...args);
+  };
+}
+
+/**
+ * Loads the state from the localStorage, here are the keys that we're interested in persisting.
+ * In the future if this gets more complicated, we can consider using https://github.com/rt2zz/redux-persist
+ * For now, just loading these keys here and persisting them in `store.subscribe` should be good
+ * enough.
+ *
+ * Inspired from https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage
+ *
+ * In general it might not be a good idea to have the store know about `dataSetId` which is something
+ * specific of a reducer. In the future we could add a new reducer with the data that the application needs
+ * saved
+ */
+function loadInitialState() {
+  return {
+    download: {
+      dataSetId: localStorage.getItem('dataSetId')
+    }
   };
 }

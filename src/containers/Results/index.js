@@ -105,7 +105,6 @@ class Results extends Component {
       results,
       addExperiment,
       removeExperiment,
-      dataSet,
       isLoading,
       pagination: { totalPages, currentPage }
     } = this.props;
@@ -159,7 +158,6 @@ class Results extends Component {
                   result={result}
                   addExperiment={addExperiment}
                   removeExperiment={removeExperiment}
-                  dataSet={dataSet}
                 />
               ))}
               <Pagination

@@ -191,7 +191,6 @@ class DatasetNoEmail extends React.Component {
   }
 
   async _submitEmailForm() {
-    debugger;
     const token = await Ajax.get('/token/');
     await Ajax.post(`/token/`, { id: token.id, is_activated: true });
 

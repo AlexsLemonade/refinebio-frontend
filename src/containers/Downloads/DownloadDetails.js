@@ -33,10 +33,11 @@ export default function DownloadDetails({
   aggregate_by,
   scale_by
 }) {
-  let fileData =
-    aggregate_by === 'SPECIES'
+  let fileData = dataSet
+    ? aggregate_by === 'SPECIES'
       ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
-      : downloadsFilesDataByExperiment(dataSet);
+      : downloadsFilesDataByExperiment(dataSet)
+    : false;
   return (
     <div>
       {fileData && (
@@ -229,7 +230,7 @@ class ExperimentsView extends React.Component {
                       {metadataFields && metadataFields.length ? (
                         metadataFields.join(', ')
                       ) : (
-                        <i class="result__not-provided">
+                        <i className="result__not-provided">
                           No sample metadata fields
                         </i>
                       )}

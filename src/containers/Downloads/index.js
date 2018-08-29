@@ -96,7 +96,7 @@ class Download extends Component {
         <h1 className="downloads__heading">Download Dataset</h1>
         {isLoading ? (
           <div className="loader" />
-        ) : !Object.keys(dataSet).length ? (
+        ) : !dataSet || !Object.keys(dataSet).length ? (
           <div className="downloads__empty">
             <h3 className="downloads__empty-heading">Your dataset is empty.</h3>
             <Link className="button" to="/">
