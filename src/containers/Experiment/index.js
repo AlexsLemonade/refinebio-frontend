@@ -75,8 +75,9 @@ let Experiment = ({
                 </h3>
                 <div>
                   <DataSetSampleActions
-                    samples={experiment.samples}
-                    experiment={experiment}
+                    data={{
+                      [experiment.accession_code]: experiment.samples
+                    }}
                   />
                 </div>
               </div>
@@ -270,8 +271,9 @@ class ExperimentSamplesTable extends React.Component {
               Show only samples added to dataset
             </Checkbox>
             <DataSetSampleActions
-              samples={samplesDisplayed}
-              experiment={experiment}
+              data={{
+                [experiment.accession_code]: samplesDisplayed
+              }}
               enableAddRemaining={false}
               meta={{
                 buttonStyle: 'secondary',

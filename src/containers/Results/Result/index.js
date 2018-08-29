@@ -31,7 +31,18 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
           </Link>
         </div>
 
-        <DataSetSampleActions samples={result.samples} experiment={result} />
+        <DataSetSampleActions
+          data={{
+            // convert the `processed_samples` list into the object with sample fields that
+            // `DataSetSampleActions` is expecting.
+            [result.accession_code]: result.processed_samples.map(
+              accession_code => ({
+                accession_code,
+                is_processed: true
+              })
+            )
+          }}
+        />
       </div>
       <ul className="result__stats">
         <li className="result__stat">
