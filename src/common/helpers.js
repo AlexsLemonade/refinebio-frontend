@@ -145,3 +145,13 @@ export const getMetadataFields = experiment =>
   SampleFieldMetadata.filter(field =>
     experiment.sample_metadata.includes(field.id)
   ).map(field => field.Header);
+
+export function stringEnumerate([x0, ...rest]) {
+  if (!rest || !rest.length) {
+    return x0;
+  }
+
+  return `${[x0, ...rest.slice(0, rest.length - 1)].join(', ')} and ${
+    rest[rest.length - 1]
+  }`;
+}
