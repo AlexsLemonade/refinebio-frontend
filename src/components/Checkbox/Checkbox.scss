@@ -3,7 +3,8 @@
 .checkbox {
   display: flex;
   align-items: center;
-  margin-top: 8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 
   &__input {
     position: absolute;
@@ -69,6 +70,17 @@
     &:focus {
       &:before {
         border-color: #386db0;
+      }
+    }
+  }
+
+  &--disabled {
+    color: $disabled-color;
+    pointer-events: none;
+
+    .checkbox__label {
+      &:before {
+        background-color: $check-disabled;
       }
     }
   }

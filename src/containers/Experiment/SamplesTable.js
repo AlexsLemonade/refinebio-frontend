@@ -19,6 +19,8 @@ import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from './DataSetSampleActions';
 import './SamplesTable.scss';
 
+import isEqual from 'lodash/isEqual';
+
 class SamplesTable extends React.Component {
   componentDidMount() {
     document
@@ -45,8 +47,12 @@ class SamplesTable extends React.Component {
     });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     this.disableScrollButtonsIfNecessary();
+
+    if (!isEqual(prevProps.accessionCodes, this.props.accessionCodes)) {
+      this.fetchData({ setPage: 0 });
+    }
   }
 
   getMaxScrollPosition = () => {
@@ -130,7 +136,7 @@ class SamplesTable extends React.Component {
     return (
       <ReactTable
         manual={true}
-        onFetchData={this.fetchData}
+        onFetchData={tableState => this.fetchData({ tableState })}
         loading={this.state.loading}
         pages={this.state.pages}
         data={this.state.data}
@@ -142,6 +148,7 @@ class SamplesTable extends React.Component {
         columns={this.state.columns}
         ThComponent={ThComponent}
         minRows={0}
+        noDataText={this.props.noDataText}
       >
         {(state, makeTable, instance) => {
           return (
@@ -187,11 +194,15 @@ class SamplesTable extends React.Component {
     );
   }
 
-  fetchData = async (tableState = false) => {
+  fetchData = async ({ tableState = false, setPage = undefined } = {}) => {
     const { accessionCodes, experimentAccessionCodes = [] } = this.props;
-    const { page, pageSize } = this.state;
+    let { page, pageSize } = this.state;
     // get the backend ready `order_by` param, based on the sort options from the table
     let orderBy = this._getSortParam(tableState);
+
+    if (setPage >= 0) {
+      page = setPage;
+    }
 
     this.setState({ loading: true, orderBy });
 
@@ -225,6 +236,7 @@ class SamplesTable extends React.Component {
 
     this.setState({
       data,
+      page,
       columns,
       pages: Math.ceil(this.totalSamples / pageSize),
       loading: false
@@ -388,8 +400,8 @@ function MetadataCell({ original: sample }) {
             Download
           </div>
           <div className="metadata-modal__annotations">
-            {annotations.map(meta => (
-              <div>
+            {annotations.map((meta, index) => (
+              <div key={index}>
                 <pre>{meta}</pre>
               </div>
             ))}
