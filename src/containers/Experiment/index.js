@@ -23,6 +23,10 @@ import DataSetSampleActions from './DataSetSampleActions';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
 import DataSetStats from './DataSetStats';
+import TechnologyBadge, {
+  MICROARRAY,
+  RNA_SEQ
+} from '../../components/TechnologyBadge';
 
 let Experiment = ({
   fetchExperiment,
@@ -108,11 +112,15 @@ let Experiment = ({
                     : null}
                 </div>
                 <div className="experiment__stats-item">
-                  <img
-                    src={MicroarrayIcon}
+                  <TechnologyBadge
                     className="experiment__stats-icon"
-                    alt="MicroArray Badge Icon"
-                  />{' '}
+                    isMicroarray={experiment.samples.every(
+                      x => x.technology === MICROARRAY
+                    )}
+                    isRnaSeq={experiment.samples.every(
+                      x => x.technology === RNA_SEQ
+                    )}
+                  />
                   {experiment.samples.length
                     ? experiment.samples[0].pretty_platform
                     : null}
