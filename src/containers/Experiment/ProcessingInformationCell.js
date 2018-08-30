@@ -53,7 +53,7 @@ export default function ProcessingInformationCell({
 
 class ProcessingInformationModalContent extends React.Component {
   render() {
-    const { sample, results } = this.props;
+    const { results } = this.props;
 
     const pipelinesText = results.map(result => result.processor.name);
 
@@ -121,6 +121,7 @@ class ProcessingInformationModalContent extends React.Component {
 
   static PROTOCOLS = {
     'Affymetrix SCAN': AffymetrixScanProtocol,
+    'Illumina SCAN': IlluminaScanProtocol,
     'Transcriptome Index': null,
     'Salmon Quant': SalmonProtocol,
     MultiQC: null,
@@ -136,27 +137,6 @@ class ProcessingInformationModalContent extends React.Component {
     }
     return <Component {...this.props} />;
   }
-}
-
-function GeneIdentifierConversion() {
-  return (
-    <div>
-      <h3>Gene Identifier Conversion</h3>
-      <p>
-        The gene identifiers were detected and converted to Ensembl gene IDs
-        using our{' '}
-        <a
-          href="https://github.com/AlexsLemonade/identifier-refinery"
-          className="link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          custom mappings
-        </a>{' '}
-        and pipeline.
-      </p>
-    </div>
-  );
 }
 
 function AffymetrixScanProtocol() {
@@ -193,7 +173,7 @@ function AffymetrixScanProtocol() {
   );
 }
 
-function IlluminaScanProtocol({}) {
+function IlluminaScanProtocol() {
   return (
     <div className="processing-info-modal__protocol-description">
       <h3>SCAN</h3>
