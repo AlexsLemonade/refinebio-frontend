@@ -1,6 +1,40 @@
 @import '../../common/styles/variables';
 @import '../../common/styles/mixins';
+
+.samples-table-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__header {
+  }
+
+  &__main {
+    flex: 1 1;
+    overflow: hidden;
+
+    // the horizontal scroll buttons overflow outside of the table
+    // this is to make sure they are displayed
+    padding-left: 16px;
+    margin-left: -16px;
+    padding-right: 16px;
+    margin-right: -16px;
+  }
+
+  &__footer {
+    padding-top: 16px;
+  }
+}
+
+.samples-table-container {
+  position: relative;
+  height: 100%;
+}
+
 .samples-table {
+  height: 100%;
+  max-height: 115 * 8px;
+
   &__th {
     // The original styles for headers in ReactTable are under the selector: .ReactTable .rt-thead .rt-th.-sort-asc
     // !important is here to override that one

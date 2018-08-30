@@ -54,17 +54,19 @@ export default class ModalManager extends React.Component {
           }`}
           bodyOpenClassName="modal-open"
         >
-          {this.props.children({
-            hideModal: this.hideModal
-          })}
+          <div className="modal__content">
+            {this.props.children({
+              hideModal: this.hideModal
+            })}
 
-          <Button
-            className="modal__close"
-            onClick={this.hideModal}
-            buttonStyle="transparent"
-          >
-            <i className="icon ion-close" />
-          </Button>
+            <Button
+              className="modal__close"
+              onClick={this.hideModal}
+              buttonStyle="transparent"
+            >
+              <i className="icon ion-close" />
+            </Button>
+          </div>
         </Modal>
       </React.Fragment>
     );
