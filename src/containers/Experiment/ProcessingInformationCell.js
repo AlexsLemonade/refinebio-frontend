@@ -8,18 +8,6 @@ import { stringEnumerate } from '../../common/helpers';
 import moment from 'moment';
 import './ProcessingInformationCell.scss';
 
-// Pipeline names ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/22#issuecomment-394010812
-const PIPELINES = {
-  SubmitterProcessed: 'Submitter-processed',
-  AffymetrixSCAN: 'Affymetrix SCAN',
-  Salmontools: 'Salmontools',
-  AgilentSCANTwoColor: 'Agilent SCAN TwoColor',
-  IlluminaSCAN: 'Illumina SCAN',
-  tximport: 'tximport',
-  Salmon: 'Salmon',
-  MultiQC: 'MultiQC'
-};
-
 export default function ProcessingInformationCell({
   original: sample,
   ...props
@@ -173,7 +161,7 @@ function GeneIdentifierConversion() {
 function AffymetrixScanProtocol() {
   return (
     <div className="processing-info-modal__protocol-description">
-      <h3>Affymetrix SCAN</h3>
+      <h3>SCAN</h3>
       <p>
         SCAN (Single Channel Array Normalization) is a normalization method for
         single channel (Affymetrix) microarrays that allows us to process
@@ -282,7 +270,7 @@ function SalmonProtocol() {
 function TxtimportProtocol() {
   return (
     <div className="processing-info-modal__protocol-description">
-      <h3 className="processing-info-modal__subtitle">tximport</h3>
+      <h3 className="processing-info-modal__subtitle">Tximport</h3>
 
       <p>
         <i>tximport</i> imports transcript (tx)-level abundance estimates
