@@ -18,7 +18,14 @@ if (process.env.NODE_ENV !== 'test') Modal.setAppElement('#root');
 //   </ModalManager>
 export default class ModalManager extends React.Component {
   static defaultProps = {
-    modalProps: {}
+    // set custom properties to the modal
+    modalProps: {
+      // center the modal vertically in the page
+      center: false,
+
+      // Prevents the modal from being bigger than the screen when true
+      fillPage: false
+    }
   };
 
   state = {
@@ -42,7 +49,9 @@ export default class ModalManager extends React.Component {
               ? 'modal-backdrop--center'
               : 'modal-backdrop--top'
           }`}
-          className={`modal ${this.props.modalProps.className || ''}`}
+          className={`modal ${this.props.modalProps.className || ''}  ${
+            this.props.modalProps.fillPage ? 'modal--fill-page' : ''
+          }`}
           bodyOpenClassName="modal-open"
         >
           {this.props.children({

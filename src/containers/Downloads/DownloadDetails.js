@@ -329,7 +329,7 @@ class ViewSamplesButtonModal extends React.Component {
             }}
           />
         )}
-        modalProps={{ className: 'samples-modal' }}
+        modalProps={{ className: 'samples-modal', fillPage: true }}
       >
         {() => (
           <SamplesTable
