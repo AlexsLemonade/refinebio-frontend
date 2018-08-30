@@ -3,7 +3,6 @@ import { HashLink as Link } from 'react-router-hash-link';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
-import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
