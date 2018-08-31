@@ -1,6 +1,7 @@
 import { Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { replace, push } from '../../state/routerActions';
+import { getDataSetDetails } from '../../api/dataSet';
 
 export const loadDataSet = dataSet => ({
   type: 'LOAD_DATASET',
@@ -18,7 +19,7 @@ export const updateDataSet = props => ({
  */
 export const fetchDataSet = dataSetId => async dispatch => {
   try {
-    const dataSet = await Ajax.get(`/dataset/${dataSetId}/`);
+    const dataSet = await getDataSetDetails(dataSetId);
     dispatch(loadDataSet(dataSet));
   } catch (e) {
     dispatch(reportError(e));

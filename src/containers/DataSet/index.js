@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { Redirect } from 'react-router-dom';
 import { getAmazonDownloadLinkUrl } from '../../common/helpers';
 import Loader from '../../components/Loader';
 import NextStepsImage from './download-next-steps.svg';
@@ -17,8 +18,9 @@ import ModalManager from '../../components/Modal/ModalManager';
 
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
 
-import ViewDownload from '../Downloads/ViewDownload';
 import TermsOfUse from '../../components/TermsOfUse';
+import DownloadDetails from '../Downloads/DownloadDetails';
+import { ShareDatasetButton } from '../Downloads/DownloadBar';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -28,13 +30,17 @@ import TermsOfUse from '../../components/TermsOfUse';
  * Related discussion https://github.com/AlexsLemonade/refinebio-frontend/issues/27
  */
 let DataSet = ({
-  startDownload,
   dataSet,
+  startDownload,
   fetchDataSet,
   match: {
     params: { id: dataSetId }
   }
 }) => {
+  if (!dataSetId) {
+    return <Redirect to="/no-match" />;
+  }
+
   return (
     <Loader updateProps={dataSetId} fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
@@ -51,14 +57,20 @@ let DataSet = ({
                 />
               </div>
             </div>
-            {dataSetId &&
-              (dataSet.is_processed || !!dataSet.email_address) && (
-                <ViewDownload
-                  dataSetId={dataSetId}
-                  isEmbed={true}
-                  isImmutable={true}
-                />
-              )}
+
+            <h1 className="downloads__heading">Shared Dataset</h1>
+            <div className="downloads__bar">
+              <ShareDatasetButton dataSetId={dataSetId} />
+            </div>
+            <DownloadDetails
+              isImmutable={true}
+              isEmbed={true}
+              dataSet={dataSet.data}
+              aggregate_by={dataSet.aggregate_by}
+              scale_by={dataSet.scale_by}
+              experiments={dataSet.experiments}
+              samples={dataSet.samples}
+            />
           </div>
         )
       }
@@ -91,12 +103,14 @@ class DataSetPage extends React.Component {
   render() {
     const {
       is_processed,
+      is_processing,
       is_available,
       email_address,
       dataSetId,
       expires_on,
       ...props
     } = this.props;
+
     // 1. Check if the dataset is already processed, if true show a link to the download file
     if (is_processed) {
       const isExpired = moment(expires_on).isBefore(Date.now());
@@ -107,19 +121,24 @@ class DataSetPage extends React.Component {
       }
     } else {
       // 2. If it's not ready to be downloaded, then allow the user to set an email and receive an alert when its ready
-      if (!email_address) {
-        // 3. Allow the user to change his/her email if it's already added
-        // return (
-        //   <DataSetWithEmail
-        //     {...props}
-        //     email={email_address}
-        //     handleSubmit={this.handleEmailChange}
-        //   />
-        // );
-      } else {
+      // if (!email_address) {
+      // 3. Allow the user to change his/her email if it's already added
+      // return (
+      //   <DataSetWithEmail
+      //     {...props}
+      //     email={email_address}
+      //     handleSubmit={this.handleEmailChange}
+      //   />
+      // );
+      // } else {
+
+      // }
+      if (is_processing) {
         return (
           <DataSetProcessing email={email_address} dataSetId={dataSetId} />
         );
+      } else {
+        return null;
       }
     }
   }

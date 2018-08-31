@@ -24,7 +24,7 @@ class Download extends Component {
         return <DownloadStart dataSetId={dataSetId} />;
       } else {
         // if the dataset can't be downloaded, go back to the downloads page.
-        return <Redirect to="/download" />;
+        return <Redirect to="/download" params={{ returning: 1 }} />;
       }
     }
 

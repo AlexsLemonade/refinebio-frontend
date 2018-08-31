@@ -13,6 +13,7 @@ import Button from '../../../components/Button';
 import { Ajax } from '../../../common/helpers';
 import ProcessingImage from './download-processing.svg';
 import { editEmail } from '../../../state/dataSet/actions';
+import { startDownload } from '../../../state/download/actions';
 
 /**
  * This component gets rendereded in the DataSet page, when no email has been assigned
@@ -54,7 +55,7 @@ class DownloadStart extends React.Component {
             <EmailForm
               dataSetId={dataSetId}
               isSubmitDisabled={!this.state.agreedToTerms && !this.state.token}
-              onSubmit={() => this._submitEmailForm()}
+              onSubmit={data => this._submitEmailForm(data)}
             />
             {!this.state.token && (
               <TermsOfUse
@@ -74,15 +75,23 @@ class DownloadStart extends React.Component {
     );
   }
 
-  async _submitEmailForm() {
+  async _submitEmailForm(data) {
     const token = await Ajax.get('/token/');
     await Ajax.post(`/token/`, { id: token.id, is_activated: true });
 
     localStorage.setItem('refinebio-token', token.id);
-    this.props.startDownload(token.id);
+
+    await this.props.editEmail(data);
+    await this.props.startDownload(token.id);
   }
 }
-
+DownloadStart = connect(
+  () => ({}),
+  {
+    editEmail,
+    startDownload
+  }
+)(DownloadStart);
 export default DownloadStart;
 
 /**
@@ -106,19 +115,9 @@ EmailForm = reduxForm({
   form: 'dataSet-email-edit'
 })(EmailForm);
 // Set the initial value of the form components, with the email property
-EmailForm = connect(
-  (state, ownProps) => ({
-    initialValues: {
-      email: ownProps.email,
-      dataSetId: ownProps.dataSetId
-    }
-  }),
-  (dispatch, ownProps) => ({
-    onSubmit: async data => {
-      await dispatch(editEmail(data));
-      // if there's an onSubmit callback passed execute it here.
-      // This is used on instances where some component wants to be notified that the form was submitted
-      ownProps.onSubmit && ownProps.onSubmit(data);
-    }
-  })
-)(EmailForm);
+EmailForm = connect((state, ownProps) => ({
+  initialValues: {
+    email: ownProps.email,
+    dataSetId: ownProps.dataSetId
+  }
+}))(EmailForm);

@@ -263,9 +263,6 @@ export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
     experiments
   } = await getDataSetDetails(dataSetId);
 
-  samples = formatSamples(data, samples);
-  experiments = formatExperiments(experiments);
-
   dispatch(
     fetchDataSetDetailsSucceeded({
       dataSet: data,

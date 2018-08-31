@@ -118,7 +118,7 @@ export function ShareDatasetButton({ dataSetId }) {
       {() => (
         <div>
           <h1 className="share-link-modal__title">Sharable Link</h1>
-          <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
+          <InputCopy value={`${getDomain()}/dataset/${dataSetId}`} />
         </div>
       )}
     </ModalManager>
