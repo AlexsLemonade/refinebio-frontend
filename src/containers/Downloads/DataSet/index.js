@@ -1,26 +1,26 @@
 import React from 'react';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
-import { getAmazonDownloadLinkUrl } from '../../common/helpers';
-import Loader from '../../components/Loader';
+import { getAmazonDownloadLinkUrl } from '../../../common/helpers';
+import Loader from '../../../components/Loader';
 import NextStepsImage from './download-next-steps.svg';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
-import Button from '../../components/Button';
+import Button from '../../../components/Button';
 import { connect } from 'react-redux';
 import {
   fetchDataSet,
   regenerateDataSet,
   startDownload
-} from '../../state/dataSet/actions';
-import ModalManager from '../../components/Modal/ModalManager';
+} from '../../../state/dataSet/actions';
+import ModalManager from '../../../components/Modal/ModalManager';
 
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
 
-import TermsOfUse from '../../components/TermsOfUse';
-import DownloadDetails from '../Downloads/DownloadDetails';
-import { ShareDatasetButton } from '../Downloads/DownloadBar';
+import TermsOfUse from '../../../components/TermsOfUse';
+import DownloadDetails from '../DownloadDetails';
+import { ShareDatasetButton } from '../DownloadBar';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -33,10 +33,15 @@ let DataSet = ({
   dataSet,
   startDownload,
   fetchDataSet,
+  location,
   match: {
     params: { id: dataSetId }
   }
 }) => {
+  // Check if the user arrived here and wants to regenerate the current page.
+  if (location.state && location.state.regenerate) {
+  }
+
   return (
     <Loader updateProps={dataSetId} fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
@@ -88,16 +93,6 @@ export default DataSet;
  *
  */
 class DataSetPage extends React.Component {
-  state = {
-    changedEmail: false
-  };
-
-  handleEmailChange = () => {
-    this.setState({
-      changedEmail: true
-    });
-  };
-
   render() {
     const {
       is_processed,

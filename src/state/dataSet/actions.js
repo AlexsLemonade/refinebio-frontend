@@ -52,7 +52,12 @@ export const regenerateDataSet = () => async (dispatch, getState) => {
     });
 
     // redirect to the new dataset page, where the user will be able to add an email
-    dispatch(push(`/dataset/${dataSetId}`));
+    dispatch(
+      push({
+        pathname: `/dataset/${dataSetId}`,
+        state: { regenerate: true, dataSetId, dataSet: data }
+      })
+    );
   } catch (e) {
     dispatch(reportError(e));
   }

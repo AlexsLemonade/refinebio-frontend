@@ -31,10 +31,6 @@ class DownloadStart extends React.Component {
     }
   }
 
-  handleAgreedToTerms = () => {
-    this.setState({ agreedToTerms: !this.state.agreedToTerms });
-  };
-
   render() {
     const { dataSetId } = this.props;
     return (
@@ -60,7 +56,11 @@ class DownloadStart extends React.Component {
             {!this.state.token && (
               <TermsOfUse
                 agreedToTerms={this.state.agreedToTerms}
-                handleToggle={this.handleAgreedToTerms}
+                handleToggle={() =>
+                  this.setState(prevState => ({
+                    agreedToTerms: !prevState.agreedToTerms
+                  }))
+                }
               />
             )}
             <div className="dataset__image">
@@ -78,11 +78,10 @@ class DownloadStart extends React.Component {
   async _submitEmailForm(data) {
     const token = await Ajax.get('/token/');
     await Ajax.post(`/token/`, { id: token.id, is_activated: true });
-
     localStorage.setItem('refinebio-token', token.id);
 
     await this.props.editEmail(data);
-    await this.props.startDownload(token.id);
+    await this.props.startDownload({ tokenId: token.id });
   }
 }
 DownloadStart = connect(
