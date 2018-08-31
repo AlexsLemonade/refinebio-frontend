@@ -242,8 +242,7 @@ export const editTransformation = ({ dataSetId, transformation }) => async (
  * the current dataset. This information is needed to be able to group the samples
  * by species.
  */
-export const fetchDataSetDetails = () => async (dispatch, getState) => {
-  const dataSetId = getDataSetId(getState());
+export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
   if (!dataSetId) {
     return;
   }

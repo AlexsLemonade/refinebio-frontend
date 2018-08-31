@@ -49,8 +49,6 @@ export default (state = initialState, action) => {
         ...state,
         dataSetId,
         dataSet,
-        // When things are added the local details become desynced
-        areDetailsFetched: false,
         isLoading: false
       };
     }
@@ -65,8 +63,7 @@ export default (state = initialState, action) => {
       const { dataSetId } = action.data;
       return {
         ...state,
-        dataSetId,
-        isLoading: true
+        dataSetId
       };
     }
     case 'DOWNLOAD_FETCH_DETAILS_SUCCESS': {
@@ -87,9 +84,7 @@ export default (state = initialState, action) => {
         aggregate_by,
         scale_by,
         samples,
-        experiments,
-        isLoading: false,
-        areDetailsFetched: true
+        experiments
       };
     }
     case 'DOWNLOAD_CLEAR': {
