@@ -87,7 +87,7 @@ let DownloadBar = ({
             />
           </label>
         </div>
-        <Link className="button" to={`/dataset/${dataSetId}`}>
+        <Link className="button" to={`/download?start=true`}>
           Download
         </Link>
       </div>

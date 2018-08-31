@@ -1,23 +1,18 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import moment from 'moment';
 import { getAmazonDownloadLinkUrl } from '../../common/helpers';
 import Loader from '../../components/Loader';
-import ProcessingImage from './download-processing.svg';
 import NextStepsImage from './download-next-steps.svg';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
-import { reduxForm, Field } from 'redux-form';
 import Button from '../../components/Button';
 import { connect } from 'react-redux';
 import {
-  editEmail,
   fetchDataSet,
   regenerateDataSet,
   startDownload
 } from '../../state/dataSet/actions';
-import { Ajax } from '../../common/helpers';
 import ModalManager from '../../components/Modal/ModalManager';
 
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
@@ -113,18 +108,14 @@ class DataSetPage extends React.Component {
     } else {
       // 2. If it's not ready to be downloaded, then allow the user to set an email and receive an alert when its ready
       if (!email_address) {
-        if (!this.state.changedEmail) {
-          return <DatasetNoEmail {...props} />;
-        } else {
-          // 3. Allow the user to change his/her email if it's already added
-          return (
-            <DataSetWithEmail
-              {...props}
-              email={email_address}
-              handleSubmit={this.handleEmailChange}
-            />
-          );
-        }
+        // 3. Allow the user to change his/her email if it's already added
+        // return (
+        //   <DataSetWithEmail
+        //     {...props}
+        //     email={email_address}
+        //     handleSubmit={this.handleEmailChange}
+        //   />
+        // );
       } else {
         return (
           <DataSetProcessing email={email_address} dataSetId={dataSetId} />
@@ -135,147 +126,82 @@ class DataSetPage extends React.Component {
 }
 
 /**
- * This component gets rendereded in the DataSet page, when no email has been assigned
- */
-class DatasetNoEmail extends React.Component {
-  state = {
-    agreedToTerms: false,
-    token: null
-  };
-
-  componentDidMount() {
-    const token = localStorage.getItem('refinebio-token');
-    if (!!token) {
-      this.setState({ token });
-    }
-  }
-
-  handleAgreedToTerms = () => {
-    this.setState({ agreedToTerms: !this.state.agreedToTerms });
-  };
-
-  render() {
-    const { id } = this.props;
-    return (
-      <div>
-        <Helmet>
-          <title>refine.bio - Download</title>
-        </Helmet>
-        <h1>
-          We're almost ready to start putting your download files together!
-        </h1>
-        <h2>
-          Enter your email and we will send you the download link when your
-          files are ready. It usually takes about 15-20 minutes.
-        </h2>
-
-        <EmailForm
-          dataSetId={id}
-          isSubmitDisabled={!this.state.agreedToTerms && !this.state.token}
-          onSubmit={() => this._submitEmailForm()}
-        />
-        {!this.state.token && (
-          <TermsOfUse
-            agreedToTerms={this.state.agreedToTerms}
-            handleToggle={this.handleAgreedToTerms}
-          />
-        )}
-        <div className="dataset__image">
-          <img
-            src={ProcessingImage}
-            alt="We're processing your download file"
-          />
-        </div>
-      </div>
-    );
-  }
-
-  async _submitEmailForm() {
-    const token = await Ajax.get('/token/');
-    await Ajax.post(`/token/`, { id: token.id, is_activated: true });
-
-    localStorage.setItem('refinebio-token', token.id);
-    this.props.startDownload(token.id);
-  }
-}
-
-/**
  * In this state an email was already assigned to the Data Set
  */
-class DataSetWithEmail extends React.Component {
-  state = {
-    emailUpdated: false
-  };
+// class DataSetWithEmail extends React.Component {
+//   state = {
+//     emailUpdated: false
+//   };
 
-  render() {
-    const { id, email, handleSubmit } = this.props;
+//   render() {
+//     const { id, email, handleSubmit } = this.props;
 
-    return (
-      <div>
-        <div className="dataset__way-container">
-          <section>
-            <h1>Your dataset is on the way!</h1>
+//     return (
+//       <div>
+//         <div className="dataset__way-container">
+//           <section>
+//             <h1>Your dataset is on the way!</h1>
 
-            {this.state.emailUpdated && (
-              <div className="color-success">
-                <i className="ion-checkmark-circled" /> Email updated
-              </div>
-            )}
+//             {this.state.emailUpdated && (
+//               <div className="color-success">
+//                 <i className="ion-checkmark-circled" /> Email updated
+//               </div>
+//             )}
 
-            <ModalManager
-              modalProps={{ className: 'dataset__email-modal', center: true }}
-              component={showModal => (
-                <p>
-                  We have sent a confirmation email to {email} (
-                  <Button onClick={() => showModal()} buttonStyle="link">
-                    change
-                  </Button>)
-                </p>
-              )}
-            >
-              {({ hideModal }) => (
-                <div>
-                  <h1 className="dataset__email-modal-title">Change Email</h1>
-                  <h4>Enter New Email</h4>
-                  <EmailForm
-                    email={email}
-                    dataSetId={id}
-                    onSubmit={() => {
-                      hideModal();
-                      this._setEmailUpdated();
-                      handleSubmit();
-                    }}
-                  />
-                </div>
-              )}
-            </ModalManager>
+//             <ModalManager
+//               modalProps={{ className: 'dataset__email-modal', center: true }}
+//               component={showModal => (
+//                 <p>
+//                   We have sent a confirmation email to {email} (
+//                   <Button onClick={() => showModal()} buttonStyle="link">
+//                     change
+//                   </Button>)
+//                 </p>
+//               )}
+//             >
+//               {({ hideModal }) => (
+//                 <div>
+//                   <h1 className="dataset__email-modal-title">Change Email</h1>
+//                   <h4>Enter New Email</h4>
+//                   <EmailForm
+//                     email={email}
+//                     dataSetId={id}
+//                     onSubmit={() => {
+//                       hideModal();
+//                       this._setEmailUpdated();
+//                       handleSubmit();
+//                     }}
+//                   />
+//                 </div>
+//               )}
+//             </ModalManager>
 
-            <p>If you haven’t received it, please check your spam folders.</p>
-          </section>
-          <div className="dataset__way-image">
-            <img src={NextStepsImage} alt="" />
-          </div>
-        </div>
-        {/*
-          <section className="dataset__way-section">
-            <h2>Next Steps...</h2>
-            <p>What exactly is in my download file and how can I use it?</p>
-            <p>How can I link sample metadata to the Gene Expression file?</p>
-          </section>
-        */}
-      </div>
-    );
-  }
+//             <p>If you haven’t received it, please check your spam folders.</p>
+//           </section>
+//           <div className="dataset__way-image">
+//             <img src={NextStepsImage} alt="" />
+//           </div>
+//         </div>
+//         {/*
+//           <section className="dataset__way-section">
+//             <h2>Next Steps...</h2>
+//             <p>What exactly is in my download file and how can I use it?</p>
+//             <p>How can I link sample metadata to the Gene Expression file?</p>
+//           </section>
+//         */}
+//       </div>
+//     );
+//   }
 
-  _setEmailUpdated() {
-    this.setState({ emailUpdated: true });
+//   _setEmailUpdated() {
+//     this.setState({ emailUpdated: true });
 
-    // show email updated alert for 5 secs
-    setTimeout(() => {
-      this.setState({ emailUpdated: false });
-    }, 5000);
-  }
-}
+//     // show email updated alert for 5 secs
+//     setTimeout(() => {
+//       this.setState({ emailUpdated: false });
+//     }, 5000);
+//   }
+// }
 
 function DataSetProcessing({ email, dataSetId }) {
   return (
@@ -371,41 +297,3 @@ DataSetExpired = connect(
     regenerateDataSet
   }
 )(DataSetExpired);
-
-/**
- * This form can be used to edit the email that's associated with a dataset
- */
-let EmailForm = ({ handleSubmit, isSubmitDisabled }) => {
-  return (
-    <form className="form-edit-email" onSubmit={handleSubmit}>
-      <Field
-        component="input"
-        name="email"
-        type="email"
-        placeholder="jdoe@example.com"
-        className="input-text form-edit-email__text"
-      />
-      <Button text="Start Processing" isDisabled={isSubmitDisabled} />
-    </form>
-  );
-};
-EmailForm = reduxForm({
-  form: 'dataSet-email-edit'
-})(EmailForm);
-// Set the initial value of the form components, with the email property
-EmailForm = connect(
-  (state, ownProps) => ({
-    initialValues: {
-      email: ownProps.email,
-      dataSetId: ownProps.dataSetId
-    }
-  }),
-  (dispatch, ownProps) => ({
-    onSubmit: async data => {
-      await dispatch(editEmail(data));
-      // if there's an onSubmit callback passed execute it here.
-      // This is used on instances where some component wants to be notified that the form was submitted
-      ownProps.onSubmit && ownProps.onSubmit(data);
-    }
-  })
-)(EmailForm);
