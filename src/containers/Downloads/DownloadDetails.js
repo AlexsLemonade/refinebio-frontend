@@ -206,7 +206,7 @@ class ExperimentsView extends React.Component {
               this.state.organism &&
               !experiment.organisms.includes(this.state.organism)
             ) {
-              return <React.Fragment />;
+              return <React.Fragment key={i} />;
             }
 
             return (
@@ -302,15 +302,17 @@ class ExperimentsView extends React.Component {
         <div className="downloads__species-filter-item">Show</div>
         <div className="downloads__species-filter-item">
           <Radio
+            readOnly
             checked={!this.state.organism}
             onClick={() => this.setState({ organism: false })}
           >
             All Species
           </Radio>
         </div>
-        {uniqueOrganisms.map(organism => (
-          <div className="downloads__species-filter-item">
+        {uniqueOrganisms.map((organism, key) => (
+          <div className="downloads__species-filter-item" key={key}>
             <Radio
+              readOnly
               checked={this.state.organism === organism}
               onClick={() => this.setState({ organism: organism })}
             >
