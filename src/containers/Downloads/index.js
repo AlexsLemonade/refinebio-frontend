@@ -24,21 +24,12 @@ import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
 import NoDatasetsImage from './../../common/images/no-datasets.svg';
 
-import { formatSentenceCase } from '../../common/helpers';
-import {
-  getTransformationNameFromOption,
-  getTransformationOptionFromName
-} from './transformation';
-
 class Download extends Component {
-  state = {
-    aggregation: null,
-    transformation: null
-  };
-
   componentDidMount() {
-    const { dataSet, dataSetId, fetchDataSetDetails } = this.props;
-    if (dataSetId) fetchDataSetDetails(dataSet);
+    const { dataSet, dataSetId } = this.props;
+    if (dataSetId) {
+      this.props.fetchDataSetDetails(dataSet);
+    }
   }
 
   componentDidUpdate() {
@@ -54,21 +45,6 @@ class Download extends Component {
       fetchDataSetDetails(dataSet);
     }
   }
-
-  handleAggregationChange = aggregation => {
-    const { dataSetId, editAggregation } = this.props;
-    editAggregation({ dataSetId, aggregation });
-    this.setState({ aggregation });
-  };
-
-  handleTransformationChange = transformation => {
-    const { dataSetId, editTransformation } = this.props;
-    editTransformation({
-      dataSetId,
-      transformation: getTransformationNameFromOption(transformation)
-    });
-    this.setState({ transformation });
-  };
 
   render() {
     const { dataSetId, isLoading, dataSet } = this.props;
@@ -98,25 +74,13 @@ class Download extends Component {
           <Fragment>
             <DownloadBar
               dataSetId={dataSetId}
-              aggregation={this._getAggregation()}
-              aggregationOnChange={this.handleAggregationChange}
-              transformation={this._getTransformation()}
-              transformationOnChange={this.handleTransformationChange}
+              aggregate_by={this.props.aggregate_by}
+              scale_by={this.props.scale_by}
             />
             <DownloadDetails {...this.props} />
           </Fragment>
         )}
       </div>
-    );
-  }
-
-  _getAggregation() {
-    return formatSentenceCase(this.props.aggregate_by);
-  }
-
-  _getTransformation() {
-    return getTransformationOptionFromName(
-      formatSentenceCase(this.props.scale_by)
     );
   }
 }
