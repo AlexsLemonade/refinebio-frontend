@@ -47,25 +47,11 @@ class Download extends Component {
       dataSetId,
       areDetailsFetched,
       fetchDataSetDetails,
-      isLoading,
-      aggregate_by,
-      scale_by
+      isLoading
     } = this.props;
 
     if (dataSetId && !areDetailsFetched && !isLoading) {
       fetchDataSetDetails(dataSet);
-    }
-
-    if (aggregate_by && !this.state.aggregation) {
-      this.setState({ aggregation: formatSentenceCase(aggregate_by) });
-    }
-
-    if (scale_by && !this.state.transformation) {
-      this.setState({
-        transformation: getTransformationOptionFromName(
-          formatSentenceCase(scale_by)
-        )
-      });
     }
   }
 
@@ -112,15 +98,25 @@ class Download extends Component {
           <Fragment>
             <DownloadBar
               dataSetId={dataSetId}
-              aggregation={this.state.aggregation}
+              aggregation={this._getAggregation()}
               aggregationOnChange={this.handleAggregationChange}
-              transformation={this.state.transformation}
+              transformation={this._getTransformation()}
               transformationOnChange={this.handleTransformationChange}
             />
             <DownloadDetails {...this.props} />
           </Fragment>
         )}
       </div>
+    );
+  }
+
+  _getAggregation() {
+    return formatSentenceCase(this.props.aggregate_by);
+  }
+
+  _getTransformation() {
+    return getTransformationOptionFromName(
+      formatSentenceCase(this.props.scale_by)
     );
   }
 }
