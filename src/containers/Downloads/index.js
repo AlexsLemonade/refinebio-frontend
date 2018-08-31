@@ -3,29 +3,16 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import BackToTop from '../../components/BackToTop';
-
-import {
-  removeExperiment,
-  removeSamples,
-  clearDataSet,
-  fetchDataSetDetails
-} from '../../state/download/actions';
-import {
-  groupSamplesBySpecies,
-  getTotalSamplesAdded,
-  getExperimentCountBySpecies,
-  getTotalExperimentsAdded
-} from '../../state/download/reducer';
-
 import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
 import NoDatasetsImage from './../../common/images/no-datasets.svg';
 import Loader from '../../components/Loader';
+import { fetchDataSetDetails } from '../../state/download/actions';
 
 class Download extends Component {
   render() {
-    const { dataSetId, dataSet } = this.props;
+    const { dataSetId, dataSet, aggregate_by, scale_by } = this.props;
 
     return (
       <div className="downloads">
@@ -56,8 +43,8 @@ class Download extends Component {
               <Fragment>
                 <DownloadBar
                   dataSetId={dataSetId}
-                  aggregate_by={this.props.aggregate_by}
-                  scale_by={this.props.scale_by}
+                  aggregate_by={aggregate_by}
+                  scale_by={scale_by}
                 />
                 <DownloadDetails {...this.props} />
               </Fragment>
@@ -88,22 +75,9 @@ Download = connect(
     is_processing,
     is_processed,
     aggregate_by,
-    scale_by,
-    samplesBySpecies: groupSamplesBySpecies({
-      samples: samples,
-      dataSet: dataSet
-    }),
-    totalSamples: getTotalSamplesAdded({ dataSet }),
-    totalExperiments: getTotalExperimentsAdded({ dataSet }),
-    experimentCountBySpecies: getExperimentCountBySpecies({
-      experiments,
-      dataSet
-    })
+    scale_by
   }),
   {
-    removeSamples,
-    removeExperiment,
-    clearDataSet,
     fetchDataSetDetails
   }
 )(Download);

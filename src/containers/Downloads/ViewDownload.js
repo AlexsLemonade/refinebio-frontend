@@ -5,12 +5,6 @@ import { connect } from 'react-redux';
 import { fetchDataSetDetailsForView } from '../../state/viewDownload/actions';
 import DownloadDetails from './DownloadDetails';
 import { ShareDatasetButton } from './DownloadBar';
-import {
-  groupSamplesBySpecies,
-  getTotalSamplesAdded,
-  getExperimentCountBySpecies,
-  getTotalExperimentsAdded
-} from '../../state/download/reducer';
 
 /**
  * This page is displayed when the user views a download that is different from the one that's
@@ -60,20 +54,7 @@ ViewDownload = connect(
     experiments,
     aggregate_by,
     scale_by,
-    dataSetId: ownProps.dataSetId || ownProps.match.params.id,
-    samplesBySpecies:
-      samples && dataSet
-        ? groupSamplesBySpecies({
-            samples: samples,
-            dataSet: dataSet
-          })
-        : null,
-    totalSamples: getTotalSamplesAdded({ dataSet }),
-    totalExperiments: getTotalExperimentsAdded({ dataSet }),
-    experimentCountBySpecies: getExperimentCountBySpecies({
-      experiments,
-      dataSet
-    })
+    dataSetId: ownProps.dataSetId || ownProps.match.params.id
   }),
   (dispatch, ownProps) => ({
     fetchDownload: () =>

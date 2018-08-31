@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import Button from '../../components/Button';
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
@@ -14,22 +16,42 @@ import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 
 import Radio from '../../components/Radio';
 import { Link } from 'react-router-dom';
+import {
+  groupSamplesBySpecies,
+  getTotalSamplesAdded,
+  getExperimentCountBySpecies,
+  getTotalExperimentsAdded
+} from '../../state/download/reducer';
+import {
+  removeExperiment,
+  removeSamples,
+  clearDataSet
+} from '../../state/download/actions';
 
-export default function DownloadDetails({
+let DownloadDetails = ({
   dataSet,
+  samples,
   experiments,
+  aggregate_by,
+  scale_by,
+
   removeSamples,
   removeExperiment,
   clearDataSet,
-  samplesBySpecies,
-  experimentCountBySpecies,
-  totalSamples,
-  totalExperiments,
   isImmutable = false,
-  isEmbed = false,
-  aggregate_by,
-  scale_by
-}) {
+  isEmbed = false
+}) => {
+  const samplesBySpecies = groupSamplesBySpecies({
+    samples: samples,
+    dataSet: dataSet
+  });
+  const totalSamples = getTotalSamplesAdded({ dataSet });
+  const totalExperiments = getTotalExperimentsAdded({ dataSet });
+  const experimentCountBySpecies = getExperimentCountBySpecies({
+    experiments,
+    dataSet
+  });
+
   return (
     <div>
       <DownloadFileSummary
@@ -97,7 +119,16 @@ export default function DownloadDetails({
       </section>
     </div>
   );
-}
+};
+DownloadDetails = connect(
+  () => ({}),
+  {
+    removeSamples,
+    removeExperiment,
+    clearDataSet
+  }
+)(DownloadDetails);
+export default DownloadDetails;
 
 const SpeciesSamples = ({
   samplesBySpecies,
