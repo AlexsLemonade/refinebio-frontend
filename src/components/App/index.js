@@ -8,7 +8,6 @@ import Results from '../../containers/Results';
 import Experiment from '../../containers/Experiment';
 import Dashboard from '../../containers/Dashboard';
 import Downloads from '../../containers/Downloads';
-import ViewDownload from '../../containers/Downloads/ViewDownload';
 import Layout from '../Layout';
 import DataSet from '../../containers/DataSet';
 import NoMatch from '../../containers/NoMatch';
@@ -30,7 +29,6 @@ const AppContent = () => (
       <Route path="/results" component={Results} />
       <Route path="/experiments/:id" component={Experiment} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/download/:id" component={ViewDownload} />
       <Route path="/download" component={Downloads} />
       <Route path="/dataset/:id" component={DataSet} />
       <Route path="/privacy" component={Privacy} />

@@ -109,12 +109,18 @@ export default (state = initialState, action) => {
 // Returns the dataset id stored in the state.
 export const getDataSetId = state => state.download && state.download.dataSetId;
 
-export function groupSamplesBySpecies({ samples, dataSet }) {
+/**
+ *
+ * @param {*} samples contains detailed information about the samples in the dataset
+ * @param {*} dataSet
+ */
+export function groupSamplesBySpecies({ dataSet, samples }) {
   if (!dataSet || !samples) return {};
 
   return Object.keys(dataSet).reduce((species, experimentAccessionCode) => {
-    if (!Object.keys(samples).length || !samples[experimentAccessionCode])
+    if (!Object.keys(samples).length || !samples[experimentAccessionCode]) {
       return species;
+    }
     const experiment = dataSet[experimentAccessionCode];
     if (!experiment || !experiment.length) return species;
     experiment.forEach(addedSample => {

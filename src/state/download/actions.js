@@ -237,6 +237,11 @@ export const editTransformation = ({ dataSetId, transformation }) => async (
   );
 };
 
+/**
+ * Gets detailed information about the samples and experiments associated with
+ * the current dataset. This information is needed to be able to group the samples
+ * by species.
+ */
 export const fetchDataSetDetails = () => async (dispatch, getState) => {
   const dataSetId = getDataSetId(getState());
   if (!dataSetId) {

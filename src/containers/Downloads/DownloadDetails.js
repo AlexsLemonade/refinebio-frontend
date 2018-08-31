@@ -11,10 +11,7 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
-import {
-  downloadsFilesDataBySpecies,
-  downloadsFilesDataByExperiment
-} from './downloadFilesData';
+
 import Radio from '../../components/Radio';
 import { Link } from 'react-router-dom';
 
@@ -33,21 +30,15 @@ export default function DownloadDetails({
   aggregate_by,
   scale_by
 }) {
-  let fileData = dataSet
-    ? aggregate_by === 'SPECIES'
-      ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
-      : downloadsFilesDataByExperiment(dataSet)
-    : false;
   return (
     <div>
-      {fileData && (
-        <DownloadFileSummary
-          summaryData={fileData}
-          aggregate_by={aggregate_by}
-          scale_by={scale_by}
-          isEmbed={isEmbed}
-        />
-      )}
+      <DownloadFileSummary
+        dataSet={dataSet}
+        samplesBySpecies={samplesBySpecies}
+        aggregate_by={aggregate_by}
+        scale_by={scale_by}
+        isEmbed={isEmbed}
+      />
       <DownloadDatasetSummary
         samplesBySpecies={samplesBySpecies}
         totalSamples={totalSamples}
