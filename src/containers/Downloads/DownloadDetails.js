@@ -164,7 +164,7 @@ const SpeciesSamples = ({
             />
           </div>
 
-          {removeSamples && (
+          {!isImmutable && (
             <Button
               text="Remove"
               buttonStyle="remove"
@@ -267,7 +267,7 @@ class ExperimentsView extends React.Component {
                     />
                   )}
                 </div>
-                {removeExperiment && (
+                {!isImmutable && (
                   <Button
                     text="Remove"
                     buttonStyle="remove"

@@ -37,10 +37,6 @@ let DataSet = ({
     params: { id: dataSetId }
   }
 }) => {
-  if (!dataSetId) {
-    return <Redirect to="/no-match" />;
-  }
-
   return (
     <Loader updateProps={dataSetId} fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
@@ -48,17 +44,19 @@ let DataSet = ({
           <div className="loader" />
         ) : (
           <div>
-            <div className="dataset__container">
-              <div className="dataset__message">
-                <DataSetPage
-                  dataSetId={dataSetId}
-                  startDownload={startDownload}
-                  {...dataSet}
-                />
+            {dataSet.is_processing || dataSet.is_processed ? (
+              <div className="dataset__container">
+                <div className="dataset__message">
+                  <DataSetPage
+                    dataSetId={dataSetId}
+                    startDownload={startDownload}
+                    {...dataSet}
+                  />
+                </div>
               </div>
-            </div>
-
-            <h1 className="downloads__heading">Shared Dataset</h1>
+            ) : (
+              <h1 className="downloads__heading">Shared Dataset</h1>
+            )}
             <div className="downloads__bar">
               <ShareDatasetButton dataSetId={dataSetId} />
             </div>
@@ -119,27 +117,10 @@ class DataSetPage extends React.Component {
       } else {
         return <DataSetExpired />;
       }
+    } else if (is_processing) {
+      return <DataSetProcessing email={email_address} dataSetId={dataSetId} />;
     } else {
-      // 2. If it's not ready to be downloaded, then allow the user to set an email and receive an alert when its ready
-      // if (!email_address) {
-      // 3. Allow the user to change his/her email if it's already added
-      // return (
-      //   <DataSetWithEmail
-      //     {...props}
-      //     email={email_address}
-      //     handleSubmit={this.handleEmailChange}
-      //   />
-      // );
-      // } else {
-
-      // }
-      if (is_processing) {
-        return (
-          <DataSetProcessing email={email_address} dataSetId={dataSetId} />
-        );
-      } else {
-        return null;
-      }
+      return null;
     }
   }
 }
