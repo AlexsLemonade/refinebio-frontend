@@ -11,8 +11,7 @@ import Button from '../../../components/Button';
 import { connect } from 'react-redux';
 import {
   fetchDataSet,
-  regenerateDataSet,
-  startDownload
+  regenerateDataSet
 } from '../../../state/dataSet/actions';
 import ModalManager from '../../../components/Modal/ModalManager';
 
@@ -21,6 +20,7 @@ import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
 import TermsOfUse from '../../../components/TermsOfUse';
 import DownloadDetails from '../DownloadDetails';
 import { ShareDatasetButton } from '../DownloadBar';
+import DownloadStart from '../DownloadStart/DownloadStart';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -31,7 +31,6 @@ import { ShareDatasetButton } from '../DownloadBar';
  */
 let DataSet = ({
   dataSet,
-  startDownload,
   fetchDataSet,
   location,
   match: {
@@ -40,6 +39,12 @@ let DataSet = ({
 }) => {
   // Check if the user arrived here and wants to regenerate the current page.
   if (location.state && location.state.regenerate) {
+    return (
+      <DownloadStart
+        dataSetId={location.state.dataSetId}
+        dataSet={location.state.dataSet}
+      />
+    );
   }
 
   return (
@@ -52,11 +57,7 @@ let DataSet = ({
             {dataSet.is_processing || dataSet.is_processed ? (
               <div className="dataset__container">
                 <div className="dataset__message">
-                  <DataSetPage
-                    dataSetId={dataSetId}
-                    startDownload={startDownload}
-                    {...dataSet}
-                  />
+                  <DataSetPage dataSetId={dataSetId} {...dataSet} />
                 </div>
               </div>
             ) : (
@@ -83,40 +84,32 @@ let DataSet = ({
 DataSet = connect(
   ({ dataSet }) => ({ dataSet }),
   {
-    fetchDataSet,
-    startDownload
+    fetchDataSet
   }
 )(DataSet);
 export default DataSet;
 
-/**
- *
- */
-class DataSetPage extends React.Component {
-  render() {
-    const {
-      is_processed,
-      is_processing,
-      is_available,
-      email_address,
-      dataSetId,
-      expires_on,
-      ...props
-    } = this.props;
-
-    // 1. Check if the dataset is already processed, if true show a link to the download file
-    if (is_processed) {
-      const isExpired = moment(expires_on).isBefore(Date.now());
-      if (is_available && !isExpired) {
-        return <DataSetReady {...props} />;
-      } else {
-        return <DataSetExpired />;
-      }
-    } else if (is_processing) {
-      return <DataSetProcessing email={email_address} dataSetId={dataSetId} />;
+function DataSetPage({
+  is_processed,
+  is_processing,
+  is_available,
+  email_address,
+  dataSetId,
+  expires_on,
+  s3_bucket,
+  s3_key
+}) {
+  if (is_processed) {
+    const isExpired = moment(expires_on).isBefore(Date.now());
+    if (is_available && !isExpired) {
+      return <DataSetReady s3_bucket={s3_bucket} s3_key={s3_key} />;
     } else {
-      return null;
+      return <DataSetExpired />;
     }
+  } else if (is_processing) {
+    return <DataSetProcessing email={email_address} dataSetId={dataSetId} />;
+  } else {
+    return null;
   }
 }
 

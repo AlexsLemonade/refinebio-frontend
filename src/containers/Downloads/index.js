@@ -21,7 +21,7 @@ class Download extends Component {
     // show form to get information and start the download
     if (params.start === 'true') {
       if (dataSetCanBeDownloaded) {
-        return <DownloadStart dataSetId={dataSetId} />;
+        return <DownloadStart dataSetId={dataSetId} dataSet={dataSet} />;
       } else {
         // if the dataset can't be downloaded, go back to the downloads page.
         return <Redirect to="/download" params={{ returning: 1 }} />;

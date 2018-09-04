@@ -75,13 +75,18 @@ class DownloadStart extends React.Component {
     );
   }
 
-  async _submitEmailForm(data) {
+  async _submitEmailForm({ email }) {
     const token = await Ajax.get('/token/');
     await Ajax.post(`/token/`, { id: token.id, is_activated: true });
     localStorage.setItem('refinebio-token', token.id);
 
-    await this.props.editEmail(data);
-    await this.props.startDownload({ tokenId: token.id });
+    const { dataSetId, dataSet } = this.props;
+    await this.props.startDownload({
+      tokenId: token.id,
+      email,
+      dataSetId,
+      dataSet
+    });
   }
 }
 DownloadStart = connect(
