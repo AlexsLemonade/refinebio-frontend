@@ -12,88 +12,65 @@ import { fetchDataSetDetails } from '../../state/download/actions';
 import { getQueryParamObject } from '../../common/helpers';
 import DownloadStart from './DownloadStart/DownloadStart';
 
-class Download extends Component {
-  render() {
-    const { dataSetId, dataSet, aggregate_by, scale_by, location } = this.props;
-    const dataSetCanBeDownloaded = dataSet && Object.keys(dataSet).length > 0;
-    const params = getQueryParamObject(location.search);
+let Download = ({ download, location, fetchDataSetDetails }) => {
+  const { dataSetId, dataSet, aggregate_by, scale_by } = download;
+  const dataSetCanBeDownloaded = dataSet && Object.keys(dataSet).length > 0;
+  const params = getQueryParamObject(location.search);
 
-    // show form to get information and start the download
-    if (params.start === 'true') {
-      if (dataSetCanBeDownloaded) {
-        return <DownloadStart dataSetId={dataSetId} dataSet={dataSet} />;
-      } else {
-        // if the dataset can't be downloaded, go back to the downloads page.
-        return <Redirect to="/download" params={{ returning: 1 }} />;
-      }
+  // show form to get information and start the download
+  if (params.start === 'true') {
+    if (dataSetCanBeDownloaded) {
+      return <DownloadStart dataSetId={dataSetId} dataSet={dataSet} />;
+    } else {
+      // if the dataset can't be downloaded, go back to the downloads page.
+      return <Redirect to="/download" params={{ returning: 1 }} />;
     }
-
-    return (
-      <div className="downloads">
-        <Helmet>
-          <title>refine.bio - Download Dataset</title>
-        </Helmet>
-        <BackToTop />
-        <h1 className="downloads__heading">Download Dataset</h1>
-        <Loader fetch={() => this.props.fetchDataSetDetails(dataSetId)}>
-          {({ isLoading }) =>
-            isLoading ? (
-              <div className="loader" />
-            ) : !dataSetCanBeDownloaded ? (
-              <div className="downloads__empty">
-                <h3 className="downloads__empty-heading">
-                  Your dataset is empty.
-                </h3>
-                <Link className="button" to="/">
-                  Search and Add Samples
-                </Link>
-                <img
-                  src={NoDatasetsImage}
-                  alt="Your dataset is empty"
-                  className="downloads__empty-image"
-                />
-              </div>
-            ) : (
-              <Fragment>
-                <DownloadBar
-                  dataSetId={dataSetId}
-                  aggregate_by={aggregate_by}
-                  scale_by={scale_by}
-                />
-                <DownloadDetails {...this.props} />
-              </Fragment>
-            )
-          }
-        </Loader>
-      </div>
-    );
   }
-}
+
+  return (
+    <div className="downloads">
+      <Helmet>
+        <title>refine.bio - Download Dataset</title>
+      </Helmet>
+      <BackToTop />
+      <h1 className="downloads__heading">Download Dataset</h1>
+      <Loader fetch={() => fetchDataSetDetails(dataSetId)}>
+        {({ isLoading }) =>
+          isLoading ? (
+            <div className="loader" />
+          ) : !dataSetCanBeDownloaded ? (
+            <div className="downloads__empty">
+              <h3 className="downloads__empty-heading">
+                Your dataset is empty.
+              </h3>
+              <Link className="button" to="/">
+                Search and Add Samples
+              </Link>
+              <img
+                src={NoDatasetsImage}
+                alt="Your dataset is empty"
+                className="downloads__empty-image"
+              />
+            </div>
+          ) : (
+            <Fragment>
+              <DownloadBar
+                dataSetId={dataSetId}
+                aggregate_by={aggregate_by}
+                scale_by={scale_by}
+              />
+              <DownloadDetails {...download} />
+            </Fragment>
+          )
+        }
+      </Loader>
+    </div>
+  );
+};
 Download = connect(
-  ({
-    download: {
-      dataSetId,
-      samples,
-      dataSet,
-      experiments,
-      is_processing,
-      is_processed,
-      aggregate_by,
-      scale_by
-    }
-  }) => ({
-    dataSetId,
-    samples,
-    dataSet,
-    experiments,
-    is_processing,
-    is_processed,
-    aggregate_by,
-    scale_by
-  }),
+  ({ download }) => ({ download }),
   {
     fetchDataSetDetails
   }
 )(Download);
-
 export default Download;
