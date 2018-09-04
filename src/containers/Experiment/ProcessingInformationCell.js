@@ -8,6 +8,8 @@ import { stringEnumerate } from '../../common/helpers';
 import moment from 'moment';
 import './ProcessingInformationCell.scss';
 import isEqual from 'lodash/isEqual';
+import { getGenomeBuild } from '../../api/samples';
+import Loader from '../../components/Loader';
 
 export default function ProcessingInformationCell({
   original: sample,
@@ -53,7 +55,7 @@ export default function ProcessingInformationCell({
 
 class ProcessingInformationModalContent extends React.Component {
   render() {
-    const { results } = this.props;
+    const { results, sample } = this.props;
 
     const pipelinesText = results.map(result => result.processor.name);
 
@@ -105,10 +107,7 @@ class ProcessingInformationModalContent extends React.Component {
               </tr>
             ))}
 
-            <tr>
-              <td className="processing-info-modal__version">Genome build</td>
-              <td>GRCh38.p12</td>
-            </tr>
+            <GenomeBuild organism={sample.organism.name} />
           </tbody>
         </table>
 
@@ -137,6 +136,23 @@ class ProcessingInformationModalContent extends React.Component {
     }
     return <Component {...this.props} />;
   }
+}
+
+function GenomeBuild({ organism }) {
+  return (
+    <Loader fetch={() => getGenomeBuild(organism)}>
+      {({ isLoading, data }) =>
+        !isLoading && !data ? (
+          <React.Fragment />
+        ) : (
+          <tr>
+            <td className="processing-info-modal__version">Genome build</td>
+            <td>{data || '...'}</td>
+          </tr>
+        )
+      }
+    </Loader>
+  );
 }
 
 function AffymetrixScanProtocol() {
