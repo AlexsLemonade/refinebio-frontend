@@ -1,9 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import { Redirect } from 'react-router-dom';
 import { getAmazonDownloadLinkUrl } from '../../../common/helpers';
 import Loader from '../../../components/Loader';
-import NextStepsImage from './download-next-steps.svg';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
@@ -13,7 +11,6 @@ import {
   fetchDataSet,
   regenerateDataSet
 } from '../../../state/dataSet/actions';
-import ModalManager from '../../../components/Modal/ModalManager';
 
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
 

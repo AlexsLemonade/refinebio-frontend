@@ -2,14 +2,12 @@ import { Ajax } from '../../common/helpers';
 import {
   getDataSet,
   getDataSetDetails,
-  updateDataSet,
-  formatSamples,
-  formatExperiments
+  updateDataSet
 } from '../../api/dataSet';
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
 import { getDataSetId } from './reducer';
-import { push, replace } from '../routerActions';
+import { replace } from '../routerActions';
 
 /**
  * Saves an updated copy of the given dataset in the store
