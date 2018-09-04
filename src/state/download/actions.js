@@ -326,8 +326,13 @@ export const startDownload = ({ tokenId, dataSetId, dataSet, email }) => async (
     await dispatch(clearDataSet());
   }
 
-  // redirect to the dataset page
-  await dispatch(replace(`/dataset/${dataSetId}`));
+  // redirect to the dataset page, and send the email address in the state
+  await dispatch(
+    replace({
+      pathname: `/dataset/${dataSetId}`,
+      state: { email_address: email }
+    })
+  );
 };
 
 // Remove all dataset

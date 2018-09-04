@@ -57,7 +57,15 @@ let DataSet = ({
             {dataSet.is_processing || dataSet.is_processed ? (
               <div className="dataset__container">
                 <div className="dataset__message">
-                  <DataSetPage dataSetId={dataSetId} {...dataSet} />
+                  <DataSetPage
+                    dataSetId={dataSetId}
+                    {...dataSet}
+                    email_address={
+                      // the email is never returned from the api, check if it was passed
+                      // on the url state on a previous step
+                      location.state && location.state.email_address
+                    }
+                  />
                 </div>
               </div>
             ) : (
@@ -114,14 +122,22 @@ function DataSetPage({
 }
 
 function DataSetProcessing({ email, dataSetId }) {
+  let message = !!email ? (
+    <p>
+      An email with a download link will be sent to <strong>{email}</strong>{' '}
+      when the dataset is ready or you can come back to this page later.
+    </p>
+  ) : (
+    <p>
+      This can take several minutes. Check back in later to download the data.
+    </p>
+  );
+
   return (
     <div className="dataset__way-container">
       <div className="dataset__processed-text">
         <h1>Your dataset is being processed.</h1>
-        <p>
-          An email with a download link will be sent to <strong>{email}</strong>{' '}
-          when the dataset is ready or you can come back to this page later.
-        </p>
+        {message}
       </div>
       <ProcessingDataset loop={true} />
     </div>
