@@ -42,8 +42,9 @@ a {
 
 button {
   -moz-osx-font-smoothing: inherit;
-  -webkit-appearance: none;
   -webkit-font-smoothing: inherit;
+  -webkit-appearance: none;
+  appearance: none;
   background: transparent;
   border: none;
   color: inherit;
