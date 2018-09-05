@@ -175,12 +175,14 @@ class SamplesTable extends React.Component {
                   <div className="samples-table__scroll-button">{'>'}</div>
                 </div>
               </div>
-              <div>
-                <img src={InfoIcon} className="info-icon" alt="" /> Some fileds
-                may be harmonized.{' '}
-                <Link to="/docs" className="link">
-                  Learn more
-                </Link>
+              <div className="samples-table__notice info">
+                <i className="ion-information-circled info__icon" />
+                <div>
+                  Some fileds may be harmonized.{' '}
+                  <Link to="/docs" className="link">
+                    Learn more
+                  </Link>
+                </div>
               </div>
               <Pagination
                 onPaginate={this.handlePagination}
@@ -448,12 +450,12 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
 
   if (!sample.is_processed) {
     return (
-      <div className="sample-not-processed">
-        <i className="ion-information-circled sample-not-processed__info-icon" />
-        <div className="sample-not-processed__text">
+      <div className="sample-not-processed info">
+        <i className="ion-information-circled info__icon" />
+        <div>
           <div className="nowrap">Sample not processed</div>
-          <a href="/docs" className="button--link" target="_blank">
-            Learn More
+          <a href="/docs" className="link" target="_blank">
+            Learn more
           </a>
         </div>
       </div>
