@@ -176,9 +176,9 @@ class SamplesTable extends React.Component {
                 </div>
               </div>
               <div className="samples-table__notice info">
-                <i className="ion-information-circled info__icon" />
+                <img className="info__icon" src={InfoIcon} alt="" />
                 <div>
-                  Some fileds may be harmonized.{' '}
+                  Some fields may be harmonized.{' '}
                   <Link to="/docs" className="link">
                     Learn more
                   </Link>
@@ -451,7 +451,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
   if (!sample.is_processed) {
     return (
       <div className="sample-not-processed info">
-        <i className="ion-information-circled info__icon" />
+        <img className="info__icon" src={InfoIcon} alt="" />
         <div>
           <div className="nowrap">Sample not processed</div>
           <a href="/docs" className="link" target="_blank">
