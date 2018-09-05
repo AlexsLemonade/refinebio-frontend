@@ -86,7 +86,9 @@ class SamplesTable extends React.Component {
                   pageActionComponent(state.pageRows.map(x => x._original))}
               </div>
               <div className="experiment__table-container">
-                <HorizontalScroll>{makeTable()}</HorizontalScroll>
+                <HorizontalScroll targetSelector=".rt-table">
+                  {makeTable()}
+                </HorizontalScroll>
               </div>
               <div>
                 <img src={InfoIcon} className="info-icon" alt="" /> Some fileds

@@ -93,42 +93,6 @@
   .dataset-remove-button__added-container {
     display: block;
   }
-
-  &__scroll-left,
-  &__scroll-right {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    padding: auto 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &.samples-table__scroll--disabled {
-      display: none;
-    }
-  }
-
-  &__scroll-left {
-    left: -12px;
-  }
-
-  &__scroll-right {
-    right: -12px;
-  }
-
-  &__scroll-button {
-    width: 24px;
-    height: 48px;
-    color: $white;
-    background-color: $azure;
-    font-size: 24px;
-    justify-content: center;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    @include noselect;
-    z-index: 2;
-  }
 }
 
 .processing-info-modal {
