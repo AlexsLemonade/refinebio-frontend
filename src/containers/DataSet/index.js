@@ -1,16 +1,22 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import moment from 'moment';
 import { getAmazonDownloadLinkUrl } from '../../common/helpers';
 import Loader from '../../components/Loader';
 import ProcessingImage from './download-processing.svg';
 import NextStepsImage from './download-next-steps.svg';
 import DownloadImage from './download-dataset.svg';
+import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
 import { reduxForm, Field } from 'redux-form';
 import Button from '../../components/Button';
 import { connect } from 'react-redux';
-import { editEmail, fetchDataSet } from '../../state/dataSet/actions';
-import { startDownload } from '../../state/download/actions';
+import {
+  editEmail,
+  fetchDataSet,
+  regenerateDataSet,
+  startDownload
+} from '../../state/dataSet/actions';
 import { Ajax } from '../../common/helpers';
 import ModalManager from '../../components/Modal/ModalManager';
 
@@ -26,16 +32,16 @@ import TermsOfUse from '../../components/TermsOfUse';
  * - Expired: Download files expire after some time
  * Related discussion https://github.com/AlexsLemonade/refinebio-frontend/issues/27
  */
-function DataSet({
+let DataSet = ({
   startDownload,
   dataSet,
   fetchDataSet,
   match: {
     params: { id: dataSetId }
   }
-}) {
+}) => {
   return (
-    <Loader fetch={() => fetchDataSet(dataSetId)}>
+    <Loader updateProps={dataSetId} fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
         isLoading ? (
           <div className="loader" />
@@ -63,7 +69,7 @@ function DataSet({
       }
     </Loader>
   );
-}
+};
 DataSet = connect(
   ({ dataSet }) => ({ dataSet }),
   {
@@ -93,11 +99,13 @@ class DataSetPage extends React.Component {
       is_available,
       email_address,
       dataSetId,
+      expires_on,
       ...props
     } = this.props;
     // 1. Check if the dataset is already processed, if true show a link to the download file
     if (is_processed) {
-      if (is_available) {
+      const isExpired = moment(expires_on).isBefore(Date.now());
+      if (is_available && !isExpired) {
         return <DataSetReady {...props} />;
       } else {
         return <DataSetExpired />;
@@ -147,7 +155,7 @@ class DatasetNoEmail extends React.Component {
   };
 
   render() {
-    const { id, startDownload } = this.props;
+    const { id } = this.props;
     return (
       <div>
         <Helmet>
@@ -164,13 +172,7 @@ class DatasetNoEmail extends React.Component {
         <EmailForm
           dataSetId={id}
           isSubmitDisabled={!this.state.agreedToTerms && !this.state.token}
-          onSubmit={async () => {
-            const token = await Ajax.get('/token/');
-            await Ajax.post(`/token/`, { id: token.id, is_activated: true });
-
-            localStorage.setItem('refinebio-token', token.id);
-            startDownload(token.id);
-          }}
+          onSubmit={() => this._submitEmailForm()}
         />
         {!this.state.token && (
           <TermsOfUse
@@ -186,6 +188,14 @@ class DatasetNoEmail extends React.Component {
         </div>
       </div>
     );
+  }
+
+  async _submitEmailForm() {
+    const token = await Ajax.get('/token/');
+    await Ajax.post(`/token/`, { id: token.id, is_activated: true });
+
+    localStorage.setItem('refinebio-token', token.id);
+    this.props.startDownload(token.id);
   }
 }
 
@@ -338,13 +348,29 @@ class DataSetReady extends React.Component {
   }
 }
 
-function DataSetExpired() {
-  return (
-    <div>
-      <h1>Sorry this data set expired.</h1>
+let DataSetExpired = ({ regenerateDataSet }) => (
+  <div className="dataset__way-container">
+    <div className="dataset__processed-text">
+      <h1 className="dataset__way-title">Download Expired! </h1>
+      <div className="dataset__way-subtitle">
+        The download files for this dataset isn’t available anymore
+      </div>
+      <div className="dataset__way-container">
+        <Button onClick={regenerateDataSet}>Regenerate Files</Button>
+      </div>
     </div>
-  );
-}
+
+    <div className="dataset__way-image">
+      <img src={DownloadExpiredImage} alt="" />
+    </div>
+  </div>
+);
+DataSetExpired = connect(
+  () => ({}),
+  {
+    regenerateDataSet
+  }
+)(DataSetExpired);
 
 /**
  * This form can be used to edit the email that's associated with a dataset

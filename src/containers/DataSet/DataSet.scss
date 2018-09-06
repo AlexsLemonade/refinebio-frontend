@@ -1,15 +1,13 @@
-
 @import '../../common/styles/variables.scss';
 
 .dataset {
   &__message {
     width: 650px;
-    margin: 12*8px auto;
+    margin: 12 * 8px auto;
   }
 
   &__container {
-    border-bottom: 1px solid $gray;
-    margin-bottom: 5*8px;
+    margin-bottom: 5 * 8px;
 
     &:last-of-type {
       border: none;
@@ -23,7 +21,7 @@
 
   &__email-modal {
     padding: 32px 80px;
-    max-width: 84*8px;
+    max-width: 84 * 8px;
   }
 
   &__email-modal-title {
@@ -38,7 +36,7 @@
 
   &__processed-text {
     min-width: 2/3 * 100%;
-    margin-right: 8*8px;
+    margin-right: 8 * 8px;
   }
 
   &__way-image {
@@ -54,20 +52,22 @@
     padding-left: 40px;
     padding-right: 40px;
   }
-}
 
+  &__way-title {
+    margin-bottom: 16px;
+  }
 
-
-
-.form-edit-email {
-  display: flex;
-  margin-bottom: 2*8px;
-
-  &__text {
-    margin-right: 8px;
-    width: 47*8px;
+  &__way-subtitle {
+    margin-bottom: 32px;
   }
 }
 
+.form-edit-email {
+  display: flex;
+  margin-bottom: 2 * 8px;
 
-
+  &__text {
+    margin-right: 8px;
+    width: 47 * 8px;
+  }
+}

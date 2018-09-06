@@ -4,7 +4,7 @@
  */
 export default class DataSetManager {
   constructor(dataSet) {
-    this.dataSet = dataSet;
+    this.dataSet = dataSet || {};
   }
 
   removeExperiment(accessionCodesToRemove) {

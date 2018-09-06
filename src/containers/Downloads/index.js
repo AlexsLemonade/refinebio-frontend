@@ -1,13 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import BackToTop from '../../components/BackToTop';
 
 import {
   removeExperiment,
   removeSamples,
   clearDataSet,
-  fetchDataSetDetails
+  fetchDataSetDetails,
+  editAggregation,
+  editTransformation
 } from '../../state/download/actions';
 import {
   groupSamplesBySpecies,
@@ -19,14 +22,7 @@ import {
 import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
-import downloadsFilesData from './downloadFilesData';
 import NoDatasetsImage from './../../common/images/no-datasets.svg';
-import { Link } from 'react-router-dom';
-
-import {
-  editAggregation,
-  editTransformation
-} from '../../state/dataSet/actions';
 
 import { formatSentenceCase } from '../../common/helpers';
 import {
@@ -89,27 +85,18 @@ class Download extends Component {
   };
 
   render() {
-    const {
-      dataSetId,
-      isLoading,
-      dataSet,
-      is_processing,
-      is_processed
-    } = this.props;
-
-    if (is_processing || is_processed) {
-      return <Redirect to={`/dataset/${dataSetId}`} />;
-    }
+    const { dataSetId, isLoading, dataSet } = this.props;
 
     return (
       <div className="downloads">
         <Helmet>
           <title>refine.bio - Download Dataset</title>
         </Helmet>
+        <BackToTop />
         <h1 className="downloads__heading">Download Dataset</h1>
         {isLoading ? (
           <div className="loader" />
-        ) : !Object.keys(dataSet).length ? (
+        ) : !dataSet || !Object.keys(dataSet).length ? (
           <div className="downloads__empty">
             <h3 className="downloads__empty-heading">Your dataset is empty.</h3>
             <Link className="button" to="/">
@@ -174,7 +161,6 @@ Download = connect(
         samples: samples,
         dataSet: dataSet
       }),
-      filesData: downloadsFilesData(dataSet),
       totalSamples: getTotalSamplesAdded({ dataSet }),
       totalExperiments: getTotalExperimentsAdded({ dataSet }),
       experimentCountBySpecies: getExperimentCountBySpecies({

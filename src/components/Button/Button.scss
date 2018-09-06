@@ -57,9 +57,15 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
   }
 
   &--remove {
-    background: none;
-    border: 1px solid currentColor;
+    @extend .button--secondary;
     color: $black;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: $black;
+      background-color: $black;
+    }
   }
 
   &--transparent {
@@ -88,9 +94,9 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
     color: $link-color;
     white-space: normal;
     text-align: left;
+    text-decoration: underline;
 
     &:hover {
-      text-decoration: underline;
     }
 
     &:visited {

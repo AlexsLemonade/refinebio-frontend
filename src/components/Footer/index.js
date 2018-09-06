@@ -35,6 +35,7 @@ const Footer = () => (
             href="https://twitter.com/CancerDataLab"
             target="_blank"
             rel="noopener noreferrer"
+            className="footer__link-twitter"
           >
             <i className="ion-social-twitter footer__social" />
           </a>
@@ -42,6 +43,7 @@ const Footer = () => (
             href="https://github.com/AlexsLemonade/refinebio"
             target="_blank"
             rel="noopener noreferrer"
+            className="footer__link-github"
           >
             <i className="ion-social-github footer__social" />
           </a>

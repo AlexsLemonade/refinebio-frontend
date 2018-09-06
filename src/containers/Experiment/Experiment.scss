@@ -116,6 +116,19 @@
 
   &__not-provided {
     color: $dusty-gray;
+    font-style: italic;
+  }
+
+  &__sample-actions {
+    flex-grow: 1;
+
+    @include tablet {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-left: 32px;
+    }
   }
 }
 

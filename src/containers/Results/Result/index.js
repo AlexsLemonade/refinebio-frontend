@@ -8,7 +8,7 @@ import './Result.scss';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
 
-const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
+const Result = ({ result, addExperiment, removeExperiment }) => {
   const metadataFields = getMetadataFields(result);
 
   return (
@@ -24,14 +24,25 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             {result.accession_code}
           </div>
           <Link
-            className="button button--link"
+            className="link result__title"
             to={`/experiments/${result.id}?ref=search`}
           >
-            <h2 className="result__title">{result.title || 'No title.'}</h2>
+            {result.title || 'No title.'}
           </Link>
         </div>
 
-        <DataSetSampleActions samples={result.samples} experiment={result} />
+        <DataSetSampleActions
+          data={{
+            // convert the `processed_samples` list into the object with sample fields that
+            // `DataSetSampleActions` is expecting.
+            [result.accession_code]: result.processed_samples.map(
+              accession_code => ({
+                accession_code,
+                is_processed: true
+              })
+            )
+          }}
+        />
       </div>
       <ul className="result__stats">
         <li className="result__stat">

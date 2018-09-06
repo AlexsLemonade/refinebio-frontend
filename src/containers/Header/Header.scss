@@ -8,25 +8,6 @@
 
   @include tablet {
     padding: 1.5rem 0;
-
-    &--main {
-      position: relative;
-      color: $white;
-      background: none;
-
-      .header__logo {
-        filter: brightness(0) invert(1);
-      }
-
-      .header__link--button {
-        color: $white;
-      }
-
-      .header__dataset-count {
-        background: $white;
-        color: $azure;
-      }
-    }
   }
 
   &__container {
@@ -44,7 +25,7 @@
   }
 
   &__logo {
-    width:  80px;
+    width: 80px;
 
     @include tablet {
       width: auto;
@@ -61,19 +42,7 @@
     display: flex;
     align-items: center;
     min-width: fit-content;
-
-    &--button {
-      position: relative;
-      background: none;
-      border-radius: 3px;
-      border: 1px solid currentColor;
-      color: $azure;
-      font-family: 'Lato', sans-serif;
-      font-size: 1rem;
-      line-height: 1.5;
-      padding: 4px 24px;
-      flex: 0 0 auto;
-    }
+    position: relative;
   }
 
   &__dataset-count {
@@ -90,8 +59,8 @@
   }
 
   &__menu {
+    display: none;
     position: absolute;
-    display: flex;
     flex-direction: column;
     align-items: center;
     background: $white;
@@ -108,9 +77,11 @@
 
     &--open {
       margin-left: 0;
+      display: flex;
     }
 
     @include tablet {
+      display: flex;
       position: relative;
       background: none;
       height: auto;
@@ -143,24 +114,39 @@
 }
 
 .header--inverted {
-  color: $white;
-  background-color: rgba(12,52,131,0.94);
-
-  .header__burger {
-    color: $white;
-  }
+  background-color: rgba(12, 52, 131, 0.94);
 
   .header__logo {
     filter: brightness(0) invert(1);
   }
 
-  .header__link--button {
+  .header__burger {
     color: $white;
   }
 
-  .header__dataset-count {
-    background: $white;
-    color: $azure;
+  .header__link-button {
+    position: relative;
+  }
+
+  @include tablet() {
+    color: $white;
+
+    .header__link-button {
+      color: $white;
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: $azure;
+        border-color: $white;
+        background-color: $white;
+      }
+    }
+
+    .header__dataset-count {
+      background: $white;
+      color: $azure;
+    }
   }
 }
 

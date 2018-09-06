@@ -1,9 +1,29 @@
 import React from 'react';
+import { formatSentenceCase } from '../../common/helpers';
+import { getTransformationOptionFromName } from './transformation';
 
-const DownloadFileSummary = ({ summaryData }) => {
+const DownloadFileSummary = ({
+  summaryData,
+  aggregate_by,
+  scale_by,
+  isEmbed = false
+}) => {
   return (
     <section className="downloads__section">
       <h2>Download Files Summary</h2>
+
+      {isEmbed && (
+        <div>
+          <div className="downloads__file-modifier">
+            Aggregated by: {formatSentenceCase(aggregate_by)}
+          </div>
+          <div className="downloads__file-modifier">
+            Transformation:{' '}
+            {formatSentenceCase(getTransformationOptionFromName(scale_by))}
+          </div>
+        </div>
+      )}
+
       <div className="downloads__cards">
         {summaryData.files.map((card, i) => (
           <div className="downloads__card" key={i}>

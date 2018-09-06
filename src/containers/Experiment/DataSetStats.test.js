@@ -1,4 +1,4 @@
-import { DataSetStats } from './DataSetSampleActions';
+import DataSetStats from './DataSetStats';
 
 describe('DataSetStats', () => {
   let samples = [

@@ -11,19 +11,17 @@ describe('fetchDataSet', () => {
     const DataSetId = '08c429ab-01dd-43c7-b51a-c850ad4b9902';
     const DataSet = { id: DataSetId, data: {} };
 
-    global.localStorage.getItem.mockReturnValueOnce(DataSetId);
     global.fetch = jest
       .fn()
       .mockImplementation(() =>
         Promise.resolve({ ok: true, json: () => Promise.resolve(DataSet) })
       );
 
-    const store = mockStore({});
+    const store = mockStore({ download: { dataSetId: DataSetId } });
 
     await store.dispatch(fetchDataSet());
 
     expect(global.fetch.mock.calls[0]).toEqual([`/dataset/${DataSetId}/`]);
-    expect(global.localStorage.getItem.mock.calls[0]).toEqual(['dataSetId']);
     expect(store.getActions().map(x => x.type)).toEqual([
       'DOWNLOAD_DATASET_FETCH',
       'DOWNLOAD_DATASET_FETCH_SUCCESS'
@@ -34,12 +32,11 @@ describe('fetchDataSet', () => {
     const DataSetId = '08c429ab-01dd-43c7-b51a-c850ad4b9902';
     const DataSet = { id: DataSetId, data: {} };
 
-    global.localStorage.getItem.mockReturnValueOnce(DataSetId);
     global.fetch = jest.fn().mockImplementation(() => {
       throw new Error('');
     });
 
-    const store = mockStore({});
+    const store = mockStore({ download: { dataSetId: DataSetId } });
 
     await store.dispatch(fetchDataSet());
 
@@ -47,6 +44,27 @@ describe('fetchDataSet', () => {
       'DOWNLOAD_DATASET_FETCH',
       'DOWNLOAD_CLEAR',
       REPORT_ERROR
+    ]);
+  });
+
+  it('current dataset is removed if its processed', async () => {
+    const DataSetId = '08c429ab-01dd-43c7-b51a-c850ad4b9902';
+    const DataSet = { id: DataSetId, data: {}, is_processed: true };
+
+    global.fetch = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve({ ok: true, json: () => Promise.resolve(DataSet) })
+      );
+
+    const store = mockStore({ download: { dataSetId: DataSetId } });
+
+    await store.dispatch(fetchDataSet());
+
+    expect(global.fetch.mock.calls[0]).toEqual([`/dataset/${DataSetId}/`]);
+    expect(store.getActions().map(x => x.type)).toEqual([
+      'DOWNLOAD_DATASET_FETCH',
+      'DOWNLOAD_CLEAR'
     ]);
   });
 });
@@ -67,7 +85,6 @@ describe('startDownload', () => {
     });
 
     await store.dispatch(startDownload('some token id'));
-
     expect(store.getActions().map(x => x.type)).toEqual(['DOWNLOAD_CLEAR']);
   });
 });

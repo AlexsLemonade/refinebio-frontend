@@ -8,6 +8,7 @@ import {
 } from '../../api/dataSet';
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
+import { getDataSetId } from './reducer';
 
 /**
  * Saves an updated copy of the given dataset in the store
@@ -95,7 +96,6 @@ export const addExperiment = experiments => async (dispatch, getState) => {
       dataSetId: updatedDataSetId,
       data: updatedDataSet
     } = await dispatch(createOrUpdateDataSet({ dataSetId, data }));
-    localStorage.setItem('dataSetId', updatedDataSetId);
     dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
   } catch (err) {
     dispatch(reportError(err));
@@ -116,8 +116,8 @@ export const addExperimentSucceeded = (dataSetId, dataSet) => {
  * If a dataSetId exists in localStorage,
  * use it to fetch dataset from endpoint
  */
-export const fetchDataSet = () => async dispatch => {
-  const dataSetId = localStorage.getItem('dataSetId');
+export const fetchDataSet = () => async (dispatch, getState) => {
+  const dataSetId = getDataSetId(getState());
 
   if (!dataSetId) {
     return;
@@ -136,8 +136,15 @@ export const fetchDataSet = () => async dispatch => {
       is_processing,
       is_processed,
       aggregate_by,
-      scale_by
+      scale_by,
+      expires_on
     } = await getDataSet(dataSetId);
+
+    if (is_processing || is_processed) {
+      // if for any reason the user ends up in a state where the current dataset is already processed
+      // we should clear it, since this dataset is immutable
+      return await dispatch(clearDataSet());
+    }
 
     dispatch(
       fetchDataSetSucceeded({
@@ -145,7 +152,8 @@ export const fetchDataSet = () => async dispatch => {
         is_processing,
         is_processed,
         aggregate_by,
-        scale_by
+        scale_by,
+        expires_on
       })
     );
   } catch (e) {
@@ -161,7 +169,8 @@ export const fetchDataSetSucceeded = ({
   is_processing,
   is_processed,
   aggregate_by,
-  scale_by
+  scale_by,
+  expires_on
 }) => ({
   type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
   data: {
@@ -169,12 +178,67 @@ export const fetchDataSetSucceeded = ({
     is_processing,
     is_processed,
     aggregate_by,
-    scale_by
+    scale_by,
+    expires_on
   }
 });
 
-export const fetchDataSetDetails = () => async dispatch => {
-  const dataSetId = localStorage.getItem('dataSetId');
+export const editAggregation = ({ dataSetId, aggregation }) => async (
+  dispatch,
+  getState
+) => {
+  const dataSet = getState().download.dataSet;
+  const {
+    data,
+    is_processing,
+    is_processed,
+    aggregate_by,
+    scale_by
+  } = await Ajax.put(`/dataset/${dataSetId}/`, {
+    data: dataSet,
+    aggregate_by: aggregation.toUpperCase()
+  });
+
+  dispatch(
+    fetchDataSetSucceeded({
+      dataSet: data,
+      is_processing,
+      is_processed,
+      aggregate_by,
+      scale_by
+    })
+  );
+};
+
+export const editTransformation = ({ dataSetId, transformation }) => async (
+  dispatch,
+  getState
+) => {
+  const dataSet = getState().download.dataSet;
+  const {
+    data,
+    is_processing,
+    is_processed,
+    aggregate_by,
+    scale_by
+  } = await Ajax.put(`/dataset/${dataSetId}/`, {
+    data: dataSet,
+    scale_by: transformation.toUpperCase()
+  });
+
+  dispatch(
+    fetchDataSetSucceeded({
+      dataSet: data,
+      is_processing,
+      is_processed,
+      aggregate_by,
+      scale_by
+    })
+  );
+};
+
+export const fetchDataSetDetails = () => async (dispatch, getState) => {
+  const dataSetId = getDataSetId(getState());
   if (!dataSetId) {
     return;
   }
@@ -249,10 +313,6 @@ export const startDownload = tokenId => async (dispatch, getState) => {
 };
 
 // Remove all dataset
-export const clearDataSet = () => async dispatch => {
-  localStorage.removeItem('dataSetId');
-
-  dispatch({
-    type: 'DOWNLOAD_CLEAR'
-  });
-};
+export const clearDataSet = () => ({
+  type: 'DOWNLOAD_CLEAR'
+});

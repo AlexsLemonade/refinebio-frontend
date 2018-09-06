@@ -11,10 +11,15 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
+import {
+  downloadsFilesDataBySpecies,
+  downloadsFilesDataByExperiment
+} from './downloadFilesData';
+import Radio from '../../components/Radio';
+import { Link } from 'react-router-dom';
 
 export default function DownloadDetails({
   dataSet,
-  filesData,
   experiments,
   removeSamples,
   removeExperiment,
@@ -23,11 +28,26 @@ export default function DownloadDetails({
   experimentCountBySpecies,
   totalSamples,
   totalExperiments,
-  isImmutable = false
+  isImmutable = false,
+  isEmbed = false,
+  aggregate_by,
+  scale_by
 }) {
+  let fileData = dataSet
+    ? aggregate_by === 'SPECIES'
+      ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
+      : downloadsFilesDataByExperiment(dataSet)
+    : false;
   return (
     <div>
-      {filesData && <DownloadFileSummary summaryData={filesData} />}
+      {fileData && (
+        <DownloadFileSummary
+          summaryData={fileData}
+          aggregate_by={aggregate_by}
+          scale_by={scale_by}
+          isEmbed={isEmbed}
+        />
+      )}
       <DownloadDatasetSummary
         samplesBySpecies={samplesBySpecies}
         totalSamples={totalSamples}
@@ -71,21 +91,17 @@ export default function DownloadDetails({
         </div>
 
         <TabControl tabs={['Species View', 'Experiments View']}>
-          <div className="downloads__card">
-            <SpeciesSamples
-              samplesBySpecies={samplesBySpecies}
-              removeSamples={removeSamples}
-              isImmutable={isImmutable}
-            />
-          </div>
-          <div className="downloads__card">
-            <ExperimentsView
-              dataSet={dataSet}
-              experiments={experiments}
-              removeExperiment={removeExperiment}
-              isImmutable={isImmutable}
-            />
-          </div>
+          <SpeciesSamples
+            samplesBySpecies={samplesBySpecies}
+            removeSamples={removeSamples}
+            isImmutable={isImmutable}
+          />
+          <ExperimentsView
+            dataSet={dataSet}
+            experiments={experiments}
+            removeExperiment={removeExperiment}
+            isImmutable={isImmutable}
+          />
         </TabControl>
       </section>
     </div>
@@ -102,140 +118,227 @@ const SpeciesSamples = ({
     return <p>No samples added to download dataset.</p>;
   }
 
-  return Object.keys(species).map((speciesName, i) => (
-    <div className="downloads__sample" key={i}>
-      <div className="downloads__sample-info">
-        <h2 className="downloads__species-title">
-          {formatSentenceCase(speciesName)} Samples
-        </h2>
-        <div className="downloads__sample-stats">
-          <p className="downloads__sample-stat">
-            {species[speciesName].length}{' '}
-            {species[speciesName].length > 1 ? 'Samples' : 'Sample'}
-          </p>
-        </div>
+  return (
+    <div className="downloads__card">
+      {Object.keys(species).map((speciesName, i) => (
+        <div className="downloads__sample" key={i}>
+          <div className="downloads__sample-info">
+            <h2 className="downloads__species-title">
+              {formatSentenceCase(speciesName)} Samples
+            </h2>
+            <div className="downloads__sample-stats">
+              <p className="downloads__sample-stat">
+                {species[speciesName].length}{' '}
+                {species[speciesName].length > 1 ? 'Samples' : 'Sample'}
+              </p>
+            </div>
 
-        <ModalManager
-          component={showModal => (
-            <Button
-              text="View Samples"
-              buttonStyle="secondary"
-              onClick={showModal}
-            />
-          )}
-          modalProps={{ className: 'samples-modal' }}
-        >
-          {() => (
-            <SamplesTable
-              isRowRemovable={true}
+            <ViewSamplesButtonModal
               accessionCodes={species[speciesName].map(x => x.accession_code)}
               experimentAccessionCodes={species[speciesName].map(
                 x => x.experimentAccessionCode
               )}
               isImmutable={isImmutable}
             />
-          )}
-        </ModalManager>
-      </div>
-
-      {removeSamples && (
-        <Button
-          text="Remove"
-          buttonStyle="remove"
-          onClick={() => removeSamples(species[speciesName])}
-        />
-      )}
-    </div>
-  ));
-};
-
-const ExperimentsView = ({
-  dataSet,
-  experiments,
-  removeExperiment,
-  isImmutable = false
-}) => {
-  if (!dataSet || !Object.keys(dataSet).length) {
-    return <p>No samples added to download dataset.</p>;
-  }
-
-  return Object.keys(dataSet).map((id, i) => {
-    const addedSamples = dataSet[id];
-    const experiment = experiments[id];
-    const metadataFields = getMetadataFields(experiment);
-    return (
-      <div className="downloads__sample" key={i}>
-        <div className="downloads__dataSet-info">
-          <h2 className="downloads__experiment-title">{experiment.title}</h2>
-          <div className="downloads__sample-stats">
-            <div className="downloads__sample-stat">
-              <img
-                src={AccessionIcon}
-                className="downloads__sample-icon"
-                alt="Accession Icon"
-              />{' '}
-              {experiment.accession_code}
-            </div>
-            <div className="downloads__sample-stat">
-              <img
-                src={SampleIcon}
-                className="downloads__sample-icon"
-                alt="Sample Icon"
-              />{' '}
-              {addedSamples.length}
-            </div>
-            <div className="downloads__sample-stat downloads__sample-stat--experiment">
-              <img
-                src={OrganismIcon}
-                className="downloads__sample-icon"
-                alt="Organism Icon"
-              />{' '}
-              {experiment.organisms
-                .map(organism => formatSentenceCase(organism))
-                .join(',')}
-            </div>
-          </div>
-          <div className="downloads__experiment-metadata">
-            <h4>Sample Metadata Fields</h4>
-            <h5>
-              {metadataFields && metadataFields.length ? (
-                metadataFields.join(', ')
-              ) : (
-                <i class="result__not-provided">No sample metadata fields</i>
-              )}
-            </h5>
           </div>
 
-          {addedSamples.length > 0 && (
-            <ModalManager
-              component={showModal => (
-                <Button
-                  text="View Samples"
-                  buttonStyle="secondary"
-                  onClick={showModal}
-                />
-              )}
-              modalProps={{ className: 'samples-modal' }}
-            >
-              {() => (
-                <SamplesTable
-                  isRowRemovable={true}
-                  accessionCodes={addedSamples}
-                  experimentAccessionCodes={[experiment.accession_code]}
-                  isImmutable={isImmutable}
-                />
-              )}
-            </ModalManager>
+          {removeSamples && (
+            <Button
+              text="Remove"
+              buttonStyle="remove"
+              onClick={() => removeSamples(species[speciesName])}
+            />
           )}
         </div>
-        {removeExperiment && (
-          <Button
-            text="Remove"
-            buttonStyle="remove"
-            onClick={() => removeExperiment([experiment.accession_code])}
-          />
-        )}
+      ))}
+    </div>
+  );
+};
+
+class ExperimentsView extends React.Component {
+  state = { organism: false };
+
+  render() {
+    const {
+      dataSet,
+      experiments,
+      removeExperiment,
+      isImmutable = false
+    } = this.props;
+
+    if (!dataSet || !Object.keys(dataSet).length) {
+      return <p>No samples added to download dataset.</p>;
+    }
+
+    return (
+      <div>
+        {this._renderFilters()}
+
+        <div className="downloads__card">
+          {Object.keys(dataSet).map((id, i) => {
+            const addedSamples = dataSet[id];
+            const experiment = experiments[id];
+            const metadataFields = getMetadataFields(experiment);
+
+            if (
+              this.state.organism &&
+              !experiment.organisms.includes(this.state.organism)
+            ) {
+              return <React.Fragment />;
+            }
+
+            return (
+              <div className="downloads__sample" key={i}>
+                <div className="downloads__dataSet-info">
+                  <Link
+                    to={`/experiments/${experiment.id}`}
+                    className="downloads__experiment-title link"
+                  >
+                    {experiment.title}
+                  </Link>
+                  <div className="downloads__sample-stats">
+                    <div className="downloads__sample-stat">
+                      <img
+                        src={AccessionIcon}
+                        className="downloads__sample-icon"
+                        alt="Accession Icon"
+                      />{' '}
+                      {experiment.accession_code}
+                    </div>
+                    <div className="downloads__sample-stat">
+                      <img
+                        src={SampleIcon}
+                        className="downloads__sample-icon"
+                        alt="Sample Icon"
+                      />{' '}
+                      {addedSamples.length} Samples
+                    </div>
+                    <div className="downloads__sample-stat downloads__sample-stat--experiment">
+                      <img
+                        src={OrganismIcon}
+                        className="downloads__sample-icon"
+                        alt="Organism Icon"
+                      />{' '}
+                      {experiment.organisms
+                        .map(organism => formatSentenceCase(organism))
+                        .join(', ')}
+                    </div>
+                  </div>
+                  <div className="downloads__experiment-metadata">
+                    <h4>Sample Metadata Fields</h4>
+                    <h5>
+                      {metadataFields && metadataFields.length ? (
+                        metadataFields.join(', ')
+                      ) : (
+                        <i className="result__not-provided">
+                          No sample metadata fields
+                        </i>
+                      )}
+                    </h5>
+                  </div>
+
+                  {addedSamples.length > 0 && (
+                    <ViewSamplesButtonModal
+                      accessionCodes={addedSamples}
+                      experimentAccessionCodes={[experiment.accession_code]}
+                      isImmutable={isImmutable}
+                    />
+                  )}
+                </div>
+                {removeExperiment && (
+                  <Button
+                    text="Remove"
+                    buttonStyle="remove"
+                    onClick={() =>
+                      removeExperiment([experiment.accession_code])
+                    }
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
-  });
-};
+  }
+
+  _renderFilters() {
+    let organismsList = Object.keys(this.props.dataSet)
+      .map(id => this.props.experiments[id].organisms)
+      // flatten array https://stackoverflow.com/a/33680003/763705
+      .reduce((accum, organisms) => accum.concat(organisms), []);
+
+    // https://stackoverflow.com/a/14438954/763705
+    const uniqueOrganisms = [...new Set(organismsList)];
+
+    if (uniqueOrganisms.length <= 1) {
+      return;
+    }
+
+    return (
+      <div className="downloads__species-filters">
+        <div className="downloads__species-filter-item">Show</div>
+        <div className="downloads__species-filter-item">
+          <Radio
+            checked={!this.state.organism}
+            onClick={() => this.setState({ organism: false })}
+          >
+            All Species
+          </Radio>
+        </div>
+        {uniqueOrganisms.map(organism => (
+          <div className="downloads__species-filter-item">
+            <Radio
+              checked={this.state.organism === organism}
+              onClick={() => this.setState({ organism: organism })}
+            >
+              {formatSentenceCase(organism)}
+            </Radio>
+          </div>
+        ))}
+      </div>
+    );
+  }
+}
+
+/**
+ * ViewSamples button, that when clicked shows a modal with a SamplesTable.
+ *
+ * When the modal is displayed, a snapshot of the samples is saved. So that the list it's not refreshed
+ * while the modal is being displayed.
+ */
+class ViewSamplesButtonModal extends React.Component {
+  state = {
+    accessionCodes: []
+  };
+
+  render() {
+    return (
+      <ModalManager
+        component={showModal => (
+          <Button
+            text="View Samples"
+            buttonStyle="secondary"
+            onClick={() => {
+              // copy the list of accession codes before displaying the modal dialog. So that the list doesn't get
+              // modified if the user adds/removes any sample
+              this.setState((prevState, prevProps) => ({
+                accessionCodes: [...prevProps.accessionCodes]
+              }));
+              showModal();
+            }}
+          />
+        )}
+        modalProps={{ className: 'samples-modal' }}
+      >
+        {() => (
+          <SamplesTable
+            accessionCodes={this.state.accessionCodes}
+            experimentAccessionCodes={this.props.experimentAccessionCodes}
+            isImmutable={this.props.isImmutable}
+          />
+        )}
+      </ModalManager>
+    );
+  }
+}

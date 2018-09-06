@@ -9,7 +9,11 @@ const Checkbox = ({
   className,
   disabled
 }) => (
-  <div className={`checkbox ${className}`}>
+  <div
+    className={`checkbox ${!!className ? className : ''} ${
+      disabled ? 'checkbox--disabled' : ''
+    }`}
+  >
     <input
       type="checkbox"
       className="checkbox__input"
