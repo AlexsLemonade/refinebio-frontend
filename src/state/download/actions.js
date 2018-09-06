@@ -315,7 +315,15 @@ export const startDownload = ({ tokenId, dataSetId, dataSet, email }) => async (
     });
   } catch (e) {
     await dispatch(reportError(e));
-    return;
+
+    // if there's an error, redirect to the dataset page, and show a message
+    // also with a button to try again
+    return await dispatch(
+      replace({
+        pathname: `/dataset/${dataSetId}`,
+        state: { hasError: true }
+      })
+    );
   }
 
   let currentDataSet = getState().download.dataSetId;
@@ -325,7 +333,7 @@ export const startDownload = ({ tokenId, dataSetId, dataSet, email }) => async (
   }
 
   // redirect to the dataset page, and send the email address in the state
-  await dispatch(
+  return await dispatch(
     replace({
       pathname: `/dataset/${dataSetId}`,
       state: { email_address: email }

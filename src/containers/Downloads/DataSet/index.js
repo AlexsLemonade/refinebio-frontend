@@ -11,13 +11,14 @@ import {
   fetchDataSet,
   regenerateDataSet
 } from '../../../state/dataSet/actions';
-
+import { startDownload } from '../../../state/download/actions';
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
 
 import TermsOfUse from '../../../components/TermsOfUse';
 import DownloadDetails from '../DownloadDetails';
 import { ShareDatasetButton } from '../DownloadBar';
 import DownloadStart from '../DownloadStart/DownloadStart';
+import DownloadErrorImage from './dataset-error.svg';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -51,23 +52,16 @@ let DataSet = ({
           <div className="loader" />
         ) : (
           <div>
-            {dataSet.is_processing || dataSet.is_processed ? (
-              <div className="dataset__container">
-                <div className="dataset__message">
-                  <DataSetPage
-                    dataSetId={dataSetId}
-                    {...dataSet}
-                    email_address={
-                      // the email is never returned from the api, check if it was passed
-                      // on the url state on a previous step
-                      location.state && location.state.email_address
-                    }
-                  />
-                </div>
-              </div>
-            ) : (
-              <h1 className="downloads__heading">Shared Dataset</h1>
-            )}
+            <DataSetPageHeader
+              dataSetId={dataSetId}
+              dataSet={dataSet}
+              email_address={
+                // the email is never returned from the api, check if it was passed
+                // on the url state on a previous step
+                location.state && location.state.email_address
+              }
+              hasError={location.state && location.state.hasError}
+            />
             <div className="downloads__bar">
               <ShareDatasetButton dataSetId={dataSetId} />
             </div>
@@ -94,29 +88,81 @@ DataSet = connect(
 )(DataSet);
 export default DataSet;
 
-function DataSetPage({
-  is_processed,
-  is_processing,
-  is_available,
-  email_address,
-  dataSetId,
-  expires_on,
-  s3_bucket,
-  s3_key
-}) {
-  if (is_processed) {
-    const isExpired = moment(expires_on).isBefore(Date.now());
-    if (is_available && !isExpired) {
-      return <DataSetReady s3_bucket={s3_bucket} s3_key={s3_key} />;
-    } else {
-      return <DataSetExpired />;
-    }
-  } else if (is_processing) {
-    return <DataSetProcessing email={email_address} dataSetId={dataSetId} />;
-  } else {
-    return null;
-  }
+/**
+ * Renders the header of the dataset page
+ */
+function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
+  const {
+    is_processed,
+    is_processing,
+    is_available,
+    expires_on,
+    s3_bucket,
+    s3_key
+  } = dataSet;
+
+  const isExpired = moment(expires_on).isBefore(Date.now());
+  return hasError ? (
+    <DataSetErrorDownloading dataSetId={dataSetId} dataSet={dataSet} />
+  ) : is_processed ? (
+    is_available && !isExpired ? (
+      <DataSetReady s3_bucket={s3_bucket} s3_key={s3_key} />
+    ) : (
+      <DataSetExpired />
+    )
+  ) : is_processing ? (
+    <DataSetProcessing email={email_address} dataSetId={dataSetId} />
+  ) : (
+    <h1 className="downloads__heading">Shared Dataset</h1>
+  );
 }
+
+let DataSetErrorDownloading = ({ dataSetId, dataSet, startDownload }) => {
+  let token = localStorage.getItem('refinebio-token');
+
+  return (
+    <div className="dataset__container">
+      <div className="dataset__message">
+        <div className="dataset__way-container">
+          <div className="dataset__processed-text">
+            <h1>Uh-oh something went wrong!</h1>
+            <p>Please try downloading again. </p>
+            <p>
+              If the problem persists, please contact{' '}
+              <a href="mailto:ccdl@alexslemonade.org" className="link">
+                ccdl@alexslemonade.org
+              </a>
+            </p>
+
+            {token && (
+              <Button
+                onClick={() =>
+                  startDownload({
+                    tokenId: token,
+                    dataSetId,
+                    dataSet: dataSet.data
+                  })
+                }
+              >
+                Try Again
+              </Button>
+            )}
+          </div>
+
+          <div className="dataset__way-image">
+            <img src={DownloadErrorImage} alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+DataSetErrorDownloading = connect(
+  () => ({}),
+  {
+    startDownload
+  }
+)(DataSetErrorDownloading);
 
 function DataSetProcessing({ email, dataSetId }) {
   let message = !!email ? (
@@ -131,12 +177,16 @@ function DataSetProcessing({ email, dataSetId }) {
   );
 
   return (
-    <div className="dataset__way-container">
-      <div className="dataset__processed-text">
-        <h1>Your dataset is being processed.</h1>
-        {message}
+    <div className="dataset__container">
+      <div className="dataset__message">
+        <div className="dataset__way-container">
+          <div className="dataset__processed-text">
+            <h1>Your dataset is being processed.</h1>
+            {message}
+          </div>
+          <ProcessingDataset loop={true} />
+        </div>
       </div>
-      <ProcessingDataset loop={true} />
     </div>
   );
 }
@@ -170,27 +220,31 @@ class DataSetReady extends React.Component {
 
   render() {
     return (
-      <div className="dataset__way-container">
-        <div className="dataset__processed-text">
-          <h1>Your dataset is ready for download!</h1>
+      <div className="dataset__container">
+        <div className="dataset__message">
           <div className="dataset__way-container">
-            {!this.state.hasToken && (
-              <TermsOfUse
-                agreedToTerms={this.state.agreedToTerms}
-                handleToggle={this.handleAgreedToTerms}
-              />
-            )}
-            <Button
-              onClick={this.handleSubmit}
-              isDisabled={!this.state.agreedToTerms && !this.state.hasToken}
-            >
-              Download Now
-            </Button>
-          </div>
-        </div>
+            <div className="dataset__processed-text">
+              <h1>Your dataset is ready for download!</h1>
+              <div className="dataset__way-container">
+                {!this.state.hasToken && (
+                  <TermsOfUse
+                    agreedToTerms={this.state.agreedToTerms}
+                    handleToggle={this.handleAgreedToTerms}
+                  />
+                )}
+                <Button
+                  onClick={this.handleSubmit}
+                  isDisabled={!this.state.agreedToTerms && !this.state.hasToken}
+                >
+                  Download Now
+                </Button>
+              </div>
+            </div>
 
-        <div className="dataset__way-image">
-          <img src={DownloadImage} alt="" />
+            <div className="dataset__way-image">
+              <img src={DownloadImage} alt="" />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -198,19 +252,23 @@ class DataSetReady extends React.Component {
 }
 
 let DataSetExpired = ({ regenerateDataSet }) => (
-  <div className="dataset__way-container">
-    <div className="dataset__processed-text">
-      <h1 className="dataset__way-title">Download Expired! </h1>
-      <div className="dataset__way-subtitle">
-        The download files for this dataset isn’t available anymore
-      </div>
+  <div className="dataset__container">
+    <div className="dataset__message">
       <div className="dataset__way-container">
-        <Button onClick={regenerateDataSet}>Regenerate Files</Button>
-      </div>
-    </div>
+        <div className="dataset__processed-text">
+          <h1 className="dataset__way-title">Download Expired! </h1>
+          <div className="dataset__way-subtitle">
+            The download files for this dataset isn’t available anymore
+          </div>
+          <div className="dataset__way-container">
+            <Button onClick={regenerateDataSet}>Regenerate Files</Button>
+          </div>
+        </div>
 
-    <div className="dataset__way-image">
-      <img src={DownloadExpiredImage} alt="" />
+        <div className="dataset__way-image">
+          <img src={DownloadExpiredImage} alt="" />
+        </div>
+      </div>
     </div>
   </div>
 );
