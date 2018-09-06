@@ -30,7 +30,7 @@ if (typeof document !== 'undefined') {
   });
 }
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'production') {
   // Setup Google Analytics on production
   // https://github.com/react-ga/react-ga/issues/122
   // https://github.com/open-austin/budgetparty/issues/163
