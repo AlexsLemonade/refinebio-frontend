@@ -152,41 +152,49 @@ class SamplesTable extends React.Component {
       >
         {(state, makeTable, instance) => {
           return (
-            <div>
-              <div className="experiment__sample-commands">
-                <div className="experiment__per-page-dropdown">
-                  Show
-                  <Dropdown
-                    options={pageSizes}
-                    selectedOption={this.state.pageSize}
-                    onChange={this.handlePageSizeChange}
-                  />
-                  of {this.totalSamples} Samples
-                </div>
-                {pageActionComponent &&
-                  pageActionComponent(state.pageRows.map(x => x._original))}
-              </div>
-              <div className="experiment__table-container">
-                <div className="samples-table__scroll-left">
-                  <div className="samples-table__scroll-button">{'<'}</div>
-                </div>
-                {makeTable()}
-                <div className="samples-table__scroll-right">
-                  <div className="samples-table__scroll-button">{'>'}</div>
+            <div className="samples-table-layout">
+              <div className="samples-table-layout__header">
+                <div className="experiment__sample-commands">
+                  <div className="experiment__per-page-dropdown">
+                    Show
+                    <Dropdown
+                      options={pageSizes}
+                      selectedOption={this.state.pageSize}
+                      onChange={this.handlePageSizeChange}
+                    />
+                    of {this.totalSamples} Samples
+                  </div>
+                  {pageActionComponent &&
+                    pageActionComponent(state.pageRows.map(x => x._original))}
                 </div>
               </div>
-              <div>
-                <img src={InfoIcon} className="info-icon" alt="" /> Some fileds
-                may be harmonized.{' '}
-                <Link to="/docs" className="link">
-                  Learn more
-                </Link>
+
+              <div className="samples-table-layout__main">
+                <div className="samples-table-container">
+                  <div className="samples-table__scroll-left">
+                    <div className="samples-table__scroll-button">{'<'}</div>
+                  </div>
+                  {makeTable()}
+                  <div className="samples-table__scroll-right">
+                    <div className="samples-table__scroll-button">{'>'}</div>
+                  </div>
+                </div>
               </div>
-              <Pagination
-                onPaginate={this.handlePagination}
-                totalPages={totalPages}
-                currentPage={this.state.page + 1}
-              />
+
+              <div className="samples-table-layout__footer">
+                <div>
+                  <img src={InfoIcon} className="info-icon" alt="" /> Some
+                  fileds may be harmonized.{' '}
+                  <Link to="/docs" className="link">
+                    Learn more
+                  </Link>
+                </div>
+                <Pagination
+                  onPaginate={this.handlePagination}
+                  totalPages={totalPages}
+                  currentPage={this.state.page + 1}
+                />
+              </div>
             </div>
           );
         }}
