@@ -1,0 +1,41 @@
+@import '../common/styles/variables';
+@import '../common/styles/mixins';
+
+.horizontal-scroll {
+  &__left,
+  &__right {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    padding: auto 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__left {
+    left: -12px;
+  }
+
+  &__right {
+    right: -12px;
+  }
+
+  &__button {
+    width: 24px;
+    height: 48px;
+    color: $white;
+    background-color: $azure;
+    font-size: 24px;
+    justify-content: center;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    @include noselect;
+    z-index: 2;
+  }
+
+  &__disabled {
+    display: none;
+  }
+}
