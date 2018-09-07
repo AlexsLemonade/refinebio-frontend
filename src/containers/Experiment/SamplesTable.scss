@@ -54,6 +54,10 @@
 
   .rt-tbody {
     min-height: 100px;
+
+    // momentum scrolling ios https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/
+    overflow-y: scroll; /* has to be scroll, not auto */
+    -webkit-overflow-scrolling: touch;
   }
 
   .rt-noData {
@@ -127,6 +131,10 @@
   .dataset-remove-button__added-container {
     display: block;
   }
+
+  &__notice {
+    margin-bottom: 5 * 8px;
+  }
 }
 
 .info-icon {
@@ -162,16 +170,5 @@
 }
 
 .sample-not-processed {
-  display: flex;
-  flex-direction: row;
   font-size: 0.875rem;
-  align-items: center;
-
-  &__info-icon {
-    font-size: 1.5rem;
-  }
-
-  &__text {
-    margin-left: 6px;
-  }
 }

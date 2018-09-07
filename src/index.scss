@@ -117,5 +117,17 @@ fieldset {
   position: relative;
 }
 
+.info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &__icon {
+    color: $info-badge;
+    margin-right: 8px;
+    font-size: 1.5rem;
+  }
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';

@@ -75,7 +75,12 @@ export default class HorizontalScroll extends React.Component {
           <div className="horizontal-scroll__button">{'<'}</div>
         </div>
 
-        <div ref={x => (this._targetContainer = x)}>{this.props.children}</div>
+        <div
+          className="horizontal-scroll__content"
+          ref={x => (this._targetContainer = x)}
+        >
+          {this.props.children}
+        </div>
 
         <div
           className={`horizontal-scroll__right ${

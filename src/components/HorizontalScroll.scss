@@ -2,6 +2,13 @@
 @import '../common/styles/mixins';
 
 .horizontal-scroll {
+  position: relative;
+  height: 100%;
+
+  &__content {
+    height: 100%;
+  }
+
   &__left,
   &__right {
     position: absolute;

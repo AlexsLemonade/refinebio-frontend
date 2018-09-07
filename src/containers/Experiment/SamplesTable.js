@@ -87,20 +87,22 @@ class SamplesTable extends React.Component {
                     pageActionComponent(state.pageRows.map(x => x._original))}
                 </div>
               </div>
-              <div className="experiment__table-container">
+              <div className="samples-table-layout__main">
                 <HorizontalScroll targetSelector=".rt-table">
                   {makeTable()}
                 </HorizontalScroll>
               </div>
-
               <div className="samples-table-layout__footer">
-                <div>
-                  <img src={InfoIcon} className="info-icon" alt="" /> Some
-                  fileds may be harmonized.{' '}
-                  <Link to="/docs" className="link">
-                    Learn more
-                  </Link>
+                <div className="samples-table__notice info">
+                  <img className="info__icon" src={InfoIcon} alt="" />
+                  <div>
+                    Some fields may be harmonized.{' '}
+                    <Link to="/docs" className="link">
+                      Learn more
+                    </Link>
+                  </div>
                 </div>
+
                 <Pagination
                   onPaginate={this.handlePagination}
                   totalPages={totalPages}
@@ -368,12 +370,12 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
 
   if (!sample.is_processed) {
     return (
-      <div className="sample-not-processed">
-        <i className="ion-information-circled sample-not-processed__info-icon" />
-        <div className="sample-not-processed__text">
+      <div className="sample-not-processed info">
+        <img className="info__icon" src={InfoIcon} alt="" />
+        <div>
           <div className="nowrap">Sample not processed</div>
-          <a href="/docs" className="button--link" target="_blank">
-            Learn More
+          <a href="/docs" className="link" target="_blank">
+            Learn more
           </a>
         </div>
       </div>
