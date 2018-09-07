@@ -1,13 +1,25 @@
 import React from 'react';
 import { formatSentenceCase } from '../../common/helpers';
 import { getTransformationOptionFromName } from './transformation';
+import {
+  downloadsFilesDataBySpecies,
+  downloadsFilesDataByExperiment
+} from './downloadFilesData';
 
 const DownloadFileSummary = ({
-  summaryData,
+  dataSet,
+  samplesBySpecies,
   aggregate_by,
   scale_by,
   isEmbed = false
 }) => {
+  if (!dataSet) return null;
+
+  let summaryData =
+    aggregate_by === 'SPECIES'
+      ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
+      : downloadsFilesDataByExperiment(dataSet);
+
   return (
     <section className="downloads__section">
       <h2>Download Files Summary</h2>

@@ -18,87 +18,10 @@ import { addExperiment, removeSamples } from '../../state/download/actions';
 import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from './DataSetSampleActions';
 import './SamplesTable.scss';
-
+import HorizontalScroll from '../../components/HorizontalScroll';
 import isEqual from 'lodash/isEqual';
 
 class SamplesTable extends React.Component {
-  componentDidMount() {
-    document
-      .querySelector('.samples-table__scroll-right')
-      .addEventListener('click', this.scrollRight);
-
-    document
-      .querySelector('.samples-table__scroll-left')
-      .addEventListener('click', this.scrollLeft);
-
-    document
-      .querySelector('.rt-table')
-      .addEventListener('scroll', this.disableScrollButtonsIfNecessary);
-
-    // This is apparently the idiomatic way to trigger a callback if a specific attribute changed.
-    // This detects resizing on the react-table because while the table is resizing the inline
-    // style for max-width changes on '.rt-thead'.
-    this.state.resizeObserver = new MutationObserver(
-      this.disableScrollButtonsIfNecessary
-    );
-    this.state.resizeObserver.observe(document.querySelector('.rt-thead'), {
-      attributes: true,
-      attributeFilter: ['style']
-    });
-  }
-
-  componentDidUpdate(prevProps) {
-    this.disableScrollButtonsIfNecessary();
-
-    if (!isEqual(prevProps.accessionCodes, this.props.accessionCodes)) {
-      this.fetchData({ setPage: 0 });
-    }
-  }
-
-  getMaxScrollPosition = () => {
-    const element = document.querySelector('.rt-table');
-    return element.scrollWidth - element.clientWidth;
-  };
-
-  disableScrollButtonsIfNecessary = () => {
-    const element = document.querySelector('.rt-table');
-    if (element.scrollLeft <= 0) {
-      document
-        .querySelector('.samples-table__scroll-left')
-        .classList.add('samples-table__scroll--disabled');
-    } else {
-      document
-        .querySelector('.samples-table__scroll-left')
-        .classList.remove('samples-table__scroll--disabled');
-    }
-
-    if (element.scrollLeft >= this.getMaxScrollPosition()) {
-      document
-        .querySelector('.samples-table__scroll-right')
-        .classList.add('samples-table__scroll--disabled');
-    } else {
-      document
-        .querySelector('.samples-table__scroll-right')
-        .classList.remove('samples-table__scroll--disabled');
-    }
-  };
-
-  scrollLeft = () => {
-    document.querySelector('.rt-table').scrollBy({
-      top: 0,
-      left: -100,
-      behavior: 'smooth'
-    });
-  };
-
-  scrollRight = () => {
-    document.querySelector('.rt-table').scrollBy({
-      top: 0,
-      left: 100,
-      behavior: 'smooth'
-    });
-  };
-
   state = {
     page: 0,
     pages: -1,
@@ -107,14 +30,15 @@ class SamplesTable extends React.Component {
     data: []
   };
 
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.accessionCodes, this.props.accessionCodes)) {
+      this.fetchData({ setPage: 0 });
+    }
+  }
+
   get totalSamples() {
     return this.props.accessionCodes.length;
   }
-
-  removeRow = rowId => {
-    const arrayCopy = this.state.data.filter(row => row.id !== rowId);
-    this.setState({ data: arrayCopy });
-  };
 
   render() {
     const { pageActionComponent } = this.props;
@@ -127,11 +51,6 @@ class SamplesTable extends React.Component {
     // samples.
     const pageSizes = PAGE_SIZES.filter(size => size <= this.totalSamples);
     if (pageSizes.length === 0) pageSizes.push(this.totalSamples);
-
-    // TODO: remove this call https://github.com/AlexsLemonade/refinebio-frontend/issues/239
-    if (this.state.mounted) {
-      this.disableScrollButtonsIfNecessary();
-    }
 
     return (
       <ReactTable
@@ -152,43 +71,44 @@ class SamplesTable extends React.Component {
       >
         {(state, makeTable, instance) => {
           return (
-            <div>
-              <div className="experiment__sample-commands">
-                <div className="experiment__per-page-dropdown">
-                  Show
-                  <Dropdown
-                    options={pageSizes}
-                    selectedOption={this.state.pageSize}
-                    onChange={this.handlePageSizeChange}
-                  />
-                  of {this.totalSamples} Samples
+            <div className="samples-table-layout">
+              <div className="samples-table-layout__header">
+                <div className="experiment__sample-commands">
+                  <div className="experiment__per-page-dropdown">
+                    Show
+                    <Dropdown
+                      options={pageSizes}
+                      selectedOption={this.state.pageSize}
+                      onChange={this.handlePageSizeChange}
+                    />
+                    of {this.totalSamples} Samples
+                  </div>
+                  {pageActionComponent &&
+                    pageActionComponent(state.pageRows.map(x => x._original))}
                 </div>
-                {pageActionComponent &&
-                  pageActionComponent(state.pageRows.map(x => x._original))}
               </div>
               <div className="experiment__table-container">
-                <div className="samples-table__scroll-left">
-                  <div className="samples-table__scroll-button">{'<'}</div>
-                </div>
-                {makeTable()}
-                <div className="samples-table__scroll-right">
-                  <div className="samples-table__scroll-button">{'>'}</div>
-                </div>
+                <HorizontalScroll targetSelector=".rt-table">
+                  {makeTable()}
+                </HorizontalScroll>
               </div>
-              <div className="samples-table__notice info">
-                <img className="info__icon" src={InfoIcon} alt="" />
-                <div>
-                  Some fields may be harmonized.{' '}
-                  <Link to="/docs" className="link">
-                    Learn more
-                  </Link>
+              <div className="samples-table-layout__footer">
+                <div className="samples-table__notice info">
+                  <img className="info__icon" src={InfoIcon} alt="" />
+                  <div>
+                    Some fields may be harmonized.{' '}
+                    <Link to="/docs" className="link">
+                      Learn more
+                    </Link>
+                  </div>
                 </div>
+
+                <Pagination
+                  onPaginate={this.handlePagination}
+                  totalPages={totalPages}
+                  currentPage={this.state.page + 1}
+                />
               </div>
-              <Pagination
-                onPaginate={this.handlePagination}
-                totalPages={totalPages}
-                currentPage={this.state.page + 1}
-              />
             </div>
           );
         }}

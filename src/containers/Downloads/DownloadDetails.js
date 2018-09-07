@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import Button from '../../components/Button';
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
@@ -11,43 +13,54 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
-import {
-  downloadsFilesDataBySpecies,
-  downloadsFilesDataByExperiment
-} from './downloadFilesData';
+
 import Radio from '../../components/Radio';
 import { Link } from 'react-router-dom';
+import {
+  groupSamplesBySpecies,
+  getTotalSamplesAdded,
+  getExperimentCountBySpecies,
+  getTotalExperimentsAdded
+} from '../../state/download/reducer';
+import {
+  removeExperiment,
+  removeSamples,
+  clearDataSet
+} from '../../state/download/actions';
 
-export default function DownloadDetails({
+let DownloadDetails = ({
   dataSet,
+  samples,
   experiments,
+  aggregate_by,
+  scale_by,
+
   removeSamples,
   removeExperiment,
   clearDataSet,
-  samplesBySpecies,
-  experimentCountBySpecies,
-  totalSamples,
-  totalExperiments,
   isImmutable = false,
-  isEmbed = false,
-  aggregate_by,
-  scale_by
-}) {
-  let fileData = dataSet
-    ? aggregate_by === 'SPECIES'
-      ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
-      : downloadsFilesDataByExperiment(dataSet)
-    : false;
+  isEmbed = false
+}) => {
+  const samplesBySpecies = groupSamplesBySpecies({
+    samples: samples,
+    dataSet: dataSet
+  });
+  const totalSamples = getTotalSamplesAdded({ dataSet });
+  const totalExperiments = getTotalExperimentsAdded({ dataSet });
+  const experimentCountBySpecies = getExperimentCountBySpecies({
+    experiments,
+    dataSet
+  });
+
   return (
     <div>
-      {fileData && (
-        <DownloadFileSummary
-          summaryData={fileData}
-          aggregate_by={aggregate_by}
-          scale_by={scale_by}
-          isEmbed={isEmbed}
-        />
-      )}
+      <DownloadFileSummary
+        dataSet={dataSet}
+        samplesBySpecies={samplesBySpecies}
+        aggregate_by={aggregate_by}
+        scale_by={scale_by}
+        isEmbed={isEmbed}
+      />
       <DownloadDatasetSummary
         samplesBySpecies={samplesBySpecies}
         totalSamples={totalSamples}
@@ -106,7 +119,16 @@ export default function DownloadDetails({
       </section>
     </div>
   );
-}
+};
+DownloadDetails = connect(
+  () => ({}),
+  {
+    removeSamples,
+    removeExperiment,
+    clearDataSet
+  }
+)(DownloadDetails);
+export default DownloadDetails;
 
 const SpeciesSamples = ({
   samplesBySpecies,
@@ -142,7 +164,7 @@ const SpeciesSamples = ({
             />
           </div>
 
-          {removeSamples && (
+          {!isImmutable && (
             <Button
               text="Remove"
               buttonStyle="remove"
@@ -184,7 +206,7 @@ class ExperimentsView extends React.Component {
               this.state.organism &&
               !experiment.organisms.includes(this.state.organism)
             ) {
-              return <React.Fragment />;
+              return <React.Fragment key={i} />;
             }
 
             return (
@@ -245,7 +267,7 @@ class ExperimentsView extends React.Component {
                     />
                   )}
                 </div>
-                {removeExperiment && (
+                {!isImmutable && (
                   <Button
                     text="Remove"
                     buttonStyle="remove"
@@ -280,15 +302,17 @@ class ExperimentsView extends React.Component {
         <div className="downloads__species-filter-item">Show</div>
         <div className="downloads__species-filter-item">
           <Radio
+            readOnly
             checked={!this.state.organism}
             onClick={() => this.setState({ organism: false })}
           >
             All Species
           </Radio>
         </div>
-        {uniqueOrganisms.map(organism => (
-          <div className="downloads__species-filter-item">
+        {uniqueOrganisms.map((organism, key) => (
+          <div className="downloads__species-filter-item" key={key}>
             <Radio
+              readOnly
               checked={this.state.organism === organism}
               onClick={() => this.setState({ organism: organism })}
             >
@@ -329,7 +353,7 @@ class ViewSamplesButtonModal extends React.Component {
             }}
           />
         )}
-        modalProps={{ className: 'samples-modal' }}
+        modalProps={{ className: 'samples-modal', fillPage: true }}
       >
         {() => (
           <SamplesTable

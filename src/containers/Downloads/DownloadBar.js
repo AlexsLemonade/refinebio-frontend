@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import Button from '../../components/Button';
 import Dropdown from '../../components/Dropdown';
@@ -7,14 +8,29 @@ import './DownloadBar.scss';
 import { getDomain } from '../../common/helpers';
 import { Link } from 'react-router-dom';
 import HelpIcon from '../../common/icons/help.svg';
+import {
+  getTransformationNameFromOption,
+  getTransformationOptionFromName
+} from './transformation';
+import { formatSentenceCase } from '../../common/helpers';
+import {
+  editAggregation,
+  editTransformation
+} from '../../state/download/actions';
 
 let DownloadBar = ({
   dataSetId,
-  aggregation,
-  aggregationOnChange,
-  transformation,
-  transformationOnChange
+  aggregate_by,
+  scale_by,
+  editAggregation,
+  editTransformation
 }) => {
+  const aggregation = formatSentenceCase(aggregate_by);
+
+  const transformation = getTransformationOptionFromName(
+    formatSentenceCase(scale_by)
+  );
+
   return (
     <div className="downloads__bar">
       <ShareDatasetButton dataSetId={dataSetId} />
@@ -36,17 +52,11 @@ let DownloadBar = ({
               />
             </a>
             <Dropdown
-              // If there is no aggregationOnChange function, the DownloadBar
-              // is immutable, so the only option is the current one. This
-              // happens when viewing a shared dataset.
-              options={
-                aggregationOnChange ? ['Experiment', 'Species'] : [aggregation]
-              }
+              options={['Experiment', 'Species']}
               selectedOption={aggregation}
-              onChange={aggregationOnChange}
-              // The dropdown should also be disabled if there is no
-              // aggregationOnChange function
-              disabled={!aggregationOnChange}
+              onChange={aggregation =>
+                editAggregation({ dataSetId, aggregation })
+              }
             />
           </label>
           <label className="downloads__label">
@@ -64,29 +74,33 @@ let DownloadBar = ({
               />
             </a>
             <Dropdown
-              // If there is no transformationOnChange function, the DownloadBar
-              // is immutable, so the only option is the current one. This
-              // happens when viewing a shared dataset.
-              options={
-                transformationOnChange
-                  ? ['None', 'Z-score', 'Zero to One']
-                  : [transformation]
-              }
+              options={['None', 'Z-score', 'Zero to One']}
               selectedOption={transformation}
-              onChange={transformationOnChange}
-              // The dropdown should also be disabled if there is no
-              // transformationOnChange function
-              disabled={!transformationOnChange}
+              onChange={transformation =>
+                editTransformation({
+                  dataSetId,
+                  transformation: getTransformationNameFromOption(
+                    transformation
+                  )
+                })
+              }
             />
           </label>
         </div>
-        <Link className="button" to={`/dataset/${dataSetId}`}>
+        <Link className="button" to={`/download?start=true`}>
           Download
         </Link>
       </div>
     </div>
   );
 };
+DownloadBar = connect(
+  () => ({}),
+  {
+    editAggregation,
+    editTransformation
+  }
+)(DownloadBar);
 export default DownloadBar;
 
 export function ShareDatasetButton({ dataSetId }) {
@@ -104,7 +118,7 @@ export function ShareDatasetButton({ dataSetId }) {
       {() => (
         <div>
           <h1 className="share-link-modal__title">Sharable Link</h1>
-          <InputCopy value={`${getDomain()}/download/${dataSetId}`} />
+          <InputCopy value={`${getDomain()}/dataset/${dataSetId}?ref=share`} />
         </div>
       )}
     </ModalManager>

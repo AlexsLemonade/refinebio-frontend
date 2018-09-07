@@ -2,13 +2,12 @@ import { Ajax } from '../../common/helpers';
 import {
   getDataSet,
   getDataSetDetails,
-  updateDataSet,
-  formatSamples,
-  formatExperiments
+  updateDataSet
 } from '../../api/dataSet';
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
 import { getDataSetId } from './reducer';
+import { replace } from '../routerActions';
 
 /**
  * Saves an updated copy of the given dataset in the store
@@ -237,8 +236,12 @@ export const editTransformation = ({ dataSetId, transformation }) => async (
   );
 };
 
-export const fetchDataSetDetails = () => async (dispatch, getState) => {
-  const dataSetId = getDataSetId(getState());
+/**
+ * Gets detailed information about the samples and experiments associated with
+ * the current dataset. This information is needed to be able to group the samples
+ * by species.
+ */
+export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
   if (!dataSetId) {
     return;
   }
@@ -258,9 +261,6 @@ export const fetchDataSetDetails = () => async (dispatch, getState) => {
     samples,
     experiments
   } = await getDataSetDetails(dataSetId);
-
-  samples = formatSamples(data, samples);
-  experiments = formatExperiments(experiments);
 
   dispatch(
     fetchDataSetDetailsSucceeded({
@@ -296,20 +296,49 @@ export const fetchDataSetDetailsSucceeded = ({
   }
 });
 
-export const startDownload = tokenId => async (dispatch, getState) => {
-  const { dataSetId, dataSet } = getState().download;
+export const startDownload = ({ tokenId, dataSetId, dataSet, email }) => async (
+  dispatch,
+  getState
+) => {
+  if (!tokenId) {
+    throw new Error(
+      'A new token id must be requested in order to start a download'
+    );
+  }
+
   try {
     await Ajax.put(`/dataset/${dataSetId}/`, {
       start: true,
       data: dataSet,
-      token_id: tokenId
+      token_id: tokenId,
+      ...(email ? { email_address: email } : {})
     });
   } catch (e) {
     await dispatch(reportError(e));
-    return;
+
+    // if there's an error, redirect to the dataset page, and show a message
+    // also with a button to try again
+    return await dispatch(
+      replace({
+        pathname: `/dataset/${dataSetId}`,
+        state: { hasError: true }
+      })
+    );
   }
 
-  await dispatch(clearDataSet());
+  let currentDataSet = getState().download.dataSetId;
+  if (currentDataSet === dataSetId) {
+    // clear the current dataset if a download is started for it.
+    await dispatch(clearDataSet());
+  }
+
+  // redirect to the dataset page, and send the email address in the state
+  return await dispatch(
+    replace({
+      pathname: `/dataset/${dataSetId}`,
+      state: { email_address: email }
+    })
+  );
 };
 
 // Remove all dataset

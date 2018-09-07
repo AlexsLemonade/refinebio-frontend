@@ -3,10 +3,10 @@ import { HashLink as Link } from 'react-router-hash-link';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
-import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
+import TechnologyBadge from '../../../components/TechnologyBadge';
 
 const Result = ({ result, addExperiment, removeExperiment }) => {
   const metadataFields = getMetadataFields(result);
@@ -64,11 +64,10 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
             : null}
         </li>
         <li className="result__stat">
-          <img
-            src={MicroarrayIcon}
-            className="result__icon"
-            alt="MicroArray Badge Icon"
-          />{' '}
+          {/* Right now we don't have a way to determine the technology of an experiment, since
+          there's no sample information in the search endpoint. This should be updated after 
+          https://github.com/AlexsLemonade/refinebio-frontend/issues/268#issuecomment-416300232 */}
+          <TechnologyBadge className="result__icon" isMicroarray={true} />
           {result.pretty_platforms.filter(platform => !!platform).join(',')}
         </li>
       </ul>
