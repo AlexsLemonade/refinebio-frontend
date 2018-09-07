@@ -111,6 +111,8 @@ export function getDomain() {
 }
 
 export function formatSentenceCase(str) {
+  if (!str) return '';
+
   const tmpStr = str.toLowerCase().replace(/_/g, ' ');
   return tmpStr.charAt(0).toUpperCase() + tmpStr.slice(1);
 }

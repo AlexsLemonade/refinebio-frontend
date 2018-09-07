@@ -5,7 +5,13 @@ export async function getDataSet(dataSetId) {
 }
 
 export async function getDataSetDetails(dataSetId) {
-  return await Ajax.get(`/dataset/${dataSetId}/`, { details: true });
+  let response = await Ajax.get(`/dataset/${dataSetId}/`, { details: true });
+
+  return {
+    ...response,
+    samples: formatSamples(response.data, response.samples),
+    experiments: formatExperiments(response.experiments)
+  };
 }
 
 export async function updateDataSet(dataSetId, dataSet) {
