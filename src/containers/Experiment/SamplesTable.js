@@ -87,7 +87,7 @@ class SamplesTable extends React.Component {
                     pageActionComponent(state.pageRows.map(x => x._original))}
                 </div>
               </div>
-              <div className="experiment__table-container">
+              <div className="samples-table-layout__main">
                 <HorizontalScroll targetSelector=".rt-table">
                   {makeTable()}
                 </HorizontalScroll>
