@@ -1,11 +1,24 @@
+@import '../../common/styles/variables';
+
 .back-to-top {
   position: fixed;
   bottom: 15vh;
-  right: 80px;
   border-bottom: none;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease-in-out;
+  z-index: 50;
+  text-decoration: initial;
+  right: 0;
+  padding: 4px 8px;
+  background-color: #f2f2f2;
+  box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.09);
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: #f2f2f2;
+  }
 
   &--active {
     opacity: 1;
@@ -27,5 +40,9 @@
       font-family: 'Ionicons';
       font-style: normal;
     }
+  }
+
+  @include desktop() {
+    right: 80px;
   }
 }
