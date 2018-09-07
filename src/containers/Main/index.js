@@ -28,18 +28,12 @@ const Main = ({ searchTerm, fetchResults, push }) => {
           />
           <div className="main__search-suggestions">
             <p className="main__search-suggestion-label">Try searching for:</p>
-            <Link className="main__search-suggestion" to="/results?q=Notch">
-              Notch
-            </Link>
-            <Link
-              className="main__search-suggestion"
-              to="/results?q=medulloblastoma"
-            >
-              Medulloblastoma
-            </Link>
-            <Link className="main__search-suggestion" to="/results?q=GSE16476">
-              GSE16476
-            </Link>
+
+            {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
+              <Link className="main__search-suggestion" to={`/results?q=${q}`}>
+                {q}
+              </Link>
+            ))}
           </div>
         </div>
       </section>

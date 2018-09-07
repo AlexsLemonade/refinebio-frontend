@@ -12,9 +12,12 @@ const Dropdown = ({
       <select
         className="dropdown__select"
         value={options.indexOf(selectedOption)}
-        onChange={e =>
-          onChange && onChange(options[parseInt(e.target.value, 10)])
-        }
+        onChange={e => {
+          if (onChange) {
+            const index = parseInt(e.target.value, 10);
+            onChange(options[index], index);
+          }
+        }}
         disabled={disabled}
       >
         {/* Set the value of each option to the index selected, to be able to return the correct selected option

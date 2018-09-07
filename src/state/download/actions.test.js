@@ -84,7 +84,16 @@ describe('startDownload', () => {
       download: { dataSetId: DataSetId, dataSet: DataSet }
     });
 
-    await store.dispatch(startDownload('some token id'));
-    expect(store.getActions().map(x => x.type)).toEqual(['DOWNLOAD_CLEAR']);
+    await store.dispatch(
+      startDownload({
+        tokenId: 'some token id',
+        dataSetId: DataSetId,
+        dataSet: DataSet
+      })
+    );
+    expect(store.getActions().map(x => x.type)).toEqual([
+      'DOWNLOAD_CLEAR',
+      'refinebio/CALL_HISTORY_METHOD'
+    ]);
   });
 });

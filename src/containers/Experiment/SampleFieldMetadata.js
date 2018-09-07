@@ -51,7 +51,7 @@ const SampleFieldMetadata = [
     minWidth: 160
   },
   {
-    Header: 'Cell line',
+    Header: 'Cell Line',
     id: 'cell_line',
     accessor: d => d.cell_line,
     minWidth: 160
