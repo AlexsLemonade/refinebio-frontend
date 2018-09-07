@@ -4,7 +4,11 @@
 /*body*/
 .modal-open {
   overflow: hidden;
-  position: relative;
+  position: fixed;
+
+  @include desktop() {
+    position: absolute;
+  }
 }
 
 .modal-backdrop {

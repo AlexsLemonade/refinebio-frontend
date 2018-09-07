@@ -45,6 +45,10 @@
     position: relative;
   }
 
+  &__link-button {
+    position: relative;
+  }
+
   &__dataset-count {
     position: absolute;
     top: -0.5em;
@@ -122,10 +126,6 @@
 
   .header__burger {
     color: $white;
-  }
-
-  .header__link-button {
-    position: relative;
   }
 
   @include tablet() {
