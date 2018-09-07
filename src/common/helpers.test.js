@@ -1,4 +1,9 @@
-import { getQueryString, getQueryParamObject, Ajax } from './helpers';
+import {
+  getQueryString,
+  getQueryParamObject,
+  Ajax,
+  stringEnumerate
+} from './helpers';
 
 describe('getQueryString', () => {
   it('with falsy values', () => {
@@ -88,4 +93,12 @@ describe('Ajax', () => {
       ]);
     });
   });
+});
+
+it('stringEnumerate', () => {
+  expect(stringEnumerate(['first'])).toEqual('first');
+  expect(stringEnumerate(['first', 'second'])).toEqual('first and second');
+  expect(stringEnumerate(['first', 'second', 'third'])).toEqual(
+    'first, second and third'
+  );
 });
