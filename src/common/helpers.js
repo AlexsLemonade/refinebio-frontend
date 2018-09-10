@@ -92,7 +92,6 @@ export async function asyncFetch(url, params = false) {
    * When the server answers, you have to check whether it's good or not.
    */
   if (!response.ok) {
-    debugger;
     throw new Error(response.status);
   }
   return await response.json();
@@ -112,6 +111,8 @@ export function getDomain() {
 }
 
 export function formatSentenceCase(str) {
+  if (!str) return '';
+
   const tmpStr = str.toLowerCase().replace(/_/g, ' ');
   return tmpStr.charAt(0).toUpperCase() + tmpStr.slice(1);
 }
@@ -146,3 +147,13 @@ export const getMetadataFields = experiment =>
   SampleFieldMetadata.filter(field =>
     experiment.sample_metadata.includes(field.id)
   ).map(field => field.Header);
+
+export function stringEnumerate([x0, ...rest]) {
+  if (!rest || !rest.length) {
+    return x0;
+  }
+
+  return `${[x0, ...rest.slice(0, rest.length - 1)].join(', ')} and ${
+    rest[rest.length - 1]
+  }`;
+}

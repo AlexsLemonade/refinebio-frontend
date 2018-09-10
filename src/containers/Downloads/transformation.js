@@ -2,10 +2,10 @@
  * @description Returns the frontend dropdown option from the backend tranformation name
  */
 export const getTransformationOptionFromName = transformationName => {
-  switch (transformationName) {
-    case 'Standard':
+  switch (transformationName.toLowerCase()) {
+    case 'standard':
       return 'Z-score';
-    case 'Minmax':
+    case 'minmax':
       return 'Zero to One';
     default:
       return transformationName;

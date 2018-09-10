@@ -1,6 +1,40 @@
 @import '../../common/styles/variables';
 @import '../../common/styles/mixins';
+
+.samples-table-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__header {
+  }
+
+  &__main {
+    flex: 1 1;
+    overflow: hidden;
+
+    // the horizontal scroll buttons overflow outside of the table
+    // this is to make sure they are displayed
+    padding-left: 16px;
+    margin-left: -16px;
+    padding-right: 16px;
+    margin-right: -16px;
+  }
+
+  &__footer {
+    padding-top: 16px;
+  }
+}
+
+.samples-table-container {
+  position: relative;
+  height: 100%;
+}
+
 .samples-table {
+  height: 100%;
+  max-height: 115 * 8px;
+
   &__th {
     // The original styles for headers in ReactTable are under the selector: .ReactTable .rt-thead .rt-th.-sort-asc
     // !important is here to override that one
@@ -18,10 +52,26 @@
     }
   }
 
+  .rt-tbody {
+    min-height: 100px;
+
+    // momentum scrolling ios https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/
+    overflow-y: scroll; /* has to be scroll, not auto */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rt-noData {
+    margin-top: 16px;
+  }
+
   &__sort {
-    display: flex;
     flex-direction: column;
     margin-left: 8px;
+    display: none;
+
+    .rt-th.-cursor-pointer & {
+      display: flex;
+    }
 
     .rt-th.-sort-asc & {
       display: none;
@@ -40,7 +90,7 @@
       display: none;
     }
 
-    .rt-th.-sort-desc & {
+    .rt-th.-sort-desc.-cursor-pointer & {
       display: block;
     }
   }
@@ -49,12 +99,12 @@
     display: none;
     margin-left: 8px;
 
-    .rt-th.-sort-asc & {
+    .rt-th.-sort-asc.-cursor-pointer & {
       display: block;
     }
 
     .rt-th.-sort-desc & {
-      display: noneß;
+      display: none;
     }
   }
 
@@ -82,136 +132,8 @@
     display: block;
   }
 
-  &__scroll-left,
-  &__scroll-right {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    padding: auto 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &.samples-table__scroll--disabled {
-      display: none;
-    }
-  }
-
-  &__scroll-left {
-    left: -12px;
-  }
-
-  &__scroll-right {
-    right: -12px;
-  }
-
-  &__scroll-button {
-    width: 24px;
-    height: 48px;
-    color: $white;
-    background-color: $azure;
-    font-size: 24px;
-    justify-content: center;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    @include noselect;
-    z-index: 2;
-  }
-}
-
-.processing-info-modal {
-  padding: 56px;
-  max-width: 108 * 8px;
-
-  &__title {
-    margin-bottom: 16px;
-  }
-
-  &__subtitle {
-    margin-top: 16px;
-  }
-
-  &__section {
-    border-top: 1px solid $border-color;
-    margin: 24px -32px 0 -32px;
-    padding: 24px 32px 0 32px;
-  }
-
-  &__version {
-    padding-right: 32px;
-  }
-}
-
-.dot-label {
-  background-color: lighten($processed-ccdl, 52%);
-  line-height: 1;
-  padding: 4px 8px 4px 8px;
-  border-radius: 16px;
-  display: inline-block;
-  margin-bottom: 1.5rem;
-
-  &:before {
-    content: ' ';
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    border: 4px solid $processed-ccdl;
-    display: inline-block;
-    margin-right: 8px;
-  }
-
-  &--submitter {
-    background-color: lighten($processed-submitter, 52%);
-
-    &:before {
-      border-color: $processed-submitter;
-    }
-  }
-}
-
-.arrow {
-  display: block;
-  position: relative;
-  border-top: 2px solid $border-color;
-  margin-top: 5px;
-  margin-bottom: 5px;
-
-  &:before {
-    content: ' ';
-    border-top: 2px solid $border-color;
-    position: absolute;
-    top: -6px;
-    right: 0;
-    transform: rotate(30deg);
-    width: 16px;
-  }
-
-  &:after {
-    content: ' ';
-    border-top: 2px solid $border-color;
-    position: absolute;
-    top: 2px;
-    right: 0;
-    transform: rotate(-30deg);
-    width: 16px;
-  }
-}
-
-.pipeline {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  text-align: center;
-  margin: 16px 0 32px 0;
-  justify-content: space-around;
-
-  &__item {
-    margin-left: 8px;
-    margin-right: 8px;
-  }
-
-  &__arrow {
-    flex-grow: 1;
+  &__notice {
+    margin-bottom: 5 * 8px;
   }
 }
 
@@ -248,16 +170,5 @@
 }
 
 .sample-not-processed {
-  display: flex;
-  flex-direction: row;
   font-size: 0.875rem;
-  align-items: center;
-
-  &__info-icon {
-    font-size: 1.5rem;
-  }
-
-  &__text {
-    margin-left: 6px;
-  }
 }

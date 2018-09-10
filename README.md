@@ -54,6 +54,18 @@ In the project directory, run:
 * Correctly bundles React in production mode and optimizes the build for the best performance
 * Build is minified and filenames include hashes
 
+#### Deployment
+
+Deploys are triggered by git tags.
+These git tags should correspond to a version of the project.
+Once a tag has been pushed, it will trigger a new CircleCI build which will run the tests and then deploy the static files to S3 where they are served from.
+A tag can be created and pushed with the following commands:
+
+```
+git tag -a vX.X.X -m "<RELEASE MESSAGE>"
+git push origin vX.X.X
+```
+
 ## Development
 
 ### Git Workflow

@@ -10,7 +10,6 @@ import './Experiment.scss';
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
-import MicroarrayIcon from '../../common/icons/microarray-badge.svg';
 import BackToTop from '../../components/BackToTop';
 
 import SamplesTable from './SamplesTable';
@@ -20,8 +19,13 @@ import {
   removeSamples
 } from '../../state/download/actions';
 import DataSetSampleActions from './DataSetSampleActions';
-
+import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
+import DataSetStats from './DataSetStats';
+import TechnologyBadge, {
+  MICROARRAY,
+  RNA_SEQ
+} from '../../components/TechnologyBadge';
 
 let Experiment = ({
   fetchExperiment,
@@ -58,7 +62,7 @@ let Experiment = ({
               <Helmet>
                 <title>refine.bio - Experiment Details</title>
               </Helmet>
-              <BackToTop />        
+              <BackToTop />
               <div className="experiment__accession">
                 <img
                   src={AccessionIcon}
@@ -74,8 +78,9 @@ let Experiment = ({
                 </h3>
                 <div>
                   <DataSetSampleActions
-                    samples={experiment.samples}
-                    experiment={experiment}
+                    data={{
+                      [experiment.accession_code]: experiment.samples
+                    }}
                   />
                 </div>
               </div>
@@ -106,11 +111,15 @@ let Experiment = ({
                     : null}
                 </div>
                 <div className="experiment__stats-item">
-                  <img
-                    src={MicroarrayIcon}
+                  <TechnologyBadge
                     className="experiment__stats-icon"
-                    alt="MicroArray Badge Icon"
-                  />{' '}
+                    isMicroarray={experiment.samples.every(
+                      x => x.technology === MICROARRAY
+                    )}
+                    isRnaSeq={experiment.samples.every(
+                      x => x.technology === RNA_SEQ
+                    )}
+                  />
                   {experiment.samples.length
                     ? experiment.samples[0].pretty_platform
                     : null}
@@ -136,7 +145,7 @@ let Experiment = ({
                         }`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="button button--link"
+                        className="link"
                       >
                         {experiment.pubmed_id}
                       </a>
@@ -157,7 +166,7 @@ let Experiment = ({
                         }`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="button button--link"
+                        className="link"
                       >
                         {experiment.publication_title}
                       </a>
@@ -177,9 +186,8 @@ let Experiment = ({
                       href={`/results?q=${encodeURIComponent(
                         experiment.submitter_institution
                       )}`}
-                      target="_blank"
                       rel="noopener noreferrer"
-                      className="button button--link"
+                      className="link"
                     >
                       {experiment.submitter_institution}
                     </a>
@@ -193,9 +201,8 @@ let Experiment = ({
                         .map(author => (
                           <a
                             href={`/results?q=${encodeURIComponent(author)}`}
-                            target="_blank"
                             rel="noopener noreferrer"
-                            className="button button--link"
+                            className="link"
                           >
                             {author}
                           </a>
@@ -217,22 +224,7 @@ let Experiment = ({
               </div>
               <section className="experiment__section" id="samples">
                 <h2 className="experiment__title">Samples</h2>
-                <SamplesTable
-                  accessionCodes={experiment.samples.map(x => x.accession_code)}
-                  experimentAccessionCodes={[experiment.accession_code]}
-                  // Render prop for the button that adds the samples to the dataset
-                  pageActionComponent={samplesDisplayed => (
-                    <DataSetSampleActions
-                      samples={samplesDisplayed}
-                      experiment={experiment}
-                      enableAddRemaining={false}
-                      meta={{
-                        buttonStyle: 'secondary',
-                        addText: 'Add Page to Dataset'
-                      }}
-                    />
-                  )}
-                />
+                <ExperimentSamplesTable experiment={experiment} />
               </section>
             </div>
           </div>
@@ -253,3 +245,81 @@ Experiment = connect(
 )(Experiment);
 
 export default Experiment;
+
+class ExperimentSamplesTable extends React.Component {
+  state = {
+    showOnlyAddedSamples: false,
+    onlyAddedSamples: []
+  };
+
+  render() {
+    const { experiment } = this.props;
+
+    return (
+      <SamplesTable
+        accessionCodes={this._getSamplesToBeDisplayed()}
+        experimentAccessionCodes={[experiment.accession_code]}
+        // Render prop for the button that adds the samples to the dataset
+        pageActionComponent={samplesDisplayed => (
+          <div className="experiment__sample-actions">
+            <Checkbox
+              name="samples-dataset"
+              checked={this.state.showOnlyAddedSamples}
+              onToggle={() =>
+                this.setState({
+                  showOnlyAddedSamples: !this.state.showOnlyAddedSamples,
+                  onlyAddedSamples: this._getAddedSamples()
+                })
+              }
+              disabled={
+                !this.state.showOnlyAddedSamples && !this._anySampleInDataSet()
+              }
+            >
+              Show only samples added to dataset
+            </Checkbox>
+            <DataSetSampleActions
+              data={{
+                [experiment.accession_code]: samplesDisplayed
+              }}
+              enableAddRemaining={false}
+              meta={{
+                buttonStyle: 'secondary',
+                addText: 'Add Page to Dataset'
+              }}
+            />
+          </div>
+        )}
+      />
+    );
+  }
+
+  _anySampleInDataSet() {
+    const { experiment, dataSet } = this.props;
+    return new DataSetStats(
+      dataSet,
+      experiment.samples
+    ).anyProcessedInDataSet();
+  }
+
+  _getAddedSamples() {
+    const { experiment, dataSet } = this.props;
+
+    // show only the samples that are present in the dataset
+    return new DataSetStats(dataSet, experiment.samples)
+      .getSamplesInDataSet()
+      .map(x => x.accession_code);
+  }
+
+  _getSamplesToBeDisplayed() {
+    if (this.state.showOnlyAddedSamples) {
+      // show only the samples that are present in the dataset
+      return this.state.onlyAddedSamples;
+    }
+
+    // return the accession codes of all samples
+    return this.props.experiment.samples.map(x => x.accession_code);
+  }
+}
+ExperimentSamplesTable = connect(({ download: { dataSet } }) => ({ dataSet }))(
+  ExperimentSamplesTable
+);

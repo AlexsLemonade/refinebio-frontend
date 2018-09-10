@@ -1,3 +1,4 @@
+@import 'common/styles/variables';
 
 /* Styles for form controls here */
 
@@ -5,12 +6,19 @@
 .input-text {
   border: 2px solid $gray;
   border-radius: 3px;
-  font-size: 22px;
   font-family: inherit;
-  padding: 5px 24px;
+  padding: 8px 24px;
+  font-size: 16px;
 
   &:focus {
     outline: none;
   }
 }
 
+.input-lg {
+  font-size: 16px;
+
+  @include tablet() {
+    font-size: 22px;
+  }
+}

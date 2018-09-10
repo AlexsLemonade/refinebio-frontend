@@ -4,84 +4,240 @@ import ModalManager from '../../components/Modal/ModalManager';
 
 import FileIcon from './file.svg';
 import ProcessIcon from './process.svg';
-
-// Pipeline names ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/22#issuecomment-394010812
-const PIPELINES = {
-  SubmitterProcessed: 'Submitter-processed',
-  AffymetrixSCAN: 'Affymetrix SCAN',
-  Salmontools: 'Salmontools',
-  AgilentSCANTwoColor: 'Agilent SCAN TwoColor',
-  IlluminaSCAN: 'Illumina SCAN',
-  tximport: 'tximport',
-  Salmon: 'Salmon',
-  MultiQC: 'MultiQC'
-};
+import { stringEnumerate } from '../../common/helpers';
+import moment from 'moment';
+import './ProcessingInformationCell.scss';
+import isEqual from 'lodash/isEqual';
+import { getGenomeBuild } from '../../api/samples';
+import Loader from '../../components/Loader';
 
 export default function ProcessingInformationCell({
   original: sample,
   ...props
 }) {
-  let { pipelines } = sample;
-
-  // Logic to decide which pipeline modal dialog should be displayed. On Keytar Kurt we're only supporting 4 types of
-  // pipelines. In the future when we add more, we might want to refactor these modal dialogs
-  // ref: https://github.com/AlexsLemonade/refinebio-frontend/issues/22#issuecomment-394408631
-  if (pipelines.length === 1) {
-    if (pipelines.includes(PIPELINES.AffymetrixSCAN)) {
-      return <ScanModal sample={sample} scanType={PIPELINES.AffymetrixSCAN} />;
-    } else if (pipelines.includes(PIPELINES.IlluminaSCAN)) {
-      return <ScanModal sample={sample} scanType={PIPELINES.IlluminaSCAN} />;
-    } else if (pipelines.includes(PIPELINES.SubmitterProcessed)) {
-      return <SubmitterProcessedModal sample={sample} />;
-    }
-  } else if (pipelines.length === 2) {
-    if (
-      pipelines.includes(PIPELINES.tximport) &&
-      pipelines.includes(PIPELINES.Salmon)
-    ) {
-      return <SalmonTximportModal sample={sample} />;
-    }
+  if (!sample.results || !sample.results.length) {
+    return <div className="experiment__not-provided">NA</div>;
   }
 
-  return <div>{pipelines.join(', ')}</div>;
-}
+  const computationalResults = sample.results
+    .filter(result => result.processor.name !== 'MultiQC') // hack to hide multiqc
+    .filter(
+      // hack: the backend is returning duplicated computational results
+      // this ensures we only show unique values.
+      (result, index, self) =>
+        self.findIndex(r2 => r2.processor.name === result.processor.name) ===
+        index
+    )
+    .sort((result1, result2) =>
+      moment(result1.time_start).diff(moment(result2.time_start))
+    );
 
-function SubmitterProcessedModal({ sample }) {
+  const pipelinesText = computationalResults
+    .map(result => result.processor.name)
+    .join(', ');
+
   return (
     <ModalManager
       component={showModal => (
-        <Button
-          text="Submitter-processed"
-          buttonStyle="link"
-          onClick={showModal}
-        />
+        <Button text={pipelinesText} buttonStyle="link" onClick={showModal} />
       )}
       modalProps={{ className: 'processing-info-modal' }}
     >
       {() => (
-        <div>
-          <h1 className="processing-info-modal__title">
-            Processing Information
-          </h1>
-          <div className="dot-label dot-label--submitter">
-            Submitter processed
-          </div>
-
-          <SubmitterSuppliedProtocol />
-
-          <section className="processing-info-modal__section">
-            <GeneIdentifierConversion />
-          </section>
-        </div>
+        <ProcessingInformationModalContent
+          sample={sample}
+          results={computationalResults}
+        />
       )}
     </ModalManager>
   );
 }
 
-function SubmitterSuppliedProtocol() {
+class ProcessingInformationModalContent extends React.Component {
+  render() {
+    const { results, sample } = this.props;
+
+    const pipelinesText = results.map(result => result.processor.name);
+
+    return (
+      <div>
+        <h1 className="processing-info-modal__title">Processing Information</h1>
+        <div className="dot-label">refine.bio processed</div>
+
+        <h3>{stringEnumerate(pipelinesText)}</h3>
+
+        <div className="pipeline">
+          <div className="pipeline__item">
+            <img src={FileIcon} alt="" />
+            <div>Input File</div>
+          </div>
+          <div className="pipeline__arrow">
+            <div className="arrow" />
+          </div>
+
+          {results.map(({ processor: { name } }, index) => (
+            <React.Fragment key={index}>
+              <div className="pipeline__item">
+                <img src={ProcessIcon} alt="" />
+                <div>{name}</div>
+              </div>
+              <div className="pipeline__arrow">
+                <div className="arrow" />
+              </div>
+            </React.Fragment>
+          ))}
+
+          <div className="pipeline__item">
+            <img src={FileIcon} alt="" />
+            <div>Gene Expression Matrix</div>
+          </div>
+        </div>
+
+        {results.map(({ processor: { name } }) =>
+          this._getProtocolDescription(name)
+        )}
+
+        <h3 className="processing-info-modal__subtitle">Version Information</h3>
+        <table>
+          <tbody>
+            {results.map(({ processor: { name, version } }) => (
+              <tr>
+                <td className="processing-info-modal__version">{name}</td>
+                <td>{version}</td>
+              </tr>
+            ))}
+
+            <GenomeBuild organism={sample.organism.name} />
+          </tbody>
+        </table>
+
+        <section className="processing-info-modal__section">
+          <SubmitterSuppliedProtocol {...this.props} />
+        </section>
+      </div>
+    );
+  }
+
+  static PROTOCOLS = {
+    'Affymetrix SCAN': AffymetrixScanProtocol,
+    'Illumina SCAN': IlluminaScanProtocol,
+    'Transcriptome Index': null,
+    'Salmon Quant': SalmonProtocol,
+    MultiQC: null,
+    Tximport: TxtimportProtocol,
+
+    'Submitter-processed': SubmitterSuppliedProtocol
+  };
+
+  _getProtocolDescription(name) {
+    const Component = ProcessingInformationModalContent.PROTOCOLS[name];
+    if (!Component) {
+      return null;
+    }
+    return <Component {...this.props} />;
+  }
+}
+
+function GenomeBuild({ organism }) {
   return (
-    <div>
+    <Loader fetch={() => getGenomeBuild(organism)}>
+      {({ isLoading, data }) =>
+        !isLoading && !data ? (
+          <React.Fragment />
+        ) : (
+          <tr>
+            <td className="processing-info-modal__version">Genome build</td>
+            <td>{data || '...'}</td>
+          </tr>
+        )
+      }
+    </Loader>
+  );
+}
+
+function AffymetrixScanProtocol() {
+  return (
+    <div className="processing-info-modal__protocol-description">
+      <h3>SCAN</h3>
+      <p>
+        SCAN (Single Channel Array Normalization) is a normalization method for
+        single channel (Affymetrix) microarrays that allows us to process
+        individual samples. SCAN models and corrects for the effect of technical
+        bias, such as GC content, using a mixture-modeling approach. For more
+        information about this approach, see the primary publication (Piccolo,
+        et al. <i>Genomics</i>. 2012.
+        <a
+          href="http://doi.org/10.1016/j.ygeno.2012.08.003"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link"
+        >
+          DOI: 10.1016/j.ygeno.2012.08.003
+        </a>){' '}
+        <span>
+          and the SCAN.UPC bioconductor package documentation (<a
+            href="https://doi.org/10.18129/B9.bioc.SCAN.UPC"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
+            DOI: 10.18129/B9.bioc.SCAN.UPC
+          </a>).
+        </span>
+      </p>
+    </div>
+  );
+}
+
+function IlluminaScanProtocol() {
+  return (
+    <div className="processing-info-modal__protocol-description">
+      <h3>SCAN</h3>
+      <p>
+        SCAN (Single Channel Array Normalization) is a normalization method for
+        single channel microarrays that allows us to process individual samples.
+        It was originally developed for Affymetrix microarrays. In our system,
+        it has been adapted for Illumina BeadArrays. SCAN models and corrects
+        for the effect of technical bias, such as GC content, using a
+        mixture-modeling approach. For more information about this approach, see
+        the primary publication (Piccolo, et al. <i>Genomics</i>. 2012.
+        <a
+          href="http://doi.org/10.1016/j.ygeno.2012.08.003"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link"
+        >
+          DOI: 10.1016/j.ygeno.2012.08.003
+        </a>).
+      </p>
+    </div>
+  );
+}
+
+function SubmitterSuppliedProtocol({ sample, results }) {
+  let processorNames = results.map(result => result.processor.name);
+
+  return (
+    <div className="processing-info-modal__protocol-description">
       <h3>Submitter Supplied Protocol</h3>
+      {/* Rna seq specific note https://github.com/AlexsLemonade/refinebio-frontend/issues/265 */}
+      {isEqual(processorNames, ['Salmon Quant', 'Tximport']) && (
+        <p>
+          We have created custom gene mapping files for Affymetrix platforms
+          (see:
+          <a
+            href="https://github.com/AlexsLemonade/identifier-refinery"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
+            https://github.com/AlexsLemonade/identifier-refinery
+          </a>) that support conversion from probe IDs, gene symbols, Entrez
+          IDs, RefSeq and Unigene identifiers to Ensembl gene IDs. We support
+          conversion from Illumina BeadArray probe IDs to Ensembl gene IDs using
+          Bioconductor Illumina BeadArray expression packages.
+        </p>
+      )}
       <p>
         These tissues samples were obtained at surgery and stored at -80C until
         use., These tissues samples were obtained at surgery without any other
@@ -98,222 +254,9 @@ function SubmitterSuppliedProtocol() {
   );
 }
 
-function GeneIdentifierConversion() {
-  return (
-    <div>
-      <h3>Gene Identifier Conversion</h3>
-      <p>
-        The gene identifiers were detected and converted to Ensembl gene IDs
-        using our{' '}
-        <a
-          href="https://github.com/AlexsLemonade/identifier-refinery"
-          className="link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          custom mappings
-        </a>{' '}
-        and pipeline.
-      </p>
-    </div>
-  );
-}
-
-function ScanModal({ sample, scanType }) {
-  return (
-    <ModalManager
-      component={showModal => (
-        <Button text={scanType} buttonStyle="link" onClick={showModal} />
-      )}
-      modalProps={{ className: 'processing-info-modal' }}
-    >
-      {() => (
-        <div>
-          <h1 className="processing-info-modal__title">
-            Processing Information
-          </h1>
-          <div className="dot-label">refine.bio processed</div>
-
-          <h3>{scanType}</h3>
-
-          <div className="pipeline">
-            <div className="pipeline__item">
-              <img src={FileIcon} alt="" />
-              <div>Input File</div>
-            </div>
-            <div className="pipeline__arrow">
-              <div className="arrow" />
-            </div>
-            <div className="pipeline__item">
-              <img src={ProcessIcon} alt="" />
-              <div>SCAN</div>
-            </div>
-            <div className="pipeline__arrow">
-              <div className="arrow" />
-            </div>
-            <div className="pipeline__item">
-              <img src={FileIcon} alt="" />
-              <div>Gene Expression Matrix</div>
-            </div>
-          </div>
-
-          <ScanProtocol scanType={scanType} />
-
-          <section className="processing-info-modal__section">
-            <SubmitterSuppliedProtocol />
-          </section>
-        </div>
-      )}
-    </ModalManager>
-  );
-}
-
-function ScanProtocol({ scanType }) {
-  const versionInfo = _getScanVersionInfo(scanType);
-  return (
-    <div>
-      <h3>SCAN</h3>
-      <p>
-        {scanType === PIPELINES.AffymetrixSCAN
-          ? 'SCAN (Single Channel Array Normalization) is a normalization method for single channel (Affymetrix) microarrays that allows us to process individual samples. SCAN models and corrects for the effect of technical bias, such as GC content, using a mixture-modeling approach. For more information about this approach, see the primary publication (Piccolo, et al. Genomics. 2012.'
-          : 'SCAN (Single Channel Array Normalization) is a normalization method for single channel microarrays that allows us to process individual samples. It was originally developed for Affymetrix microarrays. In our system, it has been adapted for Illumina BeadArrays. SCAN models and corrects for the effect of technical bias, such as GC content, using a mixture-modeling approach. For more information about this approach, see the primary publication (Piccolo, et al. Genomics. 2012. '}
-        <a
-          href="http://doi.org/10.1016/j.ygeno.2012.08.003"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="button button--link"
-        >
-          DOI: 10.1016/j.ygeno.2012.08.003
-        </a>){' '}
-        {scanType === PIPELINES.AffymetrixSCAN ? (
-          <span>
-            and the SCAN.UPC bioconductor package documentation (<a
-              href="http://doi.org/10.1016/j.ygeno.2012.08.003"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="button button--link"
-            >
-              DOI: 10.18129/B9.bioc.SCAN.UPC
-            </a>).
-          </span>
-        ) : (
-          '.'
-        )}
-      </p>
-
-      <h3 className="processing-info-modal__subtitle">Version Information</h3>
-      <table>
-        <tbody>
-          {Object.keys(versionInfo).map(packageName => (
-            <tr>
-              <td className="processing-info-modal__version">{packageName}</td>
-              <td>{versionInfo[packageName]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-function _getScanVersionInfo(scanType) {
-  if (scanType === PIPELINES.AffymetrixSCAN) {
-    return {
-      'SCAN.UPC': '2.20.0',
-      Brainarray: '22.0.0'
-    };
-  } else if (scanType === PIPELINES.IlluminaSCAN) {
-    return {
-      'Illumina Bioconductor annotation packages': '1.26.0'
-    };
-  }
-}
-
-function SalmonTximportModal({ sample }) {
-  return (
-    <ModalManager
-      component={showModal => (
-        <Button
-          text="Salmon and tximport"
-          buttonStyle="link"
-          onClick={showModal}
-        />
-      )}
-      modalProps={{ className: 'processing-info-modal' }}
-    >
-      {() => (
-        <div>
-          <h1 className="processing-info-modal__title">
-            Processing Information
-          </h1>
-          <div className="dot-label">refine.bio processed</div>
-
-          <h3>Salmon and tximport</h3>
-
-          <div className="pipeline">
-            <div className="pipeline__item">
-              <img src={FileIcon} alt="" />
-              <div>Input File</div>
-            </div>
-            <div className="pipeline__arrow">
-              <div className="arrow" />
-            </div>
-            <div className="pipeline__item">
-              <img src={ProcessIcon} alt="" />
-              <div>Salmon</div>
-            </div>
-            <div className="pipeline__arrow">
-              <div className="arrow" />
-            </div>
-            <div className="pipeline__item">
-              <img src={ProcessIcon} alt="" />
-              <div>tximport</div>
-            </div>
-            <div className="pipeline__arrow">
-              <div className="arrow" />
-            </div>
-            <div className="pipeline__item">
-              <img src={FileIcon} alt="" />
-              <div>Gene Expression Matrix</div>
-            </div>
-          </div>
-
-          <SalmonProtocol />
-
-          <TxtimportProtocol />
-
-          <h3 className="processing-info-modal__subtitle">
-            Version Information
-          </h3>
-          <table>
-            <tbody>
-              <tr>
-                <td className="processing-info-modal__version">Salmon</td>
-                <td>0.9.1</td>
-              </tr>
-              <tr>
-                <td className="processing-info-modal__version">txtimport</td>
-                <td>1.6.0</td>
-              </tr>
-              <tr>
-                <td className="processing-info-modal__version">Genome build</td>
-                <td>GRCh38.p12</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <section className="processing-info-modal__section">
-            <SubmitterSuppliedProtocol />
-          </section>
-        </div>
-      )}
-    </ModalManager>
-  );
-}
-
 function SalmonProtocol() {
   return (
-    <div>
+    <div className="processing-info-modal__protocol-description">
       <h3>Salmon</h3>
       <p>
         Salmon is an alignment-free method for estimating transcript abundances
@@ -332,7 +275,7 @@ function SalmonProtocol() {
           href="https://combine-lab.github.io/salmon/"
           target="_blank"
           rel="noopener noreferrer"
-          className="button button--link"
+          className="link"
         >
           Learn more
         </a>
@@ -343,8 +286,8 @@ function SalmonProtocol() {
 
 function TxtimportProtocol() {
   return (
-    <div>
-      <h3 className="processing-info-modal__subtitle">tximport</h3>
+    <div className="processing-info-modal__protocol-description">
+      <h3 className="processing-info-modal__subtitle">Tximport</h3>
 
       <p>
         <i>tximport</i> imports transcript (tx)-level abundance estimates
@@ -356,18 +299,19 @@ function TxtimportProtocol() {
           href="https://www.rdocumentation.org/packages/tximport/versions/1.0.3/topics/tximport"
           target="_blank"
           rel="noopener noreferrer"
-          className="button button--link"
+          className="link"
         >
           "lengthScaledTPM"
-        </a>, which are gene-level counts that are generated by scaling TPM
-        using the average transcript length across samples and to the library
-        size. Note that tximport is applied at the <em>experiment-level</em>{' '}
-        rather than to single samples. For additional information, see the{' '}
+        </a>, which are gene-level count-scale values that are generated by
+        scaling TPM using the average transcript length across samples and to
+        the library size. Note that tximport is applied at the{' '}
+        <em>experiment-level</em> rather than to single samples. For additional
+        information, see the{' '}
         <a
           href="http://bioconductor.org/packages/release/bioc/html/tximport.html"
           target="_blank"
           rel="noopener noreferrer"
-          className="button button--link"
+          className="link"
         >
           tximport Bioconductor page
         </a>, the{' '}
@@ -375,7 +319,7 @@ function TxtimportProtocol() {
           href="http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html"
           target="_blank"
           rel="noopener noreferrer"
-          className="button button--link"
+          className="link"
         >
           tximport tutorial{' '}
           <em>Importing transcript abundance datasets with tximport</em>
@@ -384,7 +328,7 @@ function TxtimportProtocol() {
           href="http://dx.doi.org/10.12688/f1000research.7563.1"
           target="_blank"
           rel="noopener noreferrer"
-          className="button button--link"
+          className="link"
         >
           Soneson, et al. <em>F1000Research.</em> 2015.
         </a>

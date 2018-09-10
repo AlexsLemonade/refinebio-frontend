@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import Button from '../../components/Button';
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
@@ -11,41 +13,54 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../Experiment/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
-import {
-  downloadsFilesDataBySpecies,
-  downloadsFilesDataByExperiment
-} from './downloadFilesData';
-import Radio from '../../components/Radio';
 
-export default function DownloadDetails({
+import Radio from '../../components/Radio';
+import { Link } from 'react-router-dom';
+import {
+  groupSamplesBySpecies,
+  getTotalSamplesAdded,
+  getExperimentCountBySpecies,
+  getTotalExperimentsAdded
+} from '../../state/download/reducer';
+import {
+  removeExperiment,
+  removeSamples,
+  clearDataSet
+} from '../../state/download/actions';
+
+let DownloadDetails = ({
   dataSet,
+  samples,
   experiments,
+  aggregate_by,
+  scale_by,
+
   removeSamples,
   removeExperiment,
   clearDataSet,
-  samplesBySpecies,
-  experimentCountBySpecies,
-  totalSamples,
-  totalExperiments,
   isImmutable = false,
-  isEmbed = false,
-  aggregate_by,
-  scale_by
-}) {
-  let fileData =
-    aggregate_by === 'SPECIES'
-      ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
-      : downloadsFilesDataByExperiment(dataSet);
+  isEmbed = false
+}) => {
+  const samplesBySpecies = groupSamplesBySpecies({
+    samples: samples,
+    dataSet: dataSet
+  });
+  const totalSamples = getTotalSamplesAdded({ dataSet });
+  const totalExperiments = getTotalExperimentsAdded({ dataSet });
+  const experimentCountBySpecies = getExperimentCountBySpecies({
+    experiments,
+    dataSet
+  });
+
   return (
     <div>
-      {fileData && (
-        <DownloadFileSummary
-          summaryData={fileData}
-          aggregate_by={aggregate_by}
-          scale_by={scale_by}
-          isEmbed={isEmbed}
-        />
-      )}
+      <DownloadFileSummary
+        dataSet={dataSet}
+        samplesBySpecies={samplesBySpecies}
+        aggregate_by={aggregate_by}
+        scale_by={scale_by}
+        isEmbed={isEmbed}
+      />
       <DownloadDatasetSummary
         samplesBySpecies={samplesBySpecies}
         totalSamples={totalSamples}
@@ -104,7 +119,16 @@ export default function DownloadDetails({
       </section>
     </div>
   );
-}
+};
+DownloadDetails = connect(
+  () => ({}),
+  {
+    removeSamples,
+    removeExperiment,
+    clearDataSet
+  }
+)(DownloadDetails);
+export default DownloadDetails;
 
 const SpeciesSamples = ({
   samplesBySpecies,
@@ -131,32 +155,16 @@ const SpeciesSamples = ({
               </p>
             </div>
 
-            <ModalManager
-              component={showModal => (
-                <Button
-                  text="View Samples"
-                  buttonStyle="secondary"
-                  onClick={showModal}
-                />
+            <ViewSamplesButtonModal
+              accessionCodes={species[speciesName].map(x => x.accession_code)}
+              experimentAccessionCodes={species[speciesName].map(
+                x => x.experimentAccessionCode
               )}
-              modalProps={{ className: 'samples-modal' }}
-            >
-              {() => (
-                <SamplesTable
-                  isRowRemovable={true}
-                  accessionCodes={species[speciesName].map(
-                    x => x.accession_code
-                  )}
-                  experimentAccessionCodes={species[speciesName].map(
-                    x => x.experimentAccessionCode
-                  )}
-                  isImmutable={isImmutable}
-                />
-              )}
-            </ModalManager>
+              isImmutable={isImmutable}
+            />
           </div>
 
-          {removeSamples && (
+          {!isImmutable && (
             <Button
               text="Remove"
               buttonStyle="remove"
@@ -198,15 +206,18 @@ class ExperimentsView extends React.Component {
               this.state.organism &&
               !experiment.organisms.includes(this.state.organism)
             ) {
-              return <React.Fragment />;
+              return <React.Fragment key={i} />;
             }
 
             return (
               <div className="downloads__sample" key={i}>
                 <div className="downloads__dataSet-info">
-                  <h2 className="downloads__experiment-title">
+                  <Link
+                    to={`/experiments/${experiment.id}`}
+                    className="downloads__experiment-title link"
+                  >
                     {experiment.title}
-                  </h2>
+                  </Link>
                   <div className="downloads__sample-stats">
                     <div className="downloads__sample-stat">
                       <img
@@ -222,7 +233,7 @@ class ExperimentsView extends React.Component {
                         className="downloads__sample-icon"
                         alt="Sample Icon"
                       />{' '}
-                      {addedSamples.length}
+                      {addedSamples.length} Samples
                     </div>
                     <div className="downloads__sample-stat downloads__sample-stat--experiment">
                       <img
@@ -241,7 +252,7 @@ class ExperimentsView extends React.Component {
                       {metadataFields && metadataFields.length ? (
                         metadataFields.join(', ')
                       ) : (
-                        <i class="result__not-provided">
+                        <i className="result__not-provided">
                           No sample metadata fields
                         </i>
                       )}
@@ -249,28 +260,14 @@ class ExperimentsView extends React.Component {
                   </div>
 
                   {addedSamples.length > 0 && (
-                    <ModalManager
-                      component={showModal => (
-                        <Button
-                          text="View Samples"
-                          buttonStyle="secondary"
-                          onClick={showModal}
-                        />
-                      )}
-                      modalProps={{ className: 'samples-modal' }}
-                    >
-                      {() => (
-                        <SamplesTable
-                          isRowRemovable={true}
-                          accessionCodes={addedSamples}
-                          experimentAccessionCodes={[experiment.accession_code]}
-                          isImmutable={isImmutable}
-                        />
-                      )}
-                    </ModalManager>
+                    <ViewSamplesButtonModal
+                      accessionCodes={addedSamples}
+                      experimentAccessionCodes={[experiment.accession_code]}
+                      isImmutable={isImmutable}
+                    />
                   )}
                 </div>
-                {removeExperiment && (
+                {!isImmutable && (
                   <Button
                     text="Remove"
                     buttonStyle="remove"
@@ -305,15 +302,17 @@ class ExperimentsView extends React.Component {
         <div className="downloads__species-filter-item">Show</div>
         <div className="downloads__species-filter-item">
           <Radio
+            readOnly
             checked={!this.state.organism}
             onClick={() => this.setState({ organism: false })}
           >
             All Species
           </Radio>
         </div>
-        {uniqueOrganisms.map(organism => (
-          <div className="downloads__species-filter-item">
+        {uniqueOrganisms.map((organism, key) => (
+          <div className="downloads__species-filter-item" key={key}>
             <Radio
+              readOnly
               checked={this.state.organism === organism}
               onClick={() => this.setState({ organism: organism })}
             >
@@ -322,6 +321,48 @@ class ExperimentsView extends React.Component {
           </div>
         ))}
       </div>
+    );
+  }
+}
+
+/**
+ * ViewSamples button, that when clicked shows a modal with a SamplesTable.
+ *
+ * When the modal is displayed, a snapshot of the samples is saved. So that the list it's not refreshed
+ * while the modal is being displayed.
+ */
+class ViewSamplesButtonModal extends React.Component {
+  state = {
+    accessionCodes: []
+  };
+
+  render() {
+    return (
+      <ModalManager
+        component={showModal => (
+          <Button
+            text="View Samples"
+            buttonStyle="secondary"
+            onClick={() => {
+              // copy the list of accession codes before displaying the modal dialog. So that the list doesn't get
+              // modified if the user adds/removes any sample
+              this.setState((prevState, prevProps) => ({
+                accessionCodes: [...prevProps.accessionCodes]
+              }));
+              showModal();
+            }}
+          />
+        )}
+        modalProps={{ className: 'samples-modal', fillPage: true }}
+      >
+        {() => (
+          <SamplesTable
+            accessionCodes={this.state.accessionCodes}
+            experimentAccessionCodes={this.props.experimentAccessionCodes}
+            isImmutable={this.props.isImmutable}
+          />
+        )}
+      </ModalManager>
     );
   }
 }

@@ -9,13 +9,8 @@
     flex-direction: row;
   }
 
+  /*input-text*/
   &__textbox {
-    border: 2px solid $gray;
-    border-radius: 3px;
-    font-size: 1rem;
-    font-family: inherit;
-    padding: 4px 8px;
-    width: 100%;
     margin-bottom: 0.5rem;
 
     @include tablet {
@@ -28,5 +23,9 @@
     &:focus {
       outline: none;
     }
+  }
+
+  &__button {
+    font-size: 18px;
   }
 }

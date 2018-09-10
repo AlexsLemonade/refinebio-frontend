@@ -10,7 +10,7 @@ import DatasetIcon from '../../common/icons/dataset.svg';
 import './Main.scss';
 import StatsPlaceholder from './summary-stats-placeholder.svg';
 
-const Main = ({ searchTerm, fetchResults, push }) => {
+let Main = ({ searchTerm, fetchResults, push }) => {
   return (
     <div className="main">
       <Helmet>
@@ -28,18 +28,18 @@ const Main = ({ searchTerm, fetchResults, push }) => {
           />
           <div className="main__search-suggestions">
             <p className="main__search-suggestion-label">Try searching for:</p>
-            <Link className="main__search-suggestion" to="/results?q=Notch">
-              Notch
-            </Link>
-            <Link
-              className="main__search-suggestion"
-              to="/results?q=medulloblastoma"
-            >
-              Medulloblastoma
-            </Link>
-            <Link className="main__search-suggestion" to="/results?q=GSE16476">
-              GSE16476
-            </Link>
+
+            {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(
+              (q, index) => (
+                <Link
+                  className="main__search-suggestion"
+                  to={`/results?q=${q}`}
+                  key={index}
+                >
+                  {q}
+                </Link>
+              )
+            )}
           </div>
         </div>
       </section>
@@ -96,7 +96,11 @@ const Main = ({ searchTerm, fetchResults, push }) => {
       )}
       <section className="main__section main__section--blue-gradient">
         <div className="main__container">
-          <h1 className="main__heading-1">Sign Up for Updates</h1>
+          <div className="main__heading-1">Sign Up for Updates</div>
+          <div className="main__blurp-text">
+            Be the first to know about new features, compendia releases, and
+            more!
+          </div>
           {/* Mailchimp Form Embed */}
           <div id="mc_embed_signup">
             <form
@@ -144,18 +148,9 @@ const Main = ({ searchTerm, fetchResults, push }) => {
   );
 };
 
-const mapStateToProps = state => {
-  const {
-    search: { searchTerm }
-  } = state;
-  return {
-    searchTerm
-  };
-};
-
-const MainContainer = connect(
-  mapStateToProps,
+Main = connect(
+  ({ search: { searchTerm } }) => ({ searchTerm }),
   { fetchResults, push }
 )(Main);
 
-export default MainContainer;
+export default Main;

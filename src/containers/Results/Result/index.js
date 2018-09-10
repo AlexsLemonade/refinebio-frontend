@@ -3,12 +3,12 @@ import { HashLink as Link } from 'react-router-hash-link';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
-import MicroarrayIcon from '../../../common/icons/microarray-badge.svg';
 import './Result.scss';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
+import TechnologyBadge from '../../../components/TechnologyBadge';
 
-const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
+const Result = ({ result, addExperiment, removeExperiment }) => {
   const metadataFields = getMetadataFields(result);
 
   return (
@@ -24,14 +24,25 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             {result.accession_code}
           </div>
           <Link
-            className="button button--link"
+            className="link result__title"
             to={`/experiments/${result.id}?ref=search`}
           >
-            <h2 className="result__title">{result.title || 'No title.'}</h2>
+            {result.title || 'No title.'}
           </Link>
         </div>
 
-        <DataSetSampleActions samples={result.samples} experiment={result} />
+        <DataSetSampleActions
+          data={{
+            // convert the `processed_samples` list into the object with sample fields that
+            // `DataSetSampleActions` is expecting.
+            [result.accession_code]: result.processed_samples.map(
+              accession_code => ({
+                accession_code,
+                is_processed: true
+              })
+            )
+          }}
+        />
       </div>
       <ul className="result__stats">
         <li className="result__stat">
@@ -53,11 +64,10 @@ const Result = ({ result, addExperiment, removeExperiment, dataSet }) => {
             : null}
         </li>
         <li className="result__stat">
-          <img
-            src={MicroarrayIcon}
-            className="result__icon"
-            alt="MicroArray Badge Icon"
-          />{' '}
+          {/* Right now we don't have a way to determine the technology of an experiment, since
+          there's no sample information in the search endpoint. This should be updated after 
+          https://github.com/AlexsLemonade/refinebio-frontend/issues/268#issuecomment-416300232 */}
+          <TechnologyBadge className="result__icon" isMicroarray={true} />
           {result.pretty_platforms.filter(platform => !!platform).join(',')}
         </li>
       </ul>

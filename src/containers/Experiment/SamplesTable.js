@@ -18,85 +18,10 @@ import { addExperiment, removeSamples } from '../../state/download/actions';
 import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from './DataSetSampleActions';
 import './SamplesTable.scss';
+import HorizontalScroll from '../../components/HorizontalScroll';
+import isEqual from 'lodash/isEqual';
 
 class SamplesTable extends React.Component {
-  state = {
-    sorted: []
-  };
-
-  componentDidMount() {
-    document
-      .querySelector('.samples-table__scroll-right')
-      .addEventListener('click', this.scrollRight);
-
-    document
-      .querySelector('.samples-table__scroll-left')
-      .addEventListener('click', this.scrollLeft);
-
-    document
-      .querySelector('.rt-table')
-      .addEventListener('scroll', this.disableScrollButtonsIfNecessary);
-
-    // This is apparently the idiomatic way to trigger a callback if a specific attribute changed.
-    // This detects resizing on the react-table because while the table is resizing the inline
-    // style for max-width changes on '.rt-thead'.
-    this.state.resizeObserver = new MutationObserver(
-      this.disableScrollButtonsIfNecessary
-    );
-    this.state.resizeObserver.observe(document.querySelector('.rt-thead'), {
-      attributes: true,
-      attributeFilter: ['style']
-    });
-  }
-
-  componentDidUpdate() {
-    this.disableScrollButtonsIfNecessary();
-  }
-
-  getMaxScrollPosition = () => {
-    const element = document.querySelector('.rt-table');
-    return element.scrollWidth - element.clientWidth;
-  };
-
-  disableScrollButtonsIfNecessary = () => {
-    const element = document.querySelector('.rt-table');
-    if (element.scrollLeft <= 0) {
-      document
-        .querySelector('.samples-table__scroll-left')
-        .classList.add('samples-table__scroll--disabled');
-    } else {
-      document
-        .querySelector('.samples-table__scroll-left')
-        .classList.remove('samples-table__scroll--disabled');
-    }
-
-    if (element.scrollLeft >= this.getMaxScrollPosition()) {
-      document
-        .querySelector('.samples-table__scroll-right')
-        .classList.add('samples-table__scroll--disabled');
-    } else {
-      document
-        .querySelector('.samples-table__scroll-right')
-        .classList.remove('samples-table__scroll--disabled');
-    }
-  };
-
-  scrollLeft = () => {
-    document.querySelector('.rt-table').scrollBy({
-      top: 0,
-      left: -100,
-      behavior: 'smooth'
-    });
-  };
-
-  scrollRight = () => {
-    document.querySelector('.rt-table').scrollBy({
-      top: 0,
-      left: 100,
-      behavior: 'smooth'
-    });
-  };
-
   state = {
     page: 0,
     pages: -1,
@@ -105,14 +30,15 @@ class SamplesTable extends React.Component {
     data: []
   };
 
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.accessionCodes, this.props.accessionCodes)) {
+      this.fetchData({ setPage: 0 });
+    }
+  }
+
   get totalSamples() {
     return this.props.accessionCodes.length;
   }
-
-  removeRow = rowId => {
-    const arrayCopy = this.state.data.filter(row => row.id !== rowId);
-    this.setState({ data: arrayCopy });
-  };
 
   render() {
     const { pageActionComponent } = this.props;
@@ -126,15 +52,10 @@ class SamplesTable extends React.Component {
     const pageSizes = PAGE_SIZES.filter(size => size <= this.totalSamples);
     if (pageSizes.length === 0) pageSizes.push(this.totalSamples);
 
-    // TODO: remove this call https://github.com/AlexsLemonade/refinebio-frontend/issues/239
-    if (this.state.mounted) {
-      this.disableScrollButtonsIfNecessary();
-    }
-
     return (
       <ReactTable
         manual={true}
-        onFetchData={this.fetchData}
+        onFetchData={tableState => this.fetchData({ tableState })}
         loading={this.state.loading}
         pages={this.state.pages}
         data={this.state.data}
@@ -150,44 +71,48 @@ class SamplesTable extends React.Component {
         onSortedChange={(newSorted, column, shiftKey) =>
           this._customSort(newSorted, column)
         }
+        noDataText={this.props.noDataText}
       >
         {(state, makeTable, instance) => {
           return (
-            <div>
-              <div className="experiment__sample-commands">
-                <div className="experiment__per-page-dropdown">
-                  Show
-                  <Dropdown
-                    options={pageSizes}
-                    selectedOption={this.state.pageSize}
-                    onChange={this.handlePageSizeChange}
-                  />
-                  of {this.totalSamples} Samples
-                </div>
-                {pageActionComponent &&
-                  pageActionComponent(state.pageRows.map(x => x._original))}
-              </div>
-              <div className="experiment__table-container">
-                <div className="samples-table__scroll-left">
-                  <div className="samples-table__scroll-button">{'<'}</div>
-                </div>
-                {makeTable()}
-                <div className="samples-table__scroll-right">
-                  <div className="samples-table__scroll-button">{'>'}</div>
+            <div className="samples-table-layout">
+              <div className="samples-table-layout__header">
+                <div className="experiment__sample-commands">
+                  <div className="experiment__per-page-dropdown">
+                    Show
+                    <Dropdown
+                      options={pageSizes}
+                      selectedOption={this.state.pageSize}
+                      onChange={this.handlePageSizeChange}
+                    />
+                    of {this.totalSamples} Samples
+                  </div>
+                  {pageActionComponent &&
+                    pageActionComponent(state.pageRows.map(x => x._original))}
                 </div>
               </div>
-              <div>
-                <img src={InfoIcon} className="info-icon" alt="" /> Some fileds
-                may be harmonized.{' '}
-                <Link to="/docs" className="link">
-                  Learn more
-                </Link>
+              <div className="samples-table-layout__main">
+                <HorizontalScroll targetSelector=".rt-table">
+                  {makeTable()}
+                </HorizontalScroll>
               </div>
-              <Pagination
-                onPaginate={this.handlePagination}
-                totalPages={totalPages}
-                currentPage={this.state.page + 1}
-              />
+              <div className="samples-table-layout__footer">
+                <div className="samples-table__notice info">
+                  <img className="info__icon" src={InfoIcon} alt="" />
+                  <div>
+                    Some fields may be harmonized.{' '}
+                    <Link to="/docs" className="link">
+                      Learn more
+                    </Link>
+                  </div>
+                </div>
+
+                <Pagination
+                  onPaginate={this.handlePagination}
+                  totalPages={totalPages}
+                  currentPage={this.state.page + 1}
+                />
+              </div>
             </div>
           );
         }}
@@ -220,13 +145,17 @@ class SamplesTable extends React.Component {
     this.setState({ sorted: newSorted });
   }
 
-  fetchData = async (tableState = false) => {
+  fetchData = async ({ tableState = false, setPage = undefined } = {}) => {
     const { accessionCodes, experimentAccessionCodes = [] } = this.props;
-    const { page, pageSize } = this.state;
+    let { page, pageSize } = this.state;
     // get the backend ready `order_by` param, based on the sort options from the table
     let orderBy = this._getSortParam(tableState);
 
-    this.setState({ loading: true });
+    if (setPage >= 0) {
+      page = setPage;
+    }
+
+    this.setState({ loading: true, orderBy });
 
     let offset = page * pageSize;
 
@@ -258,6 +187,7 @@ class SamplesTable extends React.Component {
 
     this.setState({
       data,
+      page,
       columns,
       pages: Math.ceil(this.totalSamples / pageSize),
       loading: false
@@ -295,7 +225,8 @@ class SamplesTable extends React.Component {
       __totalValues: data.reduce(
         (total, sample) => total + (!!column.accessor(sample) ? 1 : 0),
         0
-      )
+      ),
+      Cell: CustomCell
     }));
 
     columns = columns.sort(
@@ -381,9 +312,24 @@ SamplesTable = connect(
 export default SamplesTable;
 
 /**
+ * Custom cell component used to display N/A when there's no value
+ */
+function CustomCell({ value }) {
+  if (!value) {
+    return <div className="experiment__not-provided">NA</div>;
+  }
+
+  return value;
+}
+
+/**
  * Component that renders the content in "Additional Metadata" column
  */
 function MetadataCell({ original: sample }) {
+  if (sample.annotations.length === 0) {
+    return CustomCell({});
+  }
+
   let annotations = sample.annotations.map(entry =>
     JSON.stringify(entry.data, null, 2)
   );
@@ -402,8 +348,8 @@ function MetadataCell({ original: sample }) {
             Download
           </div>
           <div className="metadata-modal__annotations">
-            {annotations.map(meta => (
-              <div>
+            {annotations.map((meta, index) => (
+              <div key={index}>
                 <pre>{meta}</pre>
               </div>
             ))}
@@ -450,22 +396,23 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
 
   if (!sample.is_processed) {
     return (
-      <p className="sample-not-processed">
-        <i className="ion-information-circled sample-not-processed__info-icon" />
-        <div className="sample-not-processed__text">
+      <div className="sample-not-processed info">
+        <img className="info__icon" src={InfoIcon} alt="" />
+        <div>
           <div className="nowrap">Sample not processed</div>
-          <a href="/docs" className="button--link" target="_blank">
-            Learn More
+          <a href="/docs" className="link" target="_blank">
+            Learn more
           </a>
         </div>
-      </p>
+      </div>
     );
   }
 
   return (
     <DataSetSampleActions
-      samples={[sample]}
-      experiment={{ accession_code: experimentAccessionCode }}
+      data={{
+        [experimentAccessionCode]: [sample]
+      }}
       meta={{ addText: 'Add', buttonStyle: 'secondary' }}
     />
   );

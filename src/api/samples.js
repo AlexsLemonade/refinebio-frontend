@@ -34,3 +34,16 @@ export async function getAllDetailedSamples({
     return [];
   }
 }
+
+export async function getGenomeBuild(organism) {
+  try {
+    let { assembly_name } = await Ajax.get('/transcriptome_indices/', {
+      organism,
+      length: 'long'
+    });
+
+    return assembly_name;
+  } catch (e) {
+    return null;
+  }
+}

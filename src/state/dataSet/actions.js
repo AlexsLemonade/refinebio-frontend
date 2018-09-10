@@ -1,6 +1,7 @@
 import { Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { replace, push } from '../../state/routerActions';
+import { getDataSet, getDataSetDetails } from '../../api/dataSet';
 
 export const loadDataSet = dataSet => ({
   type: 'LOAD_DATASET',
@@ -18,8 +19,21 @@ export const updateDataSet = props => ({
  */
 export const fetchDataSet = dataSetId => async dispatch => {
   try {
-    const dataSet = await Ajax.get(`/dataset/${dataSetId}/`);
-    dispatch(loadDataSet(dataSet));
+    // To render a dataset page we need information from these two endpoints, in the future we should
+    // consider unifying them or adding more information to the dataset details serializer
+    // https://github.com/AlexsLemonade/refinebio/blob/dev/api/data_refinery_api/serializers.py#L513-L537
+    // so that it also returns `expires_on` and the s3 information
+    const [dataSet, dataSetDetails] = await Promise.all([
+      getDataSet(dataSetId),
+      getDataSetDetails(dataSetId)
+    ]);
+
+    dispatch(
+      loadDataSet({
+        ...dataSet,
+        ...dataSetDetails
+      })
+    );
   } catch (e) {
     dispatch(reportError(e));
     dispatch(replace('/no-match'));
@@ -51,21 +65,13 @@ export const regenerateDataSet = () => async (dispatch, getState) => {
     });
 
     // redirect to the new dataset page, where the user will be able to add an email
-    dispatch(push(`/dataset/${dataSetId}`));
+    dispatch(
+      push({
+        pathname: `/dataset/${dataSetId}`,
+        state: { regenerate: true, dataSetId, dataSet: data }
+      })
+    );
   } catch (e) {
     dispatch(reportError(e));
-  }
-};
-
-export const startDownload = tokenId => async (dispatch, getState) => {
-  const { id, data } = getState().dataSet;
-  try {
-    await Ajax.put(`/dataset/${id}/`, {
-      start: true,
-      data,
-      token_id: tokenId
-    });
-  } catch (e) {
-    await dispatch(reportError(e));
   }
 };
