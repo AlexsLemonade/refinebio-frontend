@@ -10,7 +10,7 @@ import DatasetIcon from '../../common/icons/dataset.svg';
 import './Main.scss';
 import StatsPlaceholder from './summary-stats-placeholder.svg';
 
-const Main = ({ searchTerm, fetchResults, push }) => {
+let Main = ({ searchTerm, fetchResults, push }) => {
   return (
     <div className="main">
       <Helmet>
@@ -29,11 +29,17 @@ const Main = ({ searchTerm, fetchResults, push }) => {
           <div className="main__search-suggestions">
             <p className="main__search-suggestion-label">Try searching for:</p>
 
-            {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
-              <Link className="main__search-suggestion" to={`/results?q=${q}`}>
-                {q}
-              </Link>
-            ))}
+            {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(
+              (q, index) => (
+                <Link
+                  className="main__search-suggestion"
+                  to={`/results?q=${q}`}
+                  key={index}
+                >
+                  {q}
+                </Link>
+              )
+            )}
           </div>
         </div>
       </section>
@@ -142,18 +148,9 @@ const Main = ({ searchTerm, fetchResults, push }) => {
   );
 };
 
-const mapStateToProps = state => {
-  const {
-    search: { searchTerm }
-  } = state;
-  return {
-    searchTerm
-  };
-};
-
-const MainContainer = connect(
-  mapStateToProps,
+Main = connect(
+  ({ search: { searchTerm } }) => ({ searchTerm }),
   { fetchResults, push }
 )(Main);
 
-export default MainContainer;
+export default Main;
