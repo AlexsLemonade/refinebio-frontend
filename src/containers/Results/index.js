@@ -17,6 +17,7 @@ import StartSearchingImage from '../../common/images/start-searching.svg';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
 import DataSetSampleActions from '../Experiment/DataSetSampleActions';
+import isEqual from 'lodash/isEqual';
 
 class Results extends Component {
   constructor(props) {
@@ -74,7 +75,8 @@ class Results extends Component {
       checkPreviousResults &&
       this.props.results &&
       this.props.results.length > 0 &&
-      query === this.props.searchTerm
+      query === this.props.searchTerm &&
+      isEqual(filters, this.props.appliedFilters)
     ) {
       return;
     }
@@ -178,14 +180,22 @@ class Results extends Component {
 }
 Results = connect(
   ({
-    search: { results, filters, pagination, searchTerm, isSearching },
+    search: {
+      results,
+      filters,
+      pagination,
+      searchTerm,
+      isSearching,
+      appliedFilters
+    },
     download: { dataSet }
   }) => ({
     results,
     pagination,
     searchTerm,
     dataSet,
-    isLoading: isSearching
+    isLoading: isSearching,
+    appliedFilters
   }),
   {
     ...resultsActions,
