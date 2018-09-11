@@ -42,7 +42,7 @@
     }
   }
 
-  @include desktop() {
+  @media (min-width: 1460px) {
     right: 80px;
   }
 }

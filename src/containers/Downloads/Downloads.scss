@@ -227,7 +227,7 @@
 
   &__species-filters {
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     align-items: baseline;
     margin-left: 24px;
     margin-bottom: 16px;
