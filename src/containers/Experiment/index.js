@@ -73,7 +73,7 @@ let Experiment = ({
               </div>
 
               <div className="experiment__header">
-                <h3 className="experiment__header-title">
+                <h3 className="experiment__header-title mobile-p">
                   {experiment.title || 'No Title.'}
                 </h3>
                 <div>
@@ -262,21 +262,25 @@ class ExperimentSamplesTable extends React.Component {
         // Render prop for the button that adds the samples to the dataset
         pageActionComponent={samplesDisplayed => (
           <div className="experiment__sample-actions">
-            <Checkbox
-              name="samples-dataset"
-              checked={this.state.showOnlyAddedSamples}
-              onToggle={() =>
-                this.setState({
-                  showOnlyAddedSamples: !this.state.showOnlyAddedSamples,
-                  onlyAddedSamples: this._getAddedSamples()
-                })
-              }
-              disabled={
-                !this.state.showOnlyAddedSamples && !this._anySampleInDataSet()
-              }
-            >
-              Show only samples added to dataset
-            </Checkbox>
+            <div className="mobile-p">
+              <Checkbox
+                name="samples-dataset"
+                checked={this.state.showOnlyAddedSamples}
+                onToggle={() =>
+                  this.setState({
+                    showOnlyAddedSamples: !this.state.showOnlyAddedSamples,
+                    onlyAddedSamples: this._getAddedSamples()
+                  })
+                }
+                disabled={
+                  !this.state.showOnlyAddedSamples &&
+                  !this._anySampleInDataSet()
+                }
+              >
+                Show only samples added to dataset
+              </Checkbox>
+            </div>
+
             <DataSetSampleActions
               data={{
                 [experiment.accession_code]: samplesDisplayed

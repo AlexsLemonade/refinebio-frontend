@@ -135,5 +135,14 @@ fieldset {
   justify-content: space-around;
 }
 
+// adds a bottom margin on mobile devices
+.mobile-p {
+  margin-bottom: 16px;
+
+  @include tablet {
+    margin-bottom: 0;
+  }
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';

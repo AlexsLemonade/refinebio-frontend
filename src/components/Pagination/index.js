@@ -99,7 +99,7 @@ class Pagination extends Component {
     if (totalPages <= 1) return null;
     return (
       <div className="pagination">
-        <div>
+        <div className="mobile-p">
           <button
             onClick={() => onPaginate(currentPage - 1)}
             disabled={currentPage <= 1}
