@@ -6,7 +6,10 @@ import SampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
-import TechnologyBadge from '../../../components/TechnologyBadge';
+import TechnologyBadge, {
+  MICROARRAY,
+  RNA_SEQ
+} from '../../../components/TechnologyBadge';
 
 const Result = ({ result, addExperiment, removeExperiment }) => {
   const metadataFields = getMetadataFields(result);
@@ -64,10 +67,15 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
             : null}
         </li>
         <li className="result__stat">
-          {/* Right now we don't have a way to determine the technology of an experiment, since
-          there's no sample information in the search endpoint. This should be updated after 
-          https://github.com/AlexsLemonade/refinebio-frontend/issues/268#issuecomment-416300232 */}
-          <TechnologyBadge className="result__icon" isMicroarray={true} />
+          <TechnologyBadge
+            className="result__icon"
+            isMicroarray={
+              result.technologies && result.technologies.contains(MICROARRAY)
+            }
+            isRnaSeq={
+              result.technologies && result.technologies.contains(RNA_SEQ)
+            }
+          />
           {result.pretty_platforms.filter(platform => !!platform).join(',')}
         </li>
       </ul>

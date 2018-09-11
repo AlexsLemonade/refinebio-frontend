@@ -113,10 +113,10 @@ let Experiment = ({
                 <div className="experiment__stats-item">
                   <TechnologyBadge
                     className="experiment__stats-icon"
-                    isMicroarray={experiment.samples.every(
+                    isMicroarray={experiment.samples.some(
                       x => x.technology === MICROARRAY
                     )}
-                    isRnaSeq={experiment.samples.every(
+                    isRnaSeq={experiment.samples.some(
                       x => x.technology === RNA_SEQ
                     )}
                   />
