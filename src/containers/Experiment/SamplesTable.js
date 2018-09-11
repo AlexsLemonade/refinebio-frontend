@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
+import RefineTable from '../../components/RefineTable';
 import 'react-table/react-table.css';
 
 import Pagination from '../../components/Pagination';
@@ -53,7 +53,7 @@ class SamplesTable extends React.Component {
     if (pageSizes.length === 0) pageSizes.push(this.totalSamples);
 
     return (
-      <ReactTable
+      <RefineTable
         manual={true}
         onFetchData={tableState => this.fetchData({ tableState })}
         loading={this.state.loading}
@@ -112,7 +112,7 @@ class SamplesTable extends React.Component {
             </div>
           );
         }}
-      </ReactTable>
+      </RefineTable>
     );
   }
 
