@@ -143,7 +143,11 @@ class Results extends Component {
             </div>
             <div className="results__list">
               <div className="results__top-bar">
-                {results.length ? <NumberOfResults /> : null}
+                {results.length ? (
+                  <div className="results__number-results">
+                    <NumberOfResults />
+                  </div>
+                ) : null}
 
                 <DataSetSampleActions
                   data={samplesAsDataSet}

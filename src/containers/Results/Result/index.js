@@ -79,29 +79,32 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
           {result.pretty_platforms.filter(platform => !!platform).join(',')}
         </li>
       </ul>
-      <h3>Description</h3>
-      <p className="result__paragraph">{result.description}</p>
-      <h3>Publication Title</h3>
-      <p className="result__paragraph">
-        {result.publication_title || (
-          <i className="result__not-provided">No associated publication</i>
-        )}
-      </p>
-      <h3>Sample Metadata Fields</h3>
-      <p className="result__paragraph">
-        {metadataFields && metadataFields.length ? (
-          metadataFields.join(', ')
-        ) : (
-          <i className="result__not-provided">No sample metadata fields</i>
-        )}
-      </p>
 
-      <Link
-        className="button button--secondary"
-        to={`/experiments/${result.id}?ref=search#samples`}
-      >
-        View Samples
-      </Link>
+      <div className="result__details">
+        <h3>Description</h3>
+        <p className="result__paragraph">{result.description}</p>
+        <h3>Publication Title</h3>
+        <p className="result__paragraph">
+          {result.publication_title || (
+            <i className="result__not-provided">No associated publication</i>
+          )}
+        </p>
+        <h3>Sample Metadata Fields</h3>
+        <p className="result__paragraph">
+          {metadataFields && metadataFields.length ? (
+            metadataFields.join(', ')
+          ) : (
+            <i className="result__not-provided">No sample metadata fields</i>
+          )}
+        </p>
+
+        <Link
+          className="button button--secondary"
+          to={`/experiments/${result.id}?ref=search#samples`}
+        >
+          View Samples
+        </Link>
+      </div>
     </div>
   );
 };

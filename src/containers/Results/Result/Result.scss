@@ -16,6 +16,10 @@
     margin-bottom: 10px;
   }
 
+  &__title-info {
+    margin-bottom: 16px;
+  }
+
   @include tablet {
     &__title-container {
       display: flex;
@@ -26,6 +30,7 @@
     &__title-info {
       flex: 1;
       margin-right: 80px;
+      margin-bottom: 0;
     }
   }
 
@@ -39,14 +44,19 @@
 
   &__stats {
     border-top: 1px solid $gray;
-    border-bottom: 1px solid $gray;
     display: flex;
     justify-content: space-between;
     align-items: center;
     list-style: none;
-    margin: 24px 0;
-    padding: 4.5px 0;
+    margin: 24px 0 0 0;
+    padding: 4.5px 0 0 0;
     flex-wrap: wrap;
+
+    @include tablet {
+      margin-bottom: 24px;
+      border-bottom: 1px solid $gray;
+      padding-bottom: 4.5px;
+    }
   }
 
   &__icon {
@@ -74,6 +84,14 @@
 
   &__not-provided {
     color: $gray;
+  }
+
+  &__details {
+    display: none;
+
+    @include tablet {
+      display: block;
+    }
   }
 }
 
