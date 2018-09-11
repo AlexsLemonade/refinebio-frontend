@@ -129,5 +129,32 @@ fieldset {
   }
 }
 
+// shows a centered button in mobile, but aligns with flex layout on desktop
+.flex-button-container {
+  display: flex;
+  justify-content: space-around;
+
+  &--left {
+    justify-content: left;
+  }
+}
+
+// adds a bottom margin on mobile devices
+.mobile-p {
+  margin-bottom: 16px;
+
+  @include tablet {
+    margin-bottom: 0;
+  }
+}
+
+.tablet-p {
+  margin-bottom: 16px;
+
+  @include desktop {
+    margin-bottom: 0;
+  }
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';

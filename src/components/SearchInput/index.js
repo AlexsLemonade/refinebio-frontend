@@ -36,11 +36,13 @@ class SearchInput extends Component {
           name="search"
           className="input-text input-lg search-input__textbox"
         />
-        <Button
-          text="Search"
-          buttonStyle={buttonStyle}
-          className="search-input__button"
-        />
+        <div className="flex-button-container">
+          <Button
+            text="Search"
+            buttonStyle={buttonStyle}
+            className="search-input__button"
+          />
+        </div>
       </form>
     );
   }

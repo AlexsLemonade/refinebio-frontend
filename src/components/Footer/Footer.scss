@@ -34,10 +34,19 @@
     &__left {
       flex: 3;
       margin-right: 21 * 8px;
+
+      @include tablet {
+        margin-right: 40px;
+        max-width: 570px;
+      }
     }
 
     &__right {
       flex: 2;
+
+      @include tablet {
+        max-width: 340px;
+      }
     }
   }
 
@@ -46,31 +55,17 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 2 * 8px;
-  }
-
-  &__links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    @include tablet {
-      display: flex;
-    }
-  }
-
-  &__link {
-    margin-top: 2 * 8px;
-    color: $gray;
 
     @include tablet {
       margin-top: 0;
-      margin-right: 3 * 8px;
     }
   }
 
   &__link-twitter {
     font-size: 4 * 8px;
     color: $gray;
+    margin-left: 8px;
+    margin-right: 8px;
 
     &:hover,
     &:active,
@@ -90,6 +85,26 @@
     }
   }
 
+  &__link-container {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      flex-flow: row wrap;
+      align-items: baseline;
+    }
+  }
+
+  &__link {
+    margin-top: 2 * 8px;
+    color: $gray;
+
+    @include tablet {
+      margin-top: 0;
+      margin-right: 3 * 8px;
+    }
+  }
+
   &__version {
     color: $gray;
     font-size: 0.75rem;
@@ -98,6 +113,7 @@
     @include tablet {
       margin: 0;
       text-align: right;
+      flex: 2;
     }
   }
 

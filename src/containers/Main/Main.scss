@@ -138,14 +138,25 @@
 
     @include tablet {
       justify-content: space-between;
-      flex-direction: row;
+      flex-flow: row wrap;
       margin: 5 * 8px;
     }
   }
 
   &__search-suggestion-label {
-    font-size: 22px;
+    font-size: 1.375rem;
     margin: 0;
+
+    @include tablet {
+      flex: 1 100%;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    @include desktop {
+      flex: 1 auto;
+      margin-bottom: 0;
+    }
   }
 
   &__search-suggestion {

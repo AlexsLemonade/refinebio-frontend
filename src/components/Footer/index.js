@@ -72,26 +72,21 @@ const Footer = () => (
         </p>
       </div>
     </div>
-    <div className="footer__container footer__flex footer__flex--v-centered">
-      <div className="footer__left">
-        <ul className="footer__links">
-          <li className="footer__link">
-            <Link to="/license">BSD 3-Clause License</Link>
-          </li>
-          <li className="footer__link">
-            <Link to="/privacy">Privacy</Link>
-          </li>
-          <li className="footer__link">
-            <Link to="/terms">Terms of Use</Link>
-          </li>
-          <li className="footer__link">
-            <a href="mailto:ccdl@alexslemonade.org">Contact</a>
-          </li>
-        </ul>
-      </div>
-      <div className="footer__right">
-        <p className="footer__version">Version 24354-23111</p>
-      </div>
+
+    <div className="footer__container footer__link-container">
+      <Link className="footer__link" to="/license">
+        BSD 3-Clause License
+      </Link>
+      <Link className="footer__link" to="/privacy">
+        Privacy
+      </Link>
+      <Link className="footer__link" to="/terms">
+        Terms of Use
+      </Link>
+      <a className="footer__link" href="mailto:ccdl@alexslemonade.org">
+        Contact
+      </a>
+      <div className="footer__version">Version 24354-23111</div>
     </div>
   </footer>
 );

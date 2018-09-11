@@ -8,7 +8,8 @@ const Radio = ({
   children,
   className,
   disabled,
-  onClick
+  onClick,
+  readOnly
 }) => (
   <div className={`radio ${!!className ? className : ''}`}>
     <input
@@ -19,6 +20,7 @@ const Radio = ({
       id={name}
       checked={checked}
       onChange={onToggle}
+      readOnly={readOnly}
     />
     <label className="radio__label" htmlFor={name} onClick={onClick}>
       {children ? children : name}

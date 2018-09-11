@@ -155,13 +155,15 @@ const SpeciesSamples = ({
               </p>
             </div>
 
-            <ViewSamplesButtonModal
-              accessionCodes={species[speciesName].map(x => x.accession_code)}
-              experimentAccessionCodes={species[speciesName].map(
-                x => x.experimentAccessionCode
-              )}
-              isImmutable={isImmutable}
-            />
+            <div className="mobile-p">
+              <ViewSamplesButtonModal
+                accessionCodes={species[speciesName].map(x => x.accession_code)}
+                experimentAccessionCodes={species[speciesName].map(
+                  x => x.experimentAccessionCode
+                )}
+                isImmutable={isImmutable}
+              />
+            </div>
           </div>
 
           {!isImmutable && (
@@ -260,11 +262,13 @@ class ExperimentsView extends React.Component {
                   </div>
 
                   {addedSamples.length > 0 && (
-                    <ViewSamplesButtonModal
-                      accessionCodes={addedSamples}
-                      experimentAccessionCodes={[experiment.accession_code]}
-                      isImmutable={isImmutable}
-                    />
+                    <div className="mobile-p">
+                      <ViewSamplesButtonModal
+                        accessionCodes={addedSamples}
+                        experimentAccessionCodes={[experiment.accession_code]}
+                        isImmutable={isImmutable}
+                      />
+                    </div>
                   )}
                 </div>
                 {!isImmutable && (
