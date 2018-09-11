@@ -133,6 +133,10 @@ fieldset {
 .flex-button-container {
   display: flex;
   justify-content: space-around;
+
+  &--left {
+    justify-content: left;
+  }
 }
 
 // adds a bottom margin on mobile devices
@@ -140,6 +144,14 @@ fieldset {
   margin-bottom: 16px;
 
   @include tablet {
+    margin-bottom: 0;
+  }
+}
+
+.tablet-p {
+  margin-bottom: 16px;
+
+  @include desktop {
     margin-bottom: 0;
   }
 }

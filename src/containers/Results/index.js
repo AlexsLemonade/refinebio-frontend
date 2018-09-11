@@ -221,7 +221,7 @@ let NumberOfResults = ({
     </div>
   ) : (
     <div>
-      Showing
+      Showing{' '}
       <Dropdown
         options={PAGE_SIZES}
         selectedOption={resultsPerPage}

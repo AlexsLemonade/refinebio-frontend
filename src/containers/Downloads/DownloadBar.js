@@ -7,7 +7,7 @@ import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
 import { getDomain } from '../../common/helpers';
 import { Link } from 'react-router-dom';
-import HelpIcon from '../../common/icons/help.svg';
+import HelpIconImage from '../../common/icons/help.svg';
 import {
   getTransformationNameFromOption,
   getTransformationOptionFromName
@@ -33,24 +33,16 @@ let DownloadBar = ({
 
   return (
     <div className="downloads__bar">
-      <ShareDatasetButton dataSetId={dataSetId} />
+      <div className="flex-button-container flex-button-container--left tablet-p">
+        <ShareDatasetButton dataSetId={dataSetId} />
+      </div>
 
       <div className="downloads__actions">
         <div className="downloads__fieldset">
           <label className="downloads__label">
-            Aggregate
-            <a
-              href="https://refine.bio" // XXX: replace with link to docs
-              target="_blank"
-              rel="noopener noreferrer"
-              title="What is this?"
-            >
-              <img
-                className="downloads__help-icon"
-                src={HelpIcon}
-                alt="What does aggregate mean?"
-              />
-            </a>
+            <div className="downloads__label-text">
+              Aggregate <HelpIcon alt="What does aggregate mean?" />
+            </div>{' '}
             <Dropdown
               options={['Experiment', 'Species']}
               selectedOption={aggregation}
@@ -60,19 +52,9 @@ let DownloadBar = ({
             />
           </label>
           <label className="downloads__label">
-            Transformation
-            <a
-              href="https://refine.bio" // XXX: replace with link to docs
-              target="_blank"
-              rel="noopener noreferrer"
-              title="What is this?"
-            >
-              <img
-                className="downloads__help-icon"
-                src={HelpIcon}
-                alt="What does transformation mean?"
-              />
-            </a>
+            <div className="downloads__label-text">
+              Transformation <HelpIcon alt="What does transformation mean?" />
+            </div>{' '}
             <Dropdown
               options={['None', 'Z-score', 'Zero to One']}
               selectedOption={transformation}
@@ -87,9 +69,11 @@ let DownloadBar = ({
             />
           </label>
         </div>
-        <Link className="button" to={`/download?start=true`}>
-          Download
-        </Link>
+        <div className="flex-button-container flex-button-container--left">
+          <Link className="button" to={`/download?start=true`}>
+            Download
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -102,6 +86,19 @@ DownloadBar = connect(
   }
 )(DownloadBar);
 export default DownloadBar;
+
+function HelpIcon({ url = 'https://refine.bio/docs', alt = '' }) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      title="What is this?"
+    >
+      <img className="downloads__help-icon" src={HelpIconImage} alt={alt} />
+    </a>
+  );
+}
 
 export function ShareDatasetButton({ dataSetId }) {
   return (

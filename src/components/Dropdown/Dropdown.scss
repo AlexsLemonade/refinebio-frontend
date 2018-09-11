@@ -3,8 +3,6 @@
 .dropdown {
   display: inline-block;
   position: relative;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
 
   &__select {
     color: $font-color;
@@ -20,8 +18,8 @@
     cursor: pointer;
     font-family: inherit;
     -webkit-appearance: none;
-    -moz-appearance:none;
-  
+    -moz-appearance: none;
+
     &:focus {
       outline: none;
     }
@@ -49,7 +47,5 @@
     pointer-events: none;
   }
 }
-
-
 
 // styles for dropdowns used as selects

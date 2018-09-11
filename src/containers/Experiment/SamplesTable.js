@@ -75,12 +75,12 @@ class SamplesTable extends React.Component {
               <div className="samples-table-layout__header">
                 <div className="experiment__sample-commands">
                   <div className="experiment__per-page-dropdown">
-                    Show
+                    Show{' '}
                     <Dropdown
                       options={pageSizes}
                       selectedOption={this.state.pageSize}
                       onChange={this.handlePageSizeChange}
-                    />
+                    />{' '}
                     of {this.totalSamples} Samples
                   </div>
                   {pageActionComponent &&
