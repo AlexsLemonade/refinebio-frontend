@@ -129,5 +129,11 @@ fieldset {
   }
 }
 
+// shows a centered button in mobile, but aligns with flex layout on desktop
+.flex-button-container {
+  display: flex;
+  justify-content: space-around;
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';

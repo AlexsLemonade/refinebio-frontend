@@ -132,13 +132,15 @@ let Main = ({ searchTerm, fetchResults, push }) => {
                     value=""
                   />
                 </div>
-                <input
-                  type="submit"
-                  value="Subscribe"
-                  name="subscribe"
-                  id="mc-embedded-subscribe"
-                  className="button main__mailchimp-button"
-                />
+                <div className="flex-button-container">
+                  <input
+                    type="submit"
+                    value="Subscribe"
+                    name="subscribe"
+                    id="mc-embedded-subscribe"
+                    className="button main__mailchimp-button"
+                  />
+                </div>
               </div>
             </form>
           </div>
