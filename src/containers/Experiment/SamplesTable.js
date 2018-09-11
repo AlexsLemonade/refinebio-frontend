@@ -67,7 +67,6 @@ class SamplesTable extends React.Component {
         columns={this.state.columns}
         ThComponent={ThComponent}
         minRows={0}
-        sorted={this.state.sorted}
         noDataText={this.props.noDataText}
       >
         {(state, makeTable, instance) => {
