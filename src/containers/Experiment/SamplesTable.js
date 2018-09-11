@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
+import RefineTable from '../../components/RefineTable';
 import 'react-table/react-table.css';
 
 import Pagination from '../../components/Pagination';
@@ -53,7 +53,7 @@ class SamplesTable extends React.Component {
     if (pageSizes.length === 0) pageSizes.push(this.totalSamples);
 
     return (
-      <ReactTable
+      <RefineTable
         manual={true}
         onFetchData={tableState => this.fetchData({ tableState })}
         loading={this.state.loading}
@@ -68,9 +68,6 @@ class SamplesTable extends React.Component {
         ThComponent={ThComponent}
         minRows={0}
         sorted={this.state.sorted}
-        onSortedChange={(newSorted, column, shiftKey) =>
-          this._customSort(newSorted, column)
-        }
         noDataText={this.props.noDataText}
       >
         {(state, makeTable, instance) => {
@@ -116,33 +113,8 @@ class SamplesTable extends React.Component {
             </div>
           );
         }}
-      </ReactTable>
+      </RefineTable>
     );
-  }
-
-  /**
-   * Extends the default sorting algorithm for react table
-   */
-  _customSort(sorted, column) {
-    let newSorted = sorted;
-
-    if (newSorted.length > 1) {
-      // disable multisorting, and leave only the last value
-      newSorted = [sorted[sorted.length - 1]];
-    } else if (
-      newSorted.length === 1 &&
-      !!this.state.sorted &&
-      this.state.sorted.length === 1 &&
-      newSorted[0].id === this.state.sorted[0].id &&
-      !newSorted[0].desc &&
-      this.state.sorted[0].desc
-    ) {
-      // Check if the user is sorting a column for a second time, in which case we add a third state
-      // to disable all sorting
-      newSorted = [];
-    }
-
-    this.setState({ sorted: newSorted });
   }
 
   fetchData = async ({ tableState = false, setPage = undefined } = {}) => {
@@ -284,19 +256,22 @@ class SamplesTable extends React.Component {
    * Returns the sort parameter as required from the backend
    * @param {*} tableState State from the table, as given to `fetchData`
    */
-  _getSortParam() {
+  _getSortParam(tableState) {
     let orderBy = undefined;
-    const { sorted } = this.state;
-    // check table sort
-    if (sorted && sorted.length > 0) {
-      // we don't support sorting by multiple columns, so only consider the first one
-      const { id, desc } = sorted[0];
-      // ref: https://github.com/AlexsLemonade/refinebio/pull/298
-      orderBy = `${desc ? '-' : ''}${id}`;
+    if (tableState) {
+      const { sorted } = tableState;
+      // check table sort
+      if (sorted && sorted.length > 0) {
+        // we don't support sorting by multiple columns, so only consider the first one
+        const { id, desc } = sorted[0];
+        // ref: https://github.com/AlexsLemonade/refinebio/pull/298
+        orderBy = `${desc ? '-' : ''}${id}`;
+      } else {
+        orderBy = undefined;
+      }
     } else {
-      orderBy = undefined;
+      orderBy = this.state.orderBy;
     }
-
     return orderBy;
   }
 }
