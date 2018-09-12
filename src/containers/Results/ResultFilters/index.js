@@ -23,13 +23,14 @@ const FilterCategory = ({
     <h3 className="result-filters__title">{category.name}</h3>
     {categoryFilters &&
       Object.keys(categoryFilters).map(
-        (filter, i) =>
+        filter =>
           filter && filter !== 'null' ? ( // Make sure filter is not null
             // The `filter !== "null"` check is required because a null organism
             // is not `null`, it is `"null"`
             <Checkbox
-              key={i}
+              key={filter}
               name={filter}
+              className="result-filters__filter-check"
               disabled={categoryFilters[filter] === 0}
               onToggle={() =>
                 toggledFilter(
