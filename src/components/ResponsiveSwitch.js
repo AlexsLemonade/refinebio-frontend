@@ -1,18 +1,43 @@
-/**
- * This class receives two components and decides which one to render based on the type of device the user has
- * To make this truly responsive, this component would have to react to changes in the width of the browser window
- * but for now we don't need this.
- *
- * ref https://goshakkk.name/different-mobile-desktop-tablet-layouts-react/
- */
-export default function ResponsiveSwitch({ mobile, desktop }) {
-  if (isMobile()) {
-    return mobile();
-  } else {
-    return desktop();
-  }
-}
+import React from 'react';
 
-export function isMobile() {
-  return window.innerWidth < 1024;
+// This constant should be synced with the media queries that determine what width is
+// for desktop
+const DESKTOP_LIMIT = 1024;
+
+/**
+ * thanks to https://goshakkk.name/different-mobile-desktop-tablet-layouts-react/
+ */
+export default class ResponsiveSwitch extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      width: window.innerWidth
+    };
+  }
+
+  componentWillMount() {
+    window.addEventListener('resize', this.handleWindowSizeChange);
+  }
+
+  // make sure to remove the listener
+  // when the component is not mounted anymore
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowSizeChange);
+  }
+
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+  };
+
+  render() {
+    const { mobile, desktop } = this.props;
+    let isMobile = this.state.width < DESKTOP_LIMIT;
+
+    if (isMobile) {
+      return mobile();
+    } else {
+      return desktop();
+    }
+  }
 }
