@@ -52,14 +52,20 @@ const FilterCategory = ({
 );
 
 let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
+  let anyFilterApplied = Object.keys(appliedFilters)
+    .map(x => appliedFilters[x])
+    .some(x => x && x.length > 0);
+
   return (
     <div className="result-filters">
       <div className="result-filters__title-container">
         <h2 className="result-filters__title">Filters</h2>
 
-        <Button onClick={clearFilters} buttonStyle="link">
-          clear all
-        </Button>
+        {anyFilterApplied && (
+          <Button onClick={clearFilters} buttonStyle="link">
+            clear all
+          </Button>
+        )}
       </div>
       {filterCategories.map((category, i) => (
         <FilterCategory
@@ -106,6 +112,9 @@ class FiltersMobile extends React.Component {
   constructor(props) {
     super(props);
 
+    // the filters object needs to be duplicated in this component's state, to allow
+    // modifying the filters before clicking apply
+    // in desktop we call the action creators directly
     this.state = {
       filters: props.appliedFilters
     };
@@ -126,6 +135,14 @@ class FiltersMobile extends React.Component {
       >
         {({ hideMenu }) => (
           <div>
+            <Button
+              className="side-menu__close"
+              onClick={hideMenu}
+              buttonStyle="transparent"
+            >
+              <i className="icon ion-close" />
+            </Button>
+
             <FilterList
               appliedFilters={this.state.filters}
               toggledFilter={(type, value) => this._toggleFilter(type, value)}
@@ -143,8 +160,6 @@ class FiltersMobile extends React.Component {
                   this.props.updateFilters(this.state.filters);
                   hideMenu();
                 }}
-                buttonStyle="secondary"
-                className="mobile-p"
               >
                 Apply Filters
               </Button>
@@ -160,10 +175,6 @@ class FiltersMobile extends React.Component {
       filters: toggleFilterHelper(filters, type, value)
     }));
   }
-
-  _applyFilters() {}
-
-  _clearFilters() {}
 }
 FiltersMobile = connect(
   () => ({}),

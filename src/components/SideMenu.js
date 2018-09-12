@@ -23,9 +23,11 @@ export default class SideMenu extends React.Component {
           className="side-menu"
           bodyOpenClassName="modal-open"
         >
-          {this.props.children({
-            hideMenu: this.hideMenu
-          })}
+          <div className="side-menu__content">
+            {this.props.children({
+              hideMenu: this.hideMenu
+            })}
+          </div>
         </Modal>
       </React.Fragment>
     );
