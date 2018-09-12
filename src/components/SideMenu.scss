@@ -1,0 +1,11 @@
+@import '../common/styles/variables';
+
+.side-menu {
+  position: fixed;
+  left: 0;
+
+  top: 0;
+  bottom: 0;
+  background-color: $background-color;
+  width: 300px;
+}

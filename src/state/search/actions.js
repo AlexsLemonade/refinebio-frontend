@@ -74,29 +74,17 @@ export const triggerSearch = searchTerm => (dispatch, getState) => {
 
 export function toggledFilter(filterType, filterValue) {
   return (dispatch, getState) => {
-    const {
-      searchTerm,
-      appliedFilters,
-      pagination: { resultsPerPage }
-    } = getState().search;
+    const { appliedFilters } = getState().search;
     const newFilters = toggleFilterHelper(
       appliedFilters,
       filterType,
       filterValue
     );
-    // reset to the first page when a filter is applied
-    dispatch(
-      navigateToResults({
-        query: searchTerm,
-        page: 1,
-        filters: newFilters,
-        size: resultsPerPage
-      })
-    );
+    dispatch(updateFilters(newFilters));
   };
 }
 
-export const clearFilters = () => async (dispatch, getState) => {
+export const updateFilters = newFilters => (dispatch, getState) => {
   const {
     searchTerm,
     pagination: { resultsPerPage }
@@ -106,10 +94,15 @@ export const clearFilters = () => async (dispatch, getState) => {
     navigateToResults({
       query: searchTerm,
       page: 1,
-      filters: {},
+      filters: newFilters,
       size: resultsPerPage
     })
   );
+};
+
+export const clearFilters = () => dispatch => {
+  let newFilters = {};
+  dispatch(updateFilters(newFilters));
 };
 
 export function updatePage(page) {

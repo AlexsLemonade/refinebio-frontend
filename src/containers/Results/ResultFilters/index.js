@@ -4,7 +4,14 @@ import Checkbox from '../../../components/Checkbox';
 import { formatSentenceCase } from '../../../common/helpers';
 import Button from '../../../components/Button';
 import { connect } from 'react-redux';
-import { toggledFilter, clearFilters } from '../../../state/search/actions';
+import {
+  toggledFilter,
+  clearFilters,
+  updateFilters,
+  toggleFilterHelper
+} from '../../../state/search/actions';
+import ResponsiveSwitch from '../../../components/ResponsiveSwitch';
+import SideMenu from '../../../components/SideMenu';
 
 const FilterCategory = ({
   categoryFilters,
@@ -44,12 +51,7 @@ const FilterCategory = ({
   </section>
 );
 
-let ResultFilters = ({
-  toggledFilter,
-  filters,
-  appliedFilters,
-  clearFilters
-}) => {
+let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
   return (
     <div className="result-filters">
       <div className="result-filters__title-container">
@@ -71,13 +73,24 @@ let ResultFilters = ({
     </div>
   );
 };
-ResultFilters = connect(
-  ({ search: { filters } }) => ({ filters }),
+FilterList = connect(({ search: { filters } }) => ({ filters }))(FilterList);
+
+let FiltersDesktop = connect(
+  () => ({}),
   {
     toggledFilter,
     clearFilters
   }
-)(ResultFilters);
+)(FilterList);
+
+let Filters = ({ appliedFilters }) => (
+  <ResponsiveSwitch
+    mobile={() => <FiltersMobile appliedFilters={appliedFilters} />}
+    desktop={() => <FiltersDesktop appliedFilters={appliedFilters} />}
+  />
+);
+
+export default Filters;
 
 const filterCategories = [
   { name: 'organism', queryField: 'organisms__name' },
@@ -85,4 +98,77 @@ const filterCategories = [
   { name: 'publication', queryField: 'has_publication' }
 ];
 
-export default ResultFilters;
+/**
+ * Mobile version of the filters. In this case we want to show the filters in a
+ * side menu
+ */
+class FiltersMobile extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filters: props.appliedFilters
+    };
+  }
+
+  render() {
+    return (
+      <SideMenu
+        component={showMenu => (
+          <Button
+            onClick={showMenu}
+            buttonStyle="secondary"
+            className="tablet-p"
+          >
+            Filters
+          </Button>
+        )}
+      >
+        {({ hideMenu }) => (
+          <div>
+            <FilterList
+              appliedFilters={this.state.filters}
+              toggledFilter={(type, value) => this._toggleFilter(type, value)}
+              clearFilters={() => {
+                // if no changes were applied, there won't be any search and we want to reset the state filters
+                this.setState({ filters: this.props.appliedFilters });
+                this.props.clearFilters();
+                hideMenu();
+              }}
+            />
+
+            <div className="flex-button-container">
+              <Button
+                onClick={() => {
+                  this.props.updateFilters(this.state.filters);
+                  hideMenu();
+                }}
+                buttonStyle="secondary"
+                className="mobile-p"
+              >
+                Apply Filters
+              </Button>
+            </div>
+          </div>
+        )}
+      </SideMenu>
+    );
+  }
+
+  _toggleFilter(type, value) {
+    this.setState(({ filters }) => ({
+      filters: toggleFilterHelper(filters, type, value)
+    }));
+  }
+
+  _applyFilters() {}
+
+  _clearFilters() {}
+}
+FiltersMobile = connect(
+  () => ({}),
+  {
+    updateFilters,
+    clearFilters
+  }
+)(FiltersMobile);
