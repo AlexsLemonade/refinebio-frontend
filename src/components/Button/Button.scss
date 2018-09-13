@@ -16,17 +16,23 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
   white-space: nowrap;
   text-align: center;
 
-  &:hover,
-  &:active,
-  &:focus {
+  &:hover {
     background: $default-hover;
     color: $white;
     border-color: $default-hover;
+
+    .button__icon {
+      filter: brightness(0) invert(1);
+    }
   }
 
   &:active,
   &:focus {
     box-shadow: $default-active-shadow;
+  }
+
+  &__icon {
+    margin-right: 4px;
   }
 
   &:disabled,
@@ -119,4 +125,7 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
     font-size: 16px;
     padding: 8px 32px;
   }
+}
+
+.button__icon {
 }

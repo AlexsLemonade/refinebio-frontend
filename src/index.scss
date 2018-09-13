@@ -156,5 +156,11 @@ fieldset {
   }
 }
 
+.vertical-center {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';

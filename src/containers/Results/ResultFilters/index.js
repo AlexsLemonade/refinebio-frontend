@@ -128,7 +128,10 @@ class FiltersMobile extends React.Component {
       <SideMenu
         component={showMenu => (
           <Button onClick={showMenu} buttonStyle="secondary">
-            <img src={FilterIcon} /> Filters
+            <div className="vertical-center">
+              <img src={FilterIcon} className="button__icon" />
+              <span>Filters</span>
+            </div>
           </Button>
         )}
       >
