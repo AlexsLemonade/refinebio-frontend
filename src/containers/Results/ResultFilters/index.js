@@ -124,15 +124,30 @@ class FiltersMobile extends React.Component {
   }
 
   render() {
+    const { appliedFilters } = this.props;
     return (
       <SideMenu
         component={showMenu => (
-          <Button onClick={showMenu} buttonStyle="secondary">
-            <div className="vertical-center">
-              <img src={FilterIcon} className="button__icon" />
-              <span>Filters</span>
-            </div>
-          </Button>
+          <div className="vertical-center">
+            <Button onClick={showMenu} buttonStyle="secondary">
+              <div className="vertical-center">
+                <img src={FilterIcon} className="button__icon" alt="" />
+                <span>Filters</span>
+              </div>
+            </Button>
+
+            {Object.keys(appliedFilters).map(filterKey =>
+              appliedFilters[filterKey].map(filterValue => (
+                <FilterLabel
+                  key={`${filterKey}${filterValue}`}
+                  value={filterValue}
+                  onClick={() =>
+                    this.props.toggledFilter(filterKey, filterValue)
+                  }
+                />
+              ))
+            )}
+          </div>
         )}
       >
         {({ hideMenu }) => (
@@ -150,7 +165,7 @@ class FiltersMobile extends React.Component {
               toggledFilter={(type, value) => this._toggleFilter(type, value)}
               clearFilters={() => {
                 // if no changes were applied, there won't be any search and we want to reset the state filters
-                this.setState({ filters: this.props.appliedFilters });
+                this.setState({ filters: appliedFilters });
                 this.props.clearFilters();
                 hideMenu();
               }}
@@ -181,7 +196,23 @@ class FiltersMobile extends React.Component {
 FiltersMobile = connect(
   () => ({}),
   {
+    toggledFilter,
     updateFilters,
     clearFilters
   }
 )(FiltersMobile);
+
+function FilterLabel({ value, onClick }) {
+  return (
+    <div className="filter-label">
+      {formatSentenceCase(value)}
+      <Button
+        className="filter-label__remove"
+        onClick={onClick}
+        buttonStyle="transparent"
+      >
+        <i className="icon ion-close" />
+      </Button>
+    </div>
+  );
+}

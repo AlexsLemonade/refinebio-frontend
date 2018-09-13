@@ -32,6 +32,7 @@
 
     @include tablet {
       flex-direction: row;
+      align-items: center;
     }
 
     @include desktop {
@@ -41,11 +42,13 @@
 
   &__filters {
     grid-area: side;
-
-    max-width: 230px;
-    min-width: 230px;
-    margin-right: 48px;
     margin-bottom: 16px;
+
+    @include desktop {
+      max-width: 230px;
+      min-width: 230px;
+      margin-right: 48px;
+    }
   }
 
   &__list {
