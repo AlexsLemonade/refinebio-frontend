@@ -26,12 +26,19 @@ let AppError = ({ goBack }) => (
     </div>
 
     <div>
-      <img src={SpilledSample} alt="Something went wrong" />
+      <img
+        src={SpilledSample}
+        alt="Something went wrong"
+        className="img-responsive"
+      />
     </div>
   </div>
 );
-AppError = connect(() => ({}), {
-  goBack
-})(AppError);
+AppError = connect(
+  () => ({}),
+  {
+    goBack
+  }
+)(AppError);
 
 export default AppError;
