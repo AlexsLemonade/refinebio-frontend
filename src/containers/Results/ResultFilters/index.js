@@ -13,6 +13,8 @@ import {
 import ResponsiveSwitch from '../../../components/ResponsiveSwitch';
 import SideMenu from '../../../components/SideMenu';
 
+import FilterIcon from '../../../common/icons/filter-icon.svg';
+
 const FilterCategory = ({
   categoryFilters,
   category,
@@ -125,12 +127,8 @@ class FiltersMobile extends React.Component {
     return (
       <SideMenu
         component={showMenu => (
-          <Button
-            onClick={showMenu}
-            buttonStyle="secondary"
-            className="tablet-p"
-          >
-            Filters
+          <Button onClick={showMenu} buttonStyle="secondary">
+            <img src={FilterIcon} /> Filters
           </Button>
         )}
       >
