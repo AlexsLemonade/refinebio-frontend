@@ -129,7 +129,7 @@ class FiltersMobile extends React.Component {
       <SideMenu
         component={showMenu => (
           <div className="vertical-center">
-            <Button onClick={showMenu} buttonStyle="secondary">
+            <Button onClick={showMenu} buttonStyle="secondary" className="mr-1">
               <div className="vertical-center">
                 <img src={FilterIcon} className="button__icon" alt="" />
                 <span>Filters</span>
@@ -204,7 +204,7 @@ FiltersMobile = connect(
 
 function FilterLabel({ value, onClick }) {
   return (
-    <div className="filter-label">
+    <div className="filter-label mr-1">
       {formatSentenceCase(value)}
       <Button
         className="filter-label__remove"
