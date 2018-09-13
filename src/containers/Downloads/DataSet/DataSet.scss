@@ -2,8 +2,15 @@
 
 .dataset {
   &__message {
-    width: 650px;
-    margin: 12 * 8px auto;
+    margin-top: 24px;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include desktop {
+      width: 650px;
+      margin: 12 * 8px auto;
+    }
   }
 
   &__container {
@@ -65,9 +72,17 @@
 .form-edit-email {
   display: flex;
   margin-bottom: 2 * 8px;
+  flex-direction: column;
 
-  &__text {
+  &__input {
     margin-right: 8px;
-    width: 47 * 8px;
+
+    @include tablet {
+      width: 47 * 8px;
+    }
+  }
+
+  @include tablet {
+    flex-direction: row;
   }
 }

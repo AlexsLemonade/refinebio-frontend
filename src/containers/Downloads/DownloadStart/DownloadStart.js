@@ -67,6 +67,7 @@ class DownloadStart extends React.Component {
               <img
                 src={ProcessingImage}
                 alt="We're processing your download file"
+                className="img-responsive"
               />
             </div>
           </div>
@@ -109,9 +110,11 @@ let EmailForm = ({ handleSubmit, isSubmitDisabled }) => {
         name="email"
         type="email"
         placeholder="jdoe@example.com"
-        className="input-text form-edit-email__text"
+        className="input-text form-edit-email__input mobile-p"
       />
-      <Button text="Start Processing" isDisabled={isSubmitDisabled} />
+      <div className="flex-button-container">
+        <Button text="Start Processing" isDisabled={isSubmitDisabled} />
+      </div>
     </form>
   );
 };
