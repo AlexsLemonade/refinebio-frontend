@@ -3,12 +3,11 @@
 .dataset {
   &__message {
     margin-top: 24px;
-    max-width: 650px;
+    max-width: 675px;
     margin-left: auto;
     margin-right: auto;
 
     @include desktop {
-      width: 650px;
       margin: 12 * 8px auto;
     }
   }
@@ -39,15 +38,25 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+    }
   }
 
   &__processed-text {
-    min-width: 2/3 * 100%;
-    margin-right: 8 * 8px;
+    margin-bottom: 16px;
+    flex: 1 0 auto;
+
+    @include tablet {
+      max-width: 2/3 * 100%;
+      padding-right: 6 * 8px;
+      margin-bottom: 0;
+    }
   }
 
   &__way-image {
-    margin-left: 16px;
   }
 
   &__way-section {
