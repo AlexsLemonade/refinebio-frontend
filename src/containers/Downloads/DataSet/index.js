@@ -63,7 +63,7 @@ let DataSet = ({
               hasError={location.state && location.state.hasError}
             />
             <div className="downloads__bar">
-              <div className="flex-button-container">
+              <div className="flex-button-container flex-button-container--left">
                 <ShareDatasetButton dataSetId={dataSetId} />
               </div>
             </div>
