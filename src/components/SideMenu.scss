@@ -1,0 +1,16 @@
+@import '../common/styles/variables';
+
+.side-menu {
+  background-color: $background-color;
+  width: 250px;
+  min-height: 100%;
+
+  &__content {
+    padding: 16px;
+  }
+
+  &__close {
+    display: block;
+    margin-left: auto;
+  }
+}

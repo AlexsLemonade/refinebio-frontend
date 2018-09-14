@@ -139,6 +139,10 @@ fieldset {
   }
 }
 
+.mr-1 {
+  margin-right: 1rem;
+}
+
 // adds a bottom margin on mobile devices
 .mobile-p {
   margin-bottom: 16px;
@@ -154,6 +158,12 @@ fieldset {
   @include desktop {
     margin-bottom: 0;
   }
+}
+
+.vertical-center {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
 }
 
 @import 'common/styles/type';

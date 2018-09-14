@@ -1,5 +1,6 @@
 import React from 'react';
 import './Checkbox.scss';
+import classnames from 'classnames';
 
 const Checkbox = ({
   name,
@@ -10,9 +11,9 @@ const Checkbox = ({
   disabled
 }) => (
   <div
-    className={`checkbox ${!!className ? className : ''} ${
-      disabled ? 'checkbox--disabled' : ''
-    }`}
+    className={classnames('checkbox', className, {
+      'checkbox--disabled': disabled
+    })}
   >
     <input
       type="checkbox"

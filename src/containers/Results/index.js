@@ -138,26 +138,26 @@ class Results extends Component {
           <EmptyStates searchTerm={searchTerm} />
         ) : (
           <div className="results__container">
+            <div className="results__top-bar">
+              {results.length ? (
+                <div className="results__number-results">
+                  <NumberOfResults />
+                </div>
+              ) : null}
+
+              <DataSetSampleActions
+                data={samplesAsDataSet}
+                enableAddRemaining={false}
+                meta={{
+                  buttonStyle: 'secondary',
+                  addText: 'Add Page to Dataset'
+                }}
+              />
+            </div>
             <div className="results__filters">
               <ResultFilters appliedFilters={this.state.filters} />
             </div>
             <div className="results__list">
-              <div className="results__top-bar">
-                {results.length ? (
-                  <div className="results__number-results">
-                    <NumberOfResults />
-                  </div>
-                ) : null}
-
-                <DataSetSampleActions
-                  data={samplesAsDataSet}
-                  enableAddRemaining={false}
-                  meta={{
-                    buttonStyle: 'secondary',
-                    addText: 'Add Page to Dataset'
-                  }}
-                />
-              </div>
               {results.map((result, i) => (
                 <Result
                   key={i}
