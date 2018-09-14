@@ -13,8 +13,7 @@ export default (state = initialState, action) => {
       const { dataSetId } = action.data;
       return {
         ...state,
-        dataSetId,
-        isLoading: true
+        dataSetId
       };
     }
     case 'DOWNLOAD_DATASET_FETCH_SUCCESS': {
@@ -33,14 +32,7 @@ export default (state = initialState, action) => {
         is_processed,
         aggregate_by,
         scale_by,
-        expires_on,
-        isLoading: false
-      };
-    }
-    case 'DOWNLOAD_ADD_EXPERIMENT': {
-      return {
-        ...state,
-        isLoading: true
+        expires_on
       };
     }
     case 'DOWNLOAD_ADD_EXPERIMENT_SUCCESS': {
@@ -48,8 +40,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         dataSetId,
-        dataSet,
-        isLoading: false
+        dataSet
       };
     }
     case 'DOWNLOAD_UPDATE_DATASET': {
@@ -91,8 +82,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         dataSetId: null,
-        dataSet: {},
-        isLoading: false
+        dataSet: {}
       };
     }
 
