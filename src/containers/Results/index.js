@@ -30,7 +30,7 @@ class Results extends Component {
   }
 
   componentDidMount() {
-    this.updateResults(true);
+    this.updateResults();
   }
 
   async componentDidUpdate(prevProps) {
@@ -47,7 +47,7 @@ class Results extends Component {
   /**
    * Reads the search query and other parameters from the url and submits a new request to update the results.
    */
-  async updateResults(checkPreviousResults = false) {
+  async updateResults() {
     const { location } = this.props;
     let { q: query, p: page, size, ...filters } = getQueryParamObject(
       location.search
@@ -72,7 +72,6 @@ class Results extends Component {
     // Check if we already have these results fetched, in which case we don't need to make an additional request
     // this can only happen when the component is initially mounted.
     if (
-      checkPreviousResults &&
       this.props.results &&
       this.props.results.length > 0 &&
       query === this.props.searchTerm &&
@@ -89,10 +88,6 @@ class Results extends Component {
   handleSubmit = values => {
     // When a new search is made, return to the first page and clear the filters
     this.props.triggerSearch(values.search);
-  };
-
-  handlePagination = page => {
-    this.props.updatePage(page);
   };
 
   handlePageRemove = () => {
@@ -167,7 +162,7 @@ class Results extends Component {
                 />
               ))}
               <Pagination
-                onPaginate={this.handlePagination}
+                onPaginate={this.props.updatePage}
                 totalPages={totalPages}
                 currentPage={currentPage}
               />
@@ -176,10 +171,6 @@ class Results extends Component {
         )}
       </div>
     );
-  }
-
-  _getAllProcessedSamples() {
-    return [...new Set(this.props.results.map(x => x.processed_samples))];
   }
 }
 Results = connect(
