@@ -268,6 +268,17 @@ const NoSearchResults = () => (
   <div className="results__no-results">
     <h2>No matching results</h2>
     <h2>Try another term</h2>
+    <div className="results__suggestions">
+      {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
+        <Link
+          className="link results__suggestion"
+          to={`/results?q=${q}`}
+          key={q}
+        >
+          {q}
+        </Link>
+      ))}
+    </div>
     <img
       src={GhostSampleImage}
       alt="Start searching"
