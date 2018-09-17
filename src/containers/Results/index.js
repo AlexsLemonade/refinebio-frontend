@@ -4,7 +4,7 @@ import * as resultsActions from '../../state/search/actions';
 import * as downloadActions from '../../state/download/actions';
 import Helmet from 'react-helmet';
 import Result from './Result';
-import ResultFilters from './ResultFilters';
+import ResultFilters, { anyFilterApplied } from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
 import BackToTop from '../../components/BackToTop';
@@ -84,56 +84,69 @@ class Results extends Component {
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
 
-        <Loader
-          updateProps={this.props.location.search}
-          fetch={() => this.updateResults()}
-        >
-          {({ isLoading }) =>
-            isLoading ? (
-              <div className="loader" />
-            ) : !results.length ? (
-              <EmptyStates
-                searchTerm={searchTerm}
-                appliedFilters={this.state.filters}
-              />
-            ) : (
-              <div className="results__container">
-                <div className="results__top-bar">
-                  <div className="results__number-results">
-                    <NumberOfResults />
+        {!searchTerm ? (
+          <NoSearchTerm />
+        ) : (
+          <Loader
+            updateProps={this.props.location.search}
+            fetch={() => this.updateResults()}
+          >
+            {({ isLoading }) =>
+              isLoading ? (
+                <div className="loader" />
+              ) : !results.length && !anyFilterApplied(this.state.filters) ? (
+                <NoSearchTerm />
+              ) : !results.length ? (
+                <div className="results__container">
+                  <div className="results__filters">
+                    <ResultFilters appliedFilters={this.state.filters} />
                   </div>
-
-                  <DataSetSampleActions
-                    data={this._getSamplesAsDataSet()}
-                    enableAddRemaining={false}
-                    meta={{
-                      buttonStyle: 'secondary',
-                      addText: 'Add Page to Dataset'
-                    }}
-                  />
-                </div>
-                <div className="results__filters">
-                  <ResultFilters appliedFilters={this.state.filters} />
-                </div>
-                <div className="results__list">
-                  {results.map(result => (
-                    <Result
-                      key={result.accession_code}
-                      result={result}
-                      addExperiment={addExperiment}
-                      removeExperiment={removeExperiment}
+                  <div className="results__top-bar">
+                    <EmptyStates
+                      searchTerm={searchTerm}
+                      appliedFilters={this.state.filters}
                     />
-                  ))}
-                  <Pagination
-                    onPaginate={this.props.updatePage}
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                  />
+                  </div>
                 </div>
-              </div>
-            )
-          }
-        </Loader>
+              ) : (
+                <div className="results__container">
+                  <div className="results__top-bar">
+                    <div className="results__number-results">
+                      <NumberOfResults />
+                    </div>
+
+                    <DataSetSampleActions
+                      data={this._getSamplesAsDataSet()}
+                      enableAddRemaining={false}
+                      meta={{
+                        buttonStyle: 'secondary',
+                        addText: 'Add Page to Dataset'
+                      }}
+                    />
+                  </div>
+                  <div className="results__filters">
+                    <ResultFilters appliedFilters={this.state.filters} />
+                  </div>
+                  <div className="results__list">
+                    {results.map(result => (
+                      <Result
+                        key={result.accession_code}
+                        result={result}
+                        addExperiment={addExperiment}
+                        removeExperiment={removeExperiment}
+                      />
+                    ))}
+                    <Pagination
+                      onPaginate={this.props.updatePage}
+                      totalPages={totalPages}
+                      currentPage={currentPage}
+                    />
+                  </div>
+                </div>
+              )
+            }
+          </Loader>
+        )}
       </div>
     );
   }
@@ -270,6 +283,33 @@ const EmptyStates = ({ searchTerm, appliedFilters }) => {
       <img
         src={imageSrc}
         alt={imageAlt}
+        className="results__no-results-image"
+      />
+    </div>
+  );
+};
+
+/**
+ * Displayed when the user tries to search for an empty term
+ */
+const NoSearchTerm = () => {
+  return (
+    <div className="results__no-results">
+      <h2>Try searching for</h2>
+      <div className="results__suggestions">
+        {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
+          <Link
+            className="link results__suggestion"
+            to={`/results?q=${q}`}
+            key={q}
+          >
+            {q}
+          </Link>
+        ))}
+      </div>
+      <img
+        src={StartSearchingImage}
+        alt="Start searching"
         className="results__no-results-image"
       />
     </div>
