@@ -19,6 +19,8 @@ import { Link } from 'react-router-dom';
 import DataSetSampleActions from '../Experiment/DataSetSampleActions';
 import isEqual from 'lodash/isEqual';
 import Loader from '../../components/Loader';
+import Button from '../../components/Button';
+import { clearFilters } from '../../state/search/actions';
 
 class Results extends Component {
   state = {
@@ -84,69 +86,59 @@ class Results extends Component {
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
 
-        {!searchTerm ? (
-          <NoSearchTerm />
-        ) : (
-          <Loader
-            updateProps={this.props.location.search}
-            fetch={() => this.updateResults()}
-          >
-            {({ isLoading }) =>
-              isLoading ? (
-                <div className="loader" />
-              ) : !results.length && !anyFilterApplied(this.state.filters) ? (
-                <NoSearchTerm />
-              ) : !results.length ? (
-                <div className="results__container">
-                  <div className="results__filters">
-                    <ResultFilters appliedFilters={this.state.filters} />
+        <Loader
+          updateProps={this.props.location.search}
+          fetch={() => this.updateResults()}
+        >
+          {({ isLoading }) =>
+            !searchTerm ? (
+              <NoSearchTerm />
+            ) : isLoading ? (
+              <div className="loader" />
+            ) : !results.length && !anyFilterApplied(this.state.filters) ? (
+              <NoSearchResults />
+            ) : !results.length ? (
+              <NoSearchResultsTooManyFilters
+                appliedFilters={this.state.filters}
+              />
+            ) : (
+              <div className="results__container">
+                <div className="results__top-bar">
+                  <div className="results__number-results">
+                    <NumberOfResults />
                   </div>
-                  <div className="results__top-bar">
-                    <EmptyStates
-                      searchTerm={searchTerm}
-                      appliedFilters={this.state.filters}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div className="results__container">
-                  <div className="results__top-bar">
-                    <div className="results__number-results">
-                      <NumberOfResults />
-                    </div>
 
-                    <DataSetSampleActions
-                      data={this._getSamplesAsDataSet()}
-                      enableAddRemaining={false}
-                      meta={{
-                        buttonStyle: 'secondary',
-                        addText: 'Add Page to Dataset'
-                      }}
-                    />
-                  </div>
-                  <div className="results__filters">
-                    <ResultFilters appliedFilters={this.state.filters} />
-                  </div>
-                  <div className="results__list">
-                    {results.map(result => (
-                      <Result
-                        key={result.accession_code}
-                        result={result}
-                        addExperiment={addExperiment}
-                        removeExperiment={removeExperiment}
-                      />
-                    ))}
-                    <Pagination
-                      onPaginate={this.props.updatePage}
-                      totalPages={totalPages}
-                      currentPage={currentPage}
-                    />
-                  </div>
+                  <DataSetSampleActions
+                    data={this._getSamplesAsDataSet()}
+                    enableAddRemaining={false}
+                    meta={{
+                      buttonStyle: 'secondary',
+                      addText: 'Add Page to Dataset'
+                    }}
+                  />
                 </div>
-              )
-            }
-          </Loader>
-        )}
+                <div className="results__filters">
+                  <ResultFilters appliedFilters={this.state.filters} />
+                </div>
+                <div className="results__list">
+                  {results.map(result => (
+                    <Result
+                      key={result.accession_code}
+                      result={result}
+                      addExperiment={addExperiment}
+                      removeExperiment={removeExperiment}
+                    />
+                  ))}
+                  <Pagination
+                    onPaginate={this.props.updatePage}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                  />
+                </div>
+              </div>
+            )
+          }
+        </Loader>
       </div>
     );
   }
@@ -166,7 +158,7 @@ class Results extends Component {
     }
 
     // parse parameters from url
-    query = decodeURIComponent(query);
+    query = query ? decodeURIComponent(query) : undefined;
     page = parseInt(page || 1, 10);
     size = parseInt(size || 10, 10);
 
@@ -245,50 +237,6 @@ NumberOfResults = connect(
   { updateResultsPerPage }
 )(NumberOfResults);
 
-const EmptyStates = ({ searchTerm, appliedFilters }) => {
-  const title = !!searchTerm ? 'No matching results' : 'Try searching for';
-  const imageSrc = !!searchTerm ? GhostSampleImage : StartSearchingImage;
-  const imageAlt = !!searchTerm ? 'No matching results' : 'Start searching';
-
-  return (
-    <div className="results__no-results">
-      <h2>{title}</h2>
-      {!!searchTerm ? (
-        !!appliedFilters ? (
-          <h3>
-            Try another term or{' '}
-            <Link className="link" to={`/results?q=${searchTerm}`}>
-              Clear Filters
-            </Link>
-          </h3>
-        ) : (
-          <h3>Try another term</h3>
-        )
-      ) : (
-        <div className="results__suggestions">
-          <Link className="link results__suggestion" to="/results?q=Notch">
-            Notch
-          </Link>
-          <Link
-            className="link results__suggestion"
-            to="/results?q=medulloblastoma"
-          >
-            Medulloblastoma
-          </Link>
-          <Link className="link results__suggestion" to="/results?q=GSE16476">
-            GSE16476
-          </Link>
-        </div>
-      )}
-      <img
-        src={imageSrc}
-        alt={imageAlt}
-        className="results__no-results-image"
-      />
-    </div>
-  );
-};
-
 /**
  * Displayed when the user tries to search for an empty term
  */
@@ -310,8 +258,50 @@ const NoSearchTerm = () => {
       <img
         src={StartSearchingImage}
         alt="Start searching"
-        className="results__no-results-image"
+        className="results__no-results-image img-responsive"
       />
     </div>
   );
 };
+
+const NoSearchResults = () => (
+  <div className="results__no-results">
+    <h2>No matching results</h2>
+    <h2>Try another term</h2>
+    <img
+      src={GhostSampleImage}
+      alt="Start searching"
+      className="results__no-results-image img-responsive"
+    />
+  </div>
+);
+
+let NoSearchResultsTooManyFilters = ({ appliedFilters, clearFilters }) => (
+  <div className="results__container results__container--empty">
+    <div className="results__filters">
+      <ResultFilters appliedFilters={appliedFilters} />
+    </div>
+    <div className="results__list">
+      <div className="results__no-results">
+        <h2>No matching results</h2>
+        <div>
+          Try another term or{' '}
+          <Button onClick={clearFilters} buttonStyle="link">
+            Clear Filters
+          </Button>
+        </div>
+        <img
+          src={GhostSampleImage}
+          alt="Start searching"
+          className="results__no-results-image img-responsive"
+        />
+      </div>
+    </div>
+  </div>
+);
+NoSearchResultsTooManyFilters = connect(
+  () => ({}),
+  {
+    clearFilters
+  }
+)(NoSearchResultsTooManyFilters);
