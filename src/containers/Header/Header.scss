@@ -47,6 +47,10 @@
     @include tablet {
       margin-top: 0;
     }
+
+    &--active {
+      border-bottom: 2px solid currentColor;
+    }
   }
 
   &__link-button {

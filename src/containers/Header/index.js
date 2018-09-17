@@ -26,8 +26,8 @@ class Header extends React.Component {
 
           <ResponsiveSwitch
             break="mobile"
-            mobile={() => <HeaderLinksMobile />}
-            desktop={() => <HeaderLinks />}
+            mobile={() => <HeaderLinksMobile location={this.props.location} />}
+            desktop={() => <HeaderLinks location={this.props.location} />}
           />
         </div>
       </header>
@@ -46,29 +46,26 @@ class Header extends React.Component {
 Header = withRouter(Header);
 export default Header;
 
-let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet }) => {
+let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
   return (
     <ul className="header__menu">
-      <li className="header__link">
-        <Link to="/" onClick={itemClicked}>
-          Search
-        </Link>
-      </li>
-      <li className="header__link">
-        <Link to="/api" onClick={itemClicked}>
-          API
-        </Link>
-      </li>
-      <li className="header__link">
-        <Link to="/docs" onClick={itemClicked}>
-          Docs
-        </Link>
-      </li>
-      <li className="header__link">
-        <Link to="/about" onClick={itemClicked}>
-          About
-        </Link>
-      </li>
+      <HeaderLink
+        to="/"
+        onClick={itemClicked}
+        location={location}
+        activePath={['/results']}
+      >
+        Search
+      </HeaderLink>
+      <HeaderLink to="/api" onClick={itemClicked} location={location}>
+        API
+      </HeaderLink>
+      <HeaderLink to="/docs" onClick={itemClicked} location={location}>
+        Docs
+      </HeaderLink>
+      <HeaderLink to="/about" onClick={itemClicked} location={location}>
+        About
+      </HeaderLink>
       <li className="header__link">
         <Link
           className="button button--secondary header__link-button"
@@ -97,11 +94,28 @@ HeaderLinks = connect(
   }
 )(HeaderLinks);
 
+let HeaderLink = ({ to, onClick, children, location, activePath = [] }) => {
+  return (
+    <li
+      className={classnames('header__link', {
+        'header__link--active':
+          location &&
+          (location.pathname === to ||
+            activePath.some(x => location.pathname === x))
+      })}
+    >
+      <Link to={to} onClick={onClick}>
+        {children}
+      </Link>
+    </li>
+  );
+};
+
 /**
  * On mobile the links should appear on a menu at the top. This component adds that functionality
  * while reusing `HeaderLinks`
  */
-function HeaderLinksMobile() {
+function HeaderLinksMobile({ location }) {
   return (
     <SideMenu
       orientation="top"
@@ -113,7 +127,7 @@ function HeaderLinksMobile() {
     >
       {({ hideMenu }) => (
         <div>
-          <HeaderLinks itemClicked={hideMenu} />
+          <HeaderLinks itemClicked={hideMenu} location={location} />
 
           <div className="header__menu-close">
             <button onClick={hideMenu}>&times;</button>
