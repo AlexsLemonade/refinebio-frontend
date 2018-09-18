@@ -1,44 +1,94 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 
+import styles from './SubmitterSuppliedProtocol.scss';
+
+const PROTOCOLS_BY_SAMPLE_TYPE = {
+  GEO: GeoSubmitterSuppliedProtocol
+};
+
+/**
+ * This component renders the submitter supplied protocol information inside the modal dialogs
+ * It depends on the type of sample.
+ *
+ * ref https://github.com/AlexsLemonade/refinebio-frontend/issues/225#issuecomment-417345139
+ */
 export default function SubmitterSuppliedProtocol({ sample, results }) {
-  let processorNames = results.map(result => result.processor.name);
+  let Component = PROTOCOLS_BY_SAMPLE_TYPE[sample.source_database];
+  if (!Component) {
+    return null;
+  }
 
   return (
     <section className="processing-info-modal__section">
       <div className="processing-info-modal__protocol-description">
         <h3>Submitter Supplied Protocol</h3>
-        {/* Rna seq specific note https://github.com/AlexsLemonade/refinebio-frontend/issues/265 */}
-        {isEqual(processorNames, ['Salmon Quant', 'Tximport']) && (
-          <p>
-            We have created custom gene mapping files for Affymetrix platforms
-            (see:
-            <a
-              href="https://github.com/AlexsLemonade/identifier-refinery"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link"
-            >
-              https://github.com/AlexsLemonade/identifier-refinery
-            </a>) that support conversion from probe IDs, gene symbols, Entrez
-            IDs, RefSeq and Unigene identifiers to Ensembl gene IDs. We support
-            conversion from Illumina BeadArray probe IDs to Ensembl gene IDs
-            using Bioconductor Illumina BeadArray expression packages.
-          </p>
-        )}
-        <p>
-          These tissues samples were obtained at surgery and stored at -80C
-          until use., These tissues samples were obtained at surgery without any
-          other pretreatment., Acid guanidinium thiocyanate-phenol-chloroform
-          extraction of total RNA was performed according to the previous report
-          (Anal. Biochem, 162: 156,1987)., Biotinylated cRNA were prepared
-          according to the standard Affymetrix protocol from 2 ug total RNA
-          (Expression Analysis Technical Manual, 2001, Affymetrix)., Title:
-          Affymetrix CEL analysis. Description:, The data were analyzed with
-          Microarray Suite version 5.0 (MAS 5.0) using Affymetrix default
-          analysis settings and global scaling as normalization method.
-        </p>
+
+        <Component protocol_info={/*sample.protocol_info*/ GEO_MOCK_DATA} />
       </div>
     </section>
   );
 }
+
+function GeoSubmitterSuppliedProtocol({ protocol_info }) {
+  return (
+    <div>
+      <div className={styles.geo}>
+        {[
+          'Extraction protocol',
+          'Label protocol',
+          'Hybridization protocol',
+          'Scan protocol',
+          'Data processing'
+        ].map(
+          field =>
+            protocol_info[field] && (
+              <div className="experiment__row">
+                <div className="experiment__row-label">{field}</div>
+                <div>{protocol_info[field].join('. ')}</div>
+              </div>
+            )
+        )}
+
+        {protocol_info['Reference'] && (
+          <div className="experiment__row">
+            <div className="experiment__row-label">Reference</div>
+            <div>
+              <a
+                href={protocol_info['Reference']}
+                rel="nofollow"
+                target="_blank"
+                className="link"
+              >
+                {protocol_info['Reference']}
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="processing-info-modal__section">
+        <h3>Gene Identifier Conversion</h3>
+
+        <div>
+          The gene identifiers were converted to Ensembl Gene Identifiers using
+          g:Profiler (version 2.0.1)
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const GEO_MOCK_DATA = {
+  'Extraction protocol': [
+    'RNA extracted with Trizol reagent and purified per Trizol protocol; RNA further purified using RNeasy kit columns'
+  ],
+  'Label protocol': ["According to manufacturer's instructions"],
+  'Hybridization protocol': ["According to manufacturer's instructions"],
+  'Scan protocol': ["According to manufacturer's instructions"],
+  'Data processing': [
+    'Data was analyzed using Cubic Spline normalisation method'
+  ],
+  Reference:
+    'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments/E-MEXP-31/protocols'
+};
