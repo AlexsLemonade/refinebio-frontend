@@ -43,13 +43,22 @@
     align-items: center;
     min-width: fit-content;
     position: relative;
+    border-bottom: 2px solid transparent;
 
     @include tablet {
       margin-top: 0;
     }
 
-    &--active {
+    &:hover {
+      color: #386db0;
       border-bottom: 2px solid currentColor;
+    }
+
+    &--active {
+      .header__menu:not(:hover) & {
+        color: #386db0;
+        border-bottom: 2px solid currentColor;
+      }
     }
   }
 
@@ -112,6 +121,16 @@
 
   .header__burger {
     color: $white;
+  }
+
+  .header__link {
+    &:hover {
+      color: $white;
+    }
+
+    &--active {
+      color: $white !important;
+    }
   }
 
   @include tablet() {
