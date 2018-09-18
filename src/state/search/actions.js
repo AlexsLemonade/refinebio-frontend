@@ -55,7 +55,7 @@ export function fetchResults({ query, page = 1, size = 10, filters }) {
         type: 'SEARCH_RESULTS_FETCH',
         data: {
           searchTerm: query,
-          results: !!query ? results : [],
+          results,
           filters: filterData,
           totalResults,
 
