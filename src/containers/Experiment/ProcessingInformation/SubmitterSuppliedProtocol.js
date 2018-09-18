@@ -4,7 +4,8 @@ import isEqual from 'lodash/isEqual';
 import styles from './SubmitterSuppliedProtocol.scss';
 
 const PROTOCOLS_BY_SAMPLE_TYPE = {
-  GEO: GeoSubmitterSuppliedProtocol
+  GEO: GeoSubmitterSuppliedProtocol,
+  SRA: SRASubmitterSuppliedProtocol
 };
 
 /**
@@ -24,7 +25,7 @@ export default function SubmitterSuppliedProtocol({ sample, results }) {
       <div className="processing-info-modal__protocol-description">
         <h3>Submitter Supplied Protocol</h3>
 
-        <Component protocol_info={/*sample.protocol_info*/ GEO_MOCK_DATA} />
+        <Component protocol_info={/*sample.protocol_info*/ SRA_MOCK_DATA} />
       </div>
     </section>
   );
@@ -79,6 +80,29 @@ function GeoSubmitterSuppliedProtocol({ protocol_info }) {
   );
 }
 
+function SRASubmitterSuppliedProtocol({ protocol_info }) {
+  return (
+    <div className={styles.sra}>
+      {protocol_info.map(info => (
+        <div>
+          <p>{info['Description']}</p>
+          <p>
+            <b>Reference</b>{' '}
+            <a
+              href={info['Reference']}
+              rel="nofollow"
+              target="_blank"
+              className="link"
+            >
+              {info['Reference']}
+            </a>
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const GEO_MOCK_DATA = {
   'Extraction protocol': [
     'RNA extracted with Trizol reagent and purified per Trizol protocol; RNA further purified using RNeasy kit columns'
@@ -92,3 +116,18 @@ const GEO_MOCK_DATA = {
   Reference:
     'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments/E-MEXP-31/protocols'
 };
+
+const SRA_MOCK_DATA = [
+  {
+    Description:
+      'Total RNA was harvested by TriZol reagent and ribosomal RNA was removed by polyA capture prior to library generation. Libraries were created with the KAPA Stranded mRNA-seq Kit.',
+    Reference:
+      'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments/E-MEXP-31/protocols'
+  },
+  {
+    Description:
+      'Total RNA was harvested by TriZol reagent and ribosomal RNA was removed by polyA capture prior to library generation. Libraries were created with the KAPA Stranded mRNA-seq Kit.',
+    Reference:
+      'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments/E-MEXP-31/protocols'
+  }
+];
