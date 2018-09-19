@@ -45,13 +45,21 @@ async function createTimeQueries(
           .utc()
           .format();
 
-    const response = await Ajax.get(endPoint, {
-      created_at__gte: gte,
-      created_at__lte: lte,
-      limit
-    });
-    return response;
+    try {
+      const response = await Ajax.get(endPoint, {
+        created_at__gte: gte,
+        created_at__lte: lte,
+        limit
+      });
+      return response;
+    } catch (e) {
+      return {
+        count: 0,
+        results: []
+      };
+    }
   });
+
   return await Promise.all(promiseArray);
 }
 
@@ -139,8 +147,8 @@ export const fetchDashboardData = () => {
       const [stats, allSamples, allExperiments] = await Promise.all([
         Ajax.get('/stats/'),
         // samples and experiments will most likely go in another reducer when time comes
-        Ajax.get('/samples/'),
-        Ajax.get('/experiments/')
+        Ajax.get('/samples/', { limit: 1 }),
+        Ajax.get('/experiments/', { limit: 1 })
       ]);
 
       dispatch({
@@ -161,15 +169,6 @@ export const fetchDashboardData = () => {
   };
 };
 
-export const selectedTimeRange = (range = 'week') => {
-  return dispatch => {
-    dispatch({
-      type: 'DASHBOARD_TIME_OPTIONS_SELECTED'
-    });
-    dispatch(updatedTimeRange(range));
-  };
-};
-
 export const updatedTimeRange = (range = 'week') => {
   return dispatch => {
     const unit = getTimeUnit(range);
@@ -179,7 +178,6 @@ export const updatedTimeRange = (range = 'week') => {
       type: 'DASHBOARD_TIME_OPTIONS_UPDATED',
       data: {
         timeOptions: {
-          range,
           timePoints
         }
       }

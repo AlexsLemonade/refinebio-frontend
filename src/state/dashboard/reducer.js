@@ -7,10 +7,8 @@ const initialState = {
   experimentsOverTime: [],
   jobs: {},
   timeOptions: {
-    range: 'day',
     timePoints: []
-  },
-  isLoading: false
+  }
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -30,14 +28,7 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         samplesOverTime,
         experimentsOverTime,
-        jobs,
-        isLoading: false
-      };
-    }
-    case 'DASHBOARD_TIME_OPTIONS_SELECTED': {
-      return {
-        ...state,
-        isLoading: true
+        jobs
       };
     }
     case 'DASHBOARD_TIME_OPTIONS_UPDATED': {
@@ -112,13 +103,17 @@ export function getAllEstimatedTimeTilCompletion(state, jobType) {
 }
 
 export function getExperimentsCount(state) {
-  const { experiments: { count = 0 } } = state.dashboard;
+  const {
+    experiments: { count = 0 }
+  } = state.dashboard;
 
   return count;
 }
 
 export function getSamplesCount(state) {
-  const { samples: { count = 0 } } = state.dashboard;
+  const {
+    samples: { count = 0 }
+  } = state.dashboard;
 
   return count;
 }
@@ -129,7 +124,10 @@ export function getSamplesCount(state) {
  * job type
  */
 export function getJobsCompletedOverTime(state) {
-  const { jobs, timeOptions: { timePoints } } = state.dashboard;
+  const {
+    jobs,
+    timeOptions: { timePoints }
+  } = state.dashboard;
 
   /**
    * Loop over each "date" in the time range and use the index to find the
@@ -177,7 +175,10 @@ export function getSamplesCreatedOverTime(state) {
 }
 
 export function getJobsByStatusOverTime(state, jobName = 'processor') {
-  const { jobs, timeOptions: { timePoints } } = state.dashboard;
+  const {
+    jobs,
+    timeOptions: { timePoints }
+  } = state.dashboard;
 
   const jobType = jobs[jobName] || [];
 

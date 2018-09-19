@@ -157,3 +157,6 @@ export function stringEnumerate([x0, ...rest]) {
     rest[rest.length - 1]
   }`;
 }
+
+/** Allos await a specified time interval */
+export const timeout = ms => new Promise(res => setTimeout(res, ms));
