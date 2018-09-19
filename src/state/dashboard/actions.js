@@ -1,4 +1,6 @@
 import moment from 'moment';
+import { Ajax } from '../../common/helpers';
+import reportError from '../reportError';
 
 function getTimePoints(timeRange = 'week', timeUnit = 'day') {
   const gtDate = moment().startOf(timeRange),
@@ -27,7 +29,7 @@ function getTimeUnit(range) {
   }
 }
 
-function createTimeQueries(
+async function createTimeQueries(
   endPoint = '/jobs/survey/',
   timePoints = [],
   isCumulative = false,
@@ -43,20 +45,14 @@ function createTimeQueries(
           .utc()
           .format();
 
-    const response = await fetch(
-      `${endPoint}?created_at__gte=${gte}&created_at__lte=${lte}&limit=${limit}`
-    );
-
-    if (response.status === 200) {
-      return await response.json();
-    }
-    return [
-      {
-        error: 'there was an error with response'
-      }
-    ];
+    const response = await Ajax.get(endPoint, {
+      created_at__gte: gte,
+      created_at__lte: lte,
+      limit
+    });
+    return response;
   });
-  return Promise.all(promiseArray);
+  return await Promise.all(promiseArray);
 }
 
 function getJobStatusesOverTime(jobData = []) {
@@ -92,19 +88,22 @@ function getJobStatusesOverTime(jobData = []) {
 
 const fetchDataOverTime = timePoints => {
   return async dispatch => {
-    const survey = await createTimeQueries('/jobs/survey/', timePoints);
-    const processor = await createTimeQueries('/jobs/processor/', timePoints);
-    const downloader = await createTimeQueries('/jobs/downloader/', timePoints);
+    const [
+      survey,
+      processor,
+      downloader,
+      samples,
+      experiments
+    ] = await Promise.all([
+      createTimeQueries('/jobs/survey/', timePoints),
+      createTimeQueries('/jobs/processor/', timePoints),
+      createTimeQueries('/jobs/downloader/', timePoints),
 
-    // for samples and experiments, we only need the count,
-    // not the results themselves, so we don't need a high limit
-    const samples = await createTimeQueries('/samples/', timePoints, true, 1);
-    const experiments = await createTimeQueries(
-      '/experiments/',
-      timePoints,
-      true,
-      1
-    );
+      // for samples and experiments, we only need the count,
+      // not the results themselves, so we don't need a high limit
+      createTimeQueries('/samples/', timePoints, true, 1),
+      createTimeQueries('/experiments/', timePoints, true, 1)
+    ]);
 
     const surveyStatus = getJobStatusesOverTime(survey);
     const processorStatus = getJobStatusesOverTime(processor);
@@ -137,11 +136,12 @@ const fetchDataOverTime = timePoints => {
 export const fetchDashboardData = () => {
   return async dispatch => {
     try {
-      const stats = await (await fetch('/stats/')).json();
-
-      // samples and experiments will most likely go in another reducer when time comes
-      const allSamples = await (await fetch('/samples/')).json();
-      const allExperiments = await (await fetch('/experiments/')).json();
+      const [stats, allSamples, allExperiments] = await Promise.all([
+        Ajax.get('/stats/'),
+        // samples and experiments will most likely go in another reducer when time comes
+        Ajax.get('/samples/'),
+        Ajax.get('/experiments/')
+      ]);
 
       dispatch({
         type: 'DASHBOARD_REQUEST_SUCCESS',
@@ -156,7 +156,7 @@ export const fetchDashboardData = () => {
         }
       });
     } catch (e) {
-      console.log(e);
+      reportError(e);
     }
   };
 };
