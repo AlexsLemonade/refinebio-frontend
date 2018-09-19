@@ -26,6 +26,7 @@ import TechnologyBadge, {
   MICROARRAY,
   RNA_SEQ
 } from '../../components/TechnologyBadge';
+import Spinner from '../../components/Spinner';
 
 let Experiment = ({
   fetchExperiment,
@@ -47,7 +48,7 @@ let Experiment = ({
     <Loader fetch={() => fetchExperiment(match.params.id)}>
       {({ isLoading }) =>
         isLoading ? (
-          <div className="loader" />
+          <Spinner />
         ) : (
           <div>
             {comesFromSearch && (

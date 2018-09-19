@@ -11,6 +11,7 @@ import Loader from '../../components/Loader';
 import { fetchDataSetDetails } from '../../state/download/actions';
 import { getQueryParamObject } from '../../common/helpers';
 import DownloadStart from './DownloadStart/DownloadStart';
+import Spinner from '../../components/Spinner';
 
 let Download = ({ download, location, fetchDataSetDetails }) => {
   const { dataSetId, dataSet, aggregate_by, scale_by } = download;
@@ -37,7 +38,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
       <Loader fetch={() => fetchDataSetDetails(dataSetId)}>
         {({ isLoading }) =>
           isLoading ? (
-            <div className="loader" />
+            <Spinner />
           ) : !dataSetCanBeDownloaded ? (
             <div className="downloads__empty">
               <h3 className="downloads__empty-heading">

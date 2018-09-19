@@ -19,6 +19,7 @@ import DownloadDetails from '../DownloadDetails';
 import { ShareDatasetButton } from '../DownloadBar';
 import DownloadStart from '../DownloadStart/DownloadStart';
 import DownloadErrorImage from './dataset-error.svg';
+import Spinner from '../../../components/Spinner';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -49,7 +50,7 @@ let DataSet = ({
     <Loader updateProps={dataSetId} fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
         isLoading ? (
-          <div className="loader" />
+          <Spinner />
         ) : (
           <div>
             <DataSetPageHeader
