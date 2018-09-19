@@ -18,6 +18,7 @@ import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
 import DataSetSampleActions from '../Experiment/DataSetSampleActions';
 import isEqual from 'lodash/isEqual';
+import Spinner from '../../components/Spinner';
 
 class Results extends Component {
   constructor(props) {
@@ -133,7 +134,7 @@ class Results extends Component {
         </div>
 
         {isLoading || this.state.isLoading ? (
-          <div className="loader" />
+          <Spinner />
         ) : !results.length ? (
           <EmptyStates searchTerm={searchTerm} />
         ) : (

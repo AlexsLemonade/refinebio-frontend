@@ -5,6 +5,7 @@
   "dependencies": {
     "@haiku/cli": "^3.4.6",
     "@haiku/dvprasad-processingdataset": "^0.0.1",
+    "@haiku/dvprasad-refinebiospinner": "^0.0.4",
     "custom-react-scripts": "^0.2.2",
     "history": "^4.7.2",
     "husky": "^0.14.3",

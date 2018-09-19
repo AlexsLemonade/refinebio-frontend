@@ -129,6 +129,11 @@ fieldset {
   }
 }
 
+.center-block {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 // shows a centered button in mobile, but aligns with flex layout on desktop
 .flex-button-container {
   display: flex;
