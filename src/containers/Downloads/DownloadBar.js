@@ -79,7 +79,7 @@ let DownloadBar = ({
   );
 };
 DownloadBar = connect(
-  () => ({}),
+  null,
   {
     editAggregation,
     editTransformation

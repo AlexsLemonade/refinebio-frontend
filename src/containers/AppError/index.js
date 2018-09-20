@@ -35,7 +35,7 @@ let AppError = ({ goBack }) => (
   </div>
 );
 AppError = connect(
-  () => ({}),
+  null,
   {
     goBack
   }

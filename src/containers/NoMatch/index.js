@@ -27,7 +27,7 @@ let NoMatch = ({ goBack }) => (
   </div>
 );
 NoMatch = connect(
-  () => ({}),
+  null,
   { goBack }
 )(NoMatch);
 
