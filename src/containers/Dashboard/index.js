@@ -185,24 +185,7 @@ function getDashboardChartConfig(state) {
           type: 'pie',
           size: 'medium'
         },
-        {
-          title: 'Estimated Time Till Completion: Survey Jobs',
-          data: estimatedTimesTilCompletion.survey_jobs,
-          type: 'text',
-          size: 'small'
-        },
-        {
-          title: 'Estimated Time Till Completion: Processor Jobs',
-          data: estimatedTimesTilCompletion.processor_jobs,
-          type: 'text',
-          size: 'small'
-        },
-        {
-          title: 'Estimated Time Till Completion: Downloader Jobs',
-          data: estimatedTimesTilCompletion.downloader_jobs,
-          type: 'text',
-          size: 'small'
-        },
+
         {
           title: 'Survey Jobs by Status',
           data: jobsByStatus.survey_jobs,
@@ -220,6 +203,24 @@ function getDashboardChartConfig(state) {
           data: jobsByStatus.downloader_jobs,
           type: 'pie',
           size: 'medium'
+        },
+        {
+          title: 'Estimated Time Till Completion: Survey Jobs',
+          data: estimatedTimesTilCompletion.survey_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Estimated Time Till Completion: Processor Jobs',
+          data: estimatedTimesTilCompletion.processor_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Estimated Time Till Completion: Downloader Jobs',
+          data: estimatedTimesTilCompletion.downloader_jobs,
+          type: 'text',
+          size: 'small'
         },
         {
           title: 'Processor Jobs Over Time by Status',
