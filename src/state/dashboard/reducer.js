@@ -1,4 +1,5 @@
 import moment from 'moment';
+import zip from 'lodash/zip';
 
 // TODO: samples and experiments will most likely be moved into their own reducers in the future
 const initialState = {
@@ -122,49 +123,46 @@ export function getSamplesCount(state) {
  * job type
  */
 export function getJobsCompletedOverTime(state) {
-  const {
-    jobs,
-    timeOptions: { timePoints }
-  } = state.dashboard;
+  const stats = state.dashboard.stats;
 
-  /**
-   * Loop over each "date" in the time range and use the index to find the
-   * corresponding jobs API reponse for that date
-   */
-  return timePoints.reduce((jobTotals, time, i) => {
-    const dataPoint = {
-      date: time.utc().format()
+  return zip(
+    stats.survey_jobs.timeline,
+    stats.downloader_jobs.timeline,
+    stats.processor_jobs.timeline
+  ).map(([surveyPoint, downloaderPoint, processorPoint], index, array) => {
+    const [
+      previousSurveyPoint,
+      previousDownloaderPoint,
+      previousProcessorPoint
+    ] =
+      index > 0
+        ? array[index - 1]
+        : [{ completed: 0 }, { completed: 0 }, { completed: 0 }];
+
+    return {
+      date: moment.utc(surveyPoint.start).format('lll'),
+      survey: surveyPoint.completed + previousSurveyPoint.completed,
+      downloader: downloaderPoint.completed + previousDownloaderPoint.completed,
+      processor: processorPoint.completed + previousProcessorPoint.completed
     };
-
-    Object.keys(jobs).forEach(jobName => {
-      if (jobs[jobName].all.length === timePoints.length) {
-        /**
-         * If this isn't the first job run in the set time range,
-         * accumulate the total of jobs run up to this point in time
-         */
-        const jobCount =
-          i === 0
-            ? jobs[jobName].all[i].count
-            : jobTotals[i - 1][jobName] + jobs[jobName].all[i].count;
-        dataPoint[jobName] = jobCount;
-      }
-    });
-
-    jobTotals.push(dataPoint);
-    return jobTotals;
-  }, []);
+  });
 }
 
 export function getSamplesAndExperimentsCreatedOverTime(state) {
   const { samples, experiments } = state.dashboard.stats;
 
-  return samples.timeline.map((sample, index) => {
-    return {
-      date: moment.utc(sample.start).format(),
-      samples: sample.total,
-      experiments: experiments.timeline[index].total
-    };
-  });
+  return zip(samples.timeline, experiments.timeline).map(
+    ([samplePoint, experimentPoint], index, array) => {
+      const [previousSamplePoint, previousExperimentPoint] =
+        index > 0 ? array[index - 1] : [{ total: 0 }, { total: 0 }];
+
+      return {
+        date: moment.utc(samplePoint.start).format('lll'),
+        samples: samplePoint.total + previousSamplePoint.total,
+        experiments: experimentPoint.total + previousExperimentPoint.total
+      };
+    }
+  );
 }
 
 export function getJobsByStatusOverTime(state, jobName = 'processor') {
