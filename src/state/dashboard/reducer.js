@@ -56,13 +56,26 @@ export default dashboardReducer;
 // chart selectors for creating chart data for individual charts on dashboard
 
 export function getTotalLengthOfQueuesByType(state) {
-  const stats = state.dashboard.stats;
-  return Object.keys(stats).map(jobType => {
-    return {
-      name: jobType.split('_')[0],
-      value: stats[jobType].open + stats[jobType].pending
-    };
-  });
+  const {
+    survey_jobs,
+    downloader_jobs,
+    processor_jobs
+  } = state.dashboard.stats;
+
+  return [
+    {
+      name: 'Survey',
+      value: survey_jobs.open + survey_jobs.pending
+    },
+    {
+      name: 'Downloader',
+      value: downloader_jobs.open + downloader_jobs.pending
+    },
+    {
+      name: 'Processor',
+      value: processor_jobs.open + processor_jobs.pending
+    }
+  ];
 }
 
 export function getJobsByStatus(state) {

@@ -118,10 +118,10 @@ function getDashboardChartConfig(state) {
     samplesAndExperimentsOverTime: chartSelectors.getSamplesAndExperimentsCreatedOverTime(
       state
     ),
-    jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state)
-    // totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
-    //   state
-    // )
+    jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state),
+    totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
+      state
+    )
     // jobsByStatus: chartSelectors.getJobsByStatus(state),
     // estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
     //   state,
@@ -175,13 +175,13 @@ function getDashboardChartConfig(state) {
           type: 'line',
           series: ['survey', 'processor', 'downloader'],
           size: 'large'
+        },
+        {
+          title: 'Total Length of Queues by Type',
+          data: totalLengthOfQueuesByType,
+          type: 'pie',
+          size: 'medium'
         }
-        // {
-        //   title: 'Total Length of Queues by Type',
-        //   data: totalLengthOfQueuesByType,
-        //   type: 'pie',
-        //   size: 'medium'
-        // },
         // {
         //   title: 'Estimated Time Till Completion: Survey Jobs',
         //   data: estimatedTimesTilCompletion.survey_jobs,
