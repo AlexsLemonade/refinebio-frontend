@@ -86,6 +86,10 @@ class Results extends Component {
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
 
+        {/* Passing `location.search` to the Loader component ensures that we call `updateResults`
+          every time that the url is updated and also when the component is mounted.
+          We do several checks to determine what to display, eg: no results, when no search term has 
+          been entered, etc */}
         <Loader
           updateProps={this.props.location.search}
           fetch={() => this.updateResults()}
@@ -311,7 +315,7 @@ let NoSearchResultsTooManyFilters = ({ appliedFilters, clearFilters }) => (
   </div>
 );
 NoSearchResultsTooManyFilters = connect(
-  () => ({}),
+  null,
   {
     clearFilters
   }
