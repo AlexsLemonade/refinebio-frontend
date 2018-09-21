@@ -125,19 +125,19 @@ function getDashboardChartConfig(state) {
     estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
       state
     ),
-    jobsByStatus: chartSelectors.getJobsByStatus(state)
-    // processorJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
-    //   state,
-    //   'processor'
-    // ),
-    // surveyJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
-    //   state,
-    //   'survey'
-    // ),
-    // downloaderJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
-    //   state,
-    //   'downloader'
-    // )
+    jobsByStatus: chartSelectors.getJobsByStatus(state),
+    processorJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+      state,
+      'processor_jobs'
+    ),
+    surveyJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+      state,
+      'survey_jobs'
+    ),
+    downloaderJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+      state,
+      'downloader_jobs'
+    )
   };
 
   return [
@@ -216,28 +216,28 @@ function getDashboardChartConfig(state) {
           data: jobsByStatus.downloader_jobs,
           type: 'pie',
           size: 'medium'
+        },
+        {
+          title: 'Processor Jobs Over Time by Status',
+          data: processorJobsOverTimeByStatus,
+          type: 'line',
+          series: ['pending', 'open', 'completed', 'failed'],
+          size: 'large'
+        },
+        {
+          title: 'Survey Jobs Over Time by Status',
+          data: surveyJobsOverTimeByStatus,
+          type: 'line',
+          series: ['pending', 'open', 'completed', 'failed'],
+          size: 'large'
+        },
+        {
+          title: 'Downloader Jobs Over Time by Status',
+          data: downloaderJobsOverTimeByStatus,
+          type: 'line',
+          series: ['pending', 'open', 'completed', 'failed'],
+          size: 'large'
         }
-        // {
-        //   title: 'Processor Jobs Over Time by Status',
-        //   data: processorJobsOverTimeByStatus,
-        //   type: 'line',
-        //   series: ['pending', 'open', 'completed', 'failed'],
-        //   size: 'large'
-        // },
-        // {
-        //   title: 'Survey Jobs Over Time by Status',
-        //   data: surveyJobsOverTimeByStatus,
-        //   type: 'line',
-        //   series: ['pending', 'open', 'completed', 'failed'],
-        //   size: 'large'
-        // },
-        // {
-        //   title: 'Downloader Jobs Over Time by Status',
-        //   data: downloaderJobsOverTimeByStatus,
-        //   type: 'line',
-        //   series: ['pending', 'open', 'completed', 'failed'],
-        //   size: 'large'
-        // }
       ]
     }
   ];

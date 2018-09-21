@@ -78,9 +78,10 @@ export function getTotalLengthOfQueuesByType(state) {
   ];
 }
 
+const JOB_STATUS = ['open', 'pending', 'completed'];
+
 export function getJobsByStatus(state) {
   const stats = state.dashboard.stats;
-  const JOB_STATUS = ['open', 'pending', 'completed'];
   return JOB_NAMES.reduce((accum, jobType) => {
     accum[jobType] = JOB_STATUS.map(status => ({
       name: status,
@@ -147,7 +148,7 @@ export function getJobsCompletedOverTime(state) {
         : [{ completed: 0 }, { completed: 0 }, { completed: 0 }];
 
     return {
-      date: moment.utc(surveyPoint.start).format('lll'),
+      date: moment.utc(surveyPoint.end).format('lll'),
       survey: surveyPoint.completed + previousSurveyPoint.completed,
       downloader: downloaderPoint.completed + previousDownloaderPoint.completed,
       processor: processorPoint.completed + previousProcessorPoint.completed
@@ -164,7 +165,7 @@ export function getSamplesAndExperimentsCreatedOverTime(state) {
         index > 0 ? array[index - 1] : [{ total: 0 }, { total: 0 }];
 
       return {
-        date: moment.utc(samplePoint.start).format('lll'),
+        date: moment.utc(samplePoint.end).format('lll'),
         samples: samplePoint.total + previousSamplePoint.total,
         experiments: experimentPoint.total + previousExperimentPoint.total
       };
@@ -172,24 +173,28 @@ export function getSamplesAndExperimentsCreatedOverTime(state) {
   );
 }
 
-export function getJobsByStatusOverTime(state, jobName = 'processor') {
-  const {
-    jobs,
-    timeOptions: { timePoints }
-  } = state.dashboard;
+export function getJobsByStatusOverTime(state, jobName) {
+  const { stats } = state.dashboard;
 
-  const jobType = jobs[jobName] || [];
+  return stats[jobName].timeline
+    .map(dataPoint => ({
+      date: moment.utc(dataPoint.end).format('lll'),
+      total: dataPoint['total'],
+      ...JOB_STATUS.reduce((accum, status) => {
+        accum[status] = dataPoint[status];
+        return accum;
+      }, {})
+    }))
+    .map((dataPoint, index, array) => {
+      if (index === 0) return dataPoint;
 
-  return timePoints.map((time, i) => {
-    const dataPoint = {
-      date: time.utc().format()
-    };
-
-    Object.keys(jobType).forEach(status => {
-      if (status === 'all') return;
-      dataPoint[status] = jobType[status][i];
+      const { total, open, pending, completed } = array[index - 1];
+      return {
+        ...dataPoint,
+        total: dataPoint.total + total,
+        open: dataPoint.open + open,
+        pending: dataPoint.pending + pending,
+        completed: dataPoint.completed + completed
+      };
     });
-
-    return dataPoint;
-  });
 }
