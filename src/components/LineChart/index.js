@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import moment from 'moment';
 import { COLORS } from '../../constants/colors';
+import Spinner from '../Spinner';
 
 type Props = {
   series: Array<string>,
@@ -26,7 +27,8 @@ const LineChart = (props: Props) => {
     return moment(tickItem).format('MMM Do hh:mm');
   }
 
-  if (isLoading) return <div className="loader" />;
+  if (isLoading) return <Spinner />;
+
   return (
     <ResponsiveContainer>
       <LineRechart
