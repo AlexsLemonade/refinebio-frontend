@@ -3,21 +3,7 @@ import zip from 'lodash/zip';
 
 // TODO: samples and experiments will most likely be moved into their own reducers in the future
 const initialState = {
-  stats: {
-    samples: {
-      timeline: []
-    },
-    experiments: {
-      timeline: []
-    }
-  },
-
-  samplesOverTime: [],
-  experimentsOverTime: [],
-  jobs: {},
-  timeOptions: {
-    timePoints: []
-  }
+  stats: {}
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -25,24 +11,7 @@ const dashboardReducer = (state = initialState, action) => {
     case 'DASHBOARD_REQUEST_SUCCESS': {
       const { stats } = action.data;
       return {
-        ...state,
         stats
-      };
-    }
-    case 'DASHBOARD_TIME_REQUESTS_SUCCESS': {
-      const { samplesOverTime, experimentsOverTime, jobs } = action.data;
-      return {
-        ...state,
-        samplesOverTime,
-        experimentsOverTime,
-        jobs
-      };
-    }
-    case 'DASHBOARD_TIME_OPTIONS_UPDATED': {
-      const { timeOptions } = action.data;
-      return {
-        ...state,
-        timeOptions
       };
     }
     default: {
