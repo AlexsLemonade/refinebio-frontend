@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 
