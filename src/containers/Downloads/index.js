@@ -39,19 +39,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
           isLoading ? (
             <div className="loader" />
           ) : !dataSetCanBeDownloaded ? (
-            <div className="downloads__empty">
-              <h3 className="downloads__empty-heading">
-                Your dataset is empty.
-              </h3>
-              <Link className="button" to="/">
-                Search and Add Samples
-              </Link>
-              <img
-                src={NoDatasetsImage}
-                alt="Your dataset is empty"
-                className="downloads__empty-image"
-              />
-            </div>
+            <DownloadEmpty />
           ) : (
             <Fragment>
               <DownloadBar
@@ -74,3 +62,19 @@ Download = connect(
   }
 )(Download);
 export default Download;
+
+function DownloadEmpty() {
+  return (
+    <div className="downloads__empty">
+      <h3 className="downloads__empty-heading">Your dataset is empty.</h3>
+      <Link className="button" to="/">
+        Search and Add Samples
+      </Link>
+      <img
+        src={NoDatasetsImage}
+        alt="Your dataset is empty"
+        className="downloads__empty-image img-responsive"
+      />
+    </div>
+  );
+}

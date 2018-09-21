@@ -63,7 +63,9 @@ let DataSet = ({
               hasError={location.state && location.state.hasError}
             />
             <div className="downloads__bar">
-              <ShareDatasetButton dataSetId={dataSetId} />
+              <div className="flex-button-container flex-button-container--left">
+                <ShareDatasetButton dataSetId={dataSetId} />
+              </div>
             </div>
             <DownloadDetails
               isImmutable={true}
@@ -184,7 +186,9 @@ function DataSetProcessing({ email, dataSetId }) {
             <h1>Your dataset is being processed.</h1>
             {message}
           </div>
-          <ProcessingDataset loop={true} />
+          <div className="dataset__way-image">
+            <ProcessingDataset loop={true} />
+          </div>
         </div>
       </div>
     </div>
