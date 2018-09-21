@@ -6,7 +6,7 @@ import * as chartSelectors from '../../state/dashboard/reducer';
 import DashboardSection from './DashboardSection';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
 import Loader from '../../components/Loader';
-import { timeout } from '../../common/helpers';
+import { timeout, getQueryParamObject } from '../../common/helpers';
 
 import './Dashboard.scss';
 
@@ -14,9 +14,16 @@ class Dashboard extends Component {
   _liveUpdate = true;
 
   state = {
-    timeRange: 'year',
+    timeRange: 'week',
     firstRender: true
   };
+
+  componentDidMount() {
+    const { range } = getQueryParamObject(this.props.location.search);
+    if (range) {
+      this.setState({ timeRange: range });
+    }
+  }
 
   componentWillUnmount() {
     // disable live updates after the component is unmounted
@@ -24,13 +31,10 @@ class Dashboard extends Component {
   }
 
   async updateData() {
-    await Promise.all([
-      this.props.fetchDashboardData(this.state.timeRange)
-      // this.props.updatedTimeRange(this.state.timeRange)
-    ]);
+    await this.props.fetchDashboardData(this.state.timeRange);
     this.setState({ firstRender: false });
 
-    // this._startLiveUpdate();
+    this._startLiveUpdate();
   }
 
   async _startLiveUpdate() {

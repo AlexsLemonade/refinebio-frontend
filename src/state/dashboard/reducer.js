@@ -54,6 +54,8 @@ const dashboardReducer = (state = initialState, action) => {
 export default dashboardReducer;
 
 // chart selectors for creating chart data for individual charts on dashboard
+const JOB_NAMES = ['survey_jobs', 'downloader_jobs', 'processor_jobs'];
+const JOB_STATUS = ['open', 'pending', 'completed'];
 
 export function getTotalLengthOfQueuesByType(state) {
   const {
@@ -78,8 +80,6 @@ export function getTotalLengthOfQueuesByType(state) {
   ];
 }
 
-const JOB_STATUS = ['open', 'pending', 'completed'];
-
 export function getJobsByStatus(state) {
   const stats = state.dashboard.stats;
   return JOB_NAMES.reduce((accum, jobType) => {
@@ -100,8 +100,6 @@ function convertSecToMinHours(sec) {
     return `${hours} hr ${minutes} min`;
   }
 }
-
-const JOB_NAMES = ['survey_jobs', 'downloader_jobs', 'processor_jobs'];
 
 export function getAllEstimatedTimeTilCompletion(state) {
   const stats = state.dashboard.stats;
@@ -133,68 +131,63 @@ export function getSamplesCount(state) {
 export function getJobsCompletedOverTime(state) {
   const stats = state.dashboard.stats;
 
-  return zip(
+  const result = zip(
     stats.survey_jobs.timeline,
     stats.downloader_jobs.timeline,
     stats.processor_jobs.timeline
-  ).map(([surveyPoint, downloaderPoint, processorPoint], index, array) => {
-    const [
-      previousSurveyPoint,
-      previousDownloaderPoint,
-      previousProcessorPoint
-    ] =
-      index > 0
-        ? array[index - 1]
-        : [{ completed: 0 }, { completed: 0 }, { completed: 0 }];
+  ).map(([surveyPoint, downloaderPoint, processorPoint], index, array) => ({
+    date: moment.utc(surveyPoint.end).format('lll'),
+    survey: surveyPoint.completed,
+    downloader: downloaderPoint.completed,
+    processor: processorPoint.completed
+  }));
 
-    return {
-      date: moment.utc(surveyPoint.end).format('lll'),
-      survey: surveyPoint.completed + previousSurveyPoint.completed,
-      downloader: downloaderPoint.completed + previousDownloaderPoint.completed,
-      processor: processorPoint.completed + previousProcessorPoint.completed
-    };
-  });
+  return accumulateByKeys(result, ['survey', 'downloader', 'processor']);
 }
 
 export function getSamplesAndExperimentsCreatedOverTime(state) {
   const { samples, experiments } = state.dashboard.stats;
 
-  return zip(samples.timeline, experiments.timeline).map(
-    ([samplePoint, experimentPoint], index, array) => {
-      const [previousSamplePoint, previousExperimentPoint] =
-        index > 0 ? array[index - 1] : [{ total: 0 }, { total: 0 }];
-
-      return {
-        date: moment.utc(samplePoint.end).format('lll'),
-        samples: samplePoint.total + previousSamplePoint.total,
-        experiments: experimentPoint.total + previousExperimentPoint.total
-      };
-    }
+  const result = zip(samples.timeline, experiments.timeline).map(
+    ([samplePoint, experimentPoint]) => ({
+      date: moment.utc(samplePoint.end).format('lll'),
+      samples: samplePoint.total,
+      experiments: experimentPoint.total
+    })
   );
+
+  return accumulateByKeys(result, ['samples', 'experiments']);
 }
 
 export function getJobsByStatusOverTime(state, jobName) {
   const { stats } = state.dashboard;
 
-  return stats[jobName].timeline
-    .map(dataPoint => ({
-      date: moment.utc(dataPoint.end).format('lll'),
-      total: dataPoint['total'],
-      ...JOB_STATUS.reduce((accum, status) => {
-        accum[status] = dataPoint[status];
-        return accum;
-      }, {})
-    }))
-    .map((dataPoint, index, array) => {
-      if (index === 0) return dataPoint;
+  const result = stats[jobName].timeline.map(dataPoint => ({
+    date: moment.utc(dataPoint.end).format('lll'),
+    total: dataPoint['total'],
+    ...JOB_STATUS.reduce((accum, status) => {
+      accum[status] = dataPoint[status];
+      return accum;
+    }, {})
+  }));
 
-      const { total, open, pending, completed } = array[index - 1];
-      return {
-        ...dataPoint,
-        total: dataPoint.total + total,
-        open: dataPoint.open + open,
-        pending: dataPoint.pending + pending,
-        completed: dataPoint.completed + completed
-      };
-    });
+  return accumulateByKeys(result, ['total', ...JOB_STATUS]);
+}
+
+function accumulate(array, sum) {
+  let result = [array[0]];
+  for (let i = 1; i < array.length; i++) {
+    result.push(sum(array[i], result[i - 1]));
+  }
+  return result;
+}
+
+function accumulateByKeys(array, keys) {
+  return accumulate(array, (current, prev) => ({
+    ...current,
+    ...keys.reduce((accum, key) => {
+      accum[key] = current[key] + prev[key];
+      return accum;
+    }, {})
+  }));
 }
