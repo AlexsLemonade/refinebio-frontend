@@ -160,7 +160,7 @@ let DataSetErrorDownloading = ({ dataSetId, dataSet, startDownload }) => {
   );
 };
 DataSetErrorDownloading = connect(
-  () => ({}),
+  null,
   {
     startDownload
   }
@@ -277,7 +277,7 @@ let DataSetExpired = ({ regenerateDataSet }) => (
   </div>
 );
 DataSetExpired = connect(
-  () => ({}),
+  null,
   {
     regenerateDataSet
   }

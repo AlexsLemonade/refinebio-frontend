@@ -1,19 +1,23 @@
-
-
+@import '../../common/styles/variables';
 
 .error-page {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin-top: 15*8px;
+  flex-direction: column;
+  margin-top: 16px;
+  margin-bottom: 48px;
 
   &__text {
-    padding-top: 7*8px;
+    margin-bottom: 48px;
   }
 
   &__button-row {
     margin-top: 48px;
   }
+
+  @include tablet {
+    justify-content: space-around;
+    flex-direction: row;
+    margin-top: 15 * 8px;
+    align-items: center;
+  }
 }
-
-

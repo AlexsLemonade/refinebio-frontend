@@ -91,7 +91,7 @@ class DownloadStart extends React.Component {
   }
 }
 DownloadStart = connect(
-  () => ({}),
+  null,
   {
     editEmail,
     startDownload
