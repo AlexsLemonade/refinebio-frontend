@@ -55,7 +55,7 @@
     }
 
     &--active {
-      .header__menu:not(:hover) & {
+      .header__menu & {
         color: #386db0;
         border-bottom: 2px solid currentColor;
       }

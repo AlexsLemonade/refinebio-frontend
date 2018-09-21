@@ -100,8 +100,7 @@ let HeaderLink = ({ to, onClick, children, location, activePath = [] }) => {
       className={classnames('header__link', {
         'header__link--active':
           location &&
-          (location.pathname === to ||
-            activePath.some(x => location.pathname === x))
+          (location.pathname === to || activePath.includes(location.pathname))
       })}
     >
       <Link to={to} onClick={onClick}>
