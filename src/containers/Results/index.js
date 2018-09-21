@@ -21,6 +21,7 @@ import isEqual from 'lodash/isEqual';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
 import { clearFilters } from '../../state/search/actions';
+import Spinner from '../../components/Spinner';
 
 class Results extends Component {
   state = {
@@ -98,7 +99,7 @@ class Results extends Component {
             !searchTerm ? (
               <NoSearchTerm />
             ) : isLoading ? (
-              <div className="loader" />
+              <Spinner />
             ) : !results.length && !anyFilterApplied(this.state.filters) ? (
               <NoSearchResults />
             ) : !results.length ? (

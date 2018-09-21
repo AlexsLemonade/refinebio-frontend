@@ -13,4 +13,9 @@
     display: block;
     margin-left: auto;
   }
+
+  &--top {
+    width: 100%;
+    min-height: auto;
+  }
 }

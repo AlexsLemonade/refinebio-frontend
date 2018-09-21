@@ -2,8 +2,14 @@
 
 .dataset {
   &__message {
-    width: 650px;
-    margin: 12 * 8px auto;
+    margin-top: 24px;
+    max-width: 675px;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include desktop {
+      margin: 12 * 8px auto;
+    }
   }
 
   &__container {
@@ -32,15 +38,25 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+    }
   }
 
   &__processed-text {
-    min-width: 2/3 * 100%;
-    margin-right: 8 * 8px;
+    margin-bottom: 16px;
+    flex: 1 0 auto;
+
+    @include tablet {
+      max-width: 2/3 * 100%;
+      padding-right: 6 * 8px;
+      margin-bottom: 0;
+    }
   }
 
   &__way-image {
-    margin-left: 16px;
   }
 
   &__way-section {
@@ -65,9 +81,17 @@
 .form-edit-email {
   display: flex;
   margin-bottom: 2 * 8px;
+  flex-direction: column;
 
-  &__text {
+  &__input {
     margin-right: 8px;
-    width: 47 * 8px;
+
+    @include tablet {
+      width: 47 * 8px;
+    }
+  }
+
+  @include tablet {
+    flex-direction: row;
   }
 }

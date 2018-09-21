@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import classnames from 'classnames';
 
 import './SideMenu.scss';
 
@@ -20,7 +21,9 @@ export default class SideMenu extends React.Component {
           isOpen={this.state.menuOpen}
           onRequestClose={this.hideMenu}
           overlayClassName={`modal-backdrop`}
-          className="side-menu"
+          className={classnames('side-menu', {
+            'side-menu--top': this.props.orientation === 'top'
+          })}
           bodyOpenClassName="modal-open"
         >
           <div className="side-menu__content">

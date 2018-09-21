@@ -121,7 +121,7 @@ let DownloadDetails = ({
   );
 };
 DownloadDetails = connect(
-  () => ({}),
+  null,
   {
     removeSamples,
     removeExperiment,

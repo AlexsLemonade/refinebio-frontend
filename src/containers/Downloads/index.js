@@ -11,6 +11,7 @@ import Loader from '../../components/Loader';
 import { fetchDataSetDetails } from '../../state/download/actions';
 import { getQueryParamObject } from '../../common/helpers';
 import DownloadStart from './DownloadStart/DownloadStart';
+import Spinner from '../../components/Spinner';
 
 let Download = ({ download, location, fetchDataSetDetails }) => {
   const { dataSetId, dataSet, aggregate_by, scale_by } = download;
@@ -37,21 +38,9 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
       <Loader fetch={() => fetchDataSetDetails(dataSetId)}>
         {({ isLoading }) =>
           isLoading ? (
-            <div className="loader" />
+            <Spinner />
           ) : !dataSetCanBeDownloaded ? (
-            <div className="downloads__empty">
-              <h3 className="downloads__empty-heading">
-                Your dataset is empty.
-              </h3>
-              <Link className="button" to="/">
-                Search and Add Samples
-              </Link>
-              <img
-                src={NoDatasetsImage}
-                alt="Your dataset is empty"
-                className="downloads__empty-image"
-              />
-            </div>
+            <DownloadEmpty />
           ) : (
             <Fragment>
               <DownloadBar
@@ -74,3 +63,19 @@ Download = connect(
   }
 )(Download);
 export default Download;
+
+function DownloadEmpty() {
+  return (
+    <div className="downloads__empty">
+      <h3 className="downloads__empty-heading">Your dataset is empty.</h3>
+      <Link className="button" to="/">
+        Search and Add Samples
+      </Link>
+      <img
+        src={NoDatasetsImage}
+        alt="Your dataset is empty"
+        className="downloads__empty-image img-responsive"
+      />
+    </div>
+  );
+}

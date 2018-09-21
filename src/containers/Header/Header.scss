@@ -33,7 +33,7 @@
   }
 
   &__link {
-    margin: 0 1rem;
+    margin: 48px 1rem 0 1rem;
     padding: 0;
     font-weight: 400;
     font-family: 'Rubik', sans-serif;
@@ -43,6 +43,23 @@
     align-items: center;
     min-width: fit-content;
     position: relative;
+    border-bottom: 2px solid transparent;
+
+    @include tablet {
+      margin-top: 0;
+    }
+
+    &:hover {
+      color: #386db0;
+      border-bottom: 2px solid currentColor;
+    }
+
+    &--active {
+      .header__menu & {
+        color: #386db0;
+        border-bottom: 2px solid currentColor;
+      }
+    }
   }
 
   &__link-button {
@@ -63,26 +80,14 @@
   }
 
   &__menu {
-    display: none;
-    position: absolute;
     flex-direction: column;
     align-items: center;
-    background: $white;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    max-height: 500px;
     width: 100%;
     margin: 0;
     padding: 0;
     list-style: none;
-    margin-left: 100%;
-    border-bottom: 1px solid $gray;
-
-    &--open {
-      margin-left: 0;
-      display: flex;
-    }
+    margin-left: 0;
+    display: flex;
 
     @include tablet {
       display: flex;
@@ -90,18 +95,12 @@
       background: none;
       height: auto;
       width: auto;
-      margin: 0;
       flex-direction: row;
-      border: none;
     }
   }
 
   &__burger {
     font-size: 3rem;
-
-    @include tablet {
-      display: none;
-    }
   }
 
   &__menu-close {
@@ -110,10 +109,6 @@
     right: 16px;
     line-height: 1;
     font-size: 2rem;
-
-    @include tablet {
-      display: none;
-    }
   }
 }
 
@@ -126,6 +121,16 @@
 
   .header__burger {
     color: $white;
+  }
+
+  .header__link {
+    &:hover {
+      color: $white;
+    }
+
+    &--active {
+      color: $white !important;
+    }
   }
 
   @include tablet() {
