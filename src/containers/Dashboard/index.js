@@ -14,7 +14,7 @@ class Dashboard extends Component {
   _liveUpdate = true;
 
   state = {
-    timeRange: 'day'
+    timeRange: 'year'
   };
 
   componentWillUnmount() {
@@ -24,11 +24,11 @@ class Dashboard extends Component {
 
   async updateData() {
     await Promise.all([
-      this.props.fetchDashboardData(),
-      this.props.updatedTimeRange(this.state.timeRange)
+      this.props.fetchDashboardData(this.state.timeRange)
+      // this.props.updatedTimeRange(this.state.timeRange)
     ]);
 
-    this._startLiveUpdate();
+    // this._startLiveUpdate();
   }
 
   async _startLiveUpdate() {
@@ -102,35 +102,37 @@ function getDashboardChartConfig(state) {
     samplesCount,
     jobsByStatus,
     jobsCompletedOverTime,
-    samplesOverTime,
+    samplesAndExperimentsOverTime,
     processorJobsOverTimeByStatus,
     downloaderJobsOverTimeByStatus,
     surveyJobsOverTimeByStatus
   } = {
-    totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
-      state
-    ),
-    jobsByStatus: chartSelectors.getJobsByStatus(state),
-    estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
-      state,
-      'processor_jobs'
-    ),
-    experimentsCount: chartSelectors.getExperimentsCount(state),
     samplesCount: chartSelectors.getSamplesCount(state),
-    jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state),
-    samplesOverTime: chartSelectors.getSamplesCreatedOverTime(state),
-    processorJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
-      state,
-      'processor'
-    ),
-    surveyJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
-      state,
-      'survey'
-    ),
-    downloaderJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
-      state,
-      'downloader'
+    experimentsCount: chartSelectors.getExperimentsCount(state),
+    samplesAndExperimentsOverTime: chartSelectors.getSamplesAndExperimentsCreatedOverTime(
+      state
     )
+    // totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
+    //   state
+    // )
+    // jobsByStatus: chartSelectors.getJobsByStatus(state),
+    // estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
+    //   state,
+    //   'processor_jobs'
+    // ),
+    // jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state),
+    // processorJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+    //   state,
+    //   'processor'
+    // ),
+    // surveyJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+    //   state,
+    //   'survey'
+    // ),
+    // downloaderJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+    //   state,
+    //   'downloader'
+    // )
   };
 
   return [
@@ -151,87 +153,87 @@ function getDashboardChartConfig(state) {
         },
         {
           title: 'Samples and Experiments Created Over Time',
-          data: samplesOverTime,
+          data: samplesAndExperimentsOverTime,
           series: ['experiments', 'samples'],
           type: 'line',
           size: 'large'
         }
       ]
-    },
-    {
-      title: 'Jobs',
-      charts: [
-        {
-          title: 'Jobs Over Time by Type',
-          data: jobsCompletedOverTime,
-          type: 'line',
-          series: ['survey', 'processor', 'downloader'],
-          size: 'large'
-        },
-        {
-          title: 'Total Length of Queues by Type',
-          data: totalLengthOfQueuesByType,
-          type: 'pie',
-          size: 'medium'
-        },
-        {
-          title: 'Estimated Time Till Completion: Survey Jobs',
-          data: estimatedTimesTilCompletion.survey_jobs,
-          type: 'text',
-          size: 'small'
-        },
-        {
-          title: 'Estimated Time Till Completion: Processor Jobs',
-          data: estimatedTimesTilCompletion.processor_jobs,
-          type: 'text',
-          size: 'small'
-        },
-        {
-          title: 'Estimated Time Till Completion: Downloader Jobs',
-          data: estimatedTimesTilCompletion.downloader_jobs,
-          type: 'text',
-          size: 'small'
-        },
-        {
-          title: 'Survey Jobs by Status',
-          data: jobsByStatus.survey_jobs,
-          type: 'pie',
-          size: 'medium'
-        },
-        {
-          title: 'Processor Jobs by Status',
-          data: jobsByStatus.processor_jobs,
-          type: 'pie',
-          size: 'medium'
-        },
-        {
-          title: 'Downloader Jobs by Status',
-          data: jobsByStatus.downloader_jobs,
-          type: 'pie',
-          size: 'medium'
-        },
-        {
-          title: 'Processor Jobs Over Time by Status',
-          data: processorJobsOverTimeByStatus,
-          type: 'line',
-          series: ['pending', 'open', 'completed', 'failed'],
-          size: 'large'
-        },
-        {
-          title: 'Survey Jobs Over Time by Status',
-          data: surveyJobsOverTimeByStatus,
-          type: 'line',
-          series: ['pending', 'open', 'completed', 'failed'],
-          size: 'large'
-        },
-        {
-          title: 'Downloader Jobs Over Time by Status',
-          data: downloaderJobsOverTimeByStatus,
-          type: 'line',
-          series: ['pending', 'open', 'completed', 'failed'],
-          size: 'large'
-        }
-      ]
     }
+    // {
+    //   title: 'Jobs',
+    //   charts: [
+    //     {
+    //       title: 'Jobs Over Time by Type',
+    //       data: jobsCompletedOverTime,
+    //       type: 'line',
+    //       series: ['survey', 'processor', 'downloader'],
+    //       size: 'large'
+    //     },
+    //     {
+    //       title: 'Total Length of Queues by Type',
+    //       data: totalLengthOfQueuesByType,
+    //       type: 'pie',
+    //       size: 'medium'
+    //     },
+    //     {
+    //       title: 'Estimated Time Till Completion: Survey Jobs',
+    //       data: estimatedTimesTilCompletion.survey_jobs,
+    //       type: 'text',
+    //       size: 'small'
+    //     },
+    //     {
+    //       title: 'Estimated Time Till Completion: Processor Jobs',
+    //       data: estimatedTimesTilCompletion.processor_jobs,
+    //       type: 'text',
+    //       size: 'small'
+    //     },
+    //     {
+    //       title: 'Estimated Time Till Completion: Downloader Jobs',
+    //       data: estimatedTimesTilCompletion.downloader_jobs,
+    //       type: 'text',
+    //       size: 'small'
+    //     },
+    //     {
+    //       title: 'Survey Jobs by Status',
+    //       data: jobsByStatus.survey_jobs,
+    //       type: 'pie',
+    //       size: 'medium'
+    //     },
+    //     {
+    //       title: 'Processor Jobs by Status',
+    //       data: jobsByStatus.processor_jobs,
+    //       type: 'pie',
+    //       size: 'medium'
+    //     },
+    //     {
+    //       title: 'Downloader Jobs by Status',
+    //       data: jobsByStatus.downloader_jobs,
+    //       type: 'pie',
+    //       size: 'medium'
+    //     },
+    //     {
+    //       title: 'Processor Jobs Over Time by Status',
+    //       data: processorJobsOverTimeByStatus,
+    //       type: 'line',
+    //       series: ['pending', 'open', 'completed', 'failed'],
+    //       size: 'large'
+    //     },
+    //     {
+    //       title: 'Survey Jobs Over Time by Status',
+    //       data: surveyJobsOverTimeByStatus,
+    //       type: 'line',
+    //       series: ['pending', 'open', 'completed', 'failed'],
+    //       size: 'large'
+    //     },
+    //     {
+    //       title: 'Downloader Jobs Over Time by Status',
+    //       data: downloaderJobsOverTimeByStatus,
+    //       type: 'line',
+    //       series: ['pending', 'open', 'completed', 'failed'],
+    //       size: 'large'
+    //     }
+    //   ]
+    // }
   ];
 }

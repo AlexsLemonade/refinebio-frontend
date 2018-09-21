@@ -1,9 +1,17 @@
+import moment from 'moment';
+
 // TODO: samples and experiments will most likely be moved into their own reducers in the future
 const initialState = {
-  stats: {},
-  samples: {},
+  stats: {
+    samples: {
+      timeline: []
+    },
+    experiments: {
+      timeline: []
+    }
+  },
+
   samplesOverTime: [],
-  experiments: {},
   experimentsOverTime: [],
   jobs: {},
   timeOptions: {
@@ -14,12 +22,10 @@ const initialState = {
 const dashboardReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'DASHBOARD_REQUEST_SUCCESS': {
-      const { stats, samples, experiments } = action.data;
+      const { stats } = action.data;
       return {
         ...state,
-        stats,
-        samples,
-        experiments
+        stats
       };
     }
     case 'DASHBOARD_TIME_REQUESTS_SUCCESS': {
@@ -103,19 +109,11 @@ export function getAllEstimatedTimeTilCompletion(state, jobType) {
 }
 
 export function getExperimentsCount(state) {
-  const {
-    experiments: { count = 0 }
-  } = state.dashboard;
-
-  return count;
+  return state.dashboard.stats.experiments.total;
 }
 
 export function getSamplesCount(state) {
-  const {
-    samples: { count = 0 }
-  } = state.dashboard;
-
-  return count;
+  return state.dashboard.stats.samples.total;
 }
 
 /**
@@ -157,20 +155,15 @@ export function getJobsCompletedOverTime(state) {
   }, []);
 }
 
-export function getSamplesCreatedOverTime(state) {
-  const {
-    samplesOverTime,
-    experimentsOverTime,
-    timeOptions: { timePoints }
-  } = state.dashboard;
+export function getSamplesAndExperimentsCreatedOverTime(state) {
+  const { samples, experiments } = state.dashboard.stats;
 
-  return timePoints.map((time, i) => {
-    const dataPoint = {
-      date: time.utc().format(),
-      samples: samplesOverTime[i],
-      experiments: experimentsOverTime[i]
+  return samples.timeline.map((sample, index) => {
+    return {
+      date: moment.utc(sample.start).format(),
+      samples: sample.total,
+      experiments: experiments.timeline[index].total
     };
-    return dataPoint;
   });
 }
 

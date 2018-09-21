@@ -30,7 +30,7 @@ function getTimeUnit(range) {
 }
 
 async function createTimeQueries(
-  endPoint = '/jobs/survey/',
+  endPoint,
   timePoints = [],
   isCumulative = false,
   limit = 1000000000
@@ -141,26 +141,15 @@ const fetchDataOverTime = timePoints => {
   };
 };
 
-export const fetchDashboardData = () => {
+export const fetchDashboardData = range => {
   return async dispatch => {
     try {
-      const [stats, allSamples, allExperiments] = await Promise.all([
-        Ajax.get('/stats/'),
-        // samples and experiments will most likely go in another reducer when time comes
-        Ajax.get('/samples/', { limit: 1 }),
-        Ajax.get('/experiments/', { limit: 1 })
-      ]);
+      const stats = await Ajax.get('/stats', { range });
 
       dispatch({
         type: 'DASHBOARD_REQUEST_SUCCESS',
         data: {
-          stats,
-          samples: {
-            count: allSamples.count
-          },
-          experiments: {
-            count: allExperiments.count
-          }
+          stats
         }
       });
     } catch (e) {
