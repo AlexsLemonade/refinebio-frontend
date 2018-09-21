@@ -80,19 +80,12 @@ export function getTotalLengthOfQueuesByType(state) {
 
 export function getJobsByStatus(state) {
   const stats = state.dashboard.stats;
-  return Object.keys(stats).reduce((accum, jobType) => {
-    accum[jobType] = Object.keys(stats[jobType]).reduce(
-      (allStatuses, status) => {
-        if (status !== 'total' && status !== 'average_time') {
-          allStatuses.push({
-            name: status,
-            value: stats[jobType][status]
-          });
-        }
-        return allStatuses;
-      },
-      []
-    );
+  const JOB_STATUS = ['open', 'pending', 'completed'];
+  return JOB_NAMES.reduce((accum, jobType) => {
+    accum[jobType] = JOB_STATUS.map(status => ({
+      name: status,
+      value: stats[jobType][status]
+    }));
     return accum;
   }, {});
 }

@@ -124,8 +124,8 @@ function getDashboardChartConfig(state) {
     ),
     estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
       state
-    )
-    // jobsByStatus: chartSelectors.getJobsByStatus(state),
+    ),
+    jobsByStatus: chartSelectors.getJobsByStatus(state)
     // processorJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
     //   state,
     //   'processor'
@@ -198,25 +198,25 @@ function getDashboardChartConfig(state) {
           data: estimatedTimesTilCompletion.downloader_jobs,
           type: 'text',
           size: 'small'
+        },
+        {
+          title: 'Survey Jobs by Status',
+          data: jobsByStatus.survey_jobs,
+          type: 'pie',
+          size: 'medium'
+        },
+        {
+          title: 'Processor Jobs by Status',
+          data: jobsByStatus.processor_jobs,
+          type: 'pie',
+          size: 'medium'
+        },
+        {
+          title: 'Downloader Jobs by Status',
+          data: jobsByStatus.downloader_jobs,
+          type: 'pie',
+          size: 'medium'
         }
-        // {
-        //   title: 'Survey Jobs by Status',
-        //   data: jobsByStatus.survey_jobs,
-        //   type: 'pie',
-        //   size: 'medium'
-        // },
-        // {
-        //   title: 'Processor Jobs by Status',
-        //   data: jobsByStatus.processor_jobs,
-        //   type: 'pie',
-        //   size: 'medium'
-        // },
-        // {
-        //   title: 'Downloader Jobs by Status',
-        //   data: jobsByStatus.downloader_jobs,
-        //   type: 'pie',
-        //   size: 'medium'
-        // },
         // {
         //   title: 'Processor Jobs Over Time by Status',
         //   data: processorJobsOverTimeByStatus,
