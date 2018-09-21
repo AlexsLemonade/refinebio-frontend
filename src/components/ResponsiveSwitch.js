@@ -3,6 +3,7 @@ import React from 'react';
 // This constant should be synced with the media queries that determine what width is
 // for desktop
 const DESKTOP_LIMIT = 1024;
+const MOBILE_LIMIT = 768;
 
 /**
  * thanks to https://goshakkk.name/different-mobile-desktop-tablet-layouts-react/
@@ -32,12 +33,20 @@ export default class ResponsiveSwitch extends React.Component {
 
   render() {
     const { mobile, desktop } = this.props;
-    let isMobile = this.state.width < DESKTOP_LIMIT;
+    let isMobile = this.state.width < this._getLimit();
 
     if (isMobile) {
       return mobile();
     } else {
       return desktop();
     }
+  }
+
+  _getLimit() {
+    if (this.props.break === 'mobile') {
+      return MOBILE_LIMIT;
+    }
+
+    return DESKTOP_LIMIT;
   }
 }
