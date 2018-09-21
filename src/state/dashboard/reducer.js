@@ -107,15 +107,16 @@ function convertSecToMinHours(sec) {
   }
 }
 
-export function getAllEstimatedTimeTilCompletion(state, jobType) {
+const JOB_NAMES = ['survey_jobs', 'downloader_jobs', 'processor_jobs'];
+
+export function getAllEstimatedTimeTilCompletion(state) {
   const stats = state.dashboard.stats;
 
-  if (!Object.keys(stats).length) return {};
-
-  return Object.keys(stats).reduce((allEstimatedTimes, jobType) => {
+  return JOB_NAMES.reduce((allEstimatedTimes, jobType) => {
     const estimateSec =
       (stats[jobType].open + stats[jobType].pending) *
       parseFloat(stats[jobType].average_time);
+
     // we're assuming that average_time is in seconds...
     allEstimatedTimes[jobType] = convertSecToMinHours(estimateSec);
     return allEstimatedTimes;

@@ -121,12 +121,11 @@ function getDashboardChartConfig(state) {
     jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state),
     totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
       state
+    ),
+    estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
+      state
     )
     // jobsByStatus: chartSelectors.getJobsByStatus(state),
-    // estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
-    //   state,
-    //   'processor_jobs'
-    // ),
     // processorJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
     //   state,
     //   'processor'
@@ -181,25 +180,25 @@ function getDashboardChartConfig(state) {
           data: totalLengthOfQueuesByType,
           type: 'pie',
           size: 'medium'
+        },
+        {
+          title: 'Estimated Time Till Completion: Survey Jobs',
+          data: estimatedTimesTilCompletion.survey_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Estimated Time Till Completion: Processor Jobs',
+          data: estimatedTimesTilCompletion.processor_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Estimated Time Till Completion: Downloader Jobs',
+          data: estimatedTimesTilCompletion.downloader_jobs,
+          type: 'text',
+          size: 'small'
         }
-        // {
-        //   title: 'Estimated Time Till Completion: Survey Jobs',
-        //   data: estimatedTimesTilCompletion.survey_jobs,
-        //   type: 'text',
-        //   size: 'small'
-        // },
-        // {
-        //   title: 'Estimated Time Till Completion: Processor Jobs',
-        //   data: estimatedTimesTilCompletion.processor_jobs,
-        //   type: 'text',
-        //   size: 'small'
-        // },
-        // {
-        //   title: 'Estimated Time Till Completion: Downloader Jobs',
-        //   data: estimatedTimesTilCompletion.downloader_jobs,
-        //   type: 'text',
-        //   size: 'small'
-        // },
         // {
         //   title: 'Survey Jobs by Status',
         //   data: jobsByStatus.survey_jobs,
