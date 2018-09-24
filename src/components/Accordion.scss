@@ -1,0 +1,30 @@
+@import '../common/styles/variables';
+
+.accordion-item {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid $border-color;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-right: 32px;
+
+  &:last-child {
+    border-bottom: 1px solid $border-color;
+  }
+
+  &__header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  &__content {
+    margin-top: 8px;
+  }
+}

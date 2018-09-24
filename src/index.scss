@@ -166,5 +166,9 @@ fieldset {
   align-items: center;
 }
 
+.hidden {
+  display: none;
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';
