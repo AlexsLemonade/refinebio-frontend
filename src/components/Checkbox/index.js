@@ -8,7 +8,9 @@ const Checkbox = ({
   checked,
   children,
   className,
-  disabled
+  disabled,
+  onClick,
+  readOnly
 }) => (
   <div
     className={classnames('checkbox', className, {
@@ -23,8 +25,9 @@ const Checkbox = ({
       id={name}
       checked={checked}
       onChange={onToggle}
+      readOnly={readOnly}
     />
-    <label className="checkbox__label" htmlFor={name}>
+    <label className="checkbox__label" htmlFor={name} onClick={onClick}>
       {children ? children : name}
     </label>
   </div>
