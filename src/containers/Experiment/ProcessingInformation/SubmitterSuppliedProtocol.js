@@ -26,13 +26,11 @@ export default function SubmitterSuppliedProtocol({ sample, results }) {
   }
 
   return (
-    <section className="processing-info-modal__section">
-      <div className="processing-info-modal__protocol-description">
-        <h3 className={styles.title}>Submitter Supplied Protocol</h3>
+    <div className="processing-info-modal__protocol-description">
+      <h3 className={styles.title}>Submitter Supplied Protocol</h3>
 
-        <Component protocol_info={sample.protocol_info} />
-      </div>
-    </section>
+      <Component protocol_info={sample.protocol_info} />
+    </div>
   );
 }
 

@@ -6,18 +6,49 @@ import './ProcessingInformation.scss';
 import { getGenomeBuild } from '../../../api/samples';
 import Loader from '../../../components/Loader';
 import SubmitterSuppliedProtocol from './SubmitterSuppliedProtocol';
+import isEqual from 'lodash/isEqual';
 
 export default class ProcessingInformationModalContent extends React.Component {
   render() {
     const { results, sample } = this.props;
 
     const pipelinesText = results.map(result => result.processor.name);
+    const isSubmitterProcessed = isEqual(pipelinesText, [
+      'Submitter-processed'
+    ]);
 
     return (
       <div>
         <h1 className="processing-info-modal__title">Processing Information</h1>
-        <div className="dot-label">refine.bio processed</div>
 
+        {isSubmitterProcessed ? (
+          <React.Fragment>
+            <div className="dot-label dot-label--submitter">
+              Submitter processed
+            </div>
+            <SubmitterSuppliedProtocol {...this.props} />
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <div className="dot-label">refine.bio processed</div>
+
+            {this._renderPipelines()}
+
+            <section className="processing-info-modal__section">
+              <SubmitterSuppliedProtocol {...this.props} />
+            </section>
+          </React.Fragment>
+        )}
+      </div>
+    );
+  }
+
+  _renderPipelines() {
+    const { results, sample } = this.props;
+    const pipelinesText = results.map(result => result.processor.name);
+
+    return (
+      <React.Fragment>
         <h3>{stringEnumerate(pipelinesText)}</h3>
 
         <div className="pipeline">
@@ -64,9 +95,7 @@ export default class ProcessingInformationModalContent extends React.Component {
             <GenomeBuild organism={sample.organism.name} />
           </tbody>
         </table>
-
-        <SubmitterSuppliedProtocol {...this.props} />
-      </div>
+      </React.Fragment>
     );
   }
 
