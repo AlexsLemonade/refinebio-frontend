@@ -10,7 +10,7 @@ import isEqual from 'lodash/isEqual';
 
 export default class ProcessingInformationModalContent extends React.Component {
   render() {
-    const { results, sample } = this.props;
+    const { results } = this.props;
 
     const pipelinesText = results.map(result => result.processor.name);
     const isSubmitterProcessed = isEqual(pipelinesText, [

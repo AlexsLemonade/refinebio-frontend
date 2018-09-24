@@ -1,5 +1,4 @@
 import React from 'react';
-import isEqual from 'lodash/isEqual';
 import { Accordion, AccordionItem } from '../../../components/Accordion';
 import { formatSentenceCase, truncateOnWord } from '../../../common/helpers';
 import styles from './SubmitterSuppliedProtocol.scss';
