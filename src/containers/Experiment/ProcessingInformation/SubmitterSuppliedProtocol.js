@@ -112,8 +112,19 @@ function GeoSubmitterSuppliedProtocol({ protocol_info }) {
         <h3>Gene Identifier Conversion</h3>
 
         <div>
-          The gene identifiers were converted to Ensembl Gene Identifiers using
-          g:Profiler (version 2.0.1)
+          We have created custom gene mapping files for Affymetrix platforms
+          (see:{' '}
+          <a
+            href="https://github.com/AlexsLemonade/identifier-refinery"
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://github.com/AlexsLemonade/identifier-refinery
+          </a>) that support conversion from probe IDs, gene symbols, Entrez
+          IDs, RefSeq and Unigene identifiers to Ensembl gene IDs. We support
+          conversion from Illumina BeadArray probe IDs to Ensembl gene IDs using
+          Bioconductor Illumina BeadArray expression packages.
         </div>
       </div>
     </div>
