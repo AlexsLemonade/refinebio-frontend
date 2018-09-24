@@ -20,6 +20,20 @@
         'side top-bar'
         'side main';
     }
+
+    &--empty {
+      grid-template-columns: auto;
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        'side'
+        'main';
+
+      @include desktop {
+        grid-template-columns: 250px auto;
+        grid-template-rows: auto;
+        grid-template-areas: 'side main';
+      }
+    }
   }
 
   &__top-bar {
@@ -92,7 +106,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 7 * 8px;
+
+    @include desktop {
+      margin-top: 7 * 8px;
+    }
   }
 
   &__no-results-image {

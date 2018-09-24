@@ -55,16 +55,14 @@ const FilterCategory = ({
 );
 
 let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
-  let anyFilterApplied = Object.keys(appliedFilters)
-    .map(x => appliedFilters[x])
-    .some(x => x && x.length > 0);
+  let filterApplied = anyFilterApplied(appliedFilters);
 
   return (
     <div className="result-filters">
       <div className="result-filters__title-container">
         <h2 className="result-filters__title">Filters</h2>
 
-        {anyFilterApplied && (
+        {filterApplied && (
           <Button onClick={clearFilters} buttonStyle="link">
             clear all
           </Button>
@@ -215,4 +213,10 @@ function FilterLabel({ value, onClick }) {
       </Button>
     </div>
   );
+}
+
+export function anyFilterApplied(filters) {
+  return Object.keys(filters)
+    .map(x => filters[x])
+    .some(x => x && x.length > 0);
 }
