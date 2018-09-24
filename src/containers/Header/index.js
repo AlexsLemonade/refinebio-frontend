@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import logo from '../../common/icons/logo.svg';
+import logo from '../../common/icons/logo-beta.svg';
 import { fetchDataSet } from '../../state/download/actions';
 import { getTotalSamplesAdded } from '../../state/download/reducer';
 import { withRouter } from 'react-router';
@@ -56,9 +56,6 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
         activePath={['/results']}
       >
         Search
-      </HeaderLink>
-      <HeaderLink to="/api" onClick={itemClicked} location={location}>
-        API
       </HeaderLink>
       <HeaderLink to="/docs" onClick={itemClicked} location={location}>
         Docs
