@@ -37,13 +37,15 @@ export default function ProcessingInformationCell({
   );
 }
 
+const PROCESSOR_BLACKLIST = ['MultiQC', 'Salmontools'];
+
 /**
  * Get the lost of ComputationalResults that should be displayed in the modal dialog
  * @param {*} computationalResults
  */
 function prepareSampleComputationalResults(computationalResults) {
   return computationalResults
-    .filter(result => result.processor.name !== 'MultiQC') // hack to hide multiqc
+    .filter(result => !PROCESSOR_BLACKLIST.includes(result.processor.name))
     .filter(
       // hack: the backend is returning duplicated computational results
       // this ensures we only show unique values.
