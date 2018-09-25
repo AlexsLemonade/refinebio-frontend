@@ -67,27 +67,32 @@ export class Accordion extends React.Component {
 }
 
 export function AccordionItem({ title, children, onToggle, isExpanded }) {
+  const hasChildren = React.Children.count(children) > 0;
   return (
     <div className={classnames('accordion-item')}>
       <div className="accordion-item__header">
         <div className="accourdion-item__title">{title(isExpanded)}</div>
 
-        <Button onClick={onToggle} buttonStyle="transparent">
-          {isExpanded ? (
-            <i className="ion-chevron-up" />
-          ) : (
-            <i className="ion-chevron-down" />
-          )}
-        </Button>
+        {hasChildren && (
+          <Button onClick={onToggle} buttonStyle="transparent">
+            {isExpanded ? (
+              <i className="ion-chevron-up" />
+            ) : (
+              <i className="ion-chevron-down" />
+            )}
+          </Button>
+        )}
       </div>
 
-      <div
-        className={classnames('accordion-item__content', {
-          hidden: !isExpanded
-        })}
-      >
-        {children}
-      </div>
+      {hasChildren && (
+        <div
+          className={classnames('accordion-item__content', {
+            hidden: !isExpanded
+          })}
+        >
+          {children}
+        </div>
+      )}
     </div>
   );
 }

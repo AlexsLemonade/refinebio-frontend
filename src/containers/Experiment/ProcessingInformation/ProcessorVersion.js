@@ -38,6 +38,8 @@ export default class ProcessorVersion extends React.Component {
         <h3 className="processing-info-modal__subtitle">Version Information</h3>
         <Accordion>
           {results.map(({ processor }) => this._renderProcessor(processor))}
+
+          {this._renderGnomeVersion()}
         </Accordion>
       </React.Fragment>
     );
@@ -50,6 +52,33 @@ export default class ProcessorVersion extends React.Component {
       <ProcessorVersionItem
         processor={processor}
         primaryPackages={primaryPackages}
+      />
+    );
+  }
+
+  _renderGnomeVersion() {
+    const salmonProcessedResult = this.props.results.find(
+      result => result.processor.name === 'Salmon Quant'
+    );
+    if (!salmonProcessedResult || !salmonProcessedResult.organism_index)
+      return null;
+    return (
+      <AccordionItem
+        title={() => (
+          <div>
+            <b>Genome Build</b>
+
+            <table>
+              <tbody>
+                <VersionTable
+                  versions={{
+                    'genome build': salmonProcessedResult.organism_index
+                  }}
+                />
+              </tbody>
+            </table>
+          </div>
+        )}
       />
     );
   }

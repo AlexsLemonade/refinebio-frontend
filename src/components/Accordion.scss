@@ -11,13 +11,13 @@
 .accordion-item {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid $border-color;
+  border-top: 1px solid $border-color--light;
   padding-top: 16px;
   padding-bottom: 16px;
   padding-right: 32px;
 
   &:last-child {
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid $border-color--light;
   }
 
   &__header {
