@@ -11,7 +11,7 @@ const PROTOCOLS_BY_SAMPLE_TYPE = {
 };
 
 /**
- * This component renders the submitter supplied protocol information inside the modal dialogs
+ * This component renders the submitter supplied protocol information inside the modal dialogs.
  * It depends on the type of sample.
  *
  * ref https://github.com/AlexsLemonade/refinebio-frontend/issues/225#issuecomment-417345139
