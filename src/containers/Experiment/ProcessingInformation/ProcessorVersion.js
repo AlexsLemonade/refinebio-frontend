@@ -1,6 +1,5 @@
 import React from 'react';
 import { Accordion, AccordionItem } from '../../../components/Accordion';
-import Loader from '../../../components/Loader';
 import styles from './ProcessorVersion.scss';
 import classnames from 'classnames';
 import pick from 'lodash/pick';
