@@ -23,14 +23,26 @@ export default class ProcessingInformationModalContent extends React.Component {
 
         {isSubmitterProcessed ? (
           <React.Fragment>
-            <div className="dot-label dot-label--submitter">
+            <a
+              href="https://refinebio-docs.readthedocs.io/en/latest/main_text.html#refine-bio-processed-refinebio-processedibadge"
+              className="dot-label dot-label--submitter"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Submitter processed
-            </div>
+            </a>
             <SubmitterSuppliedProtocol {...this.props} />
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <div className="dot-label">refine.bio processed</div>
+            <a
+              href="https://refinebio-docs.readthedocs.io/en/latest/main_text.html#refine-bio-processed-refinebio-processedibadge"
+              className="dot-label"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              refine.bio processed
+            </a>
 
             {this._renderPipelines()}
 
