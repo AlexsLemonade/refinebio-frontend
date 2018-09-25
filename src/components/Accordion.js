@@ -14,25 +14,29 @@ export class Accordion extends React.Component {
   }
 
   render() {
-    let children = React.Children.map(this.props.children, (child, index) =>
-      React.cloneElement(child, {
-        isExpanded: this.state.activeElements[index],
-        onToggle: () => this._toggleElement(index)
-      })
+    let children = React.Children.map(
+      this.props.children,
+      (child, index) =>
+        child &&
+        React.cloneElement(child, {
+          isExpanded: this.state.activeElements[index],
+          onToggle: () => this._toggleElement(index)
+        })
     );
     return (
-      <div>
-        {!this.props.hideExpandAll && (
-          <Checkbox
-            className="accordion__expand-all"
-            onClick={() => this._toggleAll()}
-            checked={!this.state.activeElements.includes(false)}
-            name="expand-all"
-            readOnly
-          >
-            Expand all
-          </Checkbox>
-        )}
+      <div className="accordion">
+        {!this.props.hideExpandAll &&
+          children.length > 2 && (
+            <Checkbox
+              className="accordion__expand-all"
+              onClick={() => this._toggleAll()}
+              checked={!this.state.activeElements.includes(false)}
+              name="expand-all"
+              readOnly
+            >
+              Expand all
+            </Checkbox>
+          )}
 
         {children}
       </div>

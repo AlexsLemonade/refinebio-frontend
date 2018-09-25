@@ -2,7 +2,6 @@ import React from 'react';
 import { Accordion, AccordionItem } from '../../../components/Accordion';
 import { formatSentenceCase, truncateOnWord } from '../../../common/helpers';
 import styles from './SubmitterSuppliedProtocol.scss';
-import isEmpty from 'lodash/isEmpty';
 
 const PROTOCOLS_BY_SAMPLE_TYPE = {
   GEO: GeoSubmitterSuppliedProtocol,
@@ -17,8 +16,6 @@ const PROTOCOLS_BY_SAMPLE_TYPE = {
  * ref https://github.com/AlexsLemonade/refinebio-frontend/issues/225#issuecomment-417345139
  */
 export default function SubmitterSuppliedProtocol({ sample, results }) {
-  if (isEmpty(sample.protocol_info)) return null;
-
   let Component = PROTOCOLS_BY_SAMPLE_TYPE[sample.source_database];
   if (!Component) {
     return null;

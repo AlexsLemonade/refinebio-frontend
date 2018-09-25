@@ -3,14 +3,14 @@ import FileIcon from './file.svg';
 import ProcessIcon from './process.svg';
 import { stringEnumerate } from '../../../common/helpers';
 import './ProcessingInformation.scss';
-import { getGenomeBuild } from '../../../api/samples';
-import Loader from '../../../components/Loader';
 import SubmitterSuppliedProtocol from './SubmitterSuppliedProtocol';
+import ProcessorVersion from './ProcessorVersion';
 import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 
 export default class ProcessingInformationModalContent extends React.Component {
   render() {
-    const { results } = this.props;
+    const { sample, results } = this.props;
 
     const pipelinesText = results.map(result => result.processor.name);
     const isSubmitterProcessed = isEqual(pipelinesText, [
@@ -34,9 +34,11 @@ export default class ProcessingInformationModalContent extends React.Component {
 
             {this._renderPipelines()}
 
-            <section className="processing-info-modal__section">
-              <SubmitterSuppliedProtocol {...this.props} />
-            </section>
+            {!isEmpty(sample.protocol_info) && (
+              <section className="processing-info-modal__section">
+                <SubmitterSuppliedProtocol {...this.props} />
+              </section>
+            )}
           </React.Fragment>
         )}
       </div>
@@ -44,7 +46,7 @@ export default class ProcessingInformationModalContent extends React.Component {
   }
 
   _renderPipelines() {
-    const { results, sample } = this.props;
+    const { results } = this.props;
     const pipelinesText = results.map(result => result.processor.name);
 
     return (
@@ -82,19 +84,7 @@ export default class ProcessingInformationModalContent extends React.Component {
           this._getProtocolDescription(name)
         )}
 
-        <h3 className="processing-info-modal__subtitle">Version Information</h3>
-        <table>
-          <tbody>
-            {results.map(({ processor: { name, version } }) => (
-              <tr key={name}>
-                <td className="processing-info-modal__version">{name}</td>
-                <td>{version}</td>
-              </tr>
-            ))}
-
-            <GenomeBuild organism={sample.organism.name} />
-          </tbody>
-        </table>
+        <ProcessorVersion {...this.props} />
       </React.Fragment>
     );
   }
@@ -117,23 +107,6 @@ export default class ProcessingInformationModalContent extends React.Component {
     }
     return <Component {...this.props} key={name} />;
   }
-}
-
-function GenomeBuild({ organism }) {
-  return (
-    <Loader fetch={() => getGenomeBuild(organism)}>
-      {({ isLoading, data }) =>
-        !isLoading && !data ? (
-          <React.Fragment />
-        ) : (
-          <tr>
-            <td className="processing-info-modal__version">Genome build</td>
-            <td>{data || '...'}</td>
-          </tr>
-        )
-      }
-    </Loader>
-  );
 }
 
 function AffymetrixScanProtocol() {
