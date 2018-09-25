@@ -1,5 +1,6 @@
 import React from 'react';
 import './Radio.scss';
+import classnames from 'classnames';
 
 const Radio = ({
   name,
@@ -11,7 +12,7 @@ const Radio = ({
   onClick,
   readOnly
 }) => (
-  <div className={`radio ${!!className ? className : ''}`}>
+  <div className={classnames('radio', className)}>
     <input
       type="radio"
       className="radio__input"
