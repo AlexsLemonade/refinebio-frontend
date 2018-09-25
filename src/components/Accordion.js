@@ -5,14 +5,12 @@ import Checkbox from './Checkbox';
 import './Accordion.scss';
 
 export class Accordion extends React.Component {
-  state = {
-    activeElements: []
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.setState({
+    this.state = {
       activeElements: new Array(this._totalChildren()).fill(false)
-    });
+    };
   }
 
   render() {
