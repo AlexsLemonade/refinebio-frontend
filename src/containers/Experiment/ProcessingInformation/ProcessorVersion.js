@@ -49,6 +49,7 @@ export default class ProcessorVersion extends React.Component {
     if (!primaryPackages) return null;
     return (
       <ProcessorVersionItem
+        key={processor.name}
         processor={processor}
         primaryPackages={primaryPackages}
       />
@@ -141,7 +142,7 @@ function VersionTable({ title, versions, className }) {
         <td colSpan="2">{title}</td>
       </tr>
       {Object.keys(versions).map(version => (
-        <tr className={className}>
+        <tr className={className} key={version}>
           <td className="version-table__label">{version}</td>
           <td>{versions[version]}</td>
         </tr>

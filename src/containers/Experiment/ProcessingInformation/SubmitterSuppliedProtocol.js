@@ -78,7 +78,7 @@ function GeoSubmitterSuppliedProtocol({ protocol_info }) {
         ].map(
           field =>
             protocol_info[field] && (
-              <div className="experiment__row">
+              <div className="experiment__row" key={field}>
                 <div className="experiment__row-label">{field}</div>
                 <div>{protocol_info[field].join('. ')}</div>
               </div>
