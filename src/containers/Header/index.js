@@ -63,7 +63,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
       <HeaderLink to="/about" onClick={itemClicked} location={location}>
         About
       </HeaderLink>
-      <li className="header__link">
+      <li className="header__link header__link--button-wrap">
         <Link
           className="button button--secondary header__link-button"
           to="/download"
