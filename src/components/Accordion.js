@@ -14,25 +14,29 @@ export class Accordion extends React.Component {
   }
 
   render() {
-    let children = React.Children.map(this.props.children, (child, index) =>
-      React.cloneElement(child, {
-        isExpanded: this.state.activeElements[index],
-        onToggle: () => this._toggleElement(index)
-      })
+    let children = React.Children.map(
+      this.props.children,
+      (child, index) =>
+        child &&
+        React.cloneElement(child, {
+          isExpanded: this.state.activeElements[index],
+          onToggle: () => this._toggleElement(index)
+        })
     );
     return (
-      <div>
-        {!this.props.hideExpandAll && (
-          <Checkbox
-            className="accordion__expand-all"
-            onClick={() => this._toggleAll()}
-            checked={!this.state.activeElements.includes(false)}
-            name="expand-all"
-            readOnly
-          >
-            Expand all
-          </Checkbox>
-        )}
+      <div className="accordion">
+        {!this.props.hideExpandAll &&
+          children.length > 2 && (
+            <Checkbox
+              className="accordion__expand-all"
+              onClick={() => this._toggleAll()}
+              checked={!this.state.activeElements.includes(false)}
+              name="expand-all"
+              readOnly
+            >
+              Expand all
+            </Checkbox>
+          )}
 
         {children}
       </div>
@@ -63,27 +67,32 @@ export class Accordion extends React.Component {
 }
 
 export function AccordionItem({ title, children, onToggle, isExpanded }) {
+  const hasChildren = React.Children.count(children) > 0;
   return (
     <div className={classnames('accordion-item')}>
       <div className="accordion-item__header">
         <div className="accourdion-item__title">{title(isExpanded)}</div>
 
-        <Button onClick={onToggle} buttonStyle="transparent">
-          {isExpanded ? (
-            <i className="ion-chevron-up" />
-          ) : (
-            <i className="ion-chevron-down" />
-          )}
-        </Button>
+        {hasChildren && (
+          <Button onClick={onToggle} buttonStyle="transparent">
+            {isExpanded ? (
+              <i className="ion-chevron-up" />
+            ) : (
+              <i className="ion-chevron-down" />
+            )}
+          </Button>
+        )}
       </div>
 
-      <div
-        className={classnames('accordion-item__content', {
-          hidden: !isExpanded
-        })}
-      >
-        {children}
-      </div>
+      {hasChildren && (
+        <div
+          className={classnames('accordion-item__content', {
+            hidden: !isExpanded
+          })}
+        >
+          {children}
+        </div>
+      )}
     </div>
   );
 }
