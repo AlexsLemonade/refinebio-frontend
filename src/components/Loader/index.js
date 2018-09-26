@@ -1,5 +1,6 @@
 import React from 'react';
 import { REPORT_ERROR } from '../../state/reportError';
+import isEqual from 'lodash/isEqual';
 
 // Component abtract the logic of loading content from the server before displaying something,
 // Example Usage:
@@ -25,7 +26,7 @@ export default class Loader extends React.Component {
     // the property `updateProps` can be used to easily refresh the data in the loader
     // just add values that should trigger an update, and the component will take care
     // when they change
-    if (prevProps.updateProps !== this.props.updateProps) {
+    if (!isEqual(prevProps.updateProps, this.props.updateProps)) {
       this._fetchData();
     }
   }

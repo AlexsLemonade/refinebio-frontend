@@ -158,6 +158,9 @@ export function stringEnumerate([x0, ...rest]) {
   }`;
 }
 
+/** Allos await a specified time interval */
+export const timeout = ms => new Promise(res => setTimeout(res, ms));
+
 // thanks to https://stackoverflow.com/a/33379772/763705
 export function truncateOnWord(str, limit) {
   const trimmable =
