@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { getAmazonDownloadLinkUrl } from '../../../common/helpers';
+import { getAmazonDownloadLinkUrl, timeout } from '../../../common/helpers';
 import Loader from '../../../components/Loader';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
@@ -28,61 +28,94 @@ import Spinner from '../../../components/Spinner';
  * - Expired: Download files expire after some time
  * Related discussion https://github.com/AlexsLemonade/refinebio-frontend/issues/27
  */
-let DataSet = ({
-  dataSet,
-  fetchDataSet,
-  location,
-  match: {
-    params: { id: dataSetId }
-  }
-}) => {
-  // Check if the user arrived here and wants to regenerate the current page.
-  if (location.state && location.state.regenerate) {
-    return (
-      <DownloadStart
-        dataSetId={location.state.dataSetId}
-        dataSet={location.state.dataSet}
-      />
-    );
+class DataSet extends React.Component {
+  _liveUpdate = true;
+
+  componentWillUnmount() {
+    // disable live updates after the component is unmounted
+    this._liveUpdate = false;
   }
 
-  return (
-    <Loader updateProps={dataSetId} fetch={() => fetchDataSet(dataSetId)}>
-      {({ isLoading }) =>
-        isLoading ? (
-          <Spinner />
-        ) : (
-          <div>
-            <DataSetPageHeader
-              dataSetId={dataSetId}
-              dataSet={dataSet}
-              email_address={
-                // the email is never returned from the api, check if it was passed
-                // on the url state on a previous step
-                location.state && location.state.email_address
-              }
-              hasError={location.state && location.state.hasError}
-            />
-            <div className="downloads__bar">
-              <div className="flex-button-container flex-button-container--left">
-                <ShareDatasetButton dataSetId={dataSetId} />
-              </div>
-            </div>
-            <DownloadDetails
-              isImmutable={true}
-              isEmbed={true}
-              dataSet={dataSet.data}
-              aggregate_by={dataSet.aggregate_by}
-              scale_by={dataSet.scale_by}
-              experiments={dataSet.experiments}
-              samples={dataSet.samples}
-            />
-          </div>
-        )
+  async _fetchDataSet() {
+    const {
+      fetchDataSet,
+      match: {
+        params: { id: dataSetId }
       }
-    </Loader>
-  );
-};
+    } = this.props;
+
+    await fetchDataSet(dataSetId);
+
+    // start pooling the server every 20secs if the dataset is being processed
+    if (this.props.dataSet.is_processing) {
+      this._startLiveUpdate();
+    }
+  }
+
+  async _startLiveUpdate() {
+    await timeout(20000); // wait 20 secs
+    if (this._liveUpdate) {
+      this._fetchDataSet();
+    }
+  }
+
+  render() {
+    const {
+      dataSet,
+      location,
+      match: {
+        params: { id: dataSetId }
+      }
+    } = this.props;
+
+    // Check if the user arrived here and wants to regenerate the current page.
+    if (location.state && location.state.regenerate) {
+      return (
+        <DownloadStart
+          dataSetId={location.state.dataSetId}
+          dataSet={location.state.dataSet}
+        />
+      );
+    }
+
+    return (
+      <Loader updateProps={dataSetId} fetch={() => this._fetchDataSet()}>
+        {({ isLoading }) =>
+          isLoading ? (
+            <Spinner />
+          ) : (
+            <div>
+              <DataSetPageHeader
+                dataSetId={dataSetId}
+                dataSet={dataSet}
+                email_address={
+                  // the email is never returned from the api, check if it was passed
+                  // on the url state on a previous step
+                  location.state && location.state.email_address
+                }
+                hasError={location.state && location.state.hasError}
+              />
+              <div className="downloads__bar">
+                <div className="flex-button-container flex-button-container--left">
+                  <ShareDatasetButton dataSetId={dataSetId} />
+                </div>
+              </div>
+              <DownloadDetails
+                isImmutable={true}
+                isEmbed={true}
+                dataSet={dataSet.data}
+                aggregate_by={dataSet.aggregate_by}
+                scale_by={dataSet.scale_by}
+                experiments={dataSet.experiments}
+                samples={dataSet.samples}
+              />
+            </div>
+          )
+        }
+      </Loader>
+    );
+  }
+}
 DataSet = connect(
   ({ dataSet }) => ({ dataSet }),
   {
