@@ -4,7 +4,7 @@ import * as resultsActions from '../../state/search/actions';
 import * as downloadActions from '../../state/download/actions';
 import Helmet from 'react-helmet';
 import Result from './Result';
-import ResultFilters from './ResultFilters';
+import ResultFilters, { anyFilterApplied } from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
 import BackToTop from '../../components/BackToTop';
@@ -18,81 +18,47 @@ import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
 import DataSetSampleActions from '../Experiment/DataSetSampleActions';
 import isEqual from 'lodash/isEqual';
+import Loader from '../../components/Loader';
+import Button from '../../components/Button';
+import { clearFilters } from '../../state/search/actions';
+import Spinner from '../../components/Spinner';
 
 class Results extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: !props.results,
-      query: '',
-      filters: {}
-    };
-  }
-
-  componentDidMount() {
-    this.updateResults(true);
-  }
-
-  async componentDidUpdate(prevProps) {
-    if (prevProps.location.search !== this.props.location.search) {
-      // trigger a new search whenever the url changes, to ensure the results and the url
-      // are in sync
-      await this.updateResults();
-
-      // reset scroll position when the results change
-      window.scrollTo(0, 0);
-    }
-  }
+  state = {
+    query: '',
+    filters: {}
+  };
 
   /**
    * Reads the search query and other parameters from the url and submits a new request to update the results.
    */
-  async updateResults(checkPreviousResults = false) {
-    const { location } = this.props;
-    let { q: query, p: page, size, ...filters } = getQueryParamObject(
-      location.search
-    );
+  async updateResults() {
+    const searchArgs = this._parseUrl();
 
-    // for consistency, ensure all values in filters are arrays
-    // the method `getQueryParamObject` will return a single value for parameters that only
-    // appear once in the url
-    for (let key of Object.keys(filters)) {
-      if (!Array.isArray(filters[key])) {
-        filters[key] = [filters[key]];
-      }
-    }
+    this.setState({
+      query: searchArgs.query,
+      filters: searchArgs.filters
+    });
 
-    // parse parameters from url
-    query = decodeURIComponent(query);
-    page = parseInt(page || 1, 10);
-    size = parseInt(size || 10, 10);
-
-    this.setState({ query, filters });
-
-    // Check if we already have these results fetched, in which case we don't need to make an additional request
-    // this can only happen when the component is initially mounted.
+    // check if the search term and the filters are the same, in which case we don't need to
+    // fetch the results again
     if (
-      checkPreviousResults &&
       this.props.results &&
       this.props.results.length > 0 &&
-      query === this.props.searchTerm &&
-      isEqual(filters, this.props.appliedFilters)
+      searchArgs.query === this.props.searchTerm &&
+      isEqual(searchArgs.filters, this.props.appliedFilters)
     ) {
       return;
     }
 
-    this.setState({ isLoading: true });
-    await this.props.fetchResults({ query, page, size, filters });
-    this.setState({ isLoading: false });
+    // reset scroll position when the results change
+    window.scrollTo(0, 0);
+    await this.props.fetchResults(searchArgs);
   }
 
   handleSubmit = values => {
     // When a new search is made, return to the first page and clear the filters
     this.props.triggerSearch(values.search);
-  };
-
-  handlePagination = page => {
-    this.props.updatePage(page);
   };
 
   handlePageRemove = () => {
@@ -107,19 +73,8 @@ class Results extends Component {
       results,
       addExperiment,
       removeExperiment,
-      isLoading,
       pagination: { totalPages, currentPage }
     } = this.props;
-
-    const samplesAsDataSet = results.reduce((data, result) => {
-      data[result.accession_code] = result.processed_samples.map(
-        accession_code => ({
-          accession_code,
-          is_processed: true
-        })
-      );
-      return data;
-    }, {});
 
     return (
       <div className="results">
@@ -132,54 +87,99 @@ class Results extends Component {
           <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
         </div>
 
-        {isLoading || this.state.isLoading ? (
-          <div className="loader" />
-        ) : !results.length ? (
-          <EmptyStates searchTerm={searchTerm} />
-        ) : (
-          <div className="results__container">
-            <div className="results__top-bar">
-              {results.length ? (
-                <div className="results__number-results">
-                  <NumberOfResults />
-                </div>
-              ) : null}
+        {/* Passing `location.search` to the Loader component ensures that we call `updateResults`
+          every time that the url is updated and also when the component is mounted.
+          We do several checks to determine what to display, eg: no results, when no search term has 
+          been entered, etc */}
+        <Loader
+          updateProps={this.props.location.search}
+          fetch={() => this.updateResults()}
+        >
+          {({ isLoading }) =>
+            !searchTerm ? (
+              <NoSearchTerm />
+            ) : isLoading ? (
+              <Spinner />
+            ) : !results.length && !anyFilterApplied(this.state.filters) ? (
+              <NoSearchResults />
+            ) : !results.length ? (
+              <NoSearchResultsTooManyFilters
+                appliedFilters={this.state.filters}
+              />
+            ) : (
+              <div className="results__container">
+                <div className="results__top-bar">
+                  <div className="results__number-results">
+                    <NumberOfResults />
+                  </div>
 
-              <DataSetSampleActions
-                data={samplesAsDataSet}
-                enableAddRemaining={false}
-                meta={{
-                  buttonStyle: 'secondary',
-                  addText: 'Add Page to Dataset'
-                }}
-              />
-            </div>
-            <div className="results__filters">
-              <ResultFilters appliedFilters={this.state.filters} />
-            </div>
-            <div className="results__list">
-              {results.map((result, i) => (
-                <Result
-                  key={i}
-                  result={result}
-                  addExperiment={addExperiment}
-                  removeExperiment={removeExperiment}
-                />
-              ))}
-              <Pagination
-                onPaginate={this.handlePagination}
-                totalPages={totalPages}
-                currentPage={currentPage}
-              />
-            </div>
-          </div>
-        )}
+                  <DataSetSampleActions
+                    data={this._getSamplesAsDataSet()}
+                    enableAddRemaining={false}
+                    meta={{
+                      buttonStyle: 'secondary',
+                      addText: 'Add Page to Dataset'
+                    }}
+                  />
+                </div>
+                <div className="results__filters">
+                  <ResultFilters appliedFilters={this.state.filters} />
+                </div>
+                <div className="results__list">
+                  {results.map(result => (
+                    <Result
+                      key={result.accession_code}
+                      result={result}
+                      addExperiment={addExperiment}
+                      removeExperiment={removeExperiment}
+                    />
+                  ))}
+                  <Pagination
+                    onPaginate={this.props.updatePage}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                  />
+                </div>
+              </div>
+            )
+          }
+        </Loader>
       </div>
     );
   }
 
-  _getAllProcessedSamples() {
-    return [...new Set(this.props.results.map(x => x.processed_samples))];
+  _parseUrl() {
+    let { q: query, p: page, size, ...filters } = getQueryParamObject(
+      this.props.location.search
+    );
+
+    // for consistency, ensure all values in filters are arrays
+    // the method `getQueryParamObject` will return a single value for parameters that only
+    // appear once in the url
+    for (let key of Object.keys(filters)) {
+      if (!Array.isArray(filters[key])) {
+        filters[key] = [filters[key]];
+      }
+    }
+
+    // parse parameters from url
+    query = query ? decodeURIComponent(query) : undefined;
+    page = parseInt(page || 1, 10);
+    size = parseInt(size || 10, 10);
+
+    return { query, page, size, filters };
+  }
+
+  _getSamplesAsDataSet() {
+    return this.props.results.reduce((data, result) => {
+      data[result.accession_code] = result.processed_samples.map(
+        accession_code => ({
+          accession_code,
+          is_processed: true
+        })
+      );
+      return data;
+    }, {});
   }
 }
 Results = connect(
@@ -242,46 +242,82 @@ NumberOfResults = connect(
   { updateResultsPerPage }
 )(NumberOfResults);
 
-const EmptyStates = ({ searchTerm, appliedFilters }) => {
-  const title = !!searchTerm ? 'No matching results' : 'Try searching for';
-  const imageSrc = !!searchTerm ? GhostSampleImage : StartSearchingImage;
-  const imageAlt = !!searchTerm ? 'No matching results' : 'Start searching';
-
+/**
+ * Displayed when the user tries to search for an empty term
+ */
+const NoSearchTerm = () => {
   return (
     <div className="results__no-results">
-      <h2>{title}</h2>
-      {!!searchTerm ? (
-        !!appliedFilters ? (
-          <h3>
-            Try another term or{' '}
-            <Link className="link" to={`/results?q=${searchTerm}`}>
-              Clear Filters
-            </Link>
-          </h3>
-        ) : (
-          <h3>Try another term</h3>
-        )
-      ) : (
-        <div className="results__suggestions">
-          <Link className="link results__suggestion" to="/results?q=Notch">
-            Notch
-          </Link>
+      <h2>Try searching for</h2>
+      <div className="results__suggestions">
+        {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
           <Link
             className="link results__suggestion"
-            to="/results?q=medulloblastoma"
+            to={`/results?q=${q}`}
+            key={q}
           >
-            Medulloblastoma
+            {q}
           </Link>
-          <Link className="link results__suggestion" to="/results?q=GSE16476">
-            GSE16476
-          </Link>
-        </div>
-      )}
+        ))}
+      </div>
       <img
-        src={imageSrc}
-        alt={imageAlt}
-        className="results__no-results-image"
+        src={StartSearchingImage}
+        alt="Start searching"
+        className="results__no-results-image img-responsive"
       />
     </div>
   );
 };
+
+const NoSearchResults = () => (
+  <div className="results__no-results">
+    <h2>No matching results</h2>
+    <h2>Try another term</h2>
+    <div className="results__suggestions">
+      {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
+        <Link
+          className="link results__suggestion"
+          to={`/results?q=${q}`}
+          key={q}
+        >
+          {q}
+        </Link>
+      ))}
+    </div>
+    <img
+      src={GhostSampleImage}
+      alt="Start searching"
+      className="results__no-results-image img-responsive"
+    />
+  </div>
+);
+
+let NoSearchResultsTooManyFilters = ({ appliedFilters, clearFilters }) => (
+  <div className="results__container results__container--empty">
+    <div className="results__filters">
+      <ResultFilters appliedFilters={appliedFilters} />
+    </div>
+    <div className="results__list">
+      <div className="results__no-results">
+        <h2>No matching results</h2>
+        <div>
+          Try another term or{' '}
+          <Button onClick={clearFilters} buttonStyle="link">
+            Clear Filters
+          </Button>
+        </div>
+        <img
+          src={GhostSampleImage}
+          alt="Start searching"
+          className="results__no-results-image img-responsive"
+        />
+      </div>
+    </div>
+  </div>
+);
+NoSearchResultsTooManyFilters = connect(
+  null,
+  {
+    clearFilters
+  }
+)(NoSearchResultsTooManyFilters);

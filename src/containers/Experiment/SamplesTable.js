@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import RefineTable from '../../components/RefineTable';
 import 'react-table/react-table.css';
@@ -97,9 +96,14 @@ class SamplesTable extends React.Component {
                   <img className="info__icon" src={InfoIcon} alt="" />
                   <div>
                     Some fields may be harmonized.{' '}
-                    <Link to="/docs" className="link">
+                    <a
+                      href="https://refinebio-docs.readthedocs.io/en/latest/main_text.html#refine-bio-harmonized-metadata"
+                      target="_blank"
+                      className="link"
+                      rel="noopener noreferrer"
+                    >
                       Learn more
-                    </Link>
+                    </a>
                   </div>
                 </div>
 

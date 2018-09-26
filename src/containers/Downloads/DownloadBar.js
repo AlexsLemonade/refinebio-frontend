@@ -41,7 +41,11 @@ let DownloadBar = ({
         <div className="downloads__fieldset">
           <label className="downloads__label">
             <div className="downloads__label-text">
-              Aggregate <HelpIcon alt="What does aggregate mean?" />
+              Aggregate{' '}
+              <HelpIcon
+                alt="What does aggregate mean?"
+                url="https://refinebio-docs.readthedocs.io/en/latest/main_text.html#aggregations"
+              />
             </div>{' '}
             <Dropdown
               options={['Experiment', 'Species']}
@@ -53,7 +57,11 @@ let DownloadBar = ({
           </label>
           <label className="downloads__label">
             <div className="downloads__label-text">
-              Transformation <HelpIcon alt="What does transformation mean?" />
+              Transformation{' '}
+              <HelpIcon
+                alt="What does transformation mean?"
+                url="https://refinebio-docs.readthedocs.io/en/latest/main_text.html#transformations"
+              />
             </div>{' '}
             <Dropdown
               options={['None', 'Z-score', 'Zero to One']}
@@ -79,7 +87,7 @@ let DownloadBar = ({
   );
 };
 DownloadBar = connect(
-  () => ({}),
+  null,
   {
     editAggregation,
     editTransformation

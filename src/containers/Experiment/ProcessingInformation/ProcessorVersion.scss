@@ -1,0 +1,30 @@
+@import '../../../common/styles/variables';
+
+.version-table {
+  border-spacing: 0;
+  width: 100%;
+
+  td {
+    padding: 2px 2px 2px 4px;
+  }
+
+  &__label {
+    padding-right: 32px !important;
+    text-align: right;
+    width: 160px;
+    white-space: nowrap;
+  }
+
+  &__group-start {
+  }
+}
+
+:local {
+  .tableTitle {
+    font-weight: bold;
+  }
+
+  .highlight {
+    background-color: $background-color--highlight;
+  }
+}

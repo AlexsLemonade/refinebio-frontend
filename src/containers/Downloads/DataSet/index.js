@@ -19,6 +19,7 @@ import DownloadDetails from '../DownloadDetails';
 import { ShareDatasetButton } from '../DownloadBar';
 import DownloadStart from '../DownloadStart/DownloadStart';
 import DownloadErrorImage from './dataset-error.svg';
+import Spinner from '../../../components/Spinner';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -49,7 +50,7 @@ let DataSet = ({
     <Loader updateProps={dataSetId} fetch={() => fetchDataSet(dataSetId)}>
       {({ isLoading }) =>
         isLoading ? (
-          <div className="loader" />
+          <Spinner />
         ) : (
           <div>
             <DataSetPageHeader
@@ -63,7 +64,9 @@ let DataSet = ({
               hasError={location.state && location.state.hasError}
             />
             <div className="downloads__bar">
-              <ShareDatasetButton dataSetId={dataSetId} />
+              <div className="flex-button-container flex-button-container--left">
+                <ShareDatasetButton dataSetId={dataSetId} />
+              </div>
             </div>
             <DownloadDetails
               isImmutable={true}
@@ -158,7 +161,7 @@ let DataSetErrorDownloading = ({ dataSetId, dataSet, startDownload }) => {
   );
 };
 DataSetErrorDownloading = connect(
-  () => ({}),
+  null,
   {
     startDownload
   }
@@ -184,7 +187,9 @@ function DataSetProcessing({ email, dataSetId }) {
             <h1>Your dataset is being processed.</h1>
             {message}
           </div>
-          <ProcessingDataset loop={true} />
+          <div className="dataset__way-image">
+            <ProcessingDataset loop={true} />
+          </div>
         </div>
       </div>
     </div>
@@ -273,7 +278,7 @@ let DataSetExpired = ({ regenerateDataSet }) => (
   </div>
 );
 DataSetExpired = connect(
-  () => ({}),
+  null,
   {
     regenerateDataSet
   }

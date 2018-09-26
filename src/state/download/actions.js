@@ -80,13 +80,6 @@ export const createOrUpdateDataSet = ({
  * @param {array} experiments
  */
 export const addExperiment = experiments => async (dispatch, getState) => {
-  dispatch({
-    type: 'DOWNLOAD_ADD_EXPERIMENT',
-    data: {
-      experiments
-    }
-  });
-
   const { dataSet, dataSetId } = getState().download;
   const data = new DataSetManager(dataSet).addExperiment(experiments);
 

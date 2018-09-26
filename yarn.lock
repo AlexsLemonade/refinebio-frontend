@@ -27,11 +27,21 @@
   version "3.4.8"
   resolved "https://reservoir.haiku.ai:8910/@haiku%2fcore/-/core-3.4.8.tgz#1e1cc512c541f1e7388dc8a89a04552076f67c76"
 
+"@haiku/core@^4.2.0":
+  version "4.2.1"
+  resolved "https://reservoir.haiku.ai:8910/@haiku%2fcore/-/core-4.2.1.tgz#36cfe90f4cb62dbbad2818e4022dfacaaf9f7153"
+
 "@haiku/dvprasad-processingdataset@^0.0.1":
   version "0.0.1"
   resolved "https://reservoir.haiku.ai:8910/@haiku%2fdvprasad-processingdataset/-/dvprasad-processingdataset-0.0.1.tgz#c3c9e3f7ca17079a9e32483d75554ce3586b1fea"
   dependencies:
     "@haiku/core" "^3.4.4"
+
+"@haiku/dvprasad-refinebiospinner@^0.0.4":
+  version "0.0.4"
+  resolved "https://reservoir.haiku.ai:8910/@haiku%2fdvprasad-refinebiospinner/-/dvprasad-refinebiospinner-0.0.4.tgz#cd9533cd8b06e9dad59867e3eda37009720ca48a"
+  dependencies:
+    "@haiku/core" "^4.2.0"
 
 "@haiku/sdk-client@3.4.8":
   version "3.4.8"
