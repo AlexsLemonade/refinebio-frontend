@@ -76,7 +76,7 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
               result.technologies && result.technologies.contains(RNA_SEQ)
             }
           />
-          {result.pretty_platforms.filter(platform => !!platform).join(',')}
+          {result.pretty_platforms.filter(platform => !!platform).join(', ')}
         </li>
       </ul>
 
