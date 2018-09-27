@@ -35,3 +35,8 @@ CI=false REACT_APP_API_HOST=https://api.$base_host yarn run build
 pip install awscli --upgrade --user
 
 ~/.local/bin/aws s3 sync build s3://$base_host --delete --acl public-read
+
+# Only deploy to www.refine.bio on master branch.
+if [[ $branch == "master" ]]; then
+    ~/.local/bin/aws s3 sync build s3://www.$base_host --delete --acl public-read
+fi
