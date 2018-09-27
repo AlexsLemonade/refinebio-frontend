@@ -18,6 +18,7 @@ import store from '../../configureStore';
 import { Provider } from 'react-redux';
 import ErrorBoundary from '../../containers/ErrorBoundary';
 import About from '../About';
+import classnames from 'classnames';
 
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
@@ -43,23 +44,29 @@ const AppContent = () => (
 );
 
 const App = () => {
+  // In order to render `App` individually in the tests, Provider needs to wrap it's contents.
   return (
-    // In order to render `App` individually in the tests, Provider needs to wrap it's contents.
-    <Provider store={store}>
-      <Router history={history}>
-        <Layout>
-          <ErrorBoundary>
-            <Switch>
-              <Route exact path="/" component={Main} />
-              <Route exact path="/about" component={About} />
+    <div className={classnames({ ios: isIos() })}>
+      <Provider store={store}>
+        <Router history={history}>
+          <Layout>
+            <ErrorBoundary>
+              <Switch>
+                <Route exact path="/" component={Main} />
+                <Route exact path="/about" component={About} />
 
-              <Route path="/" component={AppContent} />
-            </Switch>
-          </ErrorBoundary>
-        </Layout>
-      </Router>
-    </Provider>
+                <Route path="/" component={AppContent} />
+              </Switch>
+            </ErrorBoundary>
+          </Layout>
+        </Router>
+      </Provider>
+    </div>
   );
 };
 
 export default App;
+
+function isIos() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}

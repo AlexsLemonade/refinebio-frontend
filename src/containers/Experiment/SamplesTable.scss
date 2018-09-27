@@ -55,9 +55,11 @@
   .rt-tbody {
     min-height: 100px;
 
-    // momentum scrolling ios https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/
-    overflow-y: scroll; /* has to be scroll, not auto */
-    -webkit-overflow-scrolling: touch;
+    .ios & {
+      // momentum scrolling ios https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/
+      overflow-y: scroll; /* has to be scroll, not auto */
+      -webkit-overflow-scrolling: touch;
+    }
   }
 
   .rt-noData {
