@@ -307,7 +307,7 @@ export const startDownload = ({
       start: true,
       data: dataSet,
       token_id: tokenId,
-      email_ccdl_ok: receiveUpdates,
+      ...(receiveUpdates ? { email_ccdl_ok: true } : {}),
       ...(email ? { email_address: email } : {})
     });
   } catch (e) {
