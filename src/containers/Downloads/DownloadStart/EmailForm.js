@@ -1,7 +1,7 @@
 import React from 'react';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import Checkbox, { CheckboxField } from '../../../components/Checkbox';
+import { CheckboxField } from '../../../components/Checkbox';
 import Button from '../../../components/Button';
 import { Link } from 'react-router-dom';
 

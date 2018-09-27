@@ -12,6 +12,8 @@ import {
   regenerateDataSet
 } from '../../../state/dataSet/actions';
 import { startDownload } from '../../../state/download/actions';
+import { createToken } from '../../../state/token';
+
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
 
 import TermsOfUse from '../../../components/TermsOfUse';
@@ -120,9 +122,12 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
   );
 }
 
-let DataSetErrorDownloading = ({ dataSetId, dataSet, startDownload }) => {
-  let token = localStorage.getItem('refinebio-token');
-
+let DataSetErrorDownloading = ({
+  dataSetId,
+  dataSet,
+  startDownload,
+  token
+}) => {
   return (
     <div className="dataset__container">
       <div className="dataset__message">
@@ -161,7 +166,7 @@ let DataSetErrorDownloading = ({ dataSetId, dataSet, startDownload }) => {
   );
 };
 DataSetErrorDownloading = connect(
-  null,
+  ({ token }) => ({ token }),
   {
     startDownload
   }
@@ -198,26 +203,18 @@ function DataSetProcessing({ email, dataSetId }) {
 
 class DataSetReady extends React.Component {
   state = {
-    agreedToTerms: false,
-    hasToken: false
+    agreedToTerms: false
   };
-
-  componentDidMount() {
-    const token = localStorage.getItem('refinebio-token');
-    if (!!token) {
-      this.setState({ hasToken: true });
-    }
-  }
 
   handleAgreedToTerms = () => {
     this.setState({ agreedToTerms: !this.state.agreedToTerms });
   };
 
   handleSubmit = async () => {
-    if (!this.state.hasToken) {
-      const token = await (await fetch('/token/')).json();
-      localStorage.setItem('refinebio-token', token.id);
+    if (!this.props.hasToken) {
+      await this.props.createToken();
     }
+
     const { s3_bucket, s3_key } = this.props;
     const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
     window.location.href = downloadLink;
@@ -231,7 +228,7 @@ class DataSetReady extends React.Component {
             <div className="dataset__processed-text">
               <h1>Your dataset is ready for download!</h1>
               <div className="dataset__way-container">
-                {!this.state.hasToken && (
+                {!this.props.hasToken && (
                   <TermsOfUse
                     agreedToTerms={this.state.agreedToTerms}
                     handleToggle={this.handleAgreedToTerms}
@@ -239,7 +236,7 @@ class DataSetReady extends React.Component {
                 )}
                 <Button
                   onClick={this.handleSubmit}
-                  isDisabled={!this.state.agreedToTerms && !this.state.hasToken}
+                  isDisabled={!this.state.agreedToTerms && !this.props.hasToken}
                 >
                   Download Now
                 </Button>
@@ -255,6 +252,13 @@ class DataSetReady extends React.Component {
     );
   }
 }
+DataSetReady = connect(
+  ({ token }) => ({ hasToken: !!token }),
+  {
+    startDownload,
+    createToken
+  }
+)(DataSetReady);
 
 let DataSetExpired = ({ regenerateDataSet }) => (
   <div className="dataset__container">

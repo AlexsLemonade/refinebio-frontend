@@ -7,9 +7,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import TermsOfUse from '../../../components/TermsOfUse';
-import Button from '../../../components/Button';
-import { Ajax } from '../../../common/helpers';
 import ProcessingImage from './download-processing.svg';
 import { editEmail } from '../../../state/dataSet/actions';
 import { startDownload } from '../../../state/download/actions';
