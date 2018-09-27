@@ -13,7 +13,6 @@ import './Results.scss';
 import { updateResultsPerPage } from '../../state/search/actions';
 import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../constants/table';
-import StartSearchingImage from '../../common/images/start-searching.svg';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
 import DataSetSampleActions from '../Experiment/DataSetSampleActions';
@@ -96,9 +95,7 @@ class Results extends Component {
           fetch={() => this.updateResults()}
         >
           {({ isLoading }) =>
-            !searchTerm ? (
-              <NoSearchTerm />
-            ) : isLoading ? (
+            isLoading ? (
               <Spinner />
             ) : !results.length && !anyFilterApplied(this.state.filters) ? (
               <NoSearchResults />
@@ -184,14 +181,7 @@ class Results extends Component {
 }
 Results = connect(
   ({
-    search: {
-      results,
-      filters,
-      pagination,
-      searchTerm,
-      isSearching,
-      appliedFilters
-    },
+    search: { results, pagination, searchTerm, isSearching, appliedFilters },
     download: { dataSet }
   }) => ({
     results,
@@ -241,33 +231,6 @@ NumberOfResults = connect(
   }),
   { updateResultsPerPage }
 )(NumberOfResults);
-
-/**
- * Displayed when the user tries to search for an empty term
- */
-const NoSearchTerm = () => {
-  return (
-    <div className="results__no-results">
-      <h2>Try searching for</h2>
-      <div className="results__suggestions">
-        {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
-          <Link
-            className="link results__suggestion"
-            to={`/results?q=${q}`}
-            key={q}
-          >
-            {q}
-          </Link>
-        ))}
-      </div>
-      <img
-        src={StartSearchingImage}
-        alt="Start searching"
-        className="results__no-results-image img-responsive"
-      />
-    </div>
-  );
-};
 
 const NoSearchResults = () => (
   <div className="results__no-results">
