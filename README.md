@@ -59,6 +59,7 @@ In the project directory, run:
 Deploys are triggered by git tags.
 These git tags should correspond to a version of the project.
 Once a tag has been pushed, it will trigger a new CircleCI build which will run the tests and then deploy the static files to S3 where they are served from.
+A tag pushed to the `dev` branch will result in a new deploy to the staging enviroment while a tag pushed to the `master` branch will result in a new deploy to the prod environment.
 A tag can be created and pushed with the following commands:
 
 ```
