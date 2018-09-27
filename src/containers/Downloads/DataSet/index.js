@@ -46,7 +46,7 @@ class DataSet extends React.Component {
 
     await fetchDataSet(dataSetId);
 
-    // start pooling the server every 20secs if the dataset is being processed
+    // start polling the server every 20secs if the dataset is being processed
     if (this.props.dataSet.is_processing) {
       this._startLiveUpdate();
     }
