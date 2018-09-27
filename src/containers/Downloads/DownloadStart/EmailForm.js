@@ -53,13 +53,14 @@ EmailForm = reduxForm({
 // selecting values from form https://redux-form.com/7.4.2/examples/selectingformvalues/
 const fieldSelector = formValueSelector(EMAIL_FORM);
 // Set the initial value of the form components, with the email property
-EmailForm = connect((state, ownProps) => ({
-  isSubmitDisabled:
-    !ownProps.agreedToTerms ||
-    (!ownProps.agreedToTerms && !fieldSelector(state, 'termsOfService')),
-  initialValues: {
-    email: ownProps.email
-  }
-}))(EmailForm);
+EmailForm = connect((state, ownProps) => {
+  return {
+    isSubmitDisabled:
+      !ownProps.agreedToTerms && !fieldSelector(state, 'termsOfService'),
+    initialValues: {
+      email: ownProps.email
+    }
+  };
+})(EmailForm);
 
 export default EmailForm;
