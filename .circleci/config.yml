@@ -8,52 +8,24 @@ jobs:
       - run: yarn install --ignore-engines
       - run: yarn test
 
-  deploy-dev:
+  deploy:
     docker:
       - image: circleci/python:3-node
     steps:
       - checkout
-      - run: yarn install --ignore-engines
-
-      # TODO: Maybe fix this? Or at least delete this comment
-      - run: CI=false REACT_APP_API_HOST=https://api.staging.refine.bio yarn run build
-      - run: pip install awscli --upgrade --user
-
-      # I'm not sure why it installs here but it does...
-      - run: ~/.local/bin/aws s3 sync build s3://staging.refine.bio --delete --acl public-read
-
-  deploy-master:
-    docker:
-      - image: circleci/python:3-node
-    steps:
-      - checkout
-      - run: yarn install --ignore-engines
-
-      # TODO: Maybe fix this? Or at least delete this comment
-      - run: CI=false REACT_APP_API_HOST=https://api.refine.bio yarn run build
-      - run: pip install awscli --upgrade --user
-
-      # I'm not sure why it installs here but it does...
-      - run: ~/.local/bin/aws s3 sync build s3://refine.bio --delete --acl public-read
+      - run: bash .circleci/deploy.sh
 
 workflows:
   version: 2
   test-and-deploy:
     jobs:
       - test
-      - deploy-dev:
+      - deploy:
           requires:
             - test
           filters:
             branches:
-              only: dev
-            tags:
-              only: /v.*/
-      - deploy-master:
-          requires:
-            - test
-          filters:
-            branches:
-              only: master
+              # No branch commit will ever trigger this job.
+              ignore: /.*/
             tags:
               only: /v.*/
