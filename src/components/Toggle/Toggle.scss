@@ -1,0 +1,40 @@
+@import '../../common/styles/variables';
+
+.toggle {
+  display: inline-block;
+  border: 1px solid $gray;
+  border-radius: 3px;
+  margin: 1.5rem 0 0.5rem;
+
+  &__container {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    border-right: 1px solid $gray;
+
+    &:last-of-type {
+      border-right: 0;
+    }
+  }
+
+  &__button {
+    padding: 4px 1.5rem;
+
+    &--active {
+      box-shadow: inset 0 -3px 0 0 $azure;
+    }
+
+    &:hover {
+      background: #F2F2F2;
+    }
+
+    &:focus,
+    &:active {
+      background: darken(#F2F2F2, 5%);
+    }
+  }
+}

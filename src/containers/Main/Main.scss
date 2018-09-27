@@ -1,0 +1,221 @@
+@import '../../common/styles/variables';
+
+.main {
+  &__container {
+    max-width: 1000px;
+    width: 90%;
+    margin: 0 auto;
+
+    @include tablet {
+      &--flex {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    &--searchbox {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      border-radius: 8px;
+      background-color: #fdfdfd;
+      box-shadow: 0 4px 21px 0 rgba(0, 0, 0, 0.2);
+      padding: 3 * 8px;
+      margin-bottom: 24px;
+
+      @include tablet {
+        padding: 12 * 8px 0 8.5 * 8px;
+        align-items: center;
+      }
+    }
+  }
+
+  &__col {
+    margin-bottom: 6 * 8px;
+
+    @include tablet {
+      padding: 0 11 * 8px;
+      max-width: 50%;
+      border-right: 1px solid $gray;
+
+      &:first-of-type {
+        padding-left: 0;
+      }
+
+      &:last-of-type {
+        border-right: none;
+        padding-right: 0;
+      }
+    }
+  }
+
+  &__section {
+    padding: 7 * 8px 0 0;
+
+    @include tablet {
+      padding: 13 * 8px 0;
+    }
+
+    &--gray {
+      background: $background-color--highlight;
+    }
+
+    &--blue-gradient {
+      background: $background-color--blue-gradient;
+      text-align: center;
+      color: $white;
+      padding: 9 * 8px 0;
+
+      @include tablet {
+        padding: 17 * 8px 0;
+      }
+    }
+
+    &--searchbox {
+      position: relative;
+      overflow: hidden;
+
+      @include tablet {
+        padding: 10 * 8px 0 0;
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        height: 90%;
+        width: 120%;
+        transform: translateX(-50%);
+        background: $background-color--blue-gradient;
+        border-bottom-left-radius: 50%;
+        border-bottom-right-radius: 50%;
+      }
+    }
+  }
+
+  &__heading-1 {
+    font-size: 1.6rem;
+    text-align: center;
+
+    @include tablet {
+      font-size: 2rem;
+    }
+  }
+
+  &__heading-2 {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2 * 8px;
+
+    @include tablet {
+      font-size: 1.75rem;
+      margin-bottom: 4 * 8px;
+    }
+  }
+
+  &__paragraph {
+    font-size: 1.25rem;
+  }
+
+  &__icon {
+    margin-right: 2 * 8px;
+    width: 35px;
+
+    @include tablet {
+      width: auto;
+    }
+  }
+
+  &__search-suggestions {
+    margin: 2 * 8px 0;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
+
+    @include tablet {
+      justify-content: space-between;
+      flex-flow: row wrap;
+      margin: 5 * 8px;
+    }
+  }
+
+  &__search-suggestion-label {
+    font-size: 1.375rem;
+    margin: 0;
+
+    @include tablet {
+      flex: 1 100%;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    @include desktop {
+      flex: 1 auto;
+      margin-bottom: 0;
+    }
+  }
+
+  &__search-suggestion {
+    font-size: 1.375rem;
+    color: $azure;
+    line-height: 1;
+    border-bottom: 2px solid currentColor;
+    margin: 8px 0;
+
+    @include tablet {
+      margin: 0 4 * 8px 0 8px;
+    }
+  }
+
+  &__mailchimp-form {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &__mailchimp-input {
+    margin-right: 2 * 8px;
+    width: 100%;
+    margin-bottom: 0.5rem;
+
+    @include tablet {
+      margin-bottom: 0;
+      width: auto;
+      min-width: 385px;
+    }
+  }
+
+  &__mailchimp-button {
+    background: $white;
+    color: $azure;
+    border: none;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+
+  &__stats-placeholder {
+    margin-top: 50px;
+    margin-left: auto;
+    display: block;
+    margin-right: auto;
+    max-width: 100%;
+  }
+
+  &__blurp-text {
+    font-size: 16px;
+    margin-bottom: 1rem;
+
+    @include tablet() {
+      font-size: 22px;
+    }
+  }
+}

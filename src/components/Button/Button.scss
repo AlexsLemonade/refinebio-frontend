@@ -1,0 +1,131 @@
+@import '../../common/styles/variables';
+
+$default-bg: $azure;
+$default-hover: #417ac2;
+$default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
+
+.button {
+  background-color: $default-bg;
+  border-radius: 3px;
+  color: $white;
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 4px 24px;
+  display: inline-block;
+  white-space: nowrap;
+  text-align: center;
+
+  &:hover {
+    background: $default-hover;
+    color: $white;
+    border-color: $default-hover;
+
+    .button__icon {
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  &:active,
+  &:focus {
+    box-shadow: $default-active-shadow;
+  }
+
+  &__icon {
+    margin-right: 4px;
+  }
+
+  &:disabled,
+  &--disabled {
+    cursor: not-allowed;
+    background-color: $button-disabled;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: $button-disabled;
+    }
+  }
+
+  &--secondary {
+    background: none;
+    color: $azure;
+    border: 1px solid currentColor;
+
+    &:disabled,
+    &:disabled:hover,
+    &:disabled:active,
+    &:disabled:focus {
+      background: none;
+      border-color: currentColor;
+      color: $button-disabled;
+    }
+  }
+
+  &--remove {
+    @extend .button--secondary;
+    color: $black;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: $black;
+      background-color: $black;
+    }
+  }
+
+  &--transparent {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    color: $black;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background: none;
+      color: $default-hover;
+      box-shadow: none;
+    }
+
+    &:active,
+    &:focus {
+      color: darken($azure, 10%);
+    }
+  }
+
+  // button will look like a text link
+  &--link {
+    @extend .button--transparent;
+    color: $link-color;
+    white-space: normal;
+    text-align: left;
+    text-decoration: underline;
+
+    &:hover {
+    }
+
+    &:visited {
+      color: $link-visited;
+    }
+  }
+
+  &--plain {
+    @extend .button--link;
+    font-size: 0.8rem;
+    border-bottom: 1px solid currentColor;
+    line-height: 1;
+
+    &:hover {
+      color: $default-hover;
+    }
+  }
+
+  &--large {
+    font-size: 16px;
+    padding: 8px 32px;
+  }
+}
+
+.button__icon {
+}

@@ -1,0 +1,74 @@
+@import '../../common/styles/variables';
+
+// This class is applied to the body element when a modal dialog is displayed to disable scrolling
+/*body*/
+.modal-open {
+  overflow: hidden;
+  position: fixed;
+
+  @include desktop() {
+    position: absolute;
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  // center vertically the modal dialog
+  &--center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  // refers to modal dialogs that aren't centered and have a fixed distance from the top of the screen
+  &--top {
+    @include tablet() {
+      padding: 24px 24px 40px 24px;
+    }
+
+    @include desktop() {
+      padding-top: 80px;
+      padding-bottom: 160px;
+    }
+  }
+}
+
+.modal {
+  position: relative;
+  width: auto;
+  max-width: 500px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 16px;
+  border: 1px solid $border-color;
+  background-color: $white;
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.06);
+  overflow: auto;
+  display: flex;
+
+  &__content {
+    flex: 1 1;
+    max-width: 100%;
+  }
+
+  &__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    line-height: 1;
+  }
+
+  &--fill-page {
+    max-height: 100%;
+    overflow: hidden;
+  }
+}

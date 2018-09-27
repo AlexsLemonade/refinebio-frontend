@@ -1,0 +1,132 @@
+@import '../../common/styles/variables';
+
+.experiment {
+  border-radius: 3px;
+  background-color: $white;
+  box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin: 32px 0 80px;
+
+  &__header-title {
+    @include tablet {
+      flex: 1;
+    }
+  }
+
+  &__title {
+    margin-bottom: 16px;
+  }
+
+  &__header {
+    margin-bottom: 16px;
+
+    @include tablet {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &__accession {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  &__stats {
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__stats-item {
+    display: flex;
+    flex-basis: (100%/2);
+    align-items: center;
+    margin: 8px 0;
+
+    @include tablet {
+      flex-basis: (100%/3);
+    }
+  }
+
+  &__stats-icon {
+    height: 24px;
+    margin-right: 8px;
+  }
+
+  &__row {
+    padding: 3 * 8px;
+    margin-left: -24px;
+    margin-right: -24px;
+
+    @include tablet {
+      padding-top: 16px;
+      padding-bottom: 16px;
+      padding-right: 19 * 8px;
+      display: flex;
+      flex-direction: row;
+    }
+
+    &:nth-child(2n + 1) {
+      background-color: $background-color--highlight;
+    }
+  }
+
+  &__section {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid $border-color;
+  }
+
+  &__row-label {
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+
+    @include tablet {
+      text-align: right;
+      margin-right: 24px;
+      flex-basis: 192px;
+      flex-shrink: 0;
+      font-size: 1em;
+    }
+  }
+
+  &__sample-commands {
+    margin-bottom: 16px;
+
+    @include tablet {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &__per-page-dropdown {
+    white-space: nowrap;
+    margin-bottom: 8px;
+  }
+
+  &__not-provided {
+    color: $dusty-gray;
+    font-style: italic;
+  }
+
+  &__sample-actions {
+    flex-grow: 1;
+
+    @include tablet {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-left: 32px;
+    }
+  }
+}
+
+// first two columns sticky
+//

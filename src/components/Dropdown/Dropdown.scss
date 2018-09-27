@@ -1,0 +1,51 @@
+@import '../../common/styles/variables';
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+
+  &__select {
+    color: $font-color;
+    display: inline-block;
+    padding: 5px 30px 5px 10px;
+    font-size: 1rem;
+    box-shadow: none;
+    background: $white;
+    border-radius: 3px;
+    outline: none;
+    z-index: 2;
+    border: 1px solid $input-normal;
+    cursor: pointer;
+    font-family: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:disabled,
+    &--disabled {
+      cursor: not-allowed;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: $button-disabled;
+      }
+    }
+  }
+
+  &:after {
+    content: '\f104';
+    font-family: 'Ionicons';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 4px 8px;
+    pointer-events: none;
+  }
+}
+
+// styles for dropdowns used as selects

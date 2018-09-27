@@ -1,0 +1,31 @@
+@import '../../common/styles/variables';
+
+.search-input {
+  display: flex;
+  max-width: 100%;
+  flex-direction: column;
+
+  @include tablet {
+    flex-direction: row;
+  }
+
+  /*input-text*/
+  &__textbox {
+    margin-bottom: 16px;
+
+    @include tablet {
+      margin-bottom: 0;
+      margin-right: 16px;
+      min-width: 450px;
+      padding: 11px 24px;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__button {
+    font-size: 18px;
+  }
+}

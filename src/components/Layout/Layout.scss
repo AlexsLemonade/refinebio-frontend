@@ -1,0 +1,18 @@
+@import '../../common/styles/variables';
+
+.layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__content {
+    max-width: 1075px;
+    padding: 0 8px;
+    width: 100%;
+    flex: 1;
+
+    @include tablet {
+      margin: 1rem auto;
+    }
+  }
+}

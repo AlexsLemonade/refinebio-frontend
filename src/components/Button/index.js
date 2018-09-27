@@ -1,0 +1,26 @@
+import React from 'react';
+import './Button.scss';
+
+const Button = ({
+  text,
+  buttonStyle,
+  onClick,
+  isDisabled = false,
+  className,
+  children,
+  style = null
+}) => {
+  const buttonStyleClass = buttonStyle ? `button--${buttonStyle}` : '';
+  return (
+    <button
+      className={`button ${buttonStyleClass} ${className || ''}`}
+      onClick={onClick}
+      disabled={isDisabled}
+      style={style}
+    >
+      {text || children}
+    </button>
+  );
+};
+
+export default Button;

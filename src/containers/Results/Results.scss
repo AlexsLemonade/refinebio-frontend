@@ -1,0 +1,131 @@
+@import '../../common/styles/variables';
+
+.results {
+  position: relative;
+
+  &__container {
+    display: grid;
+
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      'top-bar'
+      'side'
+      'main';
+
+    @include desktop {
+      grid-template-columns: 250px auto;
+      grid-template-rows: auto;
+      grid-template-areas:
+        'side top-bar'
+        'side main';
+    }
+
+    &--empty {
+      grid-template-columns: auto;
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        'side'
+        'main';
+
+      @include desktop {
+        grid-template-columns: 250px auto;
+        grid-template-rows: auto;
+        grid-template-areas: 'side main';
+      }
+    }
+  }
+
+  &__top-bar {
+    grid-area: top-bar;
+    margin-bottom: 16px;
+
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    @include desktop {
+      margin-bottom: 24px;
+    }
+  }
+
+  &__filters {
+    grid-area: side;
+    margin-bottom: 16px;
+
+    @include desktop {
+      max-width: 230px;
+      min-width: 230px;
+      margin-right: 48px;
+    }
+  }
+
+  &__list {
+    grid-area: main;
+  }
+
+  &__search {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+
+    @include tablet {
+      margin-bottom: 24px;
+    }
+
+    @include desktop {
+      margin-bottom: 40px;
+    }
+  }
+
+  &__added {
+    display: flex;
+    align-items: center;
+    margin-right: 6px;
+    font-size: 0.875rem;
+    color: $success;
+  }
+
+  &__added-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &__added-icon {
+    font-size: 1.5rem;
+    margin-right: 6px;
+  }
+
+  &__no-results {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    @include desktop {
+      margin-top: 7 * 8px;
+    }
+  }
+
+  &__no-results-image {
+    margin-top: 7 * 8px;
+  }
+
+  &__suggestion {
+    font-size: 1.375rem;
+    margin: 0 2 * 8px;
+  }
+
+  &__number-results {
+    margin-bottom: 16px;
+
+    @include tablet {
+      margin-bottom: 0;
+    }
+  }
+}

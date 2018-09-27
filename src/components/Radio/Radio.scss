@@ -1,0 +1,73 @@
+@import '../../common/styles/variables';
+
+.radio {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+
+  &__input {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+
+    & + .radio__label:after {
+      content: none;
+    }
+
+    &:checked {
+      & + .radio__label {
+        &:after {
+          content: '';
+        }
+
+        &:before {
+        }
+      }
+    }
+  }
+
+  &__label {
+    position: relative;
+    padding-left: 24px;
+
+    &:before,
+    &:after {
+      position: absolute;
+    }
+
+    &:before {
+      content: '';
+      display: inline-block;
+      height: 16px;
+      width: 16px;
+      border: 1px solid $gray;
+      border-radius: 50%;
+      top: 3px;
+      left: 0;
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      height: 8px;
+      width: 8px;
+      background-color: $azure;
+      left: 5px;
+      top: 8px;
+      border-radius: 50%;
+    }
+
+    &:hover {
+      &:before {
+        box-shadow: 0px 0px 0px 1px #d8d8d8;
+      }
+    }
+
+    &:active,
+    &:focus {
+      &:before {
+        border-color: #386db0;
+      }
+    }
+  }
+}

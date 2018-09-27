@@ -1,0 +1,64 @@
+html,
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+
+  @include tablet {
+    font-size: 16px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.625rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.375rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+p {
+  font-size: 1rem;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.5;
+}
+
+.link {
+  color: $azure;
+
+  &:hover {
+    color: lighten($azure, 10%);
+    text-decoration: underline;
+  }
+
+  &:focus,
+  &:active {
+    color: darken($azure, 10%);
+  }
+}

@@ -1,0 +1,274 @@
+@import '../../common/styles/variables';
+
+.about {
+  padding-bottom: 152px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  // justify-content: center;
+
+  &__section {
+    margin-bottom: 40px;
+    padding-left: 24px;
+    padding-right: 24px;
+    width: 132 * 8px;
+    max-width: 100%;
+
+    @include tablet() {
+      margin-bottom: 13 * 8px;
+    }
+  }
+
+  &__section-divider {
+    border-top: 3px solid #f2f2f2;
+    padding-top: 40px;
+
+    @include tablet() {
+      padding-top: 13 * 8px;
+    }
+  }
+
+  &__header {
+    position: relative;
+    background: linear-gradient(
+      179.93deg,
+      rgba(12, 52, 131, 0.94) 0%,
+      rgba(25, 64, 142, 0.95) 16.45%,
+      #6b8cce 43.03%,
+      #a2b6df 69.1%,
+      #a2b6df 100%
+    );
+    margin-left: -8px;
+    margin-right: -8px;
+    padding: 80px 20px 21 * 8px 20px;
+    width: 100%;
+    overflow: hidden;
+
+    @include desktop() {
+      overflow: visible;
+    }
+  }
+
+  &__header-bg {
+    position: absolute;
+    width: 880px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.1;
+    bottom: 0;
+    pointer-events: none;
+
+    @include tablet() {
+      z-index: 20;
+    }
+
+    @include desktop() {
+      width: 1348px;
+      max-width: 100%;
+    }
+  }
+
+  &__tagline {
+    color: $whisper;
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    position: relative;
+    text-shadow: 0 3px 19px rgba(0, 0, 0, 0.5);
+
+    @include tablet() {
+      z-index: 30;
+    }
+
+    @include desktop() {
+      font-size: 55px;
+      line-height: 1;
+      max-width: 848px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &__top-box {
+    margin-top: -14 * 8px;
+    position: relative;
+
+    @include tablet() {
+      z-index: 30;
+    }
+  }
+
+  &__top-box-tagline {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 3 * 8px;
+
+    @include tablet() {
+      font-size: 26px;
+      margin-bottom: 5 * 8px;
+    }
+  }
+
+  &__stats-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @include tablet() {
+      flex-direction: row;
+    }
+  }
+
+  &__stat-item {
+    text-align: center;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  &__stat {
+    font-size: 2.3rem;
+    color: $azure;
+  }
+
+  &__stat-text {
+    @include desktop() {
+      font-size: 20px;
+    }
+  }
+
+  &__info-item {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet() {
+      flex-direction: row;
+      align-items: center;
+
+      &--right {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+
+  &__info-item-image {
+    max-width: 200px;
+    margin-bottom: 24px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+
+    @include tablet() {
+      max-width: 400px;
+      max-height: 355px;
+      margin-right: 11 * 8px;
+
+      .about__info-item--right & {
+        margin-right: 0;
+        margin-left: 11 * 8px;
+      }
+    }
+  }
+
+  &__info-item-title {
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 16px;
+
+    @include tablet() {
+      text-align: left;
+      font-size: 26px;
+    }
+  }
+
+  &__info-item-text {
+    font-size: 16px;
+  }
+
+  &__section-created {
+    margin-bottom: 56px;
+
+    &__title {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 6 * 8px;
+
+      @include tablet() {
+        font-size: 22px;
+        margin-bottom: 10 * 8px;
+      }
+    }
+
+    &__logo-container {
+      text-align: center;
+
+      @include tablet() {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    &__logo {
+      &:first-child {
+        margin-bottom: 50px;
+      }
+
+      @include tablet() {
+        flex-grow: 1;
+      }
+    }
+  }
+
+  &__section-donate {
+    margin-bottom: 11 * 8px;
+
+    &__container {
+      display: flex;
+      flex-direction: column;
+
+      @include tablet() {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    &__title {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 24px;
+
+      @include desktop() {
+        margin-left: 13 * 8px;
+        margin-bottom: 0;
+      }
+    }
+
+    &__action {
+      text-align: center;
+    }
+  }
+
+  /*.button.button--large*/
+  &__button-donate {
+    @include desktop() {
+      font-size: 20px;
+      padding: 16px 32px;
+      margin-left: 13 * 8px;
+      margin-right: 13 * 8px;
+    }
+  }
+}
+
+.box {
+  border-radius: 8px;
+  background-color: $whisper;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 16px;
+
+  @include tablet() {
+    padding: 4 * 8px;
+  }
+}

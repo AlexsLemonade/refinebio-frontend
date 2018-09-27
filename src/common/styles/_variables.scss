@@ -1,0 +1,78 @@
+// COLORS - light to dark
+$white: #fff;
+$whisper: #fdfdfd;
+$gallery: #d8d8d8;
+$gray: #979797;
+$dusty-gray: #9b9b9b;
+$tundora: #444;
+$black: #000;
+
+$azure: #386db0;
+
+$success: #41a36d;
+
+// Text
+$link-color: $azure;
+$link-visited: #643b8a;
+
+$info-badge: #002f6c;
+
+// FUNCTIONAL COLORS
+$font-color: $black;
+$background-color: $white;
+$background-color--light: $whisper;
+$background-color--highlight: #f2f2f2;
+$background-color--blue-gradient: linear-gradient(
+  180deg,
+  rgba(12, 52, 131, 0.94) 0%,
+  #4b6db1 100%
+);
+
+$border-color: $gray;
+$border-color--light: #f2f2f2;
+
+$disabled-color: #999999;
+
+// SCREEN SIZES
+$mobile: '600px';
+
+// SPACING
+$container-spacing: 32px;
+
+// FORM ELEMENTS
+$input-normal: $dusty-gray;
+$input-hover: $input-normal;
+$input-focus: #386db0;
+
+// BUTTONS
+$button-disabled: $dusty-gray;
+
+// CHECKBOX
+$check-disabled: #f2f2f2;
+
+// TABLE
+$table-header-background: #cacaca;
+$table-header-border-color: #979797;
+
+$table-border-color: #979797;
+
+$table-row--highlight: #f2f2f2;
+
+$processed-ccdl: #41a36d;
+$processed-submitter: #dace00;
+
+// Media queries
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
+@mixin tablet {
+  @media (min-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}

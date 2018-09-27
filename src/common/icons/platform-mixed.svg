@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>badges/platform-mixed</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="12" cy="12" r="12"></circle>
+        <path d="M3.5,21.5 L21,3" id="path-3"></path>
+    </defs>
+    <g id="badges/platform-mixed" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="badges/platform">
+            <g id="Line">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#386DB0" xlink:href="#path-1"></use>
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <use stroke="#FDFDFD" stroke-width="0.35" stroke-linecap="square" fill-rule="nonzero" xlink:href="#path-3"></use>
+            </g>
+            <text id="m" font-family="Rubik-Regular, Rubik" font-size="12" font-weight="normal" fill="#FDFDFD">
+                <tspan x="1.78867628" y="11.774308">m</tspan>
+            </text>
+            <text id="R" font-family="Rubik-Regular, Rubik" font-size="12" font-weight="normal" fill="#FDFDFD">
+                <tspan x="12.3450177" y="20.3382064">R</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

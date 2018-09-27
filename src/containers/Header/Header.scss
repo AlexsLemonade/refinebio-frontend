@@ -1,0 +1,166 @@
+@import '../../common/styles/variables';
+
+.header {
+  position: sticky;
+  top: 0;
+  background: $background-color--light;
+  z-index: 10;
+
+  @include tablet {
+    padding: 1.5rem 0;
+  }
+
+  &__container {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    width: 95%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 8px;
+
+    @include tablet {
+      padding: 0 20px;
+    }
+  }
+
+  &__logo {
+    width: 80px;
+
+    @include tablet {
+      width: auto;
+    }
+  }
+
+  &__link {
+    margin: 48px 1rem 0 1rem;
+    padding: 0;
+    font-weight: 400;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-width: fit-content;
+    position: relative;
+    border-bottom: 2px solid transparent;
+
+    @include tablet {
+      margin-top: 0;
+    }
+
+    &:hover {
+      color: #386db0;
+      border-bottom: 2px solid currentColor;
+    }
+
+    &--active {
+      .header__menu & {
+        color: #386db0;
+        border-bottom: 2px solid currentColor;
+      }
+    }
+
+    &--button-wrap,
+    &--button-wrap:hover {
+      border-bottom-color: transparent;
+    }
+  }
+
+  &__link-button {
+    position: relative;
+  }
+
+  &__dataset-count {
+    position: absolute;
+    top: -0.5em;
+    left: 92%;
+    background: $azure;
+    color: $white;
+    border-radius: 15px;
+    padding: 0 0.5em;
+    line-height: 1.5;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  &__menu {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-left: 0;
+    display: flex;
+
+    @include tablet {
+      display: flex;
+      position: relative;
+      background: none;
+      height: auto;
+      width: auto;
+      flex-direction: row;
+    }
+  }
+
+  &__burger {
+    font-size: 3rem;
+  }
+
+  &__menu-close {
+    position: absolute;
+    top: 13px;
+    right: 16px;
+    line-height: 1;
+    font-size: 2rem;
+  }
+}
+
+.header--inverted {
+  background-color: rgba(12, 52, 131, 0.94);
+
+  .header__logo {
+    filter: brightness(0) invert(1);
+  }
+
+  .header__burger {
+    color: $white;
+  }
+
+  .header__link {
+    &:hover {
+      color: $white;
+    }
+
+    &--active {
+      color: $white !important;
+    }
+  }
+
+  @include tablet() {
+    color: $white;
+
+    .header__link-button {
+      color: $white;
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: $azure;
+        border-color: $white;
+        background-color: $white;
+      }
+    }
+
+    .header__dataset-count {
+      background: $white;
+      color: $azure;
+    }
+  }
+}
+
+// disable stick
+.header--scroll {
+  position: relative;
+}

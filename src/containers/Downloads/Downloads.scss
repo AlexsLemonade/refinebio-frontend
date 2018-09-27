@@ -1,0 +1,243 @@
+@import '../../common/styles/variables';
+
+.downloads {
+  margin-bottom: 9 * 8px;
+
+  &__bar,
+  &__fieldset {
+    display: flex;
+  }
+
+  &__fieldset {
+    margin-bottom: 2 * 8px;
+
+    @include tablet {
+      margin-bottom: 0;
+    }
+  }
+
+  &__bar {
+    border-bottom: 1px solid $gray;
+    padding-bottom: 1rem;
+    flex-direction: column;
+
+    @include tablet {
+      flex-flow: row wrap;
+      align-items: center;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+
+    @include tablet {
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 0;
+
+      flex: 2 100%;
+      justify-content: space-between;
+    }
+
+    @include desktop {
+      flex: 1 auto;
+      justify-content: flex-end;
+    }
+  }
+
+  &__species-title {
+    text-transform: capitalize;
+  }
+
+  &__section {
+    margin: 2rem 0;
+  }
+
+  &__cards {
+    padding: 0 7px;
+
+    @include tablet {
+      display: grid;
+      grid-column-gap: 14px;
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__file-modifier {
+    margin-right: 48px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  &__card {
+    background-color: $whisper;
+    box-shadow: 0 3px 20px 0 rgba($black, 0.1);
+    flex: 1;
+    margin: 1rem 0;
+    padding: 18px 0;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &--summary {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  &__card-stats {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__card-stat {
+    font-size: 0.875rem;
+    margin: 0 0.5rem;
+  }
+
+  &__table {
+    border-collapse: collapse;
+    font-size: 1.125rem;
+    width: 100%;
+  }
+
+  &__table-cell,
+  &__table-header {
+    border-bottom: 2px solid $gray;
+    font-weight: 400;
+    padding: 1rem 0;
+  }
+
+  &__table-cell {
+    &--value {
+      color: $azure;
+      font-size: 1.375rem;
+    }
+  }
+
+  &__table-row {
+    &:last-of-type {
+      .downloads__table-cell {
+        border-bottom: 0;
+      }
+    }
+  }
+
+  &__sample {
+    border-bottom: 2px solid $gray;
+    margin: 0 1.5rem 1.5rem;
+    padding-bottom: 1rem;
+    text-align: left;
+
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &:last-of-type {
+      border-bottom: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  &__sample-header {
+    text-align: left;
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__sample-stats {
+    display: flex;
+    margin: 0 -2rem 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  &__sample-stat {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 2rem;
+
+    @include tablet {
+      margin: 0 2rem;
+    }
+
+    &--experiment {
+      font-family: 'Rubik', sans-serif;
+    }
+  }
+
+  &__sample-icon {
+    height: 24px;
+    margin-right: 8px;
+  }
+
+  &__experiment-info {
+    font-family: 'Rubik', sans-serif;
+  }
+
+  &__label {
+    margin-right: 1.5rem;
+  }
+
+  &__label-text {
+    margin-bottom: 8px;
+
+    @include tablet {
+      margin-bottom: 0;
+      display: inline-block;
+    }
+  }
+
+  &__experiment-title {
+    font-size: 1rem;
+    font-weight: 600;
+    max-width: 640px;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  &__experiment-metadata {
+    margin: 0 0 1.5rem;
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__empty-heading {
+    margin: 8 * 8px 0 2 * 8px;
+  }
+
+  &__empty-image {
+    margin-top: 7.5 * 8px;
+  }
+
+  &__species-filters {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+    margin-left: 24px;
+    margin-bottom: 16px;
+  }
+
+  &__species-filter-item {
+    margin-right: 16px;
+  }
+}
+
+.samples-modal {
+  max-width: 950px;
+}

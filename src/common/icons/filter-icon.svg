@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Search-Page-Iteration" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="search-results-filters-applied" transform="translate(-34.000000, -380.000000)" fill="#386DB0" fill-rule="nonzero">
+            <g id="button-filter" transform="translate(10.000000, 371.000000)">
+                <g id="icons/filter" transform="translate(24.000000, 9.000000)">
+                    <polygon id="Shape" points="0 0 16 0 9.45454545 10.0626667 9.45454545 16 6.54545455 14 6.54545455 10.0626667"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

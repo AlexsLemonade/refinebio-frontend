@@ -1,0 +1,68 @@
+@import '../../../common/styles/variables';
+
+.responsive-chart {
+  flex-direction: column;
+  display: flex;
+  padding: 24px;
+  background: $white;
+  border: 1px solid $gallery;
+
+  @media screen and (min-width: $mobile) {
+    &--medium {
+      grid-row: span 2;
+    }
+
+    &--large {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+  }
+
+  &__title {
+    margin-bottom: 24px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  &__text {
+    font-size: 2.5rem;
+  }
+
+  &__container {
+    position: relative;
+
+    &--medium {
+      &:after {
+        padding-bottom: 100%;
+      }
+    }
+
+    &--large {
+      &:after {
+        padding-bottom: 75%;
+
+        @media screen and (min-width: $mobile) {
+          padding-bottom: 50%;
+        }
+      }
+    }
+
+    &:after {
+      display: block;
+      content: '';
+      width: 100%;
+      height: 0;
+    }
+  }
+
+  &__absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}
