@@ -19,7 +19,12 @@ workflows:
   version: 2
   test-and-deploy:
     jobs:
-      - test
+      - test:
+          filters:
+            # To allow tag commits whose name start with "v" to trigger
+            # "test" job, an explicit "tags" filter is required here.
+            tags:
+              only: /v.*/
       - deploy:
           requires:
             - test
