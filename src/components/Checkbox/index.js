@@ -39,5 +39,7 @@ export default Checkbox;
  * Checkbox component to be used inside react forms
  */
 export const CheckboxField = ({ input, children }) => (
-  <Checkbox {...input}>{children}</Checkbox>
+  <Checkbox {...input} checked={input.value}>
+    {children}
+  </Checkbox>
 );

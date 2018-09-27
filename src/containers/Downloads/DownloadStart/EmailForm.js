@@ -58,7 +58,8 @@ EmailForm = connect((state, ownProps) => {
     isSubmitDisabled:
       !ownProps.agreedToTerms && !fieldSelector(state, 'termsOfService'),
     initialValues: {
-      email: ownProps.email
+      email: ownProps.email,
+      receiveUpdates: true
     }
   };
 })(EmailForm);
