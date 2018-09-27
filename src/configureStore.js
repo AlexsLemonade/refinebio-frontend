@@ -47,6 +47,11 @@ store.subscribe(
     } else {
       localStorage.removeItem('dataSetId');
     }
+    if (state.token) {
+      localStorage.setItem('token', state.token);
+    } else {
+      localStorage.removeItem('token');
+    }
   }, 1000)
 );
 
@@ -88,6 +93,7 @@ function loadInitialState() {
   return {
     download: {
       dataSetId: localStorage.getItem('dataSetId')
-    }
+    },
+    token: localStorage.getItem('token')
   };
 }
