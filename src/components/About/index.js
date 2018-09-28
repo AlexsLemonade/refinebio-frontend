@@ -27,26 +27,27 @@ function About() {
         <div className="about__section">
           <div className="box about__top-box">
             <div className="about__top-box-tagline">
-              refine.bio has harmonized over 60,000 gene expression experiments
+              refine.bio will have harmonized over 60,000 gene expression
+              experiments
             </div>
 
             <div className="about__stats-list">
               <div className="about__stat-item">
                 <div className="about__stat">1.5M</div>
                 <div className="about__stat-text">
-                  1.5 million samples available
+                  1.5 million samples will be available
                 </div>
               </div>
               <div className="about__stat-item">
                 <div className="about__stat">3K</div>
                 <div className="about__stat-text">
-                  Support for 3000 organisms
+                  There will be support for 3000 organisms
                 </div>
               </div>
               <div className="about__stat-item">
-                <div className="about__stat">11.7 TB</div>
+                <div className="about__stat">1 PB</div>
                 <div className="about__stat-text">
-                  11.7 terabytes of raw data processed
+                  Over a petabyte of raw data will be processed
                 </div>
               </div>
             </div>
