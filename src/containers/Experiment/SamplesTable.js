@@ -97,7 +97,7 @@ class SamplesTable extends React.Component {
                   <div>
                     Some fields may be harmonized.{' '}
                     <a
-                      href="https://refinebio-docs.readthedocs.io/en/latest/main_text.html#refine-bio-harmonized-metadata"
+                      href="http://docs.refine.bio/en/latest/main_text.html#refine-bio-harmonized-metadata"
                       target="_blank"
                       className="link"
                       rel="noopener noreferrer"
@@ -378,7 +378,11 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
         <img className="info__icon" src={InfoIcon} alt="" />
         <div>
           <div className="nowrap">Sample not processed</div>
-          <a href="/docs" className="link" target="_blank">
+          <a
+            href="http://docs.refine.bio/en/latest"
+            className="link"
+            target="_blank"
+          >
             Learn more
           </a>
         </div>
