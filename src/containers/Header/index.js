@@ -57,9 +57,11 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
       >
         Search
       </HeaderLink>
-      <HeaderLink to="/docs" onClick={itemClicked} location={location}>
-        Docs
-      </HeaderLink>
+      <li class="header__link">
+        <a href="http://docs.refine.bio" target="_blank">
+          Docs
+        </a>
+      </li>
       <HeaderLink to="/about" onClick={itemClicked} location={location}>
         About
       </HeaderLink>
