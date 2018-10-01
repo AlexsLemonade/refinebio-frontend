@@ -30,7 +30,7 @@ const AppContent = () => (
   <div className="layout__content">
     <Switch>
       <Route path="/results" component={Results} />
-      <Route path={routes.experiments(':id')} component={Experiment} />
+      <Route path="/experiments/:id" component={Experiment} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/download" component={Downloads} />
       <Route path="/dataset/:id" component={DataSet} />

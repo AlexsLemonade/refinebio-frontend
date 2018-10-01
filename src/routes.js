@@ -3,7 +3,7 @@
  */
 
 export const experiments = (accessionCode, state = false) => {
-  const pathname = `/experiments/${accessionCode}`;
+  const pathname = `/experiments/${accessionCode}#`;
   return !state ? pathname : { pathname, state };
 };
 

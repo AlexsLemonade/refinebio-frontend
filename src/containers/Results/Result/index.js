@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashLink as Link } from 'react-router-hash-link';
+import { Link } from 'react-router-dom';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
@@ -30,7 +30,7 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
           </div>
           <Link
             className="link result__title"
-            to={routes.experiments(result.id, { ref: 'search' })}
+            to={routes.experiments(result.id, { ref: 'search', result })}
           >
             {result.title || 'No title.'}
           </Link>
@@ -102,7 +102,7 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
 
         <Link
           className="button button--secondary"
-          to={routes.experimentsSamples(result.id, { ref: 'search' })}
+          to={routes.experimentsSamples(result.id, { ref: 'search', result })}
         >
           View Samples
         </Link>
