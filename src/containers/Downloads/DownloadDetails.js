@@ -28,6 +28,8 @@ import {
   clearDataSet
 } from '../../state/download/actions';
 
+import * as routes from '../../routes';
+
 let DownloadDetails = ({
   dataSet,
   samples,
@@ -215,7 +217,7 @@ class ExperimentsView extends React.Component {
               <div className="downloads__sample" key={i}>
                 <div className="downloads__dataSet-info">
                   <Link
-                    to={`/experiments/${experiment.id}`}
+                    to={routes.experiments(experiment.id)}
                     className="downloads__experiment-title link"
                   >
                     {experiment.title}
