@@ -20,6 +20,8 @@ import ErrorBoundary from '../../containers/ErrorBoundary';
 import About from '../About';
 import classnames from 'classnames';
 
+import * as routes from '../../routes';
+
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
  * this helper component.
@@ -28,7 +30,7 @@ const AppContent = () => (
   <div className="layout__content">
     <Switch>
       <Route path="/results" component={Results} />
-      <Route path="/experiments/:id" component={Experiment} />
+      <Route path={routes.experiments(':id')} component={Experiment} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/download" component={Downloads} />
       <Route path="/dataset/:id" component={DataSet} />

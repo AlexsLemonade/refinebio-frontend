@@ -11,6 +11,8 @@ import TechnologyBadge, {
   RNA_SEQ
 } from '../../../components/TechnologyBadge';
 
+import * as routes from '../../../routes';
+
 const Result = ({ result, addExperiment, removeExperiment }) => {
   const metadataFields = getMetadataFields(result);
 
@@ -28,7 +30,7 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
           </div>
           <Link
             className="link result__title"
-            to={`/experiments/${result.id}?ref=search`}
+            to={routes.experiments(result.id, { ref: 'search' })}
           >
             {result.title || 'No title.'}
           </Link>
@@ -100,7 +102,7 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
 
         <Link
           className="button button--secondary"
-          to={`/experiments/${result.id}?ref=search#samples`}
+          to={routes.experimentsSamples(result.id, { ref: 'search' })}
         >
           View Samples
         </Link>

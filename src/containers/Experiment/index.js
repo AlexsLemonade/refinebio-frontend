@@ -37,11 +37,11 @@ let Experiment = ({
   addSamplesToDataset,
   dataSet,
   match,
-  location: { search },
+  location: { search, state },
   goBack
 }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
-  const comesFromSearch = getQueryParamObject(search)['ref'] === 'search';
+  const comesFromSearch = state && state.ref === 'search';
   const { organisms = [] } = experiment;
 
   return (
