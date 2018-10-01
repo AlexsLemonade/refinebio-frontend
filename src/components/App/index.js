@@ -46,7 +46,7 @@ const AppContent = () => (
 const App = () => {
   // In order to render `App` individually in the tests, Provider needs to wrap it's contents.
   return (
-    <div className={classnames({ ios: isIos() })}>
+    <div className={classnames('app-wrap', { ios: isIos() })}>
       <Provider store={store}>
         <Router history={history}>
           <Layout>
