@@ -379,7 +379,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
         <div>
           <div className="nowrap">Sample not processed</div>
           <a
-            href="http://docs.refine.bio/en/latest"
+            href="http://docs.refine.bio/en/latest/faq.html#why-can-t-i-add-certain-samples-to-my-dataset"
             className="link"
             target="_blank"
           >
