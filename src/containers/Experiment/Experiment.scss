@@ -126,7 +126,9 @@
       padding-left: 32px;
     }
   }
-}
 
-// first two columns sticky
-//
+  &__sample-table-loading-wrap {
+    padding-top: 40px;
+    min-height: 1200px;
+  }
+}

@@ -28,6 +28,7 @@ import TechnologyBadge, {
 } from '../../components/TechnologyBadge';
 import Spinner from '../../components/Spinner';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
+import Anchor from '../../components/Anchor';
 
 let Experiment = ({
   fetchExperiment,
@@ -232,14 +233,18 @@ let Experiment = ({
                   </div>
                 </div>
               </div>
-              <section className="experiment__section" id="samples">
-                <h2 className="experiment__title">Samples</h2>
-                {isLoading ? (
-                  <Spinner />
-                ) : (
-                  <ExperimentSamplesTable experiment={experimentData} />
-                )}
-              </section>
+              <Anchor name="samples">
+                <section className="experiment__section">
+                  <h2 className="experiment__title">Samples</h2>
+                  {isLoading ? (
+                    <div className="experiment__sample-table-loading-wrap">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <ExperimentSamplesTable experiment={experimentData} />
+                  )}
+                </section>
+              </Anchor>
             </div>
           </div>
         );

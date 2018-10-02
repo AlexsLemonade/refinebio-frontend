@@ -15,7 +15,7 @@ class Header extends React.Component {
   render() {
     return (
       <header
-        className={classnames('header', {
+        className={classnames('header', 'js-header', {
           'header--inverted header--scroll': this._invertColors()
         })}
       >
