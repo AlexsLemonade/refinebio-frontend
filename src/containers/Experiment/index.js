@@ -27,6 +27,7 @@ import TechnologyBadge, {
   RNA_SEQ
 } from '../../components/TechnologyBadge';
 import Spinner from '../../components/Spinner';
+import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 
 let Experiment = ({
   fetchExperiment,
@@ -53,6 +54,7 @@ let Experiment = ({
           <Spinner />
         ) : (
           <div>
+            <ScrollTopOnMount />
             {comesFromSearch && (
               <Button
                 text="Back to Results"
@@ -98,7 +100,7 @@ let Experiment = ({
                   {organisms.length
                     ? organisms
                         .map(organism => formatSentenceCase(organism.name))
-                        .join(',')
+                        .join(', ')
                     : 'No species.'}
                 </div>
                 <div className="experiment__stats-item">
@@ -230,12 +232,14 @@ let Experiment = ({
                   </div>
                 </div>
               </div>
-              {!isLoading && (
-                <section className="experiment__section" id="samples">
-                  <h2 className="experiment__title">Samples</h2>
+              <section className="experiment__section" id="samples">
+                <h2 className="experiment__title">Samples</h2>
+                {isLoading ? (
+                  <Spinner />
+                ) : (
                   <ExperimentSamplesTable experiment={experimentData} />
-                </section>
-              )}
+                )}
+              </section>
             </div>
           </div>
         );
