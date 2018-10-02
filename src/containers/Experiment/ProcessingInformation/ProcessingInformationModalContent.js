@@ -134,7 +134,7 @@ function AffymetrixScanProtocol() {
         individual samples. SCAN models and corrects for the effect of technical
         bias, such as GC content, using a mixture-modeling approach. For more
         information about this approach, see the primary publication (Piccolo,
-        et al. <i>Genomics</i>. 2012.
+        et al. <i>Genomics</i>. 2012.{' '}
         <a
           href="http://doi.org/10.1016/j.ygeno.2012.08.003"
           target="_blank"
@@ -169,7 +169,7 @@ function IlluminaScanProtocol() {
         it has been adapted for Illumina BeadArrays. SCAN models and corrects
         for the effect of technical bias, such as GC content, using a
         mixture-modeling approach. For more information about this approach, see
-        the primary publication (Piccolo, et al. <i>Genomics</i>. 2012.
+        the primary publication (Piccolo, et al. <i>Genomics</i>. 2012.{' '}
         <a
           href="http://doi.org/10.1016/j.ygeno.2012.08.003"
           target="_blank"
