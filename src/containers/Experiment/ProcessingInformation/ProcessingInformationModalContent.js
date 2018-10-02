@@ -31,7 +31,10 @@ export default class ProcessingInformationModalContent extends React.Component {
             >
               Submitter processed
             </a>
-            <SubmitterSuppliedProtocol {...this.props} />
+            <SubmitterSuppliedProtocol
+              {...this.props}
+              isSubmitterProcessed={isSubmitterProcessed}
+            />
           </React.Fragment>
         ) : (
           <React.Fragment>
