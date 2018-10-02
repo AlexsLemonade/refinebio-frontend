@@ -87,7 +87,7 @@ let DownloadDetails = ({
               {({ hideModal }) => (
                 <div>
                   <h1>Are you sure you want to remove all samples?</h1>
-                  <div className="downloads__fieldset">
+                  <div className="downloads__remove-confirmation">
                     <Button
                       buttonStyle="remove"
                       text="Yes, remove all samples"
