@@ -20,8 +20,6 @@ import ErrorBoundary from '../../containers/ErrorBoundary';
 import About from '../About';
 import classnames from 'classnames';
 
-import * as routes from '../../routes';
-
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
  * this helper component.

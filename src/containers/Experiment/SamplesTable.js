@@ -382,6 +382,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
             href="http://docs.refine.bio/en/latest"
             className="link"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Learn more
           </a>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Loader from '../../components/Loader';
 import { fetchExperiment } from '../../state/experiment/actions';
 import Button from '../../components/Button';
-import { getQueryParamObject, formatSentenceCase } from '../../common/helpers';
+import { formatSentenceCase } from '../../common/helpers';
 import './Experiment.scss';
 
 import AccessionIcon from '../../common/icons/accession.svg';

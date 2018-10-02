@@ -58,7 +58,11 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
         Search
       </HeaderLink>
       <li className="header__link">
-        <a href="http://docs.refine.bio" target="_blank">
+        <a
+          href="http://docs.refine.bio"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Docs
         </a>
       </li>
