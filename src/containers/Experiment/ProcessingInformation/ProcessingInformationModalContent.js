@@ -96,6 +96,20 @@ export default class ProcessingInformationModalContent extends React.Component {
           this._getProtocolDescription(name)
         )}
 
+        <div>
+          All samples available for download will be <b>quantile normalized</b>.
+          For more information regarding how quantile normalization is performed
+          and its limitations, see{' '}
+          <a
+            href="https://github.com/AlexsLemonade/refinebio-docs/blob/master/docs/main_text.md#quantile-normalization"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
+            our documentation
+          </a>.
+        </div>
+
         <ProcessorVersion {...this.props} />
       </React.Fragment>
     );
