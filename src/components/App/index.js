@@ -55,6 +55,14 @@ const App = () => {
                 <Route exact path="/" component={Main} />
                 <Route exact path="/about" component={About} />
 
+                <Route
+                  exact
+                  path="/docs"
+                  component={() => (
+                    <ExternalRedirect to="http://docs.refine.bio/" />
+                  )}
+                />
+
                 <Route path="/" component={AppContent} />
               </Switch>
             </ErrorBoundary>
@@ -69,4 +77,19 @@ export default App;
 
 function isIos() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+/**
+ * Redirecting to an external link is hard with React-Router
+ *
+ * Thanks to https://stackoverflow.com/a/42988282/763705
+ */
+class ExternalRedirect extends React.Component {
+  componentDidMount() {
+    window.location = this.props.to;
+  }
+
+  render() {
+    return <section>Redirecting...</section>;
+  }
 }
