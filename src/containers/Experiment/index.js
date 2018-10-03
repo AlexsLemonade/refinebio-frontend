@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import Loader from '../../components/Loader';
 import { fetchExperiment } from '../../state/experiment/actions';
 import Button from '../../components/Button';
-import { getQueryParamObject, formatSentenceCase } from '../../common/helpers';
+import {
+  getQueryParamObject,
+  formatSentenceCase,
+  truncateOnWord
+} from '../../common/helpers';
 import './Experiment.scss';
 
 import AccessionIcon from '../../common/icons/accession.svg';
@@ -60,9 +64,7 @@ let Experiment = ({
             )}
 
             <div className="experiment">
-              <Helmet>
-                <title>refine.bio - Experiment Details</title>
-              </Helmet>
+              <ExperimentHelmet experiment={experiment} />
               <BackToTop />
               <div className="experiment__accession">
                 <img
@@ -246,6 +248,18 @@ Experiment = connect(
 )(Experiment);
 
 export default Experiment;
+
+function ExperimentHelmet({ experiment }) {
+  return (
+    <Helmet>
+      <title>{truncateOnWord(experiment.title, 60, '')} - refine.bio</title>
+      <meta
+        name="description"
+        content={truncateOnWord(experiment.description, 160)}
+      />
+    </Helmet>
+  );
+}
 
 class ExperimentSamplesTable extends React.Component {
   state = {
