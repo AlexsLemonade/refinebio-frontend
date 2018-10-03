@@ -15,6 +15,13 @@ let Main = ({ searchTerm, fetchResults, push }) => {
     <div className="main">
       <Helmet>
         <title>Search for harmonized transcriptome data - refine.bio</title>
+        <meta
+          name="description"
+          content="Search the collection of harmonized RNA-seq and microarray data
+          from publicly available sources like GEO, ArrayExpress, and SRA.
+          The data has been processed with a set of standardized pipelines
+          curated by the Childhood Cancer Data Lab (CCDL)"
+        />
       </Helmet>
       <section className="main__section main__section--searchbox">
         <div className="main__container main__container--searchbox">
