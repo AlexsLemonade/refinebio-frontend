@@ -10,7 +10,7 @@ import { goBack } from '../../state/routerActions';
 let NoMatch = ({ goBack }) => (
   <div className="error-page">
     <Helmet>
-      <title>refine.bio - The page you're looking for isn't expressed.</title>
+      <title>The page you're looking for isn't expressed. - refine.bio</title>
     </Helmet>
     <div className="error-page__text">
       <h1>The page you are looking for isn’t expressed.</h1>

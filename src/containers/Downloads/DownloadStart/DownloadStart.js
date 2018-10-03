@@ -38,7 +38,7 @@ class DownloadStart extends React.Component {
         <div className="dataset__message">
           <div>
             <Helmet>
-              <title>refine.bio - Download</title>
+              <title>Download - refine.bio</title>
             </Helmet>
             <h1>
               We're almost ready to start putting your download files together!

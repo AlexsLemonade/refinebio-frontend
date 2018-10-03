@@ -78,7 +78,7 @@ class Results extends Component {
     return (
       <div className="results">
         <Helmet>
-          <title>refine.bio - Results</title>
+          <title>Results - refine.bio</title>
         </Helmet>
 
         <BackToTop />
