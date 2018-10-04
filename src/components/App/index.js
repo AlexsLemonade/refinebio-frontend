@@ -2,6 +2,7 @@ import React from 'react';
 import './App.scss';
 import { Router, Route, Switch } from 'react-router-dom';
 import history from '../../history';
+import store from '../../store/store';
 
 import Main from '../../containers/Main';
 import Results from '../../containers/Results';
@@ -14,7 +15,6 @@ import NoMatch from '../../containers/NoMatch';
 import Privacy from '../../components/Terms/Privacy';
 import Terms from '../../components/Terms/Terms';
 import License from '../../components/Terms/License';
-import store from '../../configureStore';
 import { Provider } from 'react-redux';
 import ErrorBoundary from '../../containers/ErrorBoundary';
 import About from '../About';
