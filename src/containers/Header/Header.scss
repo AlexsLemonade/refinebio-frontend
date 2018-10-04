@@ -60,6 +60,11 @@
         border-bottom: 2px solid currentColor;
       }
     }
+
+    &--button-wrap,
+    &--button-wrap:hover {
+      border-bottom-color: transparent;
+    }
   }
 
   &__link-button {

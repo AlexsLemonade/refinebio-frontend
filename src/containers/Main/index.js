@@ -22,7 +22,9 @@ let Main = ({ searchTerm, fetchResults, push }) => {
             Search for harmonized transcriptome data
           </h1>
           <SearchInput
-            onSubmit={value => push(`/results?q=${value.search}`)}
+            onSubmit={value =>
+              push(value.search ? `/results?q=${value.search}` : `/results`)
+            }
             searchTerm={searchTerm}
             buttonStyle="primary"
           />
@@ -86,7 +88,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
 
             <img
               src={StatsPlaceholder}
-              class="main__stats-placeholder"
+              className="main__stats-placeholder"
               alt="Stats"
             />
           </div>

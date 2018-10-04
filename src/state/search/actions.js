@@ -23,22 +23,6 @@ const navigateToResults = ({ query, page, size, filters }) => {
 
 export function fetchResults({ query, page = 1, size = 10, filters }) {
   return async (dispatch, getState) => {
-    if (!query) {
-      dispatch({
-        type: 'SEARCH_RESULTS_FETCH',
-        data: {
-          searchTerm: '',
-          results: [],
-          filters,
-          totalResults: 0,
-          resultsPerPage: size,
-          currentPage: page,
-          appliedFilters: {}
-        }
-      });
-      return;
-    }
-
     try {
       const {
         results,

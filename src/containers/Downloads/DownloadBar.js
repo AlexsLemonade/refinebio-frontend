@@ -44,7 +44,7 @@ let DownloadBar = ({
               Aggregate{' '}
               <HelpIcon
                 alt="What does aggregate mean?"
-                url="https://refinebio-docs.readthedocs.io/en/latest/main_text.html#aggregations"
+                url="http://docs.refine.bio/en/latest/main_text.html#aggregations"
               />
             </div>{' '}
             <Dropdown
@@ -60,7 +60,7 @@ let DownloadBar = ({
               Transformation{' '}
               <HelpIcon
                 alt="What does transformation mean?"
-                url="https://refinebio-docs.readthedocs.io/en/latest/main_text.html#transformations"
+                url="http://docs.refine.bio/en/latest/main_text.html#transformations"
               />
             </div>{' '}
             <Dropdown
@@ -95,7 +95,7 @@ DownloadBar = connect(
 )(DownloadBar);
 export default DownloadBar;
 
-function HelpIcon({ url = 'https://refine.bio/docs', alt = '' }) {
+function HelpIcon({ url = 'http://docs.refine.bio/', alt = '' }) {
   return (
     <a
       href={url}

@@ -236,6 +236,16 @@
   &__species-filter-item {
     margin-right: 16px;
   }
+
+  &__remove-confirmation {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    @include tablet {
+      flex-direction: row;
+    }
+  }
 }
 
 .samples-modal {
