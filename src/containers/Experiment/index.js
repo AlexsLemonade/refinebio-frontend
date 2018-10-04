@@ -285,7 +285,7 @@ class ExperimentSamplesTable extends React.Component {
               <Checkbox
                 name="samples-dataset"
                 checked={this.state.showOnlyAddedSamples}
-                onToggle={() =>
+                onChange={() =>
                   this.setState({
                     showOnlyAddedSamples: !this.state.showOnlyAddedSamples,
                     onlyAddedSamples: this._getAddedSamples()

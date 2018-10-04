@@ -141,7 +141,7 @@ function SRASubmitterSuppliedProtocol({ protocol_info }) {
   return (
     <div className={styles.sra}>
       {protocol_info.map(info => (
-        <div>
+        <div key={info['Description']}>
           <p>{info['Description']}</p>
           <p>
             <b>Reference</b>{' '}

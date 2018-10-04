@@ -8,6 +8,7 @@ import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
 import { getDataSetId } from './reducer';
 import { replace } from '../routerActions';
+import { createToken } from '../token';
 
 /**
  * Saves an updated copy of the given dataset in the store
@@ -289,14 +290,16 @@ export const fetchDataSetDetailsSucceeded = ({
   }
 });
 
-export const startDownload = ({ tokenId, dataSetId, dataSet, email }) => async (
-  dispatch,
-  getState
-) => {
+export const startDownload = ({
+  dataSetId,
+  dataSet,
+  email,
+  receiveUpdates = false
+}) => async (dispatch, getState) => {
+  let tokenId = getState().token;
   if (!tokenId) {
-    throw new Error(
-      'A new token id must be requested in order to start a download'
-    );
+    await dispatch(createToken());
+    tokenId = getState().token;
   }
 
   try {
@@ -304,6 +307,7 @@ export const startDownload = ({ tokenId, dataSetId, dataSet, email }) => async (
       start: true,
       data: dataSet,
       token_id: tokenId,
+      ...(receiveUpdates ? { email_ccdl_ok: true } : {}),
       ...(email ? { email_address: email } : {})
     });
   } catch (e) {
