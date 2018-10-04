@@ -28,6 +28,8 @@ import {
   clearDataSet
 } from '../../state/download/actions';
 
+import * as routes from '../../routes';
+
 let DownloadDetails = ({
   dataSet,
   samples,
@@ -85,7 +87,7 @@ let DownloadDetails = ({
               {({ hideModal }) => (
                 <div>
                   <h1>Are you sure you want to remove all samples?</h1>
-                  <div className="downloads__fieldset">
+                  <div className="downloads__remove-confirmation">
                     <Button
                       buttonStyle="remove"
                       text="Yes, remove all samples"
@@ -215,7 +217,7 @@ class ExperimentsView extends React.Component {
               <div className="downloads__sample" key={i}>
                 <div className="downloads__dataSet-info">
                   <Link
-                    to={`/experiments/${experiment.id}`}
+                    to={routes.experiments(experiment.id)}
                     className="downloads__experiment-title link"
                   >
                     {experiment.title}
