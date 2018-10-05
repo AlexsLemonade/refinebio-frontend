@@ -46,7 +46,8 @@ export function getQueryParamObject(queryString) {
         // if it's already an array just add it
         queryObj[key].push(value);
       }
-    } else {
+    } else if (value) {
+      // only add the parameter if there's an actual value to add
       queryObj[key] = value;
     }
   });
