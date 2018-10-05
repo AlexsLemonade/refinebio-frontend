@@ -72,10 +72,10 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
           <TechnologyBadge
             className="result__icon"
             isMicroarray={
-              result.technologies && result.technologies.contains(MICROARRAY)
+              result.technologies && result.technologies.includes(MICROARRAY)
             }
             isRnaSeq={
-              result.technologies && result.technologies.contains(RNA_SEQ)
+              result.technologies && result.technologies.includes(RNA_SEQ)
             }
           />
           {result.pretty_platforms.filter(platform => !!platform).join(', ')}
