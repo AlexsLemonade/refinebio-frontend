@@ -1,3 +1,6 @@
+import difference from 'lodash/difference';
+import uniq from 'lodash/uniq';
+
 /**
  * Receives the current state of a data set, and provides methods to modify it.
  * The goal of this class is to keep this logic sepparated from the action creators.
@@ -67,5 +70,28 @@ export default class DataSetManager {
       ...this.dataSet,
       ...newDataSetExperiments
     };
+  }
+
+  add(dataSetSlice) {
+    let result = { ...this.dataSet };
+    for (let accessionCode of Object.keys(dataSetSlice)) {
+      result[accessionCode] = uniq([
+        ...(result[accessionCode] || []),
+        ...dataSetSlice[accessionCode]
+      ]);
+    }
+    return result;
+  }
+
+  remove(dataSetSlice) {
+    let result = { ...this.dataSet };
+    for (let accessionCode of Object.keys(dataSetSlice)) {
+      if (!result[accessionCode]) continue;
+      result[accessionCode] = difference(
+        result[accessionCode],
+        dataSetSlice[accessionCode]
+      );
+    }
+    return result;
   }
 }
