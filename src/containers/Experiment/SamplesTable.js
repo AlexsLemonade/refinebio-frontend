@@ -13,7 +13,6 @@ import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../constants/table';
 import SampleFieldMetadata from './SampleFieldMetadata';
-import { addExperiment, removeSamples } from '../../state/download/actions';
 import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from './DataSetSampleActions';
 import './SamplesTable.scss';
@@ -278,15 +277,9 @@ class SamplesTable extends React.Component {
     return orderBy;
   }
 }
-SamplesTable = connect(
-  ({ download: { dataSet } }) => ({
-    dataSet
-  }),
-  {
-    addExperiment,
-    removeSamples
-  }
-)(SamplesTable);
+SamplesTable = connect(({ download: { dataSet } }) => ({
+  dataSet
+}))(SamplesTable);
 export default SamplesTable;
 
 /**

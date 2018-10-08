@@ -13,11 +13,6 @@ import OrganismIcon from '../../common/icons/organism.svg';
 import BackToTop from '../../components/BackToTop';
 
 import SamplesTable from './SamplesTable';
-import {
-  addExperiment,
-  removeExperiment,
-  removeSamples
-} from '../../state/download/actions';
 import DataSetSampleActions from './DataSetSampleActions';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
@@ -33,9 +28,6 @@ import Anchor from '../../components/Anchor';
 let Experiment = ({
   fetchExperiment,
   experiment = {},
-  addExperiment,
-  removeExperiment,
-  removeSamples,
   addSamplesToDataset,
   dataSet,
   match,
@@ -256,9 +248,6 @@ Experiment = connect(
   ({ experiment, download: { dataSet } }) => ({ experiment, dataSet }),
   {
     fetchExperiment,
-    addExperiment,
-    removeExperiment,
-    removeSamples,
     goBack
   }
 )(Experiment);
