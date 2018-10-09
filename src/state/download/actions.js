@@ -29,12 +29,12 @@ export const downloadUpdateDataSet = dataSet => {
 const dataSetUpdateOperation = modifier => async (dispatch, getState) => {
   // Update the current dataset with whatever in on the server, otherwise it might get out of sync
   // if the user edited it in a different tab.
-  // try {
-  //   await dispatch(fetchDataSet());
-  // } catch (e) {
-  //   dispatch(reportError(e));
-  //   throw e;
-  // }
+  try {
+    await dispatch(fetchDataSet());
+  } catch (e) {
+    dispatch(reportError(e));
+    throw e;
+  }
 
   const { dataSet, dataSetId } = getState().download;
   // apply modifier function to the dataset
