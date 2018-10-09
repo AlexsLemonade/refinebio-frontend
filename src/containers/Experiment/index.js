@@ -25,8 +25,6 @@ import Spinner from '../../components/Spinner';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import Anchor from '../../components/Anchor';
 
-import intersection from 'lodash/intersection';
-
 let Experiment = ({
   fetchExperiment,
   experiment = {},
@@ -329,7 +327,7 @@ class ExperimentSamplesTable extends React.Component {
    * with it's processed samples
    */
   _getDataSetSlice() {
-    const { experiment, dataSet } = this.props;
+    const { experiment } = this.props;
 
     return {
       [experiment.accession_code]: DataSetStats.mapAccessions(
