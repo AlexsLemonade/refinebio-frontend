@@ -107,4 +107,14 @@ export default class DataSetStats {
   totalSamplesInDataSet() {
     return this.getSamplesInDataSet().length;
   }
+
+  /**
+   * Returns a list of accession codes of the processed samples
+   * @param {Array} samples List of samples as sent by the server
+   */
+  static mapAccessions(samples) {
+    return samples
+      .filter(sample => sample.is_processed)
+      .map(sample => sample.accession_code);
+  }
 }

@@ -270,64 +270,46 @@ class ExperimentSamplesTable extends React.Component {
         accessionCodes={this._getSamplesToBeDisplayed()}
         experimentAccessionCodes={[experiment.accession_code]}
         // Render prop for the button that adds the samples to the dataset
-        pageActionComponent={samplesDisplayed => (
-          <div className="experiment__sample-actions">
-            <div className="mobile-p">
-              <Checkbox
-                name="samples-dataset"
-                checked={this.state.showOnlyAddedSamples}
-                onChange={() =>
-                  this.setState({
-                    showOnlyAddedSamples: !this.state.showOnlyAddedSamples,
-                    onlyAddedSamples: this._getAddedSamples()
-                  })
-                }
-                disabled={
-                  !this.state.showOnlyAddedSamples &&
-                  !this._anySampleInDataSet()
-                }
-              >
-                Show only samples added to dataset
-              </Checkbox>
+        pageActionComponent={samplesDisplayed => {
+          const stats = new DataSetStats(
+            this.props.dataSet,
+            this._getDataSetSlice()
+          );
+          return (
+            <div className="experiment__sample-actions">
+              <div className="mobile-p">
+                <Checkbox
+                  name="samples-dataset"
+                  checked={this.state.showOnlyAddedSamples}
+                  onChange={() =>
+                    this.setState(state => ({
+                      showOnlyAddedSamples: !state.showOnlyAddedSamples,
+                      onlyAddedSamples: stats.getSamplesInDataSet()
+                    }))
+                  }
+                  disabled={
+                    !this.state.showOnlyAddedSamples &&
+                    !stats.anyProcessedInDataSet()
+                  }
+                >
+                  Show only samples added to dataset
+                </Checkbox>
+              </div>
+
+              <DataSetSampleActions
+                data={{
+                  [experiment.accession_code]: samplesDisplayed
+                }}
+                enableAddRemaining={false}
+                meta={{
+                  buttonStyle: 'secondary',
+                  addText: 'Add Page to Dataset'
+                }}
+              />
             </div>
-
-            <DataSetSampleActions
-              data={{
-                [experiment.accession_code]: samplesDisplayed
-              }}
-              enableAddRemaining={false}
-              meta={{
-                buttonStyle: 'secondary',
-                addText: 'Add Page to Dataset'
-              }}
-            />
-          </div>
-        )}
+          );
+        }}
       />
-    );
-  }
-
-  _anySampleInDataSet() {
-    const { experiment, dataSet } = this.props;
-    return new DataSetStats(
-      dataSet,
-      experiment.samples
-    ).anyProcessedInDataSet();
-  }
-
-  _getAddedSamples() {
-    const { experiment, dataSet } = this.props;
-    const experimentSampleAccessions = experiment.samples.map(
-      sample => sample.accession_code
-    );
-    const addedSamples = intersection(
-      experimentSampleAccessions,
-      dataSet[experiment.accession_code] || []
-    );
-
-    // show only the samples that are present in the dataset
-    return experiment.samples.filter(sample =>
-      addedSamples.includes(sample.accession_code)
     );
   }
 
@@ -339,6 +321,20 @@ class ExperimentSamplesTable extends React.Component {
 
     // return the accession codes of all samples
     return this.props.experiment.samples.map(x => x.accession_code);
+  }
+
+  /**
+   * Bulilds a dataset slice, that only contains the current experiment accession code
+   * with it's processed samples
+   */
+  _getDataSetSlice() {
+    const { experiment, dataSet } = this.props;
+
+    return {
+      [experiment.accession_code]: DataSetStats.mapAccessions(
+        experiment.samples
+      )
+    };
   }
 }
 ExperimentSamplesTable = connect(({ download: { dataSet } }) => ({ dataSet }))(

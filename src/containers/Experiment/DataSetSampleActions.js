@@ -31,9 +31,7 @@ class DataSetSampleActions extends React.Component {
     } = this.props;
 
     const dataSetSlice = mapValues(data, experimentSamples =>
-      experimentSamples
-        .filter(sample => sample.is_processed)
-        .map(sample => sample.accession_code)
+      DataSetStats.mapAccessions(experimentSamples)
     );
     const stats = new DataSetStats(dataSet, dataSetSlice);
 
