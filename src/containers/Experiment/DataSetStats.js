@@ -103,4 +103,8 @@ export default class DataSetStats {
     const addedSlice = this.getAddedSlice();
     return union(...Object.values(addedSlice));
   }
+
+  totalSamplesInDataSet() {
+    return this.getSamplesInDataSet().length;
+  }
 }

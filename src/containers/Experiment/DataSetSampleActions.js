@@ -31,7 +31,9 @@ class DataSetSampleActions extends React.Component {
     } = this.props;
 
     const dataSetSlice = mapValues(data, experimentSamples =>
-      experimentSamples.map(sample => sample.accession_code)
+      experimentSamples
+        .filter(sample => sample.is_processed)
+        .map(sample => sample.accession_code)
     );
     const stats = new DataSetStats(dataSet, dataSetSlice);
 
@@ -47,13 +49,13 @@ class DataSetSampleActions extends React.Component {
     } else if (stats.allProcessedInDataSet()) {
       return (
         <RemoveFromDatasetButton
-        //handleRemove={() => removeSamples(stats.getSamplesInDataSet())}
+          handleRemove={() => removeSamples(stats.getAddedSlice())}
         />
       );
-    } else if (enableAddRemaining && stats.getSamplesInDataSet().length > 0) {
+    } else if (enableAddRemaining && stats.totalSamplesInDataSet() > 0) {
       return (
         <AddRemainingSamples
-          totalSamplesInDataset={stats.getSamplesInDataSet().length}
+          totalSamplesInDataset={stats.totalSamplesInDataSet()}
           handleAdd={() => addExperiment(dataSetSlice)}
         />
       );

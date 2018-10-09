@@ -72,7 +72,7 @@ export const createOrUpdateDataSet = ({
 
 /**
  * Takes an array of experiment objects and adds to users dataset via endpoint
- * @param {array} experiments
+ * @param {object} dataSetSlice
  */
 export const addExperiment = dataSetSlice => async (dispatch, getState) =>
   dispatch(
@@ -104,12 +104,12 @@ export const removeExperiment = accessionCodes => dispatch =>
 
 /**
  * Removes all samples with corresponding ids from each experiment in dataset.
- * @param {array} samples
+ * @param {object} dataSetSlice
  */
-export const removeSamples = samples => async (dispatch, getState) =>
+export const removeSamples = dataSetSlice => async (dispatch, getState) =>
   dispatch(
     dataSetUpdateOperation(dataSet =>
-      new DataSetManager(dataSet).removeSamples(samples)
+      new DataSetManager(dataSet).remove(dataSetSlice)
     )
   );
 
