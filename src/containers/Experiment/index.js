@@ -267,8 +267,9 @@ class ExperimentSamplesTable extends React.Component {
 
     return (
       <SamplesTable
-        accessionCodes={this._getSamplesToBeDisplayed()}
-        experimentAccessionCodes={[experiment.accession_code]}
+        dataSet={{
+          [experiment.accession_code]: this._getSamplesToBeDisplayed()
+        }}
         // Render prop for the button that adds the samples to the dataset
         pageActionComponent={samplesDisplayed => {
           const stats = new DataSetStats(
