@@ -25,6 +25,8 @@ import Spinner from '../../components/Spinner';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import Anchor from '../../components/Anchor';
 
+import intersection from 'lodash/intersection';
+
 let Experiment = ({
   fetchExperiment,
   experiment = {},
@@ -315,11 +317,18 @@ class ExperimentSamplesTable extends React.Component {
 
   _getAddedSamples() {
     const { experiment, dataSet } = this.props;
+    const experimentSampleAccessions = experiment.samples.map(
+      sample => sample.accession_code
+    );
+    const addedSamples = intersection(
+      experimentSampleAccessions,
+      dataSet[experiment.accession_code] || []
+    );
 
     // show only the samples that are present in the dataset
-    return new DataSetStats(dataSet, experiment.samples)
-      .getSamplesInDataSet()
-      .map(x => x.accession_code);
+    return experiment.samples.filter(sample =>
+      addedSamples.includes(sample.accession_code)
+    );
   }
 
   _getSamplesToBeDisplayed() {

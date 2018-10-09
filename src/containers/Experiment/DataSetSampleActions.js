@@ -4,6 +4,8 @@ import Button from '../../components/Button';
 import { addExperiment, removeSamples } from '../../state/download/actions';
 import DataSetStats from './DataSetStats';
 
+import mapValues from 'lodash/mapValues';
+
 /**
  * Given a dataset and a set of samples, this component renders the correct buttons
  * to add/remove the samples from the dataset.
@@ -28,7 +30,10 @@ class DataSetSampleActions extends React.Component {
       enableAddRemaining = true
     } = this.props;
 
-    const stats = new DataSetStats(dataSet, this._getAllSamples());
+    const dataSetSlice = mapValues(data, experimentSamples =>
+      experimentSamples.map(sample => sample.accession_code)
+    );
+    const stats = new DataSetStats(dataSet, dataSetSlice);
 
     if (!stats.anyProcessedSamples()) {
       // if there're no processed samples to be added, then just show the add button disabled
@@ -42,21 +47,14 @@ class DataSetSampleActions extends React.Component {
     } else if (stats.allProcessedInDataSet()) {
       return (
         <RemoveFromDatasetButton
-          handleRemove={() => removeSamples(stats.getSamplesInDataSet())}
+        //handleRemove={() => removeSamples(stats.getSamplesInDataSet())}
         />
       );
     } else if (enableAddRemaining && stats.getSamplesInDataSet().length > 0) {
       return (
         <AddRemainingSamples
           totalSamplesInDataset={stats.getSamplesInDataSet().length}
-          handleAdd={() =>
-            addExperiment(
-              Object.keys(data).map(accession_code => ({
-                accession_code,
-                samples: data[accession_code]
-              }))
-            )
-          }
+          handleAdd={() => addExperiment(dataSetSlice)}
         />
       );
     }
@@ -65,14 +63,7 @@ class DataSetSampleActions extends React.Component {
     return (
       <AddToDatasetButton
         addMessage={meta.addText}
-        handleAdd={() =>
-          addExperiment(
-            Object.keys(data).map(accession_code => ({
-              accession_code,
-              samples: data[accession_code]
-            }))
-          )
-        }
+        handleAdd={() => addExperiment(dataSetSlice)}
         buttonStyle={meta.buttonStyle}
       />
     );

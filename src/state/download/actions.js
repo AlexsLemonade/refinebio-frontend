@@ -27,8 +27,16 @@ export const downloadUpdateDataSet = dataSet => {
  * use this method to add/remove samples from the dataset.
  */
 const dataSetUpdateOperation = modifier => async (dispatch, getState) => {
-  const { dataSet, dataSetId } = getState().download;
+  // Update the current dataset with whatever in on the server, otherwise it might get out of sync
+  // if the user edited it in a different tab.
+  // try {
+  //   await dispatch(fetchDataSet());
+  // } catch (e) {
+  //   dispatch(reportError(e));
+  //   throw e;
+  // }
 
+  const { dataSet, dataSetId } = getState().download;
   // apply modifier function to the dataset
   const data = modifier(dataSet, dataSetId);
 
@@ -66,10 +74,10 @@ export const createOrUpdateDataSet = ({
  * Takes an array of experiment objects and adds to users dataset via endpoint
  * @param {array} experiments
  */
-export const addExperiment = experiments => async (dispatch, getState) =>
+export const addExperiment = dataSetSlice => async (dispatch, getState) =>
   dispatch(
     dataSetUpdateOperation(dataSet =>
-      new DataSetManager(dataSet).addExperiment(experiments)
+      new DataSetManager(dataSet).add(dataSetSlice)
     )
   );
 

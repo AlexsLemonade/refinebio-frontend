@@ -9,32 +9,34 @@ describe('DataSetStats', () => {
     { accession_code: 's5', is_processed: false }
   ];
 
+  it('getAddedSlice', () => {
+    let dataset = { e1: ['s1', 's2'] };
+    const slice = { e1: ['s1'] };
+    let addedSlice = new DataSetStats(dataset, slice).getAddedSlice();
+    expect(addedSlice).toEqual({ e1: ['s1'] });
+  });
+
   it('returns samples in dataset', () => {
-    let dataset = { e1: ['s1'] };
+    let dataset = { e1: ['s1', 's2'] };
+    const slice = { e1: ['s1'] };
     let processedSamples = new DataSetStats(
       dataset,
-      samples
+      slice
     ).getSamplesInDataSet();
-    expect(processedSamples.map(x => x.accession_code)).toEqual(['s1']);
+    expect(processedSamples).toEqual(['s1']);
   });
 
-  it('returns processed samples', () => {
-    let dataset = { e1: ['s1'] };
-    let processedSamples = new DataSetStats(
-      dataset,
-      samples
-    ).getProcessedSamples();
-    expect(processedSamples.map(x => x.accession_code)).toEqual([
-      's1',
-      's2',
-      's3'
-    ]);
-  });
-
-  it('checks sample in dataset', () => {
-    let dataset = { e1: ['s1'] };
-    let sample = { accession_code: 's1', is_processed: true };
-    let result = new DataSetStats(dataset, samples).sampleInDataSet(sample);
-    expect(result).toBeTruthy();
+  describe('all samples in dataset', () => {
+    it('not all samples are present', () => {
+      let dataset = { e1: ['s1'] };
+      const slice = { e1: ['s1', 's2'] };
+      let allProcessedInDataSet = new DataSetStats(
+        dataset,
+        slice
+      ).allProcessedInDataSet();
+      expect(allProcessedInDataSet).toBeFalsy();
+    });
   });
 });
+
+describe('DataSetOperations', () => {});
