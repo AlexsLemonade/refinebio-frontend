@@ -6,7 +6,7 @@ import difference from 'lodash/difference';
  * Contains several helper methods to perform operations on datasets. A dataset is a dictionary where
  * the keys are experiment accession codes, and the values are a list of sample accession codes.
  */
-class DataSetOperations {
+export class DataSetOperations {
   /**
    * Intersect two datasets
    * @param {*} d1 dataset 1

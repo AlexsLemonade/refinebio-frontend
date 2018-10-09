@@ -1,4 +1,4 @@
-import DataSetStats from './DataSetStats';
+import DataSetStats, { DataSetOperations } from './DataSetStats';
 
 describe('DataSetStats', () => {
   it('getAddedSlice', () => {
@@ -43,4 +43,22 @@ describe('DataSetStats', () => {
   });
 });
 
-describe('DataSetOperations', () => {});
+describe('DataSetOperations', () => {
+  it('intersect with one common value', () => {
+    const d1 = { e1: ['s1'], e2: ['s2'] };
+    const d2 = { e1: ['s1', 's2'] };
+    expect(DataSetOperations.intersect(d1, d2)).toEqual({ e1: ['s1'] });
+  });
+
+  it('isEqual to empty dataset', () => {
+    const d1 = {};
+    const d2 = { e1: ['s1', 's2'] };
+    expect(DataSetOperations.equal(d1, d2)).toBeFalsy();
+  });
+
+  it('isEqual ignores order where items appear', () => {
+    const d1 = { e1: ['s2', 's1'], e2: ['s3'] };
+    const d2 = { e2: ['s3'], e1: ['s1', 's2'] };
+    expect(DataSetOperations.equal(d1, d2)).toBeTruthy();
+  });
+});
