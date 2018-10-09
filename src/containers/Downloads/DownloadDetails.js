@@ -184,7 +184,7 @@ const SpeciesSamples = ({
               <Button
                 text="Remove"
                 buttonStyle="remove"
-                onClick={() => removeSamples(samplesBySpecies[speciesName])}
+                onClick={() => removeSamples(specieDataSetSlice)}
               />
             )}
           </div>

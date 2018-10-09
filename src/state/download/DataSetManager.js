@@ -87,10 +87,16 @@ export default class DataSetManager {
     let result = { ...this.dataSet };
     for (let accessionCode of Object.keys(dataSetSlice)) {
       if (!result[accessionCode]) continue;
-      result[accessionCode] = difference(
+
+      const samplesStillSelected = difference(
         result[accessionCode],
         dataSetSlice[accessionCode]
       );
+      if (samplesStillSelected.length > 0) {
+        result[accessionCode] = samplesStillSelected;
+      } else {
+        delete result[accessionCode];
+      }
     }
     return result;
   }
