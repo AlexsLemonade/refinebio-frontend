@@ -214,20 +214,20 @@ class ExperimentsView extends React.Component {
         {this._renderFilters()}
 
         <div className="downloads__card">
-          {Object.keys(dataSet).map((id, i) => {
-            const addedSamples = dataSet[id];
-            const experiment = experiments[id];
+          {Object.keys(dataSet).map(experimentAccessionCode => {
+            const addedSamples = dataSet[experimentAccessionCode];
+            const experiment = experiments[experimentAccessionCode];
             const metadataFields = getMetadataFields(experiment);
 
             if (
               this.state.organism &&
               !experiment.organisms.includes(this.state.organism)
             ) {
-              return <React.Fragment key={i} />;
+              return null;
             }
 
             return (
-              <div className="downloads__sample" key={i}>
+              <div className="downloads__sample" key={experimentAccessionCode}>
                 <div className="downloads__dataSet-info">
                   <Link
                     to={routes.experiments(experiment.id)}
