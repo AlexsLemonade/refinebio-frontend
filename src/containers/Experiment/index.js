@@ -76,8 +76,10 @@ let Experiment = ({
                 </h3>
                 <div>
                   <DataSetSampleActions
-                    data={{
-                      [experimentData.accession_code]: experimentData.samples
+                    dataSetSlice={{
+                      [experimentData.accession_code]: DataSetStats.mapAccessions(
+                        experimentData.samples
+                      )
                     }}
                   />
                 </div>
@@ -296,8 +298,10 @@ class ExperimentSamplesTable extends React.Component {
               </div>
 
               <DataSetSampleActions
-                data={{
-                  [experiment.accession_code]: samplesDisplayed
+                dataSetSlice={{
+                  [experiment.accession_code]: DataSetStats.mapAccessions(
+                    samplesDisplayed
+                  )
                 }}
                 enableAddRemaining={false}
                 meta={{

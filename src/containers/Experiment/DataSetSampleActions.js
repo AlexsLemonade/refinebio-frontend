@@ -20,7 +20,7 @@ import mapValues from 'lodash/mapValues';
 class DataSetSampleActions extends React.Component {
   render() {
     const {
-      data,
+      dataSetSlice,
       dataSet,
       removeSamples,
       addExperiment,
@@ -30,9 +30,6 @@ class DataSetSampleActions extends React.Component {
       enableAddRemaining = true
     } = this.props;
 
-    const dataSetSlice = mapValues(data, experimentSamples =>
-      DataSetStats.mapAccessions(experimentSamples)
-    );
     const stats = new DataSetStats(dataSet, dataSetSlice);
 
     if (!stats.anyProcessedSamples()) {

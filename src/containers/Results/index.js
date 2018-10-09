@@ -111,7 +111,7 @@ class Results extends Component {
                   </div>
 
                   <DataSetSampleActions
-                    data={this._getSamplesAsDataSet()}
+                    dataSetSlice={this._getSamplesAsDataSet()}
                     enableAddRemaining={false}
                     meta={{
                       buttonStyle: 'secondary',
@@ -169,12 +169,7 @@ class Results extends Component {
 
   _getSamplesAsDataSet() {
     return this.props.results.reduce((data, result) => {
-      data[result.accession_code] = result.processed_samples.map(
-        accession_code => ({
-          accession_code,
-          is_processed: true
-        })
-      );
+      data[result.accession_code] = result.processed_samples;
       return data;
     }, {});
   }

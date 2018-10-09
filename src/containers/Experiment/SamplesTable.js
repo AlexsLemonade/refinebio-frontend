@@ -367,7 +367,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
   // that way when it get's added/removed it will impact all those experiments
   const dataSetSlice = experimentAccessionCodes.reduce(
     (result, accessionCode) => {
-      result[accessionCode] = [sample];
+      result[accessionCode] = [sample.accession_code];
       return result;
     },
     {}
@@ -394,7 +394,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
 
   return (
     <DataSetSampleActions
-      data={dataSetSlice}
+      dataSetSlice={dataSetSlice}
       meta={{ addText: 'Add', buttonStyle: 'secondary' }}
     />
   );

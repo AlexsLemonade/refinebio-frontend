@@ -37,15 +37,8 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
         </div>
 
         <DataSetSampleActions
-          data={{
-            // convert the `processed_samples` list into the object with sample fields that
-            // `DataSetSampleActions` is expecting.
-            [result.accession_code]: result.processed_samples.map(
-              accession_code => ({
-                accession_code,
-                is_processed: true
-              })
-            )
+          dataSetSlice={{
+            [result.accession_code]: result.processed_samples
           }}
         />
       </div>
