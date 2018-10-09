@@ -103,41 +103,50 @@ export const getDataSetId = state => state.download && state.download.dataSetId;
  */
 export function groupSamplesBySpecies({ dataSet, samples }) {
   if (!dataSet || !samples) return {};
+  let species = {};
 
-  return Object.keys(dataSet).reduce((species, experimentAccessionCode) => {
+  for (let experimentAccessionCode of Object.keys(dataSet)) {
     if (!Object.keys(samples).length || !samples[experimentAccessionCode]) {
-      return species;
+      continue;
     }
-    const experiment = dataSet[experimentAccessionCode];
-    if (!experiment || !experiment.length) return species;
-    experiment.forEach(addedSample => {
+    const experimentSamples = dataSet[experimentAccessionCode];
+    if (!experimentSamples || !experimentSamples.length) continue;
+
+    for (let addedSampleAccessionCode of experimentSamples) {
       const sample = samples[experimentAccessionCode].find(
-        sample => sample.accession_code === addedSample
+        sample => sample.accession_code === addedSampleAccessionCode
       );
+
       const {
         organism: { name: organismName }
       } = sample;
+      if (!species[organismName]) {
+        species[organismName] = [];
+      }
+
       const modifiedSample = { ...sample, experimentAccessionCode };
-      species[organismName] = species[organismName] || [];
       species[organismName].push(modifiedSample);
-    });
-    return species;
-  }, {});
+    }
+  }
+
+  return species;
 }
 
 export function getExperimentCountBySpecies({ experiments, dataSet }) {
   if (!dataSet || !experiments) return {};
-
-  return Object.keys(dataSet).reduce((species, accessionCode) => {
+  const species = {};
+  for (let accessionCode of Object.keys(dataSet)) {
     const experimentInfo = experiments[accessionCode];
     if (!experimentInfo) return {};
+
     const { organisms } = experimentInfo;
-    organisms.forEach(organism => {
+    for (let organism of organisms) {
       if (!species[organism]) species[organism] = 0;
       species[organism]++;
-    });
-    return species;
-  }, {});
+    }
+  }
+
+  return species;
 }
 
 export function getTotalSamplesAdded({ dataSet }) {

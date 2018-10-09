@@ -28,6 +28,8 @@ import {
   clearDataSet
 } from '../../state/download/actions';
 
+import uniq from 'lodash/uniq';
+
 import * as routes from '../../routes';
 
 let DownloadDetails = ({
@@ -152,7 +154,11 @@ const SpeciesSamples = ({
             </h2>
             <div className="downloads__sample-stats">
               <p className="downloads__sample-stat">
-                {species[speciesName].length}{' '}
+                {
+                  uniq(
+                    species[speciesName].map(sample => sample.accession_code)
+                  ).length
+                }{' '}
                 {species[speciesName].length > 1 ? 'Samples' : 'Sample'}
               </p>
             </div>
