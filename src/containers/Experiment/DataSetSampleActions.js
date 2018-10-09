@@ -4,8 +4,6 @@ import Button from '../../components/Button';
 import { addExperiment, removeSamples } from '../../state/download/actions';
 import DataSetStats from './DataSetStats';
 
-import mapValues from 'lodash/mapValues';
-
 /**
  * Given a dataset and a set of samples, this component renders the correct buttons
  * to add/remove the samples from the dataset.
