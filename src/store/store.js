@@ -1,11 +1,12 @@
 // @flow
 import { createStore, applyMiddleware, compose } from 'redux';
-import rootReducer from './state/rootReducer';
+import rootReducer from '../state/rootReducer';
 import thunk from 'redux-thunk';
-import history from './history';
-import { CALL_HISTORY_METHOD } from './state/routerActions';
-import { REPORT_ERROR } from './state/reportError';
+import history from '../history';
+import { CALL_HISTORY_METHOD } from '../state/routerActions';
+import { REPORT_ERROR } from '../state/reportError';
 import throttle from 'lodash/throttle';
+import progressMiddleware from './progressMiddleware';
 
 declare var Raven: any;
 
@@ -35,7 +36,12 @@ const store = createStore(
   rootReducer,
   initialState,
   composeEnhancers(
-    applyMiddleware(thunk, routerMiddleware(history), errorMiddleware)
+    applyMiddleware(
+      progressMiddleware,
+      thunk,
+      routerMiddleware(history),
+      errorMiddleware
+    )
   )
 );
 
@@ -46,6 +52,11 @@ store.subscribe(
       localStorage.setItem('dataSetId', state.download.dataSetId);
     } else {
       localStorage.removeItem('dataSetId');
+    }
+    if (state.token) {
+      localStorage.setItem('token', state.token);
+    } else {
+      localStorage.removeItem('token');
     }
   }, 1000)
 );
@@ -88,6 +99,7 @@ function loadInitialState() {
   return {
     download: {
       dataSetId: localStorage.getItem('dataSetId')
-    }
+    },
+    token: localStorage.getItem('token')
   };
 }

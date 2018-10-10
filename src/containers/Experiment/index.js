@@ -31,30 +31,35 @@ import TechnologyBadge, {
   RNA_SEQ
 } from '../../components/TechnologyBadge';
 import Spinner from '../../components/Spinner';
+import ScrollTopOnMount from '../../components/ScrollTopOnMount';
+import Anchor from '../../components/Anchor';
 
 let Experiment = ({
   fetchExperiment,
-  experiment,
+  experiment = {},
   addExperiment,
   removeExperiment,
   removeSamples,
   addSamplesToDataset,
   dataSet,
   match,
-  location: { search },
+  location: { search, state },
   goBack
 }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
-  const comesFromSearch = getQueryParamObject(search)['ref'] === 'search';
+  const comesFromSearch = state && state.ref === 'search';
   const { organisms = [] } = experiment;
 
   return (
     <Loader fetch={() => fetchExperiment(match.params.id)}>
-      {({ isLoading }) =>
-        isLoading ? (
+      {({ isLoading }) => {
+        const experimentData = isLoading ? state && state.result : experiment;
+
+        return !experimentData ? (
           <Spinner />
         ) : (
           <div>
+            <ScrollTopOnMount />
             {comesFromSearch && (
               <Button
                 text="Back to Results"
@@ -72,17 +77,17 @@ let Experiment = ({
                   className="experiment__stats-icon"
                   alt="Accession Icon"
                 />
-                {experiment.accession_code}
+                {experimentData.accession_code}
               </div>
 
               <div className="experiment__header">
                 <h3 className="experiment__header-title mobile-p">
-                  {experiment.title || 'No Title.'}
+                  {experimentData.title || 'No Title.'}
                 </h3>
                 <div>
                   <DataSetSampleActions
                     data={{
-                      [experiment.accession_code]: experiment.samples
+                      [experimentData.accession_code]: experimentData.samples
                     }}
                   />
                 </div>
@@ -98,7 +103,7 @@ let Experiment = ({
                   {organisms.length
                     ? organisms
                         .map(organism => formatSentenceCase(organism.name))
-                        .join(',')
+                        .join(', ')
                     : 'No species.'}
                 </div>
                 <div className="experiment__stats-item">
@@ -107,26 +112,31 @@ let Experiment = ({
                     className="experiment__stats-icon"
                     alt="Sample Icon"
                   />{' '}
-                  {experiment.samples.length
-                    ? `${experiment.samples.length} Sample${
-                        experiment.samples.length > 1 ? 's' : null
+                  {experimentData.samples.length
+                    ? `${experimentData.samples.length} Sample${
+                        experimentData.samples.length > 1 ? 's' : null
                       }`
                     : null}
                 </div>
-                <div className="experiment__stats-item">
-                  <TechnologyBadge
-                    className="experiment__stats-icon"
-                    isMicroarray={experiment.samples.some(
-                      x => x.technology === MICROARRAY
-                    )}
-                    isRnaSeq={experiment.samples.some(
-                      x => x.technology === RNA_SEQ
-                    )}
-                  />
-                  {experiment.samples.length
-                    ? experiment.samples[0].pretty_platform
-                    : null}
-                </div>
+                {!isLoading &&
+                  experimentData.samples.length && (
+                    <div className="experiment__stats-item">
+                      <TechnologyBadge
+                        className="experiment__stats-icon"
+                        isMicroarray={experimentData.samples.some(
+                          x => x.technology === MICROARRAY
+                        )}
+                        isRnaSeq={experimentData.samples.some(
+                          x => x.technology === RNA_SEQ
+                        )}
+                      />
+                      {[
+                        ...new Set(
+                          experimentData.samples.map(x => x.pretty_platform)
+                        )
+                      ].join(', ')}
+                    </div>
+                  )}
               </div>
 
               <h4 className="experiment__title">
@@ -136,21 +146,21 @@ let Experiment = ({
               <div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">Description</div>
-                  <div>{experiment.description}</div>
+                  <div>{experimentData.description}</div>
                 </div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">PubMed ID</div>
                   <div>
-                    {(experiment.pubmed_id && (
+                    {(experimentData.pubmed_id && (
                       <a
                         href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                          experiment.pubmed_id
+                          experimentData.pubmed_id
                         }`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="link"
                       >
-                        {experiment.pubmed_id}
+                        {experimentData.pubmed_id}
                       </a>
                     )) || (
                       <i className="experiment__not-provided">
@@ -162,16 +172,16 @@ let Experiment = ({
                 <div className="experiment__row">
                   <div className="experiment__row-label">Publication Title</div>
                   <div>
-                    {(experiment.publication_title && (
+                    {(experimentData.publication_title && (
                       <a
                         href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                          experiment.pubmed_id
+                          experimentData.pubmed_id
                         }`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="link"
                       >
-                        {experiment.publication_title}
+                        {experimentData.publication_title}
                       </a>
                     )) || (
                       <i className="experiment__not-provided">
@@ -187,20 +197,20 @@ let Experiment = ({
                   <div>
                     <a
                       href={`/results?q=${encodeURIComponent(
-                        experiment.submitter_institution
+                        experimentData.submitter_institution
                       )}`}
                       rel="noopener noreferrer"
                       className="link"
                     >
-                      {experiment.submitter_institution}
+                      {experimentData.submitter_institution}
                     </a>
                   </div>
                 </div>
                 <div className="experiment__row">
                   <div className="experiment__row-label">Authors</div>
                   <div>
-                    {experiment.publication_authors.length > 0 ? (
-                      experiment.publication_authors
+                    {experimentData.publication_authors.length > 0 ? (
+                      experimentData.publication_authors
                         .map(author => (
                           <a
                             href={`/results?q=${encodeURIComponent(author)}`}
@@ -225,14 +235,22 @@ let Experiment = ({
                   </div>
                 </div>
               </div>
-              <section className="experiment__section" id="samples">
-                <h2 className="experiment__title">Samples</h2>
-                <ExperimentSamplesTable experiment={experiment} />
-              </section>
+              <Anchor name="samples">
+                <section className="experiment__section">
+                  <h2 className="experiment__title">Samples</h2>
+                  {isLoading ? (
+                    <div className="experiment__sample-table-loading-wrap">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <ExperimentSamplesTable experiment={experimentData} />
+                  )}
+                </section>
+              </Anchor>
             </div>
           </div>
-        )
-      }
+        );
+      }}
     </Loader>
   );
 };
@@ -281,7 +299,7 @@ class ExperimentSamplesTable extends React.Component {
               <Checkbox
                 name="samples-dataset"
                 checked={this.state.showOnlyAddedSamples}
-                onToggle={() =>
+                onChange={() =>
                   this.setState({
                     showOnlyAddedSamples: !this.state.showOnlyAddedSamples,
                     onlyAddedSamples: this._getAddedSamples()

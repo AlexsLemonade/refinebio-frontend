@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 const Radio = ({
   name,
-  onToggle,
+  onChange,
   checked,
   children,
   className,
@@ -20,7 +20,7 @@ const Radio = ({
       name={name}
       id={name}
       checked={checked}
-      onChange={onToggle}
+      onChange={onChange}
       readOnly={readOnly}
     />
     <label className="radio__label" htmlFor={name} onClick={onClick}>

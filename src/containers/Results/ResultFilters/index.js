@@ -34,7 +34,7 @@ const FilterCategory = ({
               name={filter}
               className="result-filters__filter-check"
               disabled={categoryFilters[filter] === 0}
-              onToggle={() =>
+              onChange={() =>
                 toggledFilter(
                   category.queryField,
                   filter === 'has_publication' ? 'true' : filter

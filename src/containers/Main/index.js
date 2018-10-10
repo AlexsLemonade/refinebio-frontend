@@ -88,7 +88,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
 
             <img
               src={StatsPlaceholder}
-              class="main__stats-placeholder"
+              className="main__stats-placeholder"
               alt="Stats"
             />
           </div>

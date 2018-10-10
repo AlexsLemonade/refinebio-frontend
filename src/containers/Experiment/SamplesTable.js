@@ -382,6 +382,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
             href="http://docs.refine.bio/en/latest/faq.html#why-can-t-i-add-certain-samples-to-my-dataset"
             className="link"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Learn more
           </a>

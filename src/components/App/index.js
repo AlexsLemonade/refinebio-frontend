@@ -2,6 +2,7 @@ import React from 'react';
 import './App.scss';
 import { Router, Route, Switch } from 'react-router-dom';
 import history from '../../history';
+import store from '../../store/store';
 
 import Main from '../../containers/Main';
 import Results from '../../containers/Results';
@@ -14,7 +15,6 @@ import NoMatch from '../../containers/NoMatch';
 import Privacy from '../../components/Terms/Privacy';
 import Terms from '../../components/Terms/Terms';
 import License from '../../components/Terms/License';
-import store from '../../configureStore';
 import { Provider } from 'react-redux';
 import ErrorBoundary from '../../containers/ErrorBoundary';
 import About from '../About';
@@ -55,6 +55,14 @@ const App = () => {
                 <Route exact path="/" component={Main} />
                 <Route exact path="/about" component={About} />
 
+                <Route
+                  exact
+                  path="/docs"
+                  component={() => (
+                    <ExternalRedirect to="http://docs.refine.bio/" />
+                  )}
+                />
+
                 <Route path="/" component={AppContent} />
               </Switch>
             </ErrorBoundary>
@@ -69,4 +77,19 @@ export default App;
 
 function isIos() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+/**
+ * Redirecting to an external link is hard with React-Router
+ *
+ * Thanks to https://stackoverflow.com/a/42988282/763705
+ */
+class ExternalRedirect extends React.Component {
+  componentDidMount() {
+    window.location = this.props.to;
+  }
+
+  render() {
+    return <section>Redirecting...</section>;
+  }
 }
