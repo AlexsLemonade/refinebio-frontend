@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import moment from 'moment';
 import { getAmazonDownloadLinkUrl, timeout } from '../../../common/helpers';
 import Loader from '../../../components/Loader';
@@ -81,40 +82,49 @@ class DataSet extends React.Component {
     }
 
     return (
-      <Loader updateProps={dataSetId} fetch={() => this._fetchDataSet()}>
-        {({ isLoading }) =>
-          isLoading ? (
-            <Spinner />
-          ) : (
-            <div>
-              <DataSetPageHeader
-                dataSetId={dataSetId}
-                dataSet={dataSet}
-                email_address={
-                  // the email is never returned from the api, check if it was passed
-                  // on the url state on a previous step
-                  location.state && location.state.email_address
-                }
-                hasError={location.state && location.state.hasError}
-              />
-              <div className="downloads__bar">
-                <div className="flex-button-container flex-button-container--left">
-                  <ShareDatasetButton dataSetId={dataSetId} />
+      <div>
+        <Helmet>
+          <title>Dataset - refine.bio</title>
+          <meta
+            name="description"
+            content="Explore and download this custom harmonized childhood cancer transcriptome dataset."
+          />
+        </Helmet>
+        <Loader updateProps={dataSetId} fetch={() => this._fetchDataSet()}>
+          {({ isLoading }) =>
+            isLoading ? (
+              <Spinner />
+            ) : (
+              <div>
+                <DataSetPageHeader
+                  dataSetId={dataSetId}
+                  dataSet={dataSet}
+                  email_address={
+                    // the email is never returned from the api, check if it was passed
+                    // on the url state on a previous step
+                    location.state && location.state.email_address
+                  }
+                  hasError={location.state && location.state.hasError}
+                />
+                <div className="downloads__bar">
+                  <div className="flex-button-container flex-button-container--left">
+                    <ShareDatasetButton dataSetId={dataSetId} />
+                  </div>
                 </div>
+                <DownloadDetails
+                  isImmutable={true}
+                  isEmbed={true}
+                  dataSet={dataSet.data}
+                  aggregate_by={dataSet.aggregate_by}
+                  scale_by={dataSet.scale_by}
+                  experiments={dataSet.experiments}
+                  samples={dataSet.samples}
+                />
               </div>
-              <DownloadDetails
-                isImmutable={true}
-                isEmbed={true}
-                dataSet={dataSet.data}
-                aggregate_by={dataSet.aggregate_by}
-                scale_by={dataSet.scale_by}
-                experiments={dataSet.experiments}
-                samples={dataSet.samples}
-              />
-            </div>
-          )
-        }
-      </Loader>
+            )
+          }
+        </Loader>
+      </div>
     );
   }
 }

@@ -78,7 +78,11 @@ class Results extends Component {
     return (
       <div className="results">
         <Helmet>
-          <title>{this.state.query} Results - refine.bio</title>
+          <title>{this.state.query || ''} Results - refine.bio</title>
+          <meta
+            name="description"
+            content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
+          />
         </Helmet>
 
         <BackToTop />
@@ -206,12 +210,6 @@ let NumberOfResults = ({
   searchTerm
 }) => (
   <React.Fragment>
-    <Helmet>
-      <meta
-        name="description"
-        content={`refine.bio: There are ${totalResults} experiments matching ${searchTerm}.`}
-      />
-    </Helmet>
     {// Only show the dropdown if there're enough elements
     totalResults < PAGE_SIZES[0] ? (
       <div>
