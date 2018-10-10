@@ -11,9 +11,18 @@ export default class RefineTable extends ReactTable {
    * Overriding this method we achieve the same behavior:
    * - disabling multisorting
    * - add a 3rd state to the sorting: ascending, descending, deactivated
+   *
+   * Original method: https://github.com/react-tools/react-table/blob/06648b257714806888c65bc4aca8d1b295859e26/src/methods.js#L458-L559
    */
   sortColumn(column) {
-    const { sorted, defaultSortDesc } = this.getResolvedState();
+    const { sorted, defaultSortDesc, skipNextSort } = this.getResolvedState();
+
+    if (skipNextSort) {
+      this.setStateWithData({
+        skipNextSort: false
+      });
+      return;
+    }
 
     const firstSortDirection = defaultSortDesc;
     const secondSortDirection = !firstSortDirection;
