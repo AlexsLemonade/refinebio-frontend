@@ -8,12 +8,15 @@ import DataSetStats from './DataSetStats';
  * Given a dataset and a set of samples, this component renders the correct buttons
  * to add/remove the samples from the dataset.
  *
- * <DataSetSampleActions data={{
+ * <DataSetSampleActions dataSetSlice={{
  *    [EXPERIMENT_ACCESSION_CODE]: [SAMPLES ...]
  *    ...
  * }} />
  *
  * `data` can be viewed as a slice of a dataSet.
+ *
+ * Note: When using this component you must ensure that all the sample accession codes in `dataSetSlice`
+ * are from samples that have been processed.
  */
 class DataSetSampleActions extends React.Component {
   render() {
@@ -42,14 +45,14 @@ class DataSetSampleActions extends React.Component {
     } else if (stats.allProcessedInDataSet()) {
       return (
         <RemoveFromDatasetButton
-          handleRemove={() => removeSamples(stats.getAddedSlice())}
+          onRemove={() => removeSamples(stats.getAddedSlice())}
         />
       );
     } else if (enableAddRemaining && stats.totalSamplesInDataSet() > 0) {
       return (
         <AddRemainingSamples
           totalSamplesInDataset={stats.totalSamplesInDataSet()}
-          handleAdd={() => addExperiment(dataSetSlice)}
+          onAdd={() => addExperiment(dataSetSlice)}
         />
       );
     }
@@ -58,22 +61,10 @@ class DataSetSampleActions extends React.Component {
     return (
       <AddToDatasetButton
         addMessage={meta.addText}
-        handleAdd={() => addExperiment(dataSetSlice)}
+        onAdd={() => addExperiment(dataSetSlice)}
         buttonStyle={meta.buttonStyle}
       />
     );
-  }
-
-  _getAllSamples() {
-    if (!this.props.data) return [];
-    // return all samples in all given experiments
-    return [
-      ...new Set(
-        Object.keys(this.props.data)
-          .map(accessionCode => this.props.data[accessionCode])
-          .reduce((a, b) => a.concat(b))
-      )
-    ];
   }
 }
 DataSetSampleActions = connect(
@@ -94,7 +85,7 @@ DataSetSampleActions = connect(
 export default DataSetSampleActions;
 
 export function RemoveFromDatasetButton({
-  handleRemove,
+  onRemove,
   totalAdded,
   samplesInDataset
 }) {
@@ -105,7 +96,7 @@ export function RemoveFromDatasetButton({
           <i className="ion-checkmark-circled dataset-remove-button__added-icon" />
           {totalAdded && `${totalAdded} Samples`} Added to Dataset
         </span>
-        <Button buttonStyle="plain" text="Remove" onClick={handleRemove} />
+        <Button buttonStyle="plain" text="Remove" onClick={onRemove} />
       </div>
       {samplesInDataset && (
         <p className="dataset-remove-button__info-text">
@@ -118,25 +109,21 @@ export function RemoveFromDatasetButton({
 }
 
 export function AddToDatasetButton({
-  handleAdd,
+  onAdd,
   addMessage = 'Add to Dataset',
   buttonStyle = null
 }) {
   return (
     <div className="dataset-add-button">
-      <Button text={addMessage} buttonStyle={buttonStyle} onClick={handleAdd} />
+      <Button text={addMessage} buttonStyle={buttonStyle} onClick={onAdd} />
     </div>
   );
 }
 
-function AddRemainingSamples({ handleAdd, totalSamplesInDataset }) {
+function AddRemainingSamples({ onAdd, totalSamplesInDataset }) {
   return (
     <div className="dataset-add-button">
-      <Button
-        text={'Add Remaining'}
-        buttonStyle="secondary"
-        onClick={handleAdd}
-      />
+      <Button text={'Add Remaining'} buttonStyle="secondary" onClick={onAdd} />
       <p className="dataset-add-button__info-text">
         <i className="ion-information-circled dataset-add-button__info-icon" />{' '}
         {totalSamplesInDataset} Samples are already in Dataset
