@@ -13,7 +13,7 @@ import TechnologyBadge, {
 
 import * as routes from '../../../routes';
 
-const Result = ({ result, addExperiment, removeExperiment }) => {
+const Result = ({ result }) => {
   const metadataFields = getMetadataFields(result);
 
   return (
