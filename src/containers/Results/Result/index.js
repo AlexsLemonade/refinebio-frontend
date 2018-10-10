@@ -115,6 +115,10 @@ const Result = ({ result, addExperiment, removeExperiment, query }) => {
 
 export default Result;
 
+/**
+ * Hightlight portions of a text.
+ * thanks to https://stackoverflow.com/a/43235785/763705
+ */
 function HighlightedText({ text, higlight }) {
   // Split on higlight term and include term into parts, ignore case
   let parts = text.split(new RegExp(`(${higlight})`, 'gi'));
