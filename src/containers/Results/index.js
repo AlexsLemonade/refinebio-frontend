@@ -44,6 +44,7 @@ class Results extends Component {
       filters: searchArgs.filters
     });
 
+    debugger;
     // check if the search term and the filters are the same, in which case we don't need to
     // fetch the results again
     if (
@@ -64,7 +65,8 @@ class Results extends Component {
     const {
       results,
       pagination: { totalPages, currentPage },
-      triggerSearch
+      triggerSearch,
+      updatePage
     } = this.props;
 
     return (
@@ -115,7 +117,7 @@ class Results extends Component {
                     <Result key={result.accession_code} result={result} />
                   ))}
                   <Pagination
-                    onPaginate={this.props.updatePage}
+                    onPaginate={updatePage}
                     totalPages={totalPages}
                     currentPage={currentPage}
                   />
