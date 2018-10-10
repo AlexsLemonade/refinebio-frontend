@@ -74,7 +74,7 @@ export const createOrUpdateDataSet = ({
  * Takes an array of experiment objects and adds to users dataset via endpoint
  * @param {object} dataSetSlice
  */
-export const addExperiment = dataSetSlice => async (dispatch, getState) =>
+export const addSamples = dataSetSlice => async (dispatch, getState) =>
   dispatch(
     dataSetUpdateOperation(dataSet =>
       new DataSetManager(dataSet).add(dataSetSlice)

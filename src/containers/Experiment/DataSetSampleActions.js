@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
-import { addExperiment, removeSamples } from '../../state/download/actions';
+import { addSamples, removeSamples } from '../../state/download/actions';
 import DataSetStats from './DataSetStats';
 
 /**
@@ -24,7 +24,7 @@ class DataSetSampleActions extends React.Component {
       dataSetSlice,
       dataSet,
       removeSamples,
-      addExperiment,
+      addSamples,
       meta,
       // in some cases we don't want to show the AddRemaining state, like for example adding
       // the current samples in a table
@@ -52,7 +52,7 @@ class DataSetSampleActions extends React.Component {
       return (
         <AddRemainingSamples
           totalSamplesInDataset={stats.totalSamplesInDataSet()}
-          onAdd={() => addExperiment(dataSetSlice)}
+          onAdd={() => addSamples(dataSetSlice)}
         />
       );
     }
@@ -61,7 +61,7 @@ class DataSetSampleActions extends React.Component {
     return (
       <AddToDatasetButton
         addMessage={meta.addText}
-        onAdd={() => addExperiment(dataSetSlice)}
+        onAdd={() => addSamples(dataSetSlice)}
         buttonStyle={meta.buttonStyle}
       />
     );
@@ -78,7 +78,7 @@ DataSetSampleActions = connect(
     }
   }),
   {
-    addExperiment,
+    addSamples,
     removeSamples
   }
 )(DataSetSampleActions);
