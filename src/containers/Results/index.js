@@ -44,7 +44,6 @@ class Results extends Component {
       filters: searchArgs.filters
     });
 
-    debugger;
     // check if the search term and the filters are the same, in which case we don't need to
     // fetch the results again
     if (
