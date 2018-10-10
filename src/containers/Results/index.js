@@ -129,6 +129,7 @@ class Results extends Component {
                       result={result}
                       addExperiment={addExperiment}
                       removeExperiment={removeExperiment}
+                      query={this.state.query}
                     />
                   ))}
                   <Pagination
