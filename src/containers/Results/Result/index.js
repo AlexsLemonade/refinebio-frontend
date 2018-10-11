@@ -30,7 +30,10 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
           </div>
           <Link
             className="link result__title"
-            to={routes.experiments(result.id, { ref: 'search', result })}
+            to={routes.experiments(result.accession_code, {
+              ref: 'search',
+              result
+            })}
           >
             {result.title || 'No title.'}
           </Link>
@@ -102,7 +105,10 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
 
         <Link
           className="button button--secondary"
-          to={routes.experimentsSamples(result.id, { ref: 'search', result })}
+          to={routes.experimentsSamples(result.accession_code, {
+            ref: 'search',
+            result
+          })}
         >
           View Samples
         </Link>

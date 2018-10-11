@@ -1,5 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Loader from '../../components/Loader';
 import { fetchExperiment } from '../../state/experiment/actions';
@@ -191,15 +192,14 @@ let Experiment = ({
                     Submitter’s Institution
                   </div>
                   <div>
-                    <a
-                      href={`/results?q=${encodeURIComponent(
+                    <Link
+                      to={`/results?q=${encodeURIComponent(
                         experimentData.submitter_institution
                       )}`}
-                      rel="noopener noreferrer"
                       className="link"
                     >
                       {experimentData.submitter_institution}
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="experiment__row">
@@ -208,13 +208,12 @@ let Experiment = ({
                     {experimentData.publication_authors.length > 0 ? (
                       experimentData.publication_authors
                         .map(author => (
-                          <a
-                            href={`/results?q=${encodeURIComponent(author)}`}
-                            rel="noopener noreferrer"
+                          <Link
+                            to={`/results?q=${encodeURIComponent(author)}`}
                             className="link"
                           >
                             {author}
-                          </a>
+                          </Link>
                         ))
                         .reduce((previous, current) => (
                           <React.Fragment>

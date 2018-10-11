@@ -41,6 +41,10 @@ describe('getQueryParamObject', () => {
       a: ['1', '2', '3']
     });
   });
+
+  it('empty query returns empty object', () => {
+    expect(getQueryParamObject('')).toEqual({});
+  });
 });
 
 describe('Ajax', () => {
