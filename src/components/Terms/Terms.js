@@ -5,7 +5,7 @@ import './Terms.scss';
 const Terms = () => (
   <div className="terms">
     <Helmet>
-      <title>refine.bio - Terms of Use</title>
+      <title>Terms of Use - refine.bio</title>
     </Helmet>
     <h1 className="terms__title">Terms of Use</h1>
     <p>

@@ -14,7 +14,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
   return (
     <div className="main">
       <Helmet>
-        <title>refine.bio - Search for harmonized transcriptome data</title>
+        <title>Search for harmonized transcriptome data - refine.bio</title>
       </Helmet>
       <section className="main__section main__section--searchbox">
         <div className="main__container main__container--searchbox">

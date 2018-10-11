@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 
 import './About.scss';
 
@@ -12,6 +13,13 @@ import ccdlLogo from './CCDL-logo.jpg';
 function About() {
   return (
     <div>
+      <Helmet>
+        <title>About refine.bio</title>
+        <meta
+          name="description"
+          content="Learn how this collection of childhood cancer data gives researchers a powerful new tool to accelerate the search for cures."
+        />
+      </Helmet>
       <div className="about">
         <div className="about__header">
           <img

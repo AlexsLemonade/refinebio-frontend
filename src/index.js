@@ -16,6 +16,9 @@ registerServiceWorker();
 declare var Raven: any;
 
 function initApp() {
+  // remove general meta description from header
+  document.querySelector('meta[name="description"]').remove();
+
   ReactDOM.render(<App />, document.getElementById('root'));
   registerServiceWorker();
 }
