@@ -146,11 +146,15 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     is_available,
     expires_on,
     s3_bucket,
-    s3_key
+    s3_key,
+    success
   } = dataSet;
 
+  // success can sometimes be `null`
+  const processingError = success === false;
+
   const isExpired = moment(expires_on).isBefore(Date.now());
-  return hasError ? (
+  return hasError || processingError ? (
     <DataSetErrorDownloading dataSetId={dataSetId} dataSet={dataSet} />
   ) : is_processed ? (
     is_available && !isExpired ? (
@@ -178,15 +182,9 @@ let DataSetErrorDownloading = ({
           <div className="dataset__processed-text">
             <h1>Uh-oh something went wrong!</h1>
             <p>Please try downloading again. </p>
-            <p>
-              If the problem persists, please contact{' '}
-              <a href="mailto:ccdl@alexslemonade.org" className="link">
-                ccdl@alexslemonade.org
-              </a>
-            </p>
-
             {token && (
               <Button
+                className="dataset__try-again-button"
                 onClick={() =>
                   startDownload({
                     tokenId: token,
@@ -197,6 +195,34 @@ let DataSetErrorDownloading = ({
               >
                 Try Again
               </Button>
+            )}
+
+            <p>
+              If the problem persists, please contact{' '}
+              <a href="mailto:ccdl@alexslemonade.org" className="link">
+                ccdl@alexslemonade.org
+              </a>
+              {dataSet.failure_reason && (
+                <span>
+                  {' '}
+                  or{' '}
+                  <a
+                    href="https://github.com/AlexsLemonade/refinebio/issues/new"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link"
+                  >
+                    file a ticket on Github
+                  </a>{' '}
+                  with the below error message:
+                </span>
+              )}
+            </p>
+
+            {dataSet.failure_reason && (
+              <div className="dataset__failure-reason">
+                {dataSet.failure_reason}
+              </div>
             )}
           </div>
 
