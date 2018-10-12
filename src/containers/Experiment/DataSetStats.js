@@ -28,7 +28,7 @@ export class DataSetOperations {
   }
 
   /**
-   * Returns true if both given arguments have the same values, without taking into cosideration their order
+   * Returns true if both given arguments have the same values, without considering their order
    * eg:
    * sameItems([1,2], [2,1]) === true
    * @param {Array} s1
