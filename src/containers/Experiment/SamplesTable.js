@@ -364,7 +364,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
   // retrieve all experiment accession codes referencing this sample
   const { experimentAccessionCodes } = sample;
   // Create a dataset slice, where we include all experiments that are referencing this sample
-  // that way when it get's added/removed it will impact all those experiments
+  // that way when it gets added/removed it will impact all those experiments
   const dataSetSlice = experimentAccessionCodes.reduce(
     (result, accessionCode) => {
       result[accessionCode] = [sample.accession_code];

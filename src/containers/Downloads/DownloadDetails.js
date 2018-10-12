@@ -140,59 +140,58 @@ const SpeciesSamples = ({
   samplesBySpecies,
   removeSamples,
   isImmutable = false
-}) => {
-  return (
-    <div className="downloads__card">
-      {Object.keys(samplesBySpecies).map(speciesName => {
-        // Create a slice with the samples for each specie
-        // TODO: in the future we could consider refactoring `groupSamplesBySpecies`, seems unnecessary having to modify the shape of that object here
-        const specieDataSetSlice = mapValues(
-          groupBy(samplesBySpecies[speciesName], 'experimentAccessionCode'),
-          x => x.map(sample => sample.accession_code)
-        );
+}) => (
+  <div className="downloads__card">
+    {Object.keys(samplesBySpecies).map(speciesName => {
+      // Create a slice with the samples for each specie
+      // TODO: in the future we could consider refactoring `groupSamplesBySpecies`, seems
+      // unnecessary having to modify the shape of that object here
+      const specieDataSetSlice = mapValues(
+        groupBy(samplesBySpecies[speciesName], 'experimentAccessionCode'),
+        x => x.map(sample => sample.accession_code)
+      );
 
-        return (
-          <div className="downloads__sample" key={speciesName}>
-            <div className="downloads__sample-info">
-              <h2 className="downloads__species-title">
-                {formatSentenceCase(speciesName)} Samples
-              </h2>
-              <div className="downloads__sample-stats">
-                <p className="downloads__sample-stat">
-                  {
-                    uniq(
-                      samplesBySpecies[speciesName].map(
-                        sample => sample.accession_code
-                      )
-                    ).length
-                  }{' '}
-                  {samplesBySpecies[speciesName].length > 1
-                    ? 'Samples'
-                    : 'Sample'}
-                </p>
-              </div>
-
-              <div className="mobile-p">
-                <ViewSamplesButtonModal
-                  dataSet={specieDataSetSlice}
-                  isImmutable={isImmutable}
-                />
-              </div>
+      return (
+        <div className="downloads__sample" key={speciesName}>
+          <div className="downloads__sample-info">
+            <h2 className="downloads__species-title">
+              {formatSentenceCase(speciesName)} Samples
+            </h2>
+            <div className="downloads__sample-stats">
+              <p className="downloads__sample-stat">
+                {
+                  uniq(
+                    samplesBySpecies[speciesName].map(
+                      sample => sample.accession_code
+                    )
+                  ).length
+                }{' '}
+                {samplesBySpecies[speciesName].length > 1
+                  ? 'Samples'
+                  : 'Sample'}
+              </p>
             </div>
 
-            {!isImmutable && (
-              <Button
-                text="Remove"
-                buttonStyle="remove"
-                onClick={() => removeSamples(specieDataSetSlice)}
+            <div className="mobile-p">
+              <ViewSamplesButtonModal
+                dataSet={specieDataSetSlice}
+                isImmutable={isImmutable}
               />
-            )}
+            </div>
           </div>
-        );
-      })}
-    </div>
-  );
-};
+
+          {!isImmutable && (
+            <Button
+              text="Remove"
+              buttonStyle="remove"
+              onClick={() => removeSamples(specieDataSetSlice)}
+            />
+          )}
+        </div>
+      );
+    })}
+  </div>
+);
 
 class ExperimentsView extends React.Component {
   state = { organism: false };

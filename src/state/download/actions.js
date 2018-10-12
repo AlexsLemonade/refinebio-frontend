@@ -27,7 +27,7 @@ export const downloadUpdateDataSet = dataSet => {
  * use this method to add/remove samples from the dataset.
  */
 const dataSetUpdateOperation = modifier => async (dispatch, getState) => {
-  // Update the current dataset with whatever in on the server, otherwise it might get out of sync
+  // Update the current dataset with whatever is on the server, otherwise it might get out of sync
   // if the user edited it in a different tab.
   try {
     await dispatch(fetchDataSet());
