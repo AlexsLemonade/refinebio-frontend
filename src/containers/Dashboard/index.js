@@ -51,7 +51,7 @@ class Dashboard extends Component {
     return (
       <div className="dashboard">
         <Helmet>
-          <title>refine.bio - Dashboard</title>
+          <title>Dashboard - refine.bio</title>
         </Helmet>
         <div className="dashboard__container">
           <TimeRangeSelect

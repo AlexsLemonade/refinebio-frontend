@@ -71,7 +71,11 @@ class Results extends Component {
     return (
       <div className="results">
         <Helmet>
-          <title>refine.bio - Results</title>
+          <title>{this.state.query || ''} Results - refine.bio</title>
+          <meta
+            name="description"
+            content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
+          />
         </Helmet>
 
         <BackToTop />
@@ -113,7 +117,11 @@ class Results extends Component {
                 </div>
                 <div className="results__list">
                   {results.map(result => (
-                    <Result key={result.accession_code} result={result} />
+                    <Result
+                      key={result.accession_code}
+                      result={result}
+                      query={this.state.query}
+                    />
                   ))}
                   <Pagination
                     onPaginate={updatePage}
@@ -190,30 +198,36 @@ function AddPageToDataSetButton({ results }) {
 let NumberOfResults = ({
   resultsPerPage,
   totalResults,
-  updateResultsPerPage
-}) =>
-  // Only show the dropdown if there're enough elements
-  totalResults < PAGE_SIZES[0] ? (
-    <div>
-      Showing {totalResults} of {totalResults} results
-    </div>
-  ) : (
-    <div>
-      Showing{' '}
-      <Dropdown
-        options={PAGE_SIZES}
-        selectedOption={resultsPerPage}
-        onChange={updateResultsPerPage}
-      />{' '}
-      of {totalResults} results
-    </div>
-  );
+  updateResultsPerPage,
+  searchTerm
+}) => (
+  <React.Fragment>
+    {// Only show the dropdown if there're enough elements
+    totalResults < PAGE_SIZES[0] ? (
+      <div>
+        Showing {totalResults} of {totalResults} results
+      </div>
+    ) : (
+      <div>
+        Showing{' '}
+        <Dropdown
+          options={PAGE_SIZES}
+          selectedOption={resultsPerPage}
+          onChange={updateResultsPerPage}
+        />{' '}
+        of {totalResults} results
+      </div>
+    )}
+  </React.Fragment>
+);
 NumberOfResults = connect(
   ({
     search: {
+      searchTerm,
       pagination: { totalResults, resultsPerPage }
     }
   }) => ({
+    searchTerm,
     totalResults,
     resultsPerPage
   }),

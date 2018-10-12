@@ -29,7 +29,7 @@ export function fetchResults({ query, page = 1, size = 10, filters }) {
         count: totalResults,
         filters: filterData
       } = await Ajax.get('/search/', {
-        search: query,
+        ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
         ...filters

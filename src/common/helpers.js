@@ -46,7 +46,8 @@ export function getQueryParamObject(queryString) {
         // if it's already an array just add it
         queryObj[key].push(value);
       }
-    } else {
+    } else if (value) {
+      // only add the parameter if there's an actual value to add
       queryObj[key] = value;
     }
   });
@@ -162,7 +163,7 @@ export function stringEnumerate([x0, ...rest]) {
 export const timeout = ms => new Promise(res => setTimeout(res, ms));
 
 // thanks to https://stackoverflow.com/a/33379772/763705
-export function truncateOnWord(str, limit) {
+export function truncateOnWord(str, limit, end = '...') {
   const trimmable =
     '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u2028\u2029\u3000\uFEFF';
   const reg = new RegExp('(?=[' + trimmable + '])');
@@ -174,5 +175,5 @@ export function truncateOnWord(str, limit) {
       return count <= limit;
     })
     .join('');
-  return result + (result !== str ? '...' : '');
+  return result + (result !== str ? end : '');
 }

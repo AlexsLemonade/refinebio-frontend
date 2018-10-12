@@ -5,7 +5,7 @@ import './Terms.scss';
 const Privacy = () => (
   <div className="terms">
     <Helmet>
-      <title>refine.bio - License</title>
+      <title>License - refine.bio</title>
     </Helmet>
     <h1 className="terms__title">BSD 3-Clause License</h1>
     <p>

@@ -13,7 +13,7 @@ import TechnologyBadge, {
 
 import * as routes from '../../../routes';
 
-const Result = ({ result }) => {
+const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result);
 
   return (
@@ -30,7 +30,10 @@ const Result = ({ result }) => {
           </div>
           <Link
             className="link result__title"
-            to={routes.experiments(result.id, { ref: 'search', result })}
+            to={routes.experiments(result.accession_code, {
+              ref: 'search',
+              result
+            })}
           >
             {result.title || 'No title.'}
           </Link>
@@ -77,7 +80,9 @@ const Result = ({ result }) => {
 
       <div className="result__details">
         <h3>Description</h3>
-        <p className="result__paragraph">{result.description}</p>
+        <p className="result__paragraph">
+          <HighlightedText text={result.description} higlight={query} />
+        </p>
         <h3>Publication Title</h3>
         <p className="result__paragraph">
           {result.publication_title || (
@@ -95,7 +100,10 @@ const Result = ({ result }) => {
 
         <Link
           className="button button--secondary"
-          to={routes.experimentsSamples(result.id, { ref: 'search', result })}
+          to={routes.experimentsSamples(result.accession_code, {
+            ref: 'search',
+            result
+          })}
         >
           View Samples
         </Link>
@@ -105,3 +113,31 @@ const Result = ({ result }) => {
 };
 
 export default Result;
+
+/**
+ * Hightlight portions of a text.
+ * thanks to https://stackoverflow.com/a/43235785/763705
+ */
+function HighlightedText({ text, higlight }) {
+  if (!higlight) return text;
+
+  // Split on higlight term and include term into parts, ignore case
+  let parts = text.split(new RegExp(`(${higlight})`, 'gi'));
+  return (
+    <span>
+      {' '}
+      {parts.map((part, i) => (
+        <span
+          key={i}
+          className={
+            part && part.toLowerCase() === higlight.toLowerCase()
+              ? 'text-highlight'
+              : ''
+          }
+        >
+          {part}
+        </span>
+      ))}{' '}
+    </span>
+  );
+}

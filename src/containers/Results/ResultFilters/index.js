@@ -14,6 +14,7 @@ import ResponsiveSwitch from '../../../components/ResponsiveSwitch';
 import SideMenu from '../../../components/SideMenu';
 
 import FilterIcon from '../../../common/icons/filter-icon.svg';
+import isEmpty from 'lodash/isEmpty';
 
 const FilterCategory = ({
   categoryFilters,
@@ -68,15 +69,18 @@ let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
           </Button>
         )}
       </div>
-      {filterCategories.map((category, i) => (
-        <FilterCategory
-          key={i}
-          categoryFilters={filters[category.name]}
-          category={category}
-          toggledFilter={toggledFilter}
-          appliedFilters={appliedFilters}
-        />
-      ))}
+      {filterCategories.map(
+        (category, i) =>
+          !isEmpty(filters[category.name]) && (
+            <FilterCategory
+              key={i}
+              categoryFilters={filters[category.name]}
+              category={category}
+              toggledFilter={toggledFilter}
+              appliedFilters={appliedFilters}
+            />
+          )
+      )}
     </div>
   );
 };
