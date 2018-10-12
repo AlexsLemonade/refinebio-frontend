@@ -209,12 +209,12 @@ let DataSetErrorDownloading = ({
                   <a
                     href="https://github.com/AlexsLemonade/refinebio/issues/new"
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="nofollow noopener noreferrer"
                     className="link"
                   >
-                    file a ticket on Github
+                    report the issue to us
                   </a>{' '}
-                  with the below error message:
+                  with the following error message:
                 </span>
               )}
             </p>
