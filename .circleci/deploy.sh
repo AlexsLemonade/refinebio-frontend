@@ -32,6 +32,11 @@ yarn install --ignore-engines
 
 CI=false REACT_APP_API_HOST=https://api.$base_host yarn run build
 
+if [[ $branch == "dev" ]]; then
+    # generate robots.txt file on staging https://github.com/AlexsLemonade/refinebio-frontend/issues/376
+    echo -e "User-agent: *\nDisallow: /" > build/robots.txt
+fi
+
 pip install awscli --upgrade --user
 
 ~/.local/bin/aws s3 sync build s3://$base_host --delete --acl public-read
