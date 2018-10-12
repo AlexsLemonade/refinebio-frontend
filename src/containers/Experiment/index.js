@@ -265,11 +265,15 @@ export default Experiment;
 function ExperimentHelmet({ experiment }) {
   return (
     <Helmet>
-      <title>{truncateOnWord(experiment.title, 60, '')} - refine.bio</title>
-      <meta
-        name="description"
-        content={truncateOnWord(experiment.description, 160)}
-      />
+      {experiment.title && (
+        <title>{truncateOnWord(experiment.title, 60, '')} - refine.bio</title>
+      )}
+      {experiment.description && (
+        <meta
+          name="description"
+          content={truncateOnWord(experiment.description, 160)}
+        />
+      )}
     </Helmet>
   );
 }
