@@ -120,6 +120,8 @@ export default Result;
  * thanks to https://stackoverflow.com/a/43235785/763705
  */
 function HighlightedText({ text, higlight }) {
+  if (!higlight) return text;
+
   // Split on higlight term and include term into parts, ignore case
   let parts = text.split(new RegExp(`(${higlight})`, 'gi'));
   return (
@@ -128,10 +130,10 @@ function HighlightedText({ text, higlight }) {
       {parts.map((part, i) => (
         <span
           key={i}
-          style={
-            part.toLowerCase() === higlight.toLowerCase()
-              ? { fontWeight: 'bold' }
-              : {}
+          className={
+            part && part.toLowerCase() === higlight.toLowerCase()
+              ? 'text-highlight'
+              : ''
           }
         >
           {part}
