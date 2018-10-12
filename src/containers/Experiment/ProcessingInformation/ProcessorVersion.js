@@ -60,8 +60,13 @@ export default class ProcessorVersion extends React.Component {
     const salmonProcessedResult = this.props.results.find(
       result => result.processor.name === 'Salmon Quant'
     );
-    if (!salmonProcessedResult || !salmonProcessedResult.organism_index)
+    if (
+      !salmonProcessedResult ||
+      !salmonProcessedResult.organism_index ||
+      !salmonProcessedResult.organism_index.assembly_name
+    ) {
       return null;
+    }
     return (
       <AccordionItem
         title={() => (
@@ -72,7 +77,8 @@ export default class ProcessorVersion extends React.Component {
               <tbody>
                 <VersionTable
                   versions={{
-                    'genome build': salmonProcessedResult.organism_index
+                    'genome build':
+                      salmonProcessedResult.organism_index.assembly_name
                   }}
                 />
               </tbody>

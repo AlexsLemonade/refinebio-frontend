@@ -6,7 +6,7 @@ import './Terms.scss';
 const Privacy = () => (
   <div className="terms">
     <Helmet>
-      <title>refine.bio - Privacy</title>
+      <title>Privacy - refine.bio</title>
     </Helmet>
     <h1 className="terms__title">Privacy Policy</h1>
     <p>

@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import './App.scss';
 import { Router, Route, Switch } from 'react-router-dom';
 import history from '../../history';
@@ -47,6 +48,14 @@ const App = () => {
   // In order to render `App` individually in the tests, Provider needs to wrap it's contents.
   return (
     <div className={classnames('app-wrap', { ios: isIos() })}>
+      <Helmet>
+        <title>refine.bio</title>
+        <meta
+          name="description"
+          content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
+        />
+      </Helmet>
+
       <Provider store={store}>
         <Router history={history}>
           <Layout>

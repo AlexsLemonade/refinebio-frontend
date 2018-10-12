@@ -31,7 +31,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
   return (
     <div className="downloads">
       <Helmet>
-        <title>refine.bio - Download Dataset</title>
+        <title>Download Dataset - refine.bio</title>
       </Helmet>
       <BackToTop />
       <h1 className="downloads__heading">Download Dataset</h1>
