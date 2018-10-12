@@ -6,13 +6,6 @@
     width: 90%;
     margin: 0 auto;
 
-    @include tablet {
-      &--flex {
-        display: flex;
-        justify-content: space-between;
-      }
-    }
-
     &--searchbox {
       position: relative;
       z-index: 1;
@@ -31,13 +24,23 @@
     }
   }
 
+  &__steps-container {
+    @extend .main__container;
+
+    @include desktop {
+      max-width: 1250px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
   &__col {
     margin-bottom: 6 * 8px;
 
-    @include tablet {
-      padding: 0 11 * 8px;
-      max-width: 50%;
+    @include desktop {
+      padding: 0 3 * 8px;
       border-right: 1px solid $gray;
+      flex: 1 1;
 
       &:first-of-type {
         padding-left: 0;
