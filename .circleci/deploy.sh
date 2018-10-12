@@ -34,7 +34,7 @@ CI=false REACT_APP_API_HOST=https://api.$base_host yarn run build
 
 if [[ $branch == "dev" ]]; then
     # generate robots.txt file on staging https://github.com/AlexsLemonade/refinebio-frontend/issues/376
-    echo -e "User-agent: *\nDisallow: /">build/robots.txt
+    echo -e "User-agent: *\nDisallow: /" > build/robots.txt
 fi
 
 pip install awscli --upgrade --user
