@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import RefineTable from '../../components/RefineTable';
 import 'react-table/react-table.css';
 
@@ -13,12 +12,14 @@ import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../constants/table';
 import SampleFieldMetadata from './SampleFieldMetadata';
-import { addExperiment, removeSamples } from '../../state/download/actions';
 import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from './DataSetSampleActions';
 import './SamplesTable.scss';
 import HorizontalScroll from '../../components/HorizontalScroll';
 import isEqual from 'lodash/isEqual';
+
+import uniq from 'lodash/uniq';
+import union from 'lodash/union';
 
 class SamplesTable extends React.Component {
   state = {
@@ -30,13 +31,13 @@ class SamplesTable extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.accessionCodes, this.props.accessionCodes)) {
+    if (!isEqual(prevProps.dataSet, this.props.dataSet)) {
       this.fetchData({ setPage: 0 });
     }
   }
 
   get totalSamples() {
-    return this.props.accessionCodes.length;
+    return this._getSampleAccessionCodes().length;
   }
 
   render() {
@@ -120,8 +121,12 @@ class SamplesTable extends React.Component {
     );
   }
 
+  _getSampleAccessionCodes() {
+    return uniq(union(...Object.values(this.props.dataSet)));
+  }
+
   fetchData = async ({ tableState = false, setPage = undefined } = {}) => {
-    const { accessionCodes, experimentAccessionCodes = [] } = this.props;
+    const accessionCodes = this._getSampleAccessionCodes();
     let { page, pageSize } = this.state;
     // get the backend ready `order_by` param, based on the sort options from the table
     let orderBy = this._getSortParam(tableState);
@@ -141,21 +146,17 @@ class SamplesTable extends React.Component {
       limit: pageSize
     });
 
-    if (experimentAccessionCodes.length === 1) {
-      const experimentAccessionCode = experimentAccessionCodes[0];
-
-      data = data.map(sample => {
-        return { ...sample, experimentAccessionCode };
-      });
-    } else if (experimentAccessionCodes.length > 1) {
-      data = data.map(sample => {
-        const experimentAccessionCode =
-          experimentAccessionCodes[
-            accessionCodes.indexOf(sample.accession_code)
-          ];
-        return { ...sample, experimentAccessionCode };
-      });
-    }
+    // add a new property to all samples, with the experiment accession codes that reference it in
+    // the dataset slice. This is needed when adding/removing the sample from the dataset
+    data = data.map(sample => ({
+      ...sample,
+      experimentAccessionCodes: Object.keys(this.props.dataSet).filter(
+        experimentAccessionCode =>
+          this.props.dataSet[experimentAccessionCode].includes(
+            sample.accession_code
+          )
+      )
+    }));
 
     // Customize the columns and their order depending on de data
     let columns = this._getColumns(data);
@@ -244,8 +245,7 @@ class SamplesTable extends React.Component {
           sortable: false,
           Cell: AddRemoveCell.bind(this),
           width: 190,
-          className: 'samples-table__add-remove',
-          show: !!this.props.experimentAccessionCodes.length
+          className: 'samples-table__add-remove'
         },
         ...headers
       ];
@@ -278,15 +278,6 @@ class SamplesTable extends React.Component {
     return orderBy;
   }
 }
-SamplesTable = connect(
-  ({ download: { dataSet } }) => ({
-    dataSet
-  }),
-  {
-    addExperiment,
-    removeSamples
-  }
-)(SamplesTable);
 export default SamplesTable;
 
 /**
@@ -370,7 +361,17 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
 }
 
 function AddRemoveCell({ original: sample, row: { id: rowId } }) {
-  const { experimentAccessionCode } = sample;
+  // retrieve all experiment accession codes referencing this sample
+  const { experimentAccessionCodes } = sample;
+  // Create a dataset slice, where we include all experiments that are referencing this sample
+  // that way when it gets added/removed it will impact all those experiments
+  const dataSetSlice = experimentAccessionCodes.reduce(
+    (result, accessionCode) => {
+      result[accessionCode] = [sample.accession_code];
+      return result;
+    },
+    {}
+  );
 
   if (!sample.is_processed) {
     return (
@@ -393,9 +394,7 @@ function AddRemoveCell({ original: sample, row: { id: rowId } }) {
 
   return (
     <DataSetSampleActions
-      data={{
-        [experimentAccessionCode]: [sample]
-      }}
+      dataSetSlice={dataSetSlice}
       meta={{ addText: 'Add', buttonStyle: 'secondary' }}
     />
   );

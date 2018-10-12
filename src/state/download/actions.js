@@ -23,37 +23,31 @@ export const downloadUpdateDataSet = dataSet => {
 };
 
 /**
- * Removes all experiments with the corresponding accession codes from dataset
- * @param {array} accessionCodes
+ * Applies an operation that modifies the current dataset. All other action creators
+ * use this method to add/remove samples from the dataset.
  */
-export const removeExperiment = accessionCodes => async (
-  dispatch,
-  getState
-) => {
-  const { dataSet, dataSetId } = getState().download;
-  const newDataSet = new DataSetManager(dataSet).removeExperiment(
-    accessionCodes
-  );
+const dataSetUpdateOperation = modifier => async (dispatch, getState) => {
+  // Update the current dataset with whatever is on the server, otherwise it might get out of sync
+  // if the user edited it in a different tab.
   try {
-    const response = await updateDataSet(dataSetId, newDataSet);
-    dispatch(downloadUpdateDataSet(response.data));
-  } catch (error) {
-    dispatch(reportError(error));
+    await dispatch(fetchDataSet());
+  } catch (e) {
+    dispatch(reportError(e));
+    throw e;
   }
-};
 
-/**
- * Removes all samples with corresponding ids from each experiment in dataset.
- * @param {array} samples
- */
-export const removeSamples = samples => async (dispatch, getState) => {
   const { dataSet, dataSetId } = getState().download;
-  const newDataSet = new DataSetManager(dataSet).removeSamples(samples);
+  // apply modifier function to the dataset
+  const data = modifier(dataSet, dataSetId);
+
   try {
-    const response = await updateDataSet(dataSetId, newDataSet);
-    dispatch(downloadUpdateDataSet(response.data));
-  } catch (error) {
-    dispatch(reportError(error));
+    const {
+      dataSetId: updatedDataSetId,
+      data: updatedDataSet
+    } = await dispatch(createOrUpdateDataSet({ dataSetId, data }));
+    dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
+  } catch (err) {
+    dispatch(reportError(err));
   }
 };
 
@@ -78,22 +72,14 @@ export const createOrUpdateDataSet = ({
 
 /**
  * Takes an array of experiment objects and adds to users dataset via endpoint
- * @param {array} experiments
+ * @param {object} dataSetSlice
  */
-export const addExperiment = experiments => async (dispatch, getState) => {
-  const { dataSet, dataSetId } = getState().download;
-  const data = new DataSetManager(dataSet).addExperiment(experiments);
-
-  try {
-    const {
-      dataSetId: updatedDataSetId,
-      data: updatedDataSet
-    } = await dispatch(createOrUpdateDataSet({ dataSetId, data }));
-    dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
-  } catch (err) {
-    dispatch(reportError(err));
-  }
-};
+export const addSamples = dataSetSlice => async (dispatch, getState) =>
+  dispatch(
+    dataSetUpdateOperation(dataSet =>
+      new DataSetManager(dataSet).add(dataSetSlice)
+    )
+  );
 
 export const addExperimentSucceeded = (dataSetId, dataSet) => {
   return {
@@ -106,8 +92,29 @@ export const addExperimentSucceeded = (dataSetId, dataSet) => {
 };
 
 /**
- * If a dataSetId exists in localStorage,
- * use it to fetch dataset from endpoint
+ * Removes all experiments with the corresponding accession codes from dataset
+ * @param {array} accessionCodes
+ */
+export const removeExperiment = accessionCodes => dispatch =>
+  dispatch(
+    dataSetUpdateOperation(dataSet =>
+      new DataSetManager(dataSet).removeExperiment(accessionCodes)
+    )
+  );
+
+/**
+ * Removes all samples with corresponding ids from each experiment in dataset.
+ * @param {object} dataSetSlice
+ */
+export const removeSamples = dataSetSlice => async (dispatch, getState) =>
+  dispatch(
+    dataSetUpdateOperation(dataSet =>
+      new DataSetManager(dataSet).remove(dataSetSlice)
+    )
+  );
+
+/**
+ * Use the dataset from the state
  */
 export const fetchDataSet = () => async (dispatch, getState) => {
   const dataSetId = getDataSetId(getState());
