@@ -224,17 +224,18 @@ let Experiment = ({
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="experiment experiment--sample-wrap">
               <Anchor name="samples">
-                <section className="experiment__section">
-                  <h2 className="experiment__title">Samples</h2>
-                  {isLoading ? (
-                    <div className="experiment__sample-table-loading-wrap">
-                      <Spinner />
-                    </div>
-                  ) : (
-                    <ExperimentSamplesTable experiment={experimentData} />
-                  )}
-                </section>
+                <h2 className="experiment__title">Samples</h2>
+                {isLoading ? (
+                  <div className="experiment__sample-table-loading-wrap">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <ExperimentSamplesTable experiment={experimentData} />
+                )}
               </Anchor>
             </div>
           </div>
