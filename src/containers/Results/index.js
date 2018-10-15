@@ -119,7 +119,8 @@ class Results extends Component {
                     <NumberOfResults />
                     <OrderingDropdown />
                   </div>
-
+                </div>
+                <div className="results__add-samples">
                   <DataSetSampleActions
                     data={this._getSamplesAsDataSet()}
                     enableAddRemaining={false}
