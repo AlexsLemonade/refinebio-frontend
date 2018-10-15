@@ -19,7 +19,11 @@ import DataSetSampleActions from '../Experiment/DataSetSampleActions';
 import isEqual from 'lodash/isEqual';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
-import { clearFilters } from '../../state/search/actions';
+import {
+  clearFilters,
+  Ordering,
+  updateOrdering
+} from '../../state/search/actions';
 import Spinner from '../../components/Spinner';
 
 class Results extends Component {
@@ -45,7 +49,8 @@ class Results extends Component {
       this.props.results &&
       this.props.results.length > 0 &&
       searchArgs.query === this.props.searchTerm &&
-      isEqual(searchArgs.filters, this.props.appliedFilters)
+      isEqual(searchArgs.filters, this.props.appliedFilters) &&
+      searchArgs.ordering === this.props.ordering
     ) {
       return;
     }
@@ -112,6 +117,7 @@ class Results extends Component {
                 <div className="results__top-bar">
                   <div className="results__number-results">
                     <NumberOfResults />
+                    <OrderingDropdown />
                   </div>
 
                   <DataSetSampleActions
@@ -150,7 +156,7 @@ class Results extends Component {
   }
 
   _parseUrl() {
-    let { q: query, p: page, size, ...filters } = getQueryParamObject(
+    let { q: query, p: page, size, ordering, ...filters } = getQueryParamObject(
       this.props.location.search
     );
 
@@ -168,7 +174,7 @@ class Results extends Component {
     page = parseInt(page || 1, 10);
     size = parseInt(size || 10, 10);
 
-    return { query, page, size, filters };
+    return { query, page, size, ordering, filters };
   }
 
   _getSamplesAsDataSet() {
@@ -185,7 +191,14 @@ class Results extends Component {
 }
 Results = connect(
   ({
-    search: { results, pagination, searchTerm, isSearching, appliedFilters },
+    search: {
+      results,
+      pagination,
+      searchTerm,
+      isSearching,
+      appliedFilters,
+      ordering
+    },
     download: { dataSet }
   }) => ({
     results,
@@ -193,7 +206,8 @@ Results = connect(
     searchTerm,
     dataSet,
     isLoading: isSearching,
-    appliedFilters
+    appliedFilters,
+    ordering
   }),
   {
     ...resultsActions,
@@ -294,3 +308,34 @@ NoSearchResultsTooManyFilters = connect(
     clearFilters
   }
 )(NoSearchResultsTooManyFilters);
+
+let OrderingDropdown = ({ ordering, updateOrdering }) => {
+  const options = [
+    { label: 'Most No. of samples', value: Ordering.MostSamples },
+    { label: 'Least No. of samples', value: Ordering.LeastSamples },
+    { label: 'Newest Experiment First', value: Ordering.Newest },
+    { label: 'Oldest Experiment First', value: Ordering.Oldest }
+  ];
+
+  const selectedOption = options.find(x => x.value === ordering) || options[0];
+
+  return (
+    <div className="">
+      Sort by{' '}
+      <Dropdown
+        options={options}
+        selectedOption={selectedOption}
+        label={x => x.label}
+        onChange={x => updateOrdering(x.value)}
+      />
+    </div>
+  );
+};
+OrderingDropdown = connect(
+  ({ search: { ordering } }) => ({
+    ordering
+  }),
+  {
+    updateOrdering
+  }
+)(OrderingDropdown);
