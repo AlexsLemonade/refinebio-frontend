@@ -106,7 +106,8 @@ export default Filters;
 const filterCategories = [
   { name: 'organism', queryField: 'organisms__name' },
   { name: 'technology', queryField: 'technology' },
-  { name: 'publication', queryField: 'has_publication' }
+  { name: 'publication', queryField: 'has_publication' },
+  { name: 'platforms', queryField: 'samples__platform_name' }
 ];
 
 /**
