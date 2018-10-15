@@ -5,10 +5,10 @@ import reportError from '../reportError';
 export const MOST_SAMPLES = 'MostSamples';
 
 export const Ordering = {
-  MostSamples: '',
+  MostSamples: '', // default sorting, so no parameters needed
   LeastSamples: 'samples_count',
-  Newest: 'created_at',
-  Oldest: '-created_at'
+  Newest: '-source_first_published',
+  Oldest: 'source_first_published'
 };
 
 // This action updates the current search url with new paramters, which in turn triggers a call
