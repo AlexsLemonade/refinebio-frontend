@@ -1,40 +1,64 @@
-import DataSetStats from './DataSetStats';
+import DataSetStats, { DataSetOperations } from './DataSetStats';
 
 describe('DataSetStats', () => {
-  let samples = [
-    { accession_code: 's1', is_processed: true },
-    { accession_code: 's2', is_processed: true },
-    { accession_code: 's3', is_processed: true },
-    { accession_code: 's4', is_processed: false },
-    { accession_code: 's5', is_processed: false }
-  ];
-
-  it('returns samples in dataset', () => {
-    let dataset = { e1: ['s1'] };
-    let processedSamples = new DataSetStats(
-      dataset,
-      samples
-    ).getSamplesInDataSet();
-    expect(processedSamples.map(x => x.accession_code)).toEqual(['s1']);
+  it('getAddedSlice', () => {
+    let dataset = { e1: ['s1', 's2'] };
+    const slice = { e1: ['s1'] };
+    let addedSlice = new DataSetStats(dataset, slice).getAddedSlice();
+    expect(addedSlice).toEqual({ e1: ['s1'] });
   });
 
-  it('returns processed samples', () => {
-    let dataset = { e1: ['s1'] };
-    let processedSamples = new DataSetStats(
-      dataset,
-      samples
-    ).getProcessedSamples();
-    expect(processedSamples.map(x => x.accession_code)).toEqual([
-      's1',
-      's2',
-      's3'
-    ]);
+  describe('getSamplesInDataSet', () => {
+    it('returns samples in dataset', () => {
+      let dataset = { e1: ['s1', 's2'] };
+      const slice = { e1: ['s1'] };
+      let processedSamples = new DataSetStats(
+        dataset,
+        slice
+      ).getSamplesInDataSet();
+      expect(processedSamples).toEqual(['s1']);
+    });
+
+    it('returns unique values', () => {
+      let dataset = { e1: ['s1', 's2'], e2: ['s1'] };
+      const slice = { e1: ['s1'], e2: ['s1'] };
+      let processedSamples = new DataSetStats(
+        dataset,
+        slice
+      ).getSamplesInDataSet();
+      expect(processedSamples).toEqual(['s1']);
+    });
   });
 
-  it('checks sample in dataset', () => {
-    let dataset = { e1: ['s1'] };
-    let sample = { accession_code: 's1', is_processed: true };
-    let result = new DataSetStats(dataset, samples).sampleInDataSet(sample);
-    expect(result).toBeTruthy();
+  describe('all samples in dataset', () => {
+    it('not all samples are present', () => {
+      let dataset = { e1: ['s1'] };
+      const slice = { e1: ['s1', 's2'] };
+      let allProcessedInDataSet = new DataSetStats(
+        dataset,
+        slice
+      ).allProcessedInDataSet();
+      expect(allProcessedInDataSet).toBeFalsy();
+    });
+  });
+});
+
+describe('DataSetOperations', () => {
+  it('intersect with one common value', () => {
+    const d1 = { e1: ['s1'], e2: ['s2'] };
+    const d2 = { e1: ['s1', 's2'] };
+    expect(DataSetOperations.intersect(d1, d2)).toEqual({ e1: ['s1'] });
+  });
+
+  it('isEqual to empty dataset', () => {
+    const d1 = {};
+    const d2 = { e1: ['s1', 's2'] };
+    expect(DataSetOperations.equal(d1, d2)).toBeFalsy();
+  });
+
+  it('isEqual ignores order where items appear', () => {
+    const d1 = { e1: ['s2', 's1'], e2: ['s3'] };
+    const d2 = { e2: ['s3'], e1: ['s1', 's2'] };
+    expect(DataSetOperations.equal(d1, d2)).toBeTruthy();
   });
 });

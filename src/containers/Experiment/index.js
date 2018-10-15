@@ -14,11 +14,6 @@ import OrganismIcon from '../../common/icons/organism.svg';
 import BackToTop from '../../components/BackToTop';
 
 import SamplesTable from './SamplesTable';
-import {
-  addExperiment,
-  removeExperiment,
-  removeSamples
-} from '../../state/download/actions';
 import DataSetSampleActions from './DataSetSampleActions';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
@@ -34,9 +29,6 @@ import Anchor from '../../components/Anchor';
 let Experiment = ({
   fetchExperiment,
   experiment = {},
-  addExperiment,
-  removeExperiment,
-  removeSamples,
   addSamplesToDataset,
   dataSet,
   match,
@@ -83,8 +75,10 @@ let Experiment = ({
                 </h3>
                 <div>
                   <DataSetSampleActions
-                    data={{
-                      [experimentData.accession_code]: experimentData.samples
+                    dataSetSlice={{
+                      [experimentData.accession_code]: DataSetStats.mapAccessions(
+                        experimentData.samples
+                      )
                     }}
                   />
                 </div>
@@ -253,9 +247,6 @@ Experiment = connect(
   ({ experiment, download: { dataSet } }) => ({ experiment, dataSet }),
   {
     fetchExperiment,
-    addExperiment,
-    removeExperiment,
-    removeSamples,
     goBack
   }
 )(Experiment);
@@ -289,61 +280,53 @@ class ExperimentSamplesTable extends React.Component {
 
     return (
       <SamplesTable
-        accessionCodes={this._getSamplesToBeDisplayed()}
-        experimentAccessionCodes={[experiment.accession_code]}
+        dataSet={{
+          [experiment.accession_code]: this._getSamplesToBeDisplayed()
+        }}
         // Render prop for the button that adds the samples to the dataset
-        pageActionComponent={samplesDisplayed => (
-          <div className="experiment__sample-actions">
-            <div className="mobile-p">
-              <Checkbox
-                name="samples-dataset"
-                checked={this.state.showOnlyAddedSamples}
-                onChange={() =>
-                  this.setState({
-                    showOnlyAddedSamples: !this.state.showOnlyAddedSamples,
-                    onlyAddedSamples: this._getAddedSamples()
-                  })
-                }
-                disabled={
-                  !this.state.showOnlyAddedSamples &&
-                  !this._anySampleInDataSet()
-                }
-              >
-                Show only samples added to dataset
-              </Checkbox>
-            </div>
+        pageActionComponent={samplesDisplayed => {
+          const stats = new DataSetStats(
+            this.props.dataSet,
+            this._getDataSetSlice()
+          );
+          return (
+            <div className="experiment__sample-actions">
+              <div className="mobile-p">
+                <Checkbox
+                  name="samples-dataset"
+                  checked={this.state.showOnlyAddedSamples}
+                  onChange={() =>
+                    this.setState(state => ({
+                      showOnlyAddedSamples: !state.showOnlyAddedSamples,
+                      onlyAddedSamples: stats.getSamplesInDataSet()
+                    }))
+                  }
+                  disabled={
+                    !this.state.showOnlyAddedSamples &&
+                    !stats.anyProcessedInDataSet()
+                  }
+                >
+                  Show only samples added to dataset
+                </Checkbox>
+              </div>
 
-            <DataSetSampleActions
-              data={{
-                [experiment.accession_code]: samplesDisplayed
-              }}
-              enableAddRemaining={false}
-              meta={{
-                buttonStyle: 'secondary',
-                addText: 'Add Page to Dataset'
-              }}
-            />
-          </div>
-        )}
+              <DataSetSampleActions
+                dataSetSlice={{
+                  [experiment.accession_code]: DataSetStats.mapAccessions(
+                    samplesDisplayed
+                  )
+                }}
+                enableAddRemaining={false}
+                meta={{
+                  buttonStyle: 'secondary',
+                  addText: 'Add Page to Dataset'
+                }}
+              />
+            </div>
+          );
+        }}
       />
     );
-  }
-
-  _anySampleInDataSet() {
-    const { experiment, dataSet } = this.props;
-    return new DataSetStats(
-      dataSet,
-      experiment.samples
-    ).anyProcessedInDataSet();
-  }
-
-  _getAddedSamples() {
-    const { experiment, dataSet } = this.props;
-
-    // show only the samples that are present in the dataset
-    return new DataSetStats(dataSet, experiment.samples)
-      .getSamplesInDataSet()
-      .map(x => x.accession_code);
   }
 
   _getSamplesToBeDisplayed() {
@@ -354,6 +337,20 @@ class ExperimentSamplesTable extends React.Component {
 
     // return the accession codes of all samples
     return this.props.experiment.samples.map(x => x.accession_code);
+  }
+
+  /**
+   * Bulilds a dataset slice, that only contains the current experiment accession code
+   * with it's processed samples
+   */
+  _getDataSetSlice() {
+    const { experiment } = this.props;
+
+    return {
+      [experiment.accession_code]: DataSetStats.mapAccessions(
+        experiment.samples
+      )
+    };
   }
 }
 ExperimentSamplesTable = connect(({ download: { dataSet } }) => ({ dataSet }))(

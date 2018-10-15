@@ -152,5 +152,10 @@ fieldset {
   display: none;
 }
 
+.text-highlight {
+  font-weight: bold;
+  background-color: $highlight-color;
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';

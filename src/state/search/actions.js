@@ -186,17 +186,6 @@ export const updateResultsPerPage = resultsPerPage => async (
   );
 };
 
-export function fetchOrganisms() {
-  return async dispatch => {
-    try {
-      const organisms = await Ajax.get(`/organisms/`);
-      return organisms;
-    } catch (error) {
-      dispatch(reportError(error));
-    }
-  };
-}
-
 /**
  * Takes an array with specifications of active filters and toggles one of the filters.
  * @param {any} filters Filters object, where the keys are the name of the filter

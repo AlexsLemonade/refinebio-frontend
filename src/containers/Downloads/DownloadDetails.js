@@ -28,6 +28,10 @@ import {
   clearDataSet
 } from '../../state/download/actions';
 
+import uniq from 'lodash/uniq';
+import mapValues from 'lodash/mapValues';
+import groupBy from 'lodash/groupBy';
+
 import * as routes from '../../routes';
 
 let DownloadDetails = ({
@@ -136,33 +140,41 @@ const SpeciesSamples = ({
   samplesBySpecies,
   removeSamples,
   isImmutable = false
-}) => {
-  const species = samplesBySpecies;
-  if (!species || !Object.keys(species).length) {
-    return <p>No samples added to download dataset.</p>;
-  }
+}) => (
+  <div className="downloads__card">
+    {Object.keys(samplesBySpecies).map(speciesName => {
+      // Create a slice with the samples for each specie
+      // TODO: in the future we could consider refactoring `groupSamplesBySpecies`, seems
+      // unnecessary having to modify the shape of that object here
+      const specieDataSetSlice = mapValues(
+        groupBy(samplesBySpecies[speciesName], 'experimentAccessionCode'),
+        x => x.map(sample => sample.accession_code)
+      );
 
-  return (
-    <div className="downloads__card">
-      {Object.keys(species).map((speciesName, i) => (
-        <div className="downloads__sample" key={i}>
+      return (
+        <div className="downloads__sample" key={speciesName}>
           <div className="downloads__sample-info">
             <h2 className="downloads__species-title">
               {formatSentenceCase(speciesName)} Samples
             </h2>
             <div className="downloads__sample-stats">
               <p className="downloads__sample-stat">
-                {species[speciesName].length}{' '}
-                {species[speciesName].length > 1 ? 'Samples' : 'Sample'}
+                {
+                  uniq(
+                    samplesBySpecies[speciesName].map(
+                      sample => sample.accession_code
+                    )
+                  ).length
+                }{' '}
+                {samplesBySpecies[speciesName].length > 1
+                  ? 'Samples'
+                  : 'Sample'}
               </p>
             </div>
 
             <div className="mobile-p">
               <ViewSamplesButtonModal
-                accessionCodes={species[speciesName].map(x => x.accession_code)}
-                experimentAccessionCodes={species[speciesName].map(
-                  x => x.experimentAccessionCode
-                )}
+                dataSet={specieDataSetSlice}
                 isImmutable={isImmutable}
               />
             </div>
@@ -172,14 +184,14 @@ const SpeciesSamples = ({
             <Button
               text="Remove"
               buttonStyle="remove"
-              onClick={() => removeSamples(species[speciesName])}
+              onClick={() => removeSamples(specieDataSetSlice)}
             />
           )}
         </div>
-      ))}
-    </div>
-  );
-};
+      );
+    })}
+  </div>
+);
 
 class ExperimentsView extends React.Component {
   state = { organism: false };
@@ -201,20 +213,20 @@ class ExperimentsView extends React.Component {
         {this._renderFilters()}
 
         <div className="downloads__card">
-          {Object.keys(dataSet).map((id, i) => {
-            const addedSamples = dataSet[id];
-            const experiment = experiments[id];
+          {Object.keys(dataSet).map(experimentAccessionCode => {
+            const addedSamples = dataSet[experimentAccessionCode];
+            const experiment = experiments[experimentAccessionCode];
             const metadataFields = getMetadataFields(experiment);
 
             if (
               this.state.organism &&
               !experiment.organisms.includes(this.state.organism)
             ) {
-              return <React.Fragment key={i} />;
+              return null;
             }
 
             return (
-              <div className="downloads__sample" key={i}>
+              <div className="downloads__sample" key={experimentAccessionCode}>
                 <div className="downloads__dataSet-info">
                   <Link
                     to={routes.experiments(experiment.accession_code)}
@@ -266,8 +278,7 @@ class ExperimentsView extends React.Component {
                   {addedSamples.length > 0 && (
                     <div className="mobile-p">
                       <ViewSamplesButtonModal
-                        accessionCodes={addedSamples}
-                        experimentAccessionCodes={[experiment.accession_code]}
+                        dataSet={{ [experiment.accession_code]: addedSamples }}
                         isImmutable={isImmutable}
                       />
                     </div>
@@ -339,7 +350,7 @@ class ExperimentsView extends React.Component {
  */
 class ViewSamplesButtonModal extends React.Component {
   state = {
-    accessionCodes: []
+    dataSet: {}
   };
 
   render() {
@@ -352,8 +363,8 @@ class ViewSamplesButtonModal extends React.Component {
             onClick={() => {
               // copy the list of accession codes before displaying the modal dialog. So that the list doesn't get
               // modified if the user adds/removes any sample
-              this.setState((prevState, prevProps) => ({
-                accessionCodes: [...prevProps.accessionCodes]
+              this.setState((state, props) => ({
+                dataSet: props.dataSet
               }));
               showModal();
             }}
@@ -363,8 +374,7 @@ class ViewSamplesButtonModal extends React.Component {
       >
         {() => (
           <SamplesTable
-            accessionCodes={this.state.accessionCodes}
-            experimentAccessionCodes={this.props.experimentAccessionCodes}
+            dataSet={this.state.dataSet}
             isImmutable={this.props.isImmutable}
           />
         )}
