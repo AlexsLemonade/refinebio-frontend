@@ -13,7 +13,8 @@ const SampleFieldMetadata = [
     id: 'accession_code',
     accessor: d => d.accession_code,
     minWidth: 160,
-    width: 175
+    width: 175,
+    style: { textAlign: 'right' }
   },
   {
     Header: 'Sex',
