@@ -143,40 +143,6 @@
   vertical-align: sub;
 }
 
-.metadata-modal {
-  padding: 24px;
-  max-width: 108 * 8px;
-  overflow: hidden;
-
-  @include tablet {
-    padding: 56px 56px 0 56px;
-  }
-
-  &__title {
-    margin-bottom: 4px;
-  }
-
-  &__subtitle {
-    margin-top: 4px;
-  }
-
-  &__annotations {
-    max-height: 700px;
-    margin-top: 8px;
-    overflow: auto;
-
-    @include tablet {
-      margin-left: -56px;
-      margin-right: -56px;
-    }
-  }
-
-  pre {
-    padding: 8px;
-    white-space: pre-wrap;
-  }
-}
-
 .sample-not-processed {
   font-size: 0.875rem;
 }
