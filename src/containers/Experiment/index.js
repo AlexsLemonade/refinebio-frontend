@@ -25,6 +25,8 @@ import TechnologyBadge, {
 import Spinner from '../../components/Spinner';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import Anchor from '../../components/Anchor';
+import uniq from 'lodash/uniq';
+import Technology from './Technology';
 
 let Experiment = ({
   fetchExperiment,
@@ -109,25 +111,10 @@ let Experiment = ({
                       }`
                     : null}
                 </div>
-                {!isLoading &&
-                  experimentData.samples.length && (
-                    <div className="experiment__stats-item">
-                      <TechnologyBadge
-                        className="experiment__stats-icon"
-                        isMicroarray={experimentData.samples.some(
-                          x => x.technology === MICROARRAY
-                        )}
-                        isRnaSeq={experimentData.samples.some(
-                          x => x.technology === RNA_SEQ
-                        )}
-                      />
-                      {[
-                        ...new Set(
-                          experimentData.samples.map(x => x.pretty_platform)
-                        )
-                      ].join(', ')}
-                    </div>
-                  )}
+
+                <div className="experiment__stats-item">
+                  <Technology samples={experimentData.samples} />
+                </div>
               </div>
 
               <h4 className="experiment__title">
