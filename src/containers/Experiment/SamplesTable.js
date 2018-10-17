@@ -6,8 +6,6 @@ import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import { getAllDetailedSamples } from '../../api/samples';
 
-import ModalManager from '../../components/Modal/ModalManager';
-import Button from '../../components/Button';
 import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../constants/table';
@@ -20,6 +18,7 @@ import isEqual from 'lodash/isEqual';
 
 import uniq from 'lodash/uniq';
 import union from 'lodash/union';
+import MetadataAnnotationsCell from './MetadataAnnotationsCell';
 
 class SamplesTable extends React.Component {
   state = {
@@ -230,7 +229,7 @@ class SamplesTable extends React.Component {
         Header: 'Additional Metadata',
         id: 'additional_metadata',
         sortable: false,
-        Cell: MetadataCell
+        Cell: MetadataAnnotationsCell
       }
     ];
 
@@ -289,52 +288,6 @@ function CustomCell({ value }) {
   }
 
   return value;
-}
-
-/**
- * Component that renders the content in "Additional Metadata" column
- */
-function MetadataCell({ original: sample }) {
-  if (sample.annotations.length === 0) {
-    return CustomCell({});
-  }
-
-  let annotations = sample.annotations.map(entry => entry.data);
-
-  return (
-    <ModalManager
-      component={showModal => (
-        <Button text="View" buttonStyle="link" onClick={showModal} />
-      )}
-      modalProps={{ className: 'metadata-modal' }}
-    >
-      {() => (
-        <section>
-          <h1 className="metadata-modal__title">Additional Metadata</h1>
-          <div className="metadata-modal__subtitle">
-            <img className="info-icon" src={InfoIcon} alt="" /> Included in
-            Download
-          </div>
-          <div className="metadata-modal__annotations">
-            {annotations.map((meta, index) => (
-              <div key={index}>
-                {Object.keys(meta).map(field => (
-                  <div className="experiment__row" key={field}>
-                    <div className="experiment__row-label">{field}</div>
-                    <div>
-                      {Array.isArray(meta[field])
-                        ? meta[field].map(value => <p>{value}</p>)
-                        : meta[field]}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-    </ModalManager>
-  );
 }
 
 /**
