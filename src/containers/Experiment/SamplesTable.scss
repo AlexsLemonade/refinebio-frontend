@@ -144,9 +144,13 @@
 }
 
 .metadata-modal {
-  padding: 56px 24px 56px 56px;
+  padding: 24px;
   max-width: 108 * 8px;
   overflow: hidden;
+
+  @include tablet {
+    padding: 56px 56px 0 56px;
+  }
 
   &__title {
     margin-bottom: 4px;
@@ -157,12 +161,14 @@
   }
 
   &__annotations {
+    max-height: 700px;
+    margin-top: 8px;
     overflow: auto;
-    height: 700px;
-    border-radius: 2px;
-    color: #fdfdfd;
-    font-family: 'Oxygen Mono';
-    background-color: #4a4a4a;
+
+    @include tablet {
+      margin-left: -56px;
+      margin-right: -56px;
+    }
   }
 
   pre {

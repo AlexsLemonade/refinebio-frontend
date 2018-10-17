@@ -299,9 +299,8 @@ function MetadataCell({ original: sample }) {
     return CustomCell({});
   }
 
-  let annotations = sample.annotations.map(entry =>
-    JSON.stringify(entry.data, null, 2)
-  );
+  let annotations = sample.annotations.map(entry => entry.data);
+
   return (
     <ModalManager
       component={showModal => (
@@ -319,7 +318,16 @@ function MetadataCell({ original: sample }) {
           <div className="metadata-modal__annotations">
             {annotations.map((meta, index) => (
               <div key={index}>
-                <pre>{meta}</pre>
+                {Object.keys(meta).map(field => (
+                  <div className="experiment__row" key={field}>
+                    <div className="experiment__row-label">{field}</div>
+                    <div>
+                      {Array.isArray(meta[field])
+                        ? meta[field].map(value => <p>{value}</p>)
+                        : meta[field]}
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
