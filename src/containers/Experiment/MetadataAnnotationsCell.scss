@@ -50,4 +50,10 @@
   &__filter-input {
     margin-left: 8px;
   }
+
+  &__no-match {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    text-align: center;
+  }
 }

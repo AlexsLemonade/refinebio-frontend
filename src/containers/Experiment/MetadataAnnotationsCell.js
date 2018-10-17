@@ -75,7 +75,7 @@ class AnnotationsModalContent extends React.Component {
             ))}
           </div>
         ) : (
-          <div>
+          <div className="metadata-modal__no-match">
             No metadata found matching <b>{this.state.filter}</b>.
           </div>
         )}
