@@ -31,7 +31,10 @@ export default class ProcessingInformationModalContent extends React.Component {
             >
               Submitter processed
             </a>
-            <SubmitterSuppliedProtocol {...this.props} />
+            <SubmitterSuppliedProtocol
+              {...this.props}
+              isSubmitterProcessed={isSubmitterProcessed}
+            />
           </React.Fragment>
         ) : (
           <React.Fragment>
@@ -96,6 +99,20 @@ export default class ProcessingInformationModalContent extends React.Component {
           this._getProtocolDescription(name)
         )}
 
+        <div>
+          All samples available for download will be <b>quantile normalized</b>.
+          For more information regarding how quantile normalization is performed
+          and its limitations, see{' '}
+          <a
+            href="https://github.com/AlexsLemonade/refinebio-docs/blob/master/docs/main_text.md#quantile-normalization"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
+            our documentation
+          </a>.
+        </div>
+
         <ProcessorVersion {...this.props} />
       </React.Fragment>
     );
@@ -131,7 +148,7 @@ function AffymetrixScanProtocol() {
         individual samples. SCAN models and corrects for the effect of technical
         bias, such as GC content, using a mixture-modeling approach. For more
         information about this approach, see the primary publication (Piccolo,
-        et al. <i>Genomics</i>. 2012.
+        et al. <i>Genomics</i>. 2012.{' '}
         <a
           href="http://doi.org/10.1016/j.ygeno.2012.08.003"
           target="_blank"
@@ -166,7 +183,7 @@ function IlluminaScanProtocol() {
         it has been adapted for Illumina BeadArrays. SCAN models and corrects
         for the effect of technical bias, such as GC content, using a
         mixture-modeling approach. For more information about this approach, see
-        the primary publication (Piccolo, et al. <i>Genomics</i>. 2012.
+        the primary publication (Piccolo, et al. <i>Genomics</i>. 2012.{' '}
         <a
           href="http://doi.org/10.1016/j.ygeno.2012.08.003"
           target="_blank"

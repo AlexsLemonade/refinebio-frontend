@@ -86,12 +86,12 @@ describe('startDownload', () => {
 
     await store.dispatch(
       startDownload({
-        tokenId: 'some token id',
         dataSetId: DataSetId,
         dataSet: DataSet
       })
     );
     expect(store.getActions().map(x => x.type)).toEqual([
+      'LOAD_TOKEN',
       'DOWNLOAD_CLEAR',
       'refinebio/CALL_HISTORY_METHOD'
     ]);

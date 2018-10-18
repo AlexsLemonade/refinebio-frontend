@@ -14,6 +14,7 @@ import ResponsiveSwitch from '../../../components/ResponsiveSwitch';
 import SideMenu from '../../../components/SideMenu';
 
 import FilterIcon from '../../../common/icons/filter-icon.svg';
+import isEmpty from 'lodash/isEmpty';
 
 const FilterCategory = ({
   categoryFilters,
@@ -34,16 +35,16 @@ const FilterCategory = ({
               name={filter}
               className="result-filters__filter-check"
               disabled={categoryFilters[filter] === 0}
-              onToggle={() =>
+              onChange={() =>
                 toggledFilter(
                   category.queryField,
-                  filter === 'has_publication' ? 'true' : filter
+                  filter === 'has_publication' ? 'True' : filter
                 )
               }
               checked={
                 !!appliedFilters[category.queryField] &&
                 appliedFilters[category.queryField].includes(
-                  filter === 'has_publication' ? 'true' : filter
+                  filter === 'has_publication' ? 'True' : filter
                 )
               }
             >
@@ -68,15 +69,18 @@ let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
           </Button>
         )}
       </div>
-      {filterCategories.map((category, i) => (
-        <FilterCategory
-          key={i}
-          categoryFilters={filters[category.name]}
-          category={category}
-          toggledFilter={toggledFilter}
-          appliedFilters={appliedFilters}
-        />
-      ))}
+      {filterCategories.map(
+        (category, i) =>
+          !isEmpty(filters[category.name]) && (
+            <FilterCategory
+              key={i}
+              categoryFilters={filters[category.name]}
+              category={category}
+              toggledFilter={toggledFilter}
+              appliedFilters={appliedFilters}
+            />
+          )
+      )}
     </div>
   );
 };

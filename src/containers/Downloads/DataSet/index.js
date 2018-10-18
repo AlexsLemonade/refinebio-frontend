@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import moment from 'moment';
 import { getAmazonDownloadLinkUrl, timeout } from '../../../common/helpers';
 import Loader from '../../../components/Loader';
@@ -12,6 +13,8 @@ import {
   regenerateDataSet
 } from '../../../state/dataSet/actions';
 import { startDownload } from '../../../state/download/actions';
+import { createToken } from '../../../state/token';
+
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
 
 import TermsOfUse from '../../../components/TermsOfUse';
@@ -79,40 +82,49 @@ class DataSet extends React.Component {
     }
 
     return (
-      <Loader updateProps={dataSetId} fetch={() => this._fetchDataSet()}>
-        {({ isLoading }) =>
-          isLoading ? (
-            <Spinner />
-          ) : (
-            <div>
-              <DataSetPageHeader
-                dataSetId={dataSetId}
-                dataSet={dataSet}
-                email_address={
-                  // the email is never returned from the api, check if it was passed
-                  // on the url state on a previous step
-                  location.state && location.state.email_address
-                }
-                hasError={location.state && location.state.hasError}
-              />
-              <div className="downloads__bar">
-                <div className="flex-button-container flex-button-container--left">
-                  <ShareDatasetButton dataSetId={dataSetId} />
+      <div>
+        <Helmet>
+          <title>Dataset - refine.bio</title>
+          <meta
+            name="description"
+            content="Explore and download this custom harmonized childhood cancer transcriptome dataset."
+          />
+        </Helmet>
+        <Loader updateProps={dataSetId} fetch={() => this._fetchDataSet()}>
+          {({ isLoading }) =>
+            isLoading ? (
+              <Spinner />
+            ) : (
+              <div>
+                <DataSetPageHeader
+                  dataSetId={dataSetId}
+                  dataSet={dataSet}
+                  email_address={
+                    // the email is never returned from the api, check if it was passed
+                    // on the url state on a previous step
+                    location.state && location.state.email_address
+                  }
+                  hasError={location.state && location.state.hasError}
+                />
+                <div className="downloads__bar">
+                  <div className="flex-button-container flex-button-container--left">
+                    <ShareDatasetButton dataSetId={dataSetId} />
+                  </div>
                 </div>
+                <DownloadDetails
+                  isImmutable={true}
+                  isEmbed={true}
+                  dataSet={dataSet.data}
+                  aggregate_by={dataSet.aggregate_by}
+                  scale_by={dataSet.scale_by}
+                  experiments={dataSet.experiments}
+                  samples={dataSet.samples}
+                />
               </div>
-              <DownloadDetails
-                isImmutable={true}
-                isEmbed={true}
-                dataSet={dataSet.data}
-                aggregate_by={dataSet.aggregate_by}
-                scale_by={dataSet.scale_by}
-                experiments={dataSet.experiments}
-                samples={dataSet.samples}
-              />
-            </div>
-          )
-        }
-      </Loader>
+            )
+          }
+        </Loader>
+      </div>
     );
   }
 }
@@ -134,11 +146,15 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     is_available,
     expires_on,
     s3_bucket,
-    s3_key
+    s3_key,
+    success
   } = dataSet;
 
+  // success can sometimes be `null`
+  const processingError = success === false;
+
   const isExpired = moment(expires_on).isBefore(Date.now());
-  return hasError ? (
+  return hasError || processingError ? (
     <DataSetErrorDownloading dataSetId={dataSetId} dataSet={dataSet} />
   ) : is_processed ? (
     is_available && !isExpired ? (
@@ -153,9 +169,12 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
   );
 }
 
-let DataSetErrorDownloading = ({ dataSetId, dataSet, startDownload }) => {
-  let token = localStorage.getItem('refinebio-token');
-
+let DataSetErrorDownloading = ({
+  dataSetId,
+  dataSet,
+  startDownload,
+  token
+}) => {
   return (
     <div className="dataset__container">
       <div className="dataset__message">
@@ -163,15 +182,9 @@ let DataSetErrorDownloading = ({ dataSetId, dataSet, startDownload }) => {
           <div className="dataset__processed-text">
             <h1>Uh-oh something went wrong!</h1>
             <p>Please try downloading again. </p>
-            <p>
-              If the problem persists, please contact{' '}
-              <a href="mailto:ccdl@alexslemonade.org" className="link">
-                ccdl@alexslemonade.org
-              </a>
-            </p>
-
             {token && (
               <Button
+                className="dataset__try-again-button"
                 onClick={() =>
                   startDownload({
                     tokenId: token,
@@ -182,6 +195,34 @@ let DataSetErrorDownloading = ({ dataSetId, dataSet, startDownload }) => {
               >
                 Try Again
               </Button>
+            )}
+
+            <p>
+              If the problem persists, please contact{' '}
+              <a href="mailto:ccdl@alexslemonade.org" className="link">
+                ccdl@alexslemonade.org
+              </a>
+              {dataSet.failure_reason && (
+                <span>
+                  {' '}
+                  or{' '}
+                  <a
+                    href="https://github.com/AlexsLemonade/refinebio/issues/new"
+                    target="_blank"
+                    rel="nofollow noopener noreferrer"
+                    className="link"
+                  >
+                    report the issue to us
+                  </a>{' '}
+                  with the following error message:
+                </span>
+              )}
+            </p>
+
+            {dataSet.failure_reason && (
+              <div className="dataset__failure-reason">
+                {dataSet.failure_reason}
+              </div>
             )}
           </div>
 
@@ -194,7 +235,7 @@ let DataSetErrorDownloading = ({ dataSetId, dataSet, startDownload }) => {
   );
 };
 DataSetErrorDownloading = connect(
-  null,
+  ({ token }) => ({ token }),
   {
     startDownload
   }
@@ -231,26 +272,18 @@ function DataSetProcessing({ email, dataSetId }) {
 
 class DataSetReady extends React.Component {
   state = {
-    agreedToTerms: false,
-    hasToken: false
+    agreedToTerms: false
   };
-
-  componentDidMount() {
-    const token = localStorage.getItem('refinebio-token');
-    if (!!token) {
-      this.setState({ hasToken: true });
-    }
-  }
 
   handleAgreedToTerms = () => {
     this.setState({ agreedToTerms: !this.state.agreedToTerms });
   };
 
   handleSubmit = async () => {
-    if (!this.state.hasToken) {
-      const token = await (await fetch('/token/')).json();
-      localStorage.setItem('refinebio-token', token.id);
+    if (!this.props.hasToken) {
+      await this.props.createToken();
     }
+
     const { s3_bucket, s3_key } = this.props;
     const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
     window.location.href = downloadLink;
@@ -264,7 +297,7 @@ class DataSetReady extends React.Component {
             <div className="dataset__processed-text">
               <h1>Your dataset is ready for download!</h1>
               <div className="dataset__way-container">
-                {!this.state.hasToken && (
+                {!this.props.hasToken && (
                   <TermsOfUse
                     agreedToTerms={this.state.agreedToTerms}
                     handleToggle={this.handleAgreedToTerms}
@@ -272,7 +305,7 @@ class DataSetReady extends React.Component {
                 )}
                 <Button
                   onClick={this.handleSubmit}
-                  isDisabled={!this.state.agreedToTerms && !this.state.hasToken}
+                  isDisabled={!this.state.agreedToTerms && !this.props.hasToken}
                 >
                   Download Now
                 </Button>
@@ -288,6 +321,13 @@ class DataSetReady extends React.Component {
     );
   }
 }
+DataSetReady = connect(
+  ({ token }) => ({ hasToken: !!token }),
+  {
+    startDownload,
+    createToken
+  }
+)(DataSetReady);
 
 let DataSetExpired = ({ regenerateDataSet }) => (
   <div className="dataset__container">

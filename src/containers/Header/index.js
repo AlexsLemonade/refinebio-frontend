@@ -15,7 +15,7 @@ class Header extends React.Component {
   render() {
     return (
       <header
-        className={classnames('header', {
+        className={classnames('header', 'js-header', {
           'header--inverted header--scroll': this._invertColors()
         })}
       >
@@ -57,8 +57,12 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
       >
         Search
       </HeaderLink>
-      <li class="header__link">
-        <a href="http://docs.refine.bio" target="_blank">
+      <li className="header__link">
+        <a
+          href="http://docs.refine.bio"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Docs
         </a>
       </li>

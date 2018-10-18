@@ -7,6 +7,7 @@ import SearchInput from '../../components/SearchInput';
 import { Link } from 'react-router-dom';
 import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
+import ExploreIcon from '../../common/icons/explore.svg';
 import './Main.scss';
 import StatsPlaceholder from './summary-stats-placeholder.svg';
 
@@ -14,7 +15,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
   return (
     <div className="main">
       <Helmet>
-        <title>refine.bio - Search for harmonized transcriptome data</title>
+        <title>Search for harmonized transcriptome data - refine.bio</title>
       </Helmet>
       <section className="main__section main__section--searchbox">
         <div className="main__container main__container--searchbox">
@@ -44,7 +45,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
         </div>
       </section>
       <section className="main__section">
-        <div className="main__container main__container--flex">
+        <div className="main__steps-container">
           <div className="main__col">
             <h3 className="main__heading-2">
               <img src={SearchIcon} className="main__icon" alt="search-icon" />{' '}
@@ -79,6 +80,37 @@ let Main = ({ searchTerm, fetchResults, push }) => {
               including gene expression matrices and sample metadata.
             </p>
           </div>
+          <div className="main__col">
+            <h3 className="main__heading-2">
+              <img
+                src={ExploreIcon}
+                className="main__icon"
+                alt="dataset-icon"
+              />{' '}
+              Explore the docs
+            </h3>
+            <p className="main__paragraph">
+              Learn more about our{' '}
+              <a
+                href="http://docs.refine.bio/en/latest/index.html"
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                className="link"
+              >
+                pipelines
+              </a>{' '}
+              or explore{' '}
+              <a
+                href="http://docs.refine.bio/en/latest/main_text.html#use-cases-for-downstream-analysis"
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                className="link"
+              >
+                example workflows
+              </a>{' '}
+              to see how data from refine.bio can help with your analysis.
+            </p>
+          </div>
         </div>
       </section>
       {false && (
@@ -88,7 +120,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
 
             <img
               src={StatsPlaceholder}
-              class="main__stats-placeholder"
+              className="main__stats-placeholder"
               alt="Stats"
             />
           </div>

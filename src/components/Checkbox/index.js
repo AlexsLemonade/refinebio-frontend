@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 const Checkbox = ({
   name,
-  onToggle,
+  onChange,
   checked,
   children,
   className,
@@ -24,7 +24,7 @@ const Checkbox = ({
       name={name}
       id={name}
       checked={checked}
-      onChange={onToggle}
+      onChange={onChange}
       readOnly={readOnly}
     />
     <label className="checkbox__label" htmlFor={name} onClick={onClick}>
@@ -34,3 +34,12 @@ const Checkbox = ({
 );
 
 export default Checkbox;
+
+/**
+ * Checkbox component to be used inside react forms
+ */
+export const CheckboxField = ({ input, children }) => (
+  <Checkbox {...input} checked={input.value}>
+    {children}
+  </Checkbox>
+);

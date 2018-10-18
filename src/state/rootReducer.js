@@ -4,7 +4,7 @@ import download from './download/reducer';
 import search from './search/reducer';
 import dataSet from './dataSet/reducer';
 import { reducer as formReducer } from 'redux-form';
-
+import token from './token';
 import experiment from './experiment/reducer';
 
 const rootReducer = combineReducers({
@@ -13,7 +13,8 @@ const rootReducer = combineReducers({
   download,
   experiment,
   search,
-  dataSet
+  dataSet,
+  token
 });
 
 export default rootReducer;

@@ -29,7 +29,7 @@ export function fetchResults({ query, page = 1, size = 10, filters }) {
         count: totalResults,
         filters: filterData
       } = await Ajax.get('/search/', {
-        search: query,
+        ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
         ...filters
@@ -141,17 +141,6 @@ export const updateResultsPerPage = resultsPerPage => async (
     })
   );
 };
-
-export function fetchOrganisms() {
-  return async dispatch => {
-    try {
-      const organisms = await Ajax.get(`/organisms/`);
-      return organisms;
-    } catch (error) {
-      dispatch(reportError(error));
-    }
-  };
-}
 
 /**
  * Takes an array with specifications of active filters and toggles one of the filters.

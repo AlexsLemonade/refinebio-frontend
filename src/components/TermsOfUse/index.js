@@ -10,7 +10,7 @@ class TermsOfUse extends Component {
       <div className="terms-of-use">
         <Checkbox
           className="terms-of-use__checkbox"
-          onToggle={handleToggle}
+          onChange={handleToggle}
           checked={agreedToTerms}
           name="termsOfUse"
         >

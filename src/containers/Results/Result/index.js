@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashLink as Link } from 'react-router-hash-link';
+import { Link } from 'react-router-dom';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
@@ -10,9 +10,18 @@ import TechnologyBadge, {
   MICROARRAY,
   RNA_SEQ
 } from '../../../components/TechnologyBadge';
+import DataSetStats from '../../Experiment/DataSetStats';
+import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
+import Technology from '../../Experiment/Technology';
+import * as routes from '../../../routes';
 
-const Result = ({ result, addExperiment, removeExperiment }) => {
-  const metadataFields = getMetadataFields(result);
+const Result = ({ result, query }) => {
+  const metadataFields =
+    !result.samples || result.samples.length === 0
+      ? []
+      : SampleFieldMetadata.filter(field =>
+          result.samples.some(sample => !!sample[field.id])
+        ).map(field => field.Header);
 
   return (
     <div className="result">
@@ -28,22 +37,18 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
           </div>
           <Link
             className="link result__title"
-            to={`/experiments/${result.id}?ref=search`}
+            to={routes.experiments(result.accession_code, {
+              ref: 'search',
+              result
+            })}
           >
             {result.title || 'No title.'}
           </Link>
         </div>
 
         <DataSetSampleActions
-          data={{
-            // convert the `processed_samples` list into the object with sample fields that
-            // `DataSetSampleActions` is expecting.
-            [result.accession_code]: result.processed_samples.map(
-              accession_code => ({
-                accession_code,
-                is_processed: true
-              })
-            )
+          dataSetSlice={{
+            [result.accession_code]: DataSetStats.mapAccessions(result.samples)
           }}
         />
       </div>
@@ -62,27 +67,20 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
           {result.samples.length
             ? `${result.samples.length} Sample${
-                result.samples.length > 1 ? 's' : null
+                result.samples.length > 1 ? 's' : ''
               }`
-            : null}
+            : ''}
         </li>
         <li className="result__stat">
-          <TechnologyBadge
-            className="result__icon"
-            isMicroarray={
-              result.technologies && result.technologies.contains(MICROARRAY)
-            }
-            isRnaSeq={
-              result.technologies && result.technologies.contains(RNA_SEQ)
-            }
-          />
-          {result.pretty_platforms.filter(platform => !!platform).join(', ')}
+          <Technology samples={result.samples} />
         </li>
       </ul>
 
       <div className="result__details">
         <h3>Description</h3>
-        <p className="result__paragraph">{result.description}</p>
+        <p className="result__paragraph">
+          <HighlightedText text={result.description} higlight={query} />
+        </p>
         <h3>Publication Title</h3>
         <p className="result__paragraph">
           {result.publication_title || (
@@ -100,7 +98,10 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
 
         <Link
           className="button button--secondary"
-          to={`/experiments/${result.id}?ref=search#samples`}
+          to={routes.experimentsSamples(result.accession_code, {
+            ref: 'search',
+            result
+          })}
         >
           View Samples
         </Link>
@@ -110,3 +111,31 @@ const Result = ({ result, addExperiment, removeExperiment }) => {
 };
 
 export default Result;
+
+/**
+ * Hightlight portions of a text.
+ * thanks to https://stackoverflow.com/a/43235785/763705
+ */
+function HighlightedText({ text, higlight }) {
+  if (!higlight) return text;
+
+  // Split on higlight term and include term into parts, ignore case
+  let parts = text.split(new RegExp(`(${higlight})`, 'gi'));
+  return (
+    <span>
+      {' '}
+      {parts.map((part, i) => (
+        <span
+          key={i}
+          className={
+            part && part.toLowerCase() === higlight.toLowerCase()
+              ? 'text-highlight'
+              : ''
+          }
+        >
+          {part}
+        </span>
+      ))}{' '}
+    </span>
+  );
+}

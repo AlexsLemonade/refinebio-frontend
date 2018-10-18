@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as resultsActions from '../../state/search/actions';
-import * as downloadActions from '../../state/download/actions';
+
 import Helmet from 'react-helmet';
 import Result from './Result';
 import ResultFilters, { anyFilterApplied } from './ResultFilters';
@@ -10,7 +9,6 @@ import Pagination from '../../components/Pagination';
 import BackToTop from '../../components/BackToTop';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
-import { updateResultsPerPage } from '../../state/search/actions';
 import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../constants/table';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
@@ -19,8 +17,16 @@ import DataSetSampleActions from '../Experiment/DataSetSampleActions';
 import isEqual from 'lodash/isEqual';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
-import { clearFilters } from '../../state/search/actions';
 import Spinner from '../../components/Spinner';
+import {
+  fetchResults,
+  updatePage,
+  triggerSearch,
+  clearFilters,
+  updateResultsPerPage
+} from '../../state/search/actions';
+import fromPairs from 'lodash/fromPairs';
+import DataSetStats from '../Experiment/DataSetStats';
 
 class Results extends Component {
   state = {
@@ -45,7 +51,9 @@ class Results extends Component {
       this.props.results &&
       this.props.results.length > 0 &&
       searchArgs.query === this.props.searchTerm &&
-      isEqual(searchArgs.filters, this.props.appliedFilters)
+      isEqual(searchArgs.filters, this.props.appliedFilters) &&
+      searchArgs.page === this.props.pagination.currentPage &&
+      searchArgs.size === this.props.pagination.resultsPerPage
     ) {
       return;
     }
@@ -55,35 +63,30 @@ class Results extends Component {
     await this.props.fetchResults(searchArgs);
   }
 
-  handleSubmit = values => {
-    // When a new search is made, return to the first page and clear the filters
-    this.props.triggerSearch(values.search);
-  };
-
-  handlePageRemove = () => {
-    const { removeExperiment, results } = this.props;
-    const accessionCodes = results.map(result => result.accession_code);
-    removeExperiment(accessionCodes);
-  };
-
   render() {
-    const searchTerm = this.state.query;
     const {
       results,
-      addExperiment,
-      removeExperiment,
-      pagination: { totalPages, currentPage }
+      pagination: { totalPages, currentPage },
+      triggerSearch,
+      updatePage
     } = this.props;
 
     return (
       <div className="results">
         <Helmet>
-          <title>refine.bio - Results</title>
+          <title>{this.state.query || ''} Results - refine.bio</title>
+          <meta
+            name="description"
+            content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
+          />
         </Helmet>
 
         <BackToTop />
         <div className="results__search">
-          <SearchInput onSubmit={this.handleSubmit} searchTerm={searchTerm} />
+          <SearchInput
+            searchTerm={this.state.query}
+            onSubmit={value => triggerSearch(value.search)}
+          />
         </div>
 
         {/* Passing `location.search` to the Loader component ensures that we call `updateResults`
@@ -110,14 +113,7 @@ class Results extends Component {
                     <NumberOfResults />
                   </div>
 
-                  <DataSetSampleActions
-                    data={this._getSamplesAsDataSet()}
-                    enableAddRemaining={false}
-                    meta={{
-                      buttonStyle: 'secondary',
-                      addText: 'Add Page to Dataset'
-                    }}
-                  />
+                  <AddPageToDataSetButton results={results} />
                 </div>
                 <div className="results__filters">
                   <ResultFilters appliedFilters={this.state.filters} />
@@ -127,12 +123,11 @@ class Results extends Component {
                     <Result
                       key={result.accession_code}
                       result={result}
-                      addExperiment={addExperiment}
-                      removeExperiment={removeExperiment}
+                      query={this.state.query}
                     />
                   ))}
                   <Pagination
-                    onPaginate={this.props.updatePage}
+                    onPaginate={updatePage}
                     totalPages={totalPages}
                     currentPage={currentPage}
                   />
@@ -166,66 +161,79 @@ class Results extends Component {
 
     return { query, page, size, filters };
   }
-
-  _getSamplesAsDataSet() {
-    return this.props.results.reduce((data, result) => {
-      data[result.accession_code] = result.processed_samples.map(
-        accession_code => ({
-          accession_code,
-          is_processed: true
-        })
-      );
-      return data;
-    }, {});
-  }
 }
 Results = connect(
-  ({
-    search: { results, pagination, searchTerm, isSearching, appliedFilters },
-    download: { dataSet }
-  }) => ({
+  ({ search: { results, pagination, searchTerm, appliedFilters } }) => ({
     results,
     pagination,
     searchTerm,
-    dataSet,
-    isLoading: isSearching,
     appliedFilters
   }),
   {
-    ...resultsActions,
-    ...downloadActions
+    updatePage,
+    fetchResults,
+    triggerSearch
   }
 )(Results);
-
 export default Results;
+
+/**
+ * Renders the button that can add/remove all samples in a page of the search results.
+ */
+function AddPageToDataSetButton({ results }) {
+  // create a dataset slice with the results, use the accession codes in `processed_samples`
+  const resultsDataSetSlice = fromPairs(
+    results.map(result => [
+      result.accession_code,
+      DataSetStats.mapAccessions(result.samples)
+    ])
+  );
+
+  return (
+    <DataSetSampleActions
+      dataSetSlice={resultsDataSetSlice}
+      enableAddRemaining={false}
+      meta={{
+        buttonStyle: 'secondary',
+        addText: 'Add Page to Dataset'
+      }}
+    />
+  );
+}
 
 let NumberOfResults = ({
   resultsPerPage,
   totalResults,
-  updateResultsPerPage
-}) =>
-  // Only show the dropdown if there're enough elements
-  totalResults < PAGE_SIZES[0] ? (
-    <div>
-      Showing {totalResults} of {totalResults} results
-    </div>
-  ) : (
-    <div>
-      Showing{' '}
-      <Dropdown
-        options={PAGE_SIZES}
-        selectedOption={resultsPerPage}
-        onChange={updateResultsPerPage}
-      />{' '}
-      of {totalResults} results
-    </div>
-  );
+  updateResultsPerPage,
+  searchTerm
+}) => (
+  <React.Fragment>
+    {// Only show the dropdown if there're enough elements
+    totalResults < PAGE_SIZES[0] ? (
+      <div>
+        Showing {totalResults} of {totalResults} results
+      </div>
+    ) : (
+      <div>
+        Showing{' '}
+        <Dropdown
+          options={PAGE_SIZES}
+          selectedOption={resultsPerPage}
+          onChange={updateResultsPerPage}
+        />{' '}
+        of {totalResults} results
+      </div>
+    )}
+  </React.Fragment>
+);
 NumberOfResults = connect(
   ({
     search: {
+      searchTerm,
       pagination: { totalResults, resultsPerPage }
     }
   }) => ({
+    searchTerm,
     totalResults,
     resultsPerPage
   }),
