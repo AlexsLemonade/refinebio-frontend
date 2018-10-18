@@ -51,7 +51,9 @@ class Results extends Component {
       this.props.results &&
       this.props.results.length > 0 &&
       searchArgs.query === this.props.searchTerm &&
-      isEqual(searchArgs.filters, this.props.appliedFilters)
+      isEqual(searchArgs.filters, this.props.appliedFilters) &&
+      searchArgs.page === this.props.pagination.currentPage &&
+      searchArgs.size === this.props.pagination.resultsPerPage
     ) {
       return;
     }
