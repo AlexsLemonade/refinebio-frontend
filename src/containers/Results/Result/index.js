@@ -61,7 +61,7 @@ const Result = ({ result, query }) => {
           />{' '}
           {result.organisms
             .map(organism => formatSentenceCase(organism))
-            .join(',') || 'No species.'}
+            .join(', ') || 'No species.'}
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
