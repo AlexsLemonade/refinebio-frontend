@@ -52,7 +52,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
               Find the data you need
             </h3>
             <p className="main__paragraph">
-              Search the collection of harmonized RNA-seq and microarray data
+              Search the collection of harmonized RNA-Seq and microarray data
               from publicly available sources like GEO, ArrayExpress, and SRA.
               The data has been processed with a set of standardized pipelines
               curated by the{' '}
