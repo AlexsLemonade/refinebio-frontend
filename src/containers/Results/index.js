@@ -27,6 +27,7 @@ import {
   updateResultsPerPage
 } from '../../state/search/actions';
 import fromPairs from 'lodash/fromPairs';
+import DataSetStats from '../Experiment/DataSetStats';
 
 class Results extends Component {
   state = {
@@ -52,7 +53,9 @@ class Results extends Component {
       this.props.results.length > 0 &&
       searchArgs.query === this.props.searchTerm &&
       isEqual(searchArgs.filters, this.props.appliedFilters) &&
-      searchArgs.ordering === this.props.ordering
+      searchArgs.ordering === this.props.ordering &&
+      searchArgs.page === this.props.pagination.currentPage &&
+      searchArgs.size === this.props.pagination.resultsPerPage
     ) {
       return;
     }
@@ -187,7 +190,10 @@ export default Results;
 function AddPageToDataSetButton({ results }) {
   // create a dataset slice with the results, use the accession codes in `processed_samples`
   const resultsDataSetSlice = fromPairs(
-    results.map(result => [result.accession_code, result.processed_samples])
+    results.map(result => [
+      result.accession_code,
+      DataSetStats.mapAccessions(result.samples)
+    ])
   );
 
   return (
