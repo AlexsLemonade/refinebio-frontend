@@ -6,7 +6,7 @@ export const MOST_SAMPLES = 'MostSamples';
 
 export const Ordering = {
   MostSamples: '', // default sorting, so no parameters needed
-  LeastSamples: 'samples_count',
+  LeastSamples: 'total_samples_count',
   Newest: '-source_first_published',
   Oldest: 'source_first_published'
 };
