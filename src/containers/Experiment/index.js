@@ -18,14 +18,9 @@ import DataSetSampleActions from './DataSetSampleActions';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
 import DataSetStats from './DataSetStats';
-import TechnologyBadge, {
-  MICROARRAY,
-  RNA_SEQ
-} from '../../components/TechnologyBadge';
 import Spinner from '../../components/Spinner';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import Anchor from '../../components/Anchor';
-import uniq from 'lodash/uniq';
 import Technology from './Technology';
 
 let Experiment = ({
