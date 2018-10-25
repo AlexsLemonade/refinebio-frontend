@@ -4,12 +4,8 @@ import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
-import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
+import { formatSentenceCase } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
-import TechnologyBadge, {
-  MICROARRAY,
-  RNA_SEQ
-} from '../../../components/TechnologyBadge';
 import DataSetStats from '../../Experiment/DataSetStats';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
 import Technology from '../../Experiment/Technology';
