@@ -4,8 +4,12 @@ import Button from '../../components/Button';
 import InfoIcon from '../../common/icons/info-badge.svg';
 import pickBy from 'lodash/pickBy';
 import Input from '../../components/Input';
-
+import isObject from 'lodash/isObject';
+import isString from 'lodash/isString';
 import './MetadataAnnotationsCell.scss';
+import fromPairs from 'lodash/fromPairs';
+import { isValidURL } from '../../common/helpers';
+import HighlightedText from '../../components/HighlightedText';
 
 /**
  * Component that renders the content in "Additional Metadata" column on the Samples Table
@@ -62,14 +66,12 @@ class AnnotationsModalContent extends React.Component {
             {annotations.map((meta, index) => (
               <div key={index}>
                 {Object.keys(meta).map(field => (
-                  <div className="experiment__row" key={field}>
-                    <div className="experiment__row-label">{field}</div>
-                    <div>
-                      {Array.isArray(meta[field])
-                        ? meta[field].map(value => <p>{value}</p>)
-                        : meta[field]}
-                    </div>
-                  </div>
+                  <Annotation
+                    key={field}
+                    field={field}
+                    value={meta[field]}
+                    highlight={this.state.filter}
+                  />
                 ))}
               </div>
             ))}
@@ -98,3 +100,189 @@ class AnnotationsModalContent extends React.Component {
     );
   }
 }
+
+function Annotation({ field, value, highlight = '' }) {
+  if (Array.isArray(value) && value.length === 1) {
+    return <Annotation field={field} value={value[0]} highlight={highlight} />;
+  }
+
+  // check if it's an array with key/values. Basically objects with only two keys and
+  // one of them is `value`
+  if (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every(item => Object.keys(item).length === 2 && !!item.value)
+  ) {
+    const valueAsObject = fromPairs(
+      value.map(item => {
+        const keyParam = Object.keys(item).find(x => x !== 'value');
+        return [item[keyParam], item.value];
+      })
+    );
+
+    return (
+      <Annotation field={field} value={valueAsObject} highlight={highlight} />
+    );
+  }
+
+  const valueIsObject = Array.isArray(value) || !isObject(value);
+
+  return (
+    <div className="metadata-item">
+      <div className="metadata-item__row">
+        <div className="experiment__row-label">{field}</div>
+        {valueIsObject && (
+          <div>
+            <AnnotationValue value={value} highlight={highlight} />
+          </div>
+        )}
+      </div>
+      {!valueIsObject &&
+        Object.keys(value).map(subField => (
+          <div className="metadata-item__row">
+            <div className="experiment__row-label experiment__row-label--light">
+              <HighlightedText text={subField} highlight={highlight} />
+            </div>
+            <div>
+              <AnnotationValue value={value[subField]} highlight={highlight} />
+            </div>
+          </div>
+        ))}
+    </div>
+  );
+}
+
+function AnnotationValue({ value, level = 0, highlight = '' }) {
+  if (isString(value)) {
+    return <AnnotationText value={value} highlight={highlight} />;
+  } else if (Array.isArray(value)) {
+    return value.map((x, index) => (
+      <div style={{ marginTop: index > 0 ? 8 : 0 }}>
+        <AnnotationValue value={x} highlight={highlight} />
+      </div>
+    ));
+  } else if (isObject(value)) {
+    if (Object.keys(value).length === 2 && !!value.value) {
+      const keyParam = Object.keys(value).find(x => x !== 'value');
+      return (
+        <React.Fragment>
+          <HighlightedText text={value[keyParam]} highlight={highlight} />
+          {': '}
+          <AnnotationText value={value.value} highlight={highlight} />
+        </React.Fragment>
+      );
+    }
+
+    return Object.keys(value).map(key => (
+      <div>
+        <b>
+          <HighlightedText text={key} highlight={highlight} />
+        </b>{' '}
+        <AnnotationValue value={value[key]} highlight={highlight} />
+      </div>
+    ));
+  } else {
+    // it's a single value
+    return value;
+  }
+}
+
+function AnnotationText({ value, highlight = '' }) {
+  if (isString(value)) {
+    if (isValidURL(value)) {
+      return (
+        <a
+          href={value}
+          rel="nofollow noopener noreferrer"
+          target="_blank"
+          className="link"
+        >
+          {value}
+        </a>
+      );
+    }
+
+    return <HighlightedText text={value} highlight={highlight} />;
+  }
+
+  return <code>{JSON.stringify(value)}</code>;
+}
+
+const ANNO = [
+  {
+    file: [
+      {
+        url:
+          'ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-406/E-MTAB-406.raw.1.zip/Dre04.CEL',
+        name: 'Dre04.CEL',
+        type: 'data',
+        comment: {
+          name: 'ArrayExpress FTP file',
+          value:
+            'ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-406/E-MTAB-406.raw.1.zip'
+        },
+        tt1: {
+          name: 'ArrayExpress FTP file',
+          value: {
+            name: 'ArrayExpress FTP file',
+            value:
+              'ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-406/E-MTAB-406.raw.1.zip'
+          }
+        }
+      }
+    ],
+    scan: {
+      name: 'Dre04.CEL'
+    },
+    assay: {
+      name: 'Dre04'
+    },
+    source: {
+      name: 'zebrafish'
+    },
+    extract: {
+      name: 'Dre-04'
+    },
+    variable: [
+      {
+        name: 'Organism',
+        value: 'Danio rerio'
+      },
+      {
+        name: 'OrganismPart',
+        value: 'presomitic mesoderm'
+      },
+      {
+        name: 'Age',
+        value: '12-13 somite stage'
+      }
+    ],
+    characteristic: [
+      {
+        value: '12-13 somite stage',
+        category: 'Age'
+      },
+      {
+        value: 'Danio rerio',
+        category: 'Organism'
+      },
+      {
+        value:
+          'Zebrafish International Resource Center [ZIRC], University of Oregon',
+        category: 'BioSourceProvider'
+      },
+      {
+        value: 'natural AB strain',
+        category: 'StrainOrLine'
+      },
+      {
+        value: 'right presomitic mesoderm (posterior half)',
+        category: 'OrganismPart'
+      }
+    ],
+    'labeled-extract': {
+      name: 'Dre-04 LE',
+      label: 'biotin'
+    }
+  }
+];

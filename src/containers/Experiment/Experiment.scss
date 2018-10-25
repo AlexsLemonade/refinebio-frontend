@@ -104,6 +104,10 @@
       flex-shrink: 0;
       font-size: 1em;
     }
+
+    &--light {
+      font-weight: normal;
+    }
   }
 
   &__sample-commands {

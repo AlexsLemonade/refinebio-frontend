@@ -14,6 +14,7 @@ import DataSetStats from '../../Experiment/DataSetStats';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
 import Technology from '../../Experiment/Technology';
 import * as routes from '../../../routes';
+import HighlightedText from '../../../components/HighlightedText';
 
 const Result = ({ result, query }) => {
   const metadataFields =
@@ -79,7 +80,7 @@ const Result = ({ result, query }) => {
       <div className="result__details">
         <h3>Description</h3>
         <p className="result__paragraph">
-          <HighlightedText text={result.description} higlight={query} />
+          <HighlightedText text={result.description} highlight={query} />
         </p>
         <h3>Publication Title</h3>
         <p className="result__paragraph">
@@ -111,31 +112,3 @@ const Result = ({ result, query }) => {
 };
 
 export default Result;
-
-/**
- * Hightlight portions of a text.
- * thanks to https://stackoverflow.com/a/43235785/763705
- */
-function HighlightedText({ text, higlight }) {
-  if (!higlight) return text;
-
-  // Split on higlight term and include term into parts, ignore case
-  let parts = text.split(new RegExp(`(${higlight})`, 'gi'));
-  return (
-    <span>
-      {' '}
-      {parts.map((part, i) => (
-        <span
-          key={i}
-          className={
-            part && part.toLowerCase() === higlight.toLowerCase()
-              ? 'text-highlight'
-              : ''
-          }
-        >
-          {part}
-        </span>
-      ))}{' '}
-    </span>
-  );
-}

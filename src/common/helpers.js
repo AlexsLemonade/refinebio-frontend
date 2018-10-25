@@ -145,8 +145,10 @@ export const Ajax = {
 };
 
 export const getMetadataFields = experiment =>
-  SampleFieldMetadata.filter(field =>
-    experiment.sample_metadata.includes(field.id)
+  SampleFieldMetadata.filter(
+    field =>
+      experiment.sample_metadata &&
+      experiment.sample_metadata.includes(field.id)
   ).map(field => field.Header);
 
 export function stringEnumerate([x0, ...rest]) {
@@ -159,7 +161,7 @@ export function stringEnumerate([x0, ...rest]) {
   }`;
 }
 
-/** Allos await a specified time interval */
+/** Allows await for a specified time interval */
 export const timeout = ms => new Promise(res => setTimeout(res, ms));
 
 // thanks to https://stackoverflow.com/a/33379772/763705
@@ -176,4 +178,11 @@ export function truncateOnWord(str, limit, end = '...') {
     })
     .join('');
   return result + (result !== str ? end : '');
+}
+
+// thanks to https://stackoverflow.com/a/34695026/763705
+export function isValidURL(str) {
+  var a = document.createElement('a');
+  a.href = str;
+  return a.host && a.host != window.location.host;
 }
