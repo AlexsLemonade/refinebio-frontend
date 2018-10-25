@@ -107,9 +107,9 @@ let Experiment = ({
                   />{' '}
                   {experimentData.samples.length
                     ? `${experimentData.samples.length} Sample${
-                        experimentData.samples.length > 1 ? 's' : null
+                        experimentData.samples.length > 1 ? 's' : ''
                       }`
-                    : null}
+                    : ''}
                 </div>
 
                 <div className="experiment__stats-item">
