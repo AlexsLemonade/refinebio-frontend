@@ -10,11 +10,18 @@ import TechnologyBadge, {
   MICROARRAY,
   RNA_SEQ
 } from '../../../components/TechnologyBadge';
-
+import DataSetStats from '../../Experiment/DataSetStats';
+import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
+import Technology from '../../Experiment/Technology';
 import * as routes from '../../../routes';
 
 const Result = ({ result, query }) => {
-  const metadataFields = getMetadataFields(result);
+  const metadataFields =
+    !result.samples || result.samples.length === 0
+      ? []
+      : SampleFieldMetadata.filter(field =>
+          result.samples.some(sample => !!sample[field.id])
+        ).map(field => field.Header);
 
   return (
     <div className="result">
@@ -41,7 +48,7 @@ const Result = ({ result, query }) => {
 
         <DataSetSampleActions
           dataSetSlice={{
-            [result.accession_code]: result.processed_samples
+            [result.accession_code]: DataSetStats.mapAccessions(result.samples)
           }}
         />
       </div>
@@ -54,27 +61,18 @@ const Result = ({ result, query }) => {
           />{' '}
           {result.organisms
             .map(organism => formatSentenceCase(organism))
-            .join(',') || 'No species.'}
+            .join(', ') || 'No species.'}
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
           {result.samples.length
             ? `${result.samples.length} Sample${
-                result.samples.length > 1 ? 's' : null
+                result.samples.length > 1 ? 's' : ''
               }`
-            : null}
+            : ''}
         </li>
         <li className="result__stat">
-          <TechnologyBadge
-            className="result__icon"
-            isMicroarray={
-              result.technologies && result.technologies.includes(MICROARRAY)
-            }
-            isRnaSeq={
-              result.technologies && result.technologies.includes(RNA_SEQ)
-            }
-          />
-          {result.pretty_platforms.filter(platform => !!platform).join(', ')}
+          <Technology samples={result.samples} />
         </li>
       </ul>
 

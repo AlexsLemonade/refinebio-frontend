@@ -11,6 +11,7 @@
     grid-template-areas:
       'top-bar'
       'side'
+      'action'
       'main';
 
     @include desktop {
@@ -51,6 +52,16 @@
 
     @include desktop {
       margin-bottom: 24px;
+    }
+  }
+
+  &__add-samples {
+    grid-area: action;
+    margin-bottom: 16px;
+
+    @include tablet {
+      grid-area: top-bar;
+      margin-left: auto;
     }
   }
 
@@ -122,10 +133,15 @@
   }
 
   &__number-results {
-    margin-bottom: 16px;
+    line-height: 32px;
 
     @include tablet {
-      margin-bottom: 0;
+      line-height: inherit;
+    }
+
+    > div {
+      display: inline-block;
+      margin-right: 24px;
     }
   }
 }

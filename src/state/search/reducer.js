@@ -21,7 +21,8 @@ export default (state = initialState, action) => {
         totalResults,
         currentPage,
         appliedFilters,
-        resultsPerPage
+        resultsPerPage,
+        ordering
       } = action.data;
 
       const totalPages = Math.ceil(
@@ -34,6 +35,7 @@ export default (state = initialState, action) => {
         results,
         filters,
         appliedFilters,
+        ordering,
         pagination: {
           ...state.pagination,
           totalResults,

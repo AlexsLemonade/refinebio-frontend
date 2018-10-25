@@ -223,13 +223,15 @@ class SamplesTable extends React.Component {
         Header: 'Processing Information',
         id: 'processing_information',
         sortable: false,
-        Cell: ProcessingInformationCell
+        Cell: ProcessingInformationCell,
+        width: 200
       },
       {
         Header: 'Additional Metadata',
         id: 'additional_metadata',
         sortable: false,
-        Cell: MetadataAnnotationsCell
+        Cell: MetadataAnnotationsCell,
+        width: 200
       }
     ];
 
