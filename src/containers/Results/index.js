@@ -145,9 +145,13 @@ class Results extends Component {
   }
 
   _parseUrl() {
-    let { q: query, p: page, size, ordering, ...filters } = getQueryParamObject(
-      this.props.location.search
-    );
+    let {
+      q: query,
+      p: page = 1,
+      size = 10,
+      ordering = '',
+      ...filters
+    } = getQueryParamObject(this.props.location.search);
 
     // for consistency, ensure all values in filters are arrays
     // the method `getQueryParamObject` will return a single value for parameters that only
@@ -160,8 +164,8 @@ class Results extends Component {
 
     // parse parameters from url
     query = query ? decodeURIComponent(query) : undefined;
-    page = parseInt(page || 1, 10);
-    size = parseInt(size || 10, 10);
+    page = parseInt(page, 10);
+    size = parseInt(size, 10);
 
     return { query, page, size, ordering, filters };
   }
