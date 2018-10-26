@@ -231,7 +231,10 @@ class SamplesTable extends React.Component {
         id: 'additional_metadata',
         sortable: false,
         Cell: MetadataAnnotationsCell,
-        width: 200
+        width: 200,
+        show: data.some(
+          sample => !!sample.annotations && sample.annotations.length > 0
+        )
       }
     ];
 
