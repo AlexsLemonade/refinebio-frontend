@@ -1,0 +1,42 @@
+@import '../common/styles/variables';
+
+.info-box {
+  background: #002f6c;
+  color: $white;
+  position: relative;
+  font-size: 16px;
+  padding: 8px 40px 8px 8px;
+  margin-bottom: 24px;
+
+  @include tablet() {
+    text-align: center;
+    color: #214169;
+    background: linear-gradient(180deg, #dfe9f3 0%, #ffffff 100%);
+    box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+    padding: 32px;
+    font-size: 22px;
+  }
+
+  &__title {
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  &__inner {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__close {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    color: $white;
+    font-size: 20px;
+
+    @include tablet() {
+      color: #214169;
+    }
+  }
+}
