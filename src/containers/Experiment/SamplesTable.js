@@ -20,6 +20,7 @@ import uniq from 'lodash/uniq';
 import union from 'lodash/union';
 import MetadataAnnotationsCell from './MetadataAnnotationsCell';
 import { InputClear } from '../../components/Input';
+import debounce from 'lodash/debounce';
 
 class SamplesTable extends React.Component {
   state = {
@@ -30,6 +31,13 @@ class SamplesTable extends React.Component {
     data: [],
     filter: ''
   };
+
+  constructor(props) {
+    super(props);
+
+    // create a debounced version of fetch data, to avoid repeating
+    this._fetchDataDebounced = debounce(this.fetchData, 400);
+  }
 
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.dataSet, this.props.dataSet)) {
@@ -92,9 +100,7 @@ class SamplesTable extends React.Component {
                   <div className="samples-table__filter-input">
                     <InputClear
                       value={this.state.filter}
-                      onChange={filter =>
-                        this.setState({ filter }, () => this.fetchData())
-                      }
+                      onChange={this.handleFilterChange}
                     />
                   </div>
                 </div>
@@ -181,6 +187,10 @@ class SamplesTable extends React.Component {
       pages: Math.ceil(this.totalSamples / pageSize),
       loading: false
     });
+  };
+
+  handleFilterChange = filter => {
+    this.setState({ filter }, () => this._fetchDataDebounced());
   };
 
   handlePagination = page => {
