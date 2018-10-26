@@ -19,6 +19,7 @@ import isEqual from 'lodash/isEqual';
 import uniq from 'lodash/uniq';
 import union from 'lodash/union';
 import MetadataAnnotationsCell from './MetadataAnnotationsCell';
+import Input from '../../components/Input';
 
 class SamplesTable extends React.Component {
   state = {
@@ -26,7 +27,8 @@ class SamplesTable extends React.Component {
     pages: -1,
     pageSize: 10,
     columns: this._getColumns(),
-    data: []
+    data: [],
+    filter: ''
   };
 
   componentDidUpdate(prevProps) {
@@ -85,6 +87,15 @@ class SamplesTable extends React.Component {
                   {pageActionComponent &&
                     pageActionComponent(state.pageRows.map(x => x._original))}
                 </div>
+                <div className="samples-table__filter">
+                  <div>Filter</div>
+                  <Input
+                    onChange={filter =>
+                      this.setState({ filter }, () => this.fetchData())
+                    }
+                    className="input samples-table__filter-input"
+                  />
+                </div>
               </div>
               <div className="samples-table-layout__main">
                 <HorizontalScroll targetSelector=".rt-table">
@@ -142,7 +153,8 @@ class SamplesTable extends React.Component {
       accessionCodes,
       orderBy,
       offset,
-      limit: pageSize
+      limit: pageSize,
+      filter_by: this.state.filter
     });
 
     // add a new property to all samples, with the experiment accession codes that reference it in

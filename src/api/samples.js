@@ -19,7 +19,8 @@ export async function getAllDetailedSamples({
   accessionCodes,
   orderBy,
   offset,
-  limit
+  limit,
+  filter_by
 }) {
   if (accessionCodes && accessionCodes.length) {
     let { results } = await Ajax.get('/samples/', {
@@ -27,7 +28,8 @@ export async function getAllDetailedSamples({
       accession_codes: accessionCodes.join(','),
       offset,
       limit,
-      order_by: orderBy
+      order_by: orderBy,
+      ...(filter_by ? { filter_by } : {})
     });
     return results;
   } else {
