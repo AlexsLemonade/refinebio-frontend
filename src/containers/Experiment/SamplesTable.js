@@ -19,7 +19,7 @@ import isEqual from 'lodash/isEqual';
 import uniq from 'lodash/uniq';
 import union from 'lodash/union';
 import MetadataAnnotationsCell from './MetadataAnnotationsCell';
-import Input from '../../components/Input';
+import { InputClear } from '../../components/Input';
 
 class SamplesTable extends React.Component {
   state = {
@@ -89,12 +89,14 @@ class SamplesTable extends React.Component {
                 </div>
                 <div className="samples-table__filter">
                   <div>Filter</div>
-                  <Input
-                    onChange={filter =>
-                      this.setState({ filter }, () => this.fetchData())
-                    }
-                    className="input samples-table__filter-input"
-                  />
+                  <div className="samples-table__filter-input">
+                    <InputClear
+                      value={this.state.filter}
+                      onChange={filter =>
+                        this.setState({ filter }, () => this.fetchData())
+                      }
+                    />
+                  </div>
                 </div>
               </div>
               <div className="samples-table-layout__main">
