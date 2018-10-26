@@ -52,10 +52,10 @@ let Main = ({ searchTerm, fetchResults, push }) => {
               Find the data you need
             </h3>
             <p className="main__paragraph">
-              Search the collection of harmonized RNA-Seq and microarray data
-              from publicly available sources like GEO, ArrayExpress, and SRA.
-              The data has been processed with a set of standardized pipelines
-              curated by the{' '}
+              Search the multi-organism collection of genome wide gene
+              expression data obtained from publicly available sources like GEO,
+              ArrayExpress, and SRA. The data has been processed uniformly and
+              normalized using a set of standardized pipelines curated by the{' '}
               <a
                 className="link"
                 href="https://www.ccdatalab.org/"
