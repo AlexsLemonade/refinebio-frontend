@@ -48,7 +48,19 @@ class Results extends Component {
 
     // check if the search term and the filters are the same, in which case we don't need to
     // fetch the results again
-    if (
+    if (this._resultsAreFetched()) {
+      return;
+    }
+
+    // reset scroll position when the results change
+    window.scrollTo(0, 0);
+    await this.props.fetchResults(searchArgs);
+  }
+
+  _resultsAreFetched() {
+    const searchArgs = this._parseUrl();
+
+    return (
       this.props.results &&
       this.props.results.length > 0 &&
       searchArgs.query === this.props.searchTerm &&
@@ -56,13 +68,7 @@ class Results extends Component {
       searchArgs.ordering === this.props.ordering &&
       searchArgs.page === this.props.pagination.currentPage &&
       searchArgs.size === this.props.pagination.resultsPerPage
-    ) {
-      return;
-    }
-
-    // reset scroll position when the results change
-    window.scrollTo(0, 0);
-    await this.props.fetchResults(searchArgs);
+    );
   }
 
   render() {
@@ -100,7 +106,7 @@ class Results extends Component {
           fetch={() => this.updateResults()}
         >
           {({ isLoading }) =>
-            isLoading ? (
+            isLoading && !this._resultsAreFetched() ? (
               <Spinner />
             ) : !results.length && !anyFilterApplied(this.state.filters) ? (
               <NoSearchResults />
@@ -145,9 +151,13 @@ class Results extends Component {
   }
 
   _parseUrl() {
-    let { q: query, p: page, size, ordering, ...filters } = getQueryParamObject(
-      this.props.location.search
-    );
+    let {
+      q: query,
+      p: page = 1,
+      size = 10,
+      ordering = '',
+      ...filters
+    } = getQueryParamObject(this.props.location.search);
 
     // for consistency, ensure all values in filters are arrays
     // the method `getQueryParamObject` will return a single value for parameters that only
@@ -160,8 +170,8 @@ class Results extends Component {
 
     // parse parameters from url
     query = query ? decodeURIComponent(query) : undefined;
-    page = parseInt(page || 1, 10);
-    size = parseInt(size || 10, 10);
+    page = parseInt(page, 10);
+    size = parseInt(size, 10);
 
     return { query, page, size, ordering, filters };
   }
