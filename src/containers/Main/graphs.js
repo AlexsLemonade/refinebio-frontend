@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Loader from '../../components/Loader';
 import { Ajax, formatSentenceCase } from '../../common/helpers';
 import Spinner from '../../components/Spinner';
@@ -16,6 +17,7 @@ import {
 } from 'recharts';
 import moment from 'moment';
 import { accumulateByKeys } from '../../common/helpers';
+import { push } from '../../state/routerActions';
 
 async function fetchSamplesPerSpecies() {
   const results = await Ajax.get('/search/', {
@@ -26,51 +28,62 @@ async function fetchSamplesPerSpecies() {
   return Object.keys(results.filters.organism)
     .map(name => ({
       name: formatSentenceCase(name),
+      organism: name,
       samples: results.filters.organism[name]
     }))
     .sort((x, y) => y.samples - x.samples)
     .slice(0, 20);
 }
 
-export function SamplesPerSpeciesGraph() {
-  return (
-    <div style={{ minHeight: 400 }}>
-      <Loader fetch={fetchSamplesPerSpecies}>
-        {({ isLoading, data }) =>
-          isLoading ? (
-            <Spinner />
-          ) : (
-            <div style={{ height: 500 }}>
-              <ResponsiveContainer>
-                <BarChart
-                  data={data}
-                  margin={{ top: 5, right: 30, left: 30, bottom: 150 }}
-                >
-                  <XAxis
-                    dataKey="name"
-                    angle={-30}
-                    textAnchor="end"
-                    interval={0}
-                  />
-                  <YAxis
-                    label={{
-                      value: 'Number of Samples',
-                      angle: -90,
-                      position: 'insideLeft',
-                      offset: -22
-                    }}
-                  />
-                  <Tooltip />
-                  <Bar dataKey="samples" fill="#386db0" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )
-        }
-      </Loader>
-    </div>
-  );
-}
+let SamplesPerSpeciesGraph = ({ push }) => (
+  <div style={{ minHeight: 400 }}>
+    <Loader fetch={fetchSamplesPerSpecies}>
+      {({ isLoading, data }) =>
+        isLoading ? (
+          <Spinner />
+        ) : (
+          <div style={{ height: 500 }}>
+            <ResponsiveContainer>
+              <BarChart
+                data={data}
+                margin={{ top: 5, right: 30, left: 30, bottom: 150 }}
+              >
+                <XAxis
+                  dataKey="name"
+                  angle={-30}
+                  textAnchor="end"
+                  interval={0}
+                />
+                <YAxis
+                  label={{
+                    value: 'Number of Samples',
+                    angle: -90,
+                    position: 'insideLeft',
+                    offset: -22
+                  }}
+                />
+                <Tooltip />
+                <Bar
+                  dataKey="samples"
+                  fill="#386db0"
+                  onClick={({ payload }) =>
+                    // show all results for a given sample when bar is clicked
+                    push('/results?organisms__name=' + payload.organism)
+                  }
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )
+      }
+    </Loader>
+  </div>
+);
+SamplesPerSpeciesGraph = connect(
+  null,
+  { push }
+)(SamplesPerSpeciesGraph);
+export { SamplesPerSpeciesGraph };
 
 async function fetchSamplesOverTime() {
   const { samples } = await Ajax.get('/stats', { range: 'year' });
