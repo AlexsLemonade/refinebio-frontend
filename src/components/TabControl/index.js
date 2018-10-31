@@ -20,7 +20,11 @@ export default class TabControl extends React.Component {
   render() {
     return (
       <div>
-        <Toggle tabs={this.props.tabs} onToggle={this.handleTabChange} />
+        <Toggle
+          tabs={this.props.tabs}
+          onToggle={this.handleTabChange}
+          className={this.props.toggleClassName}
+        />
         {React.Children.toArray(this.props.children)[this.state.tabIndex]}
       </div>
     );

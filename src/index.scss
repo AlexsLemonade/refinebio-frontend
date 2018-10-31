@@ -157,5 +157,9 @@ fieldset {
   background-color: $highlight-color;
 }
 
+.recharts-text {
+  fill: $gray2;
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';
