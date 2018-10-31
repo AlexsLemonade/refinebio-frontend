@@ -9,7 +9,6 @@ import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
 import ExploreIcon from '../../common/icons/explore.svg';
 import './Main.scss';
-import StatsPlaceholder from './summary-stats-placeholder.svg';
 import { SamplesPerSpeciesGraph, SamplesOverTimeGraph } from './graphs';
 import TabControl from '../../components/TabControl';
 

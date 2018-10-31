@@ -9,10 +9,8 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Line,
-  Legend,
   LineChart
 } from 'recharts';
 import moment from 'moment';
