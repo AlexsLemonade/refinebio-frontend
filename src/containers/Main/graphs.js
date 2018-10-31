@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Loader from '../../components/Loader';
-import { Ajax, formatSentenceCase } from '../../common/helpers';
-import Spinner from '../../components/Spinner';
+import { formatSentenceCase } from '../../common/helpers';
 import {
   ResponsiveContainer,
   BarChart,
