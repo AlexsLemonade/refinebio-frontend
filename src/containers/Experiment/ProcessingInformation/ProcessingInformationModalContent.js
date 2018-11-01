@@ -203,7 +203,7 @@ function SalmonProtocol() {
       <h3>Salmon</h3>
       <p>
         Salmon is an alignment-free method for estimating transcript abundances
-        from RNA-seq data. We use it in quasi-mapping mode, which is
+        from RNA-Seq data. We use it in quasi-mapping mode, which is
         significantly faster than alignment-based approaches and requires us to
         build a Salmon transcriptome index. We build a custom reference
         transcriptome (using RSEM rsem-prepare-reference) by filtering the

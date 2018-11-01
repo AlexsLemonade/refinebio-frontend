@@ -30,6 +30,8 @@ fi
 
 yarn install --ignore-engines
 
+REACT_APP_API_HOST=https://api.$base_host yarn run cacheBackend
+
 CI=false REACT_APP_API_HOST=https://api.$base_host yarn run build
 
 if [[ $branch == "dev" ]]; then

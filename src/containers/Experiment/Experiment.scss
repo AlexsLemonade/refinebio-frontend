@@ -5,7 +5,17 @@
   background-color: $white;
   box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
   padding: 24px;
-  margin: 32px 0 80px;
+  margin: 32px 0 40px;
+
+  &--sample-wrap {
+    @extend .experiment;
+    margin-bottom: 80px;
+
+    @media (min-width: 1290px) {
+      margin-left: -80px;
+      margin-right: -80px;
+    }
+  }
 
   &__header-title {
     @include tablet {
@@ -61,6 +71,7 @@
     padding: 3 * 8px;
     margin-left: -24px;
     margin-right: -24px;
+    word-break: break-word;
 
     @include tablet {
       padding-top: 16px;
@@ -92,6 +103,10 @@
       flex-basis: 192px;
       flex-shrink: 0;
       font-size: 1em;
+    }
+
+    &--light {
+      font-weight: normal;
     }
   }
 

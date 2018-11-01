@@ -1,0 +1,86 @@
+@import '../../common/styles/variables';
+@import '../../common/styles/mixins';
+
+.metadata-modal {
+  padding: 24px;
+  max-width: 108 * 8px;
+  overflow: hidden;
+
+  @include tablet {
+    padding: 56px 56px 0 56px;
+  }
+
+  &__title {
+    margin-bottom: 4px;
+  }
+
+  &__subtitle {
+    margin-top: 4px;
+  }
+
+  &__annotations {
+    max-height: 700px;
+    margin-top: 8px;
+    overflow: auto;
+
+    @include tablet {
+      margin-left: -56px;
+      margin-right: -56px;
+    }
+  }
+
+  &__filter-wrap {
+    display: flex;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__filter {
+    display: flex;
+    align-items: center;
+  }
+
+  &__filter-input {
+    margin-left: 8px;
+  }
+
+  &__no-match {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    text-align: center;
+  }
+}
+
+.metadata-item {
+  padding: 3 * 8px;
+  @include tablet {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  &__row {
+    word-break: break-word;
+
+    @include tablet {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  &:nth-child(2n + 1) {
+    background-color: $background-color--highlight;
+  }
+
+  &__label {
+  }
+
+  &__object-key {
+  }
+}

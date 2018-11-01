@@ -38,13 +38,13 @@ const FilterCategory = ({
               onChange={() =>
                 toggledFilter(
                   category.queryField,
-                  filter === 'has_publication' ? 'true' : filter
+                  filter === 'has_publication' ? 'True' : filter
                 )
               }
               checked={
                 !!appliedFilters[category.queryField] &&
                 appliedFilters[category.queryField].includes(
-                  filter === 'has_publication' ? 'true' : filter
+                  filter === 'has_publication' ? 'True' : filter
                 )
               }
             >

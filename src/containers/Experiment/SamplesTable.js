@@ -6,8 +6,6 @@ import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import { getAllDetailedSamples } from '../../api/samples';
 
-import ModalManager from '../../components/Modal/ModalManager';
-import Button from '../../components/Button';
 import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../constants/table';
@@ -20,6 +18,7 @@ import isEqual from 'lodash/isEqual';
 
 import uniq from 'lodash/uniq';
 import union from 'lodash/union';
+import MetadataAnnotationsCell from './MetadataAnnotationsCell';
 
 class SamplesTable extends React.Component {
   state = {
@@ -224,13 +223,18 @@ class SamplesTable extends React.Component {
         Header: 'Processing Information',
         id: 'processing_information',
         sortable: false,
-        Cell: ProcessingInformationCell
+        Cell: ProcessingInformationCell,
+        width: 200
       },
       {
         Header: 'Additional Metadata',
         id: 'additional_metadata',
         sortable: false,
-        Cell: MetadataCell
+        Cell: MetadataAnnotationsCell,
+        width: 200,
+        show: data.some(
+          sample => !!sample.annotations && sample.annotations.length > 0
+        )
       }
     ];
 
@@ -289,44 +293,6 @@ function CustomCell({ value }) {
   }
 
   return value;
-}
-
-/**
- * Component that renders the content in "Additional Metadata" column
- */
-function MetadataCell({ original: sample }) {
-  if (sample.annotations.length === 0) {
-    return CustomCell({});
-  }
-
-  let annotations = sample.annotations.map(entry =>
-    JSON.stringify(entry.data, null, 2)
-  );
-  return (
-    <ModalManager
-      component={showModal => (
-        <Button text="View" buttonStyle="link" onClick={showModal} />
-      )}
-      modalProps={{ className: 'metadata-modal' }}
-    >
-      {() => (
-        <section>
-          <h1 className="metadata-modal__title">Additional Metadata</h1>
-          <div className="metadata-modal__subtitle">
-            <img className="info-icon" src={InfoIcon} alt="" /> Included in
-            Download
-          </div>
-          <div className="metadata-modal__annotations">
-            {annotations.map((meta, index) => (
-              <div key={index}>
-                <pre>{meta}</pre>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-    </ModalManager>
-  );
 }
 
 /**

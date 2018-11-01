@@ -5,7 +5,8 @@ const Dropdown = ({
   options = [],
   selectedOption = '',
   onChange,
-  disabled = false
+  disabled = false,
+  label = x => x
 }) => {
   return (
     <div className="dropdown">
@@ -24,7 +25,7 @@ const Dropdown = ({
         on the `onChange` handler */}
         {options.map((option, index) => (
           <option key={index} value={index}>
-            {option}
+            {label(option)}
           </option>
         ))}
       </select>
