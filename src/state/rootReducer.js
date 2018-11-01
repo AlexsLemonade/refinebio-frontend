@@ -6,10 +6,12 @@ import dataSet from './dataSet/reducer';
 import { reducer as formReducer } from 'redux-form';
 import token from './token';
 import experiment from './experiment/reducer';
+import platforms from './platforms';
 
 const rootReducer = combineReducers({
   form: formReducer,
   dashboard,
+  platforms,
   download,
   experiment,
   search,

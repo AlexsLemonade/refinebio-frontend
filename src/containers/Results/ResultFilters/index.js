@@ -15,6 +15,7 @@ import SideMenu from '../../../components/SideMenu';
 
 import FilterIcon from '../../../common/icons/filter-icon.svg';
 import isEmpty from 'lodash/isEmpty';
+import Platform from '../../Platform';
 
 const FilterCategory = ({
   categoryFilters,
@@ -48,7 +49,12 @@ const FilterCategory = ({
                 )
               }
             >
-              {formatSentenceCase(filter)} ({categoryFilters[filter]})
+              {category.name !== 'platforms' ? (
+                formatSentenceCase(filter)
+              ) : (
+                <Platform accessionCode={filter} />
+              )}{' '}
+              ({categoryFilters[filter]})
             </Checkbox>
           ) : null // Do not display a checkbox if the filter is null
       )}
@@ -70,10 +76,10 @@ let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
         )}
       </div>
       {filterCategories.map(
-        (category, i) =>
+        category =>
           !isEmpty(filters[category.name]) && (
             <FilterCategory
-              key={i}
+              key={category.name}
               categoryFilters={filters[category.name]}
               category={category}
               toggledFilter={toggledFilter}
@@ -107,7 +113,7 @@ const filterCategories = [
   { name: 'organism', queryField: 'organisms__name' },
   { name: 'technology', queryField: 'technology' },
   { name: 'publication', queryField: 'has_publication' },
-  { name: 'platforms', queryField: 'samples__platform_name' }
+  { name: 'platforms', queryField: 'samples__platform_accession_code' }
 ];
 
 /**
