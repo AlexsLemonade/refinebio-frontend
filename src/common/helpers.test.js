@@ -28,6 +28,10 @@ describe('getQueryString', () => {
 });
 
 describe('getQueryParamObject', () => {
+  it('empty', () => {
+    expect(getQueryParamObject('')).toEqual({});
+  });
+
   it('parses query', () => {
     expect(getQueryParamObject('a=0&b=false&c=1')).toEqual({
       a: '0',
