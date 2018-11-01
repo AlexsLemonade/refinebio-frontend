@@ -71,6 +71,17 @@ function convertSecToMinHours(sec) {
   }
 }
 
+export function getAllAverageTimeTilCompletion(state) {
+  const stats = state.dashboard.stats;
+
+  return JOB_NAMES.reduce((allEstimatedTimes, jobType) => {
+    const averageTime = parseFloat(stats[jobType].average_time);
+    // we're assuming that average_time is in seconds...
+    allEstimatedTimes[jobType] = convertSecToMinHours(averageTime);
+    return allEstimatedTimes;
+  }, {});
+}
+
 export function getAllEstimatedTimeTilCompletion(state) {
   const stats = state.dashboard.stats;
 
