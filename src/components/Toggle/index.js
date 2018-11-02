@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Toggle.scss';
+import classnames from 'classnames';
 
 class Toggle extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Toggle extends Component {
     const { tabs } = this.props;
 
     return (
-      <div className="toggle">
+      <div className={classnames('toggle', this.props.className)}>
         <ul className="toggle__container">
           {tabs.map((tab, i) => (
             <li key={i} className={`toggle__item`}>

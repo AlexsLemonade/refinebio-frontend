@@ -33,6 +33,7 @@ const LineChart = (props: Props) => {
     <ResponsiveContainer>
       <LineRechart
         data={data}
+        height={400}
         margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
       >
         <XAxis dataKey="date" tickFormatter={formatXAxis} />

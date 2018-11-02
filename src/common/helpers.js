@@ -186,3 +186,21 @@ export function isValidURL(str) {
   a.href = str;
   return a.host && a.host !== window.location.host;
 }
+
+function accumulate(array, sum) {
+  let result = [array[0]];
+  for (let i = 1; i < array.length; i++) {
+    result.push(sum(array[i], result[i - 1]));
+  }
+  return result;
+}
+
+export function accumulateByKeys(array, keys) {
+  return accumulate(array, (current, prev) => ({
+    ...current,
+    ...keys.reduce((accum, key) => {
+      accum[key] = current[key] + prev[key];
+      return accum;
+    }, {})
+  }));
+}
