@@ -20,7 +20,7 @@ export async function getAllDetailedSamples({
   orderBy,
   offset,
   limit,
-  filter_by
+  filterBy
 }) {
   if (accessionCodes && accessionCodes.length) {
     let { results } = await Ajax.get('/samples/', {
@@ -29,7 +29,7 @@ export async function getAllDetailedSamples({
       offset,
       limit,
       order_by: orderBy,
-      ...(filter_by ? { filter_by } : {})
+      filter_by: filterBy || undefined // don't send the parameter  if `filterBy === ''`
     });
     return results;
   } else {

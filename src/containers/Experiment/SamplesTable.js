@@ -162,7 +162,7 @@ class SamplesTable extends React.Component {
       orderBy,
       offset,
       limit: pageSize,
-      filter_by: this.state.filter
+      filterBy: this.state.filter
     });
 
     // add a new property to all samples, with the experiment accession codes that reference it in
