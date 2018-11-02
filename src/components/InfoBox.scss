@@ -1,0 +1,43 @@
+@import '../common/styles/variables';
+
+.info-box {
+  background: #002f6c;
+  color: $white;
+  position: relative;
+  font-size: 16px;
+  padding: 8px 40px 8px 8px;
+  margin-bottom: 24px;
+  border-radius: 2px;
+
+  @include tablet() {
+    text-align: center;
+    color: #214169;
+    background: linear-gradient(180deg, #dfe9f3 0%, #ffffff 100%);
+    padding: 32px;
+    font-size: 22px;
+  }
+
+  &__title {
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  &__inner {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__close {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    margin-top: -15px;
+    color: $white;
+    font-size: 20px;
+
+    @include tablet() {
+      color: #214169;
+    }
+  }
+}

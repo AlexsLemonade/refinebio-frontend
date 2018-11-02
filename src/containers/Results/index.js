@@ -28,6 +28,7 @@ import {
 } from '../../state/search/actions';
 import fromPairs from 'lodash/fromPairs';
 import DataSetStats from '../Experiment/DataSetStats';
+import InfoBox from '../../components/InfoBox';
 
 class Results extends Component {
   state = {
@@ -80,72 +81,76 @@ class Results extends Component {
     } = this.props;
 
     return (
-      <div className="results">
-        <Helmet>
-          <title>{this.state.query || ''} Results - refine.bio</title>
-          <meta
-            name="description"
-            content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
-          />
-        </Helmet>
+      <div>
+        <InfoBox />
 
-        <BackToTop />
-        <div className="results__search">
-          <SearchInput
-            searchTerm={this.state.query}
-            onSubmit={value => triggerSearch(value.search)}
-          />
-        </div>
+        <div className="results">
+          <Helmet>
+            <title>{this.state.query || ''} Results - refine.bio</title>
+            <meta
+              name="description"
+              content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
+            />
+          </Helmet>
 
-        {/* Passing `location.search` to the Loader component ensures that we call `updateResults`
+          <BackToTop />
+          <div className="results__search">
+            <SearchInput
+              searchTerm={this.state.query}
+              onSubmit={value => triggerSearch(value.search)}
+            />
+          </div>
+
+          {/* Passing `location.search` to the Loader component ensures that we call `updateResults`
           every time that the url is updated and also when the component is mounted.
           We do several checks to determine what to display, eg: no results, when no search term has 
           been entered, etc */}
-        <Loader
-          updateProps={this.props.location.search}
-          fetch={() => this.updateResults()}
-        >
-          {({ isLoading }) =>
-            isLoading && !this._resultsAreFetched() ? (
-              <Spinner />
-            ) : !results.length && !anyFilterApplied(this.state.filters) ? (
-              <NoSearchResults />
-            ) : !results.length ? (
-              <NoSearchResultsTooManyFilters
-                appliedFilters={this.state.filters}
-              />
-            ) : (
-              <div className="results__container">
-                <div className="results__top-bar">
-                  <div className="results__number-results">
-                    <NumberOfResults />
-                    <OrderingDropdown />
+          <Loader
+            updateProps={this.props.location.search}
+            fetch={() => this.updateResults()}
+          >
+            {({ isLoading }) =>
+              isLoading && !this._resultsAreFetched() ? (
+                <Spinner />
+              ) : !results.length && !anyFilterApplied(this.state.filters) ? (
+                <NoSearchResults />
+              ) : !results.length ? (
+                <NoSearchResultsTooManyFilters
+                  appliedFilters={this.state.filters}
+                />
+              ) : (
+                <div className="results__container">
+                  <div className="results__top-bar">
+                    <div className="results__number-results">
+                      <NumberOfResults />
+                      <OrderingDropdown />
+                    </div>
+                  </div>
+                  <div className="results__add-samples">
+                    <AddPageToDataSetButton results={results} />
+                  </div>
+                  <div className="results__filters">
+                    <ResultFilters appliedFilters={this.state.filters} />
+                  </div>
+                  <div className="results__list">
+                    {results.map(result => (
+                      <Result
+                        key={result.accession_code}
+                        result={result}
+                        query={this.state.query}
+                      />
+                    ))}
+                    <Pagination
+                      onPaginate={updatePage}
+                      totalPages={totalPages}
+                      currentPage={currentPage}
+                    />
                   </div>
                 </div>
-                <div className="results__add-samples">
-                  <AddPageToDataSetButton results={results} />
-                </div>
-                <div className="results__filters">
-                  <ResultFilters appliedFilters={this.state.filters} />
-                </div>
-                <div className="results__list">
-                  {results.map(result => (
-                    <Result
-                      key={result.accession_code}
-                      result={result}
-                      query={this.state.query}
-                    />
-                  ))}
-                  <Pagination
-                    onPaginate={updatePage}
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                  />
-                </div>
-              </div>
-            )
-          }
-        </Loader>
+              )
+            }
+          </Loader>
+        </div>
       </div>
     );
   }
