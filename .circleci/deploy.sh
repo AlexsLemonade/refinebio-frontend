@@ -21,8 +21,10 @@ branch=$(get_master_or_dev)
 
 if [[ $branch == "master" ]]; then
     base_host="refine.bio"
+    BUCKET_NAME=s3://www.$base_host
 elif [[ $branch == "dev" ]]; then
     base_host="staging.refine.bio"
+    BUCKET_NAME=s3://$base_host
 else
     echo "Why in the world was update_docker_img.sh called from a branch other than dev or master?!?!?"
     exit 1
@@ -41,9 +43,16 @@ fi
 
 pip install awscli --upgrade --user
 
-~/.local/bin/aws s3 sync build s3://$base_host --delete --acl public-read
+~/.local/bin/aws s3 sync build $BUCKET_NAME --delete --acl public-read
 
-# Only deploy to www.refine.bio on master branch.
-if [[ $branch == "master" ]]; then
-    ~/.local/bin/aws s3 sync build s3://www.$base_host --delete --acl public-read
-fi
+~/.local/bin/aws s3 cp $BUCKET_NAME/service-worker.js $BUCKET_NAME/service-worker.js \
+                 --metadata-directive REPLACE \
+                 --cache-control max-age=0,no-cache,no-store,must-revalidate \
+                 --content-type application/javascript \
+                 --acl public-read
+
+~/.local/bin/aws s3 cp $BUCKET_NAME/index.html $BUCKET_NAME/index.html \
+                 --metadata-directive REPLACE \
+                 --cache-control max-age=0,no-cache,no-store,must-revalidate \
+                 --content-type text/html \
+                 --acl public-read
