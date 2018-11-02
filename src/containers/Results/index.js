@@ -245,7 +245,7 @@ const NoSearchResults = () => (
     <h2>No matching results</h2>
     <h2>Try another term</h2>
     <div className="results__suggestions">
-      {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
+      {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
         <Link
           className="link results__suggestion"
           to={`/results?q=${q}`}
