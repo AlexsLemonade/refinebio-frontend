@@ -23,7 +23,7 @@ import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import Anchor from '../../components/Anchor';
 import Technology from './Technology';
 
-const DataBaseNames = {
+const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
   SRA: 'Sequence Read Archive (SRA)',
   ARRAY_EXPRESS: 'ArrayExpress'
@@ -223,7 +223,7 @@ let Experiment = ({
                       rel="noopener noreferrer"
                       className="link"
                     >
-                      {DataBaseNames[experiment.source_database]}
+                      {DatabaseNames[experiment.source_database]}
                     </a>
                   </div>
                 </div>
