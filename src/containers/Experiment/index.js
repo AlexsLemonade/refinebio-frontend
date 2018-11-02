@@ -24,6 +24,12 @@ import Anchor from '../../components/Anchor';
 import Technology from './Technology';
 import InfoBox from '../../components/InfoBox';
 
+const DatabaseNames = {
+  GEO: 'Gene Expression Omnibus (GEO)',
+  SRA: 'Sequence Read Archive (SRA)',
+  ARRAY_EXPRESS: 'ArrayExpress'
+};
+
 let Experiment = ({
   fetchExperiment,
   experiment = {},
@@ -212,6 +218,24 @@ let Experiment = ({
                     </div>
                   </div>
                 </div>
+
+                {experiment.source_database && (
+                  <div className="experiment__source-database">
+                    <div className="experiment__row-label">
+                      Source Repository
+                    </div>
+                    <div>
+                      <a
+                        href={experiment.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link"
+                      >
+                        {DatabaseNames[experiment.source_database]}
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="experiment experiment--sample-wrap">

@@ -39,7 +39,11 @@ const Result = ({ result, query }) => {
               result
             })}
           >
-            {result.title || 'No title.'}
+            {result.title ? (
+              <HighlightedText text={result.title} highlight={query} />
+            ) : (
+              'No title.'
+            )}
           </Link>
         </div>
 
@@ -80,14 +84,22 @@ const Result = ({ result, query }) => {
         </p>
         <h3>Publication Title</h3>
         <p className="result__paragraph">
-          {result.publication_title || (
+          {result.publication_title ? (
+            <HighlightedText
+              text={result.publication_title}
+              highlight={query}
+            />
+          ) : (
             <i className="result__not-provided">No associated publication</i>
           )}
         </p>
         <h3>Sample Metadata Fields</h3>
         <p className="result__paragraph">
           {metadataFields && metadataFields.length ? (
-            metadataFields.join(', ')
+            <HighlightedText
+              text={metadataFields.join(', ')}
+              highlight={query}
+            />
           ) : (
             <i className="result__not-provided">No sample metadata fields</i>
           )}
