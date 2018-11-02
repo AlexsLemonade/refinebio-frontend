@@ -45,7 +45,7 @@ function InfoBoxMobile({ onClose }) {
 const VISITED_BEFORE = 'firstTimeVisitor';
 
 /**
- * Returns true if this is the first time an user is visiting us
+ * Returns true if this is the first time a user is visiting us
  */
 function firstTimeUser() {
   const isFirstTimeVisitor = !localStorage.getItem(VISITED_BEFORE);
