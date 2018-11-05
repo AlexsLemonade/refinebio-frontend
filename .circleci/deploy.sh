@@ -43,7 +43,10 @@ fi
 
 pip install awscli --upgrade --user
 
-~/.local/bin/aws s3 sync build $BUCKET_NAME --delete --acl public-read
+~/.local/bin/aws s3 sync build $BUCKET_NAME \
+                 --delete \
+                 --acl public-read \
+                 --cache-control max-age=31536000,public
 
 ~/.local/bin/aws s3 cp $BUCKET_NAME/service-worker.js $BUCKET_NAME/service-worker.js \
                  --metadata-directive REPLACE \
