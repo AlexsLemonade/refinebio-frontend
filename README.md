@@ -63,7 +63,7 @@ A tag pushed to the `dev` branch will result in a new deploy to the staging envi
 A tag can be created and pushed with the following commands:
 
 ```
-git tag -a vX.X.X -m "<RELEASE MESSAGE>"
+git tag -s vX.X.X -m "<RELEASE MESSAGE>"
 git push origin vX.X.X
 ```
 
