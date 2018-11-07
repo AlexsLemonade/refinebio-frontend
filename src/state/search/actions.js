@@ -2,17 +2,27 @@ import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 
+export const MOST_SAMPLES = 'MostSamples';
+
+export const Ordering = {
+  MostSamples: '', // default sorting, so no parameters needed
+  LeastSamples: 'total_samples_count',
+  Newest: '-source_first_published',
+  Oldest: 'source_first_published'
+};
+
 // This action updates the current search url with new paramters, which in turn triggers a call
 // to `fethResults` from the view. Components wanting to modify the search results should call this
 // (or an action that call this) in order to update the search page. This way we ensure the flow is
 // in a single direction, for example:
 // new seach term -> triggers url change -> call fetchResults -> updates page
 // Without this it's harder to keep the url in sync with the results.
-const navigateToResults = ({ query, page, size, filters }) => {
+const navigateToResults = ({ query, page, size, filters, ordering }) => {
   const urlParams = {
     q: query,
     p: page > 1 ? page : undefined,
     size: size !== 10 ? size : undefined,
+    ordering: ordering !== Ordering.MostSamples ? ordering : undefined,
     ...filters
   };
 
@@ -21,7 +31,13 @@ const navigateToResults = ({ query, page, size, filters }) => {
   });
 };
 
-export function fetchResults({ query, page = 1, size = 10, filters }) {
+export function fetchResults({
+  query,
+  page = 1,
+  size = 10,
+  ordering = Ordering.MostSamples,
+  filters
+}) {
   return async (dispatch, getState) => {
     try {
       const {
@@ -32,6 +48,7 @@ export function fetchResults({ query, page = 1, size = 10, filters }) {
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
+        ...(ordering !== Ordering.MostSamples ? { ordering } : {}),
         ...filters
       });
 
@@ -42,6 +59,7 @@ export function fetchResults({ query, page = 1, size = 10, filters }) {
           results,
           filters: filterData,
           totalResults,
+          ordering,
 
           // these values come from the url, and are stored in redux after each search
           // to ease performing new searches from the action creators. Changes in the filters for
@@ -67,7 +85,8 @@ export const triggerSearch = searchTerm => (dispatch, getState) => {
       query: searchTerm,
       page: 1,
       filters: {},
-      size: resultsPerPage
+      size: resultsPerPage,
+      ordering: Ordering.MostSamples
     })
   );
 };
@@ -87,6 +106,7 @@ export function toggledFilter(filterType, filterValue) {
 export const updateFilters = newFilters => (dispatch, getState) => {
   const {
     searchTerm,
+    ordering,
     pagination: { resultsPerPage }
   } = getState().search;
   // reset to the first page when a filter is applied
@@ -95,7 +115,8 @@ export const updateFilters = newFilters => (dispatch, getState) => {
       query: searchTerm,
       page: 1,
       filters: newFilters,
-      size: resultsPerPage
+      size: resultsPerPage,
+      ordering
     })
   );
 };
@@ -105,11 +126,31 @@ export const clearFilters = () => dispatch => {
   dispatch(updateFilters(newFilters));
 };
 
+export const updateOrdering = newOrdering => (dispatch, getState) => {
+  const {
+    searchTerm,
+    appliedFilters,
+    pagination: { resultsPerPage }
+  } = getState().search;
+
+  // reset to the first page when a filter is applied
+  dispatch(
+    navigateToResults({
+      query: searchTerm,
+      page: 1,
+      filters: appliedFilters,
+      size: resultsPerPage,
+      ordering: newOrdering
+    })
+  );
+};
+
 export function updatePage(page) {
   return async (dispatch, getState) => {
     const {
       searchTerm,
       appliedFilters,
+      ordering,
       pagination: { resultsPerPage }
     } = getState().search;
     dispatch(
@@ -117,6 +158,7 @@ export function updatePage(page) {
         query: searchTerm,
         page,
         filters: appliedFilters,
+        ordering,
         size: resultsPerPage
       })
     );
@@ -129,6 +171,7 @@ export const updateResultsPerPage = resultsPerPage => async (
 ) => {
   const {
     searchTerm,
+    ordering,
     appliedFilters,
     pagination: { currentPage }
   } = getState().search;
@@ -136,6 +179,7 @@ export const updateResultsPerPage = resultsPerPage => async (
     navigateToResults({
       query: searchTerm,
       page: currentPage,
+      ordering,
       filters: appliedFilters,
       size: resultsPerPage
     })

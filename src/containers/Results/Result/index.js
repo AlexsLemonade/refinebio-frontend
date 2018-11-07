@@ -4,16 +4,13 @@ import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
-import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
+import { formatSentenceCase } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
-import TechnologyBadge, {
-  MICROARRAY,
-  RNA_SEQ
-} from '../../../components/TechnologyBadge';
 import DataSetStats from '../../Experiment/DataSetStats';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
 import Technology from '../../Experiment/Technology';
 import * as routes from '../../../routes';
+import HighlightedText from '../../../components/HighlightedText';
 
 const Result = ({ result, query }) => {
   const metadataFields =
@@ -42,7 +39,11 @@ const Result = ({ result, query }) => {
               result
             })}
           >
-            {result.title || 'No title.'}
+            {result.title ? (
+              <HighlightedText text={result.title} highlight={query} />
+            ) : (
+              'No title.'
+            )}
           </Link>
         </div>
 
@@ -61,7 +62,7 @@ const Result = ({ result, query }) => {
           />{' '}
           {result.organisms
             .map(organism => formatSentenceCase(organism))
-            .join(',') || 'No species.'}
+            .join(', ') || 'No species.'}
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
@@ -79,18 +80,26 @@ const Result = ({ result, query }) => {
       <div className="result__details">
         <h3>Description</h3>
         <p className="result__paragraph">
-          <HighlightedText text={result.description} higlight={query} />
+          <HighlightedText text={result.description} highlight={query} />
         </p>
         <h3>Publication Title</h3>
         <p className="result__paragraph">
-          {result.publication_title || (
+          {result.publication_title ? (
+            <HighlightedText
+              text={result.publication_title}
+              highlight={query}
+            />
+          ) : (
             <i className="result__not-provided">No associated publication</i>
           )}
         </p>
         <h3>Sample Metadata Fields</h3>
         <p className="result__paragraph">
           {metadataFields && metadataFields.length ? (
-            metadataFields.join(', ')
+            <HighlightedText
+              text={metadataFields.join(', ')}
+              highlight={query}
+            />
           ) : (
             <i className="result__not-provided">No sample metadata fields</i>
           )}
@@ -111,31 +120,3 @@ const Result = ({ result, query }) => {
 };
 
 export default Result;
-
-/**
- * Hightlight portions of a text.
- * thanks to https://stackoverflow.com/a/43235785/763705
- */
-function HighlightedText({ text, higlight }) {
-  if (!higlight) return text;
-
-  // Split on higlight term and include term into parts, ignore case
-  let parts = text.split(new RegExp(`(${higlight})`, 'gi'));
-  return (
-    <span>
-      {' '}
-      {parts.map((part, i) => (
-        <span
-          key={i}
-          className={
-            part && part.toLowerCase() === higlight.toLowerCase()
-              ? 'text-highlight'
-              : ''
-          }
-        >
-          {part}
-        </span>
-      ))}{' '}
-    </span>
-  );
-}

@@ -17,6 +17,7 @@ import DataSetSampleActions from '../Experiment/DataSetSampleActions';
 import isEqual from 'lodash/isEqual';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
+import { Ordering, updateOrdering } from '../../state/search/actions';
 import Spinner from '../../components/Spinner';
 import {
   fetchResults,
@@ -27,6 +28,7 @@ import {
 } from '../../state/search/actions';
 import fromPairs from 'lodash/fromPairs';
 import DataSetStats from '../Experiment/DataSetStats';
+import InfoBox from '../../components/InfoBox';
 
 class Results extends Component {
   state = {
@@ -47,20 +49,27 @@ class Results extends Component {
 
     // check if the search term and the filters are the same, in which case we don't need to
     // fetch the results again
-    if (
-      this.props.results &&
-      this.props.results.length > 0 &&
-      searchArgs.query === this.props.searchTerm &&
-      isEqual(searchArgs.filters, this.props.appliedFilters) &&
-      searchArgs.page === this.props.pagination.currentPage &&
-      searchArgs.size === this.props.pagination.resultsPerPage
-    ) {
+    if (this._resultsAreFetched()) {
       return;
     }
 
     // reset scroll position when the results change
     window.scrollTo(0, 0);
     await this.props.fetchResults(searchArgs);
+  }
+
+  _resultsAreFetched() {
+    const searchArgs = this._parseUrl();
+
+    return (
+      this.props.results &&
+      this.props.results.length > 0 &&
+      searchArgs.query === this.props.searchTerm &&
+      isEqual(searchArgs.filters, this.props.appliedFilters) &&
+      searchArgs.ordering === this.props.ordering &&
+      searchArgs.page === this.props.pagination.currentPage &&
+      searchArgs.size === this.props.pagination.resultsPerPage
+    );
   }
 
   render() {
@@ -72,78 +81,88 @@ class Results extends Component {
     } = this.props;
 
     return (
-      <div className="results">
-        <Helmet>
-          <title>{this.state.query || ''} Results - refine.bio</title>
-          <meta
-            name="description"
-            content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
-          />
-        </Helmet>
+      <div>
+        <InfoBox />
 
-        <BackToTop />
-        <div className="results__search">
-          <SearchInput
-            searchTerm={this.state.query}
-            onSubmit={value => triggerSearch(value.search)}
-          />
-        </div>
+        <div className="results">
+          <Helmet>
+            <title>{this.state.query || ''} Results - refine.bio</title>
+            <meta
+              name="description"
+              content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
+            />
+          </Helmet>
 
-        {/* Passing `location.search` to the Loader component ensures that we call `updateResults`
+          <BackToTop />
+          <div className="results__search">
+            <SearchInput
+              searchTerm={this.state.query}
+              onSubmit={value => triggerSearch(value.search)}
+            />
+          </div>
+
+          {/* Passing `location.search` to the Loader component ensures that we call `updateResults`
           every time that the url is updated and also when the component is mounted.
           We do several checks to determine what to display, eg: no results, when no search term has 
           been entered, etc */}
-        <Loader
-          updateProps={this.props.location.search}
-          fetch={() => this.updateResults()}
-        >
-          {({ isLoading }) =>
-            isLoading ? (
-              <Spinner />
-            ) : !results.length && !anyFilterApplied(this.state.filters) ? (
-              <NoSearchResults />
-            ) : !results.length ? (
-              <NoSearchResultsTooManyFilters
-                appliedFilters={this.state.filters}
-              />
-            ) : (
-              <div className="results__container">
-                <div className="results__top-bar">
-                  <div className="results__number-results">
-                    <NumberOfResults />
+          <Loader
+            updateProps={this.props.location.search}
+            fetch={() => this.updateResults()}
+          >
+            {({ isLoading }) =>
+              isLoading && !this._resultsAreFetched() ? (
+                <Spinner />
+              ) : !results.length && !anyFilterApplied(this.state.filters) ? (
+                <NoSearchResults />
+              ) : !results.length ? (
+                <NoSearchResultsTooManyFilters
+                  appliedFilters={this.state.filters}
+                />
+              ) : (
+                <div className="results__container">
+                  <div className="results__top-bar">
+                    <div className="results__number-results">
+                      <NumberOfResults />
+                      <OrderingDropdown />
+                    </div>
                   </div>
-
-                  <AddPageToDataSetButton results={results} />
-                </div>
-                <div className="results__filters">
-                  <ResultFilters appliedFilters={this.state.filters} />
-                </div>
-                <div className="results__list">
-                  {results.map(result => (
-                    <Result
-                      key={result.accession_code}
-                      result={result}
-                      query={this.state.query}
+                  <div className="results__add-samples">
+                    <AddPageToDataSetButton results={results} />
+                  </div>
+                  <div className="results__filters">
+                    <ResultFilters appliedFilters={this.state.filters} />
+                  </div>
+                  <div className="results__list">
+                    {results.map(result => (
+                      <Result
+                        key={result.accession_code}
+                        result={result}
+                        query={this.state.query}
+                      />
+                    ))}
+                    <Pagination
+                      onPaginate={updatePage}
+                      totalPages={totalPages}
+                      currentPage={currentPage}
                     />
-                  ))}
-                  <Pagination
-                    onPaginate={updatePage}
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                  />
+                  </div>
                 </div>
-              </div>
-            )
-          }
-        </Loader>
+              )
+            }
+          </Loader>
+        </div>
       </div>
     );
   }
 
   _parseUrl() {
-    let { q: query, p: page, size, ...filters } = getQueryParamObject(
-      this.props.location.search
-    );
+    let {
+      q: query,
+      p: page = 1,
+      size = 10,
+      ordering = '',
+      ...filters
+    } = getQueryParamObject(this.props.location.search);
 
     // for consistency, ensure all values in filters are arrays
     // the method `getQueryParamObject` will return a single value for parameters that only
@@ -156,18 +175,21 @@ class Results extends Component {
 
     // parse parameters from url
     query = query ? decodeURIComponent(query) : undefined;
-    page = parseInt(page || 1, 10);
-    size = parseInt(size || 10, 10);
+    page = parseInt(page, 10);
+    size = parseInt(size, 10);
 
-    return { query, page, size, filters };
+    return { query, page, size, ordering, filters };
   }
 }
 Results = connect(
-  ({ search: { results, pagination, searchTerm, appliedFilters } }) => ({
+  ({
+    search: { results, pagination, searchTerm, appliedFilters, ordering }
+  }) => ({
     results,
     pagination,
     searchTerm,
-    appliedFilters
+    appliedFilters,
+    ordering
   }),
   {
     updatePage,
@@ -292,3 +314,34 @@ NoSearchResultsTooManyFilters = connect(
     clearFilters
   }
 )(NoSearchResultsTooManyFilters);
+
+let OrderingDropdown = ({ ordering, updateOrdering }) => {
+  const options = [
+    { label: 'Most No. of samples', value: Ordering.MostSamples },
+    { label: 'Least No. of samples', value: Ordering.LeastSamples },
+    { label: 'Newest Experiment First', value: Ordering.Newest },
+    { label: 'Oldest Experiment First', value: Ordering.Oldest }
+  ];
+
+  const selectedOption = options.find(x => x.value === ordering) || options[0];
+
+  return (
+    <div className="">
+      Sort by{' '}
+      <Dropdown
+        options={options}
+        selectedOption={selectedOption}
+        label={x => x.label}
+        onChange={x => updateOrdering(x.value)}
+      />
+    </div>
+  );
+};
+OrderingDropdown = connect(
+  ({ search: { ordering } }) => ({
+    ordering
+  }),
+  {
+    updateOrdering
+  }
+)(OrderingDropdown);

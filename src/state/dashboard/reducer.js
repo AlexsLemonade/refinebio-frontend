@@ -1,5 +1,6 @@
 import moment from 'moment';
 import zip from 'lodash/zip';
+import { accumulateByKeys } from '../../common/helpers';
 
 // TODO: samples and experiments will most likely be moved into their own reducers in the future
 const initialState = {
@@ -68,6 +69,17 @@ function convertSecToMinHours(sec) {
   } else {
     return `${hours} hr ${minutes} min`;
   }
+}
+
+export function getAllAverageTimeTilCompletion(state) {
+  const stats = state.dashboard.stats;
+
+  return JOB_NAMES.reduce((allEstimatedTimes, jobType) => {
+    const averageTime = parseFloat(stats[jobType].average_time);
+    // we're assuming that average_time is in seconds...
+    allEstimatedTimes[jobType] = convertSecToMinHours(averageTime);
+    return allEstimatedTimes;
+  }, {});
 }
 
 export function getAllEstimatedTimeTilCompletion(state) {
@@ -141,22 +153,4 @@ export function getJobsByStatusOverTime(state, jobName) {
   }));
 
   return accumulateByKeys(result, ['total', ...JOB_STATUS]);
-}
-
-function accumulate(array, sum) {
-  let result = [array[0]];
-  for (let i = 1; i < array.length; i++) {
-    result.push(sum(array[i], result[i - 1]));
-  }
-  return result;
-}
-
-function accumulateByKeys(array, keys) {
-  return accumulate(array, (current, prev) => ({
-    ...current,
-    ...keys.reduce((accum, key) => {
-      accum[key] = current[key] + prev[key];
-      return accum;
-    }, {})
-  }));
 }

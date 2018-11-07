@@ -34,6 +34,7 @@
 .samples-table {
   height: 100%;
   max-height: 115 * 8px;
+  border-color: $table-border-color;
 
   &__th {
     // The original styles for headers in ReactTable are under the selector: .ReactTable .rt-thead .rt-th.-sort-asc
@@ -60,6 +61,20 @@
       overflow-y: scroll; /* has to be scroll, not auto */
       -webkit-overflow-scrolling: touch;
     }
+
+    .rt-td,
+    .rt-tr-group {
+      border-color: $table-border-color;
+    }
+  }
+
+  .rt-thead {
+    .rt-td,
+    .rt-th {
+      border-color: $table-border-color;
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+    }
   }
 
   .rt-noData {
@@ -70,6 +85,7 @@
     flex-direction: column;
     margin-left: 8px;
     display: none;
+    color: #8d8d8d;
 
     .rt-th.-cursor-pointer & {
       display: flex;
@@ -117,7 +133,7 @@
 
   // override styles of the original table components
   .rt-td {
-    padding: 4px 8px !important;
+    padding: 8px 16px !important;
     white-space: normal !important;
   }
 
@@ -137,38 +153,22 @@
   &__notice {
     margin-bottom: 5 * 8px;
   }
+
+  &__filter {
+    display: flex;
+    margin-bottom: 16px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &__filter-input {
+    margin-left: 8px;
+    width: 180px;
+  }
 }
 
 .info-icon {
   vertical-align: sub;
-}
-
-.metadata-modal {
-  padding: 56px 24px 56px 56px;
-  max-width: 108 * 8px;
-  overflow: hidden;
-
-  &__title {
-    margin-bottom: 4px;
-  }
-
-  &__subtitle {
-    margin-top: 4px;
-  }
-
-  &__annotations {
-    overflow: auto;
-    height: 700px;
-    border-radius: 2px;
-    color: #fdfdfd;
-    font-family: 'Oxygen Mono';
-    background-color: #4a4a4a;
-  }
-
-  pre {
-    padding: 8px;
-    white-space: pre-wrap;
-  }
 }
 
 .sample-not-processed {

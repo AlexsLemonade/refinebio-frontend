@@ -6,8 +6,6 @@ import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import { getAllDetailedSamples } from '../../api/samples';
 
-import ModalManager from '../../components/Modal/ModalManager';
-import Button from '../../components/Button';
 import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../constants/table';
@@ -20,6 +18,9 @@ import isEqual from 'lodash/isEqual';
 
 import uniq from 'lodash/uniq';
 import union from 'lodash/union';
+import MetadataAnnotationsCell from './MetadataAnnotationsCell';
+import { InputClear } from '../../components/Input';
+import debounce from 'lodash/debounce';
 
 class SamplesTable extends React.Component {
   state = {
@@ -27,8 +28,16 @@ class SamplesTable extends React.Component {
     pages: -1,
     pageSize: 10,
     columns: this._getColumns(),
-    data: []
+    data: [],
+    filter: ''
   };
+
+  constructor(props) {
+    super(props);
+
+    // create a debounced version of fetch data, to avoid repeating
+    this._fetchDataDebounced = debounce(this.fetchData, 400);
+  }
 
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.dataSet, this.props.dataSet)) {
@@ -85,6 +94,15 @@ class SamplesTable extends React.Component {
                   </div>
                   {pageActionComponent &&
                     pageActionComponent(state.pageRows.map(x => x._original))}
+                </div>
+                <div className="samples-table__filter">
+                  <div>Filter</div>
+                  <div className="samples-table__filter-input">
+                    <InputClear
+                      value={this.state.filter}
+                      onChange={this.handleFilterChange}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="samples-table-layout__main">
@@ -143,7 +161,8 @@ class SamplesTable extends React.Component {
       accessionCodes,
       orderBy,
       offset,
-      limit: pageSize
+      limit: pageSize,
+      filterBy: this.state.filter
     });
 
     // add a new property to all samples, with the experiment accession codes that reference it in
@@ -168,6 +187,10 @@ class SamplesTable extends React.Component {
       pages: Math.ceil(this.totalSamples / pageSize),
       loading: false
     });
+  };
+
+  handleFilterChange = filter => {
+    this.setState({ filter }, () => this._fetchDataDebounced());
   };
 
   handlePagination = page => {
@@ -224,13 +247,18 @@ class SamplesTable extends React.Component {
         Header: 'Processing Information',
         id: 'processing_information',
         sortable: false,
-        Cell: ProcessingInformationCell
+        Cell: ProcessingInformationCell,
+        width: 200
       },
       {
         Header: 'Additional Metadata',
         id: 'additional_metadata',
         sortable: false,
-        Cell: MetadataCell
+        Cell: MetadataAnnotationsCell,
+        width: 200,
+        show: data.some(
+          sample => !!sample.annotations && sample.annotations.length > 0
+        )
       }
     ];
 
@@ -289,44 +317,6 @@ function CustomCell({ value }) {
   }
 
   return value;
-}
-
-/**
- * Component that renders the content in "Additional Metadata" column
- */
-function MetadataCell({ original: sample }) {
-  if (sample.annotations.length === 0) {
-    return CustomCell({});
-  }
-
-  let annotations = sample.annotations.map(entry =>
-    JSON.stringify(entry.data, null, 2)
-  );
-  return (
-    <ModalManager
-      component={showModal => (
-        <Button text="View" buttonStyle="link" onClick={showModal} />
-      )}
-      modalProps={{ className: 'metadata-modal' }}
-    >
-      {() => (
-        <section>
-          <h1 className="metadata-modal__title">Additional Metadata</h1>
-          <div className="metadata-modal__subtitle">
-            <img className="info-icon" src={InfoIcon} alt="" /> Included in
-            Download
-          </div>
-          <div className="metadata-modal__annotations">
-            {annotations.map((meta, index) => (
-              <div key={index}>
-                <pre>{meta}</pre>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-    </ModalManager>
-  );
 }
 
 /**
