@@ -1,11 +1,6 @@
 @import '../../../common/styles/variables';
 
 .result-filters {
-  @include desktop {
-    position: sticky;
-    top: 220px;
-  }
-
   &__title-container {
     display: flex;
     flex-direction: row;
