@@ -1,5 +1,7 @@
 import React from 'react';
 import './Input.scss';
+import Button from '../Button';
+import classnames from 'classnames';
 
 type Props = {
   value: string,
@@ -21,4 +23,27 @@ export default Input;
 // ref: https://redux-form.com/7.3.0/docs/faq/customcomponent.md/
 export const InputField = ({ input: { value, onChange }, className = '' }) => (
   <Input className={className} value={value} onChange={onChange} />
+);
+
+/**
+ * Input button with clear icon
+ */
+export const InputClear = ({ onChange, value, className, ...props }) => (
+  <div className="input-wrap">
+    <Input
+      value={value}
+      onChange={onChange}
+      className={classnames('input input-wrap__input', className)}
+      {...props}
+    />
+    {value && (
+      <Button
+        className="input-wrap__clear"
+        onClick={() => onChange('')}
+        buttonStyle="transparent"
+      >
+        <i className="icon ion-close" />
+      </Button>
+    )}
+  </div>
 );

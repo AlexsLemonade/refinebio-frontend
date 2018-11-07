@@ -19,6 +19,8 @@ import isEqual from 'lodash/isEqual';
 import uniq from 'lodash/uniq';
 import union from 'lodash/union';
 import MetadataAnnotationsCell from './MetadataAnnotationsCell';
+import { InputClear } from '../../components/Input';
+import debounce from 'lodash/debounce';
 
 class SamplesTable extends React.Component {
   state = {
@@ -26,8 +28,16 @@ class SamplesTable extends React.Component {
     pages: -1,
     pageSize: 10,
     columns: this._getColumns(),
-    data: []
+    data: [],
+    filter: ''
   };
+
+  constructor(props) {
+    super(props);
+
+    // create a debounced version of fetch data, to avoid repeating
+    this._fetchDataDebounced = debounce(this.fetchData, 400);
+  }
 
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.dataSet, this.props.dataSet)) {
@@ -84,6 +94,15 @@ class SamplesTable extends React.Component {
                   </div>
                   {pageActionComponent &&
                     pageActionComponent(state.pageRows.map(x => x._original))}
+                </div>
+                <div className="samples-table__filter">
+                  <div>Filter</div>
+                  <div className="samples-table__filter-input">
+                    <InputClear
+                      value={this.state.filter}
+                      onChange={this.handleFilterChange}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="samples-table-layout__main">
@@ -142,7 +161,8 @@ class SamplesTable extends React.Component {
       accessionCodes,
       orderBy,
       offset,
-      limit: pageSize
+      limit: pageSize,
+      filterBy: this.state.filter
     });
 
     // add a new property to all samples, with the experiment accession codes that reference it in
@@ -167,6 +187,10 @@ class SamplesTable extends React.Component {
       pages: Math.ceil(this.totalSamples / pageSize),
       loading: false
     });
+  };
+
+  handleFilterChange = filter => {
+    this.setState({ filter }, () => this._fetchDataDebounced());
   };
 
   handlePagination = page => {

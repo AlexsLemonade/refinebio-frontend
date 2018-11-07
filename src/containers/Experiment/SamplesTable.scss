@@ -153,6 +153,18 @@
   &__notice {
     margin-bottom: 5 * 8px;
   }
+
+  &__filter {
+    display: flex;
+    margin-bottom: 16px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &__filter-input {
+    margin-left: 8px;
+    width: 180px;
+  }
 }
 
 .info-icon {
