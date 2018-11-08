@@ -48,7 +48,8 @@ function About() {
                   {numberFormatter(apiData.stats.samples.total)}
                 </div>
                 <div className="about__stat-text">
-                  1.5 million samples will be available
+                  {numberFormatter(apiData.stats.samples.total)} samples
+                  available
                 </div>
               </div>
               <div className="about__stat-item">
@@ -56,13 +57,15 @@ function About() {
                   {numberFormatter(Object.keys(apiData.organism).length)}
                 </div>
                 <div className="about__stat-text">
-                  There will be support for 3000 organisms
+                  Support for{' '}
+                  {numberFormatter(Object.keys(apiData.organism).length)}{' '}
+                  organisms
                 </div>
               </div>
               <div className="about__stat-item">
-                <div className="about__stat">1 PB</div>
+                <div className="about__stat">11.7 TB</div>
                 <div className="about__stat-text">
-                  Over a petabyte of raw data will be processed
+                  11.7 terabytes of raw data processed
                 </div>
               </div>
             </div>
