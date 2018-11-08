@@ -10,6 +10,9 @@ import betterMed from './better-med.svg';
 import alsfLogo from './ALSFsquare.jpg';
 import ccdlLogo from './CCDL-logo.jpg';
 
+import apiData from '../../apiData.json';
+import { numberFormatter } from '../../common/helpers';
+
 function About() {
   return (
     <div>
@@ -41,13 +44,17 @@ function About() {
 
             <div className="about__stats-list">
               <div className="about__stat-item">
-                <div className="about__stat">1.5M</div>
+                <div className="about__stat">
+                  {numberFormatter(apiData.stats.samples.total)}
+                </div>
                 <div className="about__stat-text">
                   1.5 million samples will be available
                 </div>
               </div>
               <div className="about__stat-item">
-                <div className="about__stat">3K</div>
+                <div className="about__stat">
+                  {numberFormatter(Object.keys(apiData.organism).length)}
+                </div>
                 <div className="about__stat-text">
                   There will be support for 3000 organisms
                 </div>
