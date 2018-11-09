@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script verifies that the tag triggering this deploy was signed
+# This script verifies that the tag triggering this deployment was signed
 # by a trusted member of the CCDL.
 
 for key in $(ls -1 keys/); do
