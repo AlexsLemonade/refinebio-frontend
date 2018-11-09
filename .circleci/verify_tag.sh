@@ -3,7 +3,7 @@
 # This script verifies that the tag triggering this deployment was signed
 # by a trusted member of the CCDL.
 
-for key in $(ls -1 keys/); do
+for key in keys/*; do
     gpg --import keys/$key
 done
 
