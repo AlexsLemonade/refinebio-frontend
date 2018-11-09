@@ -28,6 +28,7 @@ class SamplesTable extends React.Component {
     pages: -1,
     pageSize: 10,
     columns: this._getColumns(),
+    totalSamples: 0,
     data: [],
     filter: ''
   };
@@ -46,7 +47,7 @@ class SamplesTable extends React.Component {
   }
 
   get totalSamples() {
-    return this._getSampleAccessionCodes().length;
+    return this.state.totalSamples;
   }
 
   render() {
@@ -157,7 +158,7 @@ class SamplesTable extends React.Component {
 
     let offset = page * pageSize;
 
-    let data = await getAllDetailedSamples({
+    let { count, data } = await getAllDetailedSamples({
       accessionCodes,
       orderBy,
       offset,
@@ -181,6 +182,7 @@ class SamplesTable extends React.Component {
     let columns = this._getColumns(data);
 
     this.setState({
+      totalSamples: count,
       data,
       page,
       columns,
