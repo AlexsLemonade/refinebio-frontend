@@ -44,6 +44,8 @@ function InfoBoxMobile({ onClose }) {
 
 const VISITED_BEFORE = 'firstTimeVisitor';
 
+const LANDING_PAGE = window.location.href;
+
 /**
  * Returns true if this is the first time a user is visiting us
  */
@@ -57,7 +59,8 @@ function firstTimeUser() {
 
 class InfoBox extends React.Component {
   state = {
-    showInfoBox: firstTimeUser()
+    // The infobox should only be displayed when it's first loaded, on the page where the user landed initially
+    showInfoBox: firstTimeUser() && LANDING_PAGE === window.location.href
   };
 
   render() {
