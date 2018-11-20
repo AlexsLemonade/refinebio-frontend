@@ -41,7 +41,6 @@ let Experiment = ({
 }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
-  const { organisms = [] } = experiment;
 
   return (
     <div>
@@ -49,9 +48,23 @@ let Experiment = ({
 
       <Loader fetch={() => fetchExperiment(match.params.id)}>
         {({ isLoading }) => {
-          const experimentData = isLoading ? state && state.result : experiment;
+          let displaySpinner = isLoading;
+          let experimentData = experiment;
+          let totalSamples = experiment.samples && experiment.samples.length;
+          let organisms = experimentData.organisms;
 
-          return !experimentData ? (
+          // if the user is coming from the search, we should have some experiment's data in the
+          if (isLoading && comesFromSearch && state.result) {
+            displaySpinner = false;
+            experimentData = {
+              ...state.result,
+              samples: []
+            };
+            totalSamples = state.result.total_samples_count;
+            organisms = state.result.organisms.map(name => ({ name }));
+          }
+
+          return displaySpinner ? (
             <Spinner />
           ) : (
             <div>
@@ -110,11 +123,7 @@ let Experiment = ({
                       className="experiment__stats-icon"
                       alt="Sample Icon"
                     />{' '}
-                    {experimentData.samples.length
-                      ? `${experimentData.samples.length} Sample${
-                          experimentData.samples.length > 1 ? 's' : ''
-                        }`
-                      : ''}
+                    {totalSamples} Sample{totalSamples > 1 && 's'}
                   </div>
 
                   <div className="experiment__stats-item">
