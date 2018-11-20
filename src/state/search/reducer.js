@@ -49,3 +49,15 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+/**
+ * Returns the parameters from the url, that are saved in the state
+ * @param {*} param0 redux state
+ */
+export const getUrlParams = ({ search }) => ({
+  query: search.searchTerm,
+  page: search.pagination.currentPage,
+  size: search.pagination.resultsPerPage,
+  filters: search.appliedFilters,
+  ordering: search.ordering
+});

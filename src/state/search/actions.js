@@ -1,6 +1,7 @@
 import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
+import { getUrlParams } from './reducer';
 
 export const MOST_SAMPLES = 'MostSamples';
 
@@ -76,16 +77,15 @@ export function fetchResults({
 }
 
 export const triggerSearch = searchTerm => (dispatch, getState) => {
-  const {
-    pagination: { resultsPerPage }
-  } = getState().search;
+  const params = getUrlParams(getState());
+
   // when a new search is performed, remove the filters, and go back to the first page
   dispatch(
     navigateToResults({
+      ...params,
       query: searchTerm,
       page: 1,
       filters: {},
-      size: resultsPerPage,
       ordering: Ordering.MostSamples
     })
   );
@@ -104,19 +104,14 @@ export function toggledFilter(filterType, filterValue) {
 }
 
 export const updateFilters = newFilters => (dispatch, getState) => {
-  const {
-    searchTerm,
-    ordering,
-    pagination: { resultsPerPage }
-  } = getState().search;
+  const params = getUrlParams(getState());
+
   // reset to the first page when a filter is applied
   dispatch(
     navigateToResults({
-      query: searchTerm,
+      ...params,
       page: 1,
-      filters: newFilters,
-      size: resultsPerPage,
-      ordering
+      filters: newFilters
     })
   );
 };
@@ -127,60 +122,37 @@ export const clearFilters = () => dispatch => {
 };
 
 export const updateOrdering = newOrdering => (dispatch, getState) => {
-  const {
-    searchTerm,
-    appliedFilters,
-    pagination: { resultsPerPage }
-  } = getState().search;
+  const params = getUrlParams(getState());
 
   // reset to the first page when a filter is applied
   dispatch(
     navigateToResults({
-      query: searchTerm,
+      ...params,
       page: 1,
-      filters: appliedFilters,
-      size: resultsPerPage,
       ordering: newOrdering
     })
   );
 };
 
-export function updatePage(page) {
-  return async (dispatch, getState) => {
-    const {
-      searchTerm,
-      appliedFilters,
-      ordering,
-      pagination: { resultsPerPage }
-    } = getState().search;
-    dispatch(
-      navigateToResults({
-        query: searchTerm,
-        page,
-        filters: appliedFilters,
-        ordering,
-        size: resultsPerPage
-      })
-    );
-  };
-}
+export const updatePage = page => async (dispatch, getState) => {
+  const params = getUrlParams(getState());
+
+  dispatch(
+    navigateToResults({
+      ...params,
+      page
+    })
+  );
+};
 
 export const updateResultsPerPage = resultsPerPage => async (
   dispatch,
   getState
 ) => {
-  const {
-    searchTerm,
-    ordering,
-    appliedFilters,
-    pagination: { currentPage }
-  } = getState().search;
+  const params = getUrlParams(getState());
   dispatch(
     navigateToResults({
-      query: searchTerm,
-      page: currentPage,
-      ordering,
-      filters: appliedFilters,
+      ...params,
       size: resultsPerPage
     })
   );
