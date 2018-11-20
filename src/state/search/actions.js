@@ -105,16 +105,24 @@ export const triggerSearch = searchTerm => (dispatch, getState) => {
   );
 };
 
-export function toggledFilter(filterType, filterValue) {
+/**
+ * Toggles a given filter
+ * @param {string} filterType Name of the filter to be applied
+ * @param {string} filterValue Value of the filter
+ * @param {boolean} trackOrder Allow disabling interactive filtering (used on mobile devices)
+ */
+export function toggledFilter(filterType, filterValue, trackOrder = true) {
   return (dispatch, getState) => {
     const { filters, filterOrder } = getUrlParams(getState());
     const newFilters = toggleFilterHelper(filters, filterType, filterValue);
-    const newFilterOrder = updateFilterOrderHelper({
-      filters,
-      type: filterType,
-      value: filterValue,
-      filterOrder
-    });
+    const newFilterOrder = trackOrder
+      ? updateFilterOrderHelper({
+          filters,
+          type: filterType,
+          value: filterValue,
+          filterOrder
+        })
+      : [];
 
     dispatch(updateFilters(newFilters, newFilterOrder));
   };
