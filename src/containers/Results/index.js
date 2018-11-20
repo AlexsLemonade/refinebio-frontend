@@ -164,6 +164,7 @@ class Results extends Component {
       p: page = 1,
       size = 10,
       ordering = '',
+      filter_order = '',
       ...filters
     } = getQueryParamObject(this.props.location.search);
 
@@ -180,8 +181,9 @@ class Results extends Component {
     query = query ? decodeURIComponent(query) : undefined;
     page = parseInt(page, 10);
     size = parseInt(size, 10);
+    const filterOrder = filter_order ? filter_order.split(',') : [];
 
-    return { query, page, size, ordering, filters };
+    return { query, page, size, ordering, filters, filterOrder };
   }
 }
 Results = connect(
