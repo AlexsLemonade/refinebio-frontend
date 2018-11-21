@@ -6,9 +6,6 @@ import SampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
-import DataSetStats from '../../Experiment/DataSetStats';
-import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
-import Technology from '../../Experiment/Technology';
 import * as routes from '../../../routes';
 import HighlightedText from '../../../components/HighlightedText';
 import TechnologyBadge, {

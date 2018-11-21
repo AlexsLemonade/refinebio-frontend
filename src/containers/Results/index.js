@@ -27,7 +27,6 @@ import {
   updateResultsPerPage
 } from '../../state/search/actions';
 import fromPairs from 'lodash/fromPairs';
-import DataSetStats from '../Experiment/DataSetStats';
 import InfoBox from '../../components/InfoBox';
 import StickyBox from 'react-sticky-box';
 
