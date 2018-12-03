@@ -29,6 +29,7 @@ import {
 import fromPairs from 'lodash/fromPairs';
 import DataSetStats from '../Experiment/DataSetStats';
 import InfoBox from '../../components/InfoBox';
+import StickyBox from 'react-sticky-box';
 
 class Results extends Component {
   state = {
@@ -130,7 +131,9 @@ class Results extends Component {
                     <AddPageToDataSetButton results={results} />
                   </div>
                   <div className="results__filters">
-                    <ResultFilters appliedFilters={this.state.filters} />
+                    <StickyBox offsetTop={80} offsetBottom={20}>
+                      <ResultFilters appliedFilters={this.state.filters} />
+                    </StickyBox>
                   </div>
                   <div className="results__list">
                     {results.map(result => (

@@ -21,8 +21,9 @@ import DataSetStats from './DataSetStats';
 import Spinner from '../../components/Spinner';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import Anchor from '../../components/Anchor';
-import Technology from './Technology';
+import Technology, { getTechnologies } from './Technology';
 import InfoBox from '../../components/InfoBox';
+import classnames from 'classnames';
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
@@ -117,7 +118,12 @@ let Experiment = ({
                       : ''}
                   </div>
 
-                  <div className="experiment__stats-item">
+                  <div
+                    className={classnames('experiment__stats-item', {
+                      'experiment__stats-item--lg':
+                        getTechnologies(experimentData.samples).length > 3
+                    })}
+                  >
                     <Technology samples={experimentData.samples} />
                   </div>
                 </div>

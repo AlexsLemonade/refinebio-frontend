@@ -60,6 +60,10 @@
     @include tablet {
       flex-basis: (100%/3);
     }
+
+    &--lg {
+      flex-basis: 100%;
+    }
   }
 
   &__stats-icon {

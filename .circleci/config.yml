@@ -13,6 +13,7 @@ jobs:
       - image: circleci/python:3-node
     steps:
       - checkout
+      - run: bash .circleci/verify_tag.sh
       - run: bash .circleci/deploy.sh
 
 workflows:

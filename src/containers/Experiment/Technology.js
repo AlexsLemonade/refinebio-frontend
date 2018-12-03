@@ -13,7 +13,11 @@ export default function Technology({ samples }) {
         isMicroarray={samples.some(x => x.technology === MICROARRAY)}
         isRnaSeq={samples.some(x => x.technology === RNA_SEQ)}
       />
-      {uniq(samples.map(x => x.pretty_platform)).join(', ')}
+      {getTechnologies(samples).join(', ')}
     </React.Fragment>
   );
+}
+
+export function getTechnologies(samples) {
+  return uniq(samples.map(x => x.pretty_platform));
 }

@@ -8,9 +8,10 @@ import { formatSentenceCase } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
 import DataSetStats from '../../Experiment/DataSetStats';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
-import Technology from '../../Experiment/Technology';
+import Technology, { getTechnologies } from '../../Experiment/Technology';
 import * as routes from '../../../routes';
 import HighlightedText from '../../../components/HighlightedText';
+import classnames from 'classnames';
 
 const Result = ({ result, query }) => {
   const metadataFields =
@@ -72,7 +73,11 @@ const Result = ({ result, query }) => {
               }`
             : ''}
         </li>
-        <li className="result__stat">
+        <li
+          className={classnames('result__stat', {
+            'result__stat--lg': getTechnologies(result.samples).length > 3
+          })}
+        >
           <Technology samples={result.samples} />
         </li>
       </ul>
