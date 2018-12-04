@@ -54,7 +54,7 @@ let Experiment = ({
           let totalSamples = experiment.samples && experiment.samples.length;
           let organisms = experimentData.organisms;
 
-          // if the user is coming from the search, we should have some experiment's data in the
+          // for users coming from the search, see if there's any experiment's data in the url state
           if (isLoading && comesFromSearch && state.result) {
             displaySpinner = false;
             experimentData = {
