@@ -55,8 +55,8 @@ class AnnotationsModalContent extends React.Component {
             />
           </div>
 
-          <div className="metadata-modal__subtitle">
-            <img className="info-icon" src={InfoIcon} alt="" /> Sample Metadata
+          <div className="metadata-modal__subtitle info">
+            <img className="info__icon" src={InfoIcon} alt="" /> Sample Metadata
             included in Download
           </div>
         </div>
