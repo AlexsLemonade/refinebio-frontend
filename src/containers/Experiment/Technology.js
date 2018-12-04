@@ -14,7 +14,7 @@ export default function Technology({ samples }) {
         isMicroarray={samples.some(x => x.technology === MICROARRAY)}
         isRnaSeq={samples.some(x => x.technology === RNA_SEQ)}
       />
-      {uniq(samples.map(x => x.platform_accession_code))
+      {getTechnologies(samples)
         .map(code => <Platform accessionCode={code} />)
         .reduce((prev, curr) => [prev, ', ', curr])}
     </React.Fragment>
@@ -22,5 +22,5 @@ export default function Technology({ samples }) {
 }
 
 export function getTechnologies(samples) {
-  return uniq(samples.map(x => x.pretty_platform));
+  return uniq(samples.map(x => x.platform_accession_code));
 }
