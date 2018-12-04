@@ -27,12 +27,10 @@ let Main = ({ searchTerm, fetchResults, push }) => {
             onSubmit={value =>
               push(value.search ? `/results?q=${value.search}` : `/results`)
             }
-            searchTerm={searchTerm}
             buttonStyle="primary"
           />
           <div className="main__search-suggestions">
             <p className="main__search-suggestion-label">Try searching for:</p>
-
             {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
               <Link
                 className="main__search-suggestion"
