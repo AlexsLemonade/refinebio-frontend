@@ -107,6 +107,7 @@ export default Dashboard;
 function getDashboardChartConfig(state) {
   const {
     totalLengthOfQueuesByType,
+    averageTimesTilCompletion,
     estimatedTimesTilCompletion,
     experimentsCount,
     samplesCount,
@@ -124,6 +125,9 @@ function getDashboardChartConfig(state) {
     ),
     jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state),
     totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
+      state
+    ),
+    averageTimesTilCompletion: chartSelectors.getAllAverageTimeTilCompletion(
       state
     ),
     estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
@@ -205,14 +209,32 @@ function getDashboardChartConfig(state) {
           size: 'medium'
         },
         {
+          title: 'Average Time: Survey Jobs',
+          data: averageTimesTilCompletion.survey_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
           title: 'Estimated Time Till Completion: Survey Jobs',
           data: estimatedTimesTilCompletion.survey_jobs,
           type: 'text',
           size: 'small'
         },
         {
+          title: 'Average Time: Processor Jobs',
+          data: averageTimesTilCompletion.processor_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
           title: 'Estimated Time Till Completion: Processor Jobs',
           data: estimatedTimesTilCompletion.processor_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Average Time: Downloader Jobs',
+          data: averageTimesTilCompletion.downloader_jobs,
           type: 'text',
           size: 'small'
         },

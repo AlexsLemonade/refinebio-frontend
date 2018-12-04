@@ -5,7 +5,7 @@
   background-color: $white;
   box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
   padding: 24px;
-  margin: 32px 0 40px;
+  margin: 16px 0 40px;
 
   &--sample-wrap {
     @extend .experiment;
@@ -60,11 +60,22 @@
     @include tablet {
       flex-basis: (100%/3);
     }
+
+    &--lg {
+      flex-basis: 100%;
+    }
   }
 
   &__stats-icon {
     height: 24px;
     margin-right: 8px;
+  }
+
+  &__source-database {
+    border-top: 1px solid $border-color;
+    margin-top: 24px;
+    padding-top: 16px;
+    display: flex;
   }
 
   &__row {

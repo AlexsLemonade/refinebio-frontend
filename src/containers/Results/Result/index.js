@@ -8,9 +8,10 @@ import { formatSentenceCase } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
 import DataSetStats from '../../Experiment/DataSetStats';
 import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
-import Technology from '../../Experiment/Technology';
+import Technology, { getTechnologies } from '../../Experiment/Technology';
 import * as routes from '../../../routes';
 import HighlightedText from '../../../components/HighlightedText';
+import classnames from 'classnames';
 
 const Result = ({ result, query }) => {
   const metadataFields =
@@ -39,7 +40,11 @@ const Result = ({ result, query }) => {
               result
             })}
           >
-            {result.title || 'No title.'}
+            {result.title ? (
+              <HighlightedText text={result.title} highlight={query} />
+            ) : (
+              'No title.'
+            )}
           </Link>
         </div>
 
@@ -68,7 +73,11 @@ const Result = ({ result, query }) => {
               }`
             : ''}
         </li>
-        <li className="result__stat">
+        <li
+          className={classnames('result__stat', {
+            'result__stat--lg': getTechnologies(result.samples).length > 3
+          })}
+        >
           <Technology samples={result.samples} />
         </li>
       </ul>
@@ -80,14 +89,22 @@ const Result = ({ result, query }) => {
         </p>
         <h3>Publication Title</h3>
         <p className="result__paragraph">
-          {result.publication_title || (
+          {result.publication_title ? (
+            <HighlightedText
+              text={result.publication_title}
+              highlight={query}
+            />
+          ) : (
             <i className="result__not-provided">No associated publication</i>
           )}
         </p>
         <h3>Sample Metadata Fields</h3>
         <p className="result__paragraph">
           {metadataFields && metadataFields.length ? (
-            metadataFields.join(', ')
+            <HighlightedText
+              text={metadataFields.join(', ')}
+              highlight={query}
+            />
           ) : (
             <i className="result__not-provided">No sample metadata fields</i>
           )}

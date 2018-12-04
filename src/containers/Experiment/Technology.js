@@ -20,3 +20,7 @@ export default function Technology({ samples }) {
     </React.Fragment>
   );
 }
+
+export function getTechnologies(samples) {
+  return uniq(samples.map(x => x.pretty_platform));
+}
