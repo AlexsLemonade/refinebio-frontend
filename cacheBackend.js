@@ -21,6 +21,9 @@ Promise.all([
   // fetch samples per organisms, also used on the landing page
   axios.get(ApiHost + '/search/?limit=1&offset=0').then(function(response) {
     cache['organism'] = response.data.filters.organism;
+
+    // also use this request to save the source revision returned in the headers
+    cache['sourceRevision'] = response.headers['x-source-revision'] || false;
   })
 ]).then(function() {
   fs.writeFileSync(`src/apiData.json`, JSON.stringify(cache));

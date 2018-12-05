@@ -1,4 +1,6 @@
 import SampleFieldMetadata from '../containers/Experiment/SampleFieldMetadata';
+import apiData from '../apiData.json';
+import { ApiVersionMismatchError } from '../common/errors';
 
 /**
  * Generates a query string from a query object
@@ -85,7 +87,13 @@ export async function asyncFetch(url, params = false) {
   try {
     response = await (!!params ? fetch(fullURL, params) : fetch(fullURL));
   } catch (e) {
-    throw new Error(`Fatal error fetching ${url}`);
+    throw new Error(`Network error when fetching ${url}`);
+  }
+
+  // check backend version to ensure it hasn't changed since the last deploy
+  const sourceRevision = response.headers.get('x-source-revision');
+  if (!!apiData.sourceRevision && apiData.sourceRevision !== sourceRevision) {
+    throw new ApiVersionMismatchError();
   }
 
   /**
