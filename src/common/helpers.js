@@ -91,9 +91,15 @@ export async function asyncFetch(url, params = false) {
   }
 
   // check backend version to ensure it hasn't changed since the last deploy
-  const sourceRevision = response.headers.get('x-source-revision');
-  if (!!apiData.sourceRevision && apiData.sourceRevision !== sourceRevision) {
-    throw new ApiVersionMismatchError();
+  if (response.headers) {
+    const sourceRevision = response.headers.get('x-source-revision');
+    if (
+      !!sourceRevision &&
+      !!apiData.sourceRevision &&
+      apiData.sourceRevision !== sourceRevision
+    ) {
+      throw new ApiVersionMismatchError();
+    }
   }
 
   /**
