@@ -1,5 +1,4 @@
 import SampleFieldMetadata from '../containers/Experiment/SampleFieldMetadata';
-import apiData from '../apiData.json';
 import { ApiVersionMismatchError } from '../common/errors';
 
 /**
