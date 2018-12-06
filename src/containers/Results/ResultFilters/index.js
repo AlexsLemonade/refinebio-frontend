@@ -151,7 +151,7 @@ class FiltersMobile extends React.Component {
                   key={`${filterKey}${filterValue}`}
                   value={filterValue}
                   onClick={() =>
-                    this.props.toggledFilter(filterKey, filterValue)
+                    this.props.toggledFilter(filterKey, filterValue, false)
                   }
                 />
               ))
