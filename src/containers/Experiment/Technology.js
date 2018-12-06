@@ -7,6 +7,8 @@ import uniq from 'lodash/uniq';
 import Platform from '../Platform';
 
 export default function Technology({ samples }) {
+  if (!samples || !samples.length) return null;
+
   return (
     <React.Fragment>
       <TechnologyBadge

@@ -12,6 +12,7 @@ import TechnologyBadge, {
   MICROARRAY,
   RNA_SEQ
 } from '../../../components/TechnologyBadge';
+import Platform from '../../Platform';
 
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result);
@@ -42,7 +43,7 @@ const Result = ({ result, query }) => {
                 publication_authors: result.publication_authors,
                 source_url: result.source_url,
                 source_database: result.source_database,
-                samples: []
+                organisms: result.organisms
               }
             })}
           >
@@ -86,7 +87,9 @@ const Result = ({ result, query }) => {
               result.technologies && result.technologies.includes(RNA_SEQ)
             }
           />
-          {result.pretty_platforms.filter(platform => !!platform).join(', ')}
+          {result.platforms
+            .map(code => <Platform accessionCode={code} />)
+            .reduce((prev, curr) => [prev, ', ', curr])}
         </li>
       </ul>
 
@@ -132,7 +135,7 @@ const Result = ({ result, query }) => {
               publication_authors: result.publication_authors,
               source_url: result.source_url,
               source_database: result.source_database,
-              samples: []
+              organisms: result.organisms
             }
           })}
         >
