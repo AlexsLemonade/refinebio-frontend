@@ -32,7 +32,18 @@ const Result = ({ result, query }) => {
             className="link result__title"
             to={routes.experiments(result.accession_code, {
               ref: 'search',
-              result
+              result: {
+                accession_code: result.accession_code,
+                title: result.title,
+                description: result.description,
+                pubmed_id: result.pubmed_id,
+                publication_title: result.publication_title,
+                submitter_institution: result.submitter_institution,
+                publication_authors: result.publication_authors,
+                source_url: result.source_url,
+                source_database: result.source_database,
+                samples: []
+              }
             })}
           >
             {result.title ? (
@@ -111,7 +122,18 @@ const Result = ({ result, query }) => {
           className="button button--secondary"
           to={routes.experimentsSamples(result.accession_code, {
             ref: 'search',
-            result
+            result: {
+              accession_code: result.accession_code,
+              title: result.title,
+              description: result.description,
+              pubmed_id: result.pubmed_id,
+              publication_title: result.publication_title,
+              submitter_institution: result.submitter_institution,
+              publication_authors: result.publication_authors,
+              source_url: result.source_url,
+              source_database: result.source_database,
+              samples: []
+            }
           })}
         >
           View Samples
