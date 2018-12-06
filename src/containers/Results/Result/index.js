@@ -4,22 +4,17 @@ import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
-import { formatSentenceCase } from '../../../common/helpers';
+import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../Experiment/DataSetSampleActions';
-import DataSetStats from '../../Experiment/DataSetStats';
-import SampleFieldMetadata from '../../Experiment/SampleFieldMetadata';
-import Technology, { getTechnologies } from '../../Experiment/Technology';
 import * as routes from '../../../routes';
 import HighlightedText from '../../../components/HighlightedText';
-import classnames from 'classnames';
+import TechnologyBadge, {
+  MICROARRAY,
+  RNA_SEQ
+} from '../../../components/TechnologyBadge';
 
 const Result = ({ result, query }) => {
-  const metadataFields =
-    !result.samples || result.samples.length === 0
-      ? []
-      : SampleFieldMetadata.filter(field =>
-          result.samples.some(sample => !!sample[field.id])
-        ).map(field => field.Header);
+  const metadataFields = getMetadataFields(result);
 
   return (
     <div className="result">
@@ -50,7 +45,7 @@ const Result = ({ result, query }) => {
 
         <DataSetSampleActions
           dataSetSlice={{
-            [result.accession_code]: DataSetStats.mapAccessions(result.samples)
+            [result.accession_code]: result.processed_samples
           }}
         />
       </div>
@@ -67,18 +62,20 @@ const Result = ({ result, query }) => {
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
-          {result.samples.length
-            ? `${result.samples.length} Sample${
-                result.samples.length > 1 ? 's' : ''
-              }`
-            : ''}
+          {result.total_samples_count} Sample{result.total_samples_count > 1 &&
+            's'}
         </li>
-        <li
-          className={classnames('result__stat', {
-            'result__stat--lg': getTechnologies(result.samples).length > 3
-          })}
-        >
-          <Technology samples={result.samples} />
+        <li className="result__stat">
+          <TechnologyBadge
+            className="result__icon"
+            isMicroarray={
+              result.technologies && result.technologies.includes(MICROARRAY)
+            }
+            isRnaSeq={
+              result.technologies && result.technologies.includes(RNA_SEQ)
+            }
+          />
+          {result.pretty_platforms.filter(platform => !!platform).join(', ')}
         </li>
       </ul>
 
