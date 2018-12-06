@@ -42,6 +42,7 @@ const Result = ({ result, query }) => {
                 publication_authors: result.publication_authors,
                 source_url: result.source_url,
                 source_database: result.source_database,
+                organisms: result.organisms,
                 samples: []
               }
             })}
@@ -132,6 +133,7 @@ const Result = ({ result, query }) => {
               publication_authors: result.publication_authors,
               source_url: result.source_url,
               source_database: result.source_database,
+              organisms: result.organisms,
               samples: []
             }
           })}
