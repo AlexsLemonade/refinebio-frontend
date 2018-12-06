@@ -70,6 +70,10 @@ export function getRange(n) {
   return result;
 }
 
+// Store the last api version detected, this is used to detect updates to the api
+// while the app is running.
+let ApiSourceRevision = false;
+
 /**
  * Using fetch with async await that returns fulfilled value of the request
  *
@@ -77,7 +81,6 @@ export function getRange(n) {
  * @param {object} params
  * @returns {Promise}
  */
-
 export async function asyncFetch(url, params = false) {
   const fullURL = process.env.REACT_APP_API_HOST
     ? `${process.env.REACT_APP_API_HOST}${url}`
@@ -95,11 +98,14 @@ export async function asyncFetch(url, params = false) {
     const sourceRevision = response.headers.get('x-source-revision');
     if (
       !!sourceRevision &&
-      !!apiData.sourceRevision &&
-      apiData.sourceRevision !== sourceRevision
+      !!ApiSourceRevision &&
+      ApiSourceRevision !== sourceRevision
     ) {
       throw new ApiVersionMismatchError();
     }
+
+    // save the last source revision
+    ApiSourceRevision = sourceRevision;
   }
 
   /**
