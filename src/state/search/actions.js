@@ -1,6 +1,7 @@
 import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
+import { getUrlParams } from './reducer';
 
 export const MOST_SAMPLES = 'MostSamples';
 
@@ -17,12 +18,21 @@ export const Ordering = {
 // in a single direction, for example:
 // new seach term -> triggers url change -> call fetchResults -> updates page
 // Without this it's harder to keep the url in sync with the results.
-const navigateToResults = ({ query, page, size, filters, ordering }) => {
+const navigateToResults = ({
+  query,
+  page,
+  size,
+  filters,
+  filterOrder,
+  ordering
+}) => {
   const urlParams = {
     q: query,
     p: page > 1 ? page : undefined,
     size: size !== 10 ? size : undefined,
     ordering: ordering !== Ordering.MostSamples ? ordering : undefined,
+    filter_order:
+      filterOrder && filterOrder.length > 0 ? filterOrder.join(',') : undefined,
     ...filters
   };
 
@@ -36,6 +46,7 @@ export function fetchResults({
   page = 1,
   size = 10,
   ordering = Ordering.MostSamples,
+  filterOrder = [],
   filters
 }) {
   return async (dispatch, getState) => {
@@ -49,7 +60,11 @@ export function fetchResults({
         limit: size,
         offset: (page - 1) * size,
         ...(ordering !== Ordering.MostSamples ? { ordering } : {}),
-        ...filters
+        ...filters,
+        filter_order:
+          filterOrder && filterOrder.length > 0
+            ? filterOrder.join(',')
+            : undefined
       });
 
       dispatch({
@@ -58,6 +73,7 @@ export function fetchResults({
           searchTerm: query,
           results,
           filters: filterData,
+          filterOrder,
           totalResults,
           ordering,
 
@@ -76,47 +92,55 @@ export function fetchResults({
 }
 
 export const triggerSearch = searchTerm => (dispatch, getState) => {
-  const {
-    pagination: { resultsPerPage }
-  } = getState().search;
+  const params = getUrlParams(getState());
   // when a new search is performed, remove the filters, and go back to the first page
   dispatch(
     navigateToResults({
+      ...params,
       query: searchTerm,
       page: 1,
       filters: {},
-      size: resultsPerPage,
       ordering: Ordering.MostSamples
     })
   );
 };
 
-export function toggledFilter(filterType, filterValue) {
+/**
+ * Toggles a given filter
+ * @param {string} filterType Name of the filter to be applied
+ * @param {string} filterValue Value of the filter
+ * @param {boolean} trackOrder Allow disabling interactive filtering (used on mobile devices)
+ */
+export function toggledFilter(filterType, filterValue, trackOrder = true) {
   return (dispatch, getState) => {
-    const { appliedFilters } = getState().search;
-    const newFilters = toggleFilterHelper(
-      appliedFilters,
-      filterType,
-      filterValue
-    );
-    dispatch(updateFilters(newFilters));
+    const { filters, filterOrder } = getUrlParams(getState());
+    const newFilters = toggleFilterHelper(filters, filterType, filterValue);
+    const newFilterOrder = trackOrder
+      ? updateFilterOrderHelper({
+          filters,
+          type: filterType,
+          value: filterValue,
+          filterOrder
+        })
+      : [];
+
+    dispatch(updateFilters(newFilters, newFilterOrder));
   };
 }
 
-export const updateFilters = newFilters => (dispatch, getState) => {
-  const {
-    searchTerm,
-    ordering,
-    pagination: { resultsPerPage }
-  } = getState().search;
+export const updateFilters = (newFilters, filterOrder = []) => (
+  dispatch,
+  getState
+) => {
+  const params = getUrlParams(getState());
+
   // reset to the first page when a filter is applied
   dispatch(
     navigateToResults({
-      query: searchTerm,
+      ...params,
       page: 1,
-      filters: newFilters,
-      size: resultsPerPage,
-      ordering
+      filterOrder: filterOrder,
+      filters: newFilters
     })
   );
 };
@@ -127,60 +151,35 @@ export const clearFilters = () => dispatch => {
 };
 
 export const updateOrdering = newOrdering => (dispatch, getState) => {
-  const {
-    searchTerm,
-    appliedFilters,
-    pagination: { resultsPerPage }
-  } = getState().search;
-
+  const params = getUrlParams(getState());
   // reset to the first page when a filter is applied
   dispatch(
     navigateToResults({
-      query: searchTerm,
+      ...params,
       page: 1,
-      filters: appliedFilters,
-      size: resultsPerPage,
       ordering: newOrdering
     })
   );
 };
 
-export function updatePage(page) {
-  return async (dispatch, getState) => {
-    const {
-      searchTerm,
-      appliedFilters,
-      ordering,
-      pagination: { resultsPerPage }
-    } = getState().search;
-    dispatch(
-      navigateToResults({
-        query: searchTerm,
-        page,
-        filters: appliedFilters,
-        ordering,
-        size: resultsPerPage
-      })
-    );
-  };
-}
+export const updatePage = page => async (dispatch, getState) => {
+  const params = getUrlParams(getState());
+  dispatch(
+    navigateToResults({
+      ...params,
+      page
+    })
+  );
+};
 
 export const updateResultsPerPage = resultsPerPage => async (
   dispatch,
   getState
 ) => {
-  const {
-    searchTerm,
-    ordering,
-    appliedFilters,
-    pagination: { currentPage }
-  } = getState().search;
+  const params = getUrlParams(getState());
   dispatch(
     navigateToResults({
-      query: searchTerm,
-      page: currentPage,
-      ordering,
-      filters: appliedFilters,
+      ...params,
       size: resultsPerPage
     })
   );
@@ -209,8 +208,30 @@ export function toggleFilterHelper(filters, type, value) {
     appliedFilterType = [...prevFilterValue, value];
   }
 
-  return {
+  const newFilters = {
     ...filters,
     [type]: appliedFilterType
   };
+
+  return newFilters;
+}
+
+export function updateFilterOrderHelper({
+  filters,
+  type,
+  value,
+  filterOrder = []
+}) {
+  // check if the filter has been applied, in which case it should be removed from the order
+  if (filters[type] && filters[type].includes(value)) {
+    const filterIndex = filterOrder.lastIndexOf(type);
+    if (filterIndex >= 0) {
+      return filterOrder
+        .slice(0, filterIndex)
+        .concat(filterOrder.slice(filterIndex + 1, filterOrder.length));
+    }
+  }
+
+  // otherwise just add it to the filterOrder array
+  return [...filterOrder, type];
 }

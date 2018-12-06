@@ -27,7 +27,6 @@ import {
   updateResultsPerPage
 } from '../../state/search/actions';
 import fromPairs from 'lodash/fromPairs';
-import DataSetStats from '../Experiment/DataSetStats';
 import InfoBox from '../../components/InfoBox';
 import StickyBox from 'react-sticky-box';
 
@@ -164,6 +163,7 @@ class Results extends Component {
       p: page = 1,
       size = 10,
       ordering = '',
+      filter_order = '',
       ...filters
     } = getQueryParamObject(this.props.location.search);
 
@@ -180,8 +180,9 @@ class Results extends Component {
     query = query ? decodeURIComponent(query) : undefined;
     page = parseInt(page, 10);
     size = parseInt(size, 10);
+    const filterOrder = filter_order ? filter_order.split(',') : [];
 
-    return { query, page, size, ordering, filters };
+    return { query, page, size, ordering, filters, filterOrder };
   }
 }
 Results = connect(
@@ -208,10 +209,7 @@ export default Results;
 function AddPageToDataSetButton({ results }) {
   // create a dataset slice with the results, use the accession codes in `processed_samples`
   const resultsDataSetSlice = fromPairs(
-    results.map(result => [
-      result.accession_code,
-      DataSetStats.mapAccessions(result.samples)
-    ])
+    results.map(result => [result.accession_code, result.processed_samples])
   );
 
   return (

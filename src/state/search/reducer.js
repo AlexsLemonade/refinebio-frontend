@@ -2,6 +2,7 @@ const initialState = {
   searchTerm: '',
   results: [],
   filters: {},
+  filterOrder: [],
   appliedFilters: {},
   pagination: {
     totalResults: 0,
@@ -21,6 +22,7 @@ export default (state = initialState, action) => {
         totalResults,
         currentPage,
         appliedFilters,
+        filterOrder, // array with the name of the applied filters
         resultsPerPage,
         ordering
       } = action.data;
@@ -35,6 +37,7 @@ export default (state = initialState, action) => {
         results,
         filters,
         appliedFilters,
+        filterOrder,
         ordering,
         pagination: {
           ...state.pagination,
@@ -49,3 +52,16 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+/**
+ * Returns the parameters from the url, that are saved in the state
+ * @param {*} param0 redux state
+ */
+export const getUrlParams = ({ search }) => ({
+  query: search.searchTerm,
+  page: search.pagination.currentPage,
+  size: search.pagination.resultsPerPage,
+  filters: search.appliedFilters,
+  filterOrder: search.filterOrder,
+  ordering: search.ordering
+});
