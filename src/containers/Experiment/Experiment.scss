@@ -18,8 +18,13 @@
   }
 
   &__header-title {
+    word-break: break-all;
+    word-break: break-word;
+    display: block;
+
     @include tablet {
       flex: 1;
+      margin-right: 16px;
     }
   }
 
