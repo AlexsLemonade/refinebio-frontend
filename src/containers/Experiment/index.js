@@ -335,10 +335,9 @@ class ExperimentSamplesTable extends React.Component {
                     !stats.anyProcessedInDataSet()
                   }
                 >
-                  Show only samples added to dataset
+                  Show only samples in current dataset
                 </Checkbox>
               </div>
-
               <DataSetSampleActions
                 dataSetSlice={{
                   [experiment.accession_code]: DataSetStats.mapAccessions(
