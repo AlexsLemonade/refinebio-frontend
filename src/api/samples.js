@@ -15,26 +15,14 @@ export async function getDetailedSample(sampleId) {
  * @param {number} offset
  * @param {number} limit
  */
-export async function getAllDetailedSamples({
-  accessionCodes,
-  orderBy,
-  offset,
-  limit,
-  filterBy
-}) {
-  if (accessionCodes && accessionCodes.length) {
-    let { count, results } = await Ajax.get('/samples/', {
-      // send the accession codes as a string, otherwise they will be converted to an array parameter
-      accession_codes: accessionCodes.join(','),
-      offset,
-      limit,
-      order_by: orderBy,
-      filter_by: filterBy || undefined // don't send the parameter  if `filterBy === ''`
-    });
-    return { count, data: results };
-  } else {
-    return [];
-  }
+export async function getAllDetailedSamples({ orderBy, filterBy, ...params }) {
+  let { count, results } = await Ajax.get('/samples/', {
+    ...params,
+    // send the accession codes as a string, otherwise they will be converted to an array parameter
+    order_by: orderBy,
+    filter_by: filterBy || undefined // don't send the parameter  if `filterBy === ''`
+  });
+  return { count, data: results };
 }
 
 export async function getGenomeBuild(organism) {

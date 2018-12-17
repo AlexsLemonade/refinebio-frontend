@@ -29,6 +29,7 @@ import {
 } from '../../state/download/actions';
 
 import uniq from 'lodash/uniq';
+import union from 'lodash/union';
 import mapValues from 'lodash/mapValues';
 import groupBy from 'lodash/groupBy';
 
@@ -374,7 +375,12 @@ class ViewSamplesButtonModal extends React.Component {
       >
         {() => (
           <SamplesTable
-            dataSet={this.state.dataSet}
+            experimentSampleAssociations={this.state.dataSet}
+            fetchSampleParams={{
+              accession_codes: uniq(
+                union(...Object.values(this.state.dataSet))
+              ).join(',')
+            }}
             isImmutable={this.props.isImmutable}
           />
         )}

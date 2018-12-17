@@ -41,7 +41,7 @@ class SamplesTable extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.dataSet, this.props.dataSet)) {
+    if (!isEqual(prevProps.fetchSampleParams, this.props.fetchSampleParams)) {
       this.fetchData({ setPage: 0 });
     }
   }
@@ -145,7 +145,6 @@ class SamplesTable extends React.Component {
   }
 
   fetchData = async ({ tableState = false, setPage = undefined } = {}) => {
-    const accessionCodes = this._getSampleAccessionCodes();
     let { page, pageSize } = this.state;
     // get the backend ready `order_by` param, based on the sort options from the table
     let orderBy = this._getSortParam(tableState);
@@ -159,22 +158,23 @@ class SamplesTable extends React.Component {
     let offset = page * pageSize;
 
     let { count, data } = await getAllDetailedSamples({
-      accessionCodes,
       orderBy,
       offset,
       limit: pageSize,
-      filterBy: this.state.filter
+      filterBy: this.state.filter,
+      ...(this.props.fetchSampleParams || {})
     });
 
     // add a new property to all samples, with the experiment accession codes that reference it in
     // the dataset slice. This is needed when adding/removing the sample from the dataset
     data = data.map(sample => ({
       ...sample,
-      experimentAccessionCodes: Object.keys(this.props.dataSet).filter(
-        experimentAccessionCode =>
-          this.props.dataSet[experimentAccessionCode].includes(
-            sample.accession_code
-          )
+      experimentAccessionCodes: Object.keys(
+        this.props.experimentSampleAssociations
+      ).filter(experimentAccessionCode =>
+        this.props.experimentSampleAssociations[
+          experimentAccessionCode
+        ].includes(sample.accession_code)
       )
     }));
 
