@@ -21,14 +21,14 @@ branch=$(get_master_or_dev)
 
 if [[ $branch == "master" ]]; then
     base_host="refine.bio"
-    BUCKET_NAME=s3://www.$base_host
 elif [[ $branch == "dev" ]]; then
     base_host="staging.refine.bio"
-    BUCKET_NAME=s3://$base_host
 else
     echo "Why in the world was update_docker_img.sh called from a branch other than dev or master?!?!?"
     exit 1
 fi
+
+BUCKET_NAME=s3://$base_host
 
 yarn install --ignore-engines
 

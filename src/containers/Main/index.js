@@ -36,7 +36,8 @@ let Main = ({ searchTerm, fetchResults, push }) => {
           />
           <div className="main__search-suggestions">
             <p className="main__search-suggestion-label">Try searching for:</p>
-            {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
+
+            {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
               <Link
                 className="main__search-suggestion"
                 to={`/results?q=${q}`}
