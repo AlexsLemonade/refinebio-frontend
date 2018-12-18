@@ -47,3 +47,17 @@ export const InputClear = ({ onChange, value, className, ...props }) => (
     )}
   </div>
 );
+
+export const InputSearch = ({ onChange, value, className, ...props }) => (
+  <div className={classnames('input-wrap', className)}>
+    <Input
+      value={value}
+      onChange={onChange}
+      className="input input-wrap__input"
+      {...props}
+    />
+    <div className="input-wrap__clear">
+      <i className="icon ion-search" />
+    </div>
+  </div>
+);
