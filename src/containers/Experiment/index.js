@@ -300,8 +300,7 @@ function ExperimentHelmet({ experiment }) {
 
 class ExperimentSamplesTable extends React.Component {
   state = {
-    showOnlyAddedSamples: false,
-    onlyAddedSamples: []
+    showOnlyAddedSamples: false
   };
 
   render() {
@@ -309,8 +308,16 @@ class ExperimentSamplesTable extends React.Component {
 
     return (
       <SamplesTable
-        dataSet={{
-          [experiment.accession_code]: this._getSamplesToBeDisplayed()
+        experimentSampleAssociations={{
+          [experiment.accession_code]: this.props.experiment.samples.map(
+            x => x.accession_code
+          )
+        }}
+        fetchSampleParams={{
+          experiment_accession_code: experiment.accession_code,
+          dataset_id: this.state.showOnlyAddedSamples
+            ? this.props.dataSetId
+            : undefined
         }}
         // Render prop for the button that adds the samples to the dataset
         pageActionComponent={samplesDisplayed => {
@@ -326,8 +333,7 @@ class ExperimentSamplesTable extends React.Component {
                   checked={this.state.showOnlyAddedSamples}
                   onChange={() =>
                     this.setState(state => ({
-                      showOnlyAddedSamples: !state.showOnlyAddedSamples,
-                      onlyAddedSamples: stats.getSamplesInDataSet()
+                      showOnlyAddedSamples: !state.showOnlyAddedSamples
                     }))
                   }
                   disabled={
@@ -335,10 +341,9 @@ class ExperimentSamplesTable extends React.Component {
                     !stats.anyProcessedInDataSet()
                   }
                 >
-                  Show only samples added to dataset
+                  Show only samples in current dataset
                 </Checkbox>
               </div>
-
               <DataSetSampleActions
                 dataSetSlice={{
                   [experiment.accession_code]: DataSetStats.mapAccessions(
@@ -358,16 +363,6 @@ class ExperimentSamplesTable extends React.Component {
     );
   }
 
-  _getSamplesToBeDisplayed() {
-    if (this.state.showOnlyAddedSamples) {
-      // show only the samples that are present in the dataset
-      return this.state.onlyAddedSamples;
-    }
-
-    // return the accession codes of all samples
-    return this.props.experiment.samples.map(x => x.accession_code);
-  }
-
   /**
    * Bulilds a dataset slice, that only contains the current experiment accession code
    * with it's processed samples
@@ -382,6 +377,7 @@ class ExperimentSamplesTable extends React.Component {
     };
   }
 }
-ExperimentSamplesTable = connect(({ download: { dataSet } }) => ({ dataSet }))(
-  ExperimentSamplesTable
-);
+ExperimentSamplesTable = connect(({ download: { dataSetId, dataSet } }) => ({
+  dataSetId,
+  dataSet
+}))(ExperimentSamplesTable);

@@ -40,7 +40,9 @@
     line-height: 1.2;
     text-align: left;
     font-weight: 600;
+    word-break: break-all; // FF doesn't support `break-word`
     word-break: break-word;
+    display: block;
   }
 
   &__stats {

@@ -38,6 +38,8 @@
 
     @include tablet() {
       color: #214169;
+      top: 10px;
+      margin-top: 0;
     }
   }
 }

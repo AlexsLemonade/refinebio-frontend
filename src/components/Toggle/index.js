@@ -28,20 +28,23 @@ class Toggle extends Component {
     return (
       <div className={classnames('toggle', this.props.className)}>
         <ul className="toggle__container">
-          {tabs.map((tab, i) => (
-            <li key={i} className={`toggle__item`}>
-              <button
-                className={`toggle__button ${
-                  i === this.state.activeTabIndex
-                    ? 'toggle__button--active'
-                    : ''
-                }`}
-                onClick={() => this.handleToggle(i)}
-              >
-                {tab}
-              </button>
-            </li>
-          ))}
+          {tabs.map(
+            (tab, i) =>
+              !!tab && (
+                <li key={tab.toString()} className={`toggle__item`}>
+                  <button
+                    className={`toggle__button ${
+                      i === this.state.activeTabIndex
+                        ? 'toggle__button--active'
+                        : ''
+                    }`}
+                    onClick={() => this.handleToggle(i)}
+                  >
+                    {tab}
+                  </button>
+                </li>
+              )
+          )}
         </ul>
       </div>
     );

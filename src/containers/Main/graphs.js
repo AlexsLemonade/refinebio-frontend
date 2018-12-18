@@ -25,7 +25,7 @@ function getSamplesPerSpecies() {
       samples: organism[name]
     }))
     .sort((x, y) => y.samples - x.samples)
-    .slice(0, 20);
+    .slice(0, 10);
 }
 
 let SamplesPerSpeciesGraph = ({ push }) => {
@@ -68,7 +68,15 @@ SamplesPerSpeciesGraph = connect(
 )(SamplesPerSpeciesGraph);
 export { SamplesPerSpeciesGraph };
 
-function getSamplesOverTime() {
+export function getSamplesOverTime() {
+  if (
+    !apiData.stats ||
+    !apiData.stats.samples ||
+    !apiData.stats.samples.timeline
+  ) {
+    return false;
+  }
+
   const { samples } = apiData.stats;
   return accumulateByKeys(samples.timeline, ['total']).filter(
     x => moment(x.start).isAfter('2018-07-01') // only show data after our launch
@@ -77,6 +85,7 @@ function getSamplesOverTime() {
 
 export function SamplesOverTimeGraph() {
   const data = getSamplesOverTime();
+  if (!data) return null;
   return (
     <div style={{ minHeight: 400 }}>
       <div style={{ height: 500 }}>

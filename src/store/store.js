@@ -7,6 +7,7 @@ import { CALL_HISTORY_METHOD } from '../state/routerActions';
 import { REPORT_ERROR } from '../state/reportError';
 import throttle from 'lodash/throttle';
 import progressMiddleware from './progressMiddleware';
+import { ApiVersionMismatchError } from '../common/errors';
 
 declare var Raven: any;
 
@@ -18,6 +19,11 @@ const errorMiddleware = () => next => action => {
   }
 
   let error = action.data;
+
+  if (error instanceof ApiVersionMismatchError) {
+    // refresh the current page when the version of the api changes
+    window.location.reload();
+  }
 
   if (process.env.NODE_ENV === 'development') {
     // log exception in console on development

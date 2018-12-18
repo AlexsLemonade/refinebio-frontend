@@ -9,8 +9,13 @@ import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
 import ExploreIcon from '../../common/icons/explore.svg';
 import './Main.scss';
-import { SamplesPerSpeciesGraph, SamplesOverTimeGraph } from './graphs';
+import {
+  SamplesPerSpeciesGraph,
+  SamplesOverTimeGraph,
+  getSamplesOverTime
+} from './graphs';
 import TabControl from '../../components/TabControl';
+import apiData from '../../apiData.json';
 
 let Main = ({ searchTerm, fetchResults, push }) => {
   return (
@@ -27,7 +32,6 @@ let Main = ({ searchTerm, fetchResults, push }) => {
             onSubmit={value =>
               push(value.search ? `/results?q=${value.search}` : `/results`)
             }
-            searchTerm={searchTerm}
             buttonStyle="primary"
           />
           <div className="main__search-suggestions">
@@ -114,19 +118,24 @@ let Main = ({ searchTerm, fetchResults, push }) => {
           </div>
         </div>
       </section>
-      <section className="main__section main__section--gray">
-        <div className="main__container">
-          <h2 className="main__heading-1">Summary Statistics</h2>
+      {(getSamplesOverTime() || apiData.organism) && (
+        <section className="main__section main__section--gray">
+          <div className="main__container">
+            <h2 className="main__heading-1">Summary Statistics</h2>
 
-          <TabControl
-            tabs={['Samples per Species', 'Samples over Time']}
-            toggleClassName="toggle--statics-tabs"
-          >
-            <SamplesPerSpeciesGraph />
-            <SamplesOverTimeGraph />
-          </TabControl>
-        </div>
-      </section>
+            <TabControl
+              tabs={[
+                apiData.organism ? 'Samples per Species' : false,
+                getSamplesOverTime() ? 'Samples over Time' : false
+              ]}
+              toggleClassName="toggle--statics-tabs"
+            >
+              <SamplesPerSpeciesGraph />
+              <SamplesOverTimeGraph />
+            </TabControl>
+          </div>
+        </section>
+      )}
       <section className="main__section main__section--blue-gradient">
         <div className="main__container">
           <div className="main__heading-1">Sign Up for Updates</div>
