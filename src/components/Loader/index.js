@@ -41,7 +41,14 @@ export default class Loader extends React.Component {
 
   async _fetchData() {
     this.setState({ isLoading: true });
-    const data = await this.props.fetch();
+
+    let data;
+    try {
+      data = await this.props.fetch();
+    } catch (e) {
+      this.setState({ isLoading: false, hasError: true });
+      return;
+    }
 
     if (data && data.type === REPORT_ERROR) {
       this.setState({ hasError: true });
