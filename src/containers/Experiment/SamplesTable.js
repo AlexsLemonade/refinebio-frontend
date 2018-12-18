@@ -21,6 +21,7 @@ import union from 'lodash/union';
 import MetadataAnnotationsCell from './MetadataAnnotationsCell';
 import { InputClear } from '../../components/Input';
 import debounce from 'lodash/debounce';
+import Button from '../../components/Button';
 
 class SamplesTable extends React.Component {
   state = {
@@ -30,7 +31,8 @@ class SamplesTable extends React.Component {
     columns: this._getColumns(),
     totalSamples: 0,
     data: [],
-    filter: ''
+    filter: '',
+    hasError: false
   };
 
   constructor(props) {
@@ -78,6 +80,12 @@ class SamplesTable extends React.Component {
         ThComponent={ThComponent}
         minRows={0}
         noDataText={this.props.noDataText}
+        NoDataComponent={NoDataComponent}
+        getNoDataProps={() => ({
+          hasError: this.state.hasError,
+          // send a callback to allow retrying
+          fetchData: this._fetchDataDebounced
+        })}
       >
         {(state, makeTable, instance) => {
           return (
@@ -153,17 +161,27 @@ class SamplesTable extends React.Component {
       page = setPage;
     }
 
-    this.setState({ loading: true, orderBy });
+    this.setState({ loading: true, orderBy, hasError: false });
 
     let offset = page * pageSize;
 
-    let { count, data } = await getAllDetailedSamples({
-      orderBy,
-      offset,
-      limit: pageSize,
-      filterBy: this.state.filter,
-      ...(this.props.fetchSampleParams || {})
-    });
+    let count, data;
+    try {
+      ({ count, data } = await getAllDetailedSamples({
+        orderBy,
+        offset,
+        limit: pageSize,
+        filterBy: this.state.filter,
+        ...(this.props.fetchSampleParams || {})
+      }));
+    } catch (e) {
+      this.setState({
+        data: [],
+        loading: false,
+        hasError: true
+      });
+      return;
+    }
 
     // add a new property to all samples, with the experiment accession codes that reference it in
     // the dataset slice. This is needed when adding/removing the sample from the dataset
@@ -187,7 +205,8 @@ class SamplesTable extends React.Component {
       page,
       columns,
       pages: Math.ceil(this.totalSamples / pageSize),
-      loading: false
+      loading: false,
+      hasError: false
     });
   };
 
@@ -218,6 +237,8 @@ class SamplesTable extends React.Component {
    * @param {Array} data Data that should be displayed in the table
    */
   _getColumns(data = []) {
+    if (data.length === 0) return [];
+
     const isImmutable = this.props.isImmutable;
     // 1. define all columns
     // 2. count the number of samples that have a value for each column
@@ -309,6 +330,22 @@ class SamplesTable extends React.Component {
   }
 }
 export default SamplesTable;
+
+const NoDataComponent = ({ hasError, children, fetchData }) =>
+  hasError ? (
+    <div className="samples-table__message samples-table__message--error ">
+      Temporarily under heavy traffic load. Please{' '}
+      <Button
+        text="try again"
+        buttonStyle="link"
+        onClick={fetchData}
+        className="color-error"
+      />{' '}
+      later.
+    </div>
+  ) : (
+    <div className="samples-table__message">{children}</div>
+  );
 
 /**
  * Custom cell component used to display N/A when there's no value
