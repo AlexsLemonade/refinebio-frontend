@@ -1,6 +1,5 @@
 import React from 'react';
 import './ResultFilters.scss';
-import Checkbox from '../../../components/Checkbox';
 import { formatSentenceCase } from '../../../common/helpers';
 import Button from '../../../components/Button';
 import { connect } from 'react-redux';
