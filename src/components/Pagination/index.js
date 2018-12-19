@@ -14,16 +14,14 @@ class Pagination extends Component {
   handleJumpPageSubmit(e) {
     const { totalPages, onPaginate } = this.props;
     e.preventDefault();
-    if (this.state.pageNumber && this.state.pageNumber <= totalPages) {
-      onPaginate(this.state.pageNumber);
-    }
-  }
+    // reset page number
+    this.setState({ pageNumber: '' });
 
-  handleInputChange(e) {
-    const {
-      target: { value }
-    } = e;
-    this.setState({ pageNumber: value });
+    const pageNumber = parseInt(this.state.pageNumber);
+    if (isNaN(pageNumber) || pageNumber < 0 || pageNumber > totalPages) {
+      return;
+    }
+    onPaginate(pageNumber);
   }
 
   getPaginationRange(currentPage, totalPages) {
@@ -117,7 +115,7 @@ class Pagination extends Component {
           </button>
         </div>
         <div className="pagination__jumper">
-          <form onSubmit={this.handleJumpPageSubmit.bind(this)}>
+          <form onSubmit={e => this.handleJumpPageSubmit(e)}>
             <label>
               Jump to page
               <input
@@ -126,14 +124,12 @@ class Pagination extends Component {
                 className="pagination__input"
                 type="number"
                 min="1"
-                onChange={this.handleInputChange.bind(this)}
+                onChange={e => this.setState({ pageNumber: e.target.value })}
                 value={this.state.pageNumber}
               />
               <Button
-                // Adjust the vertical-align slightly to center the button on
-                // the input above, and add a margin to space them out.
-                style={{ verticalAlign: '-1.2px', marginLeft: '8px' }}
                 buttonStyle="secondary"
+                className="pagination__button"
                 text="Go"
               />
             </label>
