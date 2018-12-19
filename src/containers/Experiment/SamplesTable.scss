@@ -77,8 +77,20 @@
     }
   }
 
-  .rt-noData {
-    margin-top: 16px;
+  &__message {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    padding: 48px 0;
+
+    color: rgba(0, 0, 0, 0.5);
+
+    &--error {
+      color: $color-error;
+    }
   }
 
   &__sort {
