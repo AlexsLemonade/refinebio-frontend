@@ -19,10 +19,12 @@ function AppStatus({ data }) {
     <div>
       <AppRunningSpeed speed={speed} />
 
-      <div>
-        Total number of samples processed:{' '}
-        <b>{formatNumber(data.samples.total, 0)}</b>
-      </div>
+      {data.processed_samples && (
+        <div>
+          Total number of samples processed:{' '}
+          <b>{formatNumber(data.processed_samples.total, 0)}</b>
+        </div>
+      )}
     </div>
   );
 }
@@ -42,11 +44,13 @@ class ExecutiveDashboard extends React.Component {
                 </h2>
 
                 {apiData.stats &&
-                  apiData.stats.samples &&
-                  apiData.stats.samples.total && (
+                  apiData.stats.processed_samples &&
+                  apiData.stats.processed_samples.total && (
                     <div>
                       We have processed more than{' '}
-                      <b>{formatNumber(apiData.stats.samples.total, 0)}</b>{' '}
+                      <b>
+                        {formatNumber(apiData.stats.processed_samples.total, 0)}
+                      </b>{' '}
                       samples
                     </div>
                   )}
