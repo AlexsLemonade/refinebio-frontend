@@ -109,9 +109,11 @@ class Results extends Component {
             updateProps={this.props.location.search}
             fetch={() => this.updateResults()}
           >
-            {({ isLoading }) =>
+            {({ isLoading, hasError }) =>
               isLoading && !this._resultsAreFetched() ? (
                 <Spinner />
+              ) : hasError ? (
+                <ErrorApiUnderHeavyLoad />
               ) : !results.length && !anyFilterApplied(this.state.filters) ? (
                 <NoSearchResults />
               ) : !results.length ? (
@@ -263,12 +265,23 @@ NumberOfResults = connect(
   { updateResultsPerPage }
 )(NumberOfResults);
 
+const ErrorApiUnderHeavyLoad = () => (
+  <div className="results__no-results">
+    <h2>Temporarily under heavy traffic load</h2>
+    <img
+      src={GhostSampleImage}
+      alt="Start searching"
+      className="results__no-results-image img-responsive"
+    />
+  </div>
+);
+
 const NoSearchResults = () => (
   <div className="results__no-results">
     <h2>No matching results</h2>
     <h2>Try another term</h2>
     <div className="results__suggestions">
-      {['Notch', 'Medulloblastoma', 'GSE16476', 'Versteeg'].map(q => (
+      {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
         <Link
           className="link results__suggestion"
           to={`/results?q=${q}`}

@@ -26,13 +26,17 @@ const progressMiddleware = ({ dispatch, getState }) => next => async action => {
       NProgress.start();
     }
     progressStackCount++;
+    let result;
 
-    const result = await next(action);
-
-    progressStackCount--;
-    if (progressStackCount === 0) {
-      NProgress.done();
+    try {
+      result = await next(action);
+    } finally {
+      progressStackCount--;
+      if (progressStackCount === 0) {
+        NProgress.done();
+      }
     }
+
     return result;
   }
 

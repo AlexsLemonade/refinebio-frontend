@@ -87,6 +87,8 @@ export function fetchResults({
       });
     } catch (error) {
       dispatch(reportError(error));
+      // rethrow the error
+      throw error;
     }
   };
 }
