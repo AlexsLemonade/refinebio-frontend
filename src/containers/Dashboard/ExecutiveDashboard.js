@@ -1,8 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
 import Loader from '../../components/Loader';
-import { Ajax } from '../../common/helpers';
+import { Ajax, formatNumber } from '../../common/helpers';
 import './ExecutiveDashboard.scss';
+import apiData from '../../apiData';
+import Spinner from '../../components/Spinner';
 
 const RunningStatus = {
   NotRunning: 0,
@@ -11,12 +13,15 @@ const RunningStatus = {
 };
 
 function AppStatus({ data }) {
+  const speed = getRunningSpeed(data);
+
   return (
-    <div className="executive-dashboard">
-      <AppRunningSpeed data={data} />
+    <div>
+      <AppRunningSpeed speed={speed} />
 
       <div>
-        Total number of samples processed: <b>{data.samples.total}</b>
+        Total number of samples processed:{' '}
+        <b>{formatNumber(data.samples.total, 0)}</b>
       </div>
     </div>
   );
@@ -25,11 +30,27 @@ function AppStatus({ data }) {
 class ExecutiveDashboard extends React.Component {
   render() {
     return (
-      <div className="">
+      <div className="executive-dashboard">
         <Loader fetch={fetchStats}>
-          {({ isLoading, data }) =>
+          {({ isLoading, data, hasError }) =>
             isLoading ? (
-              <div>Loading...</div>
+              <Spinner />
+            ) : hasError ? (
+              <div>
+                <h2 className="executive-dashboard__error">
+                  Temporarily under heavy traffic load.
+                </h2>
+
+                {apiData.stats &&
+                  apiData.stats.samples &&
+                  apiData.stats.samples.total && (
+                    <div>
+                      We have processed more than{' '}
+                      <b>{formatNumber(apiData.stats.samples.total, 0)}</b>{' '}
+                      samples
+                    </div>
+                  )}
+              </div>
             ) : (
               <div>
                 <AppStatus data={data} />
@@ -44,15 +65,13 @@ class ExecutiveDashboard extends React.Component {
 
 export default ExecutiveDashboard;
 
-function AppRunningSpeed({ data }) {
-  const speed = getRunningSpeed(data);
-
+function AppRunningSpeed({ speed }) {
   const title =
     speed === RunningStatus.RunningFast
-      ? "We're running fast!!!"
+      ? 'We are running fast!'
       : speed === RunningStatus.Running
         ? 'We are running.'
-        : 'We are not running';
+        : 'We are not running.';
 
   return (
     <div>
@@ -67,10 +86,6 @@ function AppRunningSpeed({ data }) {
       <h1>{title}</h1>
     </div>
   );
-
-  if (speed === RunningStatus.NotRunning) {
-    return <div>asd</div>;
-  }
 }
 
 async function fetchStats() {
