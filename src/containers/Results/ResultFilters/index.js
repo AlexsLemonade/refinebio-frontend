@@ -1,6 +1,5 @@
 import React from 'react';
 import './ResultFilters.scss';
-import Checkbox from '../../../components/Checkbox';
 import { formatSentenceCase } from '../../../common/helpers';
 import Button from '../../../components/Button';
 import { connect } from 'react-redux';
@@ -15,48 +14,7 @@ import SideMenu from '../../../components/SideMenu';
 
 import FilterIcon from '../../../common/icons/filter-icon.svg';
 import isEmpty from 'lodash/isEmpty';
-
-const FilterCategory = ({
-  categoryFilters,
-  category,
-  toggledFilter,
-  appliedFilters
-}) => (
-  <section className="result-filters__section">
-    <h3 className="result-filters__title">{category.name}</h3>
-    {categoryFilters &&
-      Object.keys(categoryFilters)
-        // Sort filters by the number of samples in descending order
-        .sort((a, b) => categoryFilters[b] - categoryFilters[a])
-        .map(
-          filter =>
-            filter && filter !== 'null' ? ( // Make sure filter is not null
-              // The `filter !== "null"` check is required because a null organism
-              // is not `null`, it is `"null"`
-              <Checkbox
-                key={filter}
-                name={filter}
-                className="result-filters__filter-check"
-                disabled={categoryFilters[filter] === 0}
-                onChange={() =>
-                  toggledFilter(
-                    category.queryField,
-                    filter === 'has_publication' ? 'True' : filter
-                  )
-                }
-                checked={
-                  !!appliedFilters[category.queryField] &&
-                  appliedFilters[category.queryField].includes(
-                    filter === 'has_publication' ? 'True' : filter
-                  )
-                }
-              >
-                {formatSentenceCase(filter)} ({categoryFilters[filter]})
-              </Checkbox>
-            ) : null // Do not display a checkbox if the filter is null
-        )}
-  </section>
-);
+import FilterCategory from './FilterCategory';
 
 let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
   let filterApplied = anyFilterApplied(appliedFilters);
