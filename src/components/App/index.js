@@ -21,6 +21,7 @@ import { Provider } from 'react-redux';
 import ErrorBoundary from '../../containers/ErrorBoundary';
 import About from '../About';
 import classnames from 'classnames';
+import SpeciesCompendia from '../../containers/SpeciesCompendia';
 
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
@@ -38,6 +39,7 @@ const AppContent = () => (
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/license" component={License} />
+      <Route path="/species-compendia" component={SpeciesCompendia} />
 
       {/* Custom route to be able to redirect to the 404 page */}
       <Route path="/not-found" component={NoMatch} />
