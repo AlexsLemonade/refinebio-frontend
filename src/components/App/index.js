@@ -39,7 +39,6 @@ const AppContent = () => (
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/license" component={License} />
-      <Route path="/species-compendia" component={SpeciesCompendia} />
 
       {/* Custom route to be able to redirect to the 404 page */}
       <Route path="/not-found" component={NoMatch} />
@@ -67,6 +66,7 @@ const App = () => {
               <Switch>
                 <Route exact path="/" component={Main} />
                 <Route exact path="/about" component={About} />
+                <Route path="/species-compendia" component={SpeciesCompendia} />
 
                 <Route
                   exact
