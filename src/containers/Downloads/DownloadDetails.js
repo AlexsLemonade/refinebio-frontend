@@ -279,7 +279,7 @@ class ExperimentsView extends React.Component {
                     text="Remove"
                     buttonStyle="remove"
                     onClick={() =>
-                      removeExperiment([experiment.accession_code])
+                      removeExperiment([experiment.accession_code], true)
                     }
                   />
                 )}

@@ -25,13 +25,14 @@ export const updateDownloadDataSet = data => ({
  */
 export const createOrUpdateDataSet = ({
   data,
-  dataSetId = null
+  dataSetId = null,
+  details = false
 }) => async dispatch => {
   let response = !dataSetId
     ? await Ajax.post('/dataset/create/', {
         data
       })
-    : await updateDataSet(dataSetId, data);
+    : await updateDataSet(dataSetId, data, details);
 
   return {
     dataSetId: response.id,
@@ -43,7 +44,10 @@ export const createOrUpdateDataSet = ({
  * Applies an operation that modifies the current dataset. All other action creators
  * use this method to add/remove samples from the dataset.
  */
-const dataSetUpdateOperation = modifier => async (dispatch, getState) => {
+const dataSetUpdateOperation = (modifier, details = false) => async (
+  dispatch,
+  getState
+) => {
   // Update the current dataset with whatever is on the server, otherwise it might get out of sync
   // if the user edited it in a different tab.
   try {
@@ -61,7 +65,7 @@ const dataSetUpdateOperation = modifier => async (dispatch, getState) => {
     const {
       dataSetId: updatedDataSetId,
       data: updatedDataSet
-    } = await dispatch(createOrUpdateDataSet({ dataSetId, data }));
+    } = await dispatch(createOrUpdateDataSet({ dataSetId, data, details }));
 
     dispatch(
       updateDownloadDataSet({
@@ -89,10 +93,11 @@ export const addSamples = dataSetSlice => async (dispatch, getState) =>
  * Removes all experiments with the corresponding accession codes from dataset
  * @param {array} accessionCodes
  */
-export const removeExperiment = accessionCodes => dispatch =>
+export const removeExperiment = (accessionCodes, details = false) => dispatch =>
   dispatch(
-    dataSetUpdateOperation(dataSet =>
-      new DataSetManager(dataSet).removeExperiment(accessionCodes)
+    dataSetUpdateOperation(
+      dataSet => new DataSetManager(dataSet).removeExperiment(accessionCodes),
+      details
     )
   );
 
@@ -100,10 +105,14 @@ export const removeExperiment = accessionCodes => dispatch =>
  * Removes all samples with corresponding ids from each experiment in dataset.
  * @param {object} dataSetSlice
  */
-export const removeSamples = dataSetSlice => async (dispatch, getState) =>
+export const removeSamples = (dataSetSlice, details = false) => async (
+  dispatch,
+  getState
+) =>
   dispatch(
-    dataSetUpdateOperation(dataSet =>
-      new DataSetManager(dataSet).remove(dataSetSlice)
+    dataSetUpdateOperation(
+      dataSet => new DataSetManager(dataSet).remove(dataSetSlice),
+      details
     )
   );
 
