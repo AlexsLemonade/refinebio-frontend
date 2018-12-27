@@ -27,17 +27,13 @@ const DownloadDatasetSummary = props => {
 
 function SpeciesRow({ samplesBySpecies, experimentCountBySpecies }) {
   return Object.keys(samplesBySpecies).map((organism, i) => {
-    const samples = samplesBySpecies[organism];
-    const uniqueSamplesCount = uniq(
-      samples.map(sample => sample.accession_code)
-    ).length;
     return (
       <tr className="downloads__table-row" key={i}>
         <td className="downloads__table-cell">
           {formatSentenceCase(organism)}
         </td>
         <td className="downloads__table-cell downloads__table-cell--value">
-          {uniqueSamplesCount}
+          {samplesBySpecies[organism].length}
         </td>
         <td className="downloads__table-cell downloads__table-cell--value">
           {experimentCountBySpecies[organism]}

@@ -17,7 +17,6 @@ import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 import Radio from '../../components/Radio';
 import { Link } from 'react-router-dom';
 import {
-  groupSamplesBySpecies,
   getTotalSamplesAdded,
   getExperimentCountBySpecies,
   getTotalExperimentsAdded
@@ -37,7 +36,7 @@ import * as routes from '../../routes';
 
 let DownloadDetails = ({
   dataSet,
-  samples,
+  organism_samples: samplesBySpecies,
   experiments,
   aggregate_by,
   scale_by,
@@ -48,10 +47,6 @@ let DownloadDetails = ({
   isImmutable = false,
   isEmbed = false
 }) => {
-  const samplesBySpecies = groupSamplesBySpecies({
-    samples: samples,
-    dataSet: dataSet
-  });
   const totalSamples = getTotalSamplesAdded({ dataSet });
   const totalExperiments = getTotalExperimentsAdded({ dataSet });
   const experimentCountBySpecies = getExperimentCountBySpecies({
@@ -160,13 +155,7 @@ const SpeciesSamples = ({
             </h2>
             <div className="downloads__sample-stats">
               <p className="downloads__sample-stat">
-                {
-                  uniq(
-                    samplesBySpecies[speciesName].map(
-                      sample => sample.accession_code
-                    )
-                  ).length
-                }{' '}
+                {samplesBySpecies[speciesName].length}{' '}
                 {samplesBySpecies[speciesName].length > 1
                   ? 'Samples'
                   : 'Sample'}

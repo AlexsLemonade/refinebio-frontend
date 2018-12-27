@@ -9,7 +9,6 @@ export async function getDataSetDetails(dataSetId) {
 
   return {
     ...response,
-    samples: formatSamples(response.data, response.samples),
     experiments: formatExperiments(response.experiments)
   };
 }
@@ -26,16 +25,4 @@ export function formatExperiments(experiments) {
     accum[experiment.accession_code] = experiment;
     return accum;
   }, {});
-}
-
-export function formatSamples(data, samples) {
-  let result = {};
-
-  for (let accession_code of Object.keys(data)) {
-    result[accession_code] = samples.filter(sample =>
-      data[accession_code].includes(sample.accession_code)
-    );
-  }
-
-  return result;
 }
