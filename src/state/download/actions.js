@@ -28,15 +28,16 @@ export const createOrUpdateDataSet = ({
   dataSetId = null,
   details = false
 }) => async dispatch => {
-  let response = !dataSetId
+  let { id, data: dataSet, ...dataSetDetails } = !dataSetId
     ? await Ajax.post('/dataset/create/', {
         data
       })
     : await updateDataSet(dataSetId, data, details);
 
   return {
-    dataSetId: response.id,
-    data: response.data
+    dataSetId: id,
+    dataSet,
+    ...dataSetDetails
   };
 };
 
@@ -64,11 +65,13 @@ const dataSetUpdateOperation = (modifier, details = false) => async (
   try {
     const {
       dataSetId: updatedDataSetId,
-      data: updatedDataSet
+      dataSet: updatedDataSet,
+      ...dataSetDetails
     } = await dispatch(createOrUpdateDataSet({ dataSetId, data, details }));
 
     dispatch(
       updateDownloadDataSet({
+        ...dataSetDetails,
         dataSetId: updatedDataSetId,
         dataSet: updatedDataSet
       })
@@ -167,13 +170,6 @@ export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
   if (!dataSetId) {
     return;
   }
-
-  dispatch({
-    type: 'DOWNLOAD_FETCH_DETAILS',
-    data: {
-      dataSetId
-    }
-  });
 
   let response = await getDataSetDetails(dataSetId);
   dispatch(

@@ -17,10 +17,17 @@ export async function updateDataSet(dataSetId, dataSet, details = false) {
   // Q: is it wrong to include a query parameter in a PUT request?
   // the `details` parameter is only used to "modify" the reponse from the API, it doesn't
   // cause any side effect or different behavior
-  return await Ajax.put(
+  const result = await Ajax.put(
     `/dataset/${dataSetId}/${details ? '?details=true' : ''}`,
     { data: dataSet }
   );
+
+  return details
+    ? {
+        ...result,
+        experiments: formatExperiments(result.experiments)
+      }
+    : result;
 }
 
 // Takes in arrays of samples and experiments as formatted by the serializer
