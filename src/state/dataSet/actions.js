@@ -22,7 +22,7 @@ export const fetchDataSet = (dataSetId, details = true) => async dispatch => {
     let dataSet = details
       ? await getDataSetDetails(dataSetId)
       : await getDataSet(dataSetId);
-    dispatch(loadDataSet(dataSet));
+    dispatch(updateDataSet(dataSet));
   } catch (e) {
     dispatch(reportError(e));
     dispatch(replace('/no-match'));

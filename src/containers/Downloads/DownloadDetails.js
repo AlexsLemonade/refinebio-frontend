@@ -107,6 +107,7 @@ let DownloadDetails = ({
 
         <TabControl tabs={['Species View', 'Experiments View']}>
           <SpeciesSamples
+            dataSet={dataSet}
             samplesBySpecies={samplesBySpecies}
             removeSamples={removeSamples}
             isImmutable={isImmutable}
@@ -133,18 +134,16 @@ DownloadDetails = connect(
 export default DownloadDetails;
 
 const SpeciesSamples = ({
+  dataSet,
   samplesBySpecies,
   removeSamples,
   isImmutable = false
 }) => (
   <div className="downloads__card">
     {Object.keys(samplesBySpecies).map(speciesName => {
-      // Create a slice with the samples for each specie
-      // TODO: in the future we could consider refactoring `groupSamplesBySpecies`, seems
-      // unnecessary having to modify the shape of that object here
-      const specieDataSetSlice = mapValues(
-        groupBy(samplesBySpecies[speciesName], 'experimentAccessionCode'),
-        x => x.map(sample => sample.accession_code)
+      const samplesInSpecie = samplesBySpecies[speciesName];
+      const specieDataSetSlice = mapValues(dataSet, samples =>
+        samples.filter(accessionCode => samplesInSpecie.includes(accessionCode))
       );
 
       return (
@@ -155,10 +154,8 @@ const SpeciesSamples = ({
             </h2>
             <div className="downloads__sample-stats">
               <p className="downloads__sample-stat">
-                {samplesBySpecies[speciesName].length}{' '}
-                {samplesBySpecies[speciesName].length > 1
-                  ? 'Samples'
-                  : 'Sample'}
+                {samplesInSpecie.length}{' '}
+                {samplesInSpecie.length > 1 ? 'Samples' : 'Sample'}
               </p>
             </div>
 
@@ -174,7 +171,7 @@ const SpeciesSamples = ({
             <Button
               text="Remove"
               buttonStyle="remove"
-              onClick={() => removeSamples(specieDataSetSlice)}
+              onClick={() => removeSamples(specieDataSetSlice, true)}
             />
           )}
         </div>
