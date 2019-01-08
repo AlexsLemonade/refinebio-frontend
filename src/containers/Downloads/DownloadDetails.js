@@ -27,13 +27,12 @@ import {
   clearDataSet
 } from '../../state/download/actions';
 
-import uniq from 'lodash/uniq';
-import union from 'lodash/union';
 import mapValues from 'lodash/mapValues';
 
 import * as routes from '../../routes';
 
 let DownloadDetails = ({
+  dataSetId,
   dataSet,
   organism_samples: samplesBySpecies,
   experiments,
@@ -109,11 +108,13 @@ let DownloadDetails = ({
           <SpeciesSamples
             onRefreshDataSet={onRefreshDataSet}
             dataSet={dataSet}
+            dataSetId={dataSetId}
             samplesBySpecies={samplesBySpecies}
             removeSamples={removeSamples}
             isImmutable={isImmutable}
           />
           <ExperimentsView
+            dataSetId={dataSetId}
             onRefreshDataSet={onRefreshDataSet}
             dataSet={dataSet}
             experiments={experiments}
@@ -137,6 +138,7 @@ export default DownloadDetails;
 
 const SpeciesSamples = ({
   onRefreshDataSet,
+  dataSetId,
   dataSet,
   samplesBySpecies,
   removeSamples,
@@ -167,6 +169,10 @@ const SpeciesSamples = ({
                 onRefreshDataSet={onRefreshDataSet}
                 dataSet={specieDataSetSlice}
                 isImmutable={isImmutable}
+                fetchSampleParams={{
+                  dataset_id: dataSetId,
+                  organism__name: speciesName
+                }}
               />
             </div>
           </div>
@@ -270,6 +276,10 @@ class ExperimentsView extends React.Component {
                   {addedSamples.length > 0 && (
                     <div className="mobile-p">
                       <ViewSamplesButtonModal
+                        fetchSampleParams={{
+                          dataset_id: this.props.dataSetId,
+                          experiment_accession_code: experiment.accession_code
+                        }}
                         onRefreshDataSet={onRefreshDataSet}
                         dataSet={{ [experiment.accession_code]: addedSamples }}
                         isImmutable={isImmutable}
@@ -373,11 +383,7 @@ class ViewSamplesButtonModal extends React.Component {
         {() => (
           <SamplesTable
             experimentSampleAssociations={this.state.dataSet}
-            fetchSampleParams={{
-              accession_codes: uniq(
-                union(...Object.values(this.state.dataSet))
-              ).join(',')
-            }}
+            fetchSampleParams={this.props.fetchSampleParams}
             isImmutable={this.props.isImmutable}
           />
         )}
