@@ -73,7 +73,7 @@ class FilterCategory extends React.Component {
                   <HighlightedText
                     text={formatSentenceCase(filter)}
                     highlight={this.state.query}
-                  />
+                  />{' '}
                   ({categoryFilters[filter]})
                 </Checkbox>
               ) : null // Do not display a checkbox if the filter is null
