@@ -1,6 +1,5 @@
 import React from 'react';
 import { formatSentenceCase } from '../../common/helpers';
-import uniq from 'lodash/uniq';
 
 const DownloadDatasetSummary = props => {
   return (

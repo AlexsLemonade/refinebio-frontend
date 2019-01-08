@@ -30,7 +30,6 @@ import {
 import uniq from 'lodash/uniq';
 import union from 'lodash/union';
 import mapValues from 'lodash/mapValues';
-import groupBy from 'lodash/groupBy';
 
 import * as routes from '../../routes';
 
