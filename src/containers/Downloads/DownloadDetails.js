@@ -30,6 +30,7 @@ import {
 import uniq from 'lodash/uniq';
 import union from 'lodash/union';
 import mapValues from 'lodash/mapValues';
+import isEqual from 'lodash/isEqual';
 
 import * as routes from '../../routes';
 
@@ -44,7 +45,8 @@ let DownloadDetails = ({
   removeExperiment,
   clearDataSet,
   isImmutable = false,
-  isEmbed = false
+  isEmbed = false,
+  onRefreshDataSet
 }) => {
   const totalSamples = getTotalSamplesAdded({ dataSet });
   const totalExperiments = getTotalExperimentsAdded({ dataSet });
@@ -106,12 +108,14 @@ let DownloadDetails = ({
 
         <TabControl tabs={['Species View', 'Experiments View']}>
           <SpeciesSamples
+            onRefreshDataSet={onRefreshDataSet}
             dataSet={dataSet}
             samplesBySpecies={samplesBySpecies}
             removeSamples={removeSamples}
             isImmutable={isImmutable}
           />
           <ExperimentsView
+            onRefreshDataSet={onRefreshDataSet}
             dataSet={dataSet}
             experiments={experiments}
             removeExperiment={removeExperiment}
@@ -133,6 +137,7 @@ DownloadDetails = connect(
 export default DownloadDetails;
 
 const SpeciesSamples = ({
+  onRefreshDataSet,
   dataSet,
   samplesBySpecies,
   removeSamples,
@@ -160,6 +165,7 @@ const SpeciesSamples = ({
 
             <div className="mobile-p">
               <ViewSamplesButtonModal
+                onRefreshDataSet={onRefreshDataSet}
                 dataSet={specieDataSetSlice}
                 isImmutable={isImmutable}
               />
@@ -184,6 +190,7 @@ class ExperimentsView extends React.Component {
 
   render() {
     const {
+      onRefreshDataSet,
       dataSet,
       experiments,
       removeExperiment,
@@ -264,6 +271,7 @@ class ExperimentsView extends React.Component {
                   {addedSamples.length > 0 && (
                     <div className="mobile-p">
                       <ViewSamplesButtonModal
+                        onRefreshDataSet={onRefreshDataSet}
                         dataSet={{ [experiment.accession_code]: addedSamples }}
                         isImmutable={isImmutable}
                       />
@@ -357,6 +365,11 @@ class ViewSamplesButtonModal extends React.Component {
           />
         )}
         modalProps={{ className: 'samples-modal', fillPage: true }}
+        onClose={() =>
+          this.props.onRefreshDataSet &&
+          !this.props.isImmutable &&
+          this.props.onRefreshDataSet()
+        }
       >
         {() => (
           <SamplesTable

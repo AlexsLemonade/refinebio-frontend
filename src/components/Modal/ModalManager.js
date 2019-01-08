@@ -34,7 +34,11 @@ export default class ModalManager extends React.Component {
 
   showModal = () => this.setState({ modalOpen: true });
 
-  hideModal = () => this.setState({ modalOpen: false });
+  hideModal = () => {
+    this.setState({ modalOpen: false });
+
+    !!this.props.onClose && this.props.onClose();
+  };
 
   render() {
     return (

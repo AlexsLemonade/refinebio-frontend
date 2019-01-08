@@ -35,7 +35,7 @@ function SpeciesRow({ samplesBySpecies, experimentCountBySpecies }) {
           {samplesBySpecies[organism].length}
         </td>
         <td className="downloads__table-cell downloads__table-cell--value">
-          {experimentCountBySpecies[organism]}
+          {experimentCountBySpecies[organism] || 0}
         </td>
       </tr>
     );

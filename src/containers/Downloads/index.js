@@ -48,7 +48,10 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
                 aggregate_by={aggregate_by}
                 scale_by={scale_by}
               />
-              <DownloadDetails {...download} />
+              <DownloadDetails
+                {...download}
+                onRefreshDataSet={() => fetchDataSetDetails(dataSetId)}
+              />
             </Fragment>
           )
         }
