@@ -43,13 +43,15 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow",
-    "cacheBackend": "node cacheBackend.js"
+    "cacheBackend": "node cacheBackend.js",
+    "start-and-test": "start-server-and-test start http://localhost:3000 test"
   },
   "devDependencies": {
     "axios": "^0.18.0",
     "flow-bin": "^0.68.0",
+    "puppeteer": "^1.11.0",
     "redux-mock-store": "^1.5.1",
-    "puppeteer": "^1.11.0"
+    "start-server-and-test": "^1.7.11"
   },
   "proxy": "http://localhost:8000/"
 }

@@ -6,8 +6,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install --ignore-engines
-      - run: yarn start # start the app before the tests, for the end to end tests
-      - run: yarn test
+      - run: yarn start-and-test
 
   deploy:
     docker:
