@@ -14,7 +14,7 @@ describe('refine.bio integration tests', () => {
 
       close();
     },
-    10000
+    9000000
   );
 
   test(
@@ -26,7 +26,7 @@ describe('refine.bio integration tests', () => {
 
       close();
     },
-    10000
+    9000000
   );
 });
 
