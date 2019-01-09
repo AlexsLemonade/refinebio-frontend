@@ -5,6 +5,9 @@ jobs:
       - image: circleci/python:3-node
     steps:
       - checkout
+      - run:
+          name: Workaround for GoogleChrome/puppeteer#290
+          command: 'sh .circleci/setup_puppeteer.sh'
       - run: yarn install --ignore-engines
       - run: yarn start-and-test
 
