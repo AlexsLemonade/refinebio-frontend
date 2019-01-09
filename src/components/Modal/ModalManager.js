@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import Button from '../Button';
+import classnames from 'classnames';
 
 import './Modal.scss';
 
@@ -29,46 +30,107 @@ export default class ModalManager extends React.Component {
   };
 
   state = {
-    modalOpen: false
+    modalOpen: false,
+    modalLevel: 0
   };
-
-  showModal = () => this.setState({ modalOpen: true });
-
-  hideModal = () => this.setState({ modalOpen: false });
 
   render() {
     return (
-      <React.Fragment>
-        {this.props.component(this.showModal)}
-        <Modal
-          {...this.props.modalProps}
-          isOpen={this.state.modalOpen}
-          onRequestClose={this.hideModal}
-          overlayClassName={`modal-backdrop ${
-            this.props.modalProps.center
-              ? 'modal-backdrop--center'
-              : 'modal-backdrop--top'
-          }`}
-          className={`modal ${this.props.modalProps.className || ''}  ${
-            this.props.modalProps.fillPage ? 'modal--fill-page' : ''
-          }`}
-          bodyOpenClassName="modal-open"
-        >
-          <div className="modal__content">
-            {this.props.children({
-              hideModal: this.hideModal
-            })}
+      <ModalContext.Consumer>
+        {({ level, stackModal, popModal }) => {
+          const showModal = () => {
+            this.setState({ modalOpen: true, modalLevel: level + 1 });
+            stackModal();
+          };
 
-            <Button
-              className="modal__close"
-              onClick={this.hideModal}
-              buttonStyle="transparent"
-            >
-              <i className="icon ion-close" />
-            </Button>
-          </div>
-        </Modal>
-      </React.Fragment>
+          const hideModal = () => {
+            this.setState({ modalOpen: false });
+            popModal();
+          };
+
+          return (
+            <React.Fragment>
+              {this.props.component(showModal)}
+
+              <Modal
+                {...this.props.modalProps}
+                isOpen={this.state.modalOpen}
+                onRequestClose={hideModal}
+                overlayClassName={classnames('modal-backdrop', {
+                  // This is the trick to multiple stacked modals, all are part of the DOM but only the last
+                  // one is displayed. Others are hidden with this class.
+                  hidden: this.state.modalLevel !== level,
+                  'modal-backdrop--center': this.props.modalProps.center,
+                  'modal-backdrop--top': !this.props.modalProps.center
+                })}
+                className={`modal ${this.props.modalProps.className || ''}  ${
+                  this.props.modalProps.fillPage ? 'modal--fill-page' : ''
+                }`}
+                bodyOpenClassName="modal-open"
+              >
+                <div className="modal__content">
+                  {this.props.children({
+                    hideModal: hideModal
+                  })}
+
+                  {level > 1 && (
+                    <Button
+                      className="modal__back"
+                      onClick={hideModal}
+                      buttonStyle="link"
+                    >
+                      {'< Back'}
+                    </Button>
+                  )}
+
+                  <Button
+                    className="modal__close"
+                    onClick={hideModal}
+                    buttonStyle="transparent"
+                  >
+                    <i className="icon ion-close" />
+                  </Button>
+                </div>
+              </Modal>
+            </React.Fragment>
+          );
+        }}
+      </ModalContext.Consumer>
+    );
+  }
+}
+
+const ModalContext = React.createContext({
+  level: 0,
+  stackModal: () => {},
+  popModal: () => {}
+});
+
+// Provider for React Context https://reactjs.org/docs/context.html
+// This wraps the entire application so that all modal dialogs have access to it.
+export class ModalStackProvider extends React.Component {
+  state = {
+    level: 0
+  };
+
+  stackModal = () => this.setState(state => ({ level: state.level + 1 }));
+
+  popModal = () =>
+    this.setState(state => {
+      return { level: state.level - 1 };
+    });
+
+  render() {
+    return (
+      <ModalContext.Provider
+        value={{
+          ...this.state,
+          stackModal: this.stackModal,
+          popModal: this.popModal
+        }}
+      >
+        {this.props.children}
+      </ModalContext.Provider>
     );
   }
 }

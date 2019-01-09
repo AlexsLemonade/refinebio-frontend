@@ -21,6 +21,7 @@ import { Provider } from 'react-redux';
 import ErrorBoundary from '../../containers/ErrorBoundary';
 import About from '../About';
 import classnames from 'classnames';
+import { ModalStackProvider } from '../Modal/ModalManager';
 
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
@@ -59,26 +60,28 @@ const App = () => {
       </Helmet>
 
       <Provider store={store}>
-        <Router history={history}>
-          <Layout>
-            <ErrorBoundary>
-              <Switch>
-                <Route exact path="/" component={Main} />
-                <Route exact path="/about" component={About} />
+        <ModalStackProvider>
+          <Router history={history}>
+            <Layout>
+              <ErrorBoundary>
+                <Switch>
+                  <Route exact path="/" component={Main} />
+                  <Route exact path="/about" component={About} />
 
-                <Route
-                  exact
-                  path="/docs"
-                  component={() => (
-                    <ExternalRedirect to="http://docs.refine.bio/" />
-                  )}
-                />
+                  <Route
+                    exact
+                    path="/docs"
+                    component={() => (
+                      <ExternalRedirect to="http://docs.refine.bio/" />
+                    )}
+                  />
 
-                <Route path="/" component={AppContent} />
-              </Switch>
-            </ErrorBoundary>
-          </Layout>
-        </Router>
+                  <Route path="/" component={AppContent} />
+                </Switch>
+              </ErrorBoundary>
+            </Layout>
+          </Router>
+        </ModalStackProvider>
       </Provider>
     </div>
   );
