@@ -45,7 +45,7 @@
     "eject": "react-scripts eject",
     "flow": "flow",
     "cacheBackend": "node cacheBackend.js",
-    "test:integration": "jest --runInBand"
+    "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
     "axios": "^0.18.0",
@@ -67,9 +67,5 @@
       "Firefox ESR",
       "not ie < 11"
     ]
-  },
-  "jest": {
-    "preset": "jest-puppeteer",
-    "testRegex": "./integration/.*test\\.js$"
   }
 }
