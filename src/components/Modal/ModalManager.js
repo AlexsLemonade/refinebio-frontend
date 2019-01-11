@@ -31,35 +31,38 @@ export default class ModalManager extends React.Component {
 
   state = {
     modalOpen: false,
-    modalLevel: 0
+    childOpen: false
   };
 
   render() {
     return (
       <ModalContext.Consumer>
-        {({ level, stackModal, popModal }) => {
-          const showModal = () => {
-            this.setState({ modalOpen: true, modalLevel: level + 1 });
+        {({ hasParent, stackModal, popModal, onBack }) => {
+          const handleShowModal = () => {
+            this.setState({ modalOpen: true });
             stackModal();
           };
-
-          const hideModal = () => {
-            this.setState({ modalOpen: false });
+          const handleHideModal = () => {
+            this.setState({ modalOpen: false, childOpen: false });
             popModal();
+          };
+          const handleBack = () => {
+            this.setState({ modalOpen: false, childOpen: false });
+            onBack();
           };
 
           return (
             <React.Fragment>
-              {this.props.component(showModal)}
+              {this.props.component(handleShowModal)}
 
               <Modal
                 {...this.props.modalProps}
                 isOpen={this.state.modalOpen}
-                onRequestClose={hideModal}
+                onRequestClose={handleHideModal}
                 overlayClassName={classnames('modal-backdrop', {
                   // This is the trick to multiple stacked modals, all are part of the DOM but only the last
                   // one is displayed. Others are hidden with this class.
-                  hidden: this.state.modalLevel !== level,
+                  hidden: this.state.childOpen,
                   'modal-backdrop--center': this.props.modalProps.center,
                   'modal-backdrop--top': !this.props.modalProps.center
                 })}
@@ -69,14 +72,24 @@ export default class ModalManager extends React.Component {
                 bodyOpenClassName="modal-open"
               >
                 <div className="modal__content">
-                  {this.props.children({
-                    hideModal: hideModal
-                  })}
+                  {/* Add a new contect for child modals */}
+                  <ModalStackProvider
+                    onOpen={() => this.setState({ childOpen: true })}
+                    onClose={handleHideModal}
+                    onBack={() =>
+                      this.setState({ modalOpen: true, childOpen: false })
+                    }
+                    hasParent={true}
+                  >
+                    {this.props.children({
+                      hideModal: handleHideModal
+                    })}
+                  </ModalStackProvider>
 
-                  {level > 1 && (
+                  {hasParent && (
                     <Button
                       className="modal__back"
-                      onClick={hideModal}
+                      onClick={handleBack}
                       buttonStyle="link"
                     >
                       {'< Back'}
@@ -85,7 +98,7 @@ export default class ModalManager extends React.Component {
 
                   <Button
                     className="modal__close"
-                    onClick={hideModal}
+                    onClick={handleHideModal}
                     buttonStyle="transparent"
                   >
                     <i className="icon ion-close" />
@@ -101,36 +114,31 @@ export default class ModalManager extends React.Component {
 }
 
 const ModalContext = React.createContext({
-  level: 0,
+  hasParent: false,
   stackModal: () => {},
-  popModal: () => {}
+  popModal: () => {},
+  onBack: () => {}
 });
 
 // Provider for React Context https://reactjs.org/docs/context.html
-// This wraps the entire application so that all modal dialogs have access to it.
-export class ModalStackProvider extends React.Component {
-  state = {
-    level: 0
-  };
-
-  stackModal = () => this.setState(state => ({ level: state.level + 1 }));
-
-  popModal = () =>
-    this.setState(state => {
-      return { level: state.level - 1 };
-    });
-
-  render() {
-    return (
-      <ModalContext.Provider
-        value={{
-          ...this.state,
-          stackModal: this.stackModal,
-          popModal: this.popModal
-        }}
-      >
-        {this.props.children}
-      </ModalContext.Provider>
-    );
-  }
+// Modal dialogs will have to comunicate with the parent modal dialog,
+export function ModalStackProvider({
+  children,
+  hasParent,
+  onOpen,
+  onClose,
+  onBack
+}) {
+  return (
+    <ModalContext.Provider
+      value={{
+        hasParent: hasParent,
+        stackModal: () => onOpen && onOpen(),
+        popModal: () => onClose && onClose(),
+        onBack: () => onBack && onBack()
+      }}
+    >
+      {children}
+    </ModalContext.Provider>
+  );
 }

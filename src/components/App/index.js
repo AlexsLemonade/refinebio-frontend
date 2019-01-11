@@ -60,28 +60,26 @@ const App = () => {
       </Helmet>
 
       <Provider store={store}>
-        <ModalStackProvider>
-          <Router history={history}>
-            <Layout>
-              <ErrorBoundary>
-                <Switch>
-                  <Route exact path="/" component={Main} />
-                  <Route exact path="/about" component={About} />
+        <Router history={history}>
+          <Layout>
+            <ErrorBoundary>
+              <Switch>
+                <Route exact path="/" component={Main} />
+                <Route exact path="/about" component={About} />
 
-                  <Route
-                    exact
-                    path="/docs"
-                    component={() => (
-                      <ExternalRedirect to="http://docs.refine.bio/" />
-                    )}
-                  />
+                <Route
+                  exact
+                  path="/docs"
+                  component={() => (
+                    <ExternalRedirect to="http://docs.refine.bio/" />
+                  )}
+                />
 
-                  <Route path="/" component={AppContent} />
-                </Switch>
-              </ErrorBoundary>
-            </Layout>
-          </Router>
-        </ModalStackProvider>
+                <Route path="/" component={AppContent} />
+              </Switch>
+            </ErrorBoundary>
+          </Layout>
+        </Router>
       </Provider>
     </div>
   );
