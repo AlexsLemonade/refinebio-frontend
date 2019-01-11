@@ -56,12 +56,10 @@
   }
 
   &__cards {
-    padding: 0 7px;
-
     @include tablet {
       display: grid;
       grid-column-gap: 14px;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
