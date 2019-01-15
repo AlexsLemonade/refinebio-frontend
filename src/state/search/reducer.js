@@ -27,9 +27,7 @@ export default (state = initialState, action) => {
         ordering
       } = action.data;
 
-      const totalPages = Math.ceil(
-        totalResults / state.pagination.resultsPerPage
-      );
+      const totalPages = Math.ceil(totalResults / resultsPerPage);
 
       return {
         ...state,
