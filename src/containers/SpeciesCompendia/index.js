@@ -4,6 +4,8 @@ import Dropdown from '../../components/Dropdown';
 import Button from '../../components/Button';
 import './SpeciesCompendia.scss';
 
+import PointsBackground from './PointsBackground';
+
 export default function SpeciesCompendia() {
   return (
     <div>
@@ -13,6 +15,8 @@ export default function SpeciesCompendia() {
 
       <div className="species-compendia">
         <div className="species-compendia__header">
+          <PointsBackground />
+
           <div className="species-compendia__header-inner">
             <h1 className="species-compendia__title">
               Species Compendia are the collection of all the samples available

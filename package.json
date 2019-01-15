@@ -7,6 +7,8 @@
     "@haiku/dvprasad-processingdataset": "^0.0.1",
     "@haiku/dvprasad-refinebiospinner": "^0.0.4",
     "custom-react-scripts": "^0.2.2",
+    "delayed-scroll-restoration-polyfill": "^0.1.1",
+    "gsap": "^2.0.2",
     "history": "^4.7.2",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",
