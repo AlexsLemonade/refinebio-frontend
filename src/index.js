@@ -7,6 +7,8 @@ import { unregister } from './registerServiceWorker';
 
 import smoothscroll from 'smoothscroll-polyfill';
 
+import 'delayed-scroll-restoration-polyfill';
+
 // kick off the polyfill!
 smoothscroll.polyfill();
 
