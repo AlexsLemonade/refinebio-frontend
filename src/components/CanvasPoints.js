@@ -1,37 +1,6 @@
 import React from 'react';
 import { TweenLite, Circ } from 'gsap/TweenMax';
-
-class Canvas extends React.Component {
-  canvas = React.createRef();
-
-  componentDidMount() {
-    this.canvas.current.width = this.props.width;
-    this.canvas.current.height = this.props.height;
-    this.ctx = this.canvas.current.getContext('2d');
-
-    this._drawCanvas();
-  }
-
-  componentDidUpdate() {
-    this.canvas.current.width = this.props.width;
-    this.canvas.current.height = this.props.height;
-  }
-
-  componentWillUnmount() {
-    this.ctx = null;
-  }
-
-  _drawCanvas = () => {
-    if (!this.ctx) return;
-
-    this.props.draw(this.ctx);
-    requestAnimationFrame(this._drawCanvas);
-  };
-
-  render() {
-    return <canvas className={this.props.className} ref={this.canvas} />;
-  }
-}
+import Canvas from './Canvas';
 
 export default class CanvasPoints extends React.Component {
   canvas = React.createRef();
@@ -47,12 +16,17 @@ export default class CanvasPoints extends React.Component {
   }
 
   componentDidMount() {
-    for (var i in this.points) {
-      this.shiftPoint(this.points[i]);
-    }
+    this.points.forEach(this.animatePoints);
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    this.points = CanvasPoints.generatePoints(
+      this.props.cuadrants,
+      this.props.width,
+      this.props.height
+    );
+    this.points.forEach(this.animatePoints);
+  }
 
   drawCanvas = ctx => {
     ctx.lineWidth = 2;
@@ -74,19 +48,21 @@ export default class CanvasPoints extends React.Component {
     }
   };
 
-  shiftPoint(point) {
+  animatePoints = point => {
+    if (!this.points.includes(point)) return;
+
     const duration = 4 + 2 * Math.random();
+
     TweenLite.to(point, duration, {
       x: point.originX - 50 + Math.random() * 50,
       y: point.originY - 50 + Math.random() * 50,
       ease: Circ.easeInOut,
       onComplete: () => {
         const wait = 2 + 1 * Math.random();
-
-        setTimeout(() => this.shiftPoint(point), wait);
+        setTimeout(() => this.animatePoints(point), wait);
       }
     });
-  }
+  };
 
   render() {
     return (
@@ -101,10 +77,11 @@ export default class CanvasPoints extends React.Component {
 
   static generatePoints(cuadrants, width, height) {
     const points = [];
-    for (var x = 0; x < width; x = x + width / cuadrants) {
-      for (var y = 0; y < height; y = y + height / cuadrants) {
-        var px = x + (Math.random() * width) / cuadrants;
-        var py = y + (Math.random() * height) / cuadrants;
+    const step = 45;
+    for (var x = 0; x < width; x += step) {
+      for (var y = 0; y < height; y += step) {
+        var px = x + Math.random() * step;
+        var py = y + Math.random() * step;
         const circleRadius = 5 + Math.random() * 3;
         var p = { x: px, originX: px, y: py, originY: py, circleRadius };
         points.push(p);

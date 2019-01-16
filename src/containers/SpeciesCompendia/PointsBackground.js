@@ -30,25 +30,8 @@ export default class PointsBackground extends React.Component {
         ref={this.container}
         className="species-compendia__header-background"
       >
-        {this.state.width > 0 &&
-          this.state.height > 0 && (
-            <CanvasPoints
-              width={this.state.width}
-              height={this.state.height}
-              cuadrants={this.getCuadrants()}
-            />
-          )}
+        <CanvasPoints width={this.state.width} height={this.state.height} />
       </div>
     );
-  }
-
-  getCuadrants() {
-    if (this.state.width < 600) {
-      return 9;
-    } else if (this.state.width > 2200) {
-      return this.state.width / 140;
-    }
-
-    return this.state.width / 90;
   }
 }
