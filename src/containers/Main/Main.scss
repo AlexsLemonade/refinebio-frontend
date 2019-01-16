@@ -88,12 +88,10 @@
         position: absolute;
         top: 0;
         left: 50%;
-        height: 90%;
-        width: 120%;
+        height: 80%;
+        width: 100%;
         transform: translateX(-50%);
         background: $background-color--blue-gradient;
-        border-bottom-left-radius: 50%;
-        border-bottom-right-radius: 50%;
       }
     }
   }
