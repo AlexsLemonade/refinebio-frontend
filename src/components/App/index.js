@@ -21,7 +21,6 @@ import { Provider } from 'react-redux';
 import ErrorBoundary from '../../containers/ErrorBoundary';
 import About from '../About';
 import classnames from 'classnames';
-import { ModalStackProvider } from '../Modal/ModalManager';
 
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into
