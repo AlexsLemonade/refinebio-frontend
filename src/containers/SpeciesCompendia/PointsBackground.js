@@ -18,6 +18,8 @@ export default class PointsBackground extends React.Component {
   }
 
   handleWindowSizeChange = () => {
+    if (!this.container.current) return;
+
     this.setState({
       width: this.container.current.clientWidth,
       height: this.container.current.clientHeight

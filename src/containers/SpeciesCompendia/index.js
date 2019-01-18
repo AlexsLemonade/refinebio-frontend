@@ -5,6 +5,7 @@ import Button from '../../components/Button';
 import './SpeciesCompendia.scss';
 
 import PointsBackground from './PointsBackground';
+import DownloadCompendia from './DownloadCompendia';
 
 export default function SpeciesCompendia() {
   return (
@@ -53,21 +54,6 @@ export default function SpeciesCompendia() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function DownloadCompendia() {
-  return (
-    <div className="download-compendia">
-      <div className="download-compendia__title">Download the Compendia</div>
-
-      <div>
-        <span className="download-compendia__choose">Choose Organism</span>
-        <Dropdown options={['Danio Rerio']} />
-      </div>
-
-      <Button text="Download Now" className="download-compendia__button" />
     </div>
   );
 }
