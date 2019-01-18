@@ -1,6 +1,5 @@
 import React from 'react';
 import Dropdown from '../../components/Dropdown';
-import Button from '../../components/Button';
 import { Ajax, formatSentenceCase } from '../../common/helpers';
 import Loader from '../../components/Loader';
 

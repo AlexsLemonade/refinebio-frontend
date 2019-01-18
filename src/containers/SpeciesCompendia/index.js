@@ -1,6 +1,5 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import Dropdown from '../../components/Dropdown';
 import Button from '../../components/Button';
 import './SpeciesCompendia.scss';
 
