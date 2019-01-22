@@ -96,7 +96,9 @@ export default class DataSetStats {
    */
   anyProcessedSamples() {
     return Object.values(this.dataSetSlice).some(
-      samples => samples && samples.length > 0
+      samples =>
+        (samples && samples.length > 0) ||
+        (samples && samples.all && samples.total > 0)
     );
   }
 

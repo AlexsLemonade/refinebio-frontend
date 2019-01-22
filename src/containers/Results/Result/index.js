@@ -59,7 +59,7 @@ const Result = ({ result, query }) => {
           dataSetSlice={{
             [result.accession_code]: {
               all: true,
-              total: result.processed_samples
+              total: result.num_processed_samples
             }
           }}
         />
