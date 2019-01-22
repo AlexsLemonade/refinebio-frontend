@@ -62,7 +62,7 @@ let Experiment = ({
               samples: []
             };
             totalSamples = state.result.total_samples_count;
-            organisms = state.result.organisms.map(name => ({ name }));
+            organisms = state.result.organism_names;
           }
 
           return displaySpinner ? (
