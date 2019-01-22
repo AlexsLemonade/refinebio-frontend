@@ -54,17 +54,13 @@ export function fetchResults({
       const {
         results,
         count: totalResults,
-        filters: filterData
+        facets: elasticSearchFacets
       } = await Ajax.get('/es/', {
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
         ...(ordering !== Ordering.MostSamples ? { ordering } : {}),
-        ...filters,
-        filter_order:
-          filterOrder && filterOrder.length > 0
-            ? filterOrder.join(',')
-            : undefined
+        ...filters
       });
 
       dispatch({
@@ -72,7 +68,7 @@ export function fetchResults({
         data: {
           searchTerm: query,
           results,
-          filters: {}, // filterData,
+          filters: transformElasticSearchFacets(elasticSearchFacets),
           filterOrder,
           totalResults,
           ordering,
@@ -91,6 +87,40 @@ export function fetchResults({
       throw error;
     }
   };
+}
+
+/**
+ * Ideally the filters should be formatted in the backend, but that seemed to be difficult
+ * with elastic search https://github.com/AlexsLemonade/refinebio/pull/974#issuecomment-456533392
+ */
+function transformElasticSearchFacets(facets) {
+  return {
+    organism: transformFacet(
+      facets['_filter_organism_names']['organism_names']
+    ),
+    technology: transformFacet(facets['_filter_technology']['technology']),
+    publication: transformHasPublicationFacet(
+      facets['_filter_has_publication']['has_publication']
+    ),
+    platforms: transformFacet(
+      facets['_filter_platform_names']['platform_names']
+    )
+  };
+}
+
+function transformFacet(facet) {
+  const result = {};
+  for (let item of facet.buckets) {
+    result[item.key] = item.doc_count;
+  }
+
+  return result;
+}
+
+function transformHasPublicationFacet(facet) {
+  if (!facet.buckets || !facet.buckets.length) return null;
+  const activeBucket = facet.buckets.find(bucket => bucket.key === 1);
+  return activeBucket && { has_publication: activeBucket.doc_count };
 }
 
 export const triggerSearch = searchTerm => (dispatch, getState) => {
