@@ -40,9 +40,9 @@ const DownloadFileSummary = ({
         {summaryData.files.map((card, i) => (
           <div className="downloads__card" key={i}>
             <h4>{card.title}</h4>
-            <p>{card.description}</p>
             <div className="downloads__card-stats">
-              <p className="downloads__card-stat">Format: {card.format}</p>
+              <div className="downloads__card-stat">{card.description}</div>
+              <div className="downloads__card-stat">Format: {card.format}</div>
             </div>
           </div>
         ))}
