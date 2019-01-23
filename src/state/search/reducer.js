@@ -1,7 +1,7 @@
 const initialState = {
   searchTerm: '',
   results: [],
-  filters: {},
+  filters: null,
   filterOrder: [],
   appliedFilters: {},
   pagination: {

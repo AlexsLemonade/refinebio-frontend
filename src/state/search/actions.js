@@ -47,28 +47,52 @@ export function fetchResults({
   size = 10,
   ordering = Ordering.MostSamples,
   filterOrder = [],
-  filters
+  filters: appliedFilters
 }) {
   return async (dispatch, getState) => {
     try {
-      const {
-        results,
-        count: totalResults,
-        facets: elasticSearchFacets
-      } = await Ajax.get('/es/', {
+      const { results, count: totalResults, facets } = await Ajax.get('/es/', {
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
         ...(ordering !== Ordering.MostSamples ? { ordering } : {}),
-        ...filters
+        ...appliedFilters
       });
+
+      let filters = transformElasticSearchFacets(facets);
+
+      if (filterOrder.length > 0) {
+        // merge both filter objects to enable interactive filtering
+        const lastFilterName = filterOrder[filterOrder.length - 1];
+        let previousFilters = getState().search.filters;
+
+        if (!previousFilters) {
+          // make another request to the api to fetch the results
+          const { facets: previousFacets } = await Ajax.get('/es/', {
+            ...(query ? { search: query } : {}),
+            limit: 1,
+            ...{
+              ...appliedFilters,
+              [lastFilterName]: undefined
+            }
+          });
+          previousFilters = transformElasticSearchFacets(previousFacets);
+        }
+
+        filters = {
+          ...filters,
+          // on the last filter category, use the numbers from the previous set
+          // to enable interactive filtering
+          [lastFilterName]: previousFilters[lastFilterName]
+        };
+      }
 
       dispatch({
         type: 'SEARCH_RESULTS_FETCH',
         data: {
           searchTerm: query,
           results,
-          filters: transformElasticSearchFacets(elasticSearchFacets),
+          filters,
           filterOrder,
           totalResults,
           ordering,
@@ -78,7 +102,7 @@ export function fetchResults({
           // example keep the other parameters
           resultsPerPage: size,
           currentPage: page,
-          appliedFilters: filters
+          appliedFilters
         }
       });
     } catch (error) {
