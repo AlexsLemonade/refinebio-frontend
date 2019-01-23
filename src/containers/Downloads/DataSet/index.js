@@ -149,8 +149,6 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     is_processing,
     is_available,
     expires_on,
-    s3_bucket,
-    s3_key,
     success
   } = dataSet;
 
