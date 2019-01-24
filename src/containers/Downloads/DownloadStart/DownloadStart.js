@@ -11,6 +11,8 @@ import ProcessingImage from './download-processing.svg';
 import { editEmail } from '../../../state/dataSet/actions';
 import { startDownload } from '../../../state/download/actions';
 import EmailForm from './EmailForm';
+import { InvalidTokenError } from '../../../common/errors';
+import { SubmissionError } from 'redux-form';
 
 /**
  * This component gets rendereded in the DataSet page, when no email has been assigned
@@ -52,13 +54,22 @@ class DownloadStart extends React.PureComponent {
 
   async _submitEmailForm({ email, termsOfService, receiveUpdates }) {
     const { dataSetId, dataSet } = this.props;
-    await this.props.startDownload({
-      email,
-      termsOfService,
-      receiveUpdates,
-      dataSetId,
-      dataSet
-    });
+    try {
+      await this.props.startDownload({
+        email,
+        termsOfService,
+        receiveUpdates,
+        dataSetId,
+        dataSet
+      });
+    } catch (e) {
+      // expect server errors here
+      if (e instanceof InvalidTokenError) {
+        throw new SubmissionError({
+          termsOfService: 'Please accept our terms of service.'
+        });
+      }
+    }
   }
 }
 DownloadStart = connect(
