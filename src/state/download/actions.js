@@ -8,7 +8,8 @@ import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
 import { getDataSetId } from './reducer';
 import { replace } from '../routerActions';
-import { createToken } from '../token';
+import { createToken, clearToken } from '../token';
+import { ServerError, InvalidTokenError } from '../../common/errors';
 
 /**
  * Saves an updated copy of the given dataset in the store
@@ -318,8 +319,15 @@ export const startDownload = ({
       ...(email ? { email_address: email } : {})
     });
   } catch (e) {
-    await dispatch(reportError(e));
+    if (e instanceof ServerError) {
+      // check for an invalid token error
+      if (e.data.detail === 'You must provide an active API token ID') {
+        dispatch(clearToken());
+        throw new InvalidTokenError();
+      }
+    }
 
+    await dispatch(reportError(e));
     // if there's an error, redirect to the dataset page, and show a message
     // also with a button to try again
     return await dispatch(

@@ -10,11 +10,13 @@ const Checkbox = ({
   className,
   disabled,
   onClick,
-  readOnly
+  readOnly,
+  error
 }) => (
   <div
     className={classnames('checkbox', className, {
-      'checkbox--disabled': disabled
+      'checkbox--disabled': disabled,
+      'checkbox--error': error
     })}
   >
     <input
@@ -38,8 +40,11 @@ export default Checkbox;
 /**
  * Checkbox component to be used inside react forms
  */
-export const CheckboxField = ({ input, children }) => (
-  <Checkbox {...input} checked={input.value}>
-    {children}
-  </Checkbox>
+export const CheckboxField = ({ input, children, meta: { error } }) => (
+  <React.Fragment>
+    {error && <p className="color-error">{error}</p>}
+    <Checkbox {...input} checked={input.value} error={error}>
+      {children}
+    </Checkbox>
+  </React.Fragment>
 );

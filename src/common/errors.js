@@ -15,3 +15,19 @@ export class ApiVersionMismatchError extends ExtendableError {
     Object.setPrototypeOf(this, ApiVersionMismatchError.prototype);
   }
 }
+
+export class ServerError extends ExtendableError {
+  constructor(status, data) {
+    super(`${status} ${JSON.stringify(data)}`);
+    this.status = status;
+    this.data = data;
+    Object.setPrototypeOf(this, ServerError.prototype);
+  }
+}
+
+export class InvalidTokenError extends ExtendableError {
+  constructor() {
+    super();
+    Object.setPrototypeOf(this, InvalidTokenError.prototype);
+  }
+}

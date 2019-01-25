@@ -1,5 +1,5 @@
 import SampleFieldMetadata from '../containers/Experiment/SampleFieldMetadata';
-import { ApiVersionMismatchError } from '../common/errors';
+import { ApiVersionMismatchError, ServerError } from '../common/errors';
 
 /**
  * Generates a query string from a query object
@@ -107,14 +107,15 @@ export async function asyncFetch(url, params = false) {
     ApiSourceRevision = sourceRevision;
   }
 
+  const result = await response.json();
   /**
    * You only get an exception (rejection) when there's a network problem.
    * When the server answers, you have to check whether it's good or not.
    */
   if (!response.ok) {
-    throw new Error(response.status);
+    throw new ServerError(response.status, result);
   }
-  return await response.json();
+  return result;
 }
 
 export function getAmazonDownloadLinkUrl(s3_bucket, s3_key) {

@@ -74,6 +74,12 @@
     }
   }
 
+  &--error {
+    .checkbox__label:before {
+      border-color: $color-error;
+    }
+  }
+
   &--disabled {
     color: $disabled-color;
     pointer-events: none;
