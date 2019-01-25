@@ -67,6 +67,13 @@
     line-height: 1;
   }
 
+  &__back {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    line-height: 1;
+  }
+
   &--fill-page {
     max-height: 100%;
     overflow: hidden;

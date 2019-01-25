@@ -75,10 +75,11 @@ class Results extends Component {
   render() {
     const {
       results,
-      pagination: { totalPages, currentPage },
+      pagination: { totalResults, currentPage, resultsPerPage },
       triggerSearch,
       updatePage
     } = this.props;
+    const totalPages = Math.ceil(totalResults / resultsPerPage);
 
     return (
       <div>
