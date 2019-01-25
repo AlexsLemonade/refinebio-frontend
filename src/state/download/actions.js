@@ -11,15 +11,34 @@ import { replace } from '../routerActions';
 import { createToken, clearToken } from '../token';
 import { ServerError, InvalidTokenError } from '../../common/errors';
 
+// Remove all dataset
+export const clearDataSet = () => ({
+  type: 'DOWNLOAD_CLEAR'
+});
+
+export const updateDownloadDataSet = data => ({
+  type: 'DOWNLOAD_DATASET_UPDATE',
+  data
+});
+
 /**
- * Saves an updated copy of the given dataset in the store
+ * Updates a DataSet with the given data in the backend. A new one is created if it doesn't exist.
  */
-export const downloadUpdateDataSet = dataSet => {
+export const createOrUpdateDataSet = ({
+  data,
+  dataSetId = null,
+  details = false
+}) => async dispatch => {
+  let { id, data: dataSet, ...dataSetDetails } = !dataSetId
+    ? await Ajax.post('/dataset/create/', {
+        data
+      })
+    : await updateDataSet(dataSetId, data, details);
+
   return {
-    type: 'DOWNLOAD_UPDATE_DATASET',
-    data: {
-      dataSet
-    }
+    dataSetId: id,
+    dataSet,
+    ...dataSetDetails
   };
 };
 
@@ -27,7 +46,10 @@ export const downloadUpdateDataSet = dataSet => {
  * Applies an operation that modifies the current dataset. All other action creators
  * use this method to add/remove samples from the dataset.
  */
-const dataSetUpdateOperation = modifier => async (dispatch, getState) => {
+const dataSetUpdateOperation = (modifier, details = false) => async (
+  dispatch,
+  getState
+) => {
   // Update the current dataset with whatever is on the server, otherwise it might get out of sync
   // if the user edited it in a different tab.
   try {
@@ -44,31 +66,20 @@ const dataSetUpdateOperation = modifier => async (dispatch, getState) => {
   try {
     const {
       dataSetId: updatedDataSetId,
-      data: updatedDataSet
-    } = await dispatch(createOrUpdateDataSet({ dataSetId, data }));
-    dispatch(addExperimentSucceeded(updatedDataSetId, updatedDataSet));
+      dataSet: updatedDataSet,
+      ...dataSetDetails
+    } = await dispatch(createOrUpdateDataSet({ dataSetId, data, details }));
+
+    dispatch(
+      updateDownloadDataSet({
+        ...dataSetDetails,
+        dataSetId: updatedDataSetId,
+        dataSet: updatedDataSet
+      })
+    );
   } catch (err) {
     dispatch(reportError(err));
   }
-};
-
-/**
- * Updates a DataSet with the given data in the backend. A new one is created if it doesn't exist.
- */
-export const createOrUpdateDataSet = ({
-  data,
-  dataSetId = null
-}) => async dispatch => {
-  let response = !dataSetId
-    ? await Ajax.post('/dataset/create/', {
-        data
-      })
-    : await updateDataSet(dataSetId, data);
-
-  return {
-    dataSetId: response.id,
-    data: response.data
-  };
 };
 
 /**
@@ -82,24 +93,15 @@ export const addSamples = dataSetSlice => async (dispatch, getState) =>
     )
   );
 
-export const addExperimentSucceeded = (dataSetId, dataSet) => {
-  return {
-    type: 'DOWNLOAD_ADD_EXPERIMENT_SUCCESS',
-    data: {
-      dataSet,
-      dataSetId
-    }
-  };
-};
-
 /**
  * Removes all experiments with the corresponding accession codes from dataset
  * @param {array} accessionCodes
  */
-export const removeExperiment = accessionCodes => dispatch =>
+export const removeExperiment = (accessionCodes, details = false) => dispatch =>
   dispatch(
-    dataSetUpdateOperation(dataSet =>
-      new DataSetManager(dataSet).removeExperiment(accessionCodes)
+    dataSetUpdateOperation(
+      dataSet => new DataSetManager(dataSet).removeExperiment(accessionCodes),
+      details
     )
   );
 
@@ -107,17 +109,21 @@ export const removeExperiment = accessionCodes => dispatch =>
  * Removes all samples with corresponding ids from each experiment in dataset.
  * @param {object} dataSetSlice
  */
-export const removeSamples = dataSetSlice => async (dispatch, getState) =>
+export const removeSamples = (dataSetSlice, details = false) => async (
+  dispatch,
+  getState
+) =>
   dispatch(
-    dataSetUpdateOperation(dataSet =>
-      new DataSetManager(dataSet).remove(dataSetSlice)
+    dataSetUpdateOperation(
+      dataSet => new DataSetManager(dataSet).remove(dataSetSlice),
+      details
     )
   );
 
 /**
  * Use the dataset from the state
  */
-export const fetchDataSet = () => async (dispatch, getState) => {
+export const fetchDataSet = (details = false) => async (dispatch, getState) => {
   const dataSetId = getDataSetId(getState());
 
   if (!dataSetId) {
@@ -132,29 +138,20 @@ export const fetchDataSet = () => async (dispatch, getState) => {
   });
 
   try {
-    const {
-      data,
-      is_processing,
-      is_processed,
-      aggregate_by,
-      scale_by,
-      expires_on
-    } = await getDataSet(dataSetId);
+    const data = details
+      ? await getDataSetDetails(dataSetId)
+      : await getDataSet(dataSetId);
 
-    if (is_processing || is_processed) {
+    if (data.is_processing || data.is_processed) {
       // if for any reason the user ends up in a state where the current dataset is already processed
       // we should clear it, since this dataset is immutable
       return await dispatch(clearDataSet());
     }
 
     dispatch(
-      fetchDataSetSucceeded({
-        dataSet: data,
-        is_processing,
-        is_processed,
-        aggregate_by,
-        scale_by,
-        expires_on
+      updateDownloadDataSet({
+        ...data,
+        dataSet: data.data
       })
     );
   } catch (e) {
@@ -163,79 +160,6 @@ export const fetchDataSet = () => async (dispatch, getState) => {
     // Also report the error
     await dispatch(reportError(e));
   }
-};
-
-export const fetchDataSetSucceeded = ({
-  dataSet,
-  is_processing,
-  is_processed,
-  aggregate_by,
-  scale_by,
-  expires_on
-}) => ({
-  type: 'DOWNLOAD_DATASET_FETCH_SUCCESS',
-  data: {
-    dataSet,
-    is_processing,
-    is_processed,
-    aggregate_by,
-    scale_by,
-    expires_on
-  }
-});
-
-export const editAggregation = ({ dataSetId, aggregation }) => async (
-  dispatch,
-  getState
-) => {
-  const dataSet = getState().download.dataSet;
-  const {
-    data,
-    is_processing,
-    is_processed,
-    aggregate_by,
-    scale_by
-  } = await Ajax.put(`/dataset/${dataSetId}/`, {
-    data: dataSet,
-    aggregate_by: aggregation.toUpperCase()
-  });
-
-  dispatch(
-    fetchDataSetSucceeded({
-      dataSet: data,
-      is_processing,
-      is_processed,
-      aggregate_by,
-      scale_by
-    })
-  );
-};
-
-export const editTransformation = ({ dataSetId, transformation }) => async (
-  dispatch,
-  getState
-) => {
-  const dataSet = getState().download.dataSet;
-  const {
-    data,
-    is_processing,
-    is_processed,
-    aggregate_by,
-    scale_by
-  } = await Ajax.put(`/dataset/${dataSetId}/`, {
-    data: dataSet,
-    scale_by: transformation.toUpperCase()
-  });
-
-  dispatch(
-    fetchDataSetSucceeded({
-      dataSet: data,
-      is_processing,
-      is_processed,
-      aggregate_by,
-      scale_by
-    })
-  );
 };
 
 /**
@@ -248,55 +172,51 @@ export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
     return;
   }
 
-  dispatch({
-    type: 'DOWNLOAD_FETCH_DETAILS',
-    data: {
-      dataSetId
-    }
-  });
-  let {
-    data,
-    is_processing,
-    is_processed,
-    aggregate_by,
-    scale_by,
-    samples,
-    experiments
-  } = await getDataSetDetails(dataSetId);
-
+  let response = await getDataSetDetails(dataSetId);
   dispatch(
-    fetchDataSetDetailsSucceeded({
-      dataSet: data,
-      is_processing,
-      is_processed,
-      aggregate_by,
-      scale_by,
-      samples,
-      experiments
+    updateDownloadDataSet({
+      ...response,
+      dataSet: response.data
     })
   );
 };
 
-export const fetchDataSetDetailsSucceeded = ({
-  dataSet,
-  is_processing,
-  is_processed,
-  aggregate_by,
-  scale_by,
-  samples,
-  experiments
-}) => ({
-  type: 'DOWNLOAD_FETCH_DETAILS_SUCCESS',
-  data: {
-    dataSet,
+/**
+ * edit some parameter of the dataset
+ * @param {*} params additional params to be sent to the API
+ */
+export const editDataSet = ({ dataSetId, ...params }) => async (
+  dispatch,
+  getState
+) => {
+  const dataSet = getState().download.dataSet;
+  const {
+    data,
     is_processing,
     is_processed,
     aggregate_by,
-    scale_by,
-    samples,
-    experiments
-  }
-});
+    scale_by
+  } = await Ajax.put(`/dataset/${dataSetId}/`, {
+    data: dataSet,
+    ...params
+  });
+
+  dispatch(
+    updateDownloadDataSet({
+      dataSet: data,
+      is_processing,
+      is_processed,
+      aggregate_by,
+      scale_by
+    })
+  );
+};
+
+export const editAggregation = ({ dataSetId, aggregation }) =>
+  editDataSet({ dataSetId, aggregate_by: aggregation.toUpperCase() });
+
+export const editTransformation = ({ dataSetId, transformation }) =>
+  editDataSet({ dataSetId, scale_by: transformation.toUpperCase() });
 
 export const startDownload = ({
   dataSetId,
@@ -352,8 +272,3 @@ export const startDownload = ({
     })
   );
 };
-
-// Remove all dataset
-export const clearDataSet = () => ({
-  type: 'DOWNLOAD_CLEAR'
-});

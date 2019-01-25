@@ -24,7 +24,7 @@ describe('fetchDataSet', () => {
     expect(global.fetch.mock.calls[0]).toEqual([`/dataset/${DataSetId}/`]);
     expect(store.getActions().map(x => x.type)).toEqual([
       'DOWNLOAD_DATASET_FETCH',
-      'DOWNLOAD_DATASET_FETCH_SUCCESS'
+      'DOWNLOAD_DATASET_UPDATE'
     ]);
   });
 

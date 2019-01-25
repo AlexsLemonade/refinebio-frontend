@@ -17,7 +17,6 @@ import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 import Radio from '../../components/Radio';
 import { Link } from 'react-router-dom';
 import {
-  groupSamplesBySpecies,
   getTotalSamplesAdded,
   getExperimentCountBySpecies,
   getTotalExperimentsAdded
@@ -28,16 +27,14 @@ import {
   clearDataSet
 } from '../../state/download/actions';
 
-import uniq from 'lodash/uniq';
-import union from 'lodash/union';
 import mapValues from 'lodash/mapValues';
-import groupBy from 'lodash/groupBy';
 
 import * as routes from '../../routes';
 
 let DownloadDetails = ({
+  dataSetId,
   dataSet,
-  samples,
+  organism_samples: samplesBySpecies,
   experiments,
   aggregate_by,
   scale_by,
@@ -46,12 +43,9 @@ let DownloadDetails = ({
   removeExperiment,
   clearDataSet,
   isImmutable = false,
-  isEmbed = false
+  isEmbed = false,
+  onRefreshDataSet
 }) => {
-  const samplesBySpecies = groupSamplesBySpecies({
-    samples: samples,
-    dataSet: dataSet
-  });
   const totalSamples = getTotalSamplesAdded({ dataSet });
   const totalExperiments = getTotalExperimentsAdded({ dataSet });
   const experimentCountBySpecies = getExperimentCountBySpecies({
@@ -112,11 +106,16 @@ let DownloadDetails = ({
 
         <TabControl tabs={['Species View', 'Experiments View']}>
           <SpeciesSamples
+            onRefreshDataSet={onRefreshDataSet}
+            dataSet={dataSet}
+            dataSetId={dataSetId}
             samplesBySpecies={samplesBySpecies}
             removeSamples={removeSamples}
             isImmutable={isImmutable}
           />
           <ExperimentsView
+            dataSetId={dataSetId}
+            onRefreshDataSet={onRefreshDataSet}
             dataSet={dataSet}
             experiments={experiments}
             removeExperiment={removeExperiment}
@@ -138,18 +137,18 @@ DownloadDetails = connect(
 export default DownloadDetails;
 
 const SpeciesSamples = ({
+  onRefreshDataSet,
+  dataSetId,
+  dataSet,
   samplesBySpecies,
   removeSamples,
   isImmutable = false
 }) => (
   <div className="downloads__card">
     {Object.keys(samplesBySpecies).map(speciesName => {
-      // Create a slice with the samples for each specie
-      // TODO: in the future we could consider refactoring `groupSamplesBySpecies`, seems
-      // unnecessary having to modify the shape of that object here
-      const specieDataSetSlice = mapValues(
-        groupBy(samplesBySpecies[speciesName], 'experimentAccessionCode'),
-        x => x.map(sample => sample.accession_code)
+      const samplesInSpecie = samplesBySpecies[speciesName];
+      const specieDataSetSlice = mapValues(dataSet, samples =>
+        samples.filter(accessionCode => samplesInSpecie.includes(accessionCode))
       );
 
       return (
@@ -160,23 +159,20 @@ const SpeciesSamples = ({
             </h2>
             <div className="downloads__sample-stats">
               <p className="downloads__sample-stat">
-                {
-                  uniq(
-                    samplesBySpecies[speciesName].map(
-                      sample => sample.accession_code
-                    )
-                  ).length
-                }{' '}
-                {samplesBySpecies[speciesName].length > 1
-                  ? 'Samples'
-                  : 'Sample'}
+                {samplesInSpecie.length}{' '}
+                {samplesInSpecie.length > 1 ? 'Samples' : 'Sample'}
               </p>
             </div>
 
             <div className="mobile-p">
               <ViewSamplesButtonModal
+                onRefreshDataSet={onRefreshDataSet}
                 dataSet={specieDataSetSlice}
                 isImmutable={isImmutable}
+                fetchSampleParams={{
+                  dataset_id: dataSetId,
+                  organism__name: speciesName
+                }}
               />
             </div>
           </div>
@@ -185,7 +181,7 @@ const SpeciesSamples = ({
             <Button
               text="Remove"
               buttonStyle="remove"
-              onClick={() => removeSamples(specieDataSetSlice)}
+              onClick={() => removeSamples(specieDataSetSlice, true)}
             />
           )}
         </div>
@@ -199,6 +195,7 @@ class ExperimentsView extends React.Component {
 
   render() {
     const {
+      onRefreshDataSet,
       dataSet,
       experiments,
       removeExperiment,
@@ -279,6 +276,11 @@ class ExperimentsView extends React.Component {
                   {addedSamples.length > 0 && (
                     <div className="mobile-p">
                       <ViewSamplesButtonModal
+                        fetchSampleParams={{
+                          dataset_id: this.props.dataSetId,
+                          experiment_accession_code: experiment.accession_code
+                        }}
+                        onRefreshDataSet={onRefreshDataSet}
                         dataSet={{ [experiment.accession_code]: addedSamples }}
                         isImmutable={isImmutable}
                       />
@@ -290,7 +292,7 @@ class ExperimentsView extends React.Component {
                     text="Remove"
                     buttonStyle="remove"
                     onClick={() =>
-                      removeExperiment([experiment.accession_code])
+                      removeExperiment([experiment.accession_code], true)
                     }
                   />
                 )}
@@ -372,15 +374,16 @@ class ViewSamplesButtonModal extends React.Component {
           />
         )}
         modalProps={{ className: 'samples-modal', fillPage: true }}
+        onClose={() =>
+          this.props.onRefreshDataSet &&
+          !this.props.isImmutable &&
+          this.props.onRefreshDataSet()
+        }
       >
         {() => (
           <SamplesTable
             experimentSampleAssociations={this.state.dataSet}
-            fetchSampleParams={{
-              accession_codes: uniq(
-                union(...Object.values(this.state.dataSet))
-              ).join(',')
-            }}
+            fetchSampleParams={this.props.fetchSampleParams}
             isImmutable={this.props.isImmutable}
           />
         )}

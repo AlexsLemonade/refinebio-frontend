@@ -33,6 +33,7 @@ import Spinner from '../../../components/Spinner';
  */
 class DataSet extends React.Component {
   _liveUpdate = true;
+  _firstUpdateFetchDetils = true;
 
   componentWillUnmount() {
     // disable live updates after the component is unmounted
@@ -47,7 +48,8 @@ class DataSet extends React.Component {
       }
     } = this.props;
 
-    await fetchDataSet(dataSetId);
+    await fetchDataSet(dataSetId, this._firstUpdateFetchDetils);
+    this._firstUpdateFetchDetils = false;
 
     // start polling the server every 20secs if the dataset is being processed
     if (this.props.dataSet.is_processing) {
@@ -114,11 +116,8 @@ class DataSet extends React.Component {
                 <DownloadDetails
                   isImmutable={true}
                   isEmbed={true}
+                  {...dataSet}
                   dataSet={dataSet.data}
-                  aggregate_by={dataSet.aggregate_by}
-                  scale_by={dataSet.scale_by}
-                  experiments={dataSet.experiments}
-                  samples={dataSet.samples}
                 />
               </div>
             )
