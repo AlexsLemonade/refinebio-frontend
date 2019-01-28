@@ -1,22 +1,21 @@
 import React from 'react';
 import './Button.scss';
+import classnames from 'classnames';
 
 const Button = ({
   text,
   buttonStyle,
-  onClick,
   isDisabled = false,
   className,
   children,
-  style = null
+  ...props
 }) => {
   const buttonStyleClass = buttonStyle ? `button--${buttonStyle}` : '';
   return (
     <button
-      className={`button ${buttonStyleClass} ${className || ''}`}
-      onClick={onClick}
+      {...props}
+      className={classnames('button', buttonStyleClass, className)}
       disabled={isDisabled}
-      style={style}
     >
       {text || children}
     </button>
