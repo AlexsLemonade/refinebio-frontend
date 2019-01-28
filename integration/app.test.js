@@ -22,7 +22,7 @@ describe('refine.bio integration tests', () => {
     TIMEOUT
   );
 
-  it(
+  xit(
     'search for osteosarcoma and navigate to first result',
     async () => {
       const page = await browser.newPage();
