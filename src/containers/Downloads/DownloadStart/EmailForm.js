@@ -10,21 +10,22 @@ import { InvalidTokenError } from '../../../common/errors';
 /**
  * This form can be used to edit the email that's associated with a dataset
  */
-let EmailForm = ({ onSubmit, isSubmitDisabled, agreedToTerms }) => (
+let EmailForm = ({ onSubmit, agreedToTerms }) => (
   <Formik
-    onSubmit={async (values, { setError, setValues, setSubmitting }) => {
+    onSubmit={async (values, { setErrors, setValues, setSubmitting }) => {
       try {
         await onSubmit(values);
       } catch (e) {
         // expect server errors here
         if (e instanceof InvalidTokenError) {
-          setError({
+          setErrors({
             termsOfService:
               'Please accept our terms of use to process and download data'
           });
           setValues({
             email: values.email,
-            termsOfService: false
+            termsOfService: false,
+            receiveUpdates: true
           });
           setSubmitting(false);
         } else {
@@ -74,28 +75,30 @@ let EmailForm = ({ onSubmit, isSubmitDisabled, agreedToTerms }) => (
             <Button text="Start Processing" type="submit" />
           </div>
         </div>
-        <div className={classnames({ hidden: agreedToTerms })}>
-          {errors.termsOfService && (
-            <p className="color-error">
-              <i className="ion-alert-circled" /> {errors.termsOfService}
-            </p>
-          )}
-          <Checkbox
-            name="termsOfService"
-            checked={values.termsOfService}
-            onChange={handleChange}
-          >
-            I agree to the{' '}
-            <Link
-              to="/terms"
-              className="link"
-              target="_blank"
-              rel="noopener noreferrer"
+        {!agreedToTerms && (
+          <div>
+            {errors.termsOfService && (
+              <p className="color-error">
+                <i className="ion-alert-circled" /> {errors.termsOfService}
+              </p>
+            )}
+            <Checkbox
+              name="termsOfService"
+              checked={values.termsOfService}
+              onChange={handleChange}
             >
-              Terms of Use
-            </Link>
-          </Checkbox>
-        </div>
+              I agree to the{' '}
+              <Link
+                to="/terms"
+                className="link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terms of Use
+              </Link>
+            </Checkbox>
+          </div>
+        )}
         <div>
           <Checkbox
             name="receiveUpdates"
