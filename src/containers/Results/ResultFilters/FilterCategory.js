@@ -60,13 +60,13 @@ class FilterCategory extends React.Component {
                   onChange={() =>
                     toggledFilter(
                       category.queryField,
-                      filter === 'has_publication' ? 'True' : filter
+                      filter === 'has_publication' ? 'true' : filter
                     )
                   }
                   checked={
                     !!appliedFilters[category.queryField] &&
                     appliedFilters[category.queryField].includes(
-                      filter === 'has_publication' ? 'True' : filter
+                      filter === 'has_publication' ? 'true' : filter
                     )
                   }
                 >

@@ -212,7 +212,10 @@ export default Results;
 function AddPageToDataSetButton({ results }) {
   // create a dataset slice with the results, use the accession codes in `processed_samples`
   const resultsDataSetSlice = fromPairs(
-    results.map(result => [result.accession_code, result.processed_samples])
+    results.map(result => [
+      result.accession_code,
+      { all: true, total: result.num_processed_samples }
+    ])
   );
 
   return (
