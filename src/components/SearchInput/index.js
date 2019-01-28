@@ -1,53 +1,38 @@
 import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
+import { Formik, Field, Form } from 'formik';
 import Button from '../Button';
 import './SearchInput.scss';
-import { InputField } from '../Input';
 
-class SearchInput extends Component {
+export default class SearchInput extends Component {
   static defaultProps = {
+    searchTerm: '',
     buttonStyle: 'secondary'
   };
 
-  componentDidMount() {
-    this.handleInitialize(this.props.searchTerm);
-  }
-
-  componentWillUpdate = nextProps => {
-    if (nextProps.searchTerm !== this.props.searchTerm)
-      this.handleInitialize(nextProps.searchTerm);
-  };
-
-  handleInitialize(searchTerm) {
-    const initData = {
-      search: searchTerm
-    };
-
-    this.props.initialize(initData);
-  }
-
   render() {
-    const { handleSubmit, buttonStyle } = this.props;
-
     return (
-      <form className="search-input" onSubmit={handleSubmit}>
-        <Field
-          component={InputField}
-          name="search"
-          className="input-text input-lg search-input__textbox"
-        />
-        <div className="flex-button-container">
-          <Button
-            text="Search"
-            buttonStyle={buttonStyle}
-            className="search-input__button"
-          />
-        </div>
-      </form>
+      <Formik
+        initialValues={{ search: this.props.searchTerm }}
+        onSubmit={({ search }) => this.props.onSubmit(search)}
+      >
+        {() => (
+          <Form className="search-input">
+            <Field
+              type="text"
+              name="search"
+              className="input-text input-lg search-input__textbox"
+            />
+            <div className="flex-button-container">
+              <Button
+                type="submit"
+                text="Search"
+                buttonStyle={this.props.buttonStyle}
+                className="search-input__button"
+              />
+            </div>
+          </Form>
+        )}
+      </Formik>
     );
   }
 }
-
-export default reduxForm({
-  form: 'searchInput'
-})(SearchInput);

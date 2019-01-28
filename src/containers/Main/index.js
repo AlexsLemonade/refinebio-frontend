@@ -29,9 +29,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
             Search for harmonized transcriptome data
           </h1>
           <SearchInput
-            onSubmit={value =>
-              push(value.search ? `/results?q=${value.search}` : `/results`)
-            }
+            onSubmit={query => push(query ? `/results?q=${query}` : `/results`)}
             buttonStyle="primary"
           />
           <div className="main__search-suggestions">
