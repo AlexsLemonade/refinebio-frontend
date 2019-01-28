@@ -19,7 +19,8 @@ let EmailForm = ({ onSubmit, isSubmitDisabled, agreedToTerms }) => (
         // expect server errors here
         if (e instanceof InvalidTokenError) {
           setError({
-            termsOfService: 'Please accept our terms of service.'
+            termsOfService:
+              'Please accept our terms of use to process and download data'
           });
           setValues({
             email: values.email,
@@ -43,7 +44,7 @@ let EmailForm = ({ onSubmit, isSubmitDisabled, agreedToTerms }) => (
         .required('Please enter your email address'),
       termsOfService: Yup.bool().oneOf(
         [true],
-        'Please accept our terms of service.'
+        'Please accept our terms of use to process and download data'
       )
     })}
   >
@@ -73,30 +74,28 @@ let EmailForm = ({ onSubmit, isSubmitDisabled, agreedToTerms }) => (
             <Button text="Start Processing" type="submit" />
           </div>
         </div>
-        {!agreedToTerms && (
-          <div>
-            {errors.termsOfService && (
-              <p className="color-error">
-                <i className="ion-alert-circled" /> {errors.termsOfService}
-              </p>
-            )}
-            <Checkbox
-              name="termsOfService"
-              checked={values.termsOfService}
-              onChange={handleChange}
+        <div className={classnames({ hidden: agreedToTerms })}>
+          {errors.termsOfService && (
+            <p className="color-error">
+              <i className="ion-alert-circled" /> {errors.termsOfService}
+            </p>
+          )}
+          <Checkbox
+            name="termsOfService"
+            checked={values.termsOfService}
+            onChange={handleChange}
+          >
+            I agree to the{' '}
+            <Link
+              to="/terms"
+              className="link"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              I agree to the{' '}
-              <Link
-                to="/terms"
-                className="link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Terms of Use
-              </Link>
-            </Checkbox>
-          </div>
-        )}
+              Terms of Use
+            </Link>
+          </Checkbox>
+        </div>
         <div>
           <Checkbox
             name="receiveUpdates"
