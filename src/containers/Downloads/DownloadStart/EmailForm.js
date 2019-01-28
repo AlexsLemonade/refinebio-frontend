@@ -1,63 +1,114 @@
 import React from 'react';
-import { reduxForm, Field, formValueSelector } from 'redux-form';
-import { connect } from 'react-redux';
-import { CheckboxField } from '../../../components/Checkbox';
-import Button from '../../../components/Button';
 import { Link } from 'react-router-dom';
+import { Formik, Field, Form } from 'formik';
+import * as Yup from 'yup';
+import classnames from 'classnames';
+import Checkbox from '../../../components/Checkbox';
+import Button from '../../../components/Button';
+import { InvalidTokenError } from '../../../common/errors';
 
 /**
  * This form can be used to edit the email that's associated with a dataset
  */
-let EmailForm = ({ handleSubmit, isSubmitDisabled, agreedToTerms }) => (
-  <form onSubmit={handleSubmit}>
-    <div className="form-edit-email">
-      <Field
-        component="input"
-        name="email"
-        type="email"
-        placeholder="jdoe@example.com"
-        className="input-text form-edit-email__input mobile-p"
-      />
-      <div className="flex-button-container">
-        <Button text="Start Processing" isDisabled={isSubmitDisabled} />
-      </div>
-    </div>
-    {!agreedToTerms && (
-      <div>
-        <Field component={CheckboxField} name="termsOfService">
-          I agree to the{' '}
-          <Link
-            to="/terms"
-            className="link"
-            target="_blank"
-            rel="noopener noreferrer"
+let EmailForm = ({ onSubmit, isSubmitDisabled, agreedToTerms }) => (
+  <Formik
+    onSubmit={async (values, { setError, setValues, setSubmitting }) => {
+      try {
+        await onSubmit(values);
+      } catch (e) {
+        // expect server errors here
+        if (e instanceof InvalidTokenError) {
+          setError({
+            termsOfService: 'Please accept our terms of service.'
+          });
+          setValues({
+            email: values.email,
+            termsOfService: false
+          });
+          setSubmitting(false);
+        } else {
+          // rethrow the exception
+          throw e;
+        }
+      }
+    }}
+    initialValues={{
+      receiveUpdates: true,
+      email: '',
+      termsOfService: agreedToTerms
+    }}
+    validationSchema={Yup.object().shape({
+      email: Yup.string()
+        .email('Please enter a valid email')
+        .required('Please enter your email address'),
+      termsOfService: Yup.bool().oneOf(
+        [true],
+        'Please accept our terms of service.'
+      )
+    })}
+  >
+    {({ values, handleChange, touched, errors }) => (
+      <Form>
+        <div>
+          {touched.email && errors.email ? (
+            <p className="color-error">
+              <i className="ion-alert-circled" /> {errors.email}
+            </p>
+          ) : null}
+        </div>
+        <div className="form-edit-email">
+          <div className="input-wrap">
+            <Field
+              name="email"
+              type="email"
+              placeholder="jdoe@example.com"
+              className={classnames(
+                'input-text form-edit-email__input mobile-p',
+                { 'input--error': touched.email && errors.email }
+              )}
+            />
+          </div>
+
+          <div className="flex-button-container">
+            <Button text="Start Processing" type="submit" />
+          </div>
+        </div>
+        {!agreedToTerms && (
+          <div>
+            {errors.termsOfService && (
+              <p className="color-error">
+                <i className="ion-alert-circled" /> {errors.termsOfService}
+              </p>
+            )}
+            <Checkbox
+              name="termsOfService"
+              checked={values.termsOfService}
+              onChange={handleChange}
+            >
+              I agree to the{' '}
+              <Link
+                to="/terms"
+                className="link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terms of Use
+              </Link>
+            </Checkbox>
+          </div>
+        )}
+        <div>
+          <Checkbox
+            name="receiveUpdates"
+            checked={values.receiveUpdates}
+            onChange={handleChange}
           >
-            Terms of Use
-          </Link>
-        </Field>
-      </div>
+            I would like to receive occasional updates from the refine.bio team
+          </Checkbox>
+        </div>
+      </Form>
     )}
-    <div>
-      <Field component={CheckboxField} name="receiveUpdates">
-        I would like to receive occasional updates from the refine.bio team
-      </Field>
-    </div>
-  </form>
+  </Formik>
 );
-const EMAIL_FORM = 'dataSet-email-edit';
-EmailForm = reduxForm({
-  form: EMAIL_FORM
-})(EmailForm);
-// selecting values from form https://redux-form.com/7.4.2/examples/selectingformvalues/
-const fieldSelector = formValueSelector(EMAIL_FORM);
-// Set the initial value of the form components, with the email property
-EmailForm = connect((state, ownProps) => ({
-  isSubmitDisabled:
-    !ownProps.agreedToTerms && !fieldSelector(state, 'termsOfService'),
-  initialValues: {
-    email: ownProps.email,
-    receiveUpdates: true
-  }
-}))(EmailForm);
 
 export default EmailForm;
