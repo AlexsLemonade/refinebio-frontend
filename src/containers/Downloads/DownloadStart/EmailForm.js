@@ -49,7 +49,7 @@ let EmailForm = ({ onSubmit, agreedToTerms }) => (
       )
     })}
   >
-    {({ values, handleChange, touched, errors }) => (
+    {({ values, isSubmitting, handleChange, touched, errors }) => (
       <Form>
         <div>
           {touched.email && errors.email ? (
@@ -72,7 +72,11 @@ let EmailForm = ({ onSubmit, agreedToTerms }) => (
           </div>
 
           <div className="flex-button-container">
-            <Button text="Start Processing" type="submit" />
+            <Button
+              text="Start Processing"
+              type="submit"
+              isDisabled={isSubmitting}
+            />
           </div>
         </div>
         {!agreedToTerms && (
