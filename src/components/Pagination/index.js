@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { getRange } from '../../common/helpers';
 import './Pagination.scss';
-import Button from '../Button';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import classnames from 'classnames';
+import JumpToPageForm from './JumpToPageForm';
 
 class Pagination extends Component {
   getPaginationRange(currentPage, totalPages) {
@@ -106,47 +103,3 @@ class Pagination extends Component {
 }
 
 export default Pagination;
-
-function JumpToPageForm({ onPaginate, totalPages }) {
-  return (
-    <Formik
-      initialValues={{ page: '' }}
-      onSubmit={({ page }) => onPaginate(page)}
-      validationSchema={Yup.object().shape({
-        page: Yup.number()
-          .required('Please enter a valid page number')
-          .min(1, 'Page number must be greater than 1')
-          .max(totalPages, 'Page number must be lower than ' + totalPages)
-      })}
-    >
-      {({ isSubmitting, touched, errors, values }) => (
-        <Form>
-          <label>
-            Jump to page
-            <div className="input-wrap">
-              {touched.page && errors.page ? (
-                <div className="input-wrap__error">
-                  <i className="ion-alert-circled" /> {errors.page}
-                </div>
-              ) : null}
-              <Field
-                name="page"
-                className={classnames('pagination__input input', {
-                  'input--error': touched.page && errors.page
-                })}
-                type="number"
-              />
-            </div>
-          </label>
-          <Button
-            type="submit"
-            isDisabled={isSubmitting}
-            buttonStyle="secondary"
-            className="pagination__button"
-            text="Go"
-          />
-        </Form>
-      )}
-    </Formik>
-  );
-}
