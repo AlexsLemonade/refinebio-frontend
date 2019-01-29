@@ -142,96 +142,79 @@ let Experiment = ({
                 </h4>
 
                 <div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">Description</div>
-                    <div>{experimentData.description}</div>
-                  </div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">PubMed ID</div>
-                    <div>
-                      {(experimentData.pubmed_id && (
-                        <a
-                          href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                            experimentData.pubmed_id
-                          }`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="link"
-                        >
-                          {experimentData.pubmed_id}
-                        </a>
-                      )) || (
-                        <i className="experiment__not-provided">
-                          No associated PubMed ID
-                        </i>
-                      )}
-                    </div>
-                  </div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">
-                      Publication Title
-                    </div>
-                    <div>
-                      {(experimentData.publication_title && (
-                        <a
-                          href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                            experimentData.pubmed_id
-                          }`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="link"
-                        >
-                          {experimentData.publication_title}
-                        </a>
-                      )) || (
-                        <i className="experiment__not-provided">
-                          No associated publication
-                        </i>
-                      )}
-                    </div>
-                  </div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">
-                      Submitter’s Institution
-                    </div>
-                    <div>
-                      <Link
-                        to={`/results?q=${encodeURIComponent(
-                          experimentData.submitter_institution
-                        )}`}
+                  <ExperimentHeaderRow label="Description">
+                    {experimentData.description}
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="PubMed ID">
+                    {(experimentData.pubmed_id && (
+                      <a
+                        href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                          experimentData.pubmed_id
+                        }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="link"
                       >
-                        {experimentData.submitter_institution}
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">Authors</div>
-                    <div>
-                      {experimentData.publication_authors.length > 0 ? (
-                        experimentData.publication_authors
-                          .map(author => (
-                            <Link
-                              to={`/results?q=${encodeURIComponent(author)}`}
-                              className="link"
-                            >
-                              {author}
-                            </Link>
-                          ))
-                          .reduce((previous, current) => (
-                            <React.Fragment>
-                              {previous}
-                              {', '}
-                              {current}
-                            </React.Fragment>
-                          ))
-                      ) : (
-                        <i className="experiment__not-provided">
-                          No associated authors
-                        </i>
-                      )}
-                    </div>
-                  </div>
+                        {experimentData.pubmed_id}
+                      </a>
+                    )) || (
+                      <i className="experiment__not-provided">
+                        No associated PubMed ID
+                      </i>
+                    )}
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="Publication Title">
+                    {(experimentData.publication_title && (
+                      <a
+                        href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                          experimentData.pubmed_id
+                        }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link"
+                      >
+                        {experimentData.publication_title}
+                      </a>
+                    )) || (
+                      <i className="experiment__not-provided">
+                        No associated publication
+                      </i>
+                    )}
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="Submitter’s Institution">
+                    <Link
+                      to={`/results?q=${encodeURIComponent(
+                        experimentData.submitter_institution
+                      )}`}
+                      className="link"
+                    >
+                      {experimentData.submitter_institution}
+                    </Link>
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="Authors">
+                    {experimentData.publication_authors.length > 0 ? (
+                      experimentData.publication_authors
+                        .map(author => (
+                          <Link
+                            to={`/results?q=${encodeURIComponent(author)}`}
+                            className="link"
+                          >
+                            {author}
+                          </Link>
+                        ))
+                        .reduce((previous, current) => (
+                          <React.Fragment>
+                            {previous}
+                            {', '}
+                            {current}
+                          </React.Fragment>
+                        ))
+                    ) : (
+                      <i className="experiment__not-provided">
+                        No associated authors
+                      </i>
+                    )}
+                  </ExperimentHeaderRow>
                 </div>
 
                 {experiment.source_database && (
@@ -295,6 +278,15 @@ function ExperimentHelmet({ experiment }) {
         />
       )}
     </Helmet>
+  );
+}
+
+function ExperimentHeaderRow({ label, children }) {
+  return (
+    <div className="experiment__row">
+      <div className="experiment__row-label">{label}</div>
+      <div>{children}</div>
+    </div>
   );
 }
 
