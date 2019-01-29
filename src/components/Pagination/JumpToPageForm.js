@@ -16,7 +16,7 @@ export default function JumpToPageForm({ onPaginate, totalPages }) {
         page: Yup.number()
           .required('Please enter a valid page number')
           .min(1, 'Page number must be greater than 1')
-          .max(totalPages, 'Page number must be lower than ' + totalPages)
+          .max(totalPages, `Page number must be lower than ${totalPages + 1}`)
       })}
     >
       {({ touched, errors, values }) => (
