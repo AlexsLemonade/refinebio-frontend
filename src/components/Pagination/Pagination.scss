@@ -43,17 +43,9 @@
   }
 
   &__input {
-    font-size: 1rem;
     margin-left: 8px;
-    padding: 4px 0;
     text-align: center;
     width: 50px;
-    border: 1px solid $gray;
-    line-height: 18px;
-
-    @include tablet {
-      padding: 8px 0;
-    }
 
     // turn off arrows https://css-tricks.com/snippets/css/turn-off-number-input-spinners/
     -moz-appearance: textfield;
@@ -79,6 +71,6 @@
 
   &__button {
     margin-left: 8px;
-    padding: 5px 14px;
+    padding: 4px 14px;
   }
 }

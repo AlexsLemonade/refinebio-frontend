@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { reduxForm, Field } from 'redux-form';
 import Select from '../Select';
 import './TimeRangeSelect.scss';
 
@@ -15,9 +14,9 @@ let TimeRangeSelect = ({ selectedTimeRange, options }: Props) => (
       <label className="time-range-select__label" htmlFor="timeRange">
         Time Range:{' '}
       </label>
-      <Field
+
+      <Select
         className="time-range-select__dropdown"
-        name="timeRange"
         options={options}
         component={Select}
         onChange={e => selectedTimeRange(e.target.value)}
@@ -25,7 +24,4 @@ let TimeRangeSelect = ({ selectedTimeRange, options }: Props) => (
     </div>
   </div>
 );
-TimeRangeSelect = reduxForm({
-  form: 'timeRange'
-})(TimeRangeSelect);
 export default TimeRangeSelect;

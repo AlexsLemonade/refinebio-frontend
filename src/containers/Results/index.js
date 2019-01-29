@@ -98,7 +98,7 @@ class Results extends Component {
           <div className="results__search">
             <SearchInput
               searchTerm={this.state.query}
-              onSubmit={value => triggerSearch(value.search)}
+              onSubmit={query => triggerSearch(query)}
             />
           </div>
 

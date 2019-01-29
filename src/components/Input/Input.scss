@@ -16,13 +16,27 @@
   &:focus {
     border-color: $input-focus;
   }
+
+  &--error {
+    border-color: $color-error;
+  }
 }
 
 .input-wrap {
   position: relative;
+  display: inline-block;
 
   &__input {
     padding-right: 24px;
+  }
+
+  &__error {
+    position: absolute;
+
+    bottom: 40px;
+    left: 8px;
+    white-space: nowrap;
+    color: $color-error;
   }
 
   &__clear {
