@@ -12,6 +12,7 @@ import TechnologyBadge, {
   MICROARRAY,
   RNA_SEQ
 } from '../../../components/TechnologyBadge';
+import { NDownloadableSamples } from '../../../components/Strings';
 
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result);
@@ -79,8 +80,7 @@ const Result = ({ result, query }) => {
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
-          {result.num_processed_samples} Sample{result.num_processed_samples >
-            1 && 's'}
+          <NDownloadableSamples total={result.num_processed_samples} />
         </li>
         <li className="result__stat">
           <TechnologyBadge
