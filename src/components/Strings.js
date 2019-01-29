@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function NSamples({ total }) {
   if (!total) {
     return 'No Samples';
