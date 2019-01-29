@@ -29,11 +29,19 @@ export const createOrUpdateDataSet = ({
   dataSetId = null,
   details = false
 }) => async dispatch => {
-  let { id, data: dataSet, ...dataSetDetails } = !dataSetId
-    ? await Ajax.post('/dataset/create/', {
-        data
-      })
-    : await updateDataSet(dataSetId, data, details);
+  // first create the dataset, since adding experiments with special key `[ALL]`
+  // only works with edit operations
+  if (!dataSetId) {
+    let { id } = await Ajax.post('/dataset/create/', {
+      data
+    });
+    dataSetId = id;
+  }
+  let { id, data: dataSet, ...dataSetDetails } = await updateDataSet(
+    dataSetId,
+    data,
+    details
+  );
 
   return {
     dataSetId: id,
