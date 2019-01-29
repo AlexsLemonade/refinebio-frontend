@@ -24,6 +24,7 @@ import Anchor from '../../components/Anchor';
 import Technology, { getTechnologies } from './Technology';
 import InfoBox from '../../components/InfoBox';
 import classnames from 'classnames';
+import { NDownloadableSamples } from '../../components/Strings';
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
@@ -52,6 +53,9 @@ let Experiment = ({
           let displaySpinner = isLoading;
           let experimentData = experiment;
           let totalSamples = experiment.samples && experiment.samples.length;
+          let processedSamples =
+            experiment.samples &&
+            experiment.samples.filter(x => x.is_processed).length;
           let organisms = experimentData.organisms;
 
           // for users coming from the search, see if there's any experiment's data in the url state
@@ -124,7 +128,7 @@ let Experiment = ({
                       className="experiment__stats-icon"
                       alt="Sample Icon"
                     />{' '}
-                    {totalSamples} Sample{totalSamples > 1 && 's'}
+                    <NDownloadableSamples total={processedSamples} />
                   </div>
 
                   <div
@@ -180,6 +184,9 @@ let Experiment = ({
                         No associated publication
                       </i>
                     )}
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="Total Samples">
+                    {totalSamples}
                   </ExperimentHeaderRow>
                   <ExperimentHeaderRow label="Submitter’s Institution">
                     <Link
@@ -311,6 +318,11 @@ class ExperimentSamplesTable extends React.Component {
             ? this.props.dataSetId
             : undefined
         }}
+        pageSizeDropdown={({ dropdown, totalSamples }) => (
+          <React.Fragment>
+            Show {dropdown} of {totalSamples} Total Samples
+          </React.Fragment>
+        )}
         // Render prop for the button that adds the samples to the dataset
         pageActionComponent={samplesDisplayed => {
           const stats = new DataSetStats(
