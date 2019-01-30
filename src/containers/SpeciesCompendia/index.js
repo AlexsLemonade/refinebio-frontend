@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '../../components/Button';
 import './SpeciesCompendia.scss';
-
+import EmailSection from '../Main/EmailSection';
 import PointsBackground from './PointsBackground';
 import DownloadCompendia from './DownloadCompendia';
 
@@ -52,6 +52,10 @@ export default function SpeciesCompendia() {
             <Button text="Learn More" buttonStyle="secondary" />
           </div>
         </div>
+      </div>
+
+      <div className="main__section main__section--blue-gradient">
+        <EmailSection />
       </div>
     </div>
   );
