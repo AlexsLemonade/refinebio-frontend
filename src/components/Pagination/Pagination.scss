@@ -11,8 +11,12 @@
   }
 
   &__ends {
-    font-size: 14px;
+    font-size: 16px;
     margin: 0 4px;
+
+    &:hover {
+      color: $azure;
+    }
 
     &:disabled {
       color: $gray;
@@ -22,24 +26,33 @@
   &__page {
     margin: 0 2px;
 
+    &:hover {
+      color: $azure;
+    }
+
     &--active {
       background: $azure;
       border-radius: 2px;
       color: white;
       padding: 0 3px;
+
+      &:hover {
+        color: white;
+      }
     }
   }
 
   &__input {
-    font-size: 1rem;
     margin-left: 8px;
-    padding: 4px 0;
     text-align: center;
     width: 50px;
-    border: 1px solid $gray;
 
-    @include tablet {
-      padding: 8px 0;
+    // turn off arrows https://css-tricks.com/snippets/css/turn-off-number-input-spinners/
+    -moz-appearance: textfield;
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
   }
 
@@ -54,5 +67,10 @@
 
   &__ellipsis {
     margin: 0 4px;
+  }
+
+  &__button {
+    margin-left: 8px;
+    padding: 4px 14px;
   }
 }

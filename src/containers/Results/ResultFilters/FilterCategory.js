@@ -60,20 +60,20 @@ class FilterCategory extends React.Component {
                   onChange={() =>
                     toggledFilter(
                       category.queryField,
-                      filter === 'has_publication' ? 'True' : filter
+                      filter === 'has_publication' ? 'true' : filter
                     )
                   }
                   checked={
                     !!appliedFilters[category.queryField] &&
                     appliedFilters[category.queryField].includes(
-                      filter === 'has_publication' ? 'True' : filter
+                      filter === 'has_publication' ? 'true' : filter
                     )
                   }
                 >
                   <HighlightedText
                     text={formatSentenceCase(filter)}
                     highlight={this.state.query}
-                  />
+                  />{' '}
                   ({categoryFilters[filter]})
                 </Checkbox>
               ) : null // Do not display a checkbox if the filter is null

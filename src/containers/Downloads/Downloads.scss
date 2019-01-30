@@ -56,12 +56,10 @@
   }
 
   &__cards {
-    padding: 0 7px;
-
     @include tablet {
       display: grid;
       grid-column-gap: 14px;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
@@ -77,7 +75,7 @@
     box-shadow: 0 3px 20px 0 rgba($black, 0.1);
     flex: 1;
     margin: 1rem 0;
-    padding: 18px 0;
+    padding: 16px 24px;
     text-align: center;
 
     display: flex;
@@ -93,12 +91,11 @@
   &__card-stats {
     align-items: center;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
   }
 
   &__card-stat {
-    font-size: 0.875rem;
-    margin: 0 0.5rem;
+    font-size: 1rem;
   }
 
   &__table {

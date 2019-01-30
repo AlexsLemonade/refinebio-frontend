@@ -24,6 +24,14 @@ import debounce from 'lodash/debounce';
 import Button from '../../components/Button';
 
 class SamplesTable extends React.Component {
+  static defaultProps = {
+    pageSizeDropdown: ({ dropdown, totalSamples }) => (
+      <React.Fragment>
+        Show {dropdown} of {totalSamples} Samples
+      </React.Fragment>
+    )
+  };
+
   state = {
     page: 0,
     pages: -1,
@@ -93,13 +101,16 @@ class SamplesTable extends React.Component {
               <div className="samples-table-layout__header">
                 <div className="experiment__sample-commands">
                   <div className="experiment__per-page-dropdown">
-                    Show{' '}
-                    <Dropdown
-                      options={pageSizes}
-                      selectedOption={this.state.pageSize}
-                      onChange={this.handlePageSizeChange}
-                    />{' '}
-                    of {this.totalSamples} Samples
+                    {this.props.pageSizeDropdown({
+                      dropdown: (
+                        <Dropdown
+                          options={pageSizes}
+                          selectedOption={this.state.pageSize}
+                          onChange={this.handlePageSizeChange}
+                        />
+                      ),
+                      totalSamples: this.totalSamples
+                    })}
                   </div>
                   {pageActionComponent &&
                     pageActionComponent(state.pageRows.map(x => x._original))}

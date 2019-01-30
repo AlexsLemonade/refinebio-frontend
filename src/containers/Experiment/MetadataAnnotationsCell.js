@@ -157,7 +157,7 @@ function AnnotationValue({ value, level = 0, highlight = '' }) {
     return <AnnotationText value={value} highlight={highlight} />;
   } else if (Array.isArray(value)) {
     return value.map((x, index) => (
-      <div style={{ marginTop: index > 0 ? 8 : 0 }}>
+      <div key={index} style={{ marginTop: index > 0 ? 8 : 0 }}>
         <AnnotationValue value={x} highlight={highlight} />
       </div>
     ));
@@ -174,7 +174,7 @@ function AnnotationValue({ value, level = 0, highlight = '' }) {
     }
 
     return Object.keys(value).map(key => (
-      <div>
+      <div key={key}>
         <b>
           <HighlightedText text={key} highlight={highlight} />
         </b>{' '}

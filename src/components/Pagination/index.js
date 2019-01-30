@@ -1,31 +1,9 @@
 import React, { Component } from 'react';
 import { getRange } from '../../common/helpers';
 import './Pagination.scss';
-import Button from '../Button';
+import JumpToPageForm from './JumpToPageForm';
 
 class Pagination extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pageNumber: ''
-    };
-  }
-
-  handleJumpPageSubmit(e) {
-    const { totalPages, onPaginate } = this.props;
-    e.preventDefault();
-    if (this.state.pageNumber && this.state.pageNumber <= totalPages) {
-      onPaginate(this.state.pageNumber);
-    }
-  }
-
-  handleInputChange(e) {
-    const {
-      target: { value }
-    } = e;
-    this.setState({ pageNumber: value });
-  }
-
   getPaginationRange(currentPage, totalPages) {
     if (currentPage <= 2) {
       return [2, 3];
@@ -117,27 +95,7 @@ class Pagination extends Component {
           </button>
         </div>
         <div className="pagination__jumper">
-          <form onSubmit={this.handleJumpPageSubmit.bind(this)}>
-            <label>
-              Jump to page
-              <input
-                id="pageNumber"
-                name="pageNumber"
-                className="pagination__input"
-                type="number"
-                min="1"
-                onChange={this.handleInputChange.bind(this)}
-                value={this.state.pageNumber}
-              />
-              <Button
-                // Adjust the vertical-align slightly to center the button on
-                // the input above, and add a margin to space them out.
-                style={{ verticalAlign: '-1.2px', marginLeft: '8px' }}
-                buttonStyle="secondary"
-                text="Go"
-              />
-            </label>
-          </form>
+          <JumpToPageForm onPaginate={onPaginate} totalPages={totalPages} />
         </div>
       </div>
     );

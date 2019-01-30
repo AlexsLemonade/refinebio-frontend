@@ -52,7 +52,7 @@ class DownloadStart extends React.PureComponent {
 
   async _submitEmailForm({ email, termsOfService, receiveUpdates }) {
     const { dataSetId, dataSet } = this.props;
-    await this.props.startDownload({
+    return await this.props.startDownload({
       email,
       termsOfService,
       receiveUpdates,

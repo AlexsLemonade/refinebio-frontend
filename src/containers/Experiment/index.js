@@ -24,6 +24,7 @@ import Anchor from '../../components/Anchor';
 import Technology, { getTechnologies } from './Technology';
 import InfoBox from '../../components/InfoBox';
 import classnames from 'classnames';
+import { NDownloadableSamples } from '../../components/Strings';
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
@@ -52,6 +53,9 @@ let Experiment = ({
           let displaySpinner = isLoading;
           let experimentData = experiment;
           let totalSamples = experiment.samples && experiment.samples.length;
+          let processedSamples =
+            experiment.samples &&
+            experiment.samples.filter(x => x.is_processed).length;
           let organisms = experimentData.organisms;
 
           // for users coming from the search, see if there's any experiment's data in the url state
@@ -62,7 +66,7 @@ let Experiment = ({
               samples: []
             };
             totalSamples = state.result.total_samples_count;
-            organisms = state.result.organisms.map(name => ({ name }));
+            organisms = state.result.organism_names;
           }
 
           return displaySpinner ? (
@@ -124,7 +128,7 @@ let Experiment = ({
                       className="experiment__stats-icon"
                       alt="Sample Icon"
                     />{' '}
-                    {totalSamples} Sample{totalSamples > 1 && 's'}
+                    <NDownloadableSamples total={processedSamples} />
                   </div>
 
                   <div
@@ -142,96 +146,82 @@ let Experiment = ({
                 </h4>
 
                 <div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">Description</div>
-                    <div>{experimentData.description}</div>
-                  </div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">PubMed ID</div>
-                    <div>
-                      {(experimentData.pubmed_id && (
-                        <a
-                          href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                            experimentData.pubmed_id
-                          }`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="link"
-                        >
-                          {experimentData.pubmed_id}
-                        </a>
-                      )) || (
-                        <i className="experiment__not-provided">
-                          No associated PubMed ID
-                        </i>
-                      )}
-                    </div>
-                  </div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">
-                      Publication Title
-                    </div>
-                    <div>
-                      {(experimentData.publication_title && (
-                        <a
-                          href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                            experimentData.pubmed_id
-                          }`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="link"
-                        >
-                          {experimentData.publication_title}
-                        </a>
-                      )) || (
-                        <i className="experiment__not-provided">
-                          No associated publication
-                        </i>
-                      )}
-                    </div>
-                  </div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">
-                      Submitter’s Institution
-                    </div>
-                    <div>
-                      <Link
-                        to={`/results?q=${encodeURIComponent(
-                          experimentData.submitter_institution
-                        )}`}
+                  <ExperimentHeaderRow label="Description">
+                    {experimentData.description}
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="PubMed ID">
+                    {(experimentData.pubmed_id && (
+                      <a
+                        href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                          experimentData.pubmed_id
+                        }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="link"
                       >
-                        {experimentData.submitter_institution}
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="experiment__row">
-                    <div className="experiment__row-label">Authors</div>
-                    <div>
-                      {experimentData.publication_authors.length > 0 ? (
-                        experimentData.publication_authors
-                          .map(author => (
-                            <Link
-                              to={`/results?q=${encodeURIComponent(author)}`}
-                              className="link"
-                            >
-                              {author}
-                            </Link>
-                          ))
-                          .reduce((previous, current) => (
-                            <React.Fragment>
-                              {previous}
-                              {', '}
-                              {current}
-                            </React.Fragment>
-                          ))
-                      ) : (
-                        <i className="experiment__not-provided">
-                          No associated authors
-                        </i>
-                      )}
-                    </div>
-                  </div>
+                        {experimentData.pubmed_id}
+                      </a>
+                    )) || (
+                      <i className="experiment__not-provided">
+                        No associated PubMed ID
+                      </i>
+                    )}
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="Publication Title">
+                    {(experimentData.publication_title && (
+                      <a
+                        href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                          experimentData.pubmed_id
+                        }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link"
+                      >
+                        {experimentData.publication_title}
+                      </a>
+                    )) || (
+                      <i className="experiment__not-provided">
+                        No associated publication
+                      </i>
+                    )}
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="Total Samples">
+                    {totalSamples}
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="Submitter’s Institution">
+                    <Link
+                      to={`/results?q=${encodeURIComponent(
+                        experimentData.submitter_institution
+                      )}`}
+                      className="link"
+                    >
+                      {experimentData.submitter_institution}
+                    </Link>
+                  </ExperimentHeaderRow>
+                  <ExperimentHeaderRow label="Authors">
+                    {experimentData.publication_authors.length > 0 ? (
+                      experimentData.publication_authors
+                        .map(author => (
+                          <Link
+                            to={`/results?q=${encodeURIComponent(author)}`}
+                            className="link"
+                          >
+                            {author}
+                          </Link>
+                        ))
+                        .reduce((previous, current) => (
+                          <React.Fragment>
+                            {previous}
+                            {', '}
+                            {current}
+                          </React.Fragment>
+                        ))
+                    ) : (
+                      <i className="experiment__not-provided">
+                        No associated authors
+                      </i>
+                    )}
+                  </ExperimentHeaderRow>
                 </div>
 
                 {experiment.source_database && (
@@ -298,6 +288,15 @@ function ExperimentHelmet({ experiment }) {
   );
 }
 
+function ExperimentHeaderRow({ label, children }) {
+  return (
+    <div className="experiment__row">
+      <div className="experiment__row-label">{label}</div>
+      <div>{children}</div>
+    </div>
+  );
+}
+
 class ExperimentSamplesTable extends React.Component {
   state = {
     showOnlyAddedSamples: false
@@ -319,6 +318,11 @@ class ExperimentSamplesTable extends React.Component {
             ? this.props.dataSetId
             : undefined
         }}
+        pageSizeDropdown={({ dropdown, totalSamples }) => (
+          <React.Fragment>
+            Show {dropdown} of {totalSamples} Total Samples
+          </React.Fragment>
+        )}
         // Render prop for the button that adds the samples to the dataset
         pageActionComponent={samplesDisplayed => {
           const stats = new DataSetStats(

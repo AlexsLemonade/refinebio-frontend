@@ -1,7 +1,11 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import { getAmazonDownloadLinkUrl, timeout } from '../../../common/helpers';
+import {
+  getAmazonDownloadLinkUrl,
+  timeout,
+  formatBytes
+} from '../../../common/helpers';
 import Loader from '../../../components/Loader';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
@@ -33,6 +37,7 @@ import Spinner from '../../../components/Spinner';
  */
 class DataSet extends React.Component {
   _liveUpdate = true;
+  _firstUpdateFetchDetils = true;
 
   componentWillUnmount() {
     // disable live updates after the component is unmounted
@@ -47,7 +52,8 @@ class DataSet extends React.Component {
       }
     } = this.props;
 
-    await fetchDataSet(dataSetId);
+    await fetchDataSet(dataSetId, this._firstUpdateFetchDetils);
+    this._firstUpdateFetchDetils = false;
 
     // start polling the server every 20secs if the dataset is being processed
     if (this.props.dataSet.is_processing) {
@@ -114,11 +120,8 @@ class DataSet extends React.Component {
                 <DownloadDetails
                   isImmutable={true}
                   isEmbed={true}
+                  {...dataSet}
                   dataSet={dataSet.data}
-                  aggregate_by={dataSet.aggregate_by}
-                  scale_by={dataSet.scale_by}
-                  experiments={dataSet.experiments}
-                  samples={dataSet.samples}
                 />
               </div>
             )
@@ -145,8 +148,6 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     is_processing,
     is_available,
     expires_on,
-    s3_bucket,
-    s3_key,
     success
   } = dataSet;
 
@@ -158,7 +159,7 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     <DataSetErrorDownloading dataSetId={dataSetId} dataSet={dataSet} />
   ) : is_processed ? (
     is_available && !isExpired ? (
-      <DataSetReady s3_bucket={s3_bucket} s3_key={s3_key} />
+      <DataSetReady dataSet={dataSet} />
     ) : (
       <DataSetExpired />
     )
@@ -284,7 +285,7 @@ class DataSetReady extends React.Component {
       await this.props.createToken();
     }
 
-    const { s3_bucket, s3_key } = this.props;
+    const { s3_bucket, s3_key } = this.props.dataSet;
     const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
     window.location.href = downloadLink;
   };
@@ -296,6 +297,13 @@ class DataSetReady extends React.Component {
           <div className="dataset__way-container">
             <div className="dataset__processed-text">
               <h1>Your dataset is ready for download!</h1>
+
+              {!!this.props.dataSet.size_in_bytes && (
+                <div className="mb-1">
+                  Download size: {formatBytes(this.props.dataSet.size_in_bytes)}
+                </div>
+              )}
+
               <div className="dataset__way-container">
                 {!this.props.hasToken && (
                   <TermsOfUse
@@ -303,6 +311,7 @@ class DataSetReady extends React.Component {
                     handleToggle={this.handleAgreedToTerms}
                   />
                 )}
+
                 <Button
                   onClick={this.handleSubmit}
                   isDisabled={!this.state.agreedToTerms && !this.props.hasToken}
