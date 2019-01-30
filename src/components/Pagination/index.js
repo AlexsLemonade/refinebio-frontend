@@ -4,6 +4,19 @@ import './Pagination.scss';
 import JumpToPageForm from './JumpToPageForm';
 
 class Pagination extends Component {
+  state = {
+    paginating: false
+  };
+
+  paginate = page => {
+    if (this.state.paginating) return;
+
+    this.setState({ paginating: true }, async () => {
+      await this.props.onPaginate(page);
+      this.setState({ paginating: false });
+    });
+  };
+
   getPaginationRange(currentPage, totalPages) {
     if (currentPage <= 2) {
       return [2, 3];
@@ -27,7 +40,8 @@ class Pagination extends Component {
         {totalPages < 5 ? null : (
           <span>
             <button
-              onClick={() => onPaginate(1)}
+              disabled={this.state.paginating}
+              onClick={() => this.paginate(1)}
               className={`pagination__page ${
                 currentPage === 1 ? 'pagination__page--active' : ''
               }`}
@@ -43,7 +57,8 @@ class Pagination extends Component {
           return (
             <button
               key={i}
-              onClick={() => onPaginate(page)}
+              disabled={this.state.paginating}
+              onClick={() => this.paginate(page)}
               className={`pagination__page ${
                 currentPage === page ? 'pagination__page--active' : ''
               }`}
@@ -58,7 +73,8 @@ class Pagination extends Component {
               <span className="pagination__ellipsis">...</span>
             )}
             <button
-              onClick={() => onPaginate(totalPages)}
+              disabled={this.state.paginating}
+              onClick={() => this.paginate(totalPages)}
               className={`pagination__page ${
                 currentPage === totalPages ? 'pagination__page--active' : ''
               }`}
@@ -75,11 +91,13 @@ class Pagination extends Component {
     const { onPaginate, totalPages, currentPage } = this.props;
 
     if (totalPages <= 1) return null;
+
     return (
       <div className="pagination">
         <div className="mobile-p">
           <button
-            onClick={() => onPaginate(currentPage - 1)}
+            disabled={this.state.paginating}
+            onClick={() => this.paginate(currentPage - 1)}
             disabled={currentPage <= 1}
             className="pagination__ends"
           >
@@ -87,7 +105,8 @@ class Pagination extends Component {
           </button>
           {this.renderPages()}
           <button
-            onClick={() => onPaginate(currentPage + 1)}
+            disabled={this.state.paginating}
+            onClick={() => this.paginate(currentPage + 1)}
             disabled={currentPage >= totalPages}
             className="pagination__ends"
           >

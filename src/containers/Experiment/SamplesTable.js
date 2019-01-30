@@ -225,9 +225,18 @@ class SamplesTable extends React.Component {
     this.setState({ filter }, () => this._fetchDataDebounced());
   };
 
+  /**
+   * Returns a promise that resolves after the current page has been updated and
+   * the corresponding data has been fetched
+   */
   handlePagination = page => {
-    // Set the current page, and update the data afterwards
-    this.setState({ page: page - 1 }, () => this.fetchData());
+    return new Promise(resolve => {
+      // Set the current page, and update the data afterwards
+      this.setState({ page: page - 1 }, async () => {
+        await this.fetchData();
+        resolve();
+      });
+    });
   };
 
   handlePageSizeChange = pageSize => {
