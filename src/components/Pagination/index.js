@@ -28,7 +28,7 @@ class Pagination extends Component {
   }
 
   renderPages() {
-    const { totalPages, onPaginate, currentPage } = this.props;
+    const { totalPages, currentPage } = this.props;
 
     const pageArray =
       totalPages < 5
@@ -96,18 +96,16 @@ class Pagination extends Component {
       <div className="pagination">
         <div className="mobile-p">
           <button
-            disabled={this.state.paginating}
             onClick={() => this.paginate(currentPage - 1)}
-            disabled={currentPage <= 1}
+            disabled={this.state.paginating || currentPage <= 1}
             className="pagination__ends"
           >
             &lt; Previous
           </button>
           {this.renderPages()}
           <button
-            disabled={this.state.paginating}
             onClick={() => this.paginate(currentPage + 1)}
-            disabled={currentPage >= totalPages}
+            disabled={this.state.paginating || currentPage >= totalPages}
             className="pagination__ends"
           >
             Next &gt;
