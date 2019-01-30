@@ -1,12 +1,11 @@
 const initialState = {
   searchTerm: '',
   results: [],
-  filters: {},
+  filters: null,
   filterOrder: [],
   appliedFilters: {},
   pagination: {
     totalResults: 0,
-    totalPages: 0,
     resultsPerPage: 10,
     currentPage: 1
   }
@@ -27,10 +26,6 @@ export default (state = initialState, action) => {
         ordering
       } = action.data;
 
-      const totalPages = Math.ceil(
-        totalResults / state.pagination.resultsPerPage
-      );
-
       return {
         ...state,
         searchTerm,
@@ -42,7 +37,6 @@ export default (state = initialState, action) => {
         pagination: {
           ...state.pagination,
           totalResults,
-          totalPages,
           currentPage,
           resultsPerPage
         }

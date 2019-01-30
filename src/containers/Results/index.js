@@ -75,10 +75,11 @@ class Results extends Component {
   render() {
     const {
       results,
-      pagination: { totalPages, currentPage },
+      pagination: { totalResults, currentPage, resultsPerPage },
       triggerSearch,
       updatePage
     } = this.props;
+    const totalPages = Math.ceil(totalResults / resultsPerPage);
 
     return (
       <div>
@@ -97,7 +98,7 @@ class Results extends Component {
           <div className="results__search">
             <SearchInput
               searchTerm={this.state.query}
-              onSubmit={value => triggerSearch(value.search)}
+              onSubmit={query => triggerSearch(query)}
             />
           </div>
 
@@ -211,7 +212,10 @@ export default Results;
 function AddPageToDataSetButton({ results }) {
   // create a dataset slice with the results, use the accession codes in `processed_samples`
   const resultsDataSetSlice = fromPairs(
-    results.map(result => [result.accession_code, result.processed_samples])
+    results.map(result => [
+      result.accession_code,
+      { all: true, total: result.num_processed_samples }
+    ])
   );
 
   return (

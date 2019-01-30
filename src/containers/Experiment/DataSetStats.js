@@ -19,10 +19,16 @@ export class DataSetOperations {
       Object.keys(d2)
     );
     for (let experimentAccession of addedExperimentAccession) {
-      result[experimentAccession] = intersect(
-        d1[experimentAccession],
-        d2[experimentAccession]
-      );
+      if (d2[experimentAccession].all) {
+        result[experimentAccession] = d1[experimentAccession];
+      } else if (d1[experimentAccession].all) {
+        result[experimentAccession] = d2[experimentAccession];
+      } else {
+        result[experimentAccession] = intersect(
+          d1[experimentAccession],
+          d2[experimentAccession]
+        );
+      }
     }
     return result;
   }
@@ -47,6 +53,20 @@ export class DataSetOperations {
     }
 
     for (let accession of d1Keys) {
+      if (d1[accession].all) {
+        if (d1[accession].total !== d2[accession].length) {
+          return false;
+        } else {
+          continue;
+        }
+      }
+      if (d2[accession].all) {
+        if (d2[accession].total !== d1[accession].length) {
+          return false;
+        } else {
+          continue;
+        }
+      }
       if (!DataSetOperations._sameItems(d1[accession], d2[accession])) {
         return false;
       }
@@ -76,7 +96,9 @@ export default class DataSetStats {
    */
   anyProcessedSamples() {
     return Object.values(this.dataSetSlice).some(
-      samples => samples && samples.length > 0
+      samples =>
+        (samples && samples.length > 0) ||
+        (samples && samples.all && samples.total > 0)
     );
   }
 

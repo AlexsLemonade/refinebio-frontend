@@ -65,9 +65,10 @@ let Filters = ({ appliedFilters }) => (
 export default Filters;
 
 const filterCategories = [
-  { name: 'organism', queryField: 'organisms__name' },
+  { name: 'organism', queryField: 'organism' },
   { name: 'technology', queryField: 'technology' },
-  { name: 'publication', queryField: 'has_publication' }
+  { name: 'publication', queryField: 'has_publication' },
+  { name: 'platforms', queryField: 'platform' }
 ];
 
 /**

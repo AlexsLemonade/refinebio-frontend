@@ -17,23 +17,12 @@ export const updateDataSet = props => ({
  * Fetches data for a given dataset
  * @param {*} id Identifier of the dataset (hash `730ad4b9-f789-48a0-a114-ca3a8c5ab030)
  */
-export const fetchDataSet = dataSetId => async dispatch => {
+export const fetchDataSet = (dataSetId, details = true) => async dispatch => {
   try {
-    // To render a dataset page we need information from these two endpoints, in the future we should
-    // consider unifying them or adding more information to the dataset details serializer
-    // https://github.com/AlexsLemonade/refinebio/blob/dev/api/data_refinery_api/serializers.py#L513-L537
-    // so that it also returns `expires_on` and the s3 information
-    const [dataSet, dataSetDetails] = await Promise.all([
-      getDataSet(dataSetId),
-      getDataSetDetails(dataSetId)
-    ]);
-
-    dispatch(
-      loadDataSet({
-        ...dataSet,
-        ...dataSetDetails
-      })
-    );
+    let dataSet = details
+      ? await getDataSetDetails(dataSetId)
+      : await getDataSet(dataSetId);
+    dispatch(updateDataSet(dataSet));
   } catch (e) {
     dispatch(reportError(e));
     dispatch(replace('/no-match'));

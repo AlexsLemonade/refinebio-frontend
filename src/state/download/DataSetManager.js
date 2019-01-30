@@ -24,10 +24,16 @@ export default class DataSetManager {
   add(dataSetSlice) {
     let result = { ...this.dataSet };
     for (let accessionCode of Object.keys(dataSetSlice)) {
-      result[accessionCode] = uniq([
-        ...(result[accessionCode] || []),
-        ...dataSetSlice[accessionCode]
-      ]);
+      if (dataSetSlice[accessionCode].all) {
+        // special code to add all samples from an experiment
+        // https://github.com/AlexsLemonade/refinebio-frontend/issues/496#issuecomment-456543865
+        result[accessionCode] = ['ALL'];
+      } else {
+        result[accessionCode] = uniq([
+          ...(result[accessionCode] || []),
+          ...dataSetSlice[accessionCode]
+        ]);
+      }
     }
     return result;
   }

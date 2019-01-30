@@ -12,6 +12,7 @@ import TechnologyBadge, {
   MICROARRAY,
   RNA_SEQ
 } from '../../../components/TechnologyBadge';
+import { NDownloadableSamples } from '../../../components/Strings';
 
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result);
@@ -42,7 +43,7 @@ const Result = ({ result, query }) => {
                 publication_authors: result.publication_authors,
                 source_url: result.source_url,
                 source_database: result.source_database,
-                organisms: result.organisms,
+                organism_names: result.organism_names,
                 samples: []
               }
             })}
@@ -57,7 +58,10 @@ const Result = ({ result, query }) => {
 
         <DataSetSampleActions
           dataSetSlice={{
-            [result.accession_code]: result.processed_samples
+            [result.accession_code]: {
+              all: true,
+              total: result.num_processed_samples
+            }
           }}
         />
       </div>
@@ -68,26 +72,23 @@ const Result = ({ result, query }) => {
             className="result__icon"
             alt="organism-icon"
           />{' '}
-          {result.organisms
-            .map(organism => formatSentenceCase(organism))
-            .join(', ') || 'No species.'}
+          {(result.organism_names &&
+            result.organism_names
+              .map(organism => formatSentenceCase(organism))
+              .join(', ')) ||
+            'No species.'}
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
-          {result.total_samples_count} Sample{result.total_samples_count > 1 &&
-            's'}
+          <NDownloadableSamples total={result.num_processed_samples} />
         </li>
         <li className="result__stat">
           <TechnologyBadge
             className="result__icon"
-            isMicroarray={
-              result.technologies && result.technologies.includes(MICROARRAY)
-            }
-            isRnaSeq={
-              result.technologies && result.technologies.includes(RNA_SEQ)
-            }
+            isMicroarray={result.technology === MICROARRAY}
+            isRnaSeq={result.technology === RNA_SEQ}
           />
-          {result.pretty_platforms.filter(platform => !!platform).join(', ')}
+          {result.platform_names.filter(platform => !!platform).join(', ')}
         </li>
       </ul>
 
@@ -133,7 +134,7 @@ const Result = ({ result, query }) => {
               publication_authors: result.publication_authors,
               source_url: result.source_url,
               source_database: result.source_database,
-              organisms: result.organisms,
+              organism_names: result.organism_names,
               samples: []
             }
           })}
