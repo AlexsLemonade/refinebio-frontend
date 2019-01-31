@@ -126,9 +126,7 @@ function transformElasticSearchFacets(facets) {
     publication: transformHasPublicationFacet(
       facets['_filter_has_publication']['has_publication']
     ),
-    platforms: transformFacet(
-      facets['_filter_platform_names']['platform_names']
-    )
+    platform: transformFacet(facets['_filter_platform_names']['platform_names'])
   };
 }
 

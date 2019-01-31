@@ -37,7 +37,9 @@ export function getQueryParamObject(queryString) {
 
   const queryObj = {};
   queryString.split('&').forEach(queryParam => {
-    const [key, value] = queryParam.split('=');
+    if (!queryParam) return;
+    let [key, value] = queryParam.split('=');
+    value = decodeURIComponent(value);
     // check if the parameter has already been seen, in which case we have to parse it as an array
     if (!!queryObj[key]) {
       if (!Array.isArray(queryObj[key])) {

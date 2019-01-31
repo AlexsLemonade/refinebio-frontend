@@ -68,7 +68,7 @@ const filterCategories = [
   { name: 'organism', queryField: 'organism' },
   { name: 'technology', queryField: 'technology' },
   { name: 'publication', queryField: 'has_publication' },
-  { name: 'platforms', queryField: 'platform' }
+  { name: 'platform', queryField: 'platform' }
 ];
 
 /**
