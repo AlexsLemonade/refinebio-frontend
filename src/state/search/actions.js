@@ -55,6 +55,7 @@ export function fetchResults({
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
+        num_processed_samples__gt: 0,
         ...(ordering !== Ordering.MostSamples ? { ordering } : {}),
         ...appliedFilters
       });
