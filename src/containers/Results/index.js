@@ -36,6 +36,16 @@ class Results extends Component {
     filters: {}
   };
 
+  constructor(props) {
+    super(props);
+
+    const searchArgs = this._parseUrl();
+    this.state = {
+      query: searchArgs.query,
+      filters: searchArgs.filters
+    };
+  }
+
   /**
    * Reads the search query and other parameters from the url and submits a new request to update the results.
    */
