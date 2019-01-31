@@ -217,11 +217,9 @@ export const Ajax = {
     })
 };
 
-export const getMetadataFields = experiment =>
+export const getMetadataFields = sampleMetadataFields =>
   SampleFieldMetadata.filter(
-    field =>
-      experiment.sample_metadata &&
-      experiment.sample_metadata.includes(field.id)
+    field => sampleMetadataFields && sampleMetadataFields.includes(field.id)
   ).map(field => field.Header);
 
 export function stringEnumerate([x0, ...rest]) {

@@ -15,7 +15,7 @@ import TechnologyBadge, {
 import { NDownloadableSamples } from '../../../components/Strings';
 
 const Result = ({ result, query }) => {
-  const metadataFields = getMetadataFields(result);
+  const metadataFields = getMetadataFields(result.sample_metadata_fields);
 
   return (
     <div className="result">
