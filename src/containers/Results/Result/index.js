@@ -14,6 +14,7 @@ import TechnologyBadge, {
 } from '../../../components/TechnologyBadge';
 import { NDownloadableSamples } from '../../../components/Strings';
 import Platform from '../../Platform';
+import { formatPlatformName } from '../../../common/helpers';
 
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result.sample_metadata_fields);
@@ -89,9 +90,7 @@ const Result = ({ result, query }) => {
             isMicroarray={result.technology === MICROARRAY}
             isRnaSeq={result.technology === RNA_SEQ}
           />
-          {result.platform_names
-            .map(name => <Platform name={name} />)
-            .reduce((prev, curr) => [prev, ', ', curr])}
+          {result.platform_names.map(formatPlatformName).join(', ')}
         </li>
       </ul>
 

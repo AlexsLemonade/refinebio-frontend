@@ -288,3 +288,20 @@ export function formatBytes(bytes, decimals = 2) {
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+
+/**
+ * Format platform names in the frontend
+ * https://github.com/AlexsLemonade/refinebio/blob/eab6d04387fe76fe6c56f15cb8c51e85bd5e8de7/api/data_refinery_api/serializers.py#L320-L326
+ */
+export function formatPlatformName(platformName) {
+  if (!platformName) return '';
+  if (platformName.includes(']')) {
+    let [accessionCode, name] = platformName.split(']');
+    accessionCode = accessionCode
+      .substr(1)
+      .toLowerCase()
+      .replace(/[-_\s]/g, '');
+    return `${name} (${accessionCode})`;
+  }
+  return platformName;
+}

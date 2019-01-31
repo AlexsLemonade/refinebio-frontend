@@ -1,6 +1,9 @@
 import React from 'react';
 import './ResultFilters.scss';
-import { formatSentenceCase } from '../../../common/helpers';
+import {
+  formatSentenceCase,
+  formatPlatformName
+} from '../../../common/helpers';
 import Button from '../../../components/Button';
 import { connect } from 'react-redux';
 import {
@@ -65,10 +68,14 @@ let Filters = ({ appliedFilters }) => (
 export default Filters;
 
 const filterCategories = [
-  { name: 'organism', queryField: 'organism' },
-  { name: 'technology', queryField: 'technology' },
-  { name: 'publication', queryField: 'has_publication' },
-  { name: 'platform', queryField: 'platform' }
+  { name: 'organism', queryField: 'organism', format: formatSentenceCase },
+  { name: 'technology', queryField: 'technology', format: formatSentenceCase },
+  {
+    name: 'publication',
+    queryField: 'has_publication',
+    format: formatSentenceCase
+  },
+  { name: 'platform', queryField: 'platform', format: formatPlatformName }
 ];
 
 /**
