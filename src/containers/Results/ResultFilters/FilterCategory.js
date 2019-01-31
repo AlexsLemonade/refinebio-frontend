@@ -4,6 +4,7 @@ import Checkbox from '../../../components/Checkbox';
 import Button from '../../../components/Button';
 import { InputSearch } from '../../../components/Input';
 import HighlightedText from '../../../components/HighlightedText';
+import Platform from '../../Platform';
 
 const MAX_FILTERS = 6;
 
@@ -70,10 +71,14 @@ class FilterCategory extends React.Component {
                     )
                   }
                 >
-                  <HighlightedText
-                    text={formatSentenceCase(filter)}
-                    highlight={this.state.query}
-                  />{' '}
+                  {category.name !== 'platforms' ? (
+                    <HighlightedText
+                      text={formatSentenceCase(filter)}
+                      highlight={this.state.query}
+                    />
+                  ) : (
+                    <Platform accessionCode={filter} />
+                  )}{' '}
                   ({categoryFilters[filter]})
                 </Checkbox>
               ) : null // Do not display a checkbox if the filter is null

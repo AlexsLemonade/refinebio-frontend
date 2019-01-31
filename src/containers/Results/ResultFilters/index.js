@@ -31,10 +31,10 @@ let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
         )}
       </div>
       {filterCategories.map(
-        (category, i) =>
+        category =>
           !isEmpty(filters[category.name]) && (
             <FilterCategory
-              key={i}
+              key={category.name}
               categoryFilters={filters[category.name]}
               category={category}
               toggledFilter={toggledFilter}

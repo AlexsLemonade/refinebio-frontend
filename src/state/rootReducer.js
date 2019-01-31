@@ -5,9 +5,11 @@ import search from './search/reducer';
 import dataSet from './dataSet/reducer';
 import token from './token';
 import experiment from './experiment/reducer';
+import platforms from './platforms';
 
 const rootReducer = combineReducers({
   dashboard,
+  platforms,
   download,
   experiment,
   search,

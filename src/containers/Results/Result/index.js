@@ -13,6 +13,7 @@ import TechnologyBadge, {
   RNA_SEQ
 } from '../../../components/TechnologyBadge';
 import { NDownloadableSamples } from '../../../components/Strings';
+import Platform from '../../Platform';
 
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result.sample_metadata_fields);
@@ -88,7 +89,9 @@ const Result = ({ result, query }) => {
             isMicroarray={result.technology === MICROARRAY}
             isRnaSeq={result.technology === RNA_SEQ}
           />
-          {result.platform_names.filter(platform => !!platform).join(', ')}
+          {result.platform_names
+            .map(name => <Platform name={name} />)
+            .reduce((prev, curr) => [prev, ', ', curr])}
         </li>
       </ul>
 
