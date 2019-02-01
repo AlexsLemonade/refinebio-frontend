@@ -13,7 +13,6 @@ import TechnologyBadge, {
   RNA_SEQ
 } from '../../../components/TechnologyBadge';
 import { NDownloadableSamples } from '../../../components/Strings';
-import Platform from '../../Platform';
 import { formatPlatformName } from '../../../common/helpers';
 
 const Result = ({ result, query }) => {
