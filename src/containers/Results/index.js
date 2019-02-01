@@ -346,9 +346,9 @@ NoSearchResultsTooManyFilters = connect(
 let OrderingDropdown = ({ ordering, updateOrdering }) => {
   const options = [
     { label: 'Most No. of samples', value: Ordering.MostSamples },
-    { label: 'Least No. of samples', value: Ordering.LeastSamples },
-    { label: 'Newest Experiment First', value: Ordering.Newest },
-    { label: 'Oldest Experiment First', value: Ordering.Oldest }
+    { label: 'Least No. of samples', value: Ordering.LeastSamples }
+    // { label: 'Newest Experiment First', value: Ordering.Newest },
+    // { label: 'Oldest Experiment First', value: Ordering.Oldest }
   ];
 
   const selectedOption = options.find(x => x.value === ordering) || options[0];
