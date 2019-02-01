@@ -2,7 +2,8 @@ import { Ajax } from '../../common/helpers';
 import {
   getDataSet,
   getDataSetDetails,
-  updateDataSet
+  updateDataSet,
+  createDataSet
 } from '../../api/dataSet';
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
@@ -32,11 +33,9 @@ export const createOrUpdateDataSet = ({
   // first create the dataset, since adding experiments with special key `[ALL]`
   // only works with edit operations
   if (!dataSetId) {
-    let { id } = await Ajax.post('/dataset/create/', {
-      data
-    });
-    dataSetId = id;
+    ({ id: dataSetId } = await createDataSet());
   }
+
   let { id, data: dataSet, ...dataSetDetails } = await updateDataSet(
     dataSetId,
     data,
