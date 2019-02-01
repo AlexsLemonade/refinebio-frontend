@@ -4,8 +4,11 @@ import TechnologyBadge, {
   RNA_SEQ
 } from '../../components/TechnologyBadge';
 import uniq from 'lodash/uniq';
+import { formatPlatformName } from '../../common/helpers';
 
 export default function Technology({ samples }) {
+  if (!samples || !samples.length) return null;
+
   return (
     <React.Fragment>
       <TechnologyBadge
@@ -13,11 +16,13 @@ export default function Technology({ samples }) {
         isMicroarray={samples.some(x => x.technology === MICROARRAY)}
         isRnaSeq={samples.some(x => x.technology === RNA_SEQ)}
       />
-      {getTechnologies(samples).join(', ')}
+      {getTechnologies(samples)
+        .map(formatPlatformName)
+        .join(', ')}
     </React.Fragment>
   );
 }
 
 export function getTechnologies(samples) {
-  return uniq(samples.map(x => x.pretty_platform));
+  return uniq(samples.map(x => x.platform_name));
 }

@@ -31,6 +31,7 @@
   &__label {
     position: relative;
     padding-left: 24px;
+    word-break: break-all;
 
     &:before,
     &:after {
