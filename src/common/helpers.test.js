@@ -28,6 +28,10 @@ describe('getQueryString', () => {
 });
 
 describe('getQueryParamObject', () => {
+  it('empty', () => {
+    expect(getQueryParamObject('')).toEqual({});
+  });
+
   it('parses query', () => {
     expect(getQueryParamObject('a=0&b=false&c=1')).toEqual({
       a: '0',
@@ -44,6 +48,15 @@ describe('getQueryParamObject', () => {
 
   it('empty query returns empty object', () => {
     expect(getQueryParamObject('')).toEqual({});
+  });
+
+  it('decodes value in url', () => {
+    const url =
+      '?filter_order=platform&platform=%5BHG-U133_Plus_2%5D%20Affymetrix%20Human%20Genome%20U133%20Plus%202.0%20Array';
+    expect(getQueryParamObject(url)).toEqual({
+      filter_order: 'platform',
+      platform: '[HG-U133_Plus_2] Affymetrix Human Genome U133 Plus 2.0 Array'
+    });
   });
 });
 

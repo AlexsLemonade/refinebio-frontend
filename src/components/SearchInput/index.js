@@ -9,9 +9,18 @@ export default class SearchInput extends Component {
     buttonStyle: 'secondary'
   };
 
+  formik = React.createRef();
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchTerm !== this.props.searchTerm && this.formik.current) {
+      this.formik.current.resetForm();
+    }
+  }
+
   render() {
     return (
       <Formik
+        ref={this.formik}
         initialValues={{ search: this.props.searchTerm }}
         onSubmit={({ search }) => this.props.onSubmit(search)}
       >

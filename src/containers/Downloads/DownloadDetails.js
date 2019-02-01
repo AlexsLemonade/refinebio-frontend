@@ -214,7 +214,9 @@ class ExperimentsView extends React.Component {
           {Object.keys(dataSet).map(experimentAccessionCode => {
             const addedSamples = dataSet[experimentAccessionCode];
             const experiment = experiments[experimentAccessionCode];
-            const metadataFields = getMetadataFields(experiment);
+            const metadataFields = getMetadataFields(
+              experiment.sample_metadata
+            );
 
             if (
               this.state.organism &&
