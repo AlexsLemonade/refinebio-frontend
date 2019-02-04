@@ -4,7 +4,6 @@ import { replace, push } from '../../state/routerActions';
 import {
   getDataSet,
   getDataSetDetails,
-  updateDataSet as updateDataSetApi,
   createDataSet
 } from '../../api/dataSet';
 
