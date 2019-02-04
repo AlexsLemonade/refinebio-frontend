@@ -1,7 +1,11 @@
 import { Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { replace, push } from '../../state/routerActions';
-import { getDataSet, getDataSetDetails } from '../../api/dataSet';
+import {
+  getDataSet,
+  getDataSetDetails,
+  createDataSet
+} from '../../api/dataSet';
 
 export const loadDataSet = dataSet => ({
   type: 'LOAD_DATASET',
@@ -46,14 +50,16 @@ export const regenerateDataSet = () => async (dispatch, getState) => {
   let { data, aggregate_by, scale_by } = getState().dataSet;
 
   try {
-    // create a new dataset
-    let { id: dataSetId } = await Ajax.post('/dataset/create/', {
+    // 1. create a new dataset
+    let { id: dataSetId } = await createDataSet();
+    // 2. add the same data
+    await Ajax.put(`/dataset/${dataSetId}/`, {
       data,
       aggregate_by,
       scale_by
     });
 
-    // redirect to the new dataset page, where the user will be able to add an email
+    // 3. redirect to the new dataset page, where the user will be able to add an email
     dispatch(
       push({
         pathname: `/dataset/${dataSetId}`,
