@@ -3,6 +3,12 @@
  */
 const SampleFieldMetadata = [
   {
+    Header: 'Cell Line',
+    id: 'cell_line',
+    accessor: d => d.cell_line,
+    minWidth: 160
+  },
+  {
     Header: 'Sex',
     id: 'sex',
     accessor: d => d.sex,
@@ -36,12 +42,6 @@ const SampleFieldMetadata = [
     Header: 'Disease Stage',
     id: 'disease_stage',
     accessor: d => d.disease_stage,
-    minWidth: 160
-  },
-  {
-    Header: 'Cell Line',
-    id: 'cell_line',
-    accessor: d => d.cell_line,
     minWidth: 160
   },
   {

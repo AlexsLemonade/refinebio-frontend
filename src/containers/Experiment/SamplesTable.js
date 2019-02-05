@@ -251,17 +251,12 @@ class SamplesTable extends React.Component {
   _getColumns(data = []) {
     if (data.length === 0) return [];
 
-    const isImmutable = this.props.isImmutable;
-    // 1. define all columns
-    // 2. count the number of samples that have a value for each column
-    let columns = SampleFieldMetadata.map(column => ({
+    let columns = SampleFieldMetadata.filter(c =>
+      this.props.sampleMetadataFields.includes(c.id)
+    ).map(column => ({
       ...column,
       Cell: CustomCell
     }));
-
-    columns = columns.filter(c =>
-      this.props.sampleMetadataFields.includes(c.id)
-    );
 
     // Get the headers that do not depend on isImmutable first
     let headers = [
@@ -271,19 +266,19 @@ class SamplesTable extends React.Component {
         show: false
       },
       {
-        Header: 'Title',
-        id: 'title',
-        accessor: d => d.title,
-        minWidth: 180,
-        Cell: CustomCell
-      },
-      {
         Header: 'Accession Code',
         id: 'accession_code',
         accessor: d => d.accession_code,
         minWidth: 160,
         width: 175,
         style: { textAlign: 'right' },
+        Cell: CustomCell
+      },
+      {
+        Header: 'Title',
+        id: 'title',
+        accessor: d => d.title,
+        minWidth: 180,
         Cell: CustomCell
       },
       ...columns,
@@ -309,7 +304,7 @@ class SamplesTable extends React.Component {
     // In some instances like the DataSet page we want to hide the Add/Remove
     // buttons, but otherwise the Add/Remove column should be the first one.
     // If the list is not immutable, prepend the Add/Remove column to headers
-    if (!isImmutable) {
+    if (!this.props.isImmutable) {
       headers = [
         {
           Header: 'Add/Remove',
