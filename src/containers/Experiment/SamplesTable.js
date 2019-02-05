@@ -37,12 +37,13 @@ class SamplesTable extends React.Component {
     page: 0,
     pages: -1,
     pageSize: 10,
-    columns: this._getColumns(),
     totalSamples: 0,
     data: [],
     filter: '',
     hasError: false
   };
+
+  columns = this._getColumns();
 
   constructor(props) {
     super(props);
@@ -85,7 +86,7 @@ class SamplesTable extends React.Component {
         className="samples-table"
         showPageSizeOptions={false}
         showPagination={false}
-        columns={this.state.columns}
+        columns={this.columns}
         ThComponent={ThComponent}
         minRows={0}
         noDataText={this.props.noDataText}
@@ -243,14 +244,9 @@ class SamplesTable extends React.Component {
   };
 
   /**
-   * Returns a custom column specification depending on the data passed.
-   * - Empty Columns are hidden
-   * - Columns with more values have higher priority
-   * @param {Array} data Data that should be displayed in the table
+   * Returns the columns that should be displayed in the table
    */
-  _getColumns(data = []) {
-    if (data.length === 0) return [];
-
+  _getColumns() {
     let columns = SampleFieldMetadata.filter(c =>
       this.props.sampleMetadataFields.includes(c.id)
     ).map(column => ({
@@ -294,10 +290,7 @@ class SamplesTable extends React.Component {
         id: 'additional_metadata',
         sortable: false,
         Cell: MetadataAnnotationsCell,
-        width: 200,
-        show: data.some(
-          sample => !!sample.annotations && sample.annotations.length > 0
-        )
+        width: 200
       }
     ];
 
@@ -318,7 +311,6 @@ class SamplesTable extends React.Component {
       ];
     }
 
-    // Return the final list of columns
     return headers;
   }
 
