@@ -307,6 +307,7 @@ class ExperimentSamplesTable extends React.Component {
 
     return (
       <SamplesTable
+        sampleMetadataFields={this.props.experiment.sample_metadata}
         experimentSampleAssociations={{
           [experiment.accession_code]: this.props.experiment.samples.map(
             x => x.accession_code

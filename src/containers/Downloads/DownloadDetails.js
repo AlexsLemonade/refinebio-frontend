@@ -285,6 +285,7 @@ class ExperimentsView extends React.Component {
                         onRefreshDataSet={onRefreshDataSet}
                         dataSet={{ [experiment.accession_code]: addedSamples }}
                         isImmutable={isImmutable}
+                        sampleMetadataFields={experiment.sample_metadata}
                       />
                     </div>
                   )}
@@ -354,6 +355,10 @@ class ExperimentsView extends React.Component {
  * while the modal is being displayed.
  */
 class ViewSamplesButtonModal extends React.Component {
+  static defaultProps = {
+    sampleMetadataFields: []
+  };
+
   state = {
     dataSet: {}
   };
@@ -387,6 +392,7 @@ class ViewSamplesButtonModal extends React.Component {
             experimentSampleAssociations={this.state.dataSet}
             fetchSampleParams={this.props.fetchSampleParams}
             isImmutable={this.props.isImmutable}
+            sampleMetadataFields={this.props.sampleMetadataFields}
           />
         )}
       </ModalManager>

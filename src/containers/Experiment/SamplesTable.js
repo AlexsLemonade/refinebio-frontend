@@ -29,7 +29,8 @@ class SamplesTable extends React.Component {
       <React.Fragment>
         Show {dropdown} of {totalSamples} Samples
       </React.Fragment>
-    )
+    ),
+    sampleMetadataFields: []
   };
 
   state = {
@@ -250,24 +251,12 @@ class SamplesTable extends React.Component {
   _getColumns(data = []) {
     if (data.length === 0) return [];
 
-    const isImmutable = this.props.isImmutable;
-    // 1. define all columns
-    // 2. count the number of samples that have a value for each column
-    let columns = SampleFieldMetadata.map(column => ({
+    let columns = SampleFieldMetadata.filter(c =>
+      this.props.sampleMetadataFields.includes(c.id)
+    ).map(column => ({
       ...column,
-      __totalValues: data.reduce(
-        (total, sample) => total + (!!column.accessor(sample) ? 1 : 0),
-        0
-      ),
       Cell: CustomCell
     }));
-
-    columns = columns.sort(
-      (column1, column2) => column2.__totalValues - column1.__totalValues - 1
-    );
-
-    // 3. Filter out the columns that don't have a value
-    columns = columns.filter(column => column.__totalValues > 0);
 
     // Get the headers that do not depend on isImmutable first
     let headers = [
@@ -275,6 +264,22 @@ class SamplesTable extends React.Component {
         id: 'id',
         accessor: d => d.id,
         show: false
+      },
+      {
+        Header: 'Accession Code',
+        id: 'accession_code',
+        accessor: d => d.accession_code,
+        minWidth: 160,
+        width: 175,
+        style: { textAlign: 'right' },
+        Cell: CustomCell
+      },
+      {
+        Header: 'Title',
+        id: 'title',
+        accessor: d => d.title,
+        minWidth: 180,
+        Cell: CustomCell
       },
       ...columns,
       {
@@ -299,7 +304,7 @@ class SamplesTable extends React.Component {
     // In some instances like the DataSet page we want to hide the Add/Remove
     // buttons, but otherwise the Add/Remove column should be the first one.
     // If the list is not immutable, prepend the Add/Remove column to headers
-    if (!isImmutable) {
+    if (!this.props.isImmutable) {
       headers = [
         {
           Header: 'Add/Remove',
