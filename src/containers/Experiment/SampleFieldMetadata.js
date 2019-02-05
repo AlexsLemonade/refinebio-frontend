@@ -3,20 +3,6 @@
  */
 const SampleFieldMetadata = [
   {
-    Header: 'Title',
-    id: 'title',
-    accessor: d => d.title,
-    minWidth: 180
-  },
-  {
-    Header: 'Accession Code',
-    id: 'accession_code',
-    accessor: d => d.accession_code,
-    minWidth: 160,
-    width: 175,
-    style: { textAlign: 'right' }
-  },
-  {
     Header: 'Sex',
     id: 'sex',
     accessor: d => d.sex,
