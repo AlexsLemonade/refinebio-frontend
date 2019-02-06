@@ -9,7 +9,6 @@ import { getAllDetailedSamples } from '../../api/samples';
 import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../constants/table';
-import SampleFieldMetadata from './SampleFieldMetadata';
 import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from '../DataSetSampleActions';
 import './SamplesTable.scss';
@@ -23,6 +22,7 @@ import { InputClear } from '../../components/Input';
 import debounce from 'lodash/debounce';
 import Button from '../../components/Button';
 import SampleDetailsLoader from './SampleDetailsLoader';
+import { formatSentenceCase } from '../../common/helpers';
 
 class SamplesTable extends React.Component {
   static defaultProps = {
@@ -101,7 +101,7 @@ class SamplesTable extends React.Component {
                       <div>Filter</div>
                       <div className="samples-table__filter-input">
                         <InputClear
-                          value={state.filterBy}
+                          value={state.filterBy || ''}
                           onChange={filterBy => state.onUpdate({ filterBy })}
                         />
                       </div>
@@ -147,15 +147,17 @@ class SamplesTable extends React.Component {
    * Returns the columns that should be displayed in the table
    */
   _getColumns() {
-    let columns = SampleFieldMetadata.filter(c =>
-      this.props.sampleMetadataFields.includes(c.id)
-    ).map(column => ({
-      ...column,
-      Cell: CustomCell
-    }));
-
     // Get the headers that do not depend on isImmutable first
-    let headers = [
+    return [
+      {
+        Header: 'Add/Remove',
+        id: 'add_remove',
+        sortable: false,
+        // Cell: AddRemoveCell.bind(this),
+        width: 190,
+        className: 'samples-table__add-remove',
+        show: !this.props.isImmutable
+      },
       {
         id: 'id',
         accessor: d => d.id,
@@ -177,7 +179,14 @@ class SamplesTable extends React.Component {
         minWidth: 180,
         Cell: CustomCell
       },
-      ...columns,
+      // list the columns in the experiment's metadata
+      ...this.props.sampleMetadataFields.map(field => ({
+        id: field,
+        accessor: d => d[field],
+        Header: formatSentenceCase(field),
+        minWidth: 160,
+        Cell: CustomCell
+      })),
       {
         Header: 'Processing Information',
         id: 'processing_information',
@@ -193,25 +202,6 @@ class SamplesTable extends React.Component {
         width: 200
       }
     ];
-
-    // In some instances like the DataSet page we want to hide the Add/Remove
-    // buttons, but otherwise the Add/Remove column should be the first one.
-    // If the list is not immutable, prepend the Add/Remove column to headers
-    // if (!this.props.isImmutable) {
-    //   headers = [
-    //     {
-    //       Header: 'Add/Remove',
-    //       id: 'add_remove',
-    //       sortable: false,
-    //       Cell: AddRemoveCell.bind(this),
-    //       width: 190,
-    //       className: 'samples-table__add-remove'
-    //     },
-    //     ...headers
-    //   ];
-    // }
-
-    return headers;
   }
 
   /**
@@ -297,7 +287,7 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
   );
 }
 
-function AddRemoveCell({ original: sample, row: { id: rowId } }) {
+function AddRemoveCell({ original: sample }) {
   // retrieve all experiment accession codes referencing this sample
   const { experimentAccessionCodes } = sample;
   // Create a dataset slice, where we include all experiments that are referencing this sample
