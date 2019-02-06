@@ -22,6 +22,20 @@ export default class SampleDetailsLoader extends React.Component {
     isLoading: false
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    // check when the pageSize is decreased, because we might have to adjust the current page
+    if (
+      this.state.pageSize > prevState.pageSize &&
+      this.state.page > this.totalPages
+    ) {
+      this.setState({ page: this.totalPages });
+    }
+  }
+
+  get totalPages() {
+    return Math.ceil(this.state.totalSamples / this.state.pageSize);
+  }
+
   render() {
     return (
       <Loader
@@ -31,9 +45,7 @@ export default class SampleDetailsLoader extends React.Component {
         {({ isLoading, hasError }) =>
           this.props.children({
             ...this.state,
-            totalPages: Math.ceil(
-              this.state.totalSamples / this.state.pageSize
-            ),
+            totalPages: this.totalPages,
             isLoading,
             hasError,
 
