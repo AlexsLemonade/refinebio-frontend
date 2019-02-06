@@ -39,10 +39,10 @@ class SamplesTable extends React.Component {
       <SampleDetailsLoader fetchSampleParams={this.props.fetchSampleParams}>
         {state => {
           // Calculate page size options to exclude ones greater than the number of samples.
-          const pageSizes = PAGE_SIZES.filter(
-            size => size <= state.totalSamples
-          );
-          if (pageSizes.length === 0) pageSizes.push(state.totalSamples);
+          const pageSizes =
+            state.totalSamples < 10
+              ? [state.totalSamples]
+              : PAGE_SIZES.filter(size => size <= state.totalSamples);
 
           return (
             <RefineTable

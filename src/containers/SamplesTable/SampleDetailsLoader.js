@@ -51,6 +51,7 @@ export default class SampleDetailsLoader extends React.Component {
             totalPages: this.totalPages,
             isLoading,
             hasError,
+            samples: !hasError ? this.state.samples : [],
 
             // Use this callback to update parameters like: page, pageSize, filter, orderBy
             onUpdate: params => this.setState(params),
