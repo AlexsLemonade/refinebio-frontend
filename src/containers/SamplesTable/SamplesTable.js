@@ -22,6 +22,7 @@ import MetadataAnnotationsCell from './MetadataAnnotationsCell';
 import { InputClear } from '../../components/Input';
 import debounce from 'lodash/debounce';
 import Button from '../../components/Button';
+import SampleDetailsLoader from './SampleDetailsLoader';
 
 class SamplesTable extends React.Component {
   static defaultProps = {
@@ -33,215 +34,114 @@ class SamplesTable extends React.Component {
     sampleMetadataFields: []
   };
 
-  state = {
-    page: 0,
-    pages: -1,
-    pageSize: 10,
-    totalSamples: 0,
-    data: [],
-    filter: '',
-    hasError: false
-  };
-
   columns = this._getColumns();
-
-  constructor(props) {
-    super(props);
-
-    // create a debounced version of fetch data, to avoid repeating
-    this._fetchDataDebounced = debounce(this.fetchData, 400);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.fetchSampleParams, this.props.fetchSampleParams)) {
-      this.fetchData({ setPage: 0 });
-    }
-  }
-
-  get totalSamples() {
-    return this.state.totalSamples;
-  }
 
   render() {
     const { pageActionComponent } = this.props;
-    // `pageActionComponent` is a render prop to add a component at the top right of the table
-    // Good for a add/remove samples button. It's a function that receives the currently displayed
-    // samples as an argument
-    const totalPages = Math.ceil(this.totalSamples / this.state.pageSize);
-
-    // Calculate page size options to exclude ones greater than the number of
-    // samples.
-    const pageSizes = PAGE_SIZES.filter(size => size <= this.totalSamples);
-    if (pageSizes.length === 0) pageSizes.push(this.totalSamples);
 
     return (
-      <RefineTable
-        manual={true}
-        onFetchData={tableState => this.fetchData({ tableState })}
-        loading={this.state.loading}
-        pages={this.state.pages}
-        data={this.state.data}
-        page={this.state.page}
-        pageSize={this.state.pageSize}
-        className="samples-table"
-        showPageSizeOptions={false}
-        showPagination={false}
-        columns={this.columns}
-        ThComponent={ThComponent}
-        minRows={0}
-        noDataText={this.props.noDataText}
-        NoDataComponent={NoDataComponent}
-        getNoDataProps={() => ({
-          hasError: this.state.hasError,
-          // send a callback to allow retrying
-          fetchData: this._fetchDataDebounced
-        })}
-      >
-        {(state, makeTable, instance) => {
+      <SampleDetailsLoader fetchSampleParams={this.props.fetchSampleParams}>
+        {state => {
+          // Calculate page size options to exclude ones greater than the number of samples.
+          const pageSizes = PAGE_SIZES.filter(
+            size => size <= state.totalSamples
+          );
+          if (pageSizes.length === 0) pageSizes.push(state.totalSamples);
+
           return (
-            <div className="samples-table-layout">
-              <div className="samples-table-layout__header">
-                <div className="experiment__sample-commands">
-                  <div className="experiment__per-page-dropdown">
-                    {this.props.pageSizeDropdown({
-                      dropdown: (
-                        <Dropdown
-                          options={pageSizes}
-                          selectedOption={this.state.pageSize}
-                          onChange={this.handlePageSizeChange}
+            <RefineTable
+              manual={true}
+              onFetchData={tableState =>
+                state.onUpdate({
+                  isLoading: true,
+                  orderBy: this._getSortParam(tableState)
+                })
+              }
+              loading={state.isLoading}
+              pages={state.totalPages}
+              data={state.samples}
+              page={state.page}
+              pageSize={state.pageSize}
+              className="samples-table"
+              showPageSizeOptions={false}
+              showPagination={false}
+              columns={this.columns}
+              ThComponent={ThComponent}
+              minRows={0}
+              noDataText={this.props.noDataText}
+              NoDataComponent={NoDataComponent}
+              getNoDataProps={() => ({
+                hasError: state.hasError,
+                // send a callback to allow retrying
+                fetchData: null // TODO
+              })}
+            >
+              {(tableState, makeTable, instance) => (
+                <div className="samples-table-layout">
+                  <div className="samples-table-layout__header">
+                    <div className="experiment__sample-commands">
+                      <div className="experiment__per-page-dropdown">
+                        {this.props.pageSizeDropdown({
+                          dropdown: (
+                            <Dropdown
+                              options={pageSizes}
+                              selectedOption={state.pageSize}
+                              onChange={pageSize =>
+                                state.onUpdate({ pageSize })
+                              }
+                            />
+                          ),
+                          totalSamples: state.totalSamples
+                        })}
+                      </div>
+                      {pageActionComponent &&
+                        pageActionComponent(state.samples)}
+                    </div>
+                    <div className="samples-table__filter">
+                      <div>Filter</div>
+                      <div className="samples-table__filter-input">
+                        <InputClear
+                          value={state.filterBy}
+                          onChange={filterBy => state.onUpdate({ filterBy })}
                         />
-                      ),
-                      totalSamples: this.totalSamples
-                    })}
+                      </div>
+                    </div>
                   </div>
-                  {pageActionComponent &&
-                    pageActionComponent(state.pageRows.map(x => x._original))}
-                </div>
-                <div className="samples-table__filter">
-                  <div>Filter</div>
-                  <div className="samples-table__filter-input">
-                    <InputClear
-                      value={this.state.filter}
-                      onChange={this.handleFilterChange}
+                  <div className="samples-table-layout__main">
+                    <HorizontalScroll targetSelector=".rt-table">
+                      {makeTable()}
+                    </HorizontalScroll>
+                  </div>
+                  <div className="samples-table-layout__footer">
+                    <div className="samples-table__notice info">
+                      <img className="info__icon" src={InfoIcon} alt="" />
+                      <div>
+                        Some fields may be harmonized.{' '}
+                        <a
+                          href="http://docs.refine.bio/en/latest/main_text.html#refine-bio-harmonized-metadata"
+                          target="_blank"
+                          className="link"
+                          rel="noopener noreferrer"
+                        >
+                          Learn more
+                        </a>
+                      </div>
+                    </div>
+
+                    <Pagination
+                      onPaginate={page => state.onUpdate({ page })}
+                      totalPages={state.totalPages}
+                      currentPage={state.page + 1}
                     />
                   </div>
                 </div>
-              </div>
-              <div className="samples-table-layout__main">
-                <HorizontalScroll targetSelector=".rt-table">
-                  {makeTable()}
-                </HorizontalScroll>
-              </div>
-              <div className="samples-table-layout__footer">
-                <div className="samples-table__notice info">
-                  <img className="info__icon" src={InfoIcon} alt="" />
-                  <div>
-                    Some fields may be harmonized.{' '}
-                    <a
-                      href="http://docs.refine.bio/en/latest/main_text.html#refine-bio-harmonized-metadata"
-                      target="_blank"
-                      className="link"
-                      rel="noopener noreferrer"
-                    >
-                      Learn more
-                    </a>
-                  </div>
-                </div>
-
-                <Pagination
-                  onPaginate={this.handlePagination}
-                  totalPages={totalPages}
-                  currentPage={this.state.page + 1}
-                />
-              </div>
-            </div>
+              )}
+            </RefineTable>
           );
         }}
-      </RefineTable>
+      </SampleDetailsLoader>
     );
   }
-
-  _getSampleAccessionCodes() {
-    return uniq(union(...Object.values(this.props.dataSet)));
-  }
-
-  fetchData = async ({ tableState = false, setPage = undefined } = {}) => {
-    let { page, pageSize } = this.state;
-    // get the backend ready `order_by` param, based on the sort options from the table
-    let orderBy = this._getSortParam(tableState);
-
-    if (setPage >= 0) {
-      page = setPage;
-    }
-
-    this.setState({ loading: true, orderBy, hasError: false });
-
-    let offset = page * pageSize;
-
-    let count, data;
-    try {
-      ({ count, data } = await getAllDetailedSamples({
-        orderBy,
-        offset,
-        limit: pageSize,
-        filterBy: this.state.filter,
-        ...(this.props.fetchSampleParams || {})
-      }));
-    } catch (e) {
-      this.setState({
-        data: [],
-        loading: false,
-        hasError: true
-      });
-      return;
-    }
-
-    // add a new property to all samples, with the experiment accession codes that reference it in
-    // the dataset slice. This is needed when adding/removing the sample from the dataset
-    data = data.map(sample => ({
-      ...sample,
-      experimentAccessionCodes: Object.keys(
-        this.props.experimentSampleAssociations
-      ).filter(experimentAccessionCode =>
-        this.props.experimentSampleAssociations[
-          experimentAccessionCode
-        ].includes(sample.accession_code)
-      )
-    }));
-
-    // Customize the columns and their order depending on de data
-    let columns = this._getColumns(data);
-
-    this.setState({
-      totalSamples: count,
-      data,
-      page,
-      columns,
-      pages: Math.ceil(this.totalSamples / pageSize),
-      loading: false,
-      hasError: false
-    });
-  };
-
-  handleFilterChange = filter => {
-    this.setState({ filter }, () => this._fetchDataDebounced());
-  };
-
-  handlePagination = page => {
-    // Set the current page, and update the data afterwards
-    this.setState({ page: page - 1 }, () => this.fetchData());
-  };
-
-  handlePageSizeChange = pageSize => {
-    let page = this.state.page;
-    // check if the page is outside of the new page range
-    if ((page + 1) * pageSize > this.totalSamples) {
-      // set the page to the last one
-      page = Math.floor(this.totalSamples / pageSize);
-    }
-
-    this.setState({ page, pageSize }, () => this.fetchData());
-  };
 
   /**
    * Returns the columns that should be displayed in the table
@@ -297,19 +197,19 @@ class SamplesTable extends React.Component {
     // In some instances like the DataSet page we want to hide the Add/Remove
     // buttons, but otherwise the Add/Remove column should be the first one.
     // If the list is not immutable, prepend the Add/Remove column to headers
-    if (!this.props.isImmutable) {
-      headers = [
-        {
-          Header: 'Add/Remove',
-          id: 'add_remove',
-          sortable: false,
-          Cell: AddRemoveCell.bind(this),
-          width: 190,
-          className: 'samples-table__add-remove'
-        },
-        ...headers
-      ];
-    }
+    // if (!this.props.isImmutable) {
+    //   headers = [
+    //     {
+    //       Header: 'Add/Remove',
+    //       id: 'add_remove',
+    //       sortable: false,
+    //       Cell: AddRemoveCell.bind(this),
+    //       width: 190,
+    //       className: 'samples-table__add-remove'
+    //     },
+    //     ...headers
+    //   ];
+    // }
 
     return headers;
   }
