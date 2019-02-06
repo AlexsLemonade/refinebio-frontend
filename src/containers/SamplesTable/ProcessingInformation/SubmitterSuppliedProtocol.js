@@ -126,8 +126,9 @@ function GeoSubmitterSuppliedProtocol({
               rel="noopener noreferrer"
             >
               https://github.com/AlexsLemonade/identifier-refinery
-            </a>) that support conversion from probe IDs, gene symbols, Entrez
-            IDs, RefSeq and Unigene identifiers to Ensembl gene IDs. We support
+            </a>
+            ) that support conversion from probe IDs, gene symbols, Entrez IDs,
+            RefSeq and Unigene identifiers to Ensembl gene IDs. We support
             conversion from Illumina BeadArray probe IDs to Ensembl gene IDs
             using Bioconductor Illumina BeadArray expression packages.
           </div>

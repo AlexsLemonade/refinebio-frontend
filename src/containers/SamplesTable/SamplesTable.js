@@ -11,7 +11,7 @@ import InfoIcon from '../../common/icons/info-badge.svg';
 import { PAGE_SIZES } from '../../constants/table';
 import SampleFieldMetadata from './SampleFieldMetadata';
 import ProcessingInformationCell from './ProcessingInformationCell';
-import DataSetSampleActions from './DataSetSampleActions';
+import DataSetSampleActions from '../DataSetSampleActions';
 import './SamplesTable.scss';
 import HorizontalScroll from '../../components/HorizontalScroll';
 import isEqual from 'lodash/isEqual';

@@ -13,11 +13,11 @@ import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import BackToTop from '../../components/BackToTop';
 
-import SamplesTable from './SamplesTable';
-import DataSetSampleActions from './DataSetSampleActions';
+import SamplesTable from '../SamplesTable/SamplesTable';
+import DataSetSampleActions from '../DataSetSampleActions';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
-import DataSetStats from './DataSetStats';
+import DataSetStats from '../DataSetStats';
 import Spinner from '../../components/Spinner';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import Anchor from '../../components/Anchor';

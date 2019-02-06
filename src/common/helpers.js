@@ -1,4 +1,3 @@
-import SampleFieldMetadata from '../containers/Experiment/SampleFieldMetadata';
 import { ApiVersionMismatchError, ServerError } from '../common/errors';
 
 /**
@@ -220,9 +219,7 @@ export const Ajax = {
 };
 
 export const getMetadataFields = sampleMetadataFields =>
-  SampleFieldMetadata.filter(
-    field => sampleMetadataFields && sampleMetadataFields.includes(field.id)
-  ).map(field => field.Header);
+  sampleMetadataFields.map(formatSentenceCase);
 
 export function stringEnumerate([x0, ...rest]) {
   if (!rest || !rest.length) {

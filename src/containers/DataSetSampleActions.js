@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Button from '../../components/Button';
-import { addSamples, removeSamples } from '../../state/download/actions';
+import Button from '../components/Button';
+import { addSamples, removeSamples } from '../state/download/actions';
 import DataSetStats from './DataSetStats';
 
 /**
