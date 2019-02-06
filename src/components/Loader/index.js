@@ -39,8 +39,12 @@ export default class Loader extends React.Component {
     return this.props.children(this.state);
   }
 
+  refresh() {
+    return this._fetchData();
+  }
+
   async _fetchData() {
-    this.setState({ isLoading: true });
+    this.setState({ hasError: false, isLoading: true });
 
     let data;
     try {

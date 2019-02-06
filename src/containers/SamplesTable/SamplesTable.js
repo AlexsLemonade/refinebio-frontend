@@ -69,7 +69,7 @@ class SamplesTable extends React.Component {
               getNoDataProps={() => ({
                 hasError: state.hasError,
                 // send a callback to allow retrying
-                fetchData: null // TODO
+                fetchData: state.refresh
               })}
             >
               {(tableState, makeTable, instance) => (

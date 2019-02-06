@@ -22,6 +22,8 @@ export default class SampleDetailsLoader extends React.Component {
     isLoading: false
   };
 
+  loader = React.createRef();
+
   componentDidUpdate(prevProps, prevState) {
     // check when the pageSize is decreased, because we might have to adjust the current page
     if (
@@ -39,6 +41,7 @@ export default class SampleDetailsLoader extends React.Component {
   render() {
     return (
       <Loader
+        ref={this.loader}
         fetch={this.fetchSamples}
         updateProps={this.getFetchSamplesParams()}
       >
@@ -50,7 +53,8 @@ export default class SampleDetailsLoader extends React.Component {
             hasError,
 
             // Use this callback to update parameters like: page, pageSize, filter, orderBy
-            onUpdate: params => this.setState(params)
+            onUpdate: params => this.setState(params),
+            refresh: () => this.loader.current && this.loader.current.refresh()
           })
         }
       </Loader>
