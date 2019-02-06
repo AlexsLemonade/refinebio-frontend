@@ -153,7 +153,18 @@ class SamplesTable extends React.Component {
         Header: 'Add/Remove',
         id: 'add_remove',
         sortable: false,
-        // Cell: AddRemoveCell.bind(this),
+        Cell: ({ original: sample }) => (
+          <AddRemoveCell
+            sample={sample}
+            experimentAccessionCodes={Object.keys(
+              this.props.experimentSampleAssociations
+            ).filter(experimentAccessionCode =>
+              this.props.experimentSampleAssociations[
+                experimentAccessionCode
+              ].includes(sample.accession_code)
+            )}
+          />
+        ),
         width: 190,
         className: 'samples-table__add-remove',
         show: !this.props.isImmutable
@@ -287,9 +298,7 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
   );
 }
 
-function AddRemoveCell({ original: sample }) {
-  // retrieve all experiment accession codes referencing this sample
-  const { experimentAccessionCodes } = sample;
+function AddRemoveCell({ sample, experimentAccessionCodes }) {
   // Create a dataset slice, where we include all experiments that are referencing this sample
   // that way when it gets added/removed it will impact all those experiments
   const dataSetSlice = experimentAccessionCodes.reduce(
