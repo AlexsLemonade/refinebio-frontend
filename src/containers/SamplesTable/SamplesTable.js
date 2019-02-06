@@ -4,7 +4,6 @@ import 'react-table/react-table.css';
 
 import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
-import { getAllDetailedSamples } from '../../api/samples';
 
 import InfoIcon from '../../common/icons/info-badge.svg';
 
@@ -13,16 +12,13 @@ import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from '../DataSetSampleActions';
 import './SamplesTable.scss';
 import HorizontalScroll from '../../components/HorizontalScroll';
-import isEqual from 'lodash/isEqual';
 
-import uniq from 'lodash/uniq';
-import union from 'lodash/union';
 import MetadataAnnotationsCell from './MetadataAnnotationsCell';
 import { InputClear } from '../../components/Input';
-import debounce from 'lodash/debounce';
 import Button from '../../components/Button';
 import SampleDetailsLoader from './SampleDetailsLoader';
 import { formatSentenceCase } from '../../common/helpers';
+import debounce from 'lodash/debounce';
 
 class SamplesTable extends React.Component {
   static defaultProps = {
@@ -97,15 +93,9 @@ class SamplesTable extends React.Component {
                       {pageActionComponent &&
                         pageActionComponent(state.samples)}
                     </div>
-                    <div className="samples-table__filter">
-                      <div>Filter</div>
-                      <div className="samples-table__filter-input">
-                        <InputClear
-                          value={state.filterBy || ''}
-                          onChange={filterBy => state.onUpdate({ filterBy })}
-                        />
-                      </div>
-                    </div>
+                    <SamplesTableFilter
+                      onChange={filterBy => state.onUpdate({ filterBy })}
+                    />
                   </div>
                   <div className="samples-table-layout__main">
                     <HorizontalScroll targetSelector=".rt-table">
@@ -131,7 +121,7 @@ class SamplesTable extends React.Component {
                     <Pagination
                       onPaginate={page => state.onUpdate({ page })}
                       totalPages={state.totalPages}
-                      currentPage={state.page + 1}
+                      currentPage={state.page}
                     />
                   </div>
                 </div>
@@ -334,4 +324,29 @@ function AddRemoveCell({ sample, experimentAccessionCodes }) {
       meta={{ addText: 'Add', buttonStyle: 'secondary' }}
     />
   );
+}
+
+class SamplesTableFilter extends React.Component {
+  state = {
+    filterBy: ''
+  };
+
+  onChangeDebounced = debounce(this.props.onChange, 400);
+
+  render() {
+    return (
+      <div className="samples-table__filter">
+        <div>Filter</div>
+        <div className="samples-table__filter-input">
+          <InputClear
+            value={this.state.filterBy}
+            onChange={filterBy => {
+              this.setState({ filterBy });
+              this.onChangeDebounced(filterBy);
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
 }

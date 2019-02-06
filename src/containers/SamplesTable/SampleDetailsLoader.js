@@ -1,6 +1,5 @@
 import React from 'react';
 import { getAllDetailedSamples } from '../../api/samples';
-import isEqual from 'lodash/isEqual';
 import Loader from '../../components/Loader';
 
 /**
@@ -8,11 +7,12 @@ import Loader from '../../components/Loader';
  */
 export default class SampleDetailsLoader extends React.Component {
   static defaultProps = {
+    // Additional props that should be sent when fetching the samples
     fetchSampleParams: {}
   };
 
   state = {
-    page: 0,
+    page: 1, // base 1
     pageSize: 10,
     filterBy: undefined,
     orderBy: undefined,
@@ -26,7 +26,7 @@ export default class SampleDetailsLoader extends React.Component {
     return (
       <Loader
         fetch={this.fetchSamples}
-        updateProps={this.getParameterSnapshot()}
+        updateProps={this.getFetchSamplesParams()}
       >
         {({ isLoading, hasError }) =>
           this.props.children({
@@ -48,9 +48,9 @@ export default class SampleDetailsLoader extends React.Component {
   /**
    * Given the current state, returns the parameters that should be used
    */
-  getParameterSnapshot() {
+  getFetchSamplesParams() {
     const { page, pageSize, orderBy, filterBy } = this.state;
-    const offset = page * pageSize;
+    const offset = (page - 1) * pageSize;
 
     return {
       ...this.props.fetchSampleParams,
@@ -62,7 +62,7 @@ export default class SampleDetailsLoader extends React.Component {
   }
 
   fetchSamples = async () => {
-    const detailedSamplesParams = this.getParameterSnapshot();
+    const detailedSamplesParams = this.getFetchSamplesParams();
     const { count: totalSamples, data: samples } = await getAllDetailedSamples(
       detailedSamplesParams
     );
