@@ -10,7 +10,7 @@ import Layout from '../components/Layout';
 import ErrorBoundary from '../components/ErrorBoundary';
 
 import Main from './Main';
-import Results from './Results';
+import Search from './Search';
 import Experiment from './Experiment';
 import Dashboard from './Dashboard';
 import ExecutiveDashboard from './Dashboard/ExecutiveDashboard';
@@ -31,7 +31,7 @@ import './App.scss';
 const AppContent = () => (
   <div className="layout__content">
     <Switch>
-      <Route path="/results" component={Results} />
+      <Route path="/search" component={Search} />
       <Route path="/experiments/:id" component={Experiment} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/executive-dashboard" component={ExecutiveDashboard} />

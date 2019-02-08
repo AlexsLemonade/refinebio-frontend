@@ -15,5 +15,5 @@ export const experimentsSamples = (accessionCode, state = false) => {
 };
 
 export const searchUrl = (params = false) => {
-  return params ? `/results?${getQueryString(params)}` : '/results';
+  return params ? `/search?${getQueryString(params)}` : '/search';
 };

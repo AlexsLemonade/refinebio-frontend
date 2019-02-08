@@ -8,7 +8,6 @@ import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
 import BackToTop from '../../components/BackToTop';
 import { getQueryParamObject } from '../../common/helpers';
-import './Results.scss';
 import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../common/constants';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
@@ -31,7 +30,9 @@ import InfoBox from '../../components/InfoBox';
 import StickyBox from 'react-sticky-box';
 import { searchUrl } from '../../routes';
 
-class Results extends Component {
+import './SearchResults.scss';
+
+class SearchResults extends Component {
   state = {
     query: '',
     filters: {}
@@ -199,7 +200,7 @@ class Results extends Component {
     return { query, page, size, ordering, filters, filterOrder };
   }
 }
-Results = connect(
+SearchResults = connect(
   ({
     search: { results, pagination, searchTerm, appliedFilters, ordering }
   }) => ({
@@ -214,8 +215,8 @@ Results = connect(
     fetchResults,
     triggerSearch
   }
-)(Results);
-export default Results;
+)(SearchResults);
+export default SearchResults;
 
 /**
  * Renders the button that can add/remove all samples in a page of the search results.
