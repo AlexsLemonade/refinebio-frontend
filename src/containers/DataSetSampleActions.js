@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../components/Button';
 import { addSamples, removeSamples } from '../state/download/actions';
-import DataSetStats from './DataSetStats';
+import DataSetStats from '../common/DataSetStats';
 
 /**
  * Given a dataset and a set of samples, this component renders the correct buttons

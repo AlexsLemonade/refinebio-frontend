@@ -17,7 +17,7 @@ import SamplesTable from '../SamplesTable/SamplesTable';
 import DataSetSampleActions from '../DataSetSampleActions';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
-import DataSetStats from '../DataSetStats';
+import DataSetStats from '../../common/DataSetStats';
 import Spinner from '../../components/Spinner';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import Anchor from '../../components/Anchor';
