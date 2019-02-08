@@ -27,6 +27,8 @@ import classnames from 'classnames';
 import { NDownloadableSamples } from '../../components/Strings';
 
 import { searchUrl } from '../../routes';
+import { getExperiment } from '../../api/experiments';
+import NoMatch from '../NoMatch';
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
@@ -34,15 +36,7 @@ const DatabaseNames = {
   ARRAY_EXPRESS: 'ArrayExpress'
 };
 
-let Experiment = ({
-  fetchExperiment,
-  experiment = {},
-  addSamplesToDataset,
-  dataSet,
-  match,
-  location: { search, state },
-  goBack
-}) => {
+let Experiment = ({ match, location: { search, state }, goBack }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
 
@@ -50,14 +44,19 @@ let Experiment = ({
     <div>
       <InfoBox />
 
-      <Loader fetch={() => fetchExperiment(match.params.id)}>
-        {({ isLoading }) => {
+      <Loader
+        fetch={() => getExperiment(match.params.id)}
+        updateProps={match.params.id}
+      >
+        {({ isLoading, hasError, data: experiment }) => {
+          if (hasError) return <NoMatch />;
+
           let displaySpinner = isLoading;
-          let experimentData = experiment;
-          let totalSamples = experiment.samples && experiment.samples.length;
-          let processedSamples =
-            experiment.samples &&
-            experiment.samples.filter(x => x.is_processed).length;
+          let experimentData = experiment || { samples: [] };
+          let totalSamples = experimentData.samples.length;
+          let processedSamples = experimentData.samples.filter(
+            x => x.is_processed
+          ).length;
           let organisms = experimentData.organisms;
 
           // for users coming from the search, see if there's any experiment's data in the url state
@@ -85,7 +84,7 @@ let Experiment = ({
               )}
 
               <div className="experiment">
-                <ExperimentHelmet experiment={experiment} />
+                <ExperimentHelmet experiment={experimentData} />
                 <BackToTop />
                 <div className="experiment__accession">
                   <img
@@ -223,19 +222,19 @@ let Experiment = ({
                   </ExperimentHeaderRow>
                 </div>
 
-                {experiment.source_database && (
+                {experimentData.source_database && (
                   <div className="experiment__source-database">
                     <div className="experiment__row-label">
                       Source Repository
                     </div>
                     <div>
                       <a
-                        href={experiment.source_url}
+                        href={experimentData.source_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="link"
                       >
-                        {DatabaseNames[experiment.source_database]}
+                        {DatabaseNames[experimentData.source_database]}
                       </a>
                     </div>
                   </div>
@@ -262,11 +261,8 @@ let Experiment = ({
   );
 };
 Experiment = connect(
-  ({ experiment, download: { dataSet } }) => ({ experiment, dataSet }),
-  {
-    fetchExperiment,
-    goBack
-  }
+  null,
+  { goBack }
 )(Experiment);
 
 export default Experiment;
