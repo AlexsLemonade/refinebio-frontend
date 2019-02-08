@@ -13,7 +13,7 @@ import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../constants/table';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
-import DataSetSampleActions from '../DataSetSampleActions';
+import DataSetSampleActions from '../../components/DataSetSampleActions';
 import isEqual from 'lodash/isEqual';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';

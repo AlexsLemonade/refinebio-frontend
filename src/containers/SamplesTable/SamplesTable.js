@@ -9,7 +9,7 @@ import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../constants/table';
 import ProcessingInformationCell from './ProcessingInformationCell';
-import DataSetSampleActions from '../DataSetSampleActions';
+import DataSetSampleActions from '../../components/DataSetSampleActions';
 import './SamplesTable.scss';
 import HorizontalScroll from '../../components/HorizontalScroll';
 

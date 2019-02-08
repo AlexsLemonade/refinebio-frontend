@@ -14,7 +14,7 @@ import OrganismIcon from '../../common/icons/organism.svg';
 import BackToTop from '../../components/BackToTop';
 
 import SamplesTable from '../SamplesTable/SamplesTable';
-import DataSetSampleActions from '../DataSetSampleActions';
+import DataSetSampleActions from '../../components/DataSetSampleActions';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
 import DataSetStats from '../../common/DataSetStats';

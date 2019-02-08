@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Button from '../components/Button';
+import Button from './Button';
 import { addSamples, removeSamples } from '../state/download/actions';
 import DataSetStats from '../common/DataSetStats';
 

@@ -5,7 +5,7 @@ import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
-import DataSetSampleActions from '../../DataSetSampleActions';
+import DataSetSampleActions from '../../../components/DataSetSampleActions';
 import * as routes from '../../../routes';
 import HighlightedText from '../../../components/HighlightedText';
 import TechnologyBadge, {
