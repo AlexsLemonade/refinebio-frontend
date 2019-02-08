@@ -17,9 +17,9 @@ import ExecutiveDashboard from './Dashboard/ExecutiveDashboard';
 import Downloads from './Downloads';
 import DataSet from './Downloads/DataSet';
 import NoMatch from './NoMatch';
-import Privacy from './Terms/Privacy';
-import Terms from './Terms/Terms';
-import License from './Terms/License';
+import Privacy from './Privacy';
+import Terms from './Terms';
+import License from './License';
 import About from './About';
 
 import './App.scss';

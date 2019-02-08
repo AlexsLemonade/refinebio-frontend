@@ -1,6 +1,5 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import './Terms.scss';
 
 const Privacy = () => (
   <div className="terms">

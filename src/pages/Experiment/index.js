@@ -3,7 +3,6 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Loader from '../../components/Loader';
-import { fetchExperiment } from '../../state/experiment/actions';
 import Button from '../../components/Button';
 import { formatSentenceCase, truncateOnWord } from '../../common/helpers';
 import './Experiment.scss';
