@@ -16,6 +16,7 @@ import {
 } from './graphs';
 import TabControl from '../../components/TabControl';
 import apiData from '../../apiData.json';
+import { searchUrl } from '../../routes';
 
 let Main = ({ searchTerm, fetchResults, push }) => {
   return (
@@ -29,7 +30,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
             Search for harmonized transcriptome data
           </h1>
           <SearchInput
-            onSubmit={query => push(query ? `/results?q=${query}` : `/results`)}
+            onSubmit={query => push(searchUrl(query ? { q: query } : null))}
             buttonStyle="primary"
           />
           <div className="main__search-suggestions">
@@ -38,7 +39,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
             {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
               <Link
                 className="main__search-suggestion"
-                to={`/results?q=${q}`}
+                to={searchUrl({ q })}
                 key={q}
               >
                 {q}

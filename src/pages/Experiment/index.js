@@ -26,6 +26,8 @@ import InfoBox from '../../components/InfoBox';
 import classnames from 'classnames';
 import { NDownloadableSamples } from '../../components/Strings';
 
+import { searchUrl } from '../../routes';
+
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
   SRA: 'Sequence Read Archive (SRA)',
@@ -190,9 +192,9 @@ let Experiment = ({
                   </ExperimentHeaderRow>
                   <ExperimentHeaderRow label="Submitter’s Institution">
                     <Link
-                      to={`/results?q=${encodeURIComponent(
-                        experimentData.submitter_institution
-                      )}`}
+                      to={searchUrl({
+                        q: experimentData.submitter_institution
+                      })}
                       className="link"
                     >
                       {experimentData.submitter_institution}
@@ -202,10 +204,7 @@ let Experiment = ({
                     {experimentData.publication_authors.length > 0 ? (
                       experimentData.publication_authors
                         .map(author => (
-                          <Link
-                            to={`/results?q=${encodeURIComponent(author)}`}
-                            className="link"
-                          >
+                          <Link to={searchUrl({ q: author })} className="link">
                             {author}
                           </Link>
                         ))

@@ -10,6 +10,7 @@ import classnames from 'classnames';
 import Loader from '../../components/Loader';
 import SideMenu from '../../components/SideMenu';
 import ResponsiveSwitch from '../../components/ResponsiveSwitch';
+import { searchUrl } from '../../routes';
 
 class Header extends React.Component {
   render() {
@@ -53,7 +54,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
         to="/"
         onClick={itemClicked}
         location={location}
-        activePath={['/results']}
+        activePath={[searchUrl()]}
       >
         Search
       </HeaderLink>

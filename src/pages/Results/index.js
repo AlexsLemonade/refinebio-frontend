@@ -29,6 +29,7 @@ import {
 import fromPairs from 'lodash/fromPairs';
 import InfoBox from '../../components/InfoBox';
 import StickyBox from 'react-sticky-box';
+import { searchUrl } from '../../routes';
 
 class Results extends Component {
   state = {
@@ -298,7 +299,7 @@ const NoSearchResults = () => (
       {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
         <Link
           className="link results__suggestion"
-          to={`/results?q=${q}`}
+          to={searchUrl({ q })}
           key={q}
         >
           {q}

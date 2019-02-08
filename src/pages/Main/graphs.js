@@ -15,6 +15,7 @@ import moment from 'moment';
 import { accumulateByKeys } from '../../common/helpers';
 import { push } from '../../state/routerActions';
 import apiData from '../../apiData.json';
+import { searchUrl } from '../../routes';
 
 function getSamplesPerSpecies() {
   const { organism } = apiData;
@@ -53,7 +54,7 @@ let SamplesPerSpeciesGraph = ({ push }) => {
               fill="#386db0"
               onClick={({ payload }) =>
                 // show all results for a given sample when bar is clicked
-                push('/results?organisms__name=' + payload.organism)
+                push(searchUrl({ organisms__name: payload.organism }))
               }
             />
           </BarChart>
