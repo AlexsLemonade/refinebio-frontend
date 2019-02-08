@@ -7,7 +7,7 @@ import Dropdown from '../../components/Dropdown';
 
 import InfoIcon from '../../common/icons/info-badge.svg';
 
-import { PAGE_SIZES } from '../../constants/table';
+import { PAGE_SIZES } from '../../common/constants';
 import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
 import './SamplesTable.scss';

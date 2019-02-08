@@ -10,7 +10,7 @@ import BackToTop from '../../components/BackToTop';
 import { getQueryParamObject } from '../../common/helpers';
 import './Results.scss';
 import Dropdown from '../../components/Dropdown';
-import { PAGE_SIZES } from '../../constants/table';
+import { PAGE_SIZES } from '../../common/constants';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import { Link } from 'react-router-dom';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
