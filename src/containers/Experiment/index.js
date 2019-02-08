@@ -13,7 +13,7 @@ import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import BackToTop from '../../components/BackToTop';
 
-import SamplesTable from '../SamplesTable/SamplesTable';
+import SamplesTable from '../../components/SamplesTable/SamplesTable';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';

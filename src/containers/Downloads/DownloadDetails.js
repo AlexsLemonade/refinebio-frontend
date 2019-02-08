@@ -11,7 +11,7 @@ import DownloadFileSummary from './DownloadFileSummary';
 import DownloadDatasetSummary from './DownloadDatasetSummary';
 
 import ModalManager from '../../components/Modal/ModalManager';
-import SamplesTable from '../SamplesTable/SamplesTable';
+import SamplesTable from '../../components/SamplesTable/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 
 import Radio from '../../components/Radio';
