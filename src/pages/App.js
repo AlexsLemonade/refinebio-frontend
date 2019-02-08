@@ -1,26 +1,28 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import './App.scss';
-import { Router, Route, Switch } from 'react-router-dom';
-import history from '../../history';
-import store from '../../store/store';
-
-import Main from '../../containers/Main';
-import Results from '../../containers/Results';
-import Experiment from '../../containers/Experiment';
-import Dashboard from '../../containers/Dashboard';
-import ExecutiveDashboard from '../../containers/Dashboard/ExecutiveDashboard';
-import Downloads from '../../containers/Downloads';
-import DataSet from '../../containers/Downloads/DataSet';
-import Layout from '../Layout';
-import NoMatch from '../../containers/NoMatch';
-import Privacy from '../../components/Terms/Privacy';
-import Terms from '../../components/Terms/Terms';
-import License from '../../components/Terms/License';
 import { Provider } from 'react-redux';
-import ErrorBoundary from '../../containers/ErrorBoundary';
-import About from '../About';
 import classnames from 'classnames';
+import { Router, Route, Switch } from 'react-router-dom';
+
+import history from '../history';
+import store from '../store/store';
+import Layout from '../components/Layout';
+
+import Main from './Main';
+import Results from './Results';
+import Experiment from './Experiment';
+import Dashboard from './Dashboard';
+import ExecutiveDashboard from './Dashboard/ExecutiveDashboard';
+import Downloads from './Downloads';
+import DataSet from './Downloads/DataSet';
+import NoMatch from './NoMatch';
+import Privacy from './Terms/Privacy';
+import Terms from './Terms/Terms';
+import License from './Terms/License';
+import ErrorBoundary from './ErrorBoundary';
+import About from './About';
+
+import './App.scss';
 
 /**
  * The 404 route was giving conflicts when used inside App, that's it's extracted into

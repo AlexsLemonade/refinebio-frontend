@@ -74,8 +74,8 @@ function AppRunningSpeed({ speed }) {
     speed === RunningStatus.RunningFast
       ? 'We are running fast!'
       : speed === RunningStatus.Running
-        ? 'We are running.'
-        : 'We are not running.';
+      ? 'We are running.'
+      : 'We are not running.';
 
   return (
     <div>

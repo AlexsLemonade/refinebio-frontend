@@ -21,7 +21,8 @@ const Terms = () => (
         className="link"
       >
         https://www.ccdatalab.org
-      </a>,{' '}
+      </a>
+      ,{' '}
       <a
         href="https://cognoma.org"
         target="_blank"
@@ -29,7 +30,8 @@ const Terms = () => (
         className="link"
       >
         https://cognoma.org
-      </a>,{' '}
+      </a>
+      ,{' '}
       <a
         href="http://www.refine.bio"
         target="_blank"
@@ -101,15 +103,15 @@ const Terms = () => (
         Account Registration
         <p>
           When you register or seek authentication, you must (a)&nbsp;provide
-          accurate, current and complete information, as prompted (<strong>
-            "Registration Data"
-          </strong>); (b) maintain the security of any logins, passwords, or
-          other credentials that you select or that are provided to you for use
-          on the CCDL; and (c) maintain and promptly update the Registration
-          Data, and any other information you provide to us, and to keep all
-          such information accurate, current and complete. You must notify us as
-          soon as practicable of any unauthorized use of your account or any
-          other breach of security by emailing us at ccdl@alexslemonade.org.
+          accurate, current and complete information, as prompted (
+          <strong>"Registration Data"</strong>); (b) maintain the security of
+          any logins, passwords, or other credentials that you select or that
+          are provided to you for use on the CCDL; and (c) maintain and promptly
+          update the Registration Data, and any other information you provide to
+          us, and to keep all such information accurate, current and complete.
+          You must notify us as soon as practicable of any unauthorized use of
+          your account or any other breach of security by emailing us at
+          ccdl@alexslemonade.org.
         </p>
       </li>
       <li>
@@ -525,7 +527,8 @@ const Terms = () => (
             className="link"
           >
             ccdl@alexslemonade.org
-          </a>.
+          </a>
+          .
         </p>
       </li>
     </ol>

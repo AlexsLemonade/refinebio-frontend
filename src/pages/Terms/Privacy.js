@@ -18,7 +18,8 @@ const Privacy = () => (
         className="link"
       >
         https://www.ccdatalab.org
-      </a>,{' '}
+      </a>
+      ,{' '}
       <a
         href="https://cognoma.org"
         target="_blank"
@@ -26,7 +27,8 @@ const Privacy = () => (
         className="link"
       >
         https://cognoma.org
-      </a>, and{' '}
+      </a>
+      , and{' '}
       <a
         href="http://www.refine.bio"
         target="_blank"
@@ -195,7 +197,8 @@ const Privacy = () => (
             className="link"
           >
             ccdl@alexslemonade.org
-          </a>. You can also request that we delete your personal information or
+          </a>
+          . You can also request that we delete your personal information or
           remove you from our communications.
         </p>
       </li>
@@ -267,7 +270,8 @@ const Privacy = () => (
             className="link"
           >
             ccdl@alexslemonade.org
-          </a>.
+          </a>
+          .
         </p>
       </li>
       <li>

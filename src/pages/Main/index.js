@@ -66,7 +66,8 @@ let Main = ({ searchTerm, fetchResults, push }) => {
                 rel="noopener noreferrer"
               >
                 Childhood Cancer Data Lab (CCDL)
-              </a>.
+              </a>
+              .
             </p>
           </div>
           <div className="main__col">
