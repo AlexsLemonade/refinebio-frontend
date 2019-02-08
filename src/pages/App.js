@@ -7,6 +7,7 @@ import { Router, Route, Switch } from 'react-router-dom';
 import history from '../history';
 import store from '../store/store';
 import Layout from '../components/Layout';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 import Main from './Main';
 import Results from './Results';
@@ -19,7 +20,6 @@ import NoMatch from './NoMatch';
 import Privacy from './Terms/Privacy';
 import Terms from './Terms/Terms';
 import License from './Terms/License';
-import ErrorBoundary from './ErrorBoundary';
 import About from './About';
 
 import './App.scss';
