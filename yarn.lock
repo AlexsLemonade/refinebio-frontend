@@ -699,12 +699,13 @@
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
 
-"@haiku/cli@^3.4.6":
-  version "3.4.8"
-  resolved "https://reservoir.haiku.ai:8910/@haiku%2fcli/-/cli-3.4.8.tgz#8d9a028c584bde02692a02e735d7cf447d1fb672"
+"@haiku/cli@^4.3.11":
+  version "4.3.11"
+  resolved "https://reservoir.haiku.ai:8910/@haiku%2fcli/-/cli-4.3.11.tgz#7fdaa4976e1f2b18eb370afd4ed52cdfa066f093"
+  integrity sha512-nFRnKYYXCh/9mDWR6Z2+iY5SWj67k498sEH5jgMvZGn0fV1+OKlWc6GEU6lCxcjPFEfsBYc6S8PYtVZjulUJNQ==
   dependencies:
-    "@haiku/sdk-client" "3.4.8"
-    "@haiku/sdk-inkstone" "3.4.8"
+    "@haiku/sdk-client" "4.3.11"
+    "@haiku/sdk-inkstone" "4.3.11"
     async "^2.5.0"
     chalk "^1.1.3"
     cli-color "^1.2.0"
@@ -720,19 +721,21 @@
     tail "^1.2.1"
     yargs "^6.6.0"
 
-"@haiku/core@^3.4.4":
-  version "3.4.8"
-  resolved "https://reservoir.haiku.ai:8910/@haiku%2fcore/-/core-3.4.8.tgz#1e1cc512c541f1e7388dc8a89a04552076f67c76"
-
 "@haiku/core@^4.2.0":
   version "4.2.1"
   resolved "https://reservoir.haiku.ai:8910/@haiku%2fcore/-/core-4.2.1.tgz#36cfe90f4cb62dbbad2818e4022dfacaaf9f7153"
 
-"@haiku/dvprasad-processingdataset@^0.0.1":
-  version "0.0.1"
-  resolved "https://reservoir.haiku.ai:8910/@haiku%2fdvprasad-processingdataset/-/dvprasad-processingdataset-0.0.1.tgz#c3c9e3f7ca17079a9e32483d75554ce3586b1fea"
+"@haiku/core@^4.3.5":
+  version "4.3.11"
+  resolved "https://reservoir.haiku.ai:8910/@haiku%2fcore/-/core-4.3.11.tgz#f52a3de03f1114b3c6dd975b279cf6f7af497c79"
+  integrity sha512-KDROVCWdgxVeM6AQclRPEG00BqV2gYZEOg4JbzLiIv4XlMmEo54SIxMUS8yv7hNARD8jrf0fnX7KmxVcApIYdQ==
+
+"@haiku/dvprasad-processingdataset@^0.0.2":
+  version "0.0.2"
+  resolved "https://reservoir.haiku.ai:8910/@haiku%2fdvprasad-processingdataset/-/dvprasad-processingdataset-0.0.2.tgz#7a3406edb9c7649bcaf48753c2337d780b2c4288"
+  integrity sha512-VF/kJ3z7wkfdjGQ/9h0kTkFeQaGy9eA0OsPXX4KFH2OhX6f8++7P0zbuVBFrjejV46v3QM5lh84g8g6OeIMCLg==
   dependencies:
-    "@haiku/core" "^3.4.4"
+    "@haiku/core" "^4.3.5"
 
 "@haiku/dvprasad-refinebiospinner@^0.0.4":
   version "0.0.4"
@@ -740,17 +743,24 @@
   dependencies:
     "@haiku/core" "^4.2.0"
 
-"@haiku/sdk-client@3.4.8":
-  version "3.4.8"
-  resolved "https://reservoir.haiku.ai:8910/@haiku%2fsdk-client/-/sdk-client-3.4.8.tgz#29d1e81bee827cd311c7d132773c415d899b4e42"
+"@haiku/sdk-client@4.3.11":
+  version "4.3.11"
+  resolved "https://reservoir.haiku.ai:8910/@haiku%2fsdk-client/-/sdk-client-4.3.11.tgz#d8f873d2042210dbd89bee22b4b0fc86519cdf5e"
+  integrity sha512-292Xv1jZ/ao851nziOHxw7JCQsDsCrGMq2lhT03/rk1deSXPvHh48MVO67SzpdHAsux1OWqbCJxP+ZrheWL6sg==
   dependencies:
+    "@haiku/sdk-inkstone" "4.3.11"
+    dedent "^0.7.0"
+    dotenv "^5.0.1"
+    fs-extra "^4.0.2"
     lodash "^4.17.4"
     mkdirp "^0.5.1"
+    pascalcase "0.1.1"
     request "^2.83.0"
 
-"@haiku/sdk-inkstone@3.4.8":
-  version "3.4.8"
-  resolved "https://reservoir.haiku.ai:8910/@haiku%2fsdk-inkstone/-/sdk-inkstone-3.4.8.tgz#f08ac6afa1aeec08fed58df6c03ab160b3c74538"
+"@haiku/sdk-inkstone@4.3.11":
+  version "4.3.11"
+  resolved "https://reservoir.haiku.ai:8910/@haiku%2fsdk-inkstone/-/sdk-inkstone-4.3.11.tgz#234eca9f11e36ffb62bffb49e23971b0df319bed"
+  integrity sha512-ag/t4BcMS+1Zw7LcpTJ8G5Mg0MC3lLm4LtxoCSfBUOxO1Zvb0TvwQPm88cBqib4KY0sY10fli9xPMHCd1vWh8w==
   dependencies:
     request "^2.83.0"
 
@@ -3130,6 +3140,11 @@ dotenv-expand@4.2.0:
 dotenv@6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.0.0.tgz#24e37c041741c5f4b25324958ebbc34bca965935"
+
+dotenv@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-5.0.1.tgz#a5317459bd3d79ab88cff6e44057a6a3fbb1fcef"
+  integrity sha512-4As8uPrjfwb7VXC+WnLCbXK7y+Ueb2B3zgNCePYfhxS1PYeaO1YTeplffTEcbfLhvFNGLAz90VvJs9yomG7bow==
 
 duplexer@^0.1.1:
   version "0.1.1"
@@ -7019,9 +7034,10 @@ parseurl@~1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.2.tgz#fc289d4ed8993119460c156253262cdc8de65bf3"
 
-pascalcase@^0.1.1:
+pascalcase@0.1.1, pascalcase@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/pascalcase/-/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
+  integrity sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ=
 
 path-browserify@0.0.0:
   version "0.0.0"
