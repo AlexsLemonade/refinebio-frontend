@@ -8,7 +8,7 @@ import {
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
 import { getDataSetId } from './reducer';
-import { replace } from '../routerActions';
+import { push, replace } from '../routerActions';
 import { createToken, clearToken } from '../token';
 import { ServerError, InvalidTokenError } from '../../common/errors';
 
@@ -278,4 +278,33 @@ export const startDownload = ({
       state: { email_address: email }
     })
   );
+};
+
+/**
+ * Once generated the datasets are immutable on the server, so to be able to re-generate one we have
+ * to create a new dataset and redirect to the associated page.
+ */
+export const regenerateDataSet = () => async (dispatch, getState) => {
+  let { data, aggregate_by, scale_by } = getState().dataSet;
+
+  try {
+    // 1. create a new dataset
+    let { id: dataSetId } = await createDataSet();
+    // 2. add the same data
+    await Ajax.put(`/dataset/${dataSetId}/`, {
+      data,
+      aggregate_by,
+      scale_by
+    });
+
+    // 3. redirect to the new dataset page, where the user will be able to add an email
+    dispatch(
+      push({
+        pathname: `/dataset/${dataSetId}`,
+        state: { regenerate: true, dataSetId, dataSet: data }
+      })
+    );
+  } catch (e) {
+    dispatch(reportError(e));
+  }
 };

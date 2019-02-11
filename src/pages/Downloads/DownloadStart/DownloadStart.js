@@ -8,7 +8,6 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import ProcessingImage from './download-processing.svg';
-import { editEmail } from '../../../state/dataSet/actions';
 import { startDownload } from '../../../state/download/actions';
 import EmailForm from './EmailForm';
 
@@ -66,7 +65,6 @@ DownloadStart = connect(
     agreedToTerms: !!state.token
   }),
   {
-    editEmail,
     startDownload
   }
 )(DownloadStart);

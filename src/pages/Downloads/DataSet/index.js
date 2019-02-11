@@ -1,22 +1,16 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import {
-  getAmazonDownloadLinkUrl,
-  timeout,
-  formatBytes
-} from '../../../common/helpers';
-import Loader from '../../../components/Loader';
+import { getAmazonDownloadLinkUrl, formatBytes } from '../../../common/helpers';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
 import Button from '../../../components/Button';
 import { connect } from 'react-redux';
 import {
-  fetchDataSet,
+  startDownload,
   regenerateDataSet
-} from '../../../state/dataSet/actions';
-import { startDownload } from '../../../state/download/actions';
+} from '../../../state/download/actions';
 import { createToken } from '../../../state/token';
 
 import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
@@ -27,6 +21,8 @@ import { ShareDatasetButton } from '../DownloadBar';
 import DownloadStart from '../DownloadStart/DownloadStart';
 import DownloadErrorImage from './dataset-error.svg';
 import Spinner from '../../../components/Spinner';
+import NoMatch from '../../NoMatch';
+import DataSetLoader from './DataSetLoader';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -35,109 +31,66 @@ import Spinner from '../../../components/Spinner';
  * - Expired: Download files expire after some time
  * Related discussion https://github.com/AlexsLemonade/refinebio-frontend/issues/27
  */
-class DataSet extends React.Component {
-  _liveUpdate = true;
-  _firstUpdateFetchDetils = true;
-
-  componentWillUnmount() {
-    // disable live updates after the component is unmounted
-    this._liveUpdate = false;
+export default function DataSet({
+  location,
+  match: {
+    params: { id: dataSetId }
   }
-
-  async _fetchDataSet() {
-    const {
-      fetchDataSet,
-      match: {
-        params: { id: dataSetId }
-      }
-    } = this.props;
-
-    await fetchDataSet(dataSetId, this._firstUpdateFetchDetils);
-    this._firstUpdateFetchDetils = false;
-
-    // start polling the server every 20secs if the dataset is being processed
-    if (this.props.dataSet.is_processing) {
-      this._startLiveUpdate();
-    }
-  }
-
-  async _startLiveUpdate() {
-    await timeout(20000); // wait 20 secs
-    if (this._liveUpdate) {
-      this._fetchDataSet();
-    }
-  }
-
-  render() {
-    const {
-      dataSet,
-      location,
-      match: {
-        params: { id: dataSetId }
-      }
-    } = this.props;
-
-    // Check if the user arrived here and wants to regenerate the current page.
-    if (location.state && location.state.regenerate) {
-      return (
-        <DownloadStart
-          dataSetId={location.state.dataSetId}
-          dataSet={location.state.dataSet}
-        />
-      );
-    }
-
+}) {
+  // Check if the user arrived here and wants to regenerate the current page.
+  if (location.state && location.state.regenerate) {
     return (
-      <div>
-        <Helmet>
-          <title>Dataset - refine.bio</title>
-          <meta
-            name="description"
-            content="Explore and download this custom harmonized childhood cancer transcriptome dataset."
-          />
-        </Helmet>
-        <Loader updateProps={dataSetId} fetch={() => this._fetchDataSet()}>
-          {({ isLoading }) =>
-            isLoading ? (
-              <Spinner />
-            ) : (
-              <div>
-                <DataSetPageHeader
-                  dataSetId={dataSetId}
-                  dataSet={dataSet}
-                  email_address={
-                    // the email is never returned from the api, check if it was passed
-                    // on the url state on a previous step
-                    location.state && location.state.email_address
-                  }
-                  hasError={location.state && location.state.hasError}
-                />
-                <div className="downloads__bar">
-                  <div className="flex-button-container flex-button-container--left">
-                    <ShareDatasetButton dataSetId={dataSetId} />
-                  </div>
-                </div>
-                <DownloadDetails
-                  isImmutable={true}
-                  isEmbed={true}
-                  {...dataSet}
-                  dataSet={dataSet.data}
-                />
-              </div>
-            )
-          }
-        </Loader>
-      </div>
+      <DownloadStart
+        dataSetId={location.state.dataSetId}
+        dataSet={location.state.dataSet}
+      />
     );
   }
+
+  return (
+    <div>
+      <Helmet>
+        <title>Dataset - refine.bio</title>
+        <meta
+          name="description"
+          content="Explore and download this custom harmonized childhood cancer transcriptome dataset."
+        />
+      </Helmet>
+      <DataSetLoader dataSetId={dataSetId}>
+        {({ dataSet, isLoading, hasError }) => {
+          if (isLoading) return <Spinner />;
+          if (hasError) return <NoMatch />;
+
+          return (
+            <div>
+              <DataSetPageHeader
+                dataSetId={dataSetId}
+                dataSet={dataSet}
+                email_address={
+                  // the email is never returned from the api, check if it was passed
+                  // on the url state on a previous step
+                  location.state && location.state.email_address
+                }
+                hasError={location.state && location.state.hasError}
+              />
+              <div className="downloads__bar">
+                <div className="flex-button-container flex-button-container--left">
+                  <ShareDatasetButton dataSetId={dataSetId} />
+                </div>
+              </div>
+              <DownloadDetails
+                isImmutable={true}
+                isEmbed={true}
+                {...dataSet}
+                dataSet={dataSet.data}
+              />
+            </div>
+          );
+        }}
+      </DataSetLoader>
+    </div>
+  );
 }
-DataSet = connect(
-  ({ dataSet }) => ({ dataSet }),
-  {
-    fetchDataSet
-  }
-)(DataSet);
-export default DataSet;
 
 /**
  * Renders the header of the dataset page
