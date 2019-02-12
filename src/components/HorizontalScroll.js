@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './HorizontalScroll.scss';
 import classnames from 'classnames';
+import useVisibility from 'react-use-visibility';
 
 /**
  * Adds buttons to modify the horizontal scroll position of an element. It's usually
@@ -113,14 +114,26 @@ function ButtonLeft({ onClick, disabled }) {
 }
 
 function ButtonRight({ onClick, disabled }) {
+  const ref = useRef();
+  const isVisible = useVisibility(ref.current);
+
   return (
     <div
-      className={`horizontal-scroll__right ${
-        disabled ? 'horizontal-scroll__disabled' : ''
-      }`}
+      className={classnames({
+        'horizontal-scroll__right': true,
+        'horizontal-scroll__disabled': disabled
+      })}
       onClick={onClick}
     >
-      <div className="horizontal-scroll__button">{'>'}</div>
+      <div
+        ref={ref}
+        className={classnames({
+          'horizontal-scroll__button': true,
+          'horizontal-scroll__button--animate': isVisible
+        })}
+      >
+        {'>'}
+      </div>
     </div>
   );
 }
