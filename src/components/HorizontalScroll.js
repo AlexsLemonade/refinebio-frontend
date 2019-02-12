@@ -68,18 +68,16 @@ export default class HorizontalScroll extends React.Component {
   render() {
     return (
       <div className="horizontal-scroll">
-        <ButtonLeft
-          onClick={this.scrollLeft}
-          disabled={this.state.disableLeftButton}
-        />
-
         <div
           className="horizontal-scroll__content"
           ref={x => (this._targetContainer = x)}
         >
           {this.props.children}
         </div>
-
+        <ButtonLeft
+          onClick={this.scrollLeft}
+          disabled={this.state.disableLeftButton}
+        />
         <ButtonRight
           onClick={this.scrollRight}
           disabled={this.state.disableRightButton}

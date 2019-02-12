@@ -4,7 +4,6 @@
 .horizontal-scroll {
   position: relative;
   height: 100%;
-
   &__content {
     height: 100%;
   }
@@ -20,12 +19,38 @@
     align-items: center;
   }
 
+  $opacity: 0;
+
   &__left {
-    left: -12px;
+    left: 0;
+    background: linear-gradient(
+      270deg,
+      rgba(253, 253, 253, 0) 0%,
+      rgba(204, 204, 204, 0.2) 40%,
+      rgba(204, 204, 204, 1) 100%
+    );
+    background-repeat: no-repeat;
+
+    > .horizontal-scroll__button {
+      margin-left: -12px;
+      margin-right: 12px;
+    }
   }
 
   &__right {
-    right: -12px;
+    right: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(253, 253, 253, 0) 0%,
+      rgba(204, 204, 204, 0.2) 40%,
+      rgba(204, 204, 204, 1) 100%
+    );
+    background-repeat: no-repeat;
+
+    > .horizontal-scroll__button {
+      margin-right: -12px;
+      margin-left: 12px;
+    }
   }
 
   &__button {
