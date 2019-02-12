@@ -380,7 +380,13 @@ class ViewSamplesButtonModal extends React.Component {
             }}
           />
         )}
-        modalProps={{ className: 'samples-modal', fillPage: true }}
+        modalProps={{
+          className: 'samples-modal',
+          fillPage: true,
+          style: {
+            content: { maxWidth: this.modalWidth() }
+          }
+        }}
         onClose={() =>
           this.props.onRefreshDataSet &&
           !this.props.isImmutable &&
@@ -397,5 +403,21 @@ class ViewSamplesButtonModal extends React.Component {
         )}
       </ModalManager>
     );
+  }
+
+  modalWidth() {
+    const totalColumns = 4 + this.props.sampleMetadataFields.length;
+
+    // logic to decide the max-width of the modal
+    // https://github.com/AlexsLemonade/refinebio-frontend/issues/495#issuecomment-459504896
+    if (totalColumns <= 5) {
+      return 1100;
+    } else if (totalColumns === 6) {
+      return 1300;
+    } else if (totalColumns === 7) {
+      return 1500;
+    } else {
+      return 1800;
+    }
   }
 }
