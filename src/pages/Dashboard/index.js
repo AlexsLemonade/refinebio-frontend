@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { connect } from 'react-redux';
 import * as chartSelectors from './chartSelectors';
 import DashboardSection from './DashboardSection';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
