@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import * as actions from '../../state/dashboard/actions';
-import * as chartSelectors from '../../state/dashboard/reducer';
+import * as chartSelectors from './chartSelectors';
 import DashboardSection from './DashboardSection';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
 import Loader from '../../components/Loader';
 import { timeout, getQueryParamObject } from '../../common/helpers';
+import { fetchDashboardData } from '../../api/dashboad';
+import Spinner from '../../components/Spinner';
 
 import './Dashboard.scss';
 
 class Dashboard extends Component {
   _liveUpdate = true;
 
-  state = {
-    timeRange: 'week',
-    firstRender: true
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    const { range } = getQueryParamObject(this.props.location.search);
-    if (range) {
-      this.setState({ timeRange: range });
-    }
+    const { range } = getQueryParamObject(props.location.search);
+    this.state = {
+      timeRange: range || 'week',
+      firstRender: true
+    };
   }
 
   componentWillUnmount() {
@@ -31,10 +30,10 @@ class Dashboard extends Component {
   }
 
   async updateData() {
-    await this.props.fetchDashboardData(this.state.timeRange);
+    const stats = await fetchDashboardData(this.state.timeRange);
     this.setState({ firstRender: false });
-
     this._startLiveUpdate();
+    return getDashboardChartConfig(stats);
   }
 
   async _startLiveUpdate() {
@@ -46,8 +45,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { chartConfig } = this.props;
-
     return (
       <div className="dashboard">
         <Helmet>
@@ -62,15 +59,19 @@ class Dashboard extends Component {
               { label: 'Last Month', value: 'month' },
               { label: 'Last Year', value: 'year' }
             ]}
-            selectedTimeRange={range => this.setState({ timeRange: range })}
+            selectedTimeRange={range =>
+              console.log(range) || this.setState({ timeRange: range })
+            }
           />
 
           <Loader fetch={() => this.updateData()}>
-            {({ isLoading }) =>
-              this.state.firstRender ? (
+            {({ isLoading, data }) => {
+              if (isLoading) return <Spinner />;
+
+              return this.state.firstRender ? (
                 <div className="loader" />
               ) : (
-                chartConfig().map((section, i) => {
+                data.map((section, i) => {
                   const { title, charts } = section;
                   return (
                     <DashboardSection
@@ -81,23 +82,14 @@ class Dashboard extends Component {
                     />
                   );
                 })
-              )
-            }
+              );
+            }}
           </Loader>
         </div>
       </div>
     );
   }
 }
-Dashboard = connect(
-  state => ({
-    timeRangeForm: state.form.timeRange,
-    isLoading: state.dashboard.isLoading,
-    timeOptions: state.dashboard.timeOptions,
-    chartConfig: () => getDashboardChartConfig(state)
-  }),
-  actions
-)(Dashboard);
 export default Dashboard;
 
 /**

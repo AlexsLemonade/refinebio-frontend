@@ -2,37 +2,12 @@ import moment from 'moment';
 import zip from 'lodash/zip';
 import { accumulateByKeys } from '../../common/helpers';
 
-// TODO: samples and experiments will most likely be moved into their own reducers in the future
-const initialState = {
-  stats: {}
-};
-
-const dashboardReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'DASHBOARD_REQUEST_SUCCESS': {
-      const { stats } = action.data;
-      return {
-        stats
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-};
-
-export default dashboardReducer;
-
 // chart selectors for creating chart data for individual charts on dashboard
 const JOB_NAMES = ['survey_jobs', 'downloader_jobs', 'processor_jobs'];
 const JOB_STATUS = ['open', 'pending', 'completed'];
 
-export function getTotalLengthOfQueuesByType(state) {
-  const {
-    survey_jobs,
-    downloader_jobs,
-    processor_jobs
-  } = state.dashboard.stats;
+export function getTotalLengthOfQueuesByType(stats) {
+  const { survey_jobs, downloader_jobs, processor_jobs } = stats;
 
   return [
     {
@@ -50,8 +25,7 @@ export function getTotalLengthOfQueuesByType(state) {
   ];
 }
 
-export function getJobsByStatus(state) {
-  const stats = state.dashboard.stats;
+export function getJobsByStatus(stats) {
   return JOB_NAMES.reduce((accum, jobType) => {
     accum[jobType] = JOB_STATUS.map(status => ({
       name: status,
@@ -71,9 +45,7 @@ function convertSecToMinHours(sec) {
   }
 }
 
-export function getAllAverageTimeTilCompletion(state) {
-  const stats = state.dashboard.stats;
-
+export function getAllAverageTimeTilCompletion(stats) {
   return JOB_NAMES.reduce((allEstimatedTimes, jobType) => {
     const averageTime = parseFloat(stats[jobType].average_time);
     // we're assuming that average_time is in seconds...
@@ -82,9 +54,7 @@ export function getAllAverageTimeTilCompletion(state) {
   }, {});
 }
 
-export function getAllEstimatedTimeTilCompletion(state) {
-  const stats = state.dashboard.stats;
-
+export function getAllEstimatedTimeTilCompletion(stats) {
   return JOB_NAMES.reduce((allEstimatedTimes, jobType) => {
     const estimateSec =
       (stats[jobType].open + stats[jobType].pending) *
@@ -96,12 +66,12 @@ export function getAllEstimatedTimeTilCompletion(state) {
   }, {});
 }
 
-export function getExperimentsCount(state) {
-  return state.dashboard.stats.experiments.total;
+export function getExperimentsCount(stats) {
+  return stats.experiments.total;
 }
 
-export function getSamplesCount(state) {
-  return state.dashboard.stats.samples.total;
+export function getSamplesCount(stats) {
+  return stats.samples.total;
 }
 
 /**
@@ -109,9 +79,7 @@ export function getSamplesCount(state) {
  * run up to that point in time since the beginning of that time range for each
  * job type
  */
-export function getJobsCompletedOverTime(state) {
-  const stats = state.dashboard.stats;
-
+export function getJobsCompletedOverTime(stats) {
   const result = zip(
     stats.survey_jobs.timeline,
     stats.downloader_jobs.timeline,
@@ -126,8 +94,8 @@ export function getJobsCompletedOverTime(state) {
   return accumulateByKeys(result, ['survey', 'downloader', 'processor']);
 }
 
-export function getSamplesAndExperimentsCreatedOverTime(state) {
-  const { samples, experiments } = state.dashboard.stats;
+export function getSamplesAndExperimentsCreatedOverTime(stats) {
+  const { samples, experiments } = stats;
 
   const result = zip(samples.timeline, experiments.timeline).map(
     ([samplePoint, experimentPoint]) => ({
@@ -140,9 +108,7 @@ export function getSamplesAndExperimentsCreatedOverTime(state) {
   return accumulateByKeys(result, ['samples', 'experiments']);
 }
 
-export function getJobsByStatusOverTime(state, jobName) {
-  const { stats } = state.dashboard;
-
+export function getJobsByStatusOverTime(stats, jobName) {
   const result = stats[jobName].timeline.map(dataPoint => ({
     date: moment.utc(dataPoint.end).format('lll'),
     total: dataPoint['total'],
