@@ -211,19 +211,16 @@ class SamplesTable extends React.Component {
    */
   _getSortParam(tableState) {
     let orderBy = undefined;
-    if (tableState) {
-      const { sorted } = tableState;
-      // check table sort
-      if (sorted && sorted.length > 0) {
-        // we don't support sorting by multiple columns, so only consider the first one
-        const { id, desc } = sorted[0];
-        // ref: https://github.com/AlexsLemonade/refinebio/pull/298
-        orderBy = `${desc ? '-' : ''}${id}`;
-      } else {
-        orderBy = undefined;
-      }
+
+    const { sorted } = tableState;
+    // check table sort
+    if (sorted && sorted.length > 0) {
+      // we don't support sorting by multiple columns, so only consider the first one
+      const { id, desc } = sorted[0];
+      // ref: https://github.com/AlexsLemonade/refinebio/pull/298
+      orderBy = `${desc ? '-' : ''}${id}`;
     } else {
-      orderBy = this.state.orderBy;
+      orderBy = undefined;
     }
     return orderBy;
   }
