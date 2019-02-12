@@ -7,6 +7,7 @@
 const axios = require('axios');
 const fs = require('fs');
 
+const version = process.env.VERSION || '0.0.0';
 const ApiHost = process.env.REACT_APP_API_HOST || 'https://api.refine.bio';
 
 console.log('Fetching data to be cached from endpoint: ' + ApiHost);
@@ -29,10 +30,18 @@ Promise.all([
   axios
     .get(ApiHost + '/search/?limit=1&offset=0')
     .then(function(response) {
-      return response.data.filters.organism;
+      return {
+        organism: response.data.filters.organism,
+        apiVersion: response.headers['x-source-revision']
+      };
     })
     .catch(error => false)
-]).then(function([stats, organism]) {
-  const cache = { stats, organism };
+]).then(function([stats, { organism, apiVersion }]) {
+  const cache = {
+    version: version, // remove `v` at the start of each version
+    apiVersion: apiVersion,
+    stats,
+    organism
+  };
   fs.writeFileSync(`src/apiData.json`, JSON.stringify(cache));
 });
