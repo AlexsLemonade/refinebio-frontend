@@ -1,5 +1,6 @@
 import React from 'react';
 import './HorizontalScroll.scss';
+import classnames from 'classnames';
 
 /**
  * Adds buttons to modify the horizontal scroll position of an element. It's usually
@@ -66,14 +67,10 @@ export default class HorizontalScroll extends React.Component {
   render() {
     return (
       <div className="horizontal-scroll">
-        <div
-          className={`horizontal-scroll__left ${
-            this.state.disableLeftButton ? 'horizontal-scroll__disabled' : ''
-          }`}
+        <ButtonLeft
           onClick={this.scrollLeft}
-        >
-          <div className="horizontal-scroll__button">{'<'}</div>
-        </div>
+          disabled={this.state.disableLeftButton}
+        />
 
         <div
           className="horizontal-scroll__content"
@@ -82,14 +79,10 @@ export default class HorizontalScroll extends React.Component {
           {this.props.children}
         </div>
 
-        <div
-          className={`horizontal-scroll__right ${
-            this.state.disableRightButton ? 'horizontal-scroll__disabled' : ''
-          }`}
+        <ButtonRight
           onClick={this.scrollRight}
-        >
-          <div className="horizontal-scroll__button">{'>'}</div>
-        </div>
+          disabled={this.state.disableRightButton}
+        />
       </div>
     );
   }
@@ -103,4 +96,31 @@ export default class HorizontalScroll extends React.Component {
 
     return result;
   }
+}
+
+function ButtonLeft({ onClick, disabled }) {
+  return (
+    <div
+      className={classnames({
+        'horizontal-scroll__left': true,
+        'horizontal-scroll__disabled': disabled
+      })}
+      onClick={onClick}
+    >
+      <div className="horizontal-scroll__button">{'<'}</div>
+    </div>
+  );
+}
+
+function ButtonRight({ onClick, disabled }) {
+  return (
+    <div
+      className={`horizontal-scroll__right ${
+        disabled ? 'horizontal-scroll__disabled' : ''
+      }`}
+      onClick={onClick}
+    >
+      <div className="horizontal-scroll__button">{'>'}</div>
+    </div>
+  );
 }

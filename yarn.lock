@@ -8277,6 +8277,13 @@ react-transition-group@^2.5.0:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
+react-use-visibility@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-use-visibility/-/react-use-visibility-0.2.0.tgz#2ff18c9ad34f4325923837f68bb44a32243ce167"
+  integrity sha512-5gFBw76+iaaF6GECekAiZ+MTxpps61BEd1tg9yt/dVS/6S8uqO9+a0ZC3GMuSY9GmxTJrtJdJO60oim359o9eQ==
+  dependencies:
+    lodash.throttle "^4.1.1"
+
 react@^16.8.1:
   version "16.8.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.1.tgz#ae11831f6cb2a05d58603a976afc8a558e852c4a"
