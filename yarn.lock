@@ -658,7 +658,7 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@7.3.1", "@babel/runtime@^7.1.5", "@babel/runtime@^7.2.0":
+"@babel/runtime@7.3.1", "@babel/runtime@^7.2.0":
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.1.tgz#574b03e8e8a9898eaf4a872a92ea20b7846f6f2a"
   integrity sha512-7jGW8ppV0ant637pIqAcFfQDDH1orEPGJb8aXfUozuCU3QqX7rX4DA8iwrbPrR1hcH0FTTHz47yQnk+bl5xHQA==
@@ -8242,15 +8242,6 @@ react-smooth@~1.0.0:
     raf "^3.4.0"
     react-transition-group "^2.5.0"
 
-react-sticky-box@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/react-sticky-box/-/react-sticky-box-0.8.0.tgz#1c191936af8f5420087b703ec6da4ef46060076c"
-  integrity sha512-al7fY+VzTKBgVrn14l21jQfhuG582Z6FD8tVbWVQDDqzcjLmUrFb+ljG2phxHhRRazg64L3yH4nOKjn78PZmag==
-  dependencies:
-    "@babel/runtime" "^7.1.5"
-    prop-types "^15.6.2"
-    resize-observer-polyfill "^1.5.1"
-
 react-table@^6.9.1:
   version "6.9.1"
   resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.9.1.tgz#50a1713a4de90089f14dcb8cf0f313992ad93a20"
@@ -8638,7 +8629,7 @@ requires-port@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
 
-resize-observer-polyfill@^1.5.0, resize-observer-polyfill@^1.5.1:
+resize-observer-polyfill@^1.5.0:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
   integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==

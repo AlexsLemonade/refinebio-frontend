@@ -16,14 +16,21 @@ import ResponsiveSwitch from '../../../components/ResponsiveSwitch';
 import SideMenu from '../../../components/SideMenu';
 
 import FilterIcon from '../../../common/icons/filter-icon.svg';
+import { useDom } from '../../../common/hooks';
 import isEmpty from 'lodash/isEmpty';
 import FilterCategory from './FilterCategory';
 
-let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
+let FilterList = ({
+  appliedFilters,
+  filters,
+  toggledFilter,
+  clearFilters,
+  style
+}) => {
   let filterApplied = anyFilterApplied(appliedFilters);
 
   return (
-    <div className="result-filters">
+    <div className="result-filters" style={style}>
       <div className="result-filters__title-container">
         <h2 className="result-filters__title">Filters</h2>
 
@@ -50,13 +57,34 @@ let FilterList = ({ appliedFilters, filters, toggledFilter, clearFilters }) => {
 };
 FilterList = connect(({ search: { filters } }) => ({ filters }))(FilterList);
 
-let FiltersDesktop = connect(
-  () => ({}),
-  {
-    toggledFilter,
-    clearFilters
-  }
-)(FilterList);
+function FiltersDesktop(props) {
+  const ref = React.useRef();
+  const size = useDom(ref, el => el.getBoundingClientRect());
+
+  // If the user scrolls down the filters should be fixed on the screen
+  // and also scrollable
+  const style =
+    size && size.top < 150
+      ? {
+          position: 'fixed',
+          top: 150,
+          width: size.width,
+          overflow: 'auto',
+          bottom: size.bottom > 1550 ? 0 : Math.ceil(1550 - size.bottom),
+          paddingBottom: 200
+        }
+      : null;
+
+  return (
+    <div className="results__filters" ref={ref}>
+      <FilterList {...props} style={style} />
+    </div>
+  );
+}
+FiltersDesktop = connect(
+  null,
+  { toggledFilter, clearFilters }
+)(FiltersDesktop);
 
 let Filters = ({ appliedFilters }) => (
   <ResponsiveSwitch
