@@ -11,6 +11,7 @@ import { getQueryParamObject } from '../../common/helpers';
 import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../common/constants';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
+import DisstressedTubey from '../../common/images/distressed-tubey.svg';
 import { Link } from 'react-router-dom';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
 import isEqual from 'lodash/isEqual';
@@ -283,9 +284,26 @@ NumberOfResults = connect(
 
 const ErrorApiUnderHeavyLoad = () => (
   <div className="results__no-results">
-    <h2>Temporarily under heavy traffic load</h2>
+    <h2>We’re a little overwhelmed at the moment.</h2>
+    <p>
+      We apologize for the inconvenience. We are working hard to restore normal
+      service.
+    </p>
+    <p>
+      Follow us on twitter (
+      <a
+        href="https://twitter.com/CancerDataLab"
+        target="_blank"
+        rel="nofollow noopener noreferrer"
+        className="link"
+      >
+        @CancerDataLab
+      </a>
+      ) for updates
+    </p>
+
     <img
-      src={GhostSampleImage}
+      src={DisstressedTubey}
       alt="Start searching"
       className="results__no-results-image img-responsive"
     />
