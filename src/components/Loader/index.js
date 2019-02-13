@@ -14,6 +14,7 @@ export default class Loader extends React.Component {
 
   state = {
     hasError: false,
+    error: null,
     isLoading: true,
     data: null
   };
@@ -44,13 +45,13 @@ export default class Loader extends React.Component {
   }
 
   async _fetchData() {
-    this.setState({ hasError: false, isLoading: true });
+    this.setState({ hasError: false, error: null, isLoading: true });
 
     let data;
     try {
       data = await this.props.fetch();
-    } catch (e) {
-      this.setState({ isLoading: false, hasError: true });
+    } catch (error) {
+      this.setState({ isLoading: false, hasError: true, error });
       return;
     }
 

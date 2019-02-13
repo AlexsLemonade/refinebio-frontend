@@ -108,7 +108,13 @@ export async function asyncFetch(url, params = false) {
     ApiSourceRevision = sourceRevision;
   }
 
-  const result = await response.json();
+  let result;
+  try {
+    result = await response.json();
+  } catch (e) {
+    result = { error: true };
+  }
+
   /**
    * You only get an exception (rejection) when there's a network problem.
    * When the server answers, you have to check whether it's good or not.
