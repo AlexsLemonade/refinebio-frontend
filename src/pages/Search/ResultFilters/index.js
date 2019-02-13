@@ -57,7 +57,7 @@ let FilterList = ({
 };
 FilterList = connect(({ search: { filters } }) => ({ filters }))(FilterList);
 
-function FiltersDesktop(props) {
+let FiltersDesktop = props => {
   const ref = React.useRef();
   const size = useDom(ref, el => el.getBoundingClientRect());
 
@@ -80,7 +80,7 @@ function FiltersDesktop(props) {
       <FilterList {...props} style={style} />
     </div>
   );
-}
+};
 FiltersDesktop = connect(
   null,
   { toggledFilter, clearFilters }
