@@ -1,8 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { connect } from 'react-redux';
-import './NoMatch/NoMatch.scss';
 import DisstressedTubey from '../common/images/distressed-tubey.svg';
+import './NoMatch/NoMatch.scss';
 
 let ServerError = () => (
   <div className="error-page">
