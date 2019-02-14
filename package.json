@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@haiku/cli": "^4.3.11",
-    "@haiku/dvprasad-processingdataset": "^0.0.2",
-    "@haiku/dvprasad-refinebiospinner": "^0.0.4",
     "delayed-scroll-restoration-polyfill": "^0.1.1",
     "formik": "^1.5.0",
     "history": "^4.7.2",
@@ -35,6 +32,7 @@
     ]
   },
   "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
     "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -45,13 +43,14 @@
     "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
+    "source-map-explorer": "^1.6.0",
+    "axios": "^0.18.0",
+    "flow-bin": "^0.68.0",
     "husky": "^0.14.3",
+    "jest-puppeteer": "^3.7.0",
     "lint-staged": "^7.0.0",
     "node-sass": "^4.11.0",
     "prettier": "^1.11.1",
-    "axios": "^0.18.0",
-    "flow-bin": "^0.68.0",
-    "jest-puppeteer": "^3.7.0",
     "puppeteer": "^1.11.0",
     "redux-mock-store": "^1.5.1"
   },

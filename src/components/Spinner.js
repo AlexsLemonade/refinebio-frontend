@@ -1,11 +1,11 @@
 import React from 'react';
-import Refinebiospinner from '@haiku/dvprasad-refinebiospinner/react';
 import styles from './Spinner.scss';
+import spinner from '../common/images/spinner.gif';
 
 export default function Spinner() {
   return (
     <div className={styles.spinner}>
-      <Refinebiospinner loop={true} />
+      <img src={spinner} width="59" height="54"/>
     </div>
   );
 }
