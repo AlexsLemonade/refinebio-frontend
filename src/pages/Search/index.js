@@ -29,7 +29,6 @@ import fromPairs from 'lodash/fromPairs';
 import InfoBox from '../../components/InfoBox';
 import StickyBox from 'react-sticky-box';
 import { searchUrl } from '../../routes';
-
 import './SearchResults.scss';
 
 class SearchResults extends Component {
