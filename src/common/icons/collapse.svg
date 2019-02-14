@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>icons/collapse</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icons/collapse" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="collapse-icon" fill="#386DB0" fill-rule="nonzero">
+            <polygon id="Fill-107" points="12.41525 4.99925 15.70725 1.70725 14.29225 0.29325 11.01225 3.57325 11.00025 0.99525 9.00025 1.00525 9.02425 6.00225 9 7 10.02425 6.99725 14.99925 7.00025 15.00025 5.00025"></polygon>
+            <path d="M1.00425,9.00065 L0.99525,11.00065 L3.57225,11.01365 L0.29325,14.29365 L1.70725,15.70765 L4.99825,12.41665 L5.00025,15.00165 L7.00025,14.99965 L6.99625,10.02465 C6.99625,9.84127191 6.9975,9.49972191 7,9 C6.51745524,9.01809976 6.18453857,9.02664976 6.00125,9.02565 L1.00425,9.00065 Z" id="Fill-109"></path>
+        </g>
+    </g>
+</svg>

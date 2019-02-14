@@ -33,7 +33,7 @@ class SamplesTable extends React.Component {
   columns = this._getColumns();
 
   render() {
-    const { pageActionComponent } = this.props;
+    const { pageActionComponent, filterActionComponent } = this.props;
 
     return (
       <SampleDetailsLoader fetchSampleParams={this.props.fetchSampleParams}>
@@ -92,10 +92,11 @@ class SamplesTable extends React.Component {
                       </div>
                       {pageActionComponent &&
                         pageActionComponent(state.samples)}
+                      <SamplesTableFilter
+                        onChange={filterBy => state.onUpdate({ filterBy })}
+                      />
+                      {filterActionComponent && filterActionComponent()}
                     </div>
-                    <SamplesTableFilter
-                      onChange={filterBy => state.onUpdate({ filterBy })}
-                    />
                   </div>
                   <div className="samples-table-layout__main">
                     <HorizontalScroll targetSelector=".rt-table">

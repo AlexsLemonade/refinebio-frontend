@@ -302,3 +302,17 @@ export function formatPlatformName(platformName) {
   }
   return platformName;
 }
+
+export function maxTableWidth(totalColumns) {
+  // logic to decide the max-width of the modal
+  // https://github.com/AlexsLemonade/refinebio-frontend/issues/495#issuecomment-459504896
+  if (totalColumns <= 5) {
+    return 1100;
+  } else if (totalColumns === 6) {
+    return 1300;
+  } else if (totalColumns === 7) {
+    return 1500;
+  } else {
+    return 1800;
+  }
+}

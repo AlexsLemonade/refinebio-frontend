@@ -7,16 +7,6 @@
   padding: 24px;
   margin: 16px 0 40px;
 
-  &--sample-wrap {
-    @extend .experiment;
-    margin-bottom: 80px;
-
-    @media (min-width: 1290px) {
-      margin-left: -80px;
-      margin-right: -80px;
-    }
-  }
-
   &__header-title {
     word-break: break-all;
     word-break: break-word;
@@ -158,8 +148,27 @@
     }
   }
 
+  &__samples-table-block {
+    margin-bottom: 80px;
+  }
+
   &__sample-table-loading-wrap {
     padding-top: 40px;
     min-height: 1200px;
+  }
+
+  &__sample-table-expand {
+    padding-top: 6px;
+    margin-left: 16px;
+  }
+
+  &__expand-button {
+    color: $link-color;
+    display: flex;
+    align-items: center;
+
+    > img {
+      margin-right: 8px;
+    }
   }
 }
