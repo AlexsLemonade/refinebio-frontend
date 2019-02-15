@@ -24,6 +24,9 @@
 
   &__header {
     margin-bottom: 16px;
+    max-width: 1110px;
+    margin-left: auto;
+    margin-right: auto;
 
     @include tablet {
       display: flex;
@@ -128,7 +131,6 @@
 
   &__per-page-dropdown {
     white-space: nowrap;
-    margin-bottom: 8px;
   }
 
   &__not-provided {

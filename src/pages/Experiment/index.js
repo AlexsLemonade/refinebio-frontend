@@ -306,7 +306,20 @@ function SamplesTableBlock({ experiment }) {
     >
       <div className="experiment">
         <Anchor name="samples">
-          <h2 className="experiment__title">Samples</h2>
+          <div className="experiment__header">
+            <h2 className="experiment__title mobile-p">Samples</h2>
+            <div>
+              {experiment && (
+                <DataSetSampleActions
+                  dataSetSlice={{
+                    [experiment.accession_code]: DataSetStats.mapAccessions(
+                      experiment.samples
+                    )
+                  }}
+                />
+              )}
+            </div>
+          </div>
           {!experiment ? (
             <div className="experiment__sample-table-loading-wrap">
               <Spinner />
