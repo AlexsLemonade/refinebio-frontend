@@ -13,7 +13,7 @@ import {
 } from '../../../state/download/actions';
 import { createToken } from '../../../state/token';
 
-import ProcessingDataset from '@haiku/dvprasad-processingdataset/react';
+import ProcessingGears from './ProcessingGears';
 
 import TermsOfUse from '../../../components/TermsOfUse';
 import DownloadDetails from '../DownloadDetails';
@@ -216,7 +216,7 @@ function DataSetProcessing({ email, dataSetId }) {
             {message}
           </div>
           <div className="dataset__way-image">
-            <ProcessingDataset loop={true} />
+            <ProcessingGears />
           </div>
         </div>
       </div>
