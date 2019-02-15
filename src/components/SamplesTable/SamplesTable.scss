@@ -35,6 +35,7 @@
   height: 100%;
   max-height: 115 * 8px;
   border-color: $table-border-color;
+  font-size: 14px;
 
   &__th {
     // The original styles for headers in ReactTable are under the selector: .ReactTable .rt-thead .rt-th.-sort-asc
@@ -153,6 +154,12 @@
     background: $table-row--highlight;
   }
 
+  .rt-tr {
+    &:hover {
+      background-color: #e2e2e2;
+    }
+  }
+
   &__add-remove {
     display: flex;
     align-items: center;
@@ -176,6 +183,11 @@
   &__filter-input {
     margin-left: 8px;
     width: 180px;
+  }
+
+  .button {
+    padding-top: 2px;
+    padding-bottom: 2px;
   }
 }
 

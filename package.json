@@ -22,6 +22,7 @@
     "react-scripts": "^2.1.5",
     "react-sticky-box": "^0.8.0",
     "react-table": "^6.9.1",
+    "react-use-visibility": "^0.2.0",
     "recharts": "^1.4.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
@@ -45,13 +46,13 @@
     "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
+    "axios": "^0.18.0",
+    "flow-bin": "^0.68.0",
     "husky": "^0.14.3",
+    "jest-puppeteer": "^3.7.0",
     "lint-staged": "^7.0.0",
     "node-sass": "^4.11.0",
     "prettier": "^1.11.1",
-    "axios": "^0.18.0",
-    "flow-bin": "^0.68.0",
-    "jest-puppeteer": "^3.7.0",
     "puppeteer": "^1.11.0",
     "redux-mock-store": "^1.5.1"
   },
