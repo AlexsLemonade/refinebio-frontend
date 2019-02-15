@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './HorizontalScroll.scss';
+import classnames from 'classnames';
+import useVisibility from 'react-use-visibility';
 
 /**
  * Adds buttons to modify the horizontal scroll position of an element. It's usually
@@ -67,29 +69,19 @@ export default class HorizontalScroll extends React.Component {
     return (
       <div className="horizontal-scroll">
         <div
-          className={`horizontal-scroll__left ${
-            this.state.disableLeftButton ? 'horizontal-scroll__disabled' : ''
-          }`}
-          onClick={this.scrollLeft}
-        >
-          <div className="horizontal-scroll__button">{'<'}</div>
-        </div>
-
-        <div
           className="horizontal-scroll__content"
           ref={x => (this._targetContainer = x)}
         >
           {this.props.children}
         </div>
-
-        <div
-          className={`horizontal-scroll__right ${
-            this.state.disableRightButton ? 'horizontal-scroll__disabled' : ''
-          }`}
+        <ButtonLeft
+          onClick={this.scrollLeft}
+          disabled={this.state.disableLeftButton}
+        />
+        <ButtonRight
           onClick={this.scrollRight}
-        >
-          <div className="horizontal-scroll__button">{'>'}</div>
-        </div>
+          disabled={this.state.disableRightButton}
+        />
       </div>
     );
   }
@@ -103,4 +95,43 @@ export default class HorizontalScroll extends React.Component {
 
     return result;
   }
+}
+
+function ButtonLeft({ onClick, disabled }) {
+  return (
+    <div
+      className={classnames({
+        'horizontal-scroll__left': true,
+        'horizontal-scroll__disabled': disabled
+      })}
+      onClick={onClick}
+    >
+      <div className="horizontal-scroll__button">{'<'}</div>
+    </div>
+  );
+}
+
+function ButtonRight({ onClick, disabled }) {
+  const ref = useRef();
+  const isVisible = useVisibility(ref.current);
+
+  return (
+    <div
+      className={classnames({
+        'horizontal-scroll__right': true,
+        'horizontal-scroll__disabled': disabled
+      })}
+      onClick={onClick}
+    >
+      <div
+        ref={ref}
+        className={classnames({
+          'horizontal-scroll__button': true,
+          'horizontal-scroll__button--animate': isVisible
+        })}
+      >
+        {'>'}
+      </div>
+    </div>
+  );
 }

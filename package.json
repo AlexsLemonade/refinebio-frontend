@@ -19,6 +19,7 @@
     "react-scripts": "^2.1.5",
     "react-sticky-box": "^0.8.0",
     "react-table": "^6.9.1",
+    "react-use-visibility": "^0.2.0",
     "recharts": "^1.4.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
