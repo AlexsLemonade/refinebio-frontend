@@ -28,6 +28,7 @@ import {
 } from '../../state/download/actions';
 
 import mapValues from 'lodash/mapValues';
+import union from 'lodash/union';
 
 import * as routes from '../../routes';
 
@@ -106,9 +107,10 @@ let DownloadDetails = ({
 
         <TabControl tabs={['Species View', 'Experiments View']}>
           <SpeciesSamples
-            onRefreshDataSet={onRefreshDataSet}
-            dataSet={dataSet}
             dataSetId={dataSetId}
+            dataSet={dataSet}
+            onRefreshDataSet={onRefreshDataSet}
+            experiments={experiments}
             samplesBySpecies={samplesBySpecies}
             removeSamples={removeSamples}
             isImmutable={isImmutable}
@@ -141,15 +143,28 @@ const SpeciesSamples = ({
   dataSetId,
   dataSet,
   samplesBySpecies,
+  experiments,
   removeSamples,
   isImmutable = false
 }) => (
   <div className="downloads__card">
     {Object.keys(samplesBySpecies).map(speciesName => {
+      // get the accession codes associated with this species (`speciesName`)
       const samplesInSpecie = samplesBySpecies[speciesName];
+      // filter the dataSet, and leave only the experiments that contain any of the samples
       const specieDataSetSlice = mapValues(dataSet, samples =>
         samples.filter(accessionCode => samplesInSpecie.includes(accessionCode))
       );
+      // concatenate all the sample metadata fields of all experiments containing these samples
+      // This way we'll display all possible values of these samples
+      let sampleMetadataFields = Object.keys(specieDataSetSlice)
+        .filter(accessionCode => specieDataSetSlice[accessionCode].length > 0)
+        .map(
+          accessionCode =>
+            experiments[accessionCode] &&
+            experiments[accessionCode].sample_metadata
+        );
+      sampleMetadataFields = union(...sampleMetadataFields);
 
       return (
         <div className="downloads__sample" key={speciesName}>
@@ -173,6 +188,7 @@ const SpeciesSamples = ({
                   dataset_id: dataSetId,
                   organism__name: speciesName
                 }}
+                sampleMetadataFields={sampleMetadataFields}
               />
             </div>
           </div>
@@ -380,7 +396,13 @@ class ViewSamplesButtonModal extends React.Component {
             }}
           />
         )}
-        modalProps={{ className: 'samples-modal', fillPage: true }}
+        modalProps={{
+          className: 'samples-modal',
+          fillPage: true,
+          style: {
+            content: { maxWidth: this.modalWidth() }
+          }
+        }}
         onClose={() =>
           this.props.onRefreshDataSet &&
           !this.props.isImmutable &&
@@ -397,5 +419,21 @@ class ViewSamplesButtonModal extends React.Component {
         )}
       </ModalManager>
     );
+  }
+
+  modalWidth() {
+    const totalColumns = 4 + this.props.sampleMetadataFields.length;
+
+    // logic to decide the max-width of the modal
+    // https://github.com/AlexsLemonade/refinebio-frontend/issues/495#issuecomment-459504896
+    if (totalColumns <= 5) {
+      return 1100;
+    } else if (totalColumns === 6) {
+      return 1300;
+    } else if (totalColumns === 7) {
+      return 1500;
+    } else {
+      return 1800;
+    }
   }
 }
