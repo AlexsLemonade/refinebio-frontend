@@ -119,7 +119,7 @@
   &__sample-commands {
     margin-bottom: 16px;
 
-    @include tablet {
+    @include desktop() {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -139,7 +139,7 @@
   &__sample-actions {
     flex-grow: 1;
 
-    @include tablet {
+    @include desktop {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -160,6 +160,11 @@
   &__sample-table-expand {
     padding-top: 6px;
     margin-left: 16px;
+    display: none;
+
+    @media (min-width: 1600px) {
+      display: block;
+    }
   }
 
   &__expand-button {

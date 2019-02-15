@@ -393,7 +393,7 @@ class ExperimentSamplesTable extends React.Component {
   }
 
   /**
-   * Bulilds a dataset slice, that only contains the current experiment accession code
+   * Builds a dataset slice, that only contains the current experiment accession code
    * with it's processed samples
    */
   _getDataSetSlice() {
