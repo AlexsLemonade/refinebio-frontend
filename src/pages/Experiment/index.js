@@ -28,6 +28,8 @@ import { NDownloadableSamples } from '../../components/Strings';
 import { searchUrl } from '../../routes';
 import { getExperiment } from '../../api/experiments';
 import NoMatch from '../NoMatch';
+import { ServerError } from '../../common/errors';
+import ServerErrorPage from '../ServerError';
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
@@ -47,8 +49,13 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
         fetch={() => getExperiment(match.params.id)}
         updateProps={match.params.id}
       >
-        {({ isLoading, hasError, data: experiment }) => {
-          if (hasError) return <NoMatch />;
+        {({ isLoading, hasError, error, data: experiment }) => {
+          if (hasError) {
+            if (error && error instanceof ServerError && error.status === 404) {
+              return <NoMatch />;
+            }
+            return <ServerErrorPage />;
+          }
 
           let displaySpinner = isLoading;
           let experimentData = experiment || { samples: [] };

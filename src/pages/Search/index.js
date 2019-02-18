@@ -11,6 +11,7 @@ import { getQueryParamObject } from '../../common/helpers';
 import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../common/constants';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
+import DistressedTubey from '../../common/images/distressed-tubey.svg';
 import { Link } from 'react-router-dom';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
 import isEqual from 'lodash/isEqual';
@@ -30,6 +31,7 @@ import InfoBox from '../../components/InfoBox';
 import StickyBox from 'react-sticky-box';
 import { searchUrl } from '../../routes';
 import './SearchResults.scss';
+import { ApiOverwhelmed } from '../ServerError';
 
 class SearchResults extends Component {
   state = {
@@ -282,9 +284,10 @@ NumberOfResults = connect(
 
 const ErrorApiUnderHeavyLoad = () => (
   <div className="results__no-results">
-    <h2>Temporarily under heavy traffic load</h2>
+    <ApiOverwhelmed />
+
     <img
-      src={GhostSampleImage}
+      src={DistressedTubey}
       alt="Start searching"
       className="results__no-results-image img-responsive"
     />

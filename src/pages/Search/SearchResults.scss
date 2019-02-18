@@ -121,6 +121,14 @@
     @include desktop {
       margin-top: 7 * 8px;
     }
+
+    h2 {
+      font-size: 1.652rem;
+    }
+
+    p {
+      font-size: 1.25rem;
+    }
   }
 
   &__no-results-image {
