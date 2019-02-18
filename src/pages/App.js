@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import classnames from 'classnames';
-import SpeciesCompendia from '../../containers/SpeciesCompendia';
+import SpeciesCompendia from './SpeciesCompendia';
 import { Router, Route, Switch } from 'react-router-dom';
 
 import history from '../history';
