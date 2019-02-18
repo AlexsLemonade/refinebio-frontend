@@ -32,6 +32,7 @@ import StickyBox from 'react-sticky-box';
 import { searchUrl } from '../../routes';
 
 import './SearchResults.scss';
+import { ApiOverwhelmed } from '../ServerError';
 
 class SearchResults extends Component {
   state = {
@@ -284,23 +285,7 @@ NumberOfResults = connect(
 
 const ErrorApiUnderHeavyLoad = () => (
   <div className="results__no-results">
-    <h2>We’re a little overwhelmed at the moment.</h2>
-    <p>
-      We apologize for the inconvenience. We are working hard to restore normal
-      service.
-    </p>
-    <p>
-      Follow us on twitter (
-      <a
-        href="https://twitter.com/CancerDataLab"
-        target="_blank"
-        rel="nofollow noopener noreferrer"
-        className="link"
-      >
-        @CancerDataLab
-      </a>
-      ) for updates
-    </p>
+    <ApiOverwhelmed />
 
     <img
       src={DisstressedTubey}
