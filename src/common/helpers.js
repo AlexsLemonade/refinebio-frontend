@@ -1,4 +1,3 @@
-import SampleFieldMetadata from '../containers/Experiment/SampleFieldMetadata';
 import { ApiVersionMismatchError, ServerError } from '../common/errors';
 
 /**
@@ -37,7 +36,9 @@ export function getQueryParamObject(queryString) {
 
   const queryObj = {};
   queryString.split('&').forEach(queryParam => {
-    const [key, value] = queryParam.split('=');
+    if (!queryParam) return;
+    let [key, value] = queryParam.split('=');
+    value = decodeURIComponent(value);
     // check if the parameter has already been seen, in which case we have to parse it as an array
     if (!!queryObj[key]) {
       if (!Array.isArray(queryObj[key])) {
@@ -217,12 +218,8 @@ export const Ajax = {
     })
 };
 
-export const getMetadataFields = experiment =>
-  SampleFieldMetadata.filter(
-    field =>
-      experiment.sample_metadata &&
-      experiment.sample_metadata.includes(field.id)
-  ).map(field => field.Header);
+export const getMetadataFields = sampleMetadataFields =>
+  sampleMetadataFields.map(formatSentenceCase);
 
 export function stringEnumerate([x0, ...rest]) {
   if (!rest || !rest.length) {
@@ -287,4 +284,21 @@ export function formatBytes(bytes, decimals = 2) {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+/**
+ * Format platform names in the frontend
+ * https://github.com/AlexsLemonade/refinebio/blob/eab6d04387fe76fe6c56f15cb8c51e85bd5e8de7/api/data_refinery_api/serializers.py#L320-L326
+ */
+export function formatPlatformName(platformName) {
+  if (!platformName) return '';
+  if (platformName.includes(']')) {
+    let [accessionCode, name] = platformName.split(']');
+    accessionCode = accessionCode
+      .substr(1)
+      .toLowerCase()
+      .replace(/[-_\s]/g, '');
+    return `${name} (${accessionCode})`;
+  }
+  return platformName;
 }

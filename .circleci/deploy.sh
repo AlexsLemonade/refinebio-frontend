@@ -32,7 +32,9 @@ BUCKET_NAME=s3://$base_host
 
 yarn install --ignore-engines
 
-REACT_APP_API_HOST=https://api.$base_host yarn run cacheBackend
+VERSION=$(git describe --abbrev=0 --tags)
+
+VERSION=$VERSION REACT_APP_API_HOST=https://api.$base_host yarn run cacheBackend
 
 CI=false REACT_APP_API_HOST=https://api.$base_host yarn run build
 

@@ -4,7 +4,6 @@
 .horizontal-scroll {
   position: relative;
   height: 100%;
-
   &__content {
     height: 100%;
   }
@@ -20,12 +19,38 @@
     align-items: center;
   }
 
+  $opacity: 0;
+
   &__left {
-    left: -12px;
+    left: 0;
+    background: linear-gradient(
+      270deg,
+      rgba(253, 253, 253, 0) 0%,
+      rgba(204, 204, 204, 0.2) 40%,
+      rgba(204, 204, 204, 1) 100%
+    );
+    background-repeat: no-repeat;
+
+    > .horizontal-scroll__button {
+      margin-left: -12px;
+      margin-right: 12px;
+    }
   }
 
   &__right {
-    right: -12px;
+    right: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(253, 253, 253, 0) 0%,
+      rgba(204, 204, 204, 0.2) 40%,
+      rgba(204, 204, 204, 1) 100%
+    );
+    background-repeat: no-repeat;
+
+    > .horizontal-scroll__button {
+      margin-right: -12px;
+      margin-left: 12px;
+    }
   }
 
   &__button {
@@ -40,9 +65,35 @@
     align-items: center;
     @include noselect;
     z-index: 2;
+
+    &--animate {
+      animation-fill-mode: both;
+      animation-name: eva-shake;
+      animation-duration: 1s;
+    }
   }
 
   &__disabled {
     display: none;
+  }
+}
+
+@keyframes eva-shake {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-3px, 0, 0);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(3px, 0, 0);
   }
 }

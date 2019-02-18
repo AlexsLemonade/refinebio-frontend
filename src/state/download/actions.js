@@ -2,12 +2,13 @@ import { Ajax } from '../../common/helpers';
 import {
   getDataSet,
   getDataSetDetails,
-  updateDataSet
+  updateDataSet,
+  createDataSet
 } from '../../api/dataSet';
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
 import { getDataSetId } from './reducer';
-import { replace } from '../routerActions';
+import { push, replace } from '../routerActions';
 import { createToken, clearToken } from '../token';
 import { ServerError, InvalidTokenError } from '../../common/errors';
 
@@ -32,11 +33,9 @@ export const createOrUpdateDataSet = ({
   // first create the dataset, since adding experiments with special key `[ALL]`
   // only works with edit operations
   if (!dataSetId) {
-    let { id } = await Ajax.post('/dataset/create/', {
-      data
-    });
-    dataSetId = id;
+    ({ id: dataSetId } = await createDataSet());
   }
+
   let { id, data: dataSet, ...dataSetDetails } = await updateDataSet(
     dataSetId,
     data,
@@ -279,4 +278,33 @@ export const startDownload = ({
       state: { email_address: email }
     })
   );
+};
+
+/**
+ * Once generated the datasets are immutable on the server, so to be able to re-generate one we have
+ * to create a new dataset and redirect to the associated page.
+ */
+export const regenerateDataSet = () => async (dispatch, getState) => {
+  let { data, aggregate_by, scale_by } = getState().dataSet;
+
+  try {
+    // 1. create a new dataset
+    let { id: dataSetId } = await createDataSet();
+    // 2. add the same data
+    await Ajax.put(`/dataset/${dataSetId}/`, {
+      data,
+      aggregate_by,
+      scale_by
+    });
+
+    // 3. redirect to the new dataset page, where the user will be able to add an email
+    dispatch(
+      push({
+        pathname: `/dataset/${dataSetId}`,
+        state: { regenerate: true, dataSetId, dataSet: data }
+      })
+    );
+  } catch (e) {
+    dispatch(reportError(e));
+  }
 };

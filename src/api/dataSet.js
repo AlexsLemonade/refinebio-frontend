@@ -13,6 +13,13 @@ export async function getDataSetDetails(dataSetId) {
   };
 }
 
+/**
+ * Creates a new dataset
+ */
+export async function createDataSet() {
+  return await Ajax.post('/dataset/create/', { data: {} });
+}
+
 export async function updateDataSet(dataSetId, dataSet, details = false) {
   // It's not technically wrong to add a query parameter to the URL of a PUT request. ref https://github.com/AlexsLemonade/refinebio-frontend/pull/485#discussion_r246158557
   // In this case, after a dataset is modified we'll need to fetch detailed information for it,
