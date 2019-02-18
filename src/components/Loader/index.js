@@ -13,7 +13,7 @@ export default class Loader extends React.Component {
   _mounted = true;
 
   state = {
-    hasError: false,
+    error: null,
     isLoading: true,
     data: null
   };
@@ -36,22 +36,30 @@ export default class Loader extends React.Component {
   }
 
   render() {
-    return this.props.children(this.state);
+    return this.props.children({
+      ...this.state,
+      // for some cases might be more convenient to use `hasError`
+      hasError: !!this.state.error
+    });
+  }
+
+  refresh() {
+    return this._fetchData();
   }
 
   async _fetchData() {
-    this.setState({ isLoading: true });
+    this.setState({ error: null, isLoading: true });
 
     let data;
     try {
       data = await this.props.fetch();
-    } catch (e) {
-      this.setState({ isLoading: false, hasError: true });
+    } catch (error) {
+      this.setState({ isLoading: false, error });
       return;
     }
 
     if (data && data.type === REPORT_ERROR) {
-      this.setState({ hasError: true });
+      this.setState({ error: true });
     } else if (this._mounted) {
       /**
        * In some cases, if the `Loaded` component gets unmounted before the `fetch` request above

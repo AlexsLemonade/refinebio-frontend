@@ -1,4 +1,3 @@
-import SampleFieldMetadata from '../containers/Experiment/SampleFieldMetadata';
 import { ApiVersionMismatchError, ServerError } from '../common/errors';
 
 /**
@@ -109,7 +108,13 @@ export async function asyncFetch(url, params = false) {
     ApiSourceRevision = sourceRevision;
   }
 
-  const result = await response.json();
+  let result;
+  try {
+    result = await response.json();
+  } catch (e) {
+    result = { error: true };
+  }
+
   /**
    * You only get an exception (rejection) when there's a network problem.
    * When the server answers, you have to check whether it's good or not.
@@ -220,9 +225,7 @@ export const Ajax = {
 };
 
 export const getMetadataFields = sampleMetadataFields =>
-  SampleFieldMetadata.filter(
-    field => sampleMetadataFields && sampleMetadataFields.includes(field.id)
-  ).map(field => field.Header);
+  sampleMetadataFields.map(formatSentenceCase);
 
 export function stringEnumerate([x0, ...rest]) {
   if (!rest || !rest.length) {

@@ -114,7 +114,6 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
   &--plain {
     @extend .button--link;
     font-size: 0.8rem;
-    border-bottom: 1px solid currentColor;
     line-height: 1;
 
     &:hover {

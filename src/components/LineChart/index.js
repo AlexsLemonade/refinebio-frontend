@@ -11,7 +11,7 @@ import {
   Legend
 } from 'recharts';
 import moment from 'moment';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../common/constants';
 import Spinner from '../Spinner';
 
 type Props = {
