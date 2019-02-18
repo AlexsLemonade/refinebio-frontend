@@ -32,6 +32,10 @@ class SamplesTable extends React.Component {
 
   columns = this._getColumns();
 
+  get totalColumns() {
+    return this.columns.length;
+  }
+
   render() {
     const { pageActionComponent } = this.props;
 

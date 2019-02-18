@@ -28,7 +28,6 @@ import {
 import fromPairs from 'lodash/fromPairs';
 import InfoBox from '../../components/InfoBox';
 import { searchUrl } from '../../routes';
-
 import './SearchResults.scss';
 
 class SearchResults extends Component {
