@@ -69,7 +69,7 @@ let FiltersDesktop = props => {
           position: 'fixed',
           top: 150,
           width: size.width,
-          overflow: 'auto',
+          overflowY: 'auto',
           bottom: size.bottom > 1550 ? 0 : Math.ceil(1550 - size.bottom),
           paddingBottom: 200
         }
