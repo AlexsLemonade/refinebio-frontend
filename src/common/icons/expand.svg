@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>icons/expand</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icons/expand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="expand-icon" transform="translate(0.000000, 0.000000)" fill="#386DB0">
+            <polygon id="Fill-90" points="15.996615 1.024 16 0.025 15.001615 0.025 10.004615 -5.55111512e-14 9.99561505 2 12.572615 2.013 9.29261505 5.293 10.706615 6.707 13.997615 3.416 13.999615 6.001 15.999615 5.999"></polygon>
+            <polygon id="Fill-92" points="5.29301505 9.2926 2.01301505 12.5726 2.00001505 9.9946 1.50460337e-05 10.0046 0.025015046 15.0016 5.32907052e-14 16 1.02401505 15.9966 5.99901505 15.9996 6.00001505 13.9996 3.41501505 13.9986 6.70701505 10.7066"></polygon>
+        </g>
+    </g>
+</svg>

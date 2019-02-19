@@ -7,16 +7,6 @@
   padding: 24px;
   margin: 16px 0 40px;
 
-  &--sample-wrap {
-    @extend .experiment;
-    margin-bottom: 80px;
-
-    @media (min-width: 1290px) {
-      margin-left: -80px;
-      margin-right: -80px;
-    }
-  }
-
   &__header-title {
     word-break: break-all;
     word-break: break-word;
@@ -34,6 +24,9 @@
 
   &__header {
     margin-bottom: 16px;
+    max-width: 1110px;
+    margin-left: auto;
+    margin-right: auto;
 
     @include tablet {
       display: flex;
@@ -129,7 +122,7 @@
   &__sample-commands {
     margin-bottom: 16px;
 
-    @include tablet {
+    @include desktop() {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -138,7 +131,6 @@
 
   &__per-page-dropdown {
     white-space: nowrap;
-    margin-bottom: 8px;
   }
 
   &__not-provided {
@@ -149,7 +141,7 @@
   &__sample-actions {
     flex-grow: 1;
 
-    @include tablet {
+    @include desktop {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -158,8 +150,32 @@
     }
   }
 
+  &__samples-table-block {
+    margin-bottom: 80px;
+  }
+
   &__sample-table-loading-wrap {
     padding-top: 40px;
     min-height: 1200px;
+  }
+
+  &__sample-table-expand {
+    padding-top: 6px;
+    margin-left: 16px;
+    display: none;
+
+    @media (min-width: 1600px) {
+      display: block;
+    }
+  }
+
+  &__expand-button {
+    color: $link-color;
+    display: flex;
+    align-items: center;
+
+    > img {
+      margin-right: 8px;
+    }
   }
 }

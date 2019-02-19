@@ -4,7 +4,12 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
-import { formatSentenceCase, truncateOnWord } from '../../common/helpers';
+import ExpandButton from './ExpandButton';
+import {
+  formatSentenceCase,
+  truncateOnWord,
+  maxTableWidth
+} from '../../common/helpers';
 import './Experiment.scss';
 
 import AccessionIcon from '../../common/icons/accession.svg';
@@ -80,185 +85,181 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
             <Spinner />
           ) : (
             <div>
-              <ScrollTopOnMount />
-              {comesFromSearch && (
-                <Button
-                  text="Back to Results"
-                  buttonStyle="secondary"
-                  onClick={goBack}
-                />
-              )}
-
-              <div className="experiment">
-                <ExperimentHelmet experiment={experimentData} />
-                <BackToTop />
-                <div className="experiment__accession">
-                  <img
-                    src={AccessionIcon}
-                    className="experiment__stats-icon"
-                    alt="Accession Icon"
+              <div className="layout__content">
+                <ScrollTopOnMount />
+                {comesFromSearch && (
+                  <Button
+                    text="Back to Results"
+                    buttonStyle="secondary"
+                    onClick={goBack}
                   />
-                  {experimentData.accession_code}
-                </div>
-
-                <div className="experiment__header">
-                  <h3 className="experiment__header-title mobile-p">
-                    {experimentData.title || 'No Title.'}
-                  </h3>
-                  <div>
-                    <DataSetSampleActions
-                      dataSetSlice={{
-                        [experimentData.accession_code]: DataSetStats.mapAccessions(
-                          experimentData.samples
-                        )
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="experiment__stats">
-                  <div className="experiment__stats-item">
-                    <img
-                      src={OrganismIcon}
-                      className="experiment__stats-icon"
-                      alt="Organism Icon"
-                    />{' '}
-                    {organisms.length
-                      ? organisms
-                          .map(organism => formatSentenceCase(organism.name))
-                          .join(', ')
-                      : 'No species.'}
-                  </div>
-                  <div className="experiment__stats-item">
-                    <img
-                      src={SampleIcon}
-                      className="experiment__stats-icon"
-                      alt="Sample Icon"
-                    />{' '}
-                    <NDownloadableSamples total={processedSamples} />
-                  </div>
-
-                  <div
-                    className={classnames('experiment__stats-item', {
-                      'experiment__stats-item--lg':
-                        getTechnologies(experimentData.samples).length > 3
-                    })}
-                  >
-                    <Technology samples={experimentData.samples} />
-                  </div>
-                </div>
-
-                <h4 className="experiment__title">
-                  Submitter Supplied Information
-                </h4>
-
-                <div>
-                  <ExperimentHeaderRow label="Description">
-                    {experimentData.description}
-                  </ExperimentHeaderRow>
-                  <ExperimentHeaderRow label="PubMed ID">
-                    {(experimentData.pubmed_id && (
-                      <a
-                        href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                          experimentData.pubmed_id
-                        }`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="link"
-                      >
-                        {experimentData.pubmed_id}
-                      </a>
-                    )) || (
-                      <i className="experiment__not-provided">
-                        No associated PubMed ID
-                      </i>
-                    )}
-                  </ExperimentHeaderRow>
-                  <ExperimentHeaderRow label="Publication Title">
-                    {(experimentData.publication_title && (
-                      <a
-                        href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                          experimentData.pubmed_id
-                        }`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="link"
-                      >
-                        {experimentData.publication_title}
-                      </a>
-                    )) || (
-                      <i className="experiment__not-provided">
-                        No associated publication
-                      </i>
-                    )}
-                  </ExperimentHeaderRow>
-                  <ExperimentHeaderRow label="Total Samples">
-                    {totalSamples}
-                  </ExperimentHeaderRow>
-                  <ExperimentHeaderRow label="Submitter’s Institution">
-                    <Link
-                      to={searchUrl({
-                        q: experimentData.submitter_institution
-                      })}
-                      className="link"
-                    >
-                      {experimentData.submitter_institution}
-                    </Link>
-                  </ExperimentHeaderRow>
-                  <ExperimentHeaderRow label="Authors">
-                    {experimentData.publication_authors.length > 0 ? (
-                      experimentData.publication_authors
-                        .map(author => (
-                          <Link to={searchUrl({ q: author })} className="link">
-                            {author}
-                          </Link>
-                        ))
-                        .reduce((previous, current) => (
-                          <React.Fragment>
-                            {previous}
-                            {', '}
-                            {current}
-                          </React.Fragment>
-                        ))
-                    ) : (
-                      <i className="experiment__not-provided">
-                        No associated authors
-                      </i>
-                    )}
-                  </ExperimentHeaderRow>
-                </div>
-
-                {experimentData.source_database && (
-                  <div className="experiment__source-database">
-                    <div className="experiment__row-label">
-                      Source Repository
-                    </div>
-                    <div>
-                      <a
-                        href={experimentData.source_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="link"
-                      >
-                        {DatabaseNames[experimentData.source_database]}
-                      </a>
-                    </div>
-                  </div>
                 )}
+
+                <div className="experiment">
+                  <ExperimentHelmet experiment={experimentData} />
+                  <BackToTop />
+                  <div className="experiment__accession">
+                    <img
+                      src={AccessionIcon}
+                      className="experiment__stats-icon"
+                      alt="Accession Icon"
+                    />
+                    {experimentData.accession_code}
+                  </div>
+
+                  <div className="experiment__header">
+                    <h3 className="experiment__header-title mobile-p">
+                      {experimentData.title || 'No Title.'}
+                    </h3>
+                    <div>
+                      <DataSetSampleActions
+                        dataSetSlice={{
+                          [experimentData.accession_code]: DataSetStats.mapAccessions(
+                            experimentData.samples
+                          )
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="experiment__stats">
+                    <div className="experiment__stats-item">
+                      <img
+                        src={OrganismIcon}
+                        className="experiment__stats-icon"
+                        alt="Organism Icon"
+                      />{' '}
+                      {organisms.length
+                        ? organisms
+                            .map(organism => formatSentenceCase(organism.name))
+                            .join(', ')
+                        : 'No species.'}
+                    </div>
+                    <div className="experiment__stats-item">
+                      <img
+                        src={SampleIcon}
+                        className="experiment__stats-icon"
+                        alt="Sample Icon"
+                      />{' '}
+                      <NDownloadableSamples total={processedSamples} />
+                    </div>
+
+                    <div
+                      className={classnames('experiment__stats-item', {
+                        'experiment__stats-item--lg':
+                          getTechnologies(experimentData.samples).length > 3
+                      })}
+                    >
+                      <Technology samples={experimentData.samples} />
+                    </div>
+                  </div>
+
+                  <h4 className="experiment__title">
+                    Submitter Supplied Information
+                  </h4>
+
+                  <div>
+                    <ExperimentHeaderRow label="Description">
+                      {experimentData.description}
+                    </ExperimentHeaderRow>
+                    <ExperimentHeaderRow label="PubMed ID">
+                      {(experimentData.pubmed_id && (
+                        <a
+                          href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                            experimentData.pubmed_id
+                          }`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="link"
+                        >
+                          {experimentData.pubmed_id}
+                        </a>
+                      )) || (
+                        <i className="experiment__not-provided">
+                          No associated PubMed ID
+                        </i>
+                      )}
+                    </ExperimentHeaderRow>
+                    <ExperimentHeaderRow label="Publication Title">
+                      {(experimentData.publication_title && (
+                        <a
+                          href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                            experimentData.pubmed_id
+                          }`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="link"
+                        >
+                          {experimentData.publication_title}
+                        </a>
+                      )) || (
+                        <i className="experiment__not-provided">
+                          No associated publication
+                        </i>
+                      )}
+                    </ExperimentHeaderRow>
+                    <ExperimentHeaderRow label="Total Samples">
+                      {totalSamples}
+                    </ExperimentHeaderRow>
+                    <ExperimentHeaderRow label="Submitter’s Institution">
+                      <Link
+                        to={searchUrl({
+                          q: experimentData.submitter_institution
+                        })}
+                        className="link"
+                      >
+                        {experimentData.submitter_institution}
+                      </Link>
+                    </ExperimentHeaderRow>
+                    <ExperimentHeaderRow label="Authors">
+                      {experimentData.publication_authors.length > 0 ? (
+                        experimentData.publication_authors
+                          .map(author => (
+                            <Link
+                              to={searchUrl({ q: author })}
+                              className="link"
+                            >
+                              {author}
+                            </Link>
+                          ))
+                          .reduce((previous, current) => (
+                            <React.Fragment>
+                              {previous}
+                              {', '}
+                              {current}
+                            </React.Fragment>
+                          ))
+                      ) : (
+                        <i className="experiment__not-provided">
+                          No associated authors
+                        </i>
+                      )}
+                    </ExperimentHeaderRow>
+                  </div>
+
+                  {experimentData.source_database && (
+                    <div className="experiment__source-database">
+                      <div className="experiment__row-label">
+                        Source Repository
+                      </div>
+                      <div>
+                        <a
+                          href={experimentData.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="link"
+                        >
+                          {DatabaseNames[experimentData.source_database]}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="experiment experiment--sample-wrap">
-                <Anchor name="samples">
-                  <h2 className="experiment__title">Samples</h2>
-                  {isLoading ? (
-                    <div className="experiment__sample-table-loading-wrap">
-                      <Spinner />
-                    </div>
-                  ) : (
-                    <ExperimentSamplesTable experiment={experimentData} />
-                  )}
-                </Anchor>
-              </div>
+              <SamplesTableBlock
+                experiment={isLoading ? null : experimentData}
+              />
             </div>
           );
         }}
@@ -298,6 +299,59 @@ function ExperimentHeaderRow({ label, children }) {
   );
 }
 
+function SamplesTableBlock({ experiment }) {
+  const [expanded, setExpanded] = React.useState(false);
+  const totalColumns = 4 + (experiment ? experiment.sample_metadata.length : 0);
+  const style = expanded
+    ? { maxWidth: Math.max(1175, maxTableWidth(totalColumns)) }
+    : {};
+
+  return (
+    <div
+      className="layout__content experiment__samples-table-block"
+      style={style}
+    >
+      <div className="experiment">
+        <Anchor name="samples">
+          <div className="experiment__header">
+            <h2 className="experiment__title mobile-p">Samples</h2>
+            <div>
+              {experiment && (
+                <DataSetSampleActions
+                  dataSetSlice={{
+                    [experiment.accession_code]: DataSetStats.mapAccessions(
+                      experiment.samples
+                    )
+                  }}
+                />
+              )}
+            </div>
+          </div>
+          {!experiment ? (
+            <div className="experiment__sample-table-loading-wrap">
+              <Spinner />
+            </div>
+          ) : (
+            <ExperimentSamplesTable
+              experiment={experiment}
+              filterActionComponent={() =>
+                totalColumns > 5 && (
+                  <div className="experiment__sample-table-expand">
+                    <ExpandButton
+                      expanded={expanded}
+                      onClick={() => setExpanded(!expanded)}
+                    />
+                  </div>
+                )
+              }
+            />
+          )}
+        </Anchor>
+      </div>
+    </div>
+  );
+}
+
 class ExperimentSamplesTable extends React.Component {
   state = {
     showOnlyAddedSamples: false
@@ -325,6 +379,7 @@ class ExperimentSamplesTable extends React.Component {
             Show {dropdown} of {totalSamples} Total Samples
           </React.Fragment>
         )}
+        filterActionComponent={this.props.filterActionComponent}
         // Render prop for the button that adds the samples to the dataset
         pageActionComponent={samplesDisplayed => {
           const stats = new DataSetStats(
@@ -350,18 +405,6 @@ class ExperimentSamplesTable extends React.Component {
                   Show only samples in current dataset
                 </Checkbox>
               </div>
-              <DataSetSampleActions
-                dataSetSlice={{
-                  [experiment.accession_code]: DataSetStats.mapAccessions(
-                    samplesDisplayed
-                  )
-                }}
-                enableAddRemaining={false}
-                meta={{
-                  buttonStyle: 'secondary',
-                  addText: 'Add Page to Dataset'
-                }}
-              />
             </div>
           );
         }}
@@ -370,7 +413,7 @@ class ExperimentSamplesTable extends React.Component {
   }
 
   /**
-   * Bulilds a dataset slice, that only contains the current experiment accession code
+   * Builds a dataset slice, that only contains the current experiment accession code
    * with it's processed samples
    */
   _getDataSetSlice() {
