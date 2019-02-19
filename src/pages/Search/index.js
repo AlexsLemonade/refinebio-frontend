@@ -28,7 +28,6 @@ import {
 } from '../../state/search/actions';
 import fromPairs from 'lodash/fromPairs';
 import InfoBox from '../../components/InfoBox';
-import StickyBox from 'react-sticky-box';
 import { searchUrl } from '../../routes';
 import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
@@ -145,11 +144,7 @@ class SearchResults extends Component {
                   <div className="results__add-samples">
                     <AddPageToDataSetButton results={results} />
                   </div>
-                  <div className="results__filters">
-                    <StickyBox offsetTop={80} offsetBottom={20}>
-                      <ResultFilters appliedFilters={this.state.filters} />
-                    </StickyBox>
-                  </div>
+                  <ResultFilters appliedFilters={this.state.filters} />
                   <div className="results__list">
                     {results.map(result => (
                       <Result
