@@ -28,7 +28,7 @@ const Result = ({ result, query }) => {
               className="result__icon"
               alt="accession-icon"
             />{' '}
-            {result.accession_code}
+            <HighlightedText text={result.accession_code} highlight={query} />
           </div>
           <Link
             className="link result__title"
