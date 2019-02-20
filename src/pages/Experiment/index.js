@@ -108,9 +108,9 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                   </div>
 
                   <div className="experiment__header">
-                    <h3 className="experiment__header-title mobile-p">
+                    <h1 className="experiment__header-title mobile-p">
                       {experimentData.title || 'No Title.'}
-                    </h3>
+                    </h1>
                     <div>
                       <DataSetSampleActions
                         dataSetSlice={{
