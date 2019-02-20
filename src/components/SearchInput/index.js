@@ -22,7 +22,7 @@ export default class SearchInput extends Component {
       <Formik
         ref={this.formik}
         initialValues={{ search: this.props.searchTerm }}
-        onSubmit={({ search }) => this.props.onSubmit(search)}
+        onSubmit={({ search }) => this.props.onSubmit(search.trim())}
       >
         {() => (
           <Form className="search-input">

@@ -146,12 +146,18 @@ class SearchResults extends Component {
                   </div>
                   <ResultFilters appliedFilters={this.state.filters} />
                   <div className="results__list">
-                    {results.map(result => (
-                      <Result
-                        key={result.accession_code}
-                        result={result}
-                        query={this.state.query}
-                      />
+                    {results.map((result, index) => (
+                      <React.Fragment key={result.accession_code}>
+                        <Result result={result} query={this.state.query} />
+
+                        {result._isTopResult &&
+                          results[index + 1] &&
+                          !results[index + 1]._isTopResult && (
+                            <div className="results__related-block">
+                              Other results matching '{this.state.query}'
+                            </div>
+                          )}
+                      </React.Fragment>
                     ))}
                     <Pagination
                       onPaginate={updatePage}
