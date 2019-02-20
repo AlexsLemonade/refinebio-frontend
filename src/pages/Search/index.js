@@ -154,7 +154,7 @@ class SearchResults extends Component {
                           results[index + 1] &&
                           !results[index + 1]._isTopResult && (
                             <div className="results__related-block">
-                              Other results matching '{this.state.query}'
+                              Related Results for '{this.state.query}'
                             </div>
                           )}
                       </React.Fragment>
