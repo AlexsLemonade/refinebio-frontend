@@ -66,7 +66,7 @@ const App = () => {
               <Switch>
                 <Route exact path="/" component={Main} />
                 <Route exact path="/about" component={About} />
-                <Route path="/experiments/:id" component={Experiment} />
+                <Route path="/experiments/:id/:slug?" component={Experiment} />
 
                 <Route
                   exact

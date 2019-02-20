@@ -1,6 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
@@ -8,9 +8,11 @@ import ExpandButton from './ExpandButton';
 import {
   formatSentenceCase,
   truncateOnWord,
-  maxTableWidth
+  maxTableWidth,
+  slugify
 } from '../../common/helpers';
 import './Experiment.scss';
+import * as routes from '../../routes';
 
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
@@ -45,7 +47,6 @@ const DatabaseNames = {
 let Experiment = ({ match, location: { search, state }, goBack }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
-
   return (
     <div>
       <InfoBox />
@@ -79,6 +80,11 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
             };
             totalSamples = state.result.total_samples_count;
             organisms = state.result.organism_names;
+          }
+
+          // Ensure that the url has the correct slug
+          if (!isLoading && match.params.slug !== slugify(experiment.title)) {
+            return <Redirect to={routes.experiments(experiment)} />;
           }
 
           return displaySpinner ? (
@@ -277,15 +283,17 @@ export default Experiment;
 function ExperimentHelmet({ experiment }) {
   return (
     <Helmet>
-      {experiment.title && (
-        <title>{truncateOnWord(experiment.title, 60, '')} - refine.bio</title>
-      )}
+      {experiment.title && <title>{experiment.title} - refine.bio</title>}
       {experiment.description && (
         <meta
           name="description"
           content={truncateOnWord(experiment.description, 160)}
         />
       )}
+      <link
+        rel="canonical"
+        href={window.location.origin + routes.experiments(experiment)}
+      />
     </Helmet>
   );
 }
