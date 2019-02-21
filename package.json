@@ -43,6 +43,7 @@
     "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
+    "sitemap": "^2.1.0",
     "axios": "^0.18.0",
     "flow-bin": "^0.68.0",
     "husky": "^0.14.3",

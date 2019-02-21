@@ -1,4 +1,5 @@
-import { getQueryString, slugify } from './common/helpers';
+import { getQueryString } from './common/helpers';
+import slugify from './common/slugify';
 
 /**
  * This file contains routes used in the app

@@ -8,9 +8,9 @@ import ExpandButton from './ExpandButton';
 import {
   formatSentenceCase,
   truncateOnWord,
-  maxTableWidth,
-  slugify
+  maxTableWidth
 } from '../../common/helpers';
+import slugify from '../../common/slugify';
 import './Experiment.scss';
 import * as routes from '../../routes';
 
