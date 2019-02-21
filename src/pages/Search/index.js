@@ -28,7 +28,6 @@ import {
 } from '../../state/search/actions';
 import fromPairs from 'lodash/fromPairs';
 import InfoBox from '../../components/InfoBox';
-import StickyBox from 'react-sticky-box';
 import { searchUrl } from '../../routes';
 import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
@@ -145,18 +144,20 @@ class SearchResults extends Component {
                   <div className="results__add-samples">
                     <AddPageToDataSetButton results={results} />
                   </div>
-                  <div className="results__filters">
-                    <StickyBox offsetTop={80} offsetBottom={20}>
-                      <ResultFilters appliedFilters={this.state.filters} />
-                    </StickyBox>
-                  </div>
+                  <ResultFilters appliedFilters={this.state.filters} />
                   <div className="results__list">
-                    {results.map(result => (
-                      <Result
-                        key={result.accession_code}
-                        result={result}
-                        query={this.state.query}
-                      />
+                    {results.map((result, index) => (
+                      <React.Fragment key={result.accession_code}>
+                        <Result result={result} query={this.state.query} />
+
+                        {result._isTopResult &&
+                          results[index + 1] &&
+                          !results[index + 1]._isTopResult && (
+                            <div className="results__related-block">
+                              Related Results for '{this.state.query}'
+                            </div>
+                          )}
+                      </React.Fragment>
                     ))}
                     <Pagination
                       onPaginate={updatePage}

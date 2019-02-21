@@ -32,7 +32,6 @@ const AppContent = () => (
   <div className="layout__content">
     <Switch>
       <Route path="/search" component={Search} />
-      <Route path="/experiments/:id" component={Experiment} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/executive-dashboard" component={ExecutiveDashboard} />
       <Route path="/download" component={Downloads} />
@@ -67,6 +66,7 @@ const App = () => {
               <Switch>
                 <Route exact path="/" component={Main} />
                 <Route exact path="/about" component={About} />
+                <Route path="/experiments/:id/:slug?" component={Experiment} />
 
                 <Route
                   exact
