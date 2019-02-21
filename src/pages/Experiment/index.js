@@ -83,7 +83,10 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           }
 
           // Ensure that the url has the correct slug
-          if (!isLoading && match.params.slug !== slugify(experiment.title)) {
+          if (
+            !isLoading &&
+            !experimentSlugMatches(match.params.slug, experiment.title)
+          ) {
             return <Redirect to={routes.experiments(experiment)} />;
           }
 
@@ -279,6 +282,13 @@ Experiment = connect(
 )(Experiment);
 
 export default Experiment;
+
+function experimentSlugMatches(slug, experimentTitle) {
+  if (!slug) return false;
+  // since the slug is the last parameter it can contain a hash, ensure that's not considered
+  slug = slug.split('#')[0];
+  return slug === slugify(experimentTitle);
+}
 
 function ExperimentHelmet({ experiment }) {
   return (
