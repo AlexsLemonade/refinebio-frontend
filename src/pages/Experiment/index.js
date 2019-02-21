@@ -48,7 +48,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
   return (
-    <div>
+    <>
       <InfoBox />
 
       <Loader
@@ -91,9 +91,11 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           }
 
           return displaySpinner ? (
-            <Spinner />
+            <div className="layout__content">
+              <Spinner />
+            </div>
           ) : (
-            <div>
+            <>
               <div className="layout__content">
                 <ScrollTopOnMount />
                 {comesFromSearch && (
@@ -269,11 +271,11 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
               <SamplesTableBlock
                 experiment={isLoading ? null : experimentData}
               />
-            </div>
+            </>
           );
         }}
       </Loader>
-    </div>
+    </>
   );
 };
 Experiment = connect(
