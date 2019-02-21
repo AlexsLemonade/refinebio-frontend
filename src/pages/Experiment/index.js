@@ -1,6 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
@@ -10,7 +10,9 @@ import {
   truncateOnWord,
   maxTableWidth
 } from '../../common/helpers';
+import slugify from '../../common/slugify';
 import './Experiment.scss';
+import * as routes from '../../routes';
 
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
@@ -45,9 +47,8 @@ const DatabaseNames = {
 let Experiment = ({ match, location: { search, state }, goBack }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
-
   return (
-    <div>
+    <>
       <InfoBox />
 
       <Loader
@@ -81,10 +82,20 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
             organisms = state.result.organism_names;
           }
 
+          // Ensure that the url has the correct slug
+          if (
+            !isLoading &&
+            !experimentSlugMatches(match.params.slug, experiment.title)
+          ) {
+            return <Redirect to={routes.experiments(experiment)} />;
+          }
+
           return displaySpinner ? (
-            <Spinner />
+            <div className="layout__content">
+              <Spinner />
+            </div>
           ) : (
-            <div>
+            <>
               <div className="layout__content">
                 <ScrollTopOnMount />
                 {comesFromSearch && (
@@ -108,9 +119,9 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                   </div>
 
                   <div className="experiment__header">
-                    <h3 className="experiment__header-title mobile-p">
+                    <h1 className="experiment__header-title mobile-p">
                       {experimentData.title || 'No Title.'}
-                    </h3>
+                    </h1>
                     <div>
                       <DataSetSampleActions
                         dataSetSlice={{
@@ -260,11 +271,11 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
               <SamplesTableBlock
                 experiment={isLoading ? null : experimentData}
               />
-            </div>
+            </>
           );
         }}
       </Loader>
-    </div>
+    </>
   );
 };
 Experiment = connect(
@@ -274,18 +285,27 @@ Experiment = connect(
 
 export default Experiment;
 
+function experimentSlugMatches(slug, experimentTitle) {
+  if (!slug) return false;
+  // since the slug is the last parameter it can contain a hash, ensure that's not considered
+  slug = slug.split('#')[0];
+  return slug === slugify(experimentTitle);
+}
+
 function ExperimentHelmet({ experiment }) {
   return (
     <Helmet>
-      {experiment.title && (
-        <title>{truncateOnWord(experiment.title, 60, '')} - refine.bio</title>
-      )}
+      {experiment.title && <title>{experiment.title} - refine.bio</title>}
       {experiment.description && (
         <meta
           name="description"
           content={truncateOnWord(experiment.description, 160)}
         />
       )}
+      <link
+        rel="canonical"
+        href={window.location.origin + routes.experiments(experiment)}
+      />
     </Helmet>
   );
 }

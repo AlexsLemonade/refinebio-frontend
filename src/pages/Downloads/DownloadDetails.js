@@ -245,7 +245,7 @@ class ExperimentsView extends React.Component {
               <div className="downloads__sample" key={experimentAccessionCode}>
                 <div className="downloads__dataSet-info">
                   <Link
-                    to={routes.experiments(experiment.accession_code)}
+                    to={routes.experiments(experiment)}
                     className="downloads__experiment-title link"
                   >
                     {experiment.title}

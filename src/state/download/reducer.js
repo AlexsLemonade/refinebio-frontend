@@ -1,4 +1,5 @@
 import union from 'lodash/union';
+import objectValues from 'lodash/values';
 
 const initialState = {
   dataSetId: null,
@@ -55,7 +56,7 @@ export function getExperimentCountBySpecies({ experiments, dataSet }) {
 
 export function getTotalSamplesAdded({ dataSet }) {
   if (!dataSet) return 0;
-  return union(...Object.values(dataSet)).length;
+  return union(...objectValues(dataSet)).length;
 }
 
 export function getTotalExperimentsAdded({ dataSet }) {

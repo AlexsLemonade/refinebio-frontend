@@ -11,6 +11,7 @@
     word-break: break-all;
     word-break: break-word;
     display: block;
+    font-size: 1.25rem;
 
     @include tablet {
       flex: 1;

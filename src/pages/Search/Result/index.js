@@ -32,7 +32,7 @@ const Result = ({ result, query }) => {
           </div>
           <Link
             className="link result__title"
-            to={routes.experiments(result.accession_code, {
+            to={routes.experiments(result, {
               ref: 'search',
               result: {
                 accession_code: result.accession_code,
@@ -123,7 +123,7 @@ const Result = ({ result, query }) => {
 
         <Link
           className="button button--secondary"
-          to={routes.experimentsSamples(result.accession_code, {
+          to={routes.experimentsSamples(result, {
             ref: 'search',
             result: {
               accession_code: result.accession_code,
