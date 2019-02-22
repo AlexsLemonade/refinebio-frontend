@@ -33,7 +33,7 @@
     ]
   },
   "scripts": {
-    "analyze": "source-map-explorer build/static/js/main.*",
+    "analyze": "source-map-explorer build/static/js/2.*",
     "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",
