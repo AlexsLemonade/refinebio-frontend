@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Button from './Button';
 import { addSamples, removeSamples } from '../state/download/actions';
 import DataSetStats from '../common/DataSetStats';
+import { IoIosCheckmarkCircle, IoIosInformationCircle } from 'react-icons/io';
 
 /**
  * Given a dataset and a set of samples, this component renders the correct buttons
@@ -93,14 +94,14 @@ export function RemoveFromDatasetButton({
     <div className="dataset-remove-button">
       <div className="dataset-remove-button__added-container">
         <span className="dataset-remove-button__added">
-          <i className="ion-checkmark-circled dataset-remove-button__added-icon" />
+          <IoIosCheckmarkCircle className="dataset-remove-button__added-icon" />
           {totalAdded && `${totalAdded} Samples`} Added to Dataset
         </span>
         <Button buttonStyle="plain" text="Remove" onClick={onRemove} />
       </div>
       {samplesInDataset && (
         <p className="dataset-remove-button__info-text">
-          <i className="ion-information-circled dataset-remove-button__info-icon" />{' '}
+          <IoIosInformationCircle className="dataset-remove-button__info-icon" />{' '}
           {samplesInDataset} Samples are already in Dataset
         </p>
       )}
@@ -125,7 +126,7 @@ function AddRemainingSamples({ onAdd, totalSamplesInDataset }) {
     <div className="dataset-add-button">
       <Button text={'Add Remaining'} buttonStyle="secondary" onClick={onAdd} />
       <p className="dataset-add-button__info-text">
-        <i className="ion-information-circled dataset-add-button__info-icon" />{' '}
+        <IoIosInformationCircle className="dataset-remove-button__info-icon" />{' '}
         {totalSamplesInDataset} Samples are already in Dataset
       </p>
     </div>

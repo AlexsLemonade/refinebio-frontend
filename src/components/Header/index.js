@@ -11,6 +11,7 @@ import Loader from '../../components/Loader';
 import SideMenu from '../../components/SideMenu';
 import ResponsiveSwitch from '../../components/ResponsiveSwitch';
 import { searchUrl } from '../../routes';
+import { IoMdMenu } from 'react-icons/io';
 
 class Header extends React.Component {
   render() {
@@ -124,7 +125,7 @@ function HeaderLinksMobile({ location }) {
       orientation="top"
       component={showMenu => (
         <button onClick={showMenu}>
-          <i className="ion-navicon header__burger" />
+          <IoMdMenu className="header__burger" />
         </button>
       )}
     >

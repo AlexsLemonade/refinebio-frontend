@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import classnames from 'classnames';
 import Button from '../Button';
+import Error from '../Error';
 
 export default function JumpToPageForm({ onPaginate, totalPages }) {
   return (
@@ -25,9 +26,7 @@ export default function JumpToPageForm({ onPaginate, totalPages }) {
             Jump to page
             <div className="input-wrap">
               {touched.page && errors.page ? (
-                <div className="input-wrap__error">
-                  <i className="ion-alert-circled" /> {errors.page}
-                </div>
+                <Error className="input-wrap__error">{errors.page}</Error>
               ) : null}
               <Field
                 name="page"

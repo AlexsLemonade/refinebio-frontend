@@ -13,6 +13,7 @@
     "react-dom": "^16.8.1",
     "react-ga": "^2.5.7",
     "react-helmet": "^5.2.0",
+    "react-icons": "^3.4.0",
     "react-modal": "^3.8.1",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
@@ -43,7 +44,6 @@
     "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
-    "sitemap": "^2.1.0",
     "axios": "^0.18.0",
     "flow-bin": "^0.68.0",
     "husky": "^0.14.3",
@@ -53,6 +53,7 @@
     "prettier": "^1.11.1",
     "puppeteer": "^1.11.0",
     "redux-mock-store": "^1.5.1",
+    "sitemap": "^2.1.0",
     "source-map-explorer": "^1.6.0"
   },
   "proxy": "http://localhost:8000/",
