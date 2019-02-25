@@ -1,0 +1,52 @@
+@import '../../common/styles/variables';
+
+.exec-dash {
+  font-size: 20px;
+  padding: 40px 80px;
+
+  @media (min-width: 2500px) {
+    font-size: 56px;
+  }
+
+  &__error {
+    color: $color-error;
+  }
+
+  &__grid {
+    margin-top: $container-spacing;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: $container-spacing;
+    grid-template-rows: auto;
+  }
+
+  &__block {
+    background: $white;
+    border: 1px solid $gallery;
+    padding: 24px;
+    text-align: center;
+
+    &--x3 {
+      grid-column: span 3;
+    }
+  }
+}
+
+.running-status {
+  margin-bottom: 16px;
+  display: block;
+  padding: 14px;
+  text-align: center;
+  background-color: #db3b28;
+  border-radius: 4px;
+  font-size: 20px;
+  color: $white;
+
+  &--running {
+    background-color: #41a36d;
+  }
+
+  &--running-fast {
+    background-color: #41a36d;
+  }
+}
