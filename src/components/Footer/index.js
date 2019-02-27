@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './Footer.scss';
 
 import apiData from '../../apiData.json';
+import { IoLogoTwitter, IoLogoGithub } from 'react-icons/io';
 
 const Footer = () => (
   <footer className="footer">
@@ -39,7 +40,7 @@ const Footer = () => (
             rel="noopener noreferrer"
             className="footer__link-twitter"
           >
-            <i className="ion-social-twitter footer__social" />
+            <IoLogoTwitter className="footer__social" />
           </a>
           <a
             href="https://github.com/AlexsLemonade/refinebio"
@@ -47,7 +48,7 @@ const Footer = () => (
             rel="noopener noreferrer"
             className="footer__link-github"
           >
-            <i className="ion-social-github footer__social" />
+            <IoLogoGithub className="footer__social" />
           </a>
         </div>
         <p className="footer__author">

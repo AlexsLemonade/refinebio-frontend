@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import Checkbox from '../../../components/Checkbox';
 import Button from '../../../components/Button';
 import { InvalidTokenError } from '../../../common/errors';
+import Error from '../../../components/Error';
 
 /**
  * This form can be used to edit the email that's associated with a dataset
@@ -52,11 +53,7 @@ let EmailForm = ({ onSubmit, agreedToTerms }) => (
     {({ values, isSubmitting, handleChange, touched, errors }) => (
       <Form>
         <div>
-          {touched.email && errors.email ? (
-            <p className="color-error">
-              <i className="ion-alert-circled" /> {errors.email}
-            </p>
-          ) : null}
+          {touched.email && errors.email ? <Error>{errors.email}</Error> : null}
         </div>
         <div className="form-edit-email">
           <div className="input-wrap">
@@ -81,11 +78,7 @@ let EmailForm = ({ onSubmit, agreedToTerms }) => (
         </div>
         {!agreedToTerms && (
           <div>
-            {errors.termsOfService && (
-              <p className="color-error">
-                <i className="ion-alert-circled" /> {errors.termsOfService}
-              </p>
-            )}
+            {errors.termsOfService && <Error>{errors.termsOfService}</Error>}
             <Checkbox
               name="termsOfService"
               checked={values.termsOfService}

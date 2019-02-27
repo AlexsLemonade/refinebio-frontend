@@ -2,6 +2,7 @@ import React from 'react';
 import './Input.scss';
 import Button from '../Button';
 import classnames from 'classnames';
+import { IoMdClose, IoMdSearch } from 'react-icons/io';
 
 type Props = {
   value: string,
@@ -36,7 +37,7 @@ export const InputClear = ({ onChange, value, className, ...props }) => (
         onClick={() => onChange('')}
         buttonStyle="transparent"
       >
-        <i className="icon ion-close" />
+        <IoMdClose className="icon" />
       </Button>
     )}
   </div>
@@ -51,7 +52,7 @@ export const InputSearch = ({ onChange, value, className, ...props }) => (
       {...props}
     />
     <div className="input-wrap__clear">
-      <i className="icon ion-search" />
+      <IoMdSearch className="icon" />
     </div>
   </div>
 );

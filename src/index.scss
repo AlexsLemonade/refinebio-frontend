@@ -169,5 +169,14 @@ fieldset {
   color: $color-error !important;
 }
 
+.error {
+  color: $color-error;
+
+  svg {
+    font-size: 1.2rem;
+    vertical-align: sub;
+  }
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';

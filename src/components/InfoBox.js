@@ -2,6 +2,7 @@ import React from 'react';
 import ResponsiveSwitch from './ResponsiveSwitch';
 import './InfoBox.scss';
 import Button from './Button';
+import { IoMdClose } from 'react-icons/io';
 
 function InfoBoxDesktop({ onClose }) {
   return (
@@ -21,7 +22,7 @@ function InfoBoxDesktop({ onClose }) {
         onClick={onClose}
         buttonStyle="transparent"
       >
-        <i className="icon ion-close" />
+        <IoMdClose className="icon" />
       </Button>
     </div>
   );
@@ -36,7 +37,7 @@ function InfoBoxMobile({ onClose }) {
         onClick={onClose}
         buttonStyle="transparent"
       >
-        <i className="icon ion-close" />
+        <IoMdClose className="icon" />
       </Button>
     </div>
   );

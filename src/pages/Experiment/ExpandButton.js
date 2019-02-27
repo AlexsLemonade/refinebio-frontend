@@ -15,12 +15,12 @@ export default function ExpandButton({ expanded, onClick }) {
     >
       {!expanded ? (
         <>
-          <img src={ExpandIcon} />
+          <img src={ExpandIcon} alt="expand icon" />
           Expand Table
         </>
       ) : (
         <>
-          <img src={CollapseIcon} />
+          <img src={CollapseIcon} alt="collapse icon" />
           Collapse Table
         </>
       )}

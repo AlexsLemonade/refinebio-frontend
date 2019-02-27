@@ -19,6 +19,7 @@ import FilterIcon from '../../../common/icons/filter-icon.svg';
 import { useDom } from '../../../common/hooks';
 import isEmpty from 'lodash/isEmpty';
 import FilterCategory from './FilterCategory';
+import { IoMdClose } from 'react-icons/io';
 
 let FilterList = ({
   appliedFilters,
@@ -156,7 +157,7 @@ class FiltersMobile extends React.Component {
               onClick={hideMenu}
               buttonStyle="transparent"
             >
-              <i className="icon ion-close" />
+              <IoMdClose className="icon" />
             </Button>
 
             <FilterList
@@ -210,7 +211,7 @@ function FilterLabel({ value, onClick }) {
         onClick={onClick}
         buttonStyle="transparent"
       >
-        <i className="icon ion-close" />
+        <IoMdClose className="icon" />
       </Button>
     </div>
   );
