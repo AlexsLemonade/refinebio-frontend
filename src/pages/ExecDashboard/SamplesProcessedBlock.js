@@ -4,7 +4,7 @@ import LineChart from '../../components/LineChart';
 
 const YESTERDAY = 'Yesterday';
 
-export default function SamplesProcessedBlock({}) {
+export default function SamplesProcessedBlock({ data }) {
   return (
     <div className="exec-dash__sample-graph">
       <div className="exec-dash__block-header">

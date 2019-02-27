@@ -72,3 +72,42 @@ export default class Loader extends React.Component {
     }
   }
 }
+
+export function useLoader(fetch, updateProps = []) {
+  const [state, setState] = React.useState({
+    error: null,
+    isLoading: true,
+    data: null
+  });
+
+  // ref that is active while the component is mounted
+  // thanks to https://medium.com/@pshrmn/react-hook-gotchas-e6ca52f49328
+  const mounted = React.useRef(true);
+  React.useEffect(() => {
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
+  React.useEffect(async () => {
+    await _fetch();
+  }, updateProps);
+
+  async function _fetch() {
+    setState({ ...state, isLoading: true, error: null });
+
+    try {
+      const data = await fetch();
+      if (mounted.current) setState({ error: null, isLoading: false, data });
+    } catch (error) {
+      if (mounted.current) setState({ ...state, isLoading: false, error });
+      return;
+    }
+  }
+
+  return {
+    ...state,
+    hasError: !!state.error,
+    refresh: _fetch
+  };
+}
