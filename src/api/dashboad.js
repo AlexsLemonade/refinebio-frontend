@@ -46,7 +46,8 @@ export async function fetchDashboardData(range = null) {
       processed_experiments: { total: 9882 },
       input_data_size: 4281596985758,
       output_data_size: 0,
-      active_volumes: []
+      active_volumes: [1, 2, 3, 4, 5, 6],
+      nomad_running_jobs: 300
     };
 
   if (range === 'week')

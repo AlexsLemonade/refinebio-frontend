@@ -142,19 +142,19 @@
   &__note {
     font-size: 0.8em;
     color: $gray;
+    padding-left: 2em;
   }
 }
 
 .running-status {
   margin-bottom: 16px;
   display: block;
-  padding: 14px;
   text-align: center;
   background-color: #db3b28;
   border-radius: 4px;
-  font-size: 20px;
   color: $white;
   grid-column: 1/-1;
+  padding: 0.8em;
 
   &--running {
     background-color: #41a36d;
@@ -162,5 +162,46 @@
 
   &--running-fast {
     background-color: #41a36d;
+    padding: 0;
+  }
+
+  svg {
+    font-size: 1.2em;
+    vertical-align: sub;
+  }
+
+  &__stripes {
+    padding: 0.4em;
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.15) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 1em 1em;
+    animation: progress-bar-stripes 1s linear infinite;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 2em;
+      height: 2em;
+      margin-right: 0.5em;
+    }
+  }
+}
+
+@keyframes progress-bar-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 1em 0;
   }
 }
