@@ -6,7 +6,7 @@ import pick from 'lodash/pick';
 const ORGANISMS = 'Organisms';
 const TECHNOLOGIES = 'Technologies';
 
-export function SampleBreakdownBlock({ data }) {
+export default function SampleBreakdownBlock({ data }) {
   const [showTechnology, setShowTechnology] = React.useState(false);
 
   const totalData = getTotalData(
