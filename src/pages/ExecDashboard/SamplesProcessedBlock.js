@@ -13,7 +13,7 @@ export default function SamplesProcessedBlock() {
   const [interval, setInterval] = React.useState(WEEK);
   const rangeParam =
     interval === YESTERDAY ? 'day' : interval === WEEK ? 'week' : 'month';
-  const { data, isLoading, hasError } = useLoader(
+  const { data, isLoading, hasError, refresh } = useLoader(
     () => fetchDashboardData(rangeParam),
     [rangeParam]
   );
