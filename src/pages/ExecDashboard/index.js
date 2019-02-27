@@ -10,6 +10,7 @@ import Spinner from '../../components/Spinner';
 import SamplesProcessedBlock from './SamplesProcessedBlock';
 import { fetchDashboardData } from '../../api/dashboad';
 import { useInterval } from '../../common/hooks';
+import Header from './Header';
 
 export default function ExecutiveDashboard() {
   const { isLoading, data, hasError, refresh } = useLoader(fetchDashboardData);
@@ -21,6 +22,8 @@ export default function ExecutiveDashboard() {
 
   return (
     <div className="exec-dash">
+      <Header />
+
       {!data ? (
         <Spinner />
       ) : hasError ? (
@@ -29,9 +32,9 @@ export default function ExecutiveDashboard() {
         </h2>
       ) : (
         <>
-          <AppRunningSpeed data={data} />
-
           <div className="exec-dash__grid">
+            <AppRunningSpeed data={data} />
+
             <div className="exec-dash__block">
               <div>Processing Speed</div>
               <div className="exec-dash__block-number">

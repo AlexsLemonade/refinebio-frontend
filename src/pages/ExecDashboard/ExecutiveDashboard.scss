@@ -2,15 +2,24 @@
 
 .exec-dash {
   font-size: 14px;
-  padding: 1em 2em;
 
   @include tablet {
     font-size: 20px;
-    padding: 2em 4em;
   }
 
   @media (min-width: 2500px) {
     font-size: 32px;
+  }
+
+  &__header {
+    margin-bottom: 2em;
+    background-color: #386db0;
+    color: $white;
+    display: flex;
+    align-items: center;
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    padding-left: 2em;
   }
 
   &__error {
@@ -24,9 +33,13 @@
     grid-gap: 1em;
     grid-template-rows: auto;
     margin-bottom: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
 
     @include tablet {
       grid-template-columns: 1fr 1fr;
+      margin-left: 2em;
+      margin-right: 2em;
     }
 
     @include desktop {
@@ -85,14 +98,7 @@
     @extend .exec-dash__block;
     display: block;
     text-align: left;
-
-    @include tablet {
-      grid-column: span 2;
-    }
-
-    @include desktop {
-      grid-column: span 5;
-    }
+    grid-column: 1/-1;
   }
 
   &__numbers-table {
@@ -148,6 +154,7 @@
   border-radius: 4px;
   font-size: 20px;
   color: $white;
+  grid-column: 1/-1;
 
   &--running {
     background-color: #41a36d;
