@@ -28,7 +28,6 @@ const LineChart = (props: Props) => {
   }
 
   if (isLoading) return <Spinner />;
-
   return (
     <ResponsiveContainer>
       <LineRechart

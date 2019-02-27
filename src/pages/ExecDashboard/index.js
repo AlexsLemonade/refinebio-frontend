@@ -1,3 +1,4 @@
+import { SampleBreakdownBlock } from './SampleBreakdownBlock';
 import React from 'react';
 import classnames from 'classnames';
 import Loader from '../../components/Loader';
@@ -5,6 +6,7 @@ import { Ajax, formatNumber } from '../../common/helpers';
 import './ExecutiveDashboard.scss';
 import apiData from '../../apiData';
 import Spinner from '../../components/Spinner';
+import SamplesProcessedBlock from './SamplesProcessedBlock';
 
 const RunningStatus = {
   NotRunning: 0,
@@ -28,35 +30,36 @@ class ExecutiveDashboard extends React.Component {
 
             // Executive dashboard
             return (
-              <div>
+              <>
                 <AppRunningSpeed speed={getRunningSpeed(data)} />
 
                 <div className="exec-dash__grid">
                   <div className="exec-dash__block">
-                    <h2 className="dashboard-section-block__title">
-                      Processing Speed
-                    </h2>
-                    <div className="dashboard-section-block__text">-</div>
-                    <div>samples/hr</div>
+                    <div>Processing Speed</div>
+                    <div className="exec-dash__block-number">-</div>
+                    <div className="exec-dash__block-small">samples/hr</div>
                   </div>
 
                   <div className="exec-dash__block">
-                    <h2 className="dashboard-section-block__title">
-                      Total Samples
-                    </h2>
-                    <div className="dashboard-section-block__text">
+                    <div>Total Samples</div>
+                    <div className="exec-dash__block-number">
                       {formatNumber(data.processed_samples.total, 0)}
                     </div>
-                    <div>Estimated Value: $20M </div>
+                    <div className="exec-dash__block-small">
+                      Estimated Value: $20M
+                    </div>
                   </div>
 
-                  <div className="exec-dash__block exec-dash__block--x3">
-                    <h2 className="dashboard-section-block__title">
-                      Organisms
-                    </h2>
-                  </div>
+                  <SampleBreakdownBlock data={data} />
+
+                  <SamplesProcessedBlock data={data} />
                 </div>
-              </div>
+
+                <div className="exec-dash__note">
+                  *Dollar values are estimated based on assumption 1 sample =
+                  $1000
+                </div>
+              </>
             );
           }}
         </Loader>
@@ -114,7 +117,20 @@ async function fetchStats() {
       open: 172,
       average_time: 1179.089652
     },
-    samples: { total: 458472 },
+    samples: {
+      total: 458472,
+
+      organism: {
+        DANIO_RERIO: 58472,
+        MOUSE: 23000,
+        HOMO_SAPIENS: 4100
+      },
+
+      technology: {
+        RNA_SEQ: 23000,
+        MICROARRAY: 15000
+      }
+    },
     experiments: { total: 12860 },
     processed_samples: { total: 133217 },
     processed_experiments: { total: 9882 },
