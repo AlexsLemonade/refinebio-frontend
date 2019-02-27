@@ -82,32 +82,41 @@ export function useLoader(fetch, updateProps = []) {
 
   // ref that is active while the component is mounted
   // thanks to https://medium.com/@pshrmn/react-hook-gotchas-e6ca52f49328
-  const mounted = React.useRef(true);
+  const mounted = React.useRef(1);
   React.useEffect(() => {
     return () => {
       mounted.current = false;
     };
   }, []);
 
-  React.useEffect(async () => {
-    await _fetch();
+  React.useEffect(() => {
+    mounted.current += 1;
+    _fetch(mounted.current);
   }, updateProps);
 
-  async function _fetch() {
+  async function _fetch(version) {
     setState({ ...state, isLoading: true, error: null });
 
     try {
       const data = await fetch();
-      if (mounted.current) setState({ error: null, isLoading: false, data });
+
+      // before modifying the state ensure that the component is still mounted
+      // and that no other `fetch` calls have been made. In which case this response
+      // would be obsolete.
+      if (!mounted.current || version !== mounted.current) return;
+      setState({ error: null, isLoading: false, data });
     } catch (error) {
-      if (mounted.current) setState({ ...state, isLoading: false, error });
-      return;
+      if (!mounted.current || version !== mounted.current) return;
+      setState({ ...state, isLoading: false, error });
     }
   }
 
   return {
     ...state,
     hasError: !!state.error,
-    refresh: _fetch
+    refresh: async () => {
+      mounted.current += 1;
+      await _fetch(mounted.current);
+    }
   };
 }
