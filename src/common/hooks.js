@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 /**
  * Calculate values from a dom node
@@ -21,15 +21,15 @@ export function useDom(ref, fn) {
  * Thanks to https://overreacted.io/making-setinterval-declarative-with-react-hooks/
  */
 export function useInterval(callback, delay) {
-  const savedCallback = useRef();
+  const savedCallback = React.useRef();
 
   // Remember the latest callback.
-  useEffect(() => {
+  React.useEffect(() => {
     savedCallback.current = callback;
   });
 
   // Set up the interval.
-  useEffect(
+  React.useEffect(
     () => {
       function tick() {
         savedCallback.current();

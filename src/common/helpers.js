@@ -324,6 +324,7 @@ export function maxTableWidth(totalColumns) {
 }
 
 /**
+ * Format number to metric prefix (https://en.wikipedia.org/wiki/Metric_prefix)
  * numberFormatter(33000) = '33K'
  *
  * Thanks to https://stackoverflow.com/a/14994860/763705

@@ -10,8 +10,10 @@ export default function SampleBreakdownBlock({ data }) {
   const [showTechnology, setShowTechnology] = React.useState(false);
 
   const totalData = getTotalData(
-    data.samples.total,
-    showTechnology ? data.samples.technology : data.samples.organism
+    data.processed_samples.total,
+    showTechnology
+      ? data.processed_samples.technology
+      : data.processed_samples.organism
   );
 
   return (
