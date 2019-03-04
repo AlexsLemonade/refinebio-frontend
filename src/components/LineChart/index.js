@@ -40,8 +40,8 @@ const LineChart = (props: Props) => {
         height={400}
         margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
       >
-        <XAxis dataKey="date" tickFormatter={formatXAxis} />
-        <YAxis />
+        <XAxis dataKey="date" tickFormatter={props.formatLabel} />
+        <YAxis tickFormatter={props.formatValue} />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip
           content={

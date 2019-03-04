@@ -4,7 +4,7 @@ import Dropdown from '../../components/Dropdown';
 import LineChart from '../../components/LineChart';
 import { useLoader } from '../../components/Loader';
 import { fetchDashboardData } from '../../api/dashboad';
-import { formatNumber } from '../../common/helpers';
+import { formatNumber, numberFormatter } from '../../common/helpers';
 import moment from 'moment';
 
 const YESTERDAY = 'Yesterday';
@@ -51,7 +51,7 @@ export default function SamplesProcessedBlock() {
             <tbody>
               <tr>
                 <th>{formatNumber(totalSamples, 0)}</th>
-                <th>${formatNumber(totalSamples * 1000)}</th>
+                <th>${formatNumber(totalSamples * 1000, 0)}</th>
               </tr>
               <tr>
                 <td>Samples</td>
@@ -78,7 +78,7 @@ export default function SamplesProcessedBlock() {
                     }[rangeParam] || null;
                   return moment(label).format(format);
                 }}
-                formatValue={x => formatNumber(x, 0)}
+                formatValue={x => numberFormatter(x)}
                 series={['samples']}
               />
             </div>
