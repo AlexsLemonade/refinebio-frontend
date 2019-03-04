@@ -13,11 +13,16 @@ import {
 import moment from 'moment';
 import { COLORS } from '../../common/constants';
 import Spinner from '../Spinner';
+import { formatNumber } from '../../common/helpers';
+
+import './LineChart.scss';
 
 type Props = {
   series: Array<string>,
   data: Array<{ date: string }>,
-  isLoading: boolean
+  isLoading: boolean,
+  formatValue: Function,
+  formatLabel: Function
 };
 
 const LineChart = (props: Props) => {
@@ -38,8 +43,14 @@ const LineChart = (props: Props) => {
         <XAxis dataKey="date" tickFormatter={formatXAxis} />
         <YAxis />
         <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip />
-        <Legend />
+        <Tooltip
+          content={
+            <TooltipContent
+              formatLabel={props.formatLabel}
+              formatValue={props.formatValue}
+            />
+          }
+        />
         {series.map((set, i) => (
           <Line
             isAnimationActive={false}
@@ -56,3 +67,25 @@ const LineChart = (props: Props) => {
 };
 
 export default LineChart;
+
+function TooltipContent({
+  payload,
+  label,
+  active,
+  range,
+  formatLabel,
+  formatValue
+}) {
+  if (!active) return null;
+
+  return (
+    <div className="tooltip">
+      <b>{formatLabel ? formatLabel(label) : label}</b>
+      {payload.map(data => (
+        <div key={data.name}>
+          {data.name}: {formatValue ? formatValue(data.value) : data.value}
+        </div>
+      ))}
+    </div>
+  );
+}

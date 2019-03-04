@@ -63,10 +63,22 @@ export default function SamplesProcessedBlock() {
           <div className="exec-dash__chart">
             <div className="responsive-chart__absolute">
               <LineChart
+                range={rangeParam}
                 data={transformSamplesTimeline(
                   data.processed_samples.timeline,
                   rangeParam
                 )}
+                formatLabel={label => {
+                  const format =
+                    {
+                      day: 'HH:00',
+                      week: 'dddd',
+                      month: 'MMM Do',
+                      year: 'MMMM'
+                    }[rangeParam] || null;
+                  return moment(label).format(format);
+                }}
+                formatValue={x => formatNumber(x, 0)}
                 series={['samples']}
               />
             </div>
