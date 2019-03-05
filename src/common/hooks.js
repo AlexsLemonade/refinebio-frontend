@@ -1,4 +1,6 @@
 import React from 'react';
+import history from '../history';
+import { getQueryParamObject } from './helpers';
 
 /**
  * Calculate values from a dom node
@@ -41,4 +43,11 @@ export function useInterval(callback, delay) {
     },
     [delay]
   );
+}
+
+export function useHistory() {
+  return {
+    pathname: history.location.pathname,
+    params: getQueryParamObject(history.location.search)
+  };
 }

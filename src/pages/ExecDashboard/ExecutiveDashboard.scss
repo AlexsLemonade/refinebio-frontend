@@ -107,7 +107,6 @@
     margin-top: 1em;
 
     @include tablet {
-      margin-top: 2em;
       flex-direction: row;
       justify-content: space-between;
     }
@@ -203,5 +202,52 @@
   }
   to {
     background-position: 1em 0;
+  }
+}
+
+// TV support
+// For now we optimized it for a TV browser at 1920x1080 with 125% zoom
+// these were the defaults on the TV at the office
+.exec-dash--tv {
+  position: relative;
+  font-size: 18px;
+
+  .exec-dash__header {
+    margin-bottom: 0;
+    background: linear-gradient(#fff, #dfe9f3);
+    color: #002f6c;
+  }
+
+  .exec-dash__grid {
+    display: block;
+  }
+
+  .exec-dash__block {
+    float: left;
+    margin-bottom: 16px;
+    margin-right: 64px;
+    min-height: 175px;
+  }
+
+  .exec-dash__sample-breakdown {
+    width: 800px;
+    margin-right: 0;
+  }
+
+  .exec-dash__sample-graph {
+    clear: both;
+    width: 100%;
+  }
+
+  .exec-dash__chart {
+    padding-bottom: 25%;
+  }
+
+  .exec-dash__note {
+    clear: both;
+  }
+
+  .recharts-line-curve {
+    stroke-width: 5px;
   }
 }

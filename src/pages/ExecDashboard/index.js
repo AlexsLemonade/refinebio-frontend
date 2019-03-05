@@ -7,8 +7,9 @@ import './ExecutiveDashboard.scss';
 import Spinner from '../../components/Spinner';
 import SamplesProcessedBlock from './SamplesProcessedBlock';
 import { fetchDashboardData } from '../../api/dashboad';
-import { useInterval } from '../../common/hooks';
+import { useInterval, useHistory } from '../../common/hooks';
 import Header from './Header';
+import classnames from 'classnames';
 
 export default function ExecutiveDashboard() {
   const { data, hasError, refresh } = useLoader(fetchDashboardData);
@@ -18,9 +19,12 @@ export default function ExecutiveDashboard() {
     if (!!data) refresh();
   }, 25 * 60 * 60 * 1000);
 
+  const { params } = useHistory();
+  const isTv = !!params.tv;
+
   return (
-    <div className="exec-dash">
-      <Header />
+    <div className={classnames({ 'exec-dash': true, 'exec-dash--tv': isTv })}>
+      <Header isTv={isTv} />
 
       {!data ? (
         <Spinner />

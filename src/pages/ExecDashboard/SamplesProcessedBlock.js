@@ -6,6 +6,7 @@ import { useLoader } from '../../components/Loader';
 import { fetchDashboardData } from '../../api/dashboad';
 import { formatNumber, numberFormatter } from '../../common/helpers';
 import moment from 'moment';
+import { addISOYears } from 'date-fns';
 
 const YESTERDAY = 'Yesterday';
 const WEEK = 'Last Week';
@@ -13,7 +14,7 @@ const MONTH = 'Last Month';
 const YEAR = 'Last Year';
 
 export default function SamplesProcessedBlock() {
-  const [interval, setInterval] = React.useState(WEEK);
+  const [interval, setInterval] = React.useState(YEAR);
   const rangeParam =
     interval === YESTERDAY
       ? 'day'
