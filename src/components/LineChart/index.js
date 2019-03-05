@@ -7,13 +7,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Line,
-  Legend
+  Line
 } from 'recharts';
-import moment from 'moment';
 import { COLORS } from '../../common/constants';
 import Spinner from '../Spinner';
-import { formatNumber } from '../../common/helpers';
 
 import './LineChart.scss';
 
@@ -27,10 +24,6 @@ type Props = {
 
 const LineChart = (props: Props) => {
   const { data = [], series = [], isLoading = false } = props;
-
-  function formatXAxis(tickItem) {
-    return moment(tickItem).format('MMM Do hh:mm');
-  }
 
   if (isLoading) return <Spinner />;
   return (
