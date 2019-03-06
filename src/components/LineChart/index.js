@@ -7,7 +7,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Line
+  Line,
+  Legend
 } from 'recharts';
 import { COLORS } from '../../common/constants';
 import Spinner from '../Spinner';
@@ -44,6 +45,7 @@ const LineChart = (props: Props) => {
             />
           }
         />
+        {series.length > 1 && <Legend />}
         {series.map((set, i) => (
           <Line
             isAnimationActive={false}

@@ -79,19 +79,29 @@ export function getSamplesCount(stats) {
  * run up to that point in time since the beginning of that time range for each
  * job type
  */
-export function getJobsCompletedOverTime(stats) {
-  const result = zip(
-    stats.survey_jobs.timeline,
+export function getJobsCompletedOverTime(stats, range) {
+  const surveyTimeline = transformTimeline(stats.survey_jobs.timeline, range);
+  const downloaderTimeline = transformTimeline(
     stats.downloader_jobs.timeline,
-    stats.processor_jobs.timeline
-  ).map(([surveyPoint, downloaderPoint, processorPoint], index, array) => ({
-    date: moment.utc(surveyPoint.end).format('lll'),
-    survey: surveyPoint.completed,
-    downloader: downloaderPoint.completed,
-    processor: processorPoint.completed
-  }));
+    range
+  );
+  const processorTimeline = transformTimeline(
+    stats.processor_jobs.timeline,
+    range
+  );
 
-  return accumulateByKeys(result, ['survey', 'downloader', 'processor']);
+  return zip(surveyTimeline, downloaderTimeline, processorTimeline).map(
+    ([
+      { date, total: survey },
+      { total: downloader },
+      { total: processor }
+    ]) => ({
+      date,
+      survey,
+      downloader,
+      processor
+    })
+  );
 }
 
 export function getSamplesAndExperimentsCreatedOverTime(stats, range) {
@@ -113,17 +123,13 @@ export function getSamplesAndExperimentsCreatedOverTime(stats, range) {
   );
 }
 
-export function getJobsByStatusOverTime(stats, jobName) {
-  const result = stats[jobName].timeline.map(dataPoint => ({
-    date: moment.utc(dataPoint.end).format('lll'),
-    total: dataPoint['total'],
-    ...JOB_STATUS.reduce((accum, status) => {
-      accum[status] = dataPoint[status];
-      return accum;
-    }, {})
-  }));
-
-  return accumulateByKeys(result, ['total', ...JOB_STATUS]);
+export function getJobsByStatusOverTime(jobsTimeline, range) {
+  return transformTimeline(jobsTimeline, range, [
+    'pending',
+    'open',
+    'completed',
+    'failed'
+  ]);
 }
 
 /**
@@ -133,11 +139,16 @@ export function getJobsByStatusOverTime(stats, jobName) {
  * @param {*} timeline as returned by the /stats endpoint
  * @param {*} range range param that the graph will be displaying
  */
-function transformTimeline(timeline, range) {
-  const result = [...getTimeline(range)].map(date => ({
-    date,
-    total: 0
-  }));
+function transformTimeline(timeline, range, fields = ['total']) {
+  const result = [...getTimeline(range)].map(date => {
+    const result = {
+      date
+    };
+    for (let field of fields) {
+      result[field] = 0;
+    }
+    return result;
+  });
 
   for (let observation of timeline) {
     // find the closest datapoint to `data.start`
@@ -153,7 +164,9 @@ function transformTimeline(timeline, range) {
     }
     if (closestTemp) {
       // add the total samples to that datapoint
-      closestTemp.total += observation.total;
+      for (let field of fields) {
+        closestTemp[field] = observation[field];
+      }
     }
   }
 

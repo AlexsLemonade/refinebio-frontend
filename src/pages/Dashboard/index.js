@@ -84,30 +84,33 @@ function getDashboardChartConfig(state, range) {
     samplesAndExperimentsOverTime: chartSelectors.getSamplesAndExperimentsCreatedOverTime(
       state,
       range
+    ),
+    jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(
+      state,
+      range
+    ),
+    totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
+      state
+    ),
+    averageTimesTilCompletion: chartSelectors.getAllAverageTimeTilCompletion(
+      state
+    ),
+    estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
+      state
+    ),
+    jobsByStatus: chartSelectors.getJobsByStatus(state),
+    processorJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+      state.processor_jobs.timeline,
+      range
+    ),
+    surveyJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+      state.survey_jobs.timeline,
+      range
+    ),
+    downloaderJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
+      state.downloader_jobs.timeline,
+      range
     )
-    // jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state),
-    // totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
-    //   state
-    // ),
-    // averageTimesTilCompletion: chartSelectors.getAllAverageTimeTilCompletion(
-    //   state
-    // ),
-    // estimatedTimesTilCompletion: chartSelectors.getAllEstimatedTimeTilCompletion(
-    //   state
-    // ),
-    // jobsByStatus: chartSelectors.getJobsByStatus(state),
-    // processorJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
-    //   state,
-    //   'processor_jobs'
-    // ),
-    // surveyJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
-    //   state,
-    //   'survey_jobs'
-    // ),
-    // downloaderJobsOverTimeByStatus: chartSelectors.getJobsByStatusOverTime(
-    //   state,
-    //   'downloader_jobs'
-    // )
   };
 
   return [
@@ -138,94 +141,94 @@ function getDashboardChartConfig(state, range) {
     {
       title: 'Jobs',
       charts: [
-        // {
-        //   title: 'Jobs Over Time by Type',
-        //   data: jobsCompletedOverTime,
-        //   type: 'line',
-        //   series: ['survey', 'processor', 'downloader'],
-        //   size: 'large'
-        // },
-        // {
-        //   title: 'Total Length of Queues by Type',
-        //   data: totalLengthOfQueuesByType,
-        //   type: 'pie',
-        //   size: 'medium'
-        // },
-        // {
-        //   title: 'Survey Jobs by Status',
-        //   data: jobsByStatus.survey_jobs,
-        //   type: 'pie',
-        //   size: 'medium'
-        // },
-        // {
-        //   title: 'Processor Jobs by Status',
-        //   data: jobsByStatus.processor_jobs,
-        //   type: 'pie',
-        //   size: 'medium'
-        // },
-        // {
-        //   title: 'Downloader Jobs by Status',
-        //   data: jobsByStatus.downloader_jobs,
-        //   type: 'pie',
-        //   size: 'medium'
-        // },
-        // {
-        //   title: 'Average Time: Survey Jobs',
-        //   data: averageTimesTilCompletion.survey_jobs,
-        //   type: 'text',
-        //   size: 'small'
-        // },
-        // {
-        //   title: 'Estimated Time Till Completion: Survey Jobs',
-        //   data: estimatedTimesTilCompletion.survey_jobs,
-        //   type: 'text',
-        //   size: 'small'
-        // },
-        // {
-        //   title: 'Average Time: Processor Jobs',
-        //   data: averageTimesTilCompletion.processor_jobs,
-        //   type: 'text',
-        //   size: 'small'
-        // },
-        // {
-        //   title: 'Estimated Time Till Completion: Processor Jobs',
-        //   data: estimatedTimesTilCompletion.processor_jobs,
-        //   type: 'text',
-        //   size: 'small'
-        // },
-        // {
-        //   title: 'Average Time: Downloader Jobs',
-        //   data: averageTimesTilCompletion.downloader_jobs,
-        //   type: 'text',
-        //   size: 'small'
-        // },
-        // {
-        //   title: 'Estimated Time Till Completion: Downloader Jobs',
-        //   data: estimatedTimesTilCompletion.downloader_jobs,
-        //   type: 'text',
-        //   size: 'small'
-        // },
-        // {
-        //   title: 'Processor Jobs Over Time by Status',
-        //   data: processorJobsOverTimeByStatus,
-        //   type: 'line',
-        //   series: ['pending', 'open', 'completed', 'failed'],
-        //   size: 'large'
-        // },
-        // {
-        //   title: 'Survey Jobs Over Time by Status',
-        //   data: surveyJobsOverTimeByStatus,
-        //   type: 'line',
-        //   series: ['pending', 'open', 'completed', 'failed'],
-        //   size: 'large'
-        // },
-        // {
-        //   title: 'Downloader Jobs Over Time by Status',
-        //   data: downloaderJobsOverTimeByStatus,
-        //   type: 'line',
-        //   series: ['pending', 'open', 'completed', 'failed'],
-        //   size: 'large'
-        // }
+        {
+          title: 'Jobs Over Time by Type',
+          data: jobsCompletedOverTime,
+          type: 'line',
+          series: ['survey', 'processor', 'downloader'],
+          size: 'large'
+        },
+        {
+          title: 'Total Length of Queues by Type',
+          data: totalLengthOfQueuesByType,
+          type: 'pie',
+          size: 'medium'
+        },
+        {
+          title: 'Survey Jobs by Status',
+          data: jobsByStatus.survey_jobs,
+          type: 'pie',
+          size: 'medium'
+        },
+        {
+          title: 'Processor Jobs by Status',
+          data: jobsByStatus.processor_jobs,
+          type: 'pie',
+          size: 'medium'
+        },
+        {
+          title: 'Downloader Jobs by Status',
+          data: jobsByStatus.downloader_jobs,
+          type: 'pie',
+          size: 'medium'
+        },
+        {
+          title: 'Average Time: Survey Jobs',
+          data: averageTimesTilCompletion.survey_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Estimated Time Till Completion: Survey Jobs',
+          data: estimatedTimesTilCompletion.survey_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Average Time: Processor Jobs',
+          data: averageTimesTilCompletion.processor_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Estimated Time Till Completion: Processor Jobs',
+          data: estimatedTimesTilCompletion.processor_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Average Time: Downloader Jobs',
+          data: averageTimesTilCompletion.downloader_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Estimated Time Till Completion: Downloader Jobs',
+          data: estimatedTimesTilCompletion.downloader_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Processor Jobs Over Time by Status',
+          data: processorJobsOverTimeByStatus,
+          type: 'line',
+          series: ['pending', 'open', 'completed', 'failed'],
+          size: 'large'
+        },
+        {
+          title: 'Survey Jobs Over Time by Status',
+          data: surveyJobsOverTimeByStatus,
+          type: 'line',
+          series: ['pending', 'open', 'completed', 'failed'],
+          size: 'large'
+        },
+        {
+          title: 'Downloader Jobs Over Time by Status',
+          data: downloaderJobsOverTimeByStatus,
+          type: 'line',
+          series: ['pending', 'open', 'completed', 'failed'],
+          size: 'large'
+        }
       ]
     }
   ];
