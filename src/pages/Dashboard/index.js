@@ -16,7 +16,7 @@ function Dashboard() {
   const { data, isLoading, refresh } = useLoader(
     async () => {
       const stats = await fetchDashboardData(range);
-      return getDashboardChartConfig(stats);
+      return getDashboardChartConfig(stats, range);
     },
     [range]
   );
@@ -65,7 +65,7 @@ export default Dashboard;
  * Returns the options for the charts in the dashboard
  * @param {*} state Redux state
  */
-function getDashboardChartConfig(state) {
+function getDashboardChartConfig(state, range) {
   const {
     totalLengthOfQueuesByType,
     averageTimesTilCompletion,
@@ -80,10 +80,11 @@ function getDashboardChartConfig(state) {
     surveyJobsOverTimeByStatus
   } = {
     samplesCount: chartSelectors.getSamplesCount(state),
-    experimentsCount: chartSelectors.getExperimentsCount(state)
-    // samplesAndExperimentsOverTime: chartSelectors.getSamplesAndExperimentsCreatedOverTime(
-    //   state
-    // )
+    experimentsCount: chartSelectors.getExperimentsCount(state),
+    samplesAndExperimentsOverTime: chartSelectors.getSamplesAndExperimentsCreatedOverTime(
+      state,
+      range
+    )
     // jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(state),
     // totalLengthOfQueuesByType: chartSelectors.getTotalLengthOfQueuesByType(
     //   state
@@ -124,14 +125,14 @@ function getDashboardChartConfig(state) {
           data: samplesCount,
           type: 'text',
           size: 'small'
+        },
+        {
+          title: 'Samples and Experiments Created Over Time',
+          data: samplesAndExperimentsOverTime,
+          series: ['experiments', 'samples'],
+          type: 'line',
+          size: 'large'
         }
-        // {
-        //   title: 'Samples and Experiments Created Over Time',
-        //   data: samplesAndExperimentsOverTime,
-        //   series: ['experiments', 'samples'],
-        //   type: 'line',
-        //   size: 'large'
-        // }
       ]
     },
     {

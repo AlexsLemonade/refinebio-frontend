@@ -71,7 +71,7 @@ export function getExperimentsCount(stats) {
 }
 
 export function getSamplesCount(stats) {
-  return stats.samples.total;
+  return stats.processed_samples.total;
 }
 
 /**
@@ -94,18 +94,23 @@ export function getJobsCompletedOverTime(stats) {
   return accumulateByKeys(result, ['survey', 'downloader', 'processor']);
 }
 
-export function getSamplesAndExperimentsCreatedOverTime(stats) {
-  const { samples, experiments } = stats;
-
-  const result = zip(samples.timeline, experiments.timeline).map(
-    ([samplePoint, experimentPoint]) => ({
-      date: moment.utc(samplePoint.end).format('lll'),
-      samples: samplePoint.total,
-      experiments: experimentPoint.total
-    })
+export function getSamplesAndExperimentsCreatedOverTime(stats, range) {
+  const samplesTimeline = transformTimeline(
+    stats.processed_samples.timeline,
+    range
+  );
+  const experimentsTimeline = transformTimeline(
+    stats.experiments.timeline,
+    range
   );
 
-  return accumulateByKeys(result, ['samples', 'experiments']);
+  return zip(samplesTimeline, experimentsTimeline).map(
+    ([{ date, total: samples }, { total: experiments }]) => ({
+      date,
+      samples,
+      experiments
+    })
+  );
 }
 
 export function getJobsByStatusOverTime(stats, jobName) {
@@ -119,4 +124,79 @@ export function getJobsByStatusOverTime(stats, jobName) {
   }));
 
   return accumulateByKeys(result, ['total', ...JOB_STATUS]);
+}
+
+/**
+ * Returns a timeline that is sorted chronologically, and that has all datapoints
+ * for a given `range`.
+ * The `/stats` endpoint only returns the datapoints that have some value.
+ * @param {*} timeline as returned by the /stats endpoint
+ * @param {*} range range param that the graph will be displaying
+ */
+function transformTimeline(timeline, range) {
+  const result = [...getTimeline(range)].map(date => ({
+    date,
+    total: 0
+  }));
+
+  for (let observation of timeline) {
+    // find the closest datapoint to `data.start`
+    let closestTemp = null;
+    for (let graphPoint of result) {
+      if (
+        !closestTemp ||
+        Math.abs(moment(observation.start).diff(graphPoint.date)) <
+          Math.abs(moment(observation.start).diff(closestTemp.date))
+      ) {
+        closestTemp = graphPoint;
+      }
+    }
+    if (closestTemp) {
+      // add the total samples to that datapoint
+      closestTemp.total += observation.total;
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Given a range returns the
+ * @param {*} range day/ | week | month | year
+ */
+function* getTimeline(range) {
+  const now = moment().startOf('day');
+
+  const data = {
+    day: {
+      start: now.clone().subtract(1, 'days'),
+      interval: moment.duration(1, 'hour')
+    },
+    week: {
+      start: now.clone().subtract(1, 'weeks'),
+      interval: moment.duration(1, 'days')
+    },
+    month: {
+      start: now.clone().subtract(30, 'days'),
+      interval: moment.duration(1, 'days')
+    },
+    year: {
+      start: now
+        .clone()
+        .subtract(365, 'days')
+        .startOf('month'),
+      interval: moment.duration(1, 'months')
+    }
+  };
+  let nextDate = data[range].start;
+  let interval = data[range].interval;
+  yield nextDate.format();
+
+  while (true) {
+    nextDate = nextDate.add(interval);
+    if (nextDate.isAfter(now)) {
+      break;
+    }
+    yield nextDate.format();
+  }
 }
