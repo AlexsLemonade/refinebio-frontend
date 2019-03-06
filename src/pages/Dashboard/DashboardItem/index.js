@@ -2,6 +2,7 @@ import React from 'react';
 import PieChart from '../../../components/PieChart';
 import LineChart from '../../../components/LineChart';
 import './DashboardItem.scss';
+import moment from 'moment';
 
 const DashboardItem = props => {
   const {
@@ -10,7 +11,8 @@ const DashboardItem = props => {
     data,
     size = 'small',
     series,
-    isLoading = false
+    isLoading = false,
+    range
   } = props;
 
   const renderChart = (type, data) => {
@@ -22,7 +24,23 @@ const DashboardItem = props => {
         return <PieChart data={data} />;
       }
       case 'line': {
-        return <LineChart data={data} series={series} isLoading={isLoading} />;
+        return (
+          <LineChart
+            data={data}
+            series={series}
+            isLoading={isLoading}
+            formatLabel={label => {
+              const format =
+                {
+                  day: 'HH:00',
+                  week: 'dddd',
+                  month: 'MMM Do',
+                  year: 'MMMM'
+                }[range] || null;
+              return moment(label).format(format);
+            }}
+          />
+        );
       }
       default: {
         return null;

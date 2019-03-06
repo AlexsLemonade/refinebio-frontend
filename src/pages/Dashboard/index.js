@@ -51,6 +51,7 @@ function Dashboard() {
                 title={title}
                 charts={charts}
                 isLoading={isLoading}
+                range={range}
               />
             );
           })
