@@ -21,10 +21,10 @@ function Dashboard() {
     [range]
   );
 
-  // refresh data every 25 mins
+  // refresh data every 10 mins
   useInterval(() => {
     if (!!data) refresh();
-  }, 25 * 60 * 60 * 1000);
+  }, 10 * 60 * 1000);
 
   return (
     <div className="dashboard">
@@ -40,7 +40,7 @@ function Dashboard() {
           onChange={setRange}
         />
 
-        {isLoading ? (
+        {!data ? (
           <Spinner />
         ) : (
           data.map(section => {
