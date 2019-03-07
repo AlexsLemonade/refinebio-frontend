@@ -119,6 +119,10 @@ export function getDatasetsOverTime(stats, range) {
   return transformTimeline(stats.dataset.timeline, range);
 }
 
+export function getVolumeOfDataOverTime(stats, range) {
+  return transformTimeline(stats.dataset.timeline, range, ['total_size']);
+}
+
 export function getExperimentsCreatedOverTime(stats, range) {
   return transformTimeline(stats.experiments.timeline, range).map(
     ({ date, total }) => ({

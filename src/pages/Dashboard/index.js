@@ -114,32 +114,32 @@ function getDashboardChartConfig(state, range) {
       title: 'Experiments and Samples',
       charts: [
         {
-          title: 'Total Experiments Created',
+          title: 'Total experiments created',
           data: experimentsCount,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Total Samples Created',
+          title: 'Total samples created',
           data: state.samples.total + state.processed_samples.total,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Total Samples Processed',
+          title: 'Total samples processed',
           data: state.processed_samples.total,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Samples Created and Processed Over Time',
+          title: 'Samples created and processed over time',
           data: chartSelectors.getSamplesOverTime(state, range),
           series: ['unprocessed', 'processed'],
           type: 'area',
           size: 'large'
         },
         {
-          title: 'Experiments Created Over Time',
+          title: 'Experiments created over time',
           data: chartSelectors.getExperimentsCreatedOverTime(state, range),
           series: ['experiments'],
           type: 'line',
@@ -151,7 +151,7 @@ function getDashboardChartConfig(state, range) {
       title: 'Downloads',
       charts: [
         {
-          title: 'Total Datasets Processed',
+          title: 'Total datasets processed',
           data: state.dataset.total,
           type: 'text',
           size: 'small'
@@ -195,9 +195,16 @@ function getDashboardChartConfig(state, range) {
           size: 'medium'
         },
         {
-          title: "Dataset's Processed Over Time",
+          title: "Dataset's processed over time",
           data: chartSelectors.getDatasetsOverTime(state, range),
           series: ['total'],
+          type: 'line',
+          size: 'large'
+        },
+        {
+          title: 'Volume of data downloaded over time',
+          data: chartSelectors.getVolumeOfDataOverTime(state, range),
+          series: ['total_size'],
           type: 'line',
           size: 'large'
         }
@@ -207,88 +214,88 @@ function getDashboardChartConfig(state, range) {
       title: 'Jobs',
       charts: [
         {
-          title: 'Jobs Over Time by Type',
+          title: 'Jobs over time by type',
           data: jobsCompletedOverTime,
           type: 'line',
           series: ['survey', 'processor', 'downloader'],
           size: 'large'
         },
         {
-          title: 'Total Length of Queues by Type',
+          title: 'Total length of queues by type',
           data: totalLengthOfQueuesByType,
           type: 'pie',
           size: 'medium'
         },
         {
-          title: 'Survey Jobs by Status',
+          title: 'Survey jobs by status',
           data: jobsByStatus.survey_jobs,
           type: 'pie',
           size: 'medium'
         },
         {
-          title: 'Processor Jobs by Status',
+          title: 'Processor jobs by status',
           data: jobsByStatus.processor_jobs,
           type: 'pie',
           size: 'medium'
         },
         {
-          title: 'Downloader Jobs by Status',
+          title: 'Downloader jobs by status',
           data: jobsByStatus.downloader_jobs,
           type: 'pie',
           size: 'medium'
         },
         {
-          title: 'Average Time: Survey Jobs',
+          title: 'Average time: Survey jobs',
           data: averageTimesTilCompletion.survey_jobs,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Estimated Time Till Completion: Survey Jobs',
+          title: 'Estimated time till completion: Survey jobs',
           data: estimatedTimesTilCompletion.survey_jobs,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Average Time: Processor Jobs',
+          title: 'Average Time: Processor jobs',
           data: averageTimesTilCompletion.processor_jobs,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Estimated Time Till Completion: Processor Jobs',
+          title: 'Estimated time till completion: Processor jobs',
           data: estimatedTimesTilCompletion.processor_jobs,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Average Time: Downloader Jobs',
+          title: 'Average Time: Downloader jobs',
           data: averageTimesTilCompletion.downloader_jobs,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Estimated Time Till Completion: Downloader Jobs',
+          title: 'Estimated time till completion: Downloader jobs',
           data: estimatedTimesTilCompletion.downloader_jobs,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Processor Jobs Over Time by Status',
+          title: 'Processor jobs over time by status',
           data: processorJobsOverTimeByStatus,
           type: 'line',
           series: ['pending', 'open', 'completed', 'failed'],
           size: 'large'
         },
         {
-          title: 'Survey Jobs Over Time by Status',
+          title: 'Survey jobs over time by status',
           data: surveyJobsOverTimeByStatus,
           type: 'line',
           series: ['pending', 'open', 'completed', 'failed'],
           size: 'large'
         },
         {
-          title: 'Downloader Jobs Over Time by Status',
+          title: 'Downloader jobs over time by status',
           data: downloaderJobsOverTimeByStatus,
           type: 'line',
           series: ['pending', 'open', 'completed', 'failed'],
