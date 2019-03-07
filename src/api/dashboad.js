@@ -142,24 +142,61 @@ const YEAR = {
       }
     ]
   },
-  samples: { total: 458472 },
   experiments: {
     total: 12860,
     timeline: [
-      { start: '2018-09-01T00:00:00Z', total: 1014 },
-      { start: '2018-12-01T00:00:00Z', total: 8211 },
-      { start: '2018-11-01T00:00:00Z', total: 3635 }
+      {
+        start: '2018-09-01T00:00:00Z',
+        total: 1014
+      },
+      {
+        start: '2018-12-01T00:00:00Z',
+        total: 8211
+      },
+      {
+        start: '2018-11-01T00:00:00Z',
+        total: 3635
+      }
+    ]
+  },
+  samples: {
+    total: 325255,
+    timeline: [
+      {
+        start: '2018-09-01T00:00:00Z',
+        total: 83114
+      },
+      {
+        start: '2018-11-01T00:00:00Z',
+        total: 69023
+      },
+      {
+        start: '2018-12-01T00:00:00Z',
+        total: 173118
+      }
     ]
   },
   processed_samples: {
     total: 133217,
     timeline: [
-      { start: '2018-12-01T00:00:00Z', total: 84774 },
-      { start: '2018-11-01T00:00:00Z', total: 36787 },
-      { start: '2018-09-01T00:00:00Z', total: 11656 }
+      {
+        start: '2018-12-01T00:00:00Z',
+        total: 84774
+      },
+      {
+        start: '2018-11-01T00:00:00Z',
+        total: 36787
+      },
+      {
+        start: '2018-09-01T00:00:00Z',
+        total: 11656
+      }
     ],
     last_hour: 0,
-    technology: { MICROARRAY: 126178, 'RNA-SEQ': 7039 },
+    technology: {
+      MICROARRAY: 126178,
+      'RNA-SEQ': 7039
+    },
     organism: {
       CHLOROCEBUS_SABAEUS: 2,
       SACCHAROMYCES_CEREVISIAE: 15,
@@ -194,10 +231,10 @@ const YEAR = {
       DANIO_RERIO: 7439
     }
   },
-  processed_experiments: { total: 9882 },
+  processed_experiments: {
+    total: 9882
+  },
   active_volumes: [],
-  input_data_size: 4281596985758,
-  output_data_size: 0,
   dataset: {
     total: 164,
     aggregated_by_experiment: 147,
@@ -205,6 +242,30 @@ const YEAR = {
     scale_by_none: 155,
     scale_by_minmax: 2,
     scale_by_standard: 7,
-    scale_by_robust: 0
-  }
+    scale_by_robust: 0,
+    timeline: [
+      {
+        start: '2018-10-01T00:00:00Z',
+        total: 11,
+        total_size: 0
+      },
+      {
+        start: '2018-12-01T00:00:00Z',
+        total: 1,
+        total_size: 0
+      },
+      {
+        start: '2018-09-01T00:00:00Z',
+        total: 13,
+        total_size: 0
+      },
+      {
+        start: '2018-11-01T00:00:00Z',
+        total: 29,
+        total_size: 0
+      }
+    ]
+  },
+  input_data_size: 4281596985758,
+  output_data_size: 0
 };

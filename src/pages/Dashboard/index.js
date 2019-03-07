@@ -126,18 +126,35 @@ function getDashboardChartConfig(state, range) {
         },
         {
           title: 'Total Samples Created',
-          data: samplesCount,
+          data: state.samples.total + state.processed_samples.total,
           type: 'text',
           size: 'small'
         },
         {
-          title: 'Samples and Experiments Created Over Time',
-          data: samplesAndExperimentsOverTime,
-          series: ['experiments', 'samples'],
+          title: 'Total Samples Processed',
+          data: state.processed_samples.total,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Samples Created and Processed Over Time',
+          data: chartSelectors.getSamplesOverTime(state, range),
+          series: ['samples', 'processed_samples'],
+          type: 'line',
+          size: 'large'
+        },
+        {
+          title: 'Experiments Created Over Time',
+          data: chartSelectors.getExperimentsCreatedOverTime(state, range),
+          series: ['experiments'],
           type: 'line',
           size: 'large'
         }
       ]
+    },
+    {
+      title: 'Downloads',
+      charts: []
     },
     {
       title: 'Jobs',

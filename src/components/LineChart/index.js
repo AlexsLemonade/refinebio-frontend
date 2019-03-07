@@ -24,9 +24,7 @@ type Props = {
 };
 
 const LineChart = (props: Props) => {
-  const { data = [], series = [], isLoading = false } = props;
-
-  if (isLoading) return <Spinner />;
+  const { data = [], series = [] } = props;
   return (
     <ResponsiveContainer>
       <LineRechart

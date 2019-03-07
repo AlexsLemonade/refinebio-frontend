@@ -104,6 +104,30 @@ export function getJobsCompletedOverTime(stats, range) {
   );
 }
 
+export function getExperimentsCreatedOverTime(stats, range) {
+  return transformTimeline(stats.experiments.timeline, range).map(
+    ({ date, total }) => ({ date, experiments: total })
+  );
+}
+
+export function getSamplesOverTime(stats, range) {
+  const samplesTimeline = transformTimeline(stats.samples.timeline, range);
+  const processedSamplesTimeline = transformTimeline(
+    stats.processed_samples.timeline,
+    range
+  );
+  return zip(samplesTimeline, processedSamplesTimeline).map(
+    ([
+      { date, total: totalSamplesUnprocessed },
+      { total: totalSamplesProcessed }
+    ]) => ({
+      date,
+      samples: totalSamplesProcessed + totalSamplesProcessed,
+      processed_samples: totalSamplesProcessed
+    })
+  );
+}
+
 export function getSamplesAndExperimentsCreatedOverTime(stats, range) {
   const samplesTimeline = transformTimeline(
     stats.processed_samples.timeline,
