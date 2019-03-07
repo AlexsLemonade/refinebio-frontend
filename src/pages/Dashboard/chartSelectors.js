@@ -115,6 +115,10 @@ export function getJobsCompletedOverTime(stats, range) {
   );
 }
 
+export function getDatasetsOverTime(stats, range) {
+  return transformTimeline(stats.dataset.timeline, range);
+}
+
 export function getExperimentsCreatedOverTime(stats, range) {
   return transformTimeline(stats.experiments.timeline, range).map(
     ({ date, total }) => ({

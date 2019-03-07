@@ -149,7 +149,59 @@ function getDashboardChartConfig(state, range) {
     },
     {
       title: 'Downloads',
-      charts: []
+      charts: [
+        {
+          title: 'Total Datasets Processed',
+          data: state.dataset.total,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Aggregate',
+          data: [
+            {
+              name: 'Experiment',
+              value: state.dataset.aggregated_by_experiment
+            },
+            {
+              name: 'Species',
+              value: state.dataset.aggregated_by_species
+            }
+          ],
+          type: 'pie',
+          size: 'medium'
+        },
+        {
+          title: 'Transformation',
+          data: [
+            {
+              name: 'None',
+              value: state.dataset.scale_by_none
+            },
+            {
+              name: 'Minmax',
+              value: state.dataset.aggregated_by_minmax
+            },
+            {
+              name: 'Standard',
+              value: state.dataset.aggregated_by_standard
+            },
+            {
+              name: 'Robust',
+              value: state.dataset.aggregated_by_robust
+            }
+          ],
+          type: 'pie',
+          size: 'medium'
+        },
+        {
+          title: "Dataset's Processed Over Time",
+          data: chartSelectors.getDatasetsOverTime(state, range),
+          series: ['total'],
+          type: 'line',
+          size: 'large'
+        }
+      ]
     },
     {
       title: 'Jobs',
