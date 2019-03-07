@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import React from 'react';
 import * as chartSelectors from './chartSelectors';
 import DashboardSection from './DashboardSection';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
-import Loader, { useLoader } from '../../components/Loader';
-import { timeout, getQueryParamObject } from '../../common/helpers';
+import { useLoader } from '../../components/Loader';
 import { useInterval } from '../../common/hooks';
 import { fetchDashboardData } from '../../api/dashboad';
 import Spinner from '../../components/Spinner';
@@ -72,14 +70,12 @@ function getDashboardChartConfig(state, range) {
     averageTimesTilCompletion,
     estimatedTimesTilCompletion,
     experimentsCount,
-    samplesCount,
     jobsByStatus,
     jobsCompletedOverTime,
     processorJobsOverTimeByStatus,
     downloaderJobsOverTimeByStatus,
     surveyJobsOverTimeByStatus
   } = {
-    samplesCount: chartSelectors.getSamplesCount(state),
     experimentsCount: chartSelectors.getExperimentsCount(state),
     jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(
       state,

@@ -3,21 +3,9 @@ import PieChart from '../../../components/PieChart';
 import LineChart from '../../../components/LineChart';
 import AreaChart from '../../../components/AreaChart';
 import './DashboardItem.scss';
-import moment from 'moment';
-
-const formatTimeLabel = range => label => {
-  const format =
-    {
-      day: 'HH:00',
-      week: 'dddd',
-      month: 'MMM Do',
-      year: 'MMMM'
-    }[range] || null;
-  return moment(label).format(format);
-};
 
 const DashboardItem = props => {
-  const { type, title, data, size = 'small', series, range } = props;
+  const { type, title, data, size = 'small', series } = props;
 
   const renderChart = (type, data) => {
     switch (type.toLowerCase()) {

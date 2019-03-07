@@ -1,6 +1,5 @@
 import moment from 'moment';
 import zip from 'lodash/zip';
-import { accumulateByKeys } from '../../common/helpers';
 
 // chart selectors for creating chart data for individual charts on dashboard
 const JOB_NAMES = ['survey_jobs', 'downloader_jobs', 'processor_jobs'];

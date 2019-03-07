@@ -11,7 +11,6 @@ import {
   Legend
 } from 'recharts';
 import { COLORS } from '../../common/constants';
-import Spinner from '../Spinner';
 
 import './LineChart.scss';
 
