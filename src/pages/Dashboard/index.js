@@ -75,17 +75,12 @@ function getDashboardChartConfig(state, range) {
     samplesCount,
     jobsByStatus,
     jobsCompletedOverTime,
-    samplesAndExperimentsOverTime,
     processorJobsOverTimeByStatus,
     downloaderJobsOverTimeByStatus,
     surveyJobsOverTimeByStatus
   } = {
     samplesCount: chartSelectors.getSamplesCount(state),
     experimentsCount: chartSelectors.getExperimentsCount(state),
-    samplesAndExperimentsOverTime: chartSelectors.getSamplesAndExperimentsCreatedOverTime(
-      state,
-      range
-    ),
     jobsCompletedOverTime: chartSelectors.getJobsCompletedOverTime(
       state,
       range
@@ -139,8 +134,8 @@ function getDashboardChartConfig(state, range) {
         {
           title: 'Samples Created and Processed Over Time',
           data: chartSelectors.getSamplesOverTime(state, range),
-          series: ['samples', 'processed_samples'],
-          type: 'line',
+          series: ['unprocessed', 'processed'],
+          type: 'area',
           size: 'large'
         },
         {

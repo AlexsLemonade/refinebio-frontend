@@ -1,19 +1,23 @@
 import React from 'react';
 import PieChart from '../../../components/PieChart';
 import LineChart from '../../../components/LineChart';
+import AreaChart from '../../../components/AreaChart';
 import './DashboardItem.scss';
 import moment from 'moment';
 
+const formatTimeLabel = range => label => {
+  const format =
+    {
+      day: 'HH:00',
+      week: 'dddd',
+      month: 'MMM Do',
+      year: 'MMMM'
+    }[range] || null;
+  return moment(label).format(format);
+};
+
 const DashboardItem = props => {
-  const {
-    type,
-    title,
-    data,
-    size = 'small',
-    series,
-    isLoading = false,
-    range
-  } = props;
+  const { type, title, data, size = 'small', series, range } = props;
 
   const renderChart = (type, data) => {
     switch (type.toLowerCase()) {
@@ -24,23 +28,10 @@ const DashboardItem = props => {
         return <PieChart data={data} />;
       }
       case 'line': {
-        return (
-          <LineChart
-            data={data}
-            series={series}
-            isLoading={isLoading}
-            formatLabel={label => {
-              const format =
-                {
-                  day: 'HH:00',
-                  week: 'dddd',
-                  month: 'MMM Do',
-                  year: 'MMMM'
-                }[range] || null;
-              return moment(label).format(format);
-            }}
-          />
-        );
+        return <LineChart data={data} series={series} />;
+      }
+      case 'area': {
+        return <AreaChart data={data} series={series} />;
       }
       default: {
         return null;

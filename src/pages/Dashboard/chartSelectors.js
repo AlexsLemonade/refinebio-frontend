@@ -6,6 +6,17 @@ import { accumulateByKeys } from '../../common/helpers';
 const JOB_NAMES = ['survey_jobs', 'downloader_jobs', 'processor_jobs'];
 const JOB_STATUS = ['open', 'pending', 'completed'];
 
+const formatTimeLabel = (date, range) => {
+  const format =
+    {
+      day: 'HH:00',
+      week: 'dddd',
+      month: 'MMM Do',
+      year: 'MMMM'
+    }[range] || null;
+  return moment(date).format(format);
+};
+
 export function getTotalLengthOfQueuesByType(stats) {
   const { survey_jobs, downloader_jobs, processor_jobs } = stats;
 
@@ -106,7 +117,10 @@ export function getJobsCompletedOverTime(stats, range) {
 
 export function getExperimentsCreatedOverTime(stats, range) {
   return transformTimeline(stats.experiments.timeline, range).map(
-    ({ date, total }) => ({ date, experiments: total })
+    ({ date, total }) => ({
+      date: date,
+      experiments: total
+    })
   );
 }
 
@@ -121,28 +135,9 @@ export function getSamplesOverTime(stats, range) {
       { date, total: totalSamplesUnprocessed },
       { total: totalSamplesProcessed }
     ]) => ({
-      date,
-      samples: totalSamplesProcessed + totalSamplesProcessed,
-      processed_samples: totalSamplesProcessed
-    })
-  );
-}
-
-export function getSamplesAndExperimentsCreatedOverTime(stats, range) {
-  const samplesTimeline = transformTimeline(
-    stats.processed_samples.timeline,
-    range
-  );
-  const experimentsTimeline = transformTimeline(
-    stats.experiments.timeline,
-    range
-  );
-
-  return zip(samplesTimeline, experimentsTimeline).map(
-    ([{ date, total: samples }, { total: experiments }]) => ({
-      date,
-      samples,
-      experiments
+      date: date,
+      unprocessed: totalSamplesUnprocessed,
+      processed: totalSamplesProcessed
     })
   );
 }
@@ -194,7 +189,10 @@ function transformTimeline(timeline, range, fields = ['total']) {
     }
   }
 
-  return result;
+  return result.map(({ date, ...rest }) => ({
+    ...rest,
+    date: formatTimeLabel(date, range)
+  }));
 }
 
 /**
