@@ -117,7 +117,7 @@ function getDashboardChartConfig(state, range) {
         },
         {
           title: 'Total samples created',
-          data: state.samples.total + state.processed_samples.total,
+          data: state.unprocessed_samples.total + state.processed_samples.total,
           type: 'text',
           size: 'small'
         },

@@ -132,7 +132,10 @@ export function getExperimentsCreatedOverTime(stats, range) {
 }
 
 export function getSamplesOverTime(stats, range) {
-  const samplesTimeline = transformTimeline(stats.samples.timeline, range);
+  const samplesTimeline = transformTimeline(
+    stats.unprocessed_samples.timeline,
+    range
+  );
   const processedSamplesTimeline = transformTimeline(
     stats.processed_samples.timeline,
     range
