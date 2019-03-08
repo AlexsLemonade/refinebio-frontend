@@ -14,10 +14,10 @@ import classnames from 'classnames';
 export default function ExecutiveDashboard() {
   const { data, hasError, refresh } = useLoader(fetchDashboardData);
 
-  // refresh data every 25 mins
+  // refresh data every 5 mins
   useInterval(() => {
     if (!!data) refresh();
-  }, 25 * 60 * 60 * 1000);
+  }, 5 * 60 * 1000);
 
   const { params } = useHistory();
   const isTv = !!params.tv;
