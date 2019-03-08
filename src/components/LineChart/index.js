@@ -7,7 +7,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Line
+  Line,
+  Legend
 } from 'recharts';
 import { COLORS } from '../../common/constants';
 
