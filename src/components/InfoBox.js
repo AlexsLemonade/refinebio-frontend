@@ -12,8 +12,8 @@ function InfoBoxDesktop({ onClose }) {
           Build and Download Custom Datasets
         </div>
         <div>
-          Choose from a collection of multi-species samples of uniformly
-          processed and normalized transcriptome data.
+          Refine.bio helps you build experiment-ready datasets using
+          transcriptomic data from all of the world's genetic databases.
         </div>
       </div>
 
