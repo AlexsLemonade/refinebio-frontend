@@ -66,7 +66,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           let displaySpinner = isLoading;
           let experimentData = experiment || { samples: [] };
           let totalSamples = experimentData.samples.length;
-          let processedSamples = experimentData.samples.filter(
+          let totalProcessedSamples = experimentData.samples.filter(
             x => x.is_processed
           ).length;
           let organisms = experimentData.organisms;
@@ -125,9 +125,10 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                     <div>
                       <DataSetSampleActions
                         dataSetSlice={{
-                          [experimentData.accession_code]: DataSetStats.mapAccessions(
-                            experimentData.samples
-                          )
+                          [experimentData.accession_code]: {
+                            all: true,
+                            total: totalProcessedSamples
+                          }
                         }}
                       />
                     </div>
@@ -152,7 +153,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         className="experiment__stats-icon"
                         alt="Sample Icon"
                       />{' '}
-                      <NDownloadableSamples total={processedSamples} />
+                      <NDownloadableSamples total={totalProcessedSamples} />
                     </div>
 
                     <div
@@ -325,6 +326,9 @@ function SamplesTableBlock({ experiment }) {
   const style = expanded
     ? { maxWidth: Math.max(1175, maxTableWidth(totalColumns)) }
     : {};
+  let totalProcessedSamples = experiment
+    ? experiment.samples.filter(x => x.is_processed).length
+    : 0;
 
   return (
     <div
@@ -339,9 +343,10 @@ function SamplesTableBlock({ experiment }) {
               {experiment && (
                 <DataSetSampleActions
                   dataSetSlice={{
-                    [experiment.accession_code]: DataSetStats.mapAccessions(
-                      experiment.samples
-                    )
+                    [experiment.accession_code]: {
+                      all: true,
+                      total: totalProcessedSamples
+                    }
                   }}
                 />
               )}
