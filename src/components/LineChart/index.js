@@ -7,10 +7,11 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Line,
-  Legend
+  Line
 } from 'recharts';
 import { COLORS } from '../../common/constants';
+
+import './LineChart.scss';
 
 import './LineChart.scss';
 
