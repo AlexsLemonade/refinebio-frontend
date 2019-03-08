@@ -34,12 +34,6 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-
-    &:before {
-      content: '\f3d8';
-      font-family: 'Ionicons';
-      font-style: normal;
-    }
   }
 
   @media (min-width: 1460px) {

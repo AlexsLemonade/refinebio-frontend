@@ -5,16 +5,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="theme-color" content="#000000">
-  <!--
-      manifest.json provides metadata used when your web app is added to the
-      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
-    -->
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
   <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png">
   <link href="https://fonts.googleapis.com/css?family=Rubik:400,500,700|Lato:400,500,700" rel="stylesheet">
-  <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+
   <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -57,7 +53,7 @@
       Raven should be loaded as early as possible, before your main javascript bundle.
     -->
   <script src="https://cdn.ravenjs.com/3.26.2/raven.min.js" crossorigin="anonymous"></script>
-  
+
   <script>
     if ("%NODE_ENV%" === "production" && window.location.host === 'www.refine.bio') {
       (function (h, o, t, j, a, r) {
@@ -70,5 +66,6 @@
       })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
     }
   </script>
+
 </body>
 </html>

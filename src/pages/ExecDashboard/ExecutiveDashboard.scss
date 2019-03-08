@@ -1,0 +1,253 @@
+@import '../../common/styles/variables';
+
+.exec-dash {
+  font-size: 14px;
+
+  @include tablet {
+    font-size: 20px;
+  }
+
+  @media (min-width: 2500px) {
+    font-size: 32px;
+  }
+
+  &__header {
+    margin-bottom: 2em;
+    background-color: #386db0;
+    color: $white;
+    display: flex;
+    align-items: center;
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    padding-left: 2em;
+  }
+
+  &__error {
+    color: $color-error;
+  }
+
+  &__grid {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: 1;
+    grid-gap: 1em;
+    grid-template-rows: auto;
+    margin-bottom: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+
+    @include tablet {
+      grid-template-columns: 1fr 1fr;
+      margin-left: 2em;
+      margin-right: 2em;
+    }
+
+    @include desktop {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+
+  &__block {
+    background: $white;
+    border: 1px solid $gallery;
+    padding: 1em 2em;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__block-header {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &__block-number {
+    font-weight: 600;
+    font-size: 1.6em;
+  }
+
+  &__block-small {
+    font-size: 0.8em;
+  }
+
+  &__sample-breakdown {
+    @extend .exec-dash__block;
+    display: block;
+    text-align: left;
+
+    @include tablet {
+      grid-column: span 2;
+    }
+
+    @include desktop {
+      grid-column: span 3;
+    }
+  }
+
+  &__sample-graph {
+    @extend .exec-dash__block;
+    display: block;
+    text-align: left;
+    grid-column: 1/-1;
+  }
+
+  &__numbers-table {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+
+    @include tablet {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    > div {
+      > div:last-child {
+        font-weight: 600;
+        font-size: 1.6em;
+      }
+    }
+  }
+
+  &__chart {
+    position: relative;
+    padding-bottom: 50%;
+    margin-top: 1em;
+    max-height: 300px;
+  }
+
+  &__chart-table {
+    th {
+      font-weight: 600;
+    }
+
+    td {
+      font-size: 0.8em;
+      color: $gray;
+      padding-right: 4em;
+    }
+  }
+
+  &__note {
+    font-size: 0.8em;
+    color: $gray;
+    padding-left: 2em;
+  }
+}
+
+.running-status {
+  margin-bottom: 16px;
+  display: block;
+  text-align: center;
+  background-color: #db3b28;
+  border-radius: 4px;
+  color: $white;
+  grid-column: 1/-1;
+  padding: 0.8em;
+
+  &--running {
+    background-color: #41a36d;
+  }
+
+  &--running-fast {
+    background-color: #41a36d;
+    padding: 0;
+  }
+
+  svg {
+    font-size: 1.2em;
+    vertical-align: sub;
+  }
+
+  &__stripes {
+    padding: 0.4em;
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.15) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 1em 1em;
+    animation: progress-bar-stripes 1s linear infinite;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 2em;
+      height: 2em;
+      margin-right: 0.5em;
+    }
+  }
+}
+
+@keyframes progress-bar-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 1em 0;
+  }
+}
+
+// TV support
+// For now we optimized it for a TV browser at 1920x1080 with 125% zoom
+// these were the defaults on the TV at the office
+.exec-dash--tv {
+  position: relative;
+  font-size: 18px;
+
+  .exec-dash__header {
+    margin-bottom: 0;
+    background: linear-gradient(#fff, #dfe9f3);
+    color: #002f6c;
+  }
+
+  .exec-dash__grid {
+    display: block;
+  }
+
+  .exec-dash__block {
+    float: left;
+    margin-bottom: 16px;
+    margin-right: 64px;
+    min-height: 175px;
+  }
+
+  .exec-dash__sample-breakdown {
+    width: 800px;
+    margin-right: 0;
+  }
+
+  .exec-dash__sample-graph {
+    clear: both;
+    width: 100%;
+  }
+
+  .exec-dash__chart {
+    padding-bottom: 25%;
+  }
+
+  .exec-dash__note {
+    clear: both;
+  }
+
+  .recharts-line-curve {
+    stroke-width: 5px;
+  }
+}

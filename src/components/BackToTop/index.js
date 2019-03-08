@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '../../components/Button';
 import './BackToTop.scss';
+import { IoIosArrowUp } from 'react-icons/io';
 
 class BackToTop extends Component {
   state = {
@@ -36,7 +37,10 @@ class BackToTop extends Component {
         }`}
         onClick={() => window.scrollTo(0, 0)}
       >
-        <i className="back-to-top__icon" />Back to Top
+        <div className="back-to-top__icon">
+          <IoIosArrowUp />
+        </div>
+        Back to Top
       </Button>
     );
   }
