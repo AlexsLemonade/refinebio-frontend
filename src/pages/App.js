@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import classnames from 'classnames';
 import SpeciesCompendia from './SpeciesCompendia';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import history from '../history';
 import store from '../store/store';
@@ -32,8 +32,11 @@ import './App.scss';
 const AppContent = () => (
   <div className="layout__content">
     <Switch>
+      <Route
+        path="/results"
+        render={props => <Redirect to={`/search${props.location.search}`} />}
+      />
       <Route path="/search" component={Search} />
-      <Route path="/experiments/:id" component={Experiment} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/executive-dashboard" component={ExecutiveDashboard} />
       <Route path="/download" component={Downloads} />
@@ -69,6 +72,7 @@ const App = () => {
                 <Route exact path="/" component={Main} />
                 <Route exact path="/about" component={About} />
                 <Route path="/species-compendia" component={SpeciesCompendia} />
+                <Route path="/experiments/:id/:slug?" component={Experiment} />
 
                 <Route
                   exact

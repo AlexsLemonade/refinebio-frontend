@@ -1,6 +1,7 @@
 import intersect from 'lodash/intersection';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
+import objectValues from 'lodash/values';
 
 /**
  * Contains several helper methods to perform operations on datasets. A dataset is a dictionary where
@@ -95,7 +96,7 @@ export default class DataSetStats {
    * returns true if there are samples in the slice
    */
   anyProcessedSamples() {
-    return Object.values(this.dataSetSlice).some(
+    return objectValues(this.dataSetSlice).some(
       samples =>
         (samples && samples.length > 0) ||
         (samples && samples.all && samples.total > 0)
@@ -109,7 +110,7 @@ export default class DataSetStats {
   }
 
   anyProcessedInDataSet() {
-    return Object.values(this.getAddedSlice()).some(
+    return objectValues(this.getAddedSlice()).some(
       samples => samples && samples.length > 0
     );
   }
@@ -123,7 +124,7 @@ export default class DataSetStats {
    */
   getSamplesInDataSet() {
     const addedSlice = this.getAddedSlice();
-    return union(...Object.values(addedSlice));
+    return union(...objectValues(addedSlice));
   }
 
   totalSamplesInDataSet() {

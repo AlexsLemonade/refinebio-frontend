@@ -108,7 +108,13 @@ export async function asyncFetch(url, params = false) {
     ApiSourceRevision = sourceRevision;
   }
 
-  const result = await response.json();
+  let result;
+  try {
+    result = await response.json();
+  } catch (e) {
+    result = { error: true };
+  }
+
   /**
    * You only get an exception (rejection) when there's a network problem.
    * When the server answers, you have to check whether it's good or not.
@@ -301,4 +307,18 @@ export function formatPlatformName(platformName) {
     return `${name} (${accessionCode})`;
   }
   return platformName;
+}
+
+export function maxTableWidth(totalColumns) {
+  // logic to decide the max-width of the modal
+  // https://github.com/AlexsLemonade/refinebio-frontend/issues/495#issuecomment-459504896
+  if (totalColumns <= 5) {
+    return 1100;
+  } else if (totalColumns === 6) {
+    return 1300;
+  } else if (totalColumns === 7) {
+    return 1500;
+  } else {
+    return 1800;
+  }
 }

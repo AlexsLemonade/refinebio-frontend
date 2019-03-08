@@ -7,7 +7,7 @@ export const MOST_SAMPLES = 'MostSamples';
 
 export const Ordering = {
   MostSamples: '', // default sorting, so no parameters needed
-  LeastSamples: 'total_samples_count',
+  LeastSamples: 'num_processed_samples',
   Newest: '-source_first_published',
   Oldest: 'source_first_published'
 };
@@ -41,6 +41,11 @@ const navigateToResults = ({
   });
 };
 
+function isAccessionCode(accessionCode) {
+  if (!accessionCode) return false;
+  return /^(GSE|ERP|SRP)(\d{3,6}$)|(E-[A-Z]{4}-\d{2,4}$)/i.test(accessionCode);
+}
+
 export function fetchResults({
   query,
   page = 1,
@@ -51,14 +56,34 @@ export function fetchResults({
 }) {
   return async (dispatch, getState) => {
     try {
-      const { results, count: totalResults, facets } = await Ajax.get('/es/', {
+      let { results, count: totalResults, facets } = await Ajax.get('/es/', {
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
-        num_processed_samples__gt: 0,
-        ...(ordering !== Ordering.MostSamples ? { ordering } : {}),
+        ...(ordering !== Ordering.MostSamples
+          ? { ordering }
+          : { ordering: '-num_processed_samples' }),
         ...appliedFilters
       });
+
+      // do accession code search
+      if (isAccessionCode(query) && page === 1) {
+        let { results: topResults } = await Ajax.get('/es/', {
+          search: `accession_code:${query}`
+        });
+
+        // mark top results
+        topResults.forEach(experiment => (experiment._isTopResult = true));
+
+        // filter out top results
+        results = results.filter(x =>
+          topResults.some(
+            topExperiment => x.accession_code !== topExperiment.accession_code
+          )
+        );
+
+        results = [...topResults, ...results];
+      }
 
       let filters = transformElasticSearchFacets(facets);
 
