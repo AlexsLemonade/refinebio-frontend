@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Select from '../Select';
+import Dropdown from '../Dropdown';
 import './TimeRangeSelect.scss';
 
 type Props = {
@@ -8,18 +8,22 @@ type Props = {
   options: Array<{ value: number, label: string }>
 };
 
-let TimeRangeSelect = ({ selectedTimeRange, options }: Props) => (
+let TimeRangeSelect = ({ selectedOption, options, onChange }: Props) => (
   <div className="time-range-select">
     <div className="time-range-select__field">
       <label className="time-range-select__label" htmlFor="timeRange">
-        Time Range:{' '}
+        View:{' '}
       </label>
 
-      <Select
+      <Dropdown
         className="time-range-select__dropdown"
-        options={options}
-        component={Select}
-        onChange={e => selectedTimeRange(e.target.value)}
+        selectedOption={options.find(x => x.value === selectedOption).label}
+        options={options.map(x => x.label)}
+        onChange={selectedLabel => {
+          const selectedValue = options.find(x => x.label === selectedLabel)
+            .value;
+          onChange(selectedValue);
+        }}
       />
     </div>
   </div>

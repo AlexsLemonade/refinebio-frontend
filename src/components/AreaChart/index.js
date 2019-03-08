@@ -2,19 +2,15 @@
 import React from 'react';
 import {
   ResponsiveContainer,
-  LineChart as LineRechart,
+  AreaChart as AreaRechart,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Line,
-  Legend
+  Legend,
+  Area
 } from 'recharts';
 import { COLORS } from '../../common/constants';
-
-import './LineChart.scss';
-
-import './LineChart.scss';
 
 type Props = {
   series: Array<string>,
@@ -24,11 +20,11 @@ type Props = {
   formatLabel: Function
 };
 
-const LineChart = (props: Props) => {
+const AreaChart = (props: Props) => {
   const { data = [], series = [] } = props;
   return (
     <ResponsiveContainer>
-      <LineRechart
+      <AreaRechart
         data={data}
         height={400}
         margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
@@ -36,50 +32,22 @@ const LineChart = (props: Props) => {
         <XAxis dataKey="date" tickFormatter={props.formatLabel} />
         <YAxis tickFormatter={props.formatValue} />
         <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip
-          content={
-            <TooltipContent
-              formatLabel={props.formatLabel}
-              formatValue={props.formatValue}
-            />
-          }
-        />
+        <Tooltip />
         {series.length > 1 && <Legend />}
         {series.map((set, i) => (
-          <Line
-            isAnimationActive={false}
-            key={i}
+          <Area
+            key={set}
             type="monotone"
             dataKey={set}
             stroke={COLORS[i]}
+            fill={COLORS[i]}
             strokeWidth={2}
+            stackId="1"
           />
         ))}
-      </LineRechart>
+      </AreaRechart>
     </ResponsiveContainer>
   );
 };
 
-export default LineChart;
-
-function TooltipContent({
-  payload,
-  label,
-  active,
-  range,
-  formatLabel,
-  formatValue
-}) {
-  if (!active) return null;
-
-  return (
-    <div className="tooltip">
-      <b>{formatLabel ? formatLabel(label) : label}</b>
-      {payload.map(data => (
-        <div key={data.name}>
-          {data.name}: {formatValue ? formatValue(data.value) : data.value}
-        </div>
-      ))}
-    </div>
-  );
-}
+export default AreaChart;
