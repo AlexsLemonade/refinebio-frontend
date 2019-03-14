@@ -61,7 +61,6 @@ FilterList = connect(({ search: { filters } }) => ({ filters }))(FilterList);
 let FiltersDesktop = props => {
   const ref = React.useRef();
   const size = useDom(ref, el => el.getBoundingClientRect());
-
   // If the user scrolls down the filters should be fixed on the screen
   // and also scrollable
   const style =
@@ -71,7 +70,10 @@ let FiltersDesktop = props => {
           top: 150,
           width: size.width,
           overflowY: 'auto',
-          bottom: size.bottom > 1550 ? 0 : Math.ceil(1550 - size.bottom),
+          bottom:
+            size.bottom > window.innerHeight
+              ? 0
+              : window.innerHeight - size.bottom,
           paddingBottom: 200
         }
       : null;
