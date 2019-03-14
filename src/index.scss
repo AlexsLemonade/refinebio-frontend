@@ -40,6 +40,10 @@ a {
   color: inherit;
 }
 
+svg {
+  overflow: visible;
+}
+
 button {
   -moz-osx-font-smoothing: inherit;
   -webkit-font-smoothing: inherit;
@@ -167,6 +171,15 @@ fieldset {
 
 .color-error {
   color: $color-error !important;
+}
+
+.error {
+  color: $color-error;
+
+  svg {
+    font-size: 1.2rem;
+    vertical-align: sub;
+  }
 }
 
 @import 'common/styles/type';

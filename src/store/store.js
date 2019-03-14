@@ -8,8 +8,7 @@ import { REPORT_ERROR } from '../state/reportError';
 import throttle from 'lodash/throttle';
 import progressMiddleware from './progressMiddleware';
 import { ApiVersionMismatchError } from '../common/errors';
-
-declare var Raven: any;
+import * as Sentry from '@sentry/browser';
 
 const initialState = loadInitialState();
 
@@ -29,8 +28,8 @@ const errorMiddleware = () => next => action => {
     // log exception in console on development
     console.log(error);
   } else {
-    // on Production Report error to Raven https://docs.sentry.io/clients/javascript/#manually-reporting-errors
-    Raven.captureException(error);
+    // on Production Report error https://docs.sentry.io/error-reporting/capturing/?platform=browsernpm
+    Sentry.captureException(error);
   }
 
   return next(action);

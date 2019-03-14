@@ -1,17 +1,11 @@
 import React from 'react';
 import PieChart from '../../../components/PieChart';
 import LineChart from '../../../components/LineChart';
+import AreaChart from '../../../components/AreaChart';
 import './DashboardItem.scss';
 
 const DashboardItem = props => {
-  const {
-    type,
-    title,
-    data,
-    size = 'small',
-    series,
-    isLoading = false
-  } = props;
+  const { type, title, data, size = 'small', series } = props;
 
   const renderChart = (type, data) => {
     switch (type.toLowerCase()) {
@@ -22,7 +16,10 @@ const DashboardItem = props => {
         return <PieChart data={data} />;
       }
       case 'line': {
-        return <LineChart data={data} series={series} isLoading={isLoading} />;
+        return <LineChart data={data} series={series} />;
+      }
+      case 'area': {
+        return <AreaChart data={data} series={series} />;
       }
       default: {
         return null;

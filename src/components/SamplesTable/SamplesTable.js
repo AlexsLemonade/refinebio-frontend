@@ -19,6 +19,7 @@ import Button from '../../components/Button';
 import SampleDetailsLoader from './SampleDetailsLoader';
 import { formatSentenceCase } from '../../common/helpers';
 import debounce from 'lodash/debounce';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
 class SamplesTable extends React.Component {
   static defaultProps = {
@@ -275,16 +276,16 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
       {children}
 
       <div className="samples-table__sort">
-        <i className="ion-chevron-up samples-table__sort-icon" />
-        <i className="ion-chevron-down samples-table__sort-icon" />
+        <IoIosArrowUp />
+        <IoIosArrowDown />
       </div>
 
       <div className="samples-table__sort-desc">
-        <i className="ion-chevron-down samples-table__sort-icon" />
+        <IoIosArrowDown />
       </div>
 
       <div className="samples-table__sort-asc">
-        <i className="ion-chevron-up samples-table__sort-icon" />
+        <IoIosArrowUp />
       </div>
     </div>
   );

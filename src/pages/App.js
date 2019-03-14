@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import classnames from 'classnames';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import history from '../history';
 import store from '../store/store';
@@ -13,7 +13,7 @@ import Main from './Main';
 import Search from './Search';
 import Experiment from './Experiment';
 import Dashboard from './Dashboard';
-import ExecutiveDashboard from './Dashboard/ExecutiveDashboard';
+import ExecutiveDashboard from './ExecDashboard';
 import Downloads from './Downloads';
 import DataSet from './Downloads/DataSet';
 import NoMatch from './NoMatch';
@@ -31,9 +31,12 @@ import './App.scss';
 const AppContent = () => (
   <div className="layout__content">
     <Switch>
+      <Route
+        path="/results"
+        render={props => <Redirect to={`/search${props.location.search}`} />}
+      />
       <Route path="/search" component={Search} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/executive-dashboard" component={ExecutiveDashboard} />
       <Route path="/download" component={Downloads} />
       <Route path="/dataset/:id" component={DataSet} />
       <Route path="/privacy" component={Privacy} />
@@ -61,25 +64,32 @@ const App = () => {
 
       <Provider store={store}>
         <Router history={history}>
-          <Layout>
-            <ErrorBoundary>
-              <Switch>
-                <Route exact path="/" component={Main} />
-                <Route exact path="/about" component={About} />
-                <Route path="/experiments/:id/:slug?" component={Experiment} />
+          <Switch>
+            <Route path="/executive-dashboard" component={ExecutiveDashboard} />
 
-                <Route
-                  exact
-                  path="/docs"
-                  component={() => (
-                    <ExternalRedirect to="http://docs.refine.bio/" />
-                  )}
-                />
+            <Layout>
+              <ErrorBoundary>
+                <Switch>
+                  <Route exact path="/" component={Main} />
+                  <Route exact path="/about" component={About} />
+                  <Route
+                    path="/experiments/:id/:slug?"
+                    component={Experiment}
+                  />
 
-                <Route path="/" component={AppContent} />
-              </Switch>
-            </ErrorBoundary>
-          </Layout>
+                  <Route
+                    exact
+                    path="/docs"
+                    component={() => (
+                      <ExternalRedirect to="http://docs.refine.bio/" />
+                    )}
+                  />
+
+                  <Route path="/" component={AppContent} />
+                </Switch>
+              </ErrorBoundary>
+            </Layout>
+          </Switch>
         </Router>
       </Provider>
     </div>

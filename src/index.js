@@ -5,11 +5,10 @@ import App from './pages/App';
 import smoothscroll from 'smoothscroll-polyfill';
 import 'delayed-scroll-restoration-polyfill';
 import apiData from './apiData.json';
+import * as Sentry from '@sentry/browser';
 
 // kick off the polyfill!
 smoothscroll.polyfill();
-
-declare var Raven: any;
 
 function initApp() {
   // remove general meta description from header
@@ -18,16 +17,21 @@ function initApp() {
   ReactDOM.render(<App />, document.getElementById('root'));
 }
 
-if (process.env.NODE_ENV === 'development') {
-  initApp();
-} else {
-  // on Production Setup Raven to report all errors there
-  Raven.config('https://eca1cd24f75a4565afdca8af72700bf2@sentry.io/1223688', {
+// initialize sentry on production
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: 'https://eca1cd24f75a4565afdca8af72700bf2@sentry.io/1223688',
+    // add release info https://docs.sentry.io/workflow/releases/?platform=browsernpm#configure-sdk
     release: apiData.version
       ? `refinebio-frontend@${apiData.version.substr(1)}`
-      : null
-  }).install();
-  // app initialization code wrapped into Raven.context
-  // ref: https://docs.sentry.io/clients/javascript/#configuring-the-client
-  Raven.context(initApp);
+      : null,
+    environment:
+      window.location.host === 'www.refine.bio'
+        ? 'production'
+        : window.location.host === 'staging.refine.bio'
+          ? 'staging'
+          : 'dev'
+  });
 }
+
+initApp();

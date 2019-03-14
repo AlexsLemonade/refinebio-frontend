@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import Button from '../Button';
 import classnames from 'classnames';
+import { IoMdClose } from 'react-icons/io';
 
 import './Modal.scss';
 
@@ -101,7 +102,7 @@ export default class ModalManager extends React.Component {
                     onClick={handleHideModal}
                     buttonStyle="transparent"
                   >
-                    <i className="icon ion-close" />
+                    <IoMdClose className="icon" />
                   </Button>
                 </div>
               </Modal>

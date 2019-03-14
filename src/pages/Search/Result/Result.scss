@@ -117,8 +117,7 @@
     align-items: center;
   }
 
-  &__added-icon,
-  &__info-icon {
+  &__added-icon {
     margin-right: 6px;
   }
 
@@ -129,9 +128,11 @@
 
   &__info-icon {
     display: inline-block;
-    font-size: 1rem;
+    font-size: 1.2rem;
     transform: rotate(15deg);
     color: #002f6c;
+    vertical-align: bottom;
+    margin-top: 4px;
   }
 
   &__info-text {
