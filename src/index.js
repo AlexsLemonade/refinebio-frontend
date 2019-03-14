@@ -32,8 +32,6 @@ if (process.env.NODE_ENV === 'production') {
           ? 'staging'
           : 'dev'
   });
-
-  Sentry.captureException(new Error('fake error message'));
 }
 
 initApp();
