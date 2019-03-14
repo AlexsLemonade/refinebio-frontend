@@ -1,5 +1,3 @@
-import pickBy from 'lodash/pickBy';
-
 import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
