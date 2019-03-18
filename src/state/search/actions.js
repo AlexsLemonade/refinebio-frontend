@@ -2,6 +2,7 @@ import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { getUrlParams } from './reducer';
+import pickBy from 'lodash/pickBy';
 
 export const MOST_SAMPLES = 'MostSamples';
 
@@ -146,7 +147,7 @@ function transformFacets(facets) {
   return {
     organism: facets['organism_names'],
     // We want to hide `Unknown` from the technologies if it has 0 processed samples
-    technology: facets['technology'], // pickBy(facets['technology'], totalSamples => totalSamples > 0),
+    technology: pickBy(facets['technology'], totalSamples => totalSamples > 0),
     publication: facets['has_publication']
       ? { has_publication: facets['has_publication']['true'] || 0 }
       : null,
