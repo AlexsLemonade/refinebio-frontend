@@ -128,11 +128,11 @@ function About() {
             <div className="about__info-item-text">
               With the power of machine learning and the rich collection of data
               in refine.bio, researchers have the potential to extract more
-              information about the biology of a patient’s sample. In turn
-              researchers will be able to better classify patients and identify
-              what types of treatments might be most effective on a case-by-case
-              basis, further enhancing the burgeoning field of precision
-              medicine.
+              information about the biology of a patient’s sample. The data in
+              refine.bio will support researchers’ efforts to better classify
+              patients and identify what types of treatments might be most
+              effective on a case-by-case basis, further enhancing the
+              burgeoning field of precision medicine.
             </div>
           </div>
         </div>
