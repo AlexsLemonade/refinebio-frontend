@@ -10,7 +10,7 @@ import Spinner from '../../components/Spinner';
 import './Dashboard.scss';
 
 function Dashboard() {
-  const [range, setRange] = React.useState('year');
+  const [range, setRange] = React.useState('day');
   const { data, isLoading, refresh } = useLoader(
     async () => {
       const stats = await fetchDashboardData(range);
@@ -128,7 +128,7 @@ function getDashboardChartConfig(state, range) {
           size: 'small'
         },
         {
-          title: 'Samples created and processed over time',
+          title: 'Samples processed over time',
           data: chartSelectors.getSamplesOverTime(state, range),
           series: ['unprocessed', 'processed'],
           type: 'area',
@@ -176,15 +176,15 @@ function getDashboardChartConfig(state, range) {
             },
             {
               name: 'Minmax',
-              value: state.dataset.aggregated_by_minmax
+              value: state.dataset.scale_by_minmax
             },
             {
               name: 'Standard',
-              value: state.dataset.aggregated_by_standard
+              value: state.dataset.scale_by_standard
             },
             {
               name: 'Robust',
-              value: state.dataset.aggregated_by_robust
+              value: state.dataset.scale_by_robust
             }
           ],
           type: 'pie',
