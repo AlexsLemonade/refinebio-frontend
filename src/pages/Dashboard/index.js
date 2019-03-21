@@ -6,13 +6,14 @@ import { useLoader } from '../../components/Loader';
 import { useInterval } from '../../common/hooks';
 import { fetchDashboardData } from '../../api/dashboad';
 import Spinner from '../../components/Spinner';
+import ServerErrorPage from '../ServerError';
 
 import './Dashboard.scss';
 
 function Dashboard() {
   const [chartUpdating, setChartUpdating] = React.useState(true);
   const [range, setRange] = React.useState('day');
-  const { data, refresh } = useLoader(
+  const { data, refresh, hasError } = useLoader(
     async () => {
       const stats = await fetchDashboardData(range);
       setChartUpdating(false);
@@ -25,6 +26,10 @@ function Dashboard() {
   useInterval(() => {
     if (!!data) refresh();
   }, 10 * 60 * 1000);
+
+  if (!hasError) {
+    return <ServerErrorPage />;
+  }
 
   return (
     <div className="dashboard">
