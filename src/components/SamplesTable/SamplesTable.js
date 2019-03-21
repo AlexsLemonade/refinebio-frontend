@@ -20,6 +20,7 @@ import SampleDetailsLoader from './SampleDetailsLoader';
 import { formatSentenceCase } from '../../common/helpers';
 import debounce from 'lodash/debounce';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import apiData from '../../apiData.json';
 
 class SamplesTable extends React.Component {
   static defaultProps = {
@@ -302,7 +303,11 @@ function AddRemoveCell({ sample, experimentAccessionCodes }) {
     {}
   );
 
-  if (!sample.is_processed) {
+  // ensure the samples have qn targets associated
+  if (
+    !sample.is_processed ||
+    (apiData.qnTargets && !apiData.qnTargets[sample.organism.name])
+  ) {
     return (
       <div className="sample-not-processed info">
         <img className="info__icon" src={InfoIcon} alt="" />
