@@ -2,6 +2,7 @@ import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { getUrlParams } from './reducer';
+import pickBy from 'lodash/pickBy';
 
 export const MOST_SAMPLES = 'MostSamples';
 
@@ -85,7 +86,7 @@ export function fetchResults({
         results = [...topResults, ...results];
       }
 
-      let filters = transformElasticSearchFacets(facets);
+      let filters = transformFacets(facets);
 
       if (filterOrder.length > 0) {
         // merge both filter objects to enable interactive filtering
@@ -102,7 +103,7 @@ export function fetchResults({
               [lastFilterName]: undefined
             }
           });
-          previousFilters = transformElasticSearchFacets(previousFacets);
+          previousFilters = transformFacets(previousFacets);
         }
 
         filters = {
@@ -140,35 +141,18 @@ export function fetchResults({
 }
 
 /**
- * Ideally the filters should be formatted in the backend, but that seemed to be difficult
- * with elastic search https://github.com/AlexsLemonade/refinebio/pull/974#issuecomment-456533392
+ * Transform filters object that is sent from the API
  */
-function transformElasticSearchFacets(facets) {
+function transformFacets(facets) {
   return {
-    organism: transformFacet(
-      facets['_filter_organism_names']['organism_names']
-    ),
-    technology: transformFacet(facets['_filter_technology']['technology']),
-    publication: transformHasPublicationFacet(
-      facets['_filter_has_publication']['has_publication']
-    ),
-    platform: transformFacet(facets['_filter_platform_names']['platform_names'])
+    organism: facets['organism_names'],
+    // We want to hide `Unknown` from the technologies if it has 0 processed samples
+    technology: pickBy(facets['technology'], totalSamples => totalSamples > 0),
+    publication: facets['has_publication']
+      ? { has_publication: facets['has_publication']['true'] || 0 }
+      : null,
+    platform: facets['platform_names']
   };
-}
-
-function transformFacet(facet) {
-  const result = {};
-  for (let item of facet.buckets) {
-    result[item.key] = item.doc_count;
-  }
-
-  return result;
-}
-
-function transformHasPublicationFacet(facet) {
-  if (!facet.buckets || !facet.buckets.length) return null;
-  const activeBucket = facet.buckets.find(bucket => bucket.key === 1);
-  return activeBucket && { has_publication: activeBucket.doc_count };
 }
 
 export const triggerSearch = searchTerm => (dispatch, getState) => {

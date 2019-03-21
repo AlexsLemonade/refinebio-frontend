@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@sentry/browser": "^4.6.4",
     "delayed-scroll-restoration-polyfill": "^0.1.1",
     "formik": "^1.5.0",
     "history": "^4.7.2",

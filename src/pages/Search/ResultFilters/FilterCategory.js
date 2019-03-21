@@ -56,7 +56,6 @@ class FilterCategory extends React.Component {
                   key={filter}
                   name={filter}
                   className="result-filters__filter-check"
-                  disabled={categoryFilters[filter] === 0}
                   onChange={() =>
                     toggledFilter(
                       category.queryField,
@@ -79,19 +78,20 @@ class FilterCategory extends React.Component {
               ) : null // Do not display a checkbox if the filter is null
           )}
 
-        {filters.length > MAX_FILTERS && !this.state.query && (
-          <Button
-            text={
-              this.state.collapsed
-                ? `+ ${filters.length - MAX_FILTERS} more`
-                : `- see less`
-            }
-            buttonStyle="link"
-            onClick={() =>
-              this.setState(state => ({ collapsed: !state.collapsed }))
-            }
-          />
-        )}
+        {filters.length > MAX_FILTERS &&
+          !this.state.query && (
+            <Button
+              text={
+                this.state.collapsed
+                  ? `+ ${filters.length - MAX_FILTERS} more`
+                  : `- see less`
+              }
+              buttonStyle="link"
+              onClick={() =>
+                this.setState(state => ({ collapsed: !state.collapsed }))
+              }
+            />
+          )}
       </section>
     );
   }
