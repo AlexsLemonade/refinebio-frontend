@@ -27,7 +27,7 @@ function Dashboard() {
     if (!!data) refresh();
   }, 10 * 60 * 1000);
 
-  if (!hasError) {
+  if (hasError) {
     return <ServerErrorPage />;
   }
 
