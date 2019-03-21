@@ -29,7 +29,7 @@ export default function ExecutiveDashboard() {
 
       {!data ? (
         <Spinner />
-      ) : hasError || true ? (
+      ) : hasError ? (
         <ServerErrorPage />
       ) : (
         <>
