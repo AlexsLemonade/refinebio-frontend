@@ -10,10 +10,12 @@ import Spinner from '../../components/Spinner';
 import './Dashboard.scss';
 
 function Dashboard() {
+  const [chartUpdating, setChartUpdating] = React.useState(true);
   const [range, setRange] = React.useState('day');
-  const { data, isLoading, refresh } = useLoader(
+  const { data, refresh } = useLoader(
     async () => {
       const stats = await fetchDashboardData(range);
+      setChartUpdating(false);
       return getDashboardChartConfig(stats, range);
     },
     [range]
@@ -35,10 +37,13 @@ function Dashboard() {
             { label: 'Last Month', value: 'month' },
             { label: 'Last Year', value: 'year' }
           ]}
-          onChange={setRange}
+          onChange={range => {
+            setChartUpdating(true);
+            setRange(range);
+          }}
         />
 
-        {!data ? (
+        {!data || chartUpdating ? (
           <Spinner />
         ) : (
           data.map(section => {
@@ -48,7 +53,6 @@ function Dashboard() {
                 key={title}
                 title={title}
                 charts={charts}
-                isLoading={isLoading}
                 range={range}
               />
             );
