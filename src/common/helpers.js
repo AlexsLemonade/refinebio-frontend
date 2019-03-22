@@ -200,17 +200,22 @@ export function formatNumber(number, decimals = 2, decPoint, thousandsSep) {
 
 // Helper methods to ease working with ajax functions
 export const Ajax = {
-  get: (url, params = false) => {
-    if (params) {
-      return asyncFetch(`${url}?${getQueryString(params)}`);
-    }
-    return asyncFetch(url);
+  get: (url, params = false, headers = {}) => {
+    url = !!params ? `${url}?${getQueryString(params)}` : url;
+    return asyncFetch(url, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        ...headers
+      }
+    });
   },
-  put: (url, params = {}) =>
+  put: (url, params = {}, headers = {}) =>
     asyncFetch(url, {
       method: 'PUT',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        ...headers
       },
       body: JSON.stringify(params)
     }),

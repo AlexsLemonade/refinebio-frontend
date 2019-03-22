@@ -23,6 +23,7 @@ import DownloadErrorImage from './dataset-error.svg';
 import Spinner from '../../../components/Spinner';
 import NoMatch from '../../NoMatch';
 import DataSetLoader from './DataSetLoader';
+import { getDataSet } from '../../../api/dataSet';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -103,6 +104,8 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     expires_on,
     success
   } = dataSet;
+
+  return <DataSetReady dataSet={dataSet} />;
 
   // success can sometimes be `null`
   const processingError = success === false;
@@ -235,12 +238,16 @@ class DataSetReady extends React.Component {
 
   handleSubmit = async () => {
     if (!this.props.hasToken) {
-      await this.props.createToken();
+      // if the current user doesn't has a valid token, we have to generate it
+      // and request the dataset data again to get the `download_url`
+      const token = await this.props.createToken();
+      const dataSet = await getDataSet(this.props.dataSet.id, token);
+      window.location.href = dataSet.download_url;
+    } else {
+      // otherwise we should have gotten the download url when the original
+      // data was requested
+      window.location.href = this.props.dataSet.download_url;
     }
-
-    const { s3_bucket, s3_key } = this.props.dataSet;
-    const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
-    window.location.href = downloadLink;
   };
 
   render() {
