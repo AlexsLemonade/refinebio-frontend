@@ -49,8 +49,6 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
   const comesFromSearch = state && state.ref === 'search';
   return (
     <>
-      <InfoBox />
-
       <Loader
         fetch={() => getExperiment(match.params.id)}
         updateProps={match.params.id}
@@ -97,6 +95,8 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           ) : (
             <>
               <div className="layout__content">
+                <InfoBox />
+
                 <ScrollTopOnMount />
                 {comesFromSearch && (
                   <Button
