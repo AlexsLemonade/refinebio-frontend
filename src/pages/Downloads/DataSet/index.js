@@ -105,8 +105,6 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     success
   } = dataSet;
 
-  return <DataSetReady dataSet={dataSet} />;
-
   // success can sometimes be `null`
   const processingError = success === false;
 
