@@ -247,14 +247,8 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         </i>
                       )}
                     </ExperimentHeaderRow>
-                  </div>
-
-                  {experimentData.source_database && (
-                    <div className="experiment__source-database">
-                      <div className="experiment__row-label">
-                        Source Repository
-                      </div>
-                      <div>
+                    {experimentData.source_database && (
+                      <ExperimentHeaderRow label="Source Repository">
                         <a
                           href={experimentData.source_url}
                           target="_blank"
@@ -263,9 +257,9 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         >
                           {DatabaseNames[experimentData.source_database]}
                         </a>
-                      </div>
-                    </div>
-                  )}
+                      </ExperimentHeaderRow>
+                    )}
+                  </div>
                 </div>
               </div>
 
