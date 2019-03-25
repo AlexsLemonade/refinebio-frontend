@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import { getAmazonDownloadLinkUrl, formatBytes } from '../../../common/helpers';
+import { formatBytes } from '../../../common/helpers';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
