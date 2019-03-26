@@ -49,8 +49,6 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
   const comesFromSearch = state && state.ref === 'search';
   return (
     <>
-      <InfoBox />
-
       <Loader
         fetch={() => getExperiment(match.params.id)}
         updateProps={match.params.id}
@@ -97,6 +95,8 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           ) : (
             <>
               <div className="layout__content">
+                <InfoBox />
+
                 <ScrollTopOnMount />
                 {comesFromSearch && (
                   <Button
@@ -247,14 +247,8 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         </i>
                       )}
                     </ExperimentHeaderRow>
-                  </div>
-
-                  {experimentData.source_database && (
-                    <div className="experiment__source-database">
-                      <div className="experiment__row-label">
-                        Source Repository
-                      </div>
-                      <div>
+                    {experimentData.source_database && (
+                      <ExperimentHeaderRow label="Source Repository">
                         <a
                           href={experimentData.source_url}
                           target="_blank"
@@ -263,9 +257,9 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         >
                           {DatabaseNames[experimentData.source_database]}
                         </a>
-                      </div>
-                    </div>
-                  )}
+                      </ExperimentHeaderRow>
+                    )}
+                  </div>
                 </div>
               </div>
 
