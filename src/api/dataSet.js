@@ -1,11 +1,19 @@
 import { Ajax } from '../common/helpers';
 
-export async function getDataSet(dataSetId) {
-  return await Ajax.get(`/dataset/${dataSetId}/`);
+export async function getDataSet(dataSetId, tokenId = null) {
+  return await Ajax.get(`/dataset/${dataSetId}/`, null, {
+    'API-KEY': tokenId
+  });
 }
 
-export async function getDataSetDetails(dataSetId) {
-  let response = await Ajax.get(`/dataset/${dataSetId}/`, { details: true });
+export async function getDataSetDetails(dataSetId, tokenId = null) {
+  let response = await Ajax.get(
+    `/dataset/${dataSetId}/`,
+    { details: true },
+    {
+      'API-KEY': tokenId
+    }
+  );
 
   return {
     ...response,

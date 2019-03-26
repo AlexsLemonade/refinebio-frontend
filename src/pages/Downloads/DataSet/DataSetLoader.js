@@ -1,9 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { getDataSet, getDataSetDetails } from '../../../api/dataSet';
 import Loader from '../../../components/Loader';
 import { timeout } from '../../../common/helpers';
 
-export default class DataSetLoader extends React.Component {
+class DataSetLoader extends React.Component {
   _loader = React.createRef();
   _liveUpdate = true;
 
@@ -21,8 +22,8 @@ export default class DataSetLoader extends React.Component {
     const { dataSetId } = this.props;
 
     const dataSet = this.state.firstUpdate
-      ? await getDataSetDetails(dataSetId)
-      : await getDataSet(dataSetId);
+      ? await getDataSetDetails(dataSetId, this.props.token)
+      : await getDataSet(dataSetId, this.props.token);
 
     if (dataSet.is_processing) {
       this._startLiveUpdate();
@@ -63,3 +64,5 @@ export default class DataSetLoader extends React.Component {
     );
   }
 }
+DataSetLoader = connect(({ token }) => ({ token }))(DataSetLoader);
+export default DataSetLoader;
