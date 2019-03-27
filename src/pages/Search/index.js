@@ -144,7 +144,10 @@ class SearchResults extends Component {
                   <div className="results__add-samples">
                     <AddPageToDataSetButton results={results} />
                   </div>
-                  <ResultFilters appliedFilters={this.state.filters} />
+                  <ResultFilters
+                    results={results}
+                    appliedFilters={this.state.filters}
+                  />
                   <div className="results__list">
                     {results.map((result, index) => (
                       <React.Fragment key={result.accession_code}>
