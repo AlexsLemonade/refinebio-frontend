@@ -250,7 +250,7 @@ export const startDownload = ({
         ...(email ? { email_address: email } : {})
       },
       {
-        API_KEY: tokenId
+        'API-KEY': tokenId
       }
     );
   } catch (e) {
