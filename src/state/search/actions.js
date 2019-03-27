@@ -7,7 +7,8 @@ import pickBy from 'lodash/pickBy';
 export const MOST_SAMPLES = 'MostSamples';
 
 export const Ordering = {
-  MostSamples: '', // default sorting, so no parameters needed
+  BestMatch: '_score',
+  MostSamples: '-num_processed_samples',
   LeastSamples: 'num_processed_samples',
   Newest: '-source_first_published',
   Oldest: 'source_first_published'
@@ -31,7 +32,7 @@ const navigateToResults = ({
     q: query,
     p: page > 1 ? page : undefined,
     size: size !== 10 ? size : undefined,
-    ordering: ordering !== Ordering.MostSamples ? ordering : undefined,
+    ordering: ordering !== '' ? ordering : undefined,
     filter_order:
       filterOrder && filterOrder.length > 0 ? filterOrder.join(',') : undefined,
     ...filters
@@ -51,7 +52,7 @@ export function fetchResults({
   query,
   page = 1,
   size = 10,
-  ordering = Ordering.MostSamples,
+  ordering = Ordering.BestMatch,
   filterOrder = [],
   filters: appliedFilters
 }) {
@@ -61,9 +62,7 @@ export function fetchResults({
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
-        ...(ordering !== Ordering.MostSamples
-          ? { ordering }
-          : { ordering: '-num_processed_samples' }),
+        ordering: ordering || Ordering.BestMatch,
         ...appliedFilters
       });
 
