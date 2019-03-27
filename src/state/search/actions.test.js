@@ -1,4 +1,10 @@
-import { toggleFilterHelper, updateFilterOrderHelper } from './actions';
+import {
+  toggleFilterHelper,
+  updateFilterOrderHelper,
+  fetchResults
+} from './actions';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 describe('toggleFilterHelper', () => {
   it('adds filter when none selected', () => {
@@ -52,5 +58,37 @@ describe('updateFilterOrderHelper', () => {
       value: 'value1'
     });
     expect(newOrder).toEqual([]);
+  });
+});
+
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+describe('fetching a dataset', () => {
+  beforeEach(function() {
+    global.fetch = jest.fn().mockImplementation(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => ({ results: [], count: 0, facets: [] })
+      })
+    );
+  });
+
+  it('sends correct ordering parameter by default', async () => {
+    const store = mockStore();
+    await store.dispatch(fetchResults({ query: 'cancer', ordering: '' }));
+    expect(global.fetch.mock.calls[0]).toEqual([
+      '/es/?search=cancer&limit=10&offset=0&ordering=_score'
+    ]);
+  });
+
+  it('pass ordering parameter', async () => {
+    const store = mockStore();
+    await store.dispatch(
+      fetchResults({ query: 'cancer', ordering: 'num_processed_samples' })
+    );
+    expect(global.fetch.mock.calls[0]).toEqual([
+      '/es/?search=cancer&limit=10&offset=0&ordering=num_processed_samples'
+    ]);
   });
 });
