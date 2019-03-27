@@ -41,13 +41,21 @@ async function cacheServerData() {
           apiVersion: response.headers['x-source-revision']
         };
       })
-      .catch(error => false)
-  ]).then(function([stats, { organism, apiVersion }]) {
+      .catch(error => false),
+    axios
+      .get(ApiHost + '/qn_targets_available')
+      .then(response => response.data)
+      .catch(_ => [])
+  ]).then(function([stats, { organism, apiVersion }, qnTargets]) {
     const cache = {
       version: version, // remove `v` at the start of each version
       apiVersion: apiVersion,
       stats,
-      organism
+      organism,
+      qnTargets: qnTargets.reduce(
+        (accum, organism) => ({ ...accum, [organism.name]: true }),
+        {}
+      )
     };
     fs.writeFileSync(`src/apiData.json`, JSON.stringify(cache));
   });
