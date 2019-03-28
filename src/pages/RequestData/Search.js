@@ -24,7 +24,7 @@ export default function SearchRequestData({
         <div className="search-request__block">
           <Formik
             initialValues={{
-              search: '',
+              accession_codes: '',
               pediatric_cancer: '',
               approach: '',
               email: ''
@@ -34,7 +34,7 @@ export default function SearchRequestData({
               push(state.ref);
             }}
             validationSchema={Yup.object().shape({
-              search: Yup.string().required(
+              accession_codes: Yup.string().required(
                 'Please list the experiment accession codes here'
               ),
               pediatric_cancer: Yup.string().required(
@@ -64,11 +64,17 @@ export default function SearchRequestData({
                     Only accessions from GEO, SRA, and ArrayExpress are
                     accepted.
                   </div>
-                  {touched['search'] &&
-                    errors['search'] && (
-                      <div className="color-error">{errors['search']}</div>
+                  {touched['accession_codes'] &&
+                    errors['accession_codes'] && (
+                      <div className="color-error">
+                        {errors['accession_codes']}
+                      </div>
                     )}
-                  <Field type="text" name="search" className="input-text" />
+                  <Field
+                    type="text"
+                    name="accession_codes"
+                    className="input-text"
+                  />
                   <div className="search-request__example">
                     Example: GSE3303, E-MEXP-3405, SRP2422
                   </div>
@@ -196,14 +202,14 @@ async function submitDataRequest(query, values) {
   await postToSlack({
     attachments: [
       {
-        fallback: JSON.stringify(values),
+        fallback: `Missing data for search term '${query}'`,
         color: '#2eb886',
         title: `Missing data for search term '${query}'`,
         title_link: `https://www.refine.bio/search?q=${query}`,
         fields: [
           {
             title: 'Accession Codes',
-            value: values.search,
+            value: values.accession_codes,
             short: true
           },
           {
