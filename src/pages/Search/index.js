@@ -160,6 +160,19 @@ class SearchResults extends Component {
                           )}
                       </React.Fragment>
                     ))}
+
+                    {currentPage === totalPages && (
+                      <div className="result result--note">
+                        Didn't see a related experiment?{' '}
+                        <Link
+                          className="link"
+                          to={searchRequestUrl({ query: this.state.query })}
+                        >
+                          Let us know
+                        </Link>
+                      </div>
+                    )}
+
                     <Pagination
                       onPaginate={updatePage}
                       totalPages={totalPages}
