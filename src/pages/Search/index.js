@@ -326,7 +326,11 @@ const NoSearchResults = ({ query }) => (
   </div>
 );
 
-let NoSearchResultsTooManyFilters = ({ appliedFilters, clearFilters }) => (
+let NoSearchResultsTooManyFilters = ({
+  query,
+  appliedFilters,
+  clearFilters
+}) => (
   <div className="results__container results__container--empty">
     <div className="results__filters">
       <ResultFilters appliedFilters={appliedFilters} />
@@ -334,12 +338,25 @@ let NoSearchResultsTooManyFilters = ({ appliedFilters, clearFilters }) => (
     <div className="results__list">
       <div className="results__no-results">
         <h2>No matching results</h2>
-        <div>
+        <p>
+          Expecting a specific experiment?{' '}
+          <Link
+            className="link"
+            to={searchRequestUrl({
+              query,
+              continueTo: '/'
+            })}
+          >
+            Let us know
+          </Link>
+        </p>
+        <p>Or</p>
+        <p>
           Try another term or{' '}
           <Button onClick={clearFilters} buttonStyle="link">
             Clear Filters
           </Button>
-        </div>
+        </p>
         <img
           src={GhostSampleImage}
           alt="Start searching"

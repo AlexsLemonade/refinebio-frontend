@@ -34,7 +34,7 @@ function SearchRequestData({ push, goBack, location: { search, state } }) {
             onSubmit={async (values, actions) => {
               await submitDataRequest(query, values);
               push({
-                pathname: state.continueTo,
+                pathname: state.continueTo || '/',
                 state: {
                   message: 'Request for Experiment Received!'
                 }
