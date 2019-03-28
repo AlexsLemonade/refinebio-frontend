@@ -24,9 +24,11 @@
 }
 
 textarea {
+  font-size: 1rem;
   width: 480px;
-  height: 72px;
+  min-height: 72px;
   padding: 5px;
-  resize: none;
+  resize: vertical;
+  max-height: 400px;
   border: 2px solid #979797;
 }
