@@ -358,11 +358,11 @@ export function numberFormatter(num, digits = 0) {
  * @param {object} params Slack webhooks params
  */
 export async function postToSlack(params) {
-  await (await fetch(
+  return await fetch(
     'https://hooks.slack.com/services/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',
     {
       method: 'POST',
       body: JSON.stringify(params)
     }
-  )).json();
+  );
 }

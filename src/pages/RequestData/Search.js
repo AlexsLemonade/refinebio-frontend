@@ -10,10 +10,7 @@ import './RequestData.scss';
 import { postToSlack } from '../../common/helpers';
 import { push } from '../../state/routerActions';
 
-export default function SearchRequestData({
-  push,
-  location: { search, state }
-}) {
+function SearchRequestData({ push, location: { search, state } }) {
   return (
     <div>
       <p>
@@ -31,7 +28,12 @@ export default function SearchRequestData({
             }}
             onSubmit={async (values, actions) => {
               await submitDataRequest('childhood cancer', values);
-              push(state.ref);
+              push({
+                pathname: '/search',
+                state: {
+                  message: 'Request for Experiment Received!'
+                }
+              });
             }}
             validationSchema={Yup.object().shape({
               accession_codes: Yup.string().required(
@@ -195,6 +197,7 @@ SearchRequestData = connect(
   null,
   { push }
 )(SearchRequestData);
+export default SearchRequestData;
 
 async function submitDataRequest(query, values) {
   let { ip } = await (await fetch('https://api.ipify.org?format=json')).json();

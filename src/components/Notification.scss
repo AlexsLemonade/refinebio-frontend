@@ -1,0 +1,26 @@
+@import '../common/styles/variables';
+@import '../common/styles/mixins';
+
+.notification {
+  background-color: $success;
+  color: $white;
+
+  &__content {
+    display: flex;
+    vertical-align: middle;
+    font-size: 16px;
+    justify-content: center;
+    position: relative;
+  }
+
+  &__close {
+    position: absolute;
+    right: 0;
+    color: $white;
+    font-size: 22px;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}
