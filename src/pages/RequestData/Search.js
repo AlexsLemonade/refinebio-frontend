@@ -1,13 +1,19 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+import { connect } from 'react-redux';
 import Button from '../../components/Button';
 import Radio, { RadioField } from '../../components/Radio';
 import { CheckboxField } from '../../components/Checkbox';
 import MissingSampleImage from './light-missing-sample.svg';
 import './RequestData.scss';
+import { postToSlack } from '../../common/helpers';
+import { push } from '../../state/routerActions';
 
-export default function SearchRequestData({}) {
+export default function SearchRequestData({
+  push,
+  location: { search, state }
+}) {
   return (
     <div>
       <p>
@@ -23,17 +29,15 @@ export default function SearchRequestData({}) {
               approach: '',
               email: ''
             }}
-            onSubmit={(values, actions) => {
-              setTimeout(() => {
-                console.log(JSON.stringify(values, null, 2));
-                actions.setSubmitting(false);
-              }, 500);
+            onSubmit={async (values, actions) => {
+              await submitDataRequest('childhood cancer', values);
+              push(state.ref);
             }}
             validationSchema={Yup.object().shape({
               search: Yup.string().required(
                 'Please list the experiment accession codes here'
               ),
-              pediatric_cancer: Yup.bool().required(
+              pediatric_cancer: Yup.string().required(
                 'Are you using this for pediatric cancer research?'
               ),
               approach: Yup.string().required(
@@ -91,13 +95,13 @@ export default function SearchRequestData({}) {
                       component={RadioField}
                       name="pediatric_cancer"
                       label="Yes"
-                      value={true}
+                      value="Yes"
                     />
                     <Field
                       component={RadioField}
                       name="pediatric_cancer"
                       label="No"
-                      value={false}
+                      value="No"
                     />
                   </fieldset>
                 </div>
@@ -116,25 +120,25 @@ export default function SearchRequestData({}) {
                       component={RadioField}
                       name="approach"
                       label="Bench Research"
-                      value="bench research"
+                      value="Bench Research"
                     />
                     <Field
                       component={RadioField}
                       name="approach"
                       label="Computational Research"
-                      value="computational research"
+                      value="Computational Research"
                     />
                     <Field
                       component={RadioField}
                       name="approach"
                       label="Clinical Research"
-                      value="clinical research"
+                      value="Clinical Research"
                     />
                     <Field
                       component={RadioField}
                       name="approach"
                       label="AI/ML Research"
-                      value="ai/ml research"
+                      value="AI/ML Research"
                     />
                   </fieldset>
                 </div>
@@ -180,4 +184,59 @@ export default function SearchRequestData({}) {
       </div>
     </div>
   );
+}
+SearchRequestData = connect(
+  null,
+  { push }
+)(SearchRequestData);
+
+async function submitDataRequest(query, values) {
+  let { ip } = await (await fetch('https://api.ipify.org?format=json')).json();
+
+  await postToSlack({
+    attachments: [
+      {
+        fallback: JSON.stringify(values),
+        color: '#2eb886',
+        title: `Missing data for search term '${query}'`,
+        title_link: `https://www.refine.bio/search?q=${query}`,
+        fields: [
+          {
+            title: 'Accession Codes',
+            value: values.search,
+            short: true
+          },
+          {
+            title: 'Pediatric Cancer Research',
+            value: values.pediatric_cancer,
+            short: true
+          },
+          {
+            title: 'Primary Approach',
+            value: values.approach,
+            short: true
+          },
+          {
+            title: 'Email',
+            value: `${values.email}${
+              values.email_updates ? ' _(wants updates)_' : ''
+            }`,
+            short: false
+          },
+          ...(values.comments
+            ? [
+                {
+                  title: 'Additional Notes',
+                  value: values.comments,
+                  short: false
+                }
+              ]
+            : [])
+        ],
+        footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
+        footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
+        ts: Date.now() / 1000 // unix time
+      }
+    ]
+  });
 }
