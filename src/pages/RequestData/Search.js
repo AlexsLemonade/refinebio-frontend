@@ -1,17 +1,17 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
-import Radio, { RadioField } from '../../components/Radio';
+import { RadioField } from '../../components/Radio';
 import { CheckboxField } from '../../components/Checkbox';
 import MissingSampleImage from './light-missing-sample.svg';
 import './RequestData.scss';
 import { postToSlack } from '../../common/helpers';
 import { push, goBack } from '../../state/routerActions';
 
-function SearchRequestData({ push, goBack, location: { search, state } }) {
+let SearchRequestData = ({ push, goBack, location: { search, state } }) => {
   const query = state && state.query;
 
   if (!query) return <Redirect to="/" />;
@@ -199,12 +199,12 @@ function SearchRequestData({ push, goBack, location: { search, state } }) {
         </div>
 
         <div>
-          <img src={MissingSampleImage} />
+          <img src={MissingSampleImage} alt="Missing sample" />
         </div>
       </div>
     </div>
   );
-}
+};
 SearchRequestData = connect(
   null,
   { push, goBack }

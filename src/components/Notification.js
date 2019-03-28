@@ -6,7 +6,7 @@ import { IoMdClose } from 'react-icons/io';
 
 import './Notification.scss';
 
-function Notification({ location: { search, state } }) {
+let Notification = ({ location: { search, state } }) => {
   const [closed, setClosed] = React.useState(false);
 
   if (closed || !state || !state.message) return null;
@@ -29,6 +29,6 @@ function Notification({ location: { search, state } }) {
       </div>
     </div>
   );
-}
+};
 Notification = withRouter(Notification);
 export default Notification;
