@@ -28,7 +28,7 @@ import {
 } from '../../state/search/actions';
 import fromPairs from 'lodash/fromPairs';
 import InfoBox from '../../components/InfoBox';
-import { searchUrl } from '../../routes';
+import { searchUrl, searchRequestUrl } from '../../routes';
 import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
 
@@ -128,9 +128,10 @@ class SearchResults extends Component {
               ) : hasError ? (
                 <ErrorApiUnderHeavyLoad />
               ) : !results.length && !anyFilterApplied(this.state.filters) ? (
-                <NoSearchResults />
+                <NoSearchResults query={this.state.query} />
               ) : !results.length ? (
                 <NoSearchResultsTooManyFilters
+                  query={this.state.query}
                   appliedFilters={this.state.filters}
                 />
               ) : (
@@ -295,11 +296,11 @@ const ErrorApiUnderHeavyLoad = () => (
   </div>
 );
 
-const NoSearchResults = () => (
+const NoSearchResults = ({ query }) => (
   <div className="results__no-results">
     <h2>No matching results</h2>
     <h2>Try another term</h2>
-    <div className="results__suggestions">
+    <div className="results__suggestion-list">
       {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
         <Link
           className="link results__suggestion"
@@ -310,6 +311,13 @@ const NoSearchResults = () => (
         </Link>
       ))}
     </div>
+    <p>
+      Expecting a specific experiment?{' '}
+      <Link className="link" to={searchRequestUrl({ query, continueTo: '/' })}>
+        Let us know
+      </Link>
+    </p>
+
     <img
       src={GhostSampleImage}
       alt="Start searching"

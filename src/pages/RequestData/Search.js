@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
@@ -8,13 +9,17 @@ import { CheckboxField } from '../../components/Checkbox';
 import MissingSampleImage from './light-missing-sample.svg';
 import './RequestData.scss';
 import { postToSlack } from '../../common/helpers';
-import { push } from '../../state/routerActions';
+import { push, goBack } from '../../state/routerActions';
 
-function SearchRequestData({ push, location: { search, state } }) {
+function SearchRequestData({ push, goBack, location: { search, state } }) {
+  const query = state && state.query;
+
+  if (!query) return <Redirect to="/" />;
+
   return (
     <div>
       <p>
-        <Button text="Back" buttonStyle="secondary" />
+        <Button text="Back" buttonStyle="secondary" onClick={goBack} />
       </p>
 
       <div className="search-request">
@@ -27,9 +32,9 @@ function SearchRequestData({ push, location: { search, state } }) {
               email: ''
             }}
             onSubmit={async (values, actions) => {
-              await submitDataRequest('childhood cancer', values);
+              await submitDataRequest(query, values);
               push({
-                pathname: '/search',
+                pathname: state.continueTo,
                 state: {
                   message: 'Request for Experiment Received!'
                 }
@@ -59,7 +64,7 @@ function SearchRequestData({ push, location: { search, state } }) {
                 <div className="search-request__section">
                   <div className="search-request__label">
                     List experiment accessions (separated by commas) you expect
-                    for search term ‘<b>mmp3</b>’{' '}
+                    for search term ‘<b>{query}</b>’{' '}
                     <span className="search-request__required">(required)</span>
                   </div>
                   <div className="search-request__note">
@@ -180,7 +185,14 @@ function SearchRequestData({ push, location: { search, state } }) {
                   />
                 </div>
 
-                <Button text="Submit" type="submit" disabled={isSubmitting} />
+                <div className="search-request__actions">
+                  <Button
+                    text="Cancel"
+                    buttonStyle="secondary"
+                    onClick={goBack}
+                  />
+                  <Button text="Submit" type="submit" disabled={isSubmitting} />
+                </div>
               </form>
             )}
           </Formik>
@@ -195,7 +207,7 @@ function SearchRequestData({ push, location: { search, state } }) {
 }
 SearchRequestData = connect(
   null,
-  { push }
+  { push, goBack }
 )(SearchRequestData);
 export default SearchRequestData;
 

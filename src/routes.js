@@ -21,3 +21,11 @@ export const experimentsSamples = (
 export const searchUrl = (params = false) => {
   return params ? `/search?${getQueryString(params)}` : '/search';
 };
+
+export const searchRequestUrl = ({ query, continueTo }) => ({
+  pathname: '/search/request',
+  state: {
+    query,
+    continueTo
+  }
+});
