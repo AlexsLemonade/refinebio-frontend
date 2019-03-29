@@ -31,6 +31,7 @@ import InfoBox from '../../components/InfoBox';
 import { searchUrl } from '../../routes';
 import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
+import { Hightlight } from '../../components/HighlightedText';
 
 class SearchResults extends Component {
   state = {
@@ -146,19 +147,21 @@ class SearchResults extends Component {
                   </div>
                   <ResultFilters appliedFilters={this.state.filters} />
                   <div className="results__list">
-                    {results.map((result, index) => (
-                      <React.Fragment key={result.accession_code}>
-                        <Result result={result} query={this.state.query} />
+                    <Hightlight match={this.state.query}>
+                      {results.map((result, index) => (
+                        <React.Fragment key={result.accession_code}>
+                          <Result result={result} query={this.state.query} />
 
-                        {result._isTopResult &&
-                          results[index + 1] &&
-                          !results[index + 1]._isTopResult && (
-                            <div className="results__related-block">
-                              Related Results for '{this.state.query}'
-                            </div>
-                          )}
-                      </React.Fragment>
-                    ))}
+                          {result._isTopResult &&
+                            results[index + 1] &&
+                            !results[index + 1]._isTopResult && (
+                              <div className="results__related-block">
+                                Related Results for '{this.state.query}'
+                              </div>
+                            )}
+                        </React.Fragment>
+                      ))}
+                    </Hightlight>
                     <Pagination
                       onPaginate={updatePage}
                       totalPages={totalPages}
