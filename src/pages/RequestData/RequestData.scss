@@ -22,7 +22,6 @@
     }
 
     @include desktop() {
-      flex-direction: row;
       padding: 40px;
       margin-top: 24px;
     }
