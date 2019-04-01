@@ -82,9 +82,11 @@ let ApiSourceRevision = false;
  * @returns {Promise}
  */
 export async function asyncFetch(url, params = false) {
-  const fullURL = process.env.REACT_APP_API_HOST
-    ? `${process.env.REACT_APP_API_HOST}${url}`
-    : url;
+  const fullURL = url.startsWith('http')
+    ? url
+    : process.env.REACT_APP_API_HOST
+      ? `${process.env.REACT_APP_API_HOST}${url}`
+      : url;
 
   let response;
   try {
@@ -357,4 +359,18 @@ export function numberFormatter(num, digits = 0) {
     }
   }
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol;
+}
+
+/**
+ * Send data to slack, configured in CCDL channel
+ * @param {object} params Slack webhooks params
+ */
+export async function postToSlack(params) {
+  return await fetch(
+    'https://hooks.slack.com/services/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',
+    {
+      method: 'POST',
+      body: JSON.stringify(params)
+    }
+  );
 }

@@ -37,6 +37,7 @@ import { getExperiment } from '../../api/experiments';
 import NoMatch from '../NoMatch';
 import { ServerError } from '../../common/errors';
 import ServerErrorPage from '../ServerError';
+import { Hightlight, HText } from '../../components/HighlightedText';
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
@@ -48,7 +49,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
   return (
-    <>
+    <Hightlight match={comesFromSearch && state.query}>
       <Loader
         fetch={() => getExperiment(match.params.id)}
         updateProps={match.params.id}
@@ -115,12 +116,12 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                       className="experiment__stats-icon"
                       alt="Accession Icon"
                     />
-                    {experimentData.accession_code}
+                    <HText>{experimentData.accession_code}</HText>
                   </div>
 
                   <div className="experiment__header">
                     <h1 className="experiment__header-title mobile-p">
-                      {experimentData.title || 'No Title.'}
+                      <HText>{experimentData.title || 'No Title.'}</HText>
                     </h1>
                     <div>
                       <DataSetSampleActions
@@ -172,7 +173,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
 
                   <div>
                     <ExperimentHeaderRow label="Description">
-                      {experimentData.description}
+                      <HText>{experimentData.description}</HText>
                     </ExperimentHeaderRow>
                     <ExperimentHeaderRow label="PubMed ID">
                       {(experimentData.pubmed_id && (
@@ -202,7 +203,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                           rel="noopener noreferrer"
                           className="link"
                         >
-                          {experimentData.publication_title}
+                          <HText>{experimentData.publication_title}</HText>
                         </a>
                       )) || (
                         <i className="experiment__not-provided">
@@ -220,7 +221,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         })}
                         className="link"
                       >
-                        {experimentData.submitter_institution}
+                        <HText>{experimentData.submitter_institution}</HText>
                       </Link>
                     </ExperimentHeaderRow>
                     <ExperimentHeaderRow label="Authors">
@@ -231,7 +232,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                               to={searchUrl({ q: author })}
                               className="link"
                             >
-                              {author}
+                              <HText>{author}</HText>
                             </Link>
                           ))
                           .reduce((previous, current) => (
@@ -270,7 +271,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           );
         }}
       </Loader>
-    </>
+    </Hightlight>
   );
 };
 Experiment = connect(

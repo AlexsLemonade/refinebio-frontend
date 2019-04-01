@@ -64,7 +64,7 @@ let FiltersDesktop = props => {
   // If the user scrolls down the filters should be fixed on the screen
   // and also scrollable
   const style =
-    size && size.top < 150
+    size && size.top < 150 && props.results && props.results.length > 3
       ? {
           position: 'fixed',
           top: 150,
@@ -89,10 +89,10 @@ FiltersDesktop = connect(
   { toggledFilter, clearFilters }
 )(FiltersDesktop);
 
-let Filters = ({ appliedFilters }) => (
+let Filters = props => (
   <ResponsiveSwitch
-    mobile={() => <FiltersMobile appliedFilters={appliedFilters} />}
-    desktop={() => <FiltersDesktop appliedFilters={appliedFilters} />}
+    mobile={() => <FiltersMobile {...props} />}
+    desktop={() => <FiltersDesktop {...props} />}
   />
 );
 

@@ -4,8 +4,6 @@ import AppError from './AppError';
 import reportError from '../../state/reportError';
 import { withRouter } from 'react-router';
 
-declare var Raven: any;
-
 /**
  * This component wraps the entire application, and shows the `AppError` page in order to recover
  * from errors in the component render lifecycle.
