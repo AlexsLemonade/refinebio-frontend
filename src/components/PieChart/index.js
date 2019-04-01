@@ -29,6 +29,7 @@ const PieChart = (props: Props) => {
           outerRadius={'100%'}
           fill="#8884d8"
           paddingAngle={0}
+          label
         >
           {data.map((entry, index) => (
             <Cell key={index} fill={COLORS[index % COLORS.length]} />

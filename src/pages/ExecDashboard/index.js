@@ -10,6 +10,7 @@ import { fetchDashboardData } from '../../api/dashboad';
 import { useInterval, useHistory } from '../../common/hooks';
 import Header from './Header';
 import classnames from 'classnames';
+import ServerErrorPage from '../ServerError';
 
 export default function ExecutiveDashboard() {
   const { data, hasError, refresh } = useLoader(fetchDashboardData);
@@ -29,9 +30,7 @@ export default function ExecutiveDashboard() {
       {!data ? (
         <Spinner />
       ) : hasError ? (
-        <h2 className="exec-dash__error">
-          Temporarily under heavy traffic load.
-        </h2>
+        <ServerErrorPage />
       ) : (
         <>
           <div className="exec-dash__grid">

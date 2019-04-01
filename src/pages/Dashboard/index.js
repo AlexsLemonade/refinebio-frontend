@@ -6,14 +6,17 @@ import { useLoader } from '../../components/Loader';
 import { useInterval } from '../../common/hooks';
 import { fetchDashboardData } from '../../api/dashboad';
 import Spinner from '../../components/Spinner';
+import ServerErrorPage from '../ServerError';
 
 import './Dashboard.scss';
 
 function Dashboard() {
-  const [range, setRange] = React.useState('year');
-  const { data, isLoading, refresh } = useLoader(
+  const [chartUpdating, setChartUpdating] = React.useState(true);
+  const [range, setRange] = React.useState('day');
+  const { data, refresh, hasError } = useLoader(
     async () => {
       const stats = await fetchDashboardData(range);
+      setChartUpdating(false);
       return getDashboardChartConfig(stats, range);
     },
     [range]
@@ -23,6 +26,10 @@ function Dashboard() {
   useInterval(() => {
     if (!!data) refresh();
   }, 10 * 60 * 1000);
+
+  if (hasError) {
+    return <ServerErrorPage />;
+  }
 
   return (
     <div className="dashboard">
@@ -35,10 +42,13 @@ function Dashboard() {
             { label: 'Last Month', value: 'month' },
             { label: 'Last Year', value: 'year' }
           ]}
-          onChange={setRange}
+          onChange={range => {
+            setChartUpdating(true);
+            setRange(range);
+          }}
         />
 
-        {!data ? (
+        {!data || chartUpdating ? (
           <Spinner />
         ) : (
           data.map(section => {
@@ -48,7 +58,6 @@ function Dashboard() {
                 key={title}
                 title={title}
                 charts={charts}
-                isLoading={isLoading}
                 range={range}
               />
             );
@@ -128,7 +137,7 @@ function getDashboardChartConfig(state, range) {
           size: 'small'
         },
         {
-          title: 'Samples created and processed over time',
+          title: 'Samples processed over time',
           data: chartSelectors.getSamplesOverTime(state, range),
           series: ['unprocessed', 'processed'],
           type: 'area',
@@ -176,15 +185,15 @@ function getDashboardChartConfig(state, range) {
             },
             {
               name: 'Minmax',
-              value: state.dataset.aggregated_by_minmax
+              value: state.dataset.scale_by_minmax
             },
             {
               name: 'Standard',
-              value: state.dataset.aggregated_by_standard
+              value: state.dataset.scale_by_standard
             },
             {
               name: 'Robust',
-              value: state.dataset.aggregated_by_robust
+              value: state.dataset.scale_by_robust
             }
           ],
           type: 'pie',
