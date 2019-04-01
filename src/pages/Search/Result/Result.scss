@@ -100,6 +100,14 @@
       display: block;
     }
   }
+
+  &--note {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    max-width: 380px;
+  }
 }
 
 .dataset-remove-button,

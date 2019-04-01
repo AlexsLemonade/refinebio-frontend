@@ -10,7 +10,8 @@ const Radio = ({
   className,
   disabled,
   onClick,
-  readOnly
+  readOnly,
+  onBlur
 }) => (
   <div className={classnames('radio', className)}>
     <input
@@ -22,6 +23,7 @@ const Radio = ({
       checked={checked}
       onChange={onChange}
       readOnly={readOnly}
+      onBlur={onBlur}
     />
     <label className="radio__label" htmlFor={name} onClick={onClick}>
       {children ? children : name}
@@ -30,3 +32,25 @@ const Radio = ({
 );
 
 export default Radio;
+
+export const RadioField = ({
+  field: { name, value: fieldValue, onBlur },
+  form,
+  id,
+  label,
+  className,
+  value
+}) => (
+  <Radio
+    name={name}
+    className={className}
+    checked={fieldValue === value}
+    onClick={e => {
+      form.setFieldValue(name, value);
+    }}
+    readOnly
+    onBlur={onBlur}
+  >
+    {label}
+  </Radio>
+);
