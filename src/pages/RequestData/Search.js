@@ -198,7 +198,7 @@ let SearchRequestData = ({ push, goBack, location: { search, state } }) => {
           </Formik>
         </div>
 
-        <div>
+        <div className="hidden-xs">
           <img src={MissingSampleImage} alt="Missing sample" />
         </div>
       </div>
