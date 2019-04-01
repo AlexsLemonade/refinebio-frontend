@@ -350,6 +350,7 @@ NoSearchResultsTooManyFilters = connect(
 
 let OrderingDropdown = ({ ordering, updateOrdering }) => {
   const options = [
+    { label: 'Best Match', value: '' },
     { label: 'Most No. of samples', value: Ordering.MostSamples },
     { label: 'Least No. of samples', value: Ordering.LeastSamples },
     { label: 'Newest Experiment First', value: Ordering.Newest },
