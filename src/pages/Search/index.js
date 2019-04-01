@@ -31,6 +31,7 @@ import InfoBox from '../../components/InfoBox';
 import { searchUrl, searchRequestUrl } from '../../routes';
 import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
+import { Hightlight } from '../../components/HighlightedText';
 
 class SearchResults extends Component {
   state = {
@@ -145,33 +146,38 @@ class SearchResults extends Component {
                   <div className="results__add-samples">
                     <AddPageToDataSetButton results={results} />
                   </div>
-                  <ResultFilters appliedFilters={this.state.filters} />
+                  <ResultFilters
+                    results={results}
+                    appliedFilters={this.state.filters}
+                  />
                   <div className="results__list">
-                    {results.map((result, index) => (
-                      <React.Fragment key={result.accession_code}>
-                        <Result result={result} query={this.state.query} />
+                    <Hightlight match={this.state.query}>
+                      {results.map((result, index) => (
+                        <React.Fragment key={result.accession_code}>
+                          <Result result={result} query={this.state.query} />
 
-                        {result._isTopResult &&
-                          results[index + 1] &&
-                          !results[index + 1]._isTopResult && (
-                            <div className="results__related-block">
-                              Related Results for '{this.state.query}'
-                            </div>
-                          )}
-                      </React.Fragment>
-                    ))}
+                          {result._isTopResult &&
+                            results[index + 1] &&
+                            !results[index + 1]._isTopResult && (
+                              <div className="results__related-block">
+                                Related Results for '{this.state.query}'
+                              </div>
+                            )}
+                        </React.Fragment>
+                      ))}
 
-                    {currentPage === totalPages && (
-                      <div className="result result--note">
-                        Didn't see a related experiment?{' '}
-                        <Link
-                          className="link"
-                          to={searchRequestUrl({ query: this.state.query })}
-                        >
-                          Let us know
-                        </Link>
-                      </div>
-                    )}
+                      {currentPage === totalPages && (
+                        <div className="result result--note">
+                          Didn't see a related experiment?{' '}
+                          <Link
+                            className="link"
+                            to={searchRequestUrl({ query: this.state.query })}
+                          >
+                            Let us know
+                          </Link>
+                        </div>
+                      )}
+                    </Hightlight>
 
                     <Pagination
                       onPaginate={updatePage}
@@ -388,6 +394,7 @@ NoSearchResultsTooManyFilters = connect(
 
 let OrderingDropdown = ({ ordering, updateOrdering }) => {
   const options = [
+    { label: 'Best Match', value: '' },
     { label: 'Most No. of samples', value: Ordering.MostSamples },
     { label: 'Least No. of samples', value: Ordering.LeastSamples },
     { label: 'Newest Experiment First', value: Ordering.Newest },

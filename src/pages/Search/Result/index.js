@@ -7,7 +7,7 @@ import './Result.scss';
 import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
 import DataSetSampleActions from '../../../components/DataSetSampleActions';
 import * as routes from '../../../routes';
-import HighlightedText from '../../../components/HighlightedText';
+import { HText } from '../../../components/HighlightedText';
 import TechnologyBadge, {
   MICROARRAY,
   RNA_SEQ
@@ -28,12 +28,13 @@ const Result = ({ result, query }) => {
               className="result__icon"
               alt="accession-icon"
             />{' '}
-            <HighlightedText text={result.accession_code} highlight={query} />
+            <HText>{result.accession_code}</HText>
           </div>
           <Link
             className="link result__title"
             to={routes.experiments(result, {
               ref: 'search',
+              query,
               result: {
                 accession_code: result.accession_code,
                 title: result.title,
@@ -49,11 +50,7 @@ const Result = ({ result, query }) => {
               }
             })}
           >
-            {result.title ? (
-              <HighlightedText text={result.title} highlight={query} />
-            ) : (
-              'No title.'
-            )}
+            {result.title ? <HText>{result.title}</HText> : 'No title.'}
           </Link>
         </div>
 
@@ -96,15 +93,12 @@ const Result = ({ result, query }) => {
       <div className="result__details">
         <h3>Description</h3>
         <p className="result__paragraph">
-          <HighlightedText text={result.description} highlight={query} />
+          <HText>{result.description}</HText>
         </p>
         <h3>Publication Title</h3>
         <p className="result__paragraph">
           {result.publication_title ? (
-            <HighlightedText
-              text={result.publication_title}
-              highlight={query}
-            />
+            <HText>{result.publication_title}</HText>
           ) : (
             <i className="result__not-provided">No associated publication</i>
           )}
@@ -112,10 +106,7 @@ const Result = ({ result, query }) => {
         <h3>Sample Metadata Fields</h3>
         <p className="result__paragraph">
           {metadataFields && metadataFields.length ? (
-            <HighlightedText
-              text={metadataFields.join(', ')}
-              highlight={query}
-            />
+            <HText>{metadataFields.join(', ')}</HText>
           ) : (
             <i className="result__not-provided">No sample metadata fields</i>
           )}
@@ -125,6 +116,7 @@ const Result = ({ result, query }) => {
           className="button button--secondary"
           to={routes.experimentsSamples(result, {
             ref: 'search',
+            query,
             result: {
               accession_code: result.accession_code,
               title: result.title,

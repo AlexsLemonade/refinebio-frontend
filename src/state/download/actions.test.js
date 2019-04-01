@@ -21,7 +21,7 @@ describe('fetchDataSet', () => {
 
     await store.dispatch(fetchDataSet());
 
-    expect(global.fetch.mock.calls[0]).toEqual([`/dataset/${DataSetId}/`]);
+    expect(global.fetch.mock.calls[0][0]).toEqual(`/dataset/${DataSetId}/`);
     expect(store.getActions().map(x => x.type)).toEqual([
       'DOWNLOAD_DATASET_FETCH',
       'DOWNLOAD_DATASET_UPDATE'
@@ -61,7 +61,7 @@ describe('fetchDataSet', () => {
 
     await store.dispatch(fetchDataSet());
 
-    expect(global.fetch.mock.calls[0]).toEqual([`/dataset/${DataSetId}/`]);
+    expect(global.fetch.mock.calls[0][0]).toEqual(`/dataset/${DataSetId}/`);
     expect(store.getActions().map(x => x.type)).toEqual([
       'DOWNLOAD_DATASET_FETCH',
       'DOWNLOAD_CLEAR'

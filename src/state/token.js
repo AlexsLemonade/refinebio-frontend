@@ -30,4 +30,5 @@ export const createToken = () => async dispatch => {
   const token = await Ajax.get('/token/');
   await Ajax.post(`/token/`, { id: token.id, is_activated: true });
   dispatch(loadToken(token.id));
+  return token.id;
 };
