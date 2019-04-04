@@ -7,9 +7,8 @@ import { useInterval } from '../../common/hooks';
 import { fetchDashboardData } from '../../api/dashboad';
 import Spinner from '../../components/Spinner';
 import ServerErrorPage from '../ServerError';
-
-import './Dashboard.scss';
 import { getQueryParamObject, formatBytes } from '../../common/helpers';
+import './Dashboard.scss';
 
 function Dashboard(props) {
   const [chartUpdating, setChartUpdating] = React.useState(true);
@@ -218,6 +217,30 @@ function getDashboardChartConfig(state, range) {
           type: 'line',
           size: 'large',
           formatValue: x => formatBytes(x)
+        }
+      ]
+    },
+    {
+      title: 'Nomad Jobs (from nomad service)',
+      charts: [
+        {
+          title: 'Running jobs',
+          data: state.nomad_running_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Pending jobs',
+          data: state.nomad_pending_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Jobs by type',
+          data: jobsCompletedOverTime,
+          type: 'bar',
+          series: ['running', 'pending'],
+          size: 'large'
         }
       ]
     },
