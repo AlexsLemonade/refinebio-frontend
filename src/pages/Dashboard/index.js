@@ -9,10 +9,15 @@ import Spinner from '../../components/Spinner';
 import ServerErrorPage from '../ServerError';
 
 import './Dashboard.scss';
+import { getQueryParamObject } from '../../common/helpers';
 
-function Dashboard() {
+function Dashboard(props) {
   const [chartUpdating, setChartUpdating] = React.useState(true);
-  const [range, setRange] = React.useState('day');
+  let { range: rangeParam } = getQueryParamObject(props.location.search);
+  if (!['day', 'week', 'month', 'year'].includes(rangeParam)) {
+    rangeParam = 'day';
+  }
+  const [range, setRange] = React.useState(rangeParam);
   const { data, refresh, hasError } = useLoader(
     async () => {
       const stats = await fetchDashboardData(range);

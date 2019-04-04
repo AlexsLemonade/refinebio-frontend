@@ -180,13 +180,14 @@ function transformTimeline(timeline, range, fields = ['total']) {
   });
 
   for (let observation of timeline) {
+    let observationDate = observation.start;
     // find the closest datapoint to `data.start`
     let closestTemp = null;
     for (let graphPoint of result) {
       if (
         !closestTemp ||
-        Math.abs(moment(observation.start).diff(graphPoint.date)) <
-          Math.abs(moment(observation.start).diff(closestTemp.date))
+        Math.abs(moment(observationDate).diff(graphPoint.date)) <
+          Math.abs(moment(observationDate).diff(closestTemp.date))
       ) {
         closestTemp = graphPoint;
       }
@@ -210,7 +211,11 @@ function transformTimeline(timeline, range, fields = ['total']) {
  * @param {*} range day/ | week | month | year
  */
 function* getTimeline(range) {
-  const now = moment();
+  let now = moment.utc();
+  if (range === 'day') {
+    // remove last hour when viewing daily stats
+    now = now.startOf('hour').subtract(1, 'hour');
+  }
 
   const data = {
     day: {
@@ -218,11 +223,17 @@ function* getTimeline(range) {
       interval: moment.duration(1, 'hour')
     },
     week: {
-      start: now.clone().subtract(1, 'weeks'),
+      start: now
+        .clone()
+        .subtract(6, 'days')
+        .startOf('day'),
       interval: moment.duration(1, 'days')
     },
     month: {
-      start: now.clone().subtract(30, 'days'),
+      start: now
+        .clone()
+        .subtract(30, 'days')
+        .startOf('day'),
       interval: moment.duration(1, 'days')
     },
     year: {
