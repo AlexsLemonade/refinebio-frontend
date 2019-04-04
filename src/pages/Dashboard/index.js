@@ -9,7 +9,7 @@ import Spinner from '../../components/Spinner';
 import ServerErrorPage from '../ServerError';
 
 import './Dashboard.scss';
-import { getQueryParamObject } from '../../common/helpers';
+import { getQueryParamObject, formatBytes } from '../../common/helpers';
 
 function Dashboard(props) {
   const [chartUpdating, setChartUpdating] = React.useState(true);
@@ -216,7 +216,8 @@ function getDashboardChartConfig(state, range) {
           data: chartSelectors.getVolumeOfDataOverTime(state, range),
           series: ['total_size'],
           type: 'line',
-          size: 'large'
+          size: 'large',
+          formatValue: x => formatBytes(x)
         }
       ]
     },
