@@ -52,6 +52,8 @@ function Dashboard(props) {
           }}
         />
 
+        <p>* All dates in UTC</p>
+
         {!data || chartUpdating ? (
           <Spinner />
         ) : (
@@ -221,7 +223,7 @@ function getDashboardChartConfig(state, range) {
       ]
     },
     {
-      title: 'Nomad Jobs (from nomad service)',
+      title: 'Current Nomad Jobs (from service)',
       charts: [
         {
           title: 'Running jobs',
@@ -236,8 +238,21 @@ function getDashboardChartConfig(state, range) {
           size: 'small'
         },
         {
-          title: 'Jobs by type',
-          data: jobsCompletedOverTime,
+          title: 'Running jobs by type',
+          data: chartSelectors.getJobsByType(
+            state.nomad_running_jobs_by_type,
+            state.nomad_pending_jobs_by_type
+          ),
+          type: 'bar',
+          series: ['running', 'pending'],
+          size: 'large'
+        },
+        {
+          title: 'Running jobs by volume',
+          data: chartSelectors.getJobsByType(
+            state.nomad_running_jobs_by_volume,
+            state.nomad_pending_jobs_by_volume
+          ),
           type: 'bar',
           series: ['running', 'pending'],
           size: 'large'
@@ -318,21 +333,21 @@ function getDashboardChartConfig(state, range) {
           title: 'Processor jobs over time by status',
           data: processorJobsOverTimeByStatus,
           type: 'line',
-          series: ['pending', 'open', 'completed', 'failed'],
+          series: chartSelectors.JOB_STATUS,
           size: 'large'
         },
         {
           title: 'Survey jobs over time by status',
           data: surveyJobsOverTimeByStatus,
           type: 'line',
-          series: ['pending', 'open', 'completed', 'failed'],
+          series: chartSelectors.JOB_STATUS,
           size: 'large'
         },
         {
           title: 'Downloader jobs over time by status',
           data: downloaderJobsOverTimeByStatus,
           type: 'line',
-          series: ['pending', 'open', 'completed', 'failed'],
+          series: chartSelectors.JOB_STATUS,
           size: 'large'
         }
       ]

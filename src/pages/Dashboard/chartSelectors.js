@@ -3,7 +3,7 @@ import zip from 'lodash/zip';
 
 // chart selectors for creating chart data for individual charts on dashboard
 const JOB_NAMES = ['survey_jobs', 'downloader_jobs', 'processor_jobs'];
-const JOB_STATUS = ['open', 'pending', 'completed'];
+export const JOB_STATUS = ['open', 'pending', 'successful', 'failed'];
 
 const formatTimeLabel = (date, range) => {
   const format =
@@ -153,12 +153,15 @@ export function getSamplesOverTime(stats, range) {
 }
 
 export function getJobsByStatusOverTime(jobsTimeline, range) {
-  return transformTimeline(jobsTimeline, range, [
-    'pending',
-    'open',
-    'completed',
-    'failed'
-  ]);
+  return transformTimeline(jobsTimeline, range, JOB_STATUS);
+}
+
+export function getJobsByType(runningJobs, pendingJobs) {
+  return Object.keys(runningJobs).map(name => ({
+    name,
+    running: runningJobs[name],
+    pending: pendingJobs[name]
+  }));
 }
 
 /**

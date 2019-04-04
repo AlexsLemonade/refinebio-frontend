@@ -2,6 +2,7 @@ import React from 'react';
 import PieChart from '../../../components/PieChart';
 import LineChart from '../../../components/LineChart';
 import AreaChart from '../../../components/AreaChart';
+import BarChart from '../../../components/BarChart';
 import './DashboardItem.scss';
 
 const DashboardItem = props => {
@@ -20,6 +21,9 @@ const DashboardItem = props => {
       }
       case 'area': {
         return <AreaChart data={data} series={series} {...rest} />;
+      }
+      case 'bar': {
+        return <BarChart data={data} series={series} {...rest} />;
       }
       default: {
         return null;
