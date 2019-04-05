@@ -56,10 +56,17 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
       >
         {({ isLoading, hasError, error, data: experiment }) => {
           if (hasError) {
-            if (error && error instanceof ServerError && error.status === 404) {
-              return <NoMatch />;
-            }
-            return <ServerErrorPage />;
+            return (
+              <div className="layout__content">
+                {error &&
+                error instanceof ServerError &&
+                error.status === 404 ? (
+                  <NoMatch />
+                ) : (
+                  <ServerErrorPage />
+                )}
+              </div>
+            );
           }
 
           let displaySpinner = isLoading;
