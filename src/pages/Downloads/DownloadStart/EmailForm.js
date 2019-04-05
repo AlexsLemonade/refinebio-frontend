@@ -11,7 +11,7 @@ import Error from '../../../components/Error';
 /**
  * This form can be used to edit the email that's associated with a dataset
  */
-let EmailForm = ({ onSubmit, agreedToTerms }) => (
+let EmailForm = ({ onSubmit, agreedToTerms, emailAddress }) => (
   <Formik
     onSubmit={async (values, { setErrors, setValues, setSubmitting }) => {
       try {
@@ -37,7 +37,7 @@ let EmailForm = ({ onSubmit, agreedToTerms }) => (
     }}
     initialValues={{
       receiveUpdates: true,
-      email: '',
+      email: emailAddress,
       termsOfService: agreedToTerms
     }}
     validationSchema={Yup.object().shape({
@@ -96,15 +96,18 @@ let EmailForm = ({ onSubmit, agreedToTerms }) => (
             </Checkbox>
           </div>
         )}
-        <div>
-          <Checkbox
-            name="receiveUpdates"
-            checked={values.receiveUpdates}
-            onChange={handleChange}
-          >
-            I would like to receive occasional updates from the refine.bio team
-          </Checkbox>
-        </div>
+        {(emailAddress === '' || values.email !== emailAddress) && (
+          <div>
+            <Checkbox
+              name="receiveUpdates"
+              checked={values.receiveUpdates}
+              onChange={handleChange}
+            >
+              I would like to receive occasional updates from the refine.bio
+              team
+            </Checkbox>
+          </div>
+        )}
       </Form>
     )}
   </Formik>
