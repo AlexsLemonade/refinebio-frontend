@@ -156,7 +156,7 @@ let DataSetErrorDownloading = ({
                   >
                     file a ticket on Github
                   </a>{' '}
-                  with the following error message.
+                  with the following error message for further assistance.
                 </span>
               )}
             </p>
