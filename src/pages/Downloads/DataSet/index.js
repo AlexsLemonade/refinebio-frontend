@@ -84,6 +84,7 @@ export default function DataSet({
                 isEmbed={true}
                 {...dataSet}
                 dataSet={dataSet.data}
+                dataSetId={dataSetId}
               />
             </div>
           );
