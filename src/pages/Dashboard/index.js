@@ -7,12 +7,16 @@ import { useInterval } from '../../common/hooks';
 import { fetchDashboardData } from '../../api/dashboad';
 import Spinner from '../../components/Spinner';
 import ServerErrorPage from '../ServerError';
-
+import { getQueryParamObject, formatBytes } from '../../common/helpers';
 import './Dashboard.scss';
 
-function Dashboard() {
+function Dashboard(props) {
   const [chartUpdating, setChartUpdating] = React.useState(true);
-  const [range, setRange] = React.useState('day');
+  let { range: rangeParam } = getQueryParamObject(props.location.search);
+  if (!['day', 'week', 'month', 'year'].includes(rangeParam)) {
+    rangeParam = 'day';
+  }
+  const [range, setRange] = React.useState(rangeParam);
   const { data, refresh, hasError } = useLoader(
     async () => {
       const stats = await fetchDashboardData(range);
@@ -47,6 +51,8 @@ function Dashboard() {
             setRange(range);
           }}
         />
+
+        <p>* All dates in UTC</p>
 
         {!data || chartUpdating ? (
           <Spinner />
@@ -211,6 +217,44 @@ function getDashboardChartConfig(state, range) {
           data: chartSelectors.getVolumeOfDataOverTime(state, range),
           series: ['total_size'],
           type: 'line',
+          size: 'large',
+          formatValue: x => formatBytes(x)
+        }
+      ]
+    },
+    {
+      title: 'Current Nomad Jobs (from service)',
+      charts: [
+        {
+          title: 'Running jobs',
+          data: state.nomad_running_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Pending jobs',
+          data: state.nomad_pending_jobs,
+          type: 'text',
+          size: 'small'
+        },
+        {
+          title: 'Running jobs by type',
+          data: chartSelectors.getJobsByType(
+            state.nomad_running_jobs_by_type,
+            state.nomad_pending_jobs_by_type
+          ),
+          type: 'bar',
+          series: ['running', 'pending'],
+          size: 'large'
+        },
+        {
+          title: 'Running jobs by volume',
+          data: chartSelectors.getJobsByType(
+            state.nomad_running_jobs_by_volume,
+            state.nomad_pending_jobs_by_volume
+          ),
+          type: 'bar',
+          series: ['running', 'pending'],
           size: 'large'
         }
       ]
@@ -289,21 +333,21 @@ function getDashboardChartConfig(state, range) {
           title: 'Processor jobs over time by status',
           data: processorJobsOverTimeByStatus,
           type: 'line',
-          series: ['pending', 'open', 'completed', 'failed'],
+          series: chartSelectors.JOB_STATUS,
           size: 'large'
         },
         {
           title: 'Survey jobs over time by status',
           data: surveyJobsOverTimeByStatus,
           type: 'line',
-          series: ['pending', 'open', 'completed', 'failed'],
+          series: chartSelectors.JOB_STATUS,
           size: 'large'
         },
         {
           title: 'Downloader jobs over time by status',
           data: downloaderJobsOverTimeByStatus,
           type: 'line',
-          series: ['pending', 'open', 'completed', 'failed'],
+          series: chartSelectors.JOB_STATUS,
           size: 'large'
         }
       ]

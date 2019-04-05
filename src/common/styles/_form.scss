@@ -25,7 +25,8 @@
 
 textarea {
   font-size: 1rem;
-  width: 480px;
+  max-width: 480px;
+  width: 100%;
   min-height: 72px;
   padding: 5px;
   resize: vertical;

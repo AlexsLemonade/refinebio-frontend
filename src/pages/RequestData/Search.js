@@ -121,7 +121,7 @@ let SearchRequestData = ({ push, goBack, location: { search, state } }) => {
 
                 <div className="search-request__section">
                   <div className="search-request__label">
-                    Which of these most closely describes your primary approach?
+                    Which of these most closely describes your primary approach?{' '}
                     <span className="search-request__required">(required)</span>
                   </div>
                   {touched['approach'] &&
@@ -198,7 +198,7 @@ let SearchRequestData = ({ push, goBack, location: { search, state } }) => {
           </Formik>
         </div>
 
-        <div>
+        <div className="hidden-xs">
           <img src={MissingSampleImage} alt="Missing sample" />
         </div>
       </div>
