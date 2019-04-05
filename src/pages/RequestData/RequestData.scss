@@ -10,14 +10,20 @@
   }
 
   &__block {
-    padding: 40px;
+    padding: 16px;
     border-radius: 3px;
     box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
     border-bottom: 18px solid #d4e1f1;
     margin-bottom: 40px;
+    margin-top: 16px;
 
     @include desktop() {
       margin-right: 40px;
+    }
+
+    @include desktop() {
+      padding: 40px;
+      margin-top: 24px;
     }
   }
 

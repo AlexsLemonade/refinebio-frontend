@@ -161,6 +161,14 @@ fieldset {
   display: none;
 }
 
+.hidden-xs {
+  display: none;
+
+  @include tablet() {
+    display: block;
+  }
+}
+
 .text-highlight {
   background-color: $highlight-color;
 }
