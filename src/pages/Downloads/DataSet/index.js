@@ -137,24 +137,12 @@ let DataSetErrorDownloading = ({
         <div className="dataset__way-container">
           <div className="dataset__processed-text">
             <h1>Uh-oh something went wrong!</h1>
-            <p>Please try downloading again. </p>
-            {token && (
-              <Button
-                className="dataset__try-again-button"
-                onClick={() =>
-                  startDownload({
-                    tokenId: token,
-                    dataSetId,
-                    dataSet: dataSet.data
-                  })
-                }
-              >
-                Try Again
-              </Button>
-            )}
-
             <p>
-              If the problem persists, please contact{' '}
+              We encountered a problem while getting your dataset ready. We
+              apologize for the inconvenience.
+            </p>
+            <p>
+              Please contact{' '}
               <a href="mailto:ccdl@alexslemonade.org" className="link">
                 ccdl@alexslemonade.org
               </a>
@@ -168,9 +156,9 @@ let DataSetErrorDownloading = ({
                     rel="nofollow noopener noreferrer"
                     className="link"
                   >
-                    report the issue to us
+                    file a ticket on Github
                   </a>{' '}
-                  with the following error message:
+                  with the following error message for further assistance.
                 </span>
               )}
             </p>
