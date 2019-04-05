@@ -10,15 +10,10 @@ const DashboardSection = props => {
       <h2 className="dashboard-section__title">{title}</h2>
       <div className="dashboard-section__grid">
         {charts.map((chart, i) => {
-          const { type, title, data, size, series } = chart;
           return (
             <DashboardItem
               key={i}
-              type={type}
-              data={data}
-              title={title}
-              size={size}
-              series={series}
+              {...chart}
               isLoading={isLoading}
               range={range}
             />
