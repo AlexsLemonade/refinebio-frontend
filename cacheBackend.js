@@ -19,22 +19,10 @@ generateSitemap();
 async function cacheServerData() {
   console.log('Fetching data to be cached from endpoint: ' + ApiHost);
   Promise.all([
-    // fetch stats for the last year, this is used for the graphs in the landing page
-    axios
-      .get(ApiHost + '/stats/?range=year')
-      .then(function(response) {
-        return response.data;
-      })
-      // try getting general stats if the range fails
-      .catch(error => axios.get(ApiHost + '/stats/'))
-      .then(function(response) {
-        return response.data;
-      })
-      // return nothing if that also fails
-      .catch(error => false),
+    getStats(),
     // fetch samples per organisms, also used on the landing page
     axios
-      .get(ApiHost + '/search/?limit=1&offset=0')
+      .get(ApiHost + '/es/?limit=1&offset=0')
       .then(function(response) {
         return {
           organism: response.data.filters.organism,
@@ -45,8 +33,9 @@ async function cacheServerData() {
     axios
       .get(ApiHost + '/qn_targets_available')
       .then(response => response.data)
-      .catch(_ => [])
-  ]).then(function([stats, { organism, apiVersion }, qnTargets]) {
+      .catch(_ => []),
+    getPlatforms()
+  ]).then(function([stats, { organism, apiVersion }, qnTargets, platforms]) {
     const cache = {
       version: version, // remove `v` at the start of each version
       apiVersion: apiVersion,
@@ -55,7 +44,8 @@ async function cacheServerData() {
       qnTargets: qnTargets.reduce(
         (accum, organism) => ({ ...accum, [organism.name]: true }),
         {}
-      )
+      ),
+      platforms
     };
     fs.writeFileSync(`src/apiData.json`, JSON.stringify(cache));
   });
@@ -106,4 +96,46 @@ async function generateSitemap() {
     }
   }
   fs.writeFileSync('./public/sitemap.xml', sitemap.toString());
+}
+
+/**
+ * Fetch stats for the last year, this is used for the graphs in the landing page
+ */
+async function getStats() {
+  try {
+    let { data: stats } = await axios.get(ApiHost + '/stats/?range=year');
+    return stats;
+  } catch (e) {
+    try {
+      console.log('Error fetching stats with ranges, trying again...');
+      // try getting general stats if the range fails
+      let { data: stats } = await axios.get(ApiHost + '/stats/');
+      return stats;
+    } catch (e1) {
+      // return nothing if that also fails
+      console.log('Error fetching stats.');
+      return false;
+    }
+  }
+}
+
+/**
+ * Retrieves the platforms from the api and formats them into an object
+ * where the keys are the platform accession codes and the values
+ * are the platform names.
+ */
+async function getPlatforms() {
+  try {
+    const { data: platforms } = await axios.get(ApiHost + '/platforms');
+    return platforms.reduce(
+      (accum, { platform_name, platform_accession_code }) => ({
+        ...accum,
+        [platform_accession_code]: platform_name
+      }),
+      {}
+    );
+  } catch (e) {
+    console.log('Error fetching platforms');
+    return {};
+  }
 }
