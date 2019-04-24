@@ -150,7 +150,7 @@ function transformFacets(facets) {
     publication: facets['has_publication']
       ? { has_publication: facets['has_publication']['true'] || 0 }
       : null,
-    platform: facets['platform_names']
+    platform: facets['platform_accession_codes']
   };
 }
 
