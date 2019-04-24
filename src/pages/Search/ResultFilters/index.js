@@ -20,6 +20,7 @@ import { useDom } from '../../../common/hooks';
 import isEmpty from 'lodash/isEmpty';
 import FilterCategory from './FilterCategory';
 import { IoMdClose } from 'react-icons/io';
+import cache from '../../../apiData.json';
 
 let FilterList = ({
   appliedFilters,
@@ -106,7 +107,12 @@ const filterCategories = [
     queryField: 'has_publication',
     format: formatSentenceCase
   },
-  { name: 'platform', queryField: 'platform', format: formatPlatformName }
+  {
+    name: 'platform',
+    queryField: 'platform',
+    format: accessionCode =>
+      formatPlatformName(cache.platforms[accessionCode] || accessionCode)
+  }
 ];
 
 /**
