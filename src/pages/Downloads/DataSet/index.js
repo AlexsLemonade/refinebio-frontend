@@ -116,7 +116,7 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     is_available && !isExpired ? (
       <DataSetReady dataSet={dataSet} />
     ) : (
-      <DataSetExpired />
+      <DataSetExpired dataSet={dataSet} />
     )
   ) : is_processing ? (
     <DataSetProcessing email={email_address} dataSetId={dataSetId} />
@@ -285,7 +285,7 @@ DataSetReady = connect(
   }
 )(DataSetReady);
 
-let DataSetExpired = ({ regenerateDataSet }) => (
+let DataSetExpired = ({ dataSet, regenerateDataSet }) => (
   <div className="dataset__container">
     <div className="dataset__message">
       <div className="dataset__way-container">
@@ -295,7 +295,9 @@ let DataSetExpired = ({ regenerateDataSet }) => (
             The download files for this dataset isn’t available anymore
           </div>
           <div className="dataset__way-container">
-            <Button onClick={regenerateDataSet}>Regenerate Files</Button>
+            <Button onClick={() => regenerateDataSet(dataSet)}>
+              Regenerate Files
+            </Button>
           </div>
         </div>
 
