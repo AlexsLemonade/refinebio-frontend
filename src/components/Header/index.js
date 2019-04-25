@@ -77,7 +77,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
           to="/download"
           onClick={itemClicked}
         >
-          Download Dataset
+          My Dataset
           <Loader fetch={fetchDataSet}>
             {({ isLoading }) =>
               !isLoading && (
