@@ -12,9 +12,7 @@ import { postToSlack } from '../../common/helpers';
 import { push, goBack } from '../../state/routerActions';
 
 let SearchRequestData = ({ push, goBack, location: { search, state } }) => {
-  const query = state && state.query;
-
-  if (!query) return <Redirect to="/" />;
+  const query = (state && state.query) || '';
 
   return (
     <div>
