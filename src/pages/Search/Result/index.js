@@ -14,6 +14,7 @@ import TechnologyBadge, {
 } from '../../../components/TechnologyBadge';
 import { NDownloadableSamples } from '../../../components/Strings';
 import { formatPlatformName } from '../../../common/helpers';
+import RequestExperimentButton from '../../Experiment/RequestExperimentButton';
 
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result.sample_metadata_fields);
@@ -54,14 +55,18 @@ const Result = ({ result, query }) => {
           </Link>
         </div>
 
-        <DataSetSampleActions
-          dataSetSlice={{
-            [result.accession_code]: {
-              all: true,
-              total: result.num_processed_samples
-            }
-          }}
-        />
+        {result.num_processed_samples === 0 ? (
+          <RequestExperimentButton accessionCode={result.accession_code} />
+        ) : (
+          <DataSetSampleActions
+            dataSetSlice={{
+              [result.accession_code]: {
+                all: true,
+                total: result.num_processed_samples
+              }
+            }}
+          />
+        )}
       </div>
       <ul className="result__stats">
         <li className="result__stat">
