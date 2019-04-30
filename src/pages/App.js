@@ -21,7 +21,6 @@ import Privacy from './Privacy';
 import Terms from './Terms';
 import License from './License';
 import About from './About';
-import SearchRequestData from './RequestData/Search';
 import './App.scss';
 
 /**
@@ -35,7 +34,6 @@ const AppContent = () => (
         path="/results"
         render={props => <Redirect to={`/search${props.location.search}`} />}
       />
-      <Route path="/search/request" component={SearchRequestData} />
       <Route path="/search" component={Search} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/download" component={Downloads} />
