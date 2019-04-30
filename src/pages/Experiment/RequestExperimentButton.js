@@ -4,6 +4,7 @@ import Button from '../../components/Button';
 import PageModal from '../../components/Modal/PageModal';
 import RequestDataForm from '../../components/RequestDataForm';
 import { IoIosCheckmarkCircle, IoIosInformationCircle } from 'react-icons/io';
+import { submitExperimentDataRequest } from '../../common/slack';
 
 export default function RequestExperimentButton({ accessionCode }) {
   const [requestOpen, setRequestOpen] = React.useState(false);
@@ -32,8 +33,9 @@ export default function RequestExperimentButton({ accessionCode }) {
         <div className="layout__content">
           <RequestDataForm
             onClose={() => setRequestOpen(false)}
-            onSubmit={values => {
+            onSubmit={async values => {
               // 1. report to slack
+              await submitExperimentDataRequest(accessionCode, values);
 
               // 2. mark experiment as requested in local storage
               setRequestedExperiments([...requestedExperiments, accessionCode]);
