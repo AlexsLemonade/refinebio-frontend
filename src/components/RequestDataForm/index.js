@@ -9,34 +9,7 @@ import MissingSampleImage from './light-missing-sample.svg';
 import './RequestData.scss';
 
 function SearchRequestHeader({ touched, errors, query }) {
-  return (
-    <>
-      <h1 className="search-request__title">Tell us what’s missing</h1>
-
-      <div className="search-request__section">
-        <div className="search-request__label">
-          List experiment accessions (separated by commas) you expect for search
-          term ‘<b>{query}</b>’{' '}
-          <span className="search-request__required">(required)</span>
-        </div>
-        <div className="search-request__note">
-          Only accessions from GEO, SRA, and ArrayExpress are accepted.
-        </div>
-        {touched['accession_codes'] &&
-          errors['accession_codes'] && (
-            <div className="color-error">{errors['accession_codes']}</div>
-          )}
-        <Field type="text" name="accession_codes" className="input-text" />
-        <div className="search-request__example">
-          Example: GSE3303, E-MEXP-3405, SRP2422
-        </div>
-
-        <div className="search-request__subtitle">
-          Help us priortize your request by answering these questions
-        </div>
-      </div>
-    </>
-  );
+  return <></>;
 }
 
 let RequestDataForm = ({ renderHeader, onSubmit, onClose }) => {
@@ -70,7 +43,7 @@ let RequestDataForm = ({ renderHeader, onSubmit, onClose }) => {
           >
             {({ handleSubmit, touched, errors, isSubmitting }) => (
               <form onSubmit={handleSubmit}>
-                {renderHeader && renderHeader(touched, errors)}
+                {renderHeader && renderHeader({ touched, errors })}
 
                 <div className="search-request__section">
                   <div className="search-request__label">

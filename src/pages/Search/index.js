@@ -32,6 +32,7 @@ import { searchUrl, searchRequestUrl } from '../../routes';
 import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
 import { Hightlight } from '../../components/HighlightedText';
+import RequestSearchButton from './RequestSearchButton';
 
 class SearchResults extends Component {
   state = {
@@ -169,12 +170,7 @@ class SearchResults extends Component {
                       {currentPage === totalPages && (
                         <div className="result result--note">
                           Didn't see a related experiment?{' '}
-                          <Link
-                            className="link"
-                            to={searchRequestUrl({ query: this.state.query })}
-                          >
-                            Let us know
-                          </Link>
+                          <RequestSearchButton query={this.state.query} />
                         </div>
                       )}
                     </Hightlight>
@@ -331,10 +327,7 @@ const NoSearchResults = ({ query }) => (
       ))}
     </div>
     <p>
-      Expecting a specific experiment?{' '}
-      <Link className="link" to={searchRequestUrl({ query, continueTo: '/' })}>
-        Let us know
-      </Link>
+      Expecting a specific experiment? <RequestSearchButton query={query} />
     </p>
 
     <img
@@ -358,16 +351,7 @@ let NoSearchResultsTooManyFilters = ({
       <div className="results__no-results">
         <h2>No matching results</h2>
         <p>
-          Expecting a specific experiment?{' '}
-          <Link
-            className="link"
-            to={searchRequestUrl({
-              query,
-              continueTo: '/'
-            })}
-          >
-            Let us know
-          </Link>
+          Expecting a specific experiment? <RequestSearchButton query={query} />
         </p>
         <p>Or</p>
         <p>
