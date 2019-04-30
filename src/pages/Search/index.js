@@ -28,7 +28,7 @@ import {
 } from '../../state/search/actions';
 import fromPairs from 'lodash/fromPairs';
 import InfoBox from '../../components/InfoBox';
-import { searchUrl, searchRequestUrl } from '../../routes';
+import { searchUrl } from '../../routes';
 import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
 import { Hightlight } from '../../components/HighlightedText';

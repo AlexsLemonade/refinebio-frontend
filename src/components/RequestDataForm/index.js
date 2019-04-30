@@ -8,10 +8,6 @@ import MissingSampleImage from './light-missing-sample.svg';
 
 import './RequestData.scss';
 
-function SearchRequestHeader({ touched, errors, query }) {
-  return <></>;
-}
-
 let RequestDataForm = ({ renderHeader, onSubmit, onClose }) => {
   return (
     <div>
