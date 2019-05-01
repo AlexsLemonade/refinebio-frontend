@@ -32,6 +32,7 @@ export default function RequestExperimentButton({ accessionCode }) {
       <PageModal isOpen={requestOpen}>
         <div className="layout__content">
           <RequestDataForm
+            useMissingDataImage={false}
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
               // 1. report to slack

@@ -5,10 +5,16 @@ import Button from '../Button';
 import { RadioField } from '../Radio';
 import { CheckboxField } from '../Checkbox';
 import MissingSampleImage from './light-missing-sample.svg';
+import ResearcherLookingImage from './illustration-forms.svg';
 
 import './RequestData.scss';
 
-let RequestDataForm = ({ renderHeader, onSubmit, onClose }) => {
+let RequestDataForm = ({
+  renderHeader,
+  onSubmit,
+  onClose,
+  useMissingDataImage = true
+}) => {
   return (
     <div>
       <p>
@@ -149,7 +155,11 @@ let RequestDataForm = ({ renderHeader, onSubmit, onClose }) => {
         </div>
 
         <div className="hidden-xs">
-          <img src={MissingSampleImage} alt="Missing sample" />
+          {useMissingDataImage ? (
+            <img src={MissingSampleImage} alt="Missing sample" />
+          ) : (
+            <img src={ResearcherLookingImage} alt="Missing sample" />
+          )}
         </div>
       </div>
     </div>
