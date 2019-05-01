@@ -14,7 +14,7 @@ import Main from './Main';
 import Search from './Search';
 import Experiment from './Experiment';
 import Dashboard from './Dashboard';
-import ExecutiveDashboard from './Dashboard/ExecutiveDashboard';
+import ExecutiveDashboard from './ExecDashboard';
 import Downloads from './Downloads';
 import DataSet from './Downloads/DataSet';
 import NoMatch from './NoMatch';
@@ -22,7 +22,6 @@ import Privacy from './Privacy';
 import Terms from './Terms';
 import License from './License';
 import About from './About';
-
 import './App.scss';
 
 /**
@@ -38,7 +37,6 @@ const AppContent = () => (
       />
       <Route path="/search" component={Search} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/executive-dashboard" component={ExecutiveDashboard} />
       <Route path="/download" component={Downloads} />
       <Route path="/dataset/:id" component={DataSet} />
       <Route path="/privacy" component={Privacy} />
@@ -66,26 +64,36 @@ const App = () => {
 
       <Provider store={store}>
         <Router history={history}>
-          <Layout>
-            <ErrorBoundary>
-              <Switch>
-                <Route exact path="/" component={Main} />
-                <Route exact path="/about" component={About} />
-                <Route path="/species-compendia" component={SpeciesCompendia} />
-                <Route path="/experiments/:id/:slug?" component={Experiment} />
+          <Switch>
+            <Route path="/executive-dashboard" component={ExecutiveDashboard} />
 
-                <Route
-                  exact
-                  path="/docs"
-                  component={() => (
-                    <ExternalRedirect to="http://docs.refine.bio/" />
-                  )}
-                />
+            <Layout>
+              <ErrorBoundary>
+                <Switch>
+                  <Route exact path="/" component={Main} />
+                  <Route exact path="/about" component={About} />
+                  <Route
+                    path="/species-compendia"
+                    component={SpeciesCompendia}
+                  />
+                  <Route
+                    path="/experiments/:id/:slug?"
+                    component={Experiment}
+                  />
 
-                <Route path="/" component={AppContent} />
-              </Switch>
-            </ErrorBoundary>
-          </Layout>
+                  <Route
+                    exact
+                    path="/docs"
+                    component={() => (
+                      <ExternalRedirect to="http://docs.refine.bio/" />
+                    )}
+                  />
+
+                  <Route path="/" component={AppContent} />
+                </Switch>
+              </ErrorBoundary>
+            </Layout>
+          </Switch>
         </Router>
       </Provider>
     </div>

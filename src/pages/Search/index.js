@@ -31,6 +31,8 @@ import InfoBox from '../../components/InfoBox';
 import { searchUrl } from '../../routes';
 import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
+import { Hightlight } from '../../components/HighlightedText';
+import RequestSearchButton from './RequestSearchButton';
 
 class SearchResults extends Component {
   state = {
@@ -128,9 +130,10 @@ class SearchResults extends Component {
               ) : hasError ? (
                 <ErrorApiUnderHeavyLoad />
               ) : !results.length && !anyFilterApplied(this.state.filters) ? (
-                <NoSearchResults />
+                <NoSearchResults query={this.state.query} />
               ) : !results.length ? (
                 <NoSearchResultsTooManyFilters
+                  query={this.state.query}
                   appliedFilters={this.state.filters}
                 />
               ) : (
@@ -144,21 +147,34 @@ class SearchResults extends Component {
                   <div className="results__add-samples">
                     <AddPageToDataSetButton results={results} />
                   </div>
-                  <ResultFilters appliedFilters={this.state.filters} />
+                  <ResultFilters
+                    results={results}
+                    appliedFilters={this.state.filters}
+                  />
                   <div className="results__list">
-                    {results.map((result, index) => (
-                      <React.Fragment key={result.accession_code}>
-                        <Result result={result} query={this.state.query} />
+                    <Hightlight match={this.state.query}>
+                      {results.map((result, index) => (
+                        <React.Fragment key={result.accession_code}>
+                          <Result result={result} query={this.state.query} />
 
-                        {result._isTopResult &&
-                          results[index + 1] &&
-                          !results[index + 1]._isTopResult && (
-                            <div className="results__related-block">
-                              Related Results for '{this.state.query}'
-                            </div>
-                          )}
-                      </React.Fragment>
-                    ))}
+                          {result._isTopResult &&
+                            results[index + 1] &&
+                            !results[index + 1]._isTopResult && (
+                              <div className="results__related-block">
+                                Related Results for '{this.state.query}'
+                              </div>
+                            )}
+                        </React.Fragment>
+                      ))}
+
+                      {currentPage === totalPages && (
+                        <div className="result result--note">
+                          Didn't see a related experiment?{' '}
+                          <RequestSearchButton query={this.state.query} />
+                        </div>
+                      )}
+                    </Hightlight>
+
                     <Pagination
                       onPaginate={updatePage}
                       totalPages={totalPages}
@@ -295,11 +311,11 @@ const ErrorApiUnderHeavyLoad = () => (
   </div>
 );
 
-const NoSearchResults = () => (
+const NoSearchResults = ({ query }) => (
   <div className="results__no-results">
     <h2>No matching results</h2>
     <h2>Try another term</h2>
-    <div className="results__suggestions">
+    <div className="results__suggestion-list">
       {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
         <Link
           className="link results__suggestion"
@@ -310,6 +326,10 @@ const NoSearchResults = () => (
         </Link>
       ))}
     </div>
+    <p>
+      Expecting a specific experiment? <RequestSearchButton query={query} />
+    </p>
+
     <img
       src={GhostSampleImage}
       alt="Start searching"
@@ -318,7 +338,11 @@ const NoSearchResults = () => (
   </div>
 );
 
-let NoSearchResultsTooManyFilters = ({ appliedFilters, clearFilters }) => (
+let NoSearchResultsTooManyFilters = ({
+  query,
+  appliedFilters,
+  clearFilters
+}) => (
   <div className="results__container results__container--empty">
     <div className="results__filters">
       <ResultFilters appliedFilters={appliedFilters} />
@@ -326,12 +350,16 @@ let NoSearchResultsTooManyFilters = ({ appliedFilters, clearFilters }) => (
     <div className="results__list">
       <div className="results__no-results">
         <h2>No matching results</h2>
-        <div>
+        <p>
+          Expecting a specific experiment? <RequestSearchButton query={query} />
+        </p>
+        <p>Or</p>
+        <p>
           Try another term or{' '}
           <Button onClick={clearFilters} buttonStyle="link">
             Clear Filters
           </Button>
-        </div>
+        </p>
         <img
           src={GhostSampleImage}
           alt="Start searching"
@@ -350,6 +378,7 @@ NoSearchResultsTooManyFilters = connect(
 
 let OrderingDropdown = ({ ordering, updateOrdering }) => {
   const options = [
+    { label: 'Best Match', value: '' },
     { label: 'Most No. of samples', value: Ordering.MostSamples },
     { label: 'Least No. of samples', value: Ordering.LeastSamples },
     { label: 'Newest Experiment First', value: Ordering.Newest },

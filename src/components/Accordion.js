@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import Button from './Button';
 import Checkbox from './Checkbox';
 import './Accordion.scss';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
 export class Accordion extends React.Component {
   constructor(props) {
@@ -75,11 +76,7 @@ export function AccordionItem({ title, children, onToggle, isExpanded }) {
 
         {hasChildren && (
           <Button onClick={onToggle} buttonStyle="transparent">
-            {isExpanded ? (
-              <i className="ion-chevron-up" />
-            ) : (
-              <i className="ion-chevron-down" />
-            )}
+            {isExpanded ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </Button>
         )}
       </div>

@@ -19,6 +19,8 @@ import Button from '../../components/Button';
 import SampleDetailsLoader from './SampleDetailsLoader';
 import { formatSentenceCase } from '../../common/helpers';
 import debounce from 'lodash/debounce';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import apiData from '../../apiData.json';
 
 class SamplesTable extends React.Component {
   static defaultProps = {
@@ -275,16 +277,16 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
       {children}
 
       <div className="samples-table__sort">
-        <i className="ion-chevron-up samples-table__sort-icon" />
-        <i className="ion-chevron-down samples-table__sort-icon" />
+        <IoIosArrowUp />
+        <IoIosArrowDown />
       </div>
 
       <div className="samples-table__sort-desc">
-        <i className="ion-chevron-down samples-table__sort-icon" />
+        <IoIosArrowDown />
       </div>
 
       <div className="samples-table__sort-asc">
-        <i className="ion-chevron-up samples-table__sort-icon" />
+        <IoIosArrowUp />
       </div>
     </div>
   );
@@ -301,7 +303,11 @@ function AddRemoveCell({ sample, experimentAccessionCodes }) {
     {}
   );
 
-  if (!sample.is_processed) {
+  // ensure the samples have qn targets associated
+  if (
+    !sample.is_processed ||
+    (apiData.qnTargets && !apiData.qnTargets[sample.organism.name])
+  ) {
     return (
       <div className="sample-not-processed info">
         <img className="info__icon" src={InfoIcon} alt="" />

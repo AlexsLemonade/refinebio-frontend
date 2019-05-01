@@ -19,6 +19,8 @@ import FilterIcon from '../../../common/icons/filter-icon.svg';
 import { useDom } from '../../../common/hooks';
 import isEmpty from 'lodash/isEmpty';
 import FilterCategory from './FilterCategory';
+import { IoMdClose } from 'react-icons/io';
+import cache from '../../../apiData.json';
 
 let FilterList = ({
   appliedFilters,
@@ -60,17 +62,19 @@ FilterList = connect(({ search: { filters } }) => ({ filters }))(FilterList);
 let FiltersDesktop = props => {
   const ref = React.useRef();
   const size = useDom(ref, el => el.getBoundingClientRect());
-
   // If the user scrolls down the filters should be fixed on the screen
   // and also scrollable
   const style =
-    size && size.top < 150
+    size && size.top < 150 && props.results && props.results.length > 3
       ? {
           position: 'fixed',
           top: 150,
           width: size.width,
           overflowY: 'auto',
-          bottom: size.bottom > 1550 ? 0 : Math.ceil(1550 - size.bottom),
+          bottom:
+            size.bottom > window.innerHeight
+              ? 0
+              : window.innerHeight - size.bottom,
           paddingBottom: 200
         }
       : null;
@@ -86,10 +90,10 @@ FiltersDesktop = connect(
   { toggledFilter, clearFilters }
 )(FiltersDesktop);
 
-let Filters = ({ appliedFilters }) => (
+let Filters = props => (
   <ResponsiveSwitch
-    mobile={() => <FiltersMobile appliedFilters={appliedFilters} />}
-    desktop={() => <FiltersDesktop appliedFilters={appliedFilters} />}
+    mobile={() => <FiltersMobile {...props} />}
+    desktop={() => <FiltersDesktop {...props} />}
   />
 );
 
@@ -103,7 +107,12 @@ const filterCategories = [
     queryField: 'has_publication',
     format: formatSentenceCase
   },
-  { name: 'platform', queryField: 'platform', format: formatPlatformName }
+  {
+    name: 'platform',
+    queryField: 'platform',
+    format: accessionCode =>
+      formatPlatformName(cache.platforms[accessionCode] || accessionCode)
+  }
 ];
 
 /**
@@ -156,7 +165,7 @@ class FiltersMobile extends React.Component {
               onClick={hideMenu}
               buttonStyle="transparent"
             >
-              <i className="icon ion-close" />
+              <IoMdClose className="icon" />
             </Button>
 
             <FilterList
@@ -210,7 +219,7 @@ function FilterLabel({ value, onClick }) {
         onClick={onClick}
         buttonStyle="transparent"
       >
-        <i className="icon ion-close" />
+        <IoMdClose className="icon" />
       </Button>
     </div>
   );

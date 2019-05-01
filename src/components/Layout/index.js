@@ -3,6 +3,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 import './Layout.scss';
 import { withRouter } from 'react-router';
+import Notification from '../Notification';
 
 let Layout = ({ children, location }) => {
   // in some cases it's useful to mark the root object with a class to identify the current page, in case
@@ -14,6 +15,7 @@ let Layout = ({ children, location }) => {
 
   return (
     <div className={`layout ${pageClass}`}>
+      <Notification />
       <Header />
       {children}
       <Footer />

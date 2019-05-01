@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import { getAmazonDownloadLinkUrl, formatBytes } from '../../../common/helpers';
+import { formatBytes } from '../../../common/helpers';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
@@ -23,6 +23,7 @@ import DownloadErrorImage from './dataset-error.svg';
 import Spinner from '../../../components/Spinner';
 import NoMatch from '../../NoMatch';
 import DataSetLoader from './DataSetLoader';
+import { getDataSet } from '../../../api/dataSet';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -83,6 +84,7 @@ export default function DataSet({
                 isEmbed={true}
                 {...dataSet}
                 dataSet={dataSet.data}
+                dataSetId={dataSetId}
               />
             </div>
           );
@@ -114,7 +116,7 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     is_available && !isExpired ? (
       <DataSetReady dataSet={dataSet} />
     ) : (
-      <DataSetExpired />
+      <DataSetExpired dataSet={dataSet} />
     )
   ) : is_processing ? (
     <DataSetProcessing email={email_address} dataSetId={dataSetId} />
@@ -135,24 +137,12 @@ let DataSetErrorDownloading = ({
         <div className="dataset__way-container">
           <div className="dataset__processed-text">
             <h1>Uh-oh something went wrong!</h1>
-            <p>Please try downloading again. </p>
-            {token && (
-              <Button
-                className="dataset__try-again-button"
-                onClick={() =>
-                  startDownload({
-                    tokenId: token,
-                    dataSetId,
-                    dataSet: dataSet.data
-                  })
-                }
-              >
-                Try Again
-              </Button>
-            )}
-
             <p>
-              If the problem persists, please contact{' '}
+              We encountered a problem while getting your dataset ready. We
+              apologize for the inconvenience.
+            </p>
+            <p>
+              Please contact{' '}
               <a href="mailto:ccdl@alexslemonade.org" className="link">
                 ccdl@alexslemonade.org
               </a>
@@ -166,9 +156,9 @@ let DataSetErrorDownloading = ({
                     rel="nofollow noopener noreferrer"
                     className="link"
                   >
-                    report the issue to us
+                    file a ticket on Github
                   </a>{' '}
-                  with the following error message:
+                  with the following error message for further assistance.
                 </span>
               )}
             </p>
@@ -235,12 +225,16 @@ class DataSetReady extends React.Component {
 
   handleSubmit = async () => {
     if (!this.props.hasToken) {
-      await this.props.createToken();
+      // if the current user doesn't has a valid token, we have to generate it
+      // and request the dataset data again to get the `download_url`
+      const token = await this.props.createToken();
+      const dataSet = await getDataSet(this.props.dataSet.id, token);
+      window.location.href = dataSet.download_url;
+    } else {
+      // otherwise we should have gotten the download url when the original
+      // data was requested
+      window.location.href = this.props.dataSet.download_url;
     }
-
-    const { s3_bucket, s3_key } = this.props.dataSet;
-    const downloadLink = getAmazonDownloadLinkUrl(s3_bucket, s3_key);
-    window.location.href = downloadLink;
   };
 
   render() {
@@ -291,7 +285,7 @@ DataSetReady = connect(
   }
 )(DataSetReady);
 
-let DataSetExpired = ({ regenerateDataSet }) => (
+let DataSetExpired = ({ dataSet, regenerateDataSet }) => (
   <div className="dataset__container">
     <div className="dataset__message">
       <div className="dataset__way-container">
@@ -301,7 +295,9 @@ let DataSetExpired = ({ regenerateDataSet }) => (
             The download files for this dataset isn’t available anymore
           </div>
           <div className="dataset__way-container">
-            <Button onClick={regenerateDataSet}>Regenerate Files</Button>
+            <Button onClick={() => regenerateDataSet(dataSet)}>
+              Regenerate Files
+            </Button>
           </div>
         </div>
 

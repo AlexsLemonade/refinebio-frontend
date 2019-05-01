@@ -131,6 +131,7 @@ export const removeSamples = (dataSetSlice, details = false) => async (
  * Use the dataset from the state
  */
 export const fetchDataSet = (details = false) => async (dispatch, getState) => {
+  let tokenId = getState().token;
   const dataSetId = getDataSetId(getState());
 
   if (!dataSetId) {
@@ -146,8 +147,8 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
 
   try {
     const data = details
-      ? await getDataSetDetails(dataSetId)
-      : await getDataSet(dataSetId);
+      ? await getDataSetDetails(dataSetId, tokenId)
+      : await getDataSet(dataSetId, tokenId);
 
     if (data.is_processing || data.is_processed) {
       // if for any reason the user ends up in a state where the current dataset is already processed
@@ -175,11 +176,12 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
  * by species.
  */
 export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
+  let tokenId = getState().token;
   if (!dataSetId) {
     return;
   }
 
-  let response = await getDataSetDetails(dataSetId);
+  let response = await getDataSetDetails(dataSetId, tokenId);
   dispatch(
     updateDownloadDataSet({
       ...response,
@@ -238,13 +240,19 @@ export const startDownload = ({
   }
 
   try {
-    await Ajax.put(`/dataset/${dataSetId}/`, {
-      start: true,
-      data: dataSet,
-      token_id: tokenId,
-      ...(receiveUpdates ? { email_ccdl_ok: true } : {}),
-      ...(email ? { email_address: email } : {})
-    });
+    await Ajax.put(
+      `/dataset/${dataSetId}/`,
+      {
+        start: true,
+        data: dataSet,
+        token_id: tokenId,
+        ...(receiveUpdates ? { email_ccdl_ok: true } : {}),
+        ...(email ? { email_address: email } : {})
+      },
+      {
+        'API-KEY': tokenId
+      }
+    );
   } catch (e) {
     if (e instanceof ServerError) {
       // check for an invalid token error
@@ -282,10 +290,10 @@ export const startDownload = ({
 
 /**
  * Once generated the datasets are immutable on the server, so to be able to re-generate one we have
- * to create a new dataset and redirect to the associated page.
+ * to create a new dataset with the same data and redirect to it's page.
  */
-export const regenerateDataSet = () => async (dispatch, getState) => {
-  let { data, aggregate_by, scale_by } = getState().dataSet;
+export const regenerateDataSet = dataSet => async (dispatch, getState) => {
+  let { data, aggregate_by, scale_by } = dataSet;
 
   try {
     // 1. create a new dataset

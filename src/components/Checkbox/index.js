@@ -38,13 +38,22 @@ const Checkbox = ({
 export default Checkbox;
 
 /**
- * Checkbox component to be used inside react forms
+ * Checkbox component to be used inside a formik's Field
  */
-export const CheckboxField = ({ input, children, meta: { error } }) => (
+export const CheckboxField = ({
+  field,
+  form: { errors, touched, setFieldValue },
+  label,
+  className
+}) => (
   <React.Fragment>
-    {error && <p className="color-error">{error}</p>}
-    <Checkbox {...input} checked={input.value} error={error}>
-      {children}
+    {errors[field.name] && <p className="color-error">{errors[field.name]}</p>}
+    <Checkbox
+      {...field}
+      error={touched && !!errors[field.name]}
+      className={className}
+    >
+      {label}
     </Checkbox>
   </React.Fragment>
 );

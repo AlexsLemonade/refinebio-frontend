@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../../components/Button';
 import './InputCopy.scss';
 import '../Input/Input.scss';
+import { IoIosCheckmarkCircle } from 'react-icons/io';
 
 // Creates an input with a copy button next to it, when the button is clicked the content of
 // the input is copied to the keyboard.
@@ -15,7 +16,7 @@ export default class InputCopy extends React.Component {
       <div className="input-copy">
         {this.state.alert && (
           <div className="input-copy__alert">
-            <i className="ion-checkmark-circled" /> Copied to clipboard.
+            <IoIosCheckmarkCircle /> Copied to clipboard.
           </div>
         )}
         <div className="input-copy__row">

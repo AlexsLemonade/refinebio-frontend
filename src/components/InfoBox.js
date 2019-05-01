@@ -2,6 +2,7 @@ import React from 'react';
 import ResponsiveSwitch from './ResponsiveSwitch';
 import './InfoBox.scss';
 import Button from './Button';
+import { IoMdClose } from 'react-icons/io';
 
 function InfoBoxDesktop({ onClose }) {
   return (
@@ -11,8 +12,8 @@ function InfoBoxDesktop({ onClose }) {
           Build and Download Custom Datasets
         </div>
         <div>
-          Choose from a collection of multi-species samples of uniformly
-          processed and normalized transcriptome data.
+          Refine.bio helps you build experiment-ready datasets using
+          transcriptomic data from all of the world's genetic databases.
         </div>
       </div>
 
@@ -21,7 +22,7 @@ function InfoBoxDesktop({ onClose }) {
         onClick={onClose}
         buttonStyle="transparent"
       >
-        <i className="icon ion-close" />
+        <IoMdClose className="icon" />
       </Button>
     </div>
   );
@@ -36,7 +37,7 @@ function InfoBoxMobile({ onClose }) {
         onClick={onClose}
         buttonStyle="transparent"
       >
-        <i className="icon ion-close" />
+        <IoMdClose className="icon" />
       </Button>
     </div>
   );

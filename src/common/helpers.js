@@ -82,9 +82,11 @@ let ApiSourceRevision = false;
  * @returns {Promise}
  */
 export async function asyncFetch(url, params = false) {
-  const fullURL = process.env.REACT_APP_API_HOST
-    ? `${process.env.REACT_APP_API_HOST}${url}`
-    : url;
+  const fullURL = url.startsWith('http')
+    ? url
+    : process.env.REACT_APP_API_HOST
+      ? `${process.env.REACT_APP_API_HOST}${url}`
+      : url;
 
   let response;
   try {
@@ -200,17 +202,25 @@ export function formatNumber(number, decimals = 2, decPoint, thousandsSep) {
 
 // Helper methods to ease working with ajax functions
 export const Ajax = {
-  get: (url, params = false) => {
-    if (params) {
-      return asyncFetch(`${url}?${getQueryString(params)}`);
-    }
-    return asyncFetch(url);
+  get: (url, params = false, headers = false) => {
+    url = !!params ? `${url}?${getQueryString(params)}` : url;
+
+    return !headers
+      ? asyncFetch(url)
+      : asyncFetch(url, {
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json',
+            ...headers
+          }
+        });
   },
-  put: (url, params = {}) =>
+  put: (url, params = {}, headers = {}) =>
     asyncFetch(url, {
       method: 'PUT',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        ...headers
       },
       body: JSON.stringify(params)
     }),
@@ -321,4 +331,32 @@ export function maxTableWidth(totalColumns) {
   } else {
     return 1800;
   }
+}
+
+/**
+ * Format number to metric prefix (https://en.wikipedia.org/wiki/Metric_prefix)
+ * numberFormatter(33000) = '33K'
+ *
+ * Thanks to https://stackoverflow.com/a/14994860/763705
+ * @param {*} num
+ * @param {*} digits
+ */
+export function numberFormatter(num, digits = 0) {
+  var si = [
+    { value: 1, symbol: '' },
+    { value: 1e3, symbol: 'k' },
+    { value: 1e6, symbol: 'M' },
+    { value: 1e9, symbol: 'G' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e15, symbol: 'P' },
+    { value: 1e18, symbol: 'E' }
+  ];
+  var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+  var i;
+  for (i = si.length - 1; i > 0; i--) {
+    if (num >= si[i].value) {
+      break;
+    }
+  }
+  return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol;
 }

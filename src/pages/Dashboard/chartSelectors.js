@@ -1,10 +1,20 @@
 import moment from 'moment';
 import zip from 'lodash/zip';
-import { accumulateByKeys } from '../../common/helpers';
 
 // chart selectors for creating chart data for individual charts on dashboard
 const JOB_NAMES = ['survey_jobs', 'downloader_jobs', 'processor_jobs'];
-const JOB_STATUS = ['open', 'pending', 'completed'];
+export const JOB_STATUS = ['open', 'pending', 'successful', 'failed'];
+
+const formatTimeLabel = (date, range) => {
+  const format =
+    {
+      day: 'HH:00',
+      week: 'dddd',
+      month: 'MMM Do',
+      year: 'MMMM'
+    }[range] || null;
+  return moment(date).format(format);
+};
 
 export function getTotalLengthOfQueuesByType(stats) {
   const { survey_jobs, downloader_jobs, processor_jobs } = stats;
@@ -71,7 +81,7 @@ export function getExperimentsCount(stats) {
 }
 
 export function getSamplesCount(stats) {
-  return stats.samples.total;
+  return stats.processed_samples.total;
 }
 
 /**
@@ -79,44 +89,173 @@ export function getSamplesCount(stats) {
  * run up to that point in time since the beginning of that time range for each
  * job type
  */
-export function getJobsCompletedOverTime(stats) {
-  const result = zip(
-    stats.survey_jobs.timeline,
+export function getJobsCompletedOverTime(stats, range) {
+  const surveyTimeline = transformTimeline(stats.survey_jobs.timeline, range);
+  const downloaderTimeline = transformTimeline(
     stats.downloader_jobs.timeline,
-    stats.processor_jobs.timeline
-  ).map(([surveyPoint, downloaderPoint, processorPoint], index, array) => ({
-    date: moment.utc(surveyPoint.end).format('lll'),
-    survey: surveyPoint.completed,
-    downloader: downloaderPoint.completed,
-    processor: processorPoint.completed
-  }));
-
-  return accumulateByKeys(result, ['survey', 'downloader', 'processor']);
-}
-
-export function getSamplesAndExperimentsCreatedOverTime(stats) {
-  const { samples, experiments } = stats;
-
-  const result = zip(samples.timeline, experiments.timeline).map(
-    ([samplePoint, experimentPoint]) => ({
-      date: moment.utc(samplePoint.end).format('lll'),
-      samples: samplePoint.total,
-      experiments: experimentPoint.total
-    })
+    range
+  );
+  const processorTimeline = transformTimeline(
+    stats.processor_jobs.timeline,
+    range
   );
 
-  return accumulateByKeys(result, ['samples', 'experiments']);
+  return zip(surveyTimeline, downloaderTimeline, processorTimeline).map(
+    ([
+      { date, total: survey },
+      { total: downloader },
+      { total: processor }
+    ]) => ({
+      date,
+      survey,
+      downloader,
+      processor
+    })
+  );
 }
 
-export function getJobsByStatusOverTime(stats, jobName) {
-  const result = stats[jobName].timeline.map(dataPoint => ({
-    date: moment.utc(dataPoint.end).format('lll'),
-    total: dataPoint['total'],
-    ...JOB_STATUS.reduce((accum, status) => {
-      accum[status] = dataPoint[status];
-      return accum;
-    }, {})
-  }));
+export function getDatasetsOverTime(stats, range) {
+  return transformTimeline(stats.dataset.timeline, range);
+}
 
-  return accumulateByKeys(result, ['total', ...JOB_STATUS]);
+export function getVolumeOfDataOverTime(stats, range) {
+  return transformTimeline(stats.dataset.timeline, range, ['total_size']);
+}
+
+export function getExperimentsCreatedOverTime(stats, range) {
+  return transformTimeline(stats.experiments.timeline, range).map(
+    ({ date, total }) => ({
+      date: date,
+      experiments: total
+    })
+  );
+}
+
+export function getSamplesOverTime(stats, range) {
+  const samplesTimeline = transformTimeline(
+    stats.unprocessed_samples.timeline,
+    range
+  );
+  const processedSamplesTimeline = transformTimeline(
+    stats.processed_samples.timeline,
+    range
+  );
+  return zip(samplesTimeline, processedSamplesTimeline).map(
+    ([
+      { date, total: totalSamplesUnprocessed },
+      { total: totalSamplesProcessed }
+    ]) => ({
+      date: date,
+      unprocessed: totalSamplesUnprocessed,
+      processed: totalSamplesProcessed
+    })
+  );
+}
+
+export function getJobsByStatusOverTime(jobsTimeline, range) {
+  return transformTimeline(jobsTimeline, range, JOB_STATUS);
+}
+
+export function getJobsByType(runningJobs, pendingJobs) {
+  return Object.keys(runningJobs).map(name => ({
+    name,
+    running: runningJobs[name],
+    pending: pendingJobs[name]
+  }));
+}
+
+/**
+ * Returns a timeline that is sorted chronologically, and that has all datapoints
+ * for a given `range`.
+ * The `/stats` endpoint only returns the datapoints that have some value.
+ * @param {*} timeline as returned by the /stats endpoint
+ * @param {*} range range param that the graph will be displaying
+ */
+function transformTimeline(timeline, range, fields = ['total']) {
+  const result = [...getTimeline(range)].map(date => {
+    const result = {
+      date
+    };
+    for (let field of fields) {
+      result[field] = 0;
+    }
+    return result;
+  });
+
+  for (let observation of timeline) {
+    let observationDate = observation.start;
+    // find the closest datapoint to `data.start`
+    let closestTemp = null;
+    for (let graphPoint of result) {
+      if (
+        !closestTemp ||
+        Math.abs(moment(observationDate).diff(graphPoint.date)) <
+          Math.abs(moment(observationDate).diff(closestTemp.date))
+      ) {
+        closestTemp = graphPoint;
+      }
+    }
+    if (closestTemp) {
+      // add the total samples to that datapoint
+      for (let field of fields) {
+        closestTemp[field] = observation[field];
+      }
+    }
+  }
+
+  return result.map(({ date, ...rest }) => ({
+    ...rest,
+    date: formatTimeLabel(date, range)
+  }));
+}
+
+/**
+ * Given a range returns the
+ * @param {*} range day/ | week | month | year
+ */
+function* getTimeline(range) {
+  let now = moment.utc();
+  if (range === 'day') {
+    // remove last hour when viewing daily stats
+    now = now.startOf('hour').subtract(1, 'hour');
+  }
+
+  const data = {
+    day: {
+      start: now.clone().subtract(1, 'days'),
+      interval: moment.duration(1, 'hour')
+    },
+    week: {
+      start: now
+        .clone()
+        .subtract(6, 'days')
+        .startOf('day'),
+      interval: moment.duration(1, 'days')
+    },
+    month: {
+      start: now
+        .clone()
+        .subtract(30, 'days')
+        .startOf('day'),
+      interval: moment.duration(1, 'days')
+    },
+    year: {
+      start: now
+        .clone()
+        .subtract(365, 'days')
+        .startOf('month'),
+      interval: moment.duration(1, 'months')
+    }
+  };
+  let nextDate = data[range].start;
+  let interval = data[range].interval;
+  yield nextDate.format();
+
+  while (true) {
+    nextDate = nextDate.add(interval);
+    if (nextDate.isAfter(now)) {
+      break;
+    }
+    yield nextDate.format();
+  }
 }

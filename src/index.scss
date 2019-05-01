@@ -40,6 +40,10 @@ a {
   color: inherit;
 }
 
+svg {
+  overflow: visible;
+}
+
 button {
   -moz-osx-font-smoothing: inherit;
   -webkit-font-smoothing: inherit;
@@ -61,6 +65,7 @@ button {
 
 fieldset {
   border: none;
+  padding: 0;
 }
 
 .img-responsive {
@@ -100,7 +105,6 @@ fieldset {
   align-items: center;
 
   &__icon {
-    color: $info-badge;
     margin-right: 8px;
     font-size: 1.5rem;
   }
@@ -123,6 +127,10 @@ fieldset {
 
 .mb-1 {
   margin-bottom: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
 }
 
 .mr-1 {
@@ -156,8 +164,15 @@ fieldset {
   display: none;
 }
 
+.hidden-xs {
+  display: none;
+
+  @include tablet() {
+    display: block;
+  }
+}
+
 .text-highlight {
-  font-weight: bold;
   background-color: $highlight-color;
 }
 
@@ -167,6 +182,15 @@ fieldset {
 
 .color-error {
   color: $color-error !important;
+}
+
+.error {
+  color: $color-error;
+
+  svg {
+    font-size: 1.2rem;
+    vertical-align: sub;
+  }
 }
 
 @import 'common/styles/type';

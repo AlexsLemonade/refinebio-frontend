@@ -10,25 +10,22 @@ import {
   Line,
   Legend
 } from 'recharts';
-import moment from 'moment';
 import { COLORS } from '../../common/constants';
-import Spinner from '../Spinner';
+
+import './LineChart.scss';
+
+import './LineChart.scss';
 
 type Props = {
   series: Array<string>,
   data: Array<{ date: string }>,
-  isLoading: boolean
+  isLoading: boolean,
+  formatValue: Function,
+  formatLabel: Function
 };
 
 const LineChart = (props: Props) => {
-  const { data = [], series = [], isLoading = false } = props;
-
-  function formatXAxis(tickItem) {
-    return moment(tickItem).format('MMM Do hh:mm');
-  }
-
-  if (isLoading) return <Spinner />;
-
+  const { data = [], series = [] } = props;
   return (
     <ResponsiveContainer>
       <LineRechart
@@ -36,11 +33,18 @@ const LineChart = (props: Props) => {
         height={400}
         margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
       >
-        <XAxis dataKey="date" tickFormatter={formatXAxis} />
-        <YAxis />
+        <XAxis dataKey="date" tickFormatter={props.formatLabel} />
+        <YAxis tickFormatter={props.formatValue} />
         <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip />
-        <Legend />
+        <Tooltip
+          content={
+            <TooltipContent
+              formatLabel={props.formatLabel}
+              formatValue={props.formatValue}
+            />
+          }
+        />
+        {series.length > 1 && <Legend />}
         {series.map((set, i) => (
           <Line
             isAnimationActive={false}
@@ -57,3 +61,25 @@ const LineChart = (props: Props) => {
 };
 
 export default LineChart;
+
+function TooltipContent({
+  payload,
+  label,
+  active,
+  range,
+  formatLabel,
+  formatValue
+}) {
+  if (!active) return null;
+
+  return (
+    <div className="tooltip">
+      <b>{formatLabel ? formatLabel(label) : label}</b>
+      {payload.map(data => (
+        <div key={data.name}>
+          {data.name}: {formatValue ? formatValue(data.value) : data.value}
+        </div>
+      ))}
+    </div>
+  );
+}

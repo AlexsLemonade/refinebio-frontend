@@ -1,0 +1,64 @@
+@import '../../common/styles/variables';
+
+.search-request {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @include desktop() {
+    flex-direction: row;
+  }
+
+  &__block {
+    padding: 16px;
+    border-radius: 3px;
+    box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+    border-bottom: 18px solid #d4e1f1;
+    margin-bottom: 40px;
+    margin-top: 16px;
+
+    @include desktop() {
+      margin-right: 40px;
+    }
+
+    @include desktop() {
+      padding: 40px;
+      margin-top: 24px;
+    }
+  }
+
+  &__section {
+    margin-bottom: 32px;
+  }
+
+  &__required {
+    color: $color-error;
+  }
+
+  &__note {
+    font-size: 14px;
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+
+  &__example {
+    color: #999999;
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  &__subtitle {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  &__label {
+    margin-bottom: 4px;
+  }
+
+  &__actions {
+    button {
+      margin-right: 8px;
+    }
+  }
+}

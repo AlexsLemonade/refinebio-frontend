@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import SpilledSample from './spilled-sample.svg';
 import Button from '../../components/Button';
 import { goBack } from '../../state/routerActions';
-
-declare var Raven: any;
+import * as Sentry from '@sentry/browser';
 
 let AppError = ({ goBack }) => (
   <div className="error-page">
@@ -14,12 +13,12 @@ let AppError = ({ goBack }) => (
         Try refreshing the page or <Button text="Go Back" onClick={goBack} />
       </div>
 
-      {Raven.lastEventId() && (
+      {Sentry.lastEventId() && (
         <div className="error-page__button-row">
           <Button
             text="Submit Feedback"
             buttonStyle="secondary"
-            onClick={() => Raven.showReportDialog()}
+            onClick={() => Sentry.showReportDialog()}
           />
         </div>
       )}

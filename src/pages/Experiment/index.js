@@ -2,6 +2,8 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
+
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
 import ExpandButton from './ExpandButton';
@@ -19,24 +21,25 @@ import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import BackToTop from '../../components/BackToTop';
 
-import SamplesTable from '../../components/SamplesTable/SamplesTable';
-import DataSetSampleActions from '../../components/DataSetSampleActions';
+import Anchor from '../../components/Anchor';
+import Spinner from '../../components/Spinner';
+import InfoBox from '../../components/InfoBox';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
 import DataSetStats from '../../common/DataSetStats';
-import Spinner from '../../components/Spinner';
-import ScrollTopOnMount from '../../components/ScrollTopOnMount';
-import Anchor from '../../components/Anchor';
 import Technology, { getTechnologies } from './Technology';
-import InfoBox from '../../components/InfoBox';
-import classnames from 'classnames';
 import { NDownloadableSamples } from '../../components/Strings';
+import ScrollTopOnMount from '../../components/ScrollTopOnMount';
+import SamplesTable from '../../components/SamplesTable/SamplesTable';
+import DataSetSampleActions from '../../components/DataSetSampleActions';
 
 import { searchUrl } from '../../routes';
 import { getExperiment } from '../../api/experiments';
 import NoMatch from '../NoMatch';
 import { ServerError } from '../../common/errors';
 import ServerErrorPage from '../ServerError';
+import { Hightlight, HText } from '../../components/HighlightedText';
+import RequestExperimentButton from './RequestExperimentButton';
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
@@ -47,26 +50,33 @@ const DatabaseNames = {
 let Experiment = ({ match, location: { search, state }, goBack }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
-  return (
-    <>
-      <InfoBox />
+  const accessionCode = match.params.id;
 
+  return (
+    <Hightlight match={comesFromSearch && state.query}>
       <Loader
-        fetch={() => getExperiment(match.params.id)}
-        updateProps={match.params.id}
+        fetch={() => getExperiment(accessionCode)}
+        updateProps={accessionCode}
       >
         {({ isLoading, hasError, error, data: experiment }) => {
           if (hasError) {
-            if (error && error instanceof ServerError && error.status === 404) {
-              return <NoMatch />;
-            }
-            return <ServerErrorPage />;
+            return (
+              <div className="layout__content">
+                {error &&
+                error instanceof ServerError &&
+                error.status === 404 ? (
+                  <NoMatch />
+                ) : (
+                  <ServerErrorPage />
+                )}
+              </div>
+            );
           }
 
           let displaySpinner = isLoading;
           let experimentData = experiment || { samples: [] };
           let totalSamples = experimentData.samples.length;
-          let processedSamples = experimentData.samples.filter(
+          let totalProcessedSamples = experimentData.samples.filter(
             x => x.is_processed
           ).length;
           let organisms = experimentData.organisms;
@@ -97,6 +107,8 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           ) : (
             <>
               <div className="layout__content">
+                <InfoBox />
+
                 <ScrollTopOnMount />
                 {comesFromSearch && (
                   <Button
@@ -115,21 +127,28 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                       className="experiment__stats-icon"
                       alt="Accession Icon"
                     />
-                    {experimentData.accession_code}
+                    <HText>{experimentData.accession_code}</HText>
                   </div>
 
                   <div className="experiment__header">
                     <h1 className="experiment__header-title mobile-p">
-                      {experimentData.title || 'No Title.'}
+                      <HText>{experimentData.title || 'No Title.'}</HText>
                     </h1>
                     <div>
-                      <DataSetSampleActions
-                        dataSetSlice={{
-                          [experimentData.accession_code]: DataSetStats.mapAccessions(
-                            experimentData.samples
-                          )
-                        }}
-                      />
+                      {totalProcessedSamples === 0 ? (
+                        <RequestExperimentButton
+                          accessionCode={accessionCode}
+                        />
+                      ) : (
+                        <DataSetSampleActions
+                          dataSetSlice={{
+                            [experimentData.accession_code]: {
+                              all: true,
+                              total: totalProcessedSamples
+                            }
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
 
@@ -152,7 +171,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         className="experiment__stats-icon"
                         alt="Sample Icon"
                       />{' '}
-                      <NDownloadableSamples total={processedSamples} />
+                      <NDownloadableSamples total={totalProcessedSamples} />
                     </div>
 
                     <div
@@ -171,7 +190,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
 
                   <div>
                     <ExperimentHeaderRow label="Description">
-                      {experimentData.description}
+                      <HText>{experimentData.description}</HText>
                     </ExperimentHeaderRow>
                     <ExperimentHeaderRow label="PubMed ID">
                       {(experimentData.pubmed_id && (
@@ -201,7 +220,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                           rel="noopener noreferrer"
                           className="link"
                         >
-                          {experimentData.publication_title}
+                          <HText>{experimentData.publication_title}</HText>
                         </a>
                       )) || (
                         <i className="experiment__not-provided">
@@ -219,7 +238,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         })}
                         className="link"
                       >
-                        {experimentData.submitter_institution}
+                        <HText>{experimentData.submitter_institution}</HText>
                       </Link>
                     </ExperimentHeaderRow>
                     <ExperimentHeaderRow label="Authors">
@@ -230,7 +249,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                               to={searchUrl({ q: author })}
                               className="link"
                             >
-                              {author}
+                              <HText>{author}</HText>
                             </Link>
                           ))
                           .reduce((previous, current) => (
@@ -246,14 +265,8 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         </i>
                       )}
                     </ExperimentHeaderRow>
-                  </div>
-
-                  {experimentData.source_database && (
-                    <div className="experiment__source-database">
-                      <div className="experiment__row-label">
-                        Source Repository
-                      </div>
-                      <div>
+                    {experimentData.source_database && (
+                      <ExperimentHeaderRow label="Source Repository">
                         <a
                           href={experimentData.source_url}
                           target="_blank"
@@ -262,9 +275,9 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                         >
                           {DatabaseNames[experimentData.source_database]}
                         </a>
-                      </div>
-                    </div>
-                  )}
+                      </ExperimentHeaderRow>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -275,7 +288,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           );
         }}
       </Loader>
-    </>
+    </Hightlight>
   );
 };
 Experiment = connect(
@@ -325,6 +338,9 @@ function SamplesTableBlock({ experiment }) {
   const style = expanded
     ? { maxWidth: Math.max(1175, maxTableWidth(totalColumns)) }
     : {};
+  let totalProcessedSamples = experiment
+    ? experiment.samples.filter(x => x.is_processed).length
+    : 0;
 
   return (
     <div
@@ -339,9 +355,10 @@ function SamplesTableBlock({ experiment }) {
               {experiment && (
                 <DataSetSampleActions
                   dataSetSlice={{
-                    [experiment.accession_code]: DataSetStats.mapAccessions(
-                      experiment.samples
-                    )
+                    [experiment.accession_code]: {
+                      all: true,
+                      total: totalProcessedSamples
+                    }
                   }}
                 />
               )}

@@ -10,56 +10,56 @@ import { connect } from 'react-redux';
 import ProcessingImage from './download-processing.svg';
 import { startDownload } from '../../../state/download/actions';
 import EmailForm from './EmailForm';
+import { useLocalStorage } from '../../../common/hooks';
 
 /**
  * This component gets rendereded in the DataSet page, when no email has been assigned
  */
-class DownloadStart extends React.PureComponent {
-  render() {
-    const { dataSetId } = this.props;
-    return (
-      <div className="dataset__container">
-        <div className="dataset__message">
-          <div>
-            <Helmet>
-              <title>Download - refine.bio</title>
-            </Helmet>
-            <h1>
-              We're almost ready to start putting your download files together!
-            </h1>
-            <h2>
-              Enter your email and we will send you the download link when your
-              files are ready. It usually takes about 15-20 minutes.
-            </h2>
-            <EmailForm
-              dataSetId={dataSetId}
-              agreedToTerms={this.props.agreedToTerms}
-              onSubmit={data => this._submitEmailForm(data)}
-            />
-            <div className="dataset__image">
-              <img
-                src={ProcessingImage}
-                alt="We're processing your download file"
-                className="img-responsive"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  async _submitEmailForm({ email, termsOfService, receiveUpdates }) {
-    const { dataSetId, dataSet } = this.props;
-    return await this.props.startDownload({
+let DownloadStart = ({ dataSetId, dataSet, agreedToTerms, startDownload }) => {
+  let [emailAddress, setEmailAddress] = useLocalStorage('email-address', '');
+  let submitEmailForm = async ({ email, termsOfService, receiveUpdates }) => {
+    setEmailAddress(email);
+    return await startDownload({
       email,
       termsOfService,
       receiveUpdates,
       dataSetId,
       dataSet
     });
-  }
-}
+  };
+
+  return (
+    <div className="dataset__container">
+      <div className="dataset__message">
+        <div>
+          <Helmet>
+            <title>Download - refine.bio</title>
+          </Helmet>
+          <h1>
+            We're almost ready to start putting your download files together!
+          </h1>
+          <h2>
+            Enter your email and we will send you the download link when your
+            files are ready. It usually takes about 15-20 minutes.
+          </h2>
+          <EmailForm
+            dataSetId={dataSetId}
+            emailAddress={emailAddress}
+            agreedToTerms={agreedToTerms}
+            onSubmit={data => submitEmailForm(data)}
+          />
+          <div className="dataset__image">
+            <img
+              src={ProcessingImage}
+              alt="We're processing your download file"
+              className="img-responsive"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 DownloadStart = connect(
   state => ({
     agreedToTerms: !!state.token

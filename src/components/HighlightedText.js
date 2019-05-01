@@ -9,21 +9,32 @@ export default function HighlightedText({ text, highlight }) {
 
   // Split on highlight term and include term into parts, ignore case
   let parts = text.split(new RegExp(`(${highlight})`, 'gi'));
-  return (
-    <span>
-      {' '}
-      {parts.map((part, i) => (
-        <span
-          key={i}
-          className={
-            part && part.toLowerCase() === highlight.toLowerCase()
-              ? 'text-highlight'
-              : ''
-          }
-        >
+  return parts.map(
+    (part, i) =>
+      part && part.toLowerCase() === highlight.toLowerCase() ? (
+        <span key={i} className="text-highlight">
           {part}
         </span>
-      ))}{' '}
-    </span>
+      ) : (
+        <React.Fragment key={i}>{part}</React.Fragment>
+      )
   );
+}
+
+const HightlightContext = React.createContext();
+
+export function Hightlight({ match, children }) {
+  return (
+    <HightlightContext.Provider value={match}>
+      {children}
+    </HightlightContext.Provider>
+  );
+}
+
+export function HText({ children }) {
+  const match = React.useContext(HightlightContext);
+  if (!match) {
+    return children;
+  }
+  return <HighlightedText text={children} highlight={match} />;
 }

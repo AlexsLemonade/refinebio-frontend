@@ -2,11 +2,13 @@ import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { getUrlParams } from './reducer';
+import pickBy from 'lodash/pickBy';
 
 export const MOST_SAMPLES = 'MostSamples';
 
 export const Ordering = {
-  MostSamples: '', // default sorting, so no parameters needed
+  BestMatch: '_score',
+  MostSamples: '-num_processed_samples',
   LeastSamples: 'num_processed_samples',
   Newest: '-source_first_published',
   Oldest: 'source_first_published'
@@ -30,7 +32,7 @@ const navigateToResults = ({
     q: query,
     p: page > 1 ? page : undefined,
     size: size !== 10 ? size : undefined,
-    ordering: ordering !== Ordering.MostSamples ? ordering : undefined,
+    ordering: ordering !== '' ? ordering : undefined,
     filter_order:
       filterOrder && filterOrder.length > 0 ? filterOrder.join(',') : undefined,
     ...filters
@@ -50,7 +52,7 @@ export function fetchResults({
   query,
   page = 1,
   size = 10,
-  ordering = Ordering.MostSamples,
+  ordering = Ordering.BestMatch,
   filterOrder = [],
   filters: appliedFilters
 }) {
@@ -60,9 +62,7 @@ export function fetchResults({
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
-        ...(ordering !== Ordering.MostSamples
-          ? { ordering }
-          : { ordering: '-num_processed_samples' }),
+        ordering: ordering || Ordering.BestMatch,
         ...appliedFilters
       });
 
@@ -85,7 +85,7 @@ export function fetchResults({
         results = [...topResults, ...results];
       }
 
-      let filters = transformElasticSearchFacets(facets);
+      let filters = transformFacets(facets);
 
       if (filterOrder.length > 0) {
         // merge both filter objects to enable interactive filtering
@@ -102,7 +102,7 @@ export function fetchResults({
               [lastFilterName]: undefined
             }
           });
-          previousFilters = transformElasticSearchFacets(previousFacets);
+          previousFilters = transformFacets(previousFacets);
         }
 
         filters = {
@@ -140,35 +140,18 @@ export function fetchResults({
 }
 
 /**
- * Ideally the filters should be formatted in the backend, but that seemed to be difficult
- * with elastic search https://github.com/AlexsLemonade/refinebio/pull/974#issuecomment-456533392
+ * Transform filters object that is sent from the API
  */
-function transformElasticSearchFacets(facets) {
+function transformFacets(facets) {
   return {
-    organism: transformFacet(
-      facets['_filter_organism_names']['organism_names']
-    ),
-    technology: transformFacet(facets['_filter_technology']['technology']),
-    publication: transformHasPublicationFacet(
-      facets['_filter_has_publication']['has_publication']
-    ),
-    platform: transformFacet(facets['_filter_platform_names']['platform_names'])
+    organism: facets['organism_names'],
+    // We want to hide `Unknown` from the technologies if it has 0 processed samples
+    technology: pickBy(facets['technology'], totalSamples => totalSamples > 0),
+    publication: facets['has_publication']
+      ? { has_publication: facets['has_publication']['true'] || 0 }
+      : null,
+    platform: facets['platform_accession_codes']
   };
-}
-
-function transformFacet(facet) {
-  const result = {};
-  for (let item of facet.buckets) {
-    result[item.key] = item.doc_count;
-  }
-
-  return result;
-}
-
-function transformHasPublicationFacet(facet) {
-  if (!facet.buckets || !facet.buckets.length) return null;
-  const activeBucket = facet.buckets.find(bucket => bucket.key === 1);
-  return activeBucket && { has_publication: activeBucket.doc_count };
 }
 
 export const triggerSearch = searchTerm => (dispatch, getState) => {
