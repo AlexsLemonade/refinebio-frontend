@@ -1,61 +1,48 @@
 import React from 'react';
 import Dropdown from '../../components/Dropdown';
 import { Ajax, formatSentenceCase } from '../../common/helpers';
-import Loader from '../../components/Loader';
+import { useLoader } from '../../components/Loader';
 
 import groupBy from 'lodash/groupBy';
 
-export default class DownloadCompendia extends React.Component {
-  state = {
-    selected: null
-  };
+const DownloadCompendia = props => {
+  const { data, isLoading } = useLoader(fetchCompendiaData);
 
-  render() {
-    return (
-      <div className="download-compendia">
-        <Loader fetch={fetchCompendiaData}>
-          {({ data, isLoading }) => {
-            if (isLoading || data.length === 0) return <div>Loading..</div>;
-            return (
-              <div>
-                <div className="download-compendia__title">
-                  Download the Compendia
-                </div>
+  if (isLoading || data.length === 0) return null;
 
-                <div>
-                  <span className="download-compendia__choose">
-                    Choose Organism
-                  </span>
-                  <Dropdown
-                    options={data}
-                    selectedOption={this.state.selected}
-                    label={x => formatSentenceCase(x.organism)}
-                    onChange={selected => this.setState({ selected })}
-                  />
-                </div>
+  return (
+    <div className="download-compendia">
+      <div>
+        <div className="download-compendia__title">Download the Compendia</div>
 
-                <a
-                  href={
-                    this.state.selected ? this.state.selected.url : data[0].url
-                  }
-                  className="button download-compendia__button"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Download Now
-                </a>
-              </div>
-            );
-          }}
-        </Loader>
+        <div>
+          <span className="download-compendia__choose">Choose Organism</span>
+          <Dropdown
+            options={data}
+            selectedOption={props.selected}
+            label={x => formatSentenceCase(x.organism)}
+            onChange={selected => {}}
+          />
+        </div>
+
+        <a
+          href={props.selected ? props.selected.url : data[0].url}
+          className="button download-compendia__button"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Download Now
+        </a>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default DownloadCompendia;
 
 async function fetchCompendiaData() {
   try {
-    const data = Ajax.get('/compendia');
+    const data = await Ajax.get('/compendia');
 
     return Object.values(groupBy(data, x => x.organism_name))
       .map(
