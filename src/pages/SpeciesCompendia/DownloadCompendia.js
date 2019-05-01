@@ -7,9 +7,11 @@ import { useLoader } from '../../components/Loader';
 import { Link } from 'react-router-dom';
 import Checkbox from '../../components/Checkbox';
 
-import groupBy from 'lodash/groupBy';
+import { createToken } from '../../state/token';
+import uniq from 'lodash/uniq';
 
-let DownloadCompendia = ({ agreedToTerms }) => {
+let DownloadCompendia = ({ token, createToken }) => {
+  const agreedToTerms = !!token;
   const [selected, setSelected] = React.useState(null);
   const [agree, setAgree] = React.useState(agreedToTerms);
   const { data, isLoading } = useLoader(fetchCompendiaData);
@@ -24,7 +26,7 @@ let DownloadCompendia = ({ agreedToTerms }) => {
         <div>
           <span className="download-compendia__choose">Choose Organism</span>
           <Dropdown
-            options={data.map(x => x.organism)}
+            options={data}
             selectedOption={selected}
             label={formatSentenceCase}
             onChange={setSelected}
@@ -55,31 +57,42 @@ let DownloadCompendia = ({ agreedToTerms }) => {
             text="Download Now"
             className="download-compendia__button"
             isDisabled={!agree}
+            onClick={async () => {
+              const tokenId = token || (await createToken());
+              const selectedOrganism = selected || data[0];
+              await downloadCompendia(selectedOrganism, tokenId);
+            }}
           />
         </div>
       </div>
     </div>
   );
 };
-DownloadCompendia = connect(state => ({
-  agreedToTerms: !!state.token
-}))(DownloadCompendia);
+DownloadCompendia = connect(
+  state => ({
+    token: state.token
+  }),
+  { createToken }
+)(DownloadCompendia);
 export default DownloadCompendia;
 
 async function fetchCompendiaData() {
   try {
     const data = await Ajax.get('/compendia');
-
-    return Object.values(groupBy(data, x => x.organism_name))
-      .map(
-        group =>
-          group.sort((x, y) => y.compendia_version - x.compendia_version)[0]
-      )
-      .map(result => ({
-        organism: result.organism_name,
-        url: result.s3_url
-      }));
+    return uniq(data.map(x => x.organism_name));
   } catch (e) {
     return [];
   }
+}
+
+async function downloadCompendia(organism, token) {
+  // refetch the compendias, now sending the token id to retrieve the download urls
+  const data = await Ajax.get('/compendia', null, { 'API-KEY': token });
+
+  const computedFile = data
+    .filter(x => x.organism_name === organism)
+    .sort((x, y) => y.compendia_version - x.compendia_version);
+
+  // set the download url
+  window.location = computedFile[0].download_url;
 }
