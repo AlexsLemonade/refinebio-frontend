@@ -105,7 +105,6 @@ fieldset {
   align-items: center;
 
   &__icon {
-    color: $info-badge;
     margin-right: 8px;
     font-size: 1.5rem;
   }
@@ -128,6 +127,10 @@ fieldset {
 
 .mb-1 {
   margin-bottom: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
 }
 
 .mr-1 {
