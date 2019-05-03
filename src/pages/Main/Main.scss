@@ -100,6 +100,10 @@
         overflow: visible;
       }
     }
+
+    &--explore {
+      background-color: #f2f2f2;
+    }
   }
 
   &__heading-1 {
@@ -258,6 +262,45 @@
     &__icon {
       height: 50px;
       margin-bottom: 1.2rem;
+    }
+
+    &__title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    &__body {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__explore-card-container {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+
+      margin-left: -50px;
+      margin-right: -50px;
+    }
+  }
+
+  &__explore-card {
+    padding: 16px;
+    background-color: #fdfdfd;
+    box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+    flex: 1 0 0;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+
+    @include desktop {
+      margin-bottom: 0;
+      margin-left: 25px;
+      margin-right: 25px;
+      padding: 60px 40px;
     }
 
     &__title {

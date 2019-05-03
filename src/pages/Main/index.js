@@ -22,6 +22,8 @@ import circusPlot from '../About/circus-plot.svg';
 import pathwayIcon from './icon-pathway.svg';
 import processIcon from './icon-process.svg';
 import heatmapIcon from './icon-heatmap.svg';
+import networkBottomIcon from './network-combined.svg';
+import networkDocsIcon from './icon-docs.svg';
 
 let Main = ({ searchTerm, fetchResults, push }) => {
   return (
@@ -209,6 +211,60 @@ let Main = ({ searchTerm, fetchResults, push }) => {
           </div>
         </section>
       )}
+
+      <section className="main__section main__section--explore">
+        <div className="main__container">
+          <div className="main__explore-card-container">
+            <div
+              className="main__explore-card"
+              style={{
+                backgroundImage: `url(${networkBottomIcon})`,
+                backgroundSize: '80%'
+              }}
+            >
+              <div className="main__explore-card__title">Species Compendia</div>
+              <div className="main__explore-card__body">
+                Our Species compendia offers datasets which has been processed
+                and aggregated by species built for machine learning
+                applications.
+              </div>
+              <div className="main__explore-card__actions">
+                <a
+                  href=""
+                  className="button button--secondary "
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Learn More
+                </a>
+              </div>
+            </div>
+            <div
+              className="main__explore-card"
+              style={{
+                backgroundImage: `url(${networkDocsIcon})`,
+                backgroundPositionX: 260
+              }}
+            >
+              <div className="main__explore-card__title">Explore the docs</div>
+              <div className="main__explore-card__body">
+                Learn about how we source and process data and other downstream
+                analyses you can do with refine.bio data.
+              </div>
+              <div className="main__explore-card__actions">
+                <a
+                  href="http://docs.refine.bio/en/latest/index.html"
+                  className="button button--secondary "
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Take me to the docs
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="main__section main__section--blue-gradient">
         <div className="main__container">
