@@ -16,9 +16,12 @@
       box-shadow: 0 4px 21px 0 rgba(0, 0, 0, 0.2);
       padding: 3 * 8px;
       margin-bottom: 24px;
+      margin-top: -220px;
+      z-index: 30;
+      max-width: 880px;
 
       @include tablet {
-        padding: 12 * 8px 0 8.5 * 8px;
+        padding: 9 * 8px 0 5.5 * 8px 0;
         align-items: center;
       }
     }
@@ -78,22 +81,23 @@
     &--searchbox {
       position: relative;
       overflow: hidden;
+      min-height: 375px;
+      background: linear-gradient(
+        179.93deg,
+        rgba(12, 52, 131, 0.94) 0%,
+        rgba(25, 64, 142, 0.95) 16.45%,
+        #6b8cce 43.03%,
+        #a2b6df 69.1%,
+        #a2b6df 100%
+      );
+      overflow: hidden;
 
       @include tablet {
         padding: 10 * 8px 0 0;
       }
 
-      &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        height: 90%;
-        width: 120%;
-        transform: translateX(-50%);
-        background: $background-color--blue-gradient;
-        border-bottom-left-radius: 50%;
-        border-bottom-right-radius: 50%;
+      @include desktop() {
+        overflow: visible;
       }
     }
   }

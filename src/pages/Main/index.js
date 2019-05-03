@@ -17,6 +17,7 @@ import {
 import TabControl from '../../components/TabControl';
 import apiData from '../../apiData.json';
 import { searchUrl } from '../../routes';
+import circusPlot from '../About/circus-plot.svg';
 
 let Main = ({ searchTerm, fetchResults, push }) => {
   return (
@@ -25,6 +26,10 @@ let Main = ({ searchTerm, fetchResults, push }) => {
         <title>Search for harmonized transcriptome data - refine.bio</title>
       </Helmet>
       <section className="main__section main__section--searchbox">
+        <img src={circusPlot} className="about__header-bg" alt="Circus Plot" />
+      </section>
+
+      <div>
         <div className="main__container main__container--searchbox">
           <h1 className="main__heading-1">
             Search for harmonized transcriptome data
@@ -47,7 +52,8 @@ let Main = ({ searchTerm, fetchResults, push }) => {
             ))}
           </div>
         </div>
-      </section>
+      </div>
+
       <section className="main__section">
         <div className="main__steps-container">
           <div className="main__col">
