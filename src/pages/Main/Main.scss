@@ -41,8 +41,8 @@
     margin-bottom: 6 * 8px;
 
     @include desktop {
-      padding: 0 3 * 8px;
-      border-right: 1px solid $gray;
+      padding: 0 10 * 8px;
+      border-right: 3px solid #f2f2f2;
       flex: 1 1;
 
       &:first-of-type {
@@ -114,12 +114,14 @@
   &__heading-2 {
     font-size: 1.5rem;
     display: flex;
-    align-items: center;
     margin-bottom: 2 * 8px;
+    flex-direction: column;
+    align-items: flex-start;
 
     @include tablet {
       font-size: 1.75rem;
       margin-bottom: 4 * 8px;
+      flex-direction: row;
     }
   }
 
@@ -128,12 +130,8 @@
   }
 
   &__icon {
-    margin-right: 2 * 8px;
-    width: 35px;
-
-    @include tablet {
-      width: auto;
-    }
+    margin-right: 3 * 8px;
+    width: 56px;
   }
 
   &__search-suggestions {
@@ -223,6 +221,53 @@
 
     @include tablet() {
       font-size: 22px;
+    }
+  }
+
+  &__uses-container {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      margin-top: 56px;
+      flex-direction: row;
+    }
+
+    @include desktop {
+      margin-left: -50px;
+      margin-right: -50px;
+    }
+  }
+
+  &__use-card {
+    padding: 16px;
+    background-color: #fdfdfd;
+    box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+    flex: 1 0 0;
+    color: $font-color;
+    margin-bottom: 24px;
+    text-align: left;
+
+    @include desktop {
+      margin-left: 25px;
+      margin-right: 25px;
+      margin-bottom: 0;
+    }
+
+    &__icon {
+      height: 50px;
+      margin-bottom: 1.2rem;
+    }
+
+    &__title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    &__body {
+      margin-bottom: 1rem;
     }
   }
 }

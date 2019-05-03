@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="209px" height="135px" viewBox="0 0 209 135" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>undraw_files1_9ool (1)</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="linearGradient-1">
+            <stop stop-color="#B3B3B3" stop-opacity="0.25" offset="0%"></stop>
+            <stop stop-color="#B3B3B3" stop-opacity="0.1" offset="54%"></stop>
+            <stop stop-color="#B3B3B3" stop-opacity="0.05" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="100.011179%" x2="50%" y2="0%" id="linearGradient-2">
+            <stop stop-color="#B3B3B3" stop-opacity="0.25" offset="0%"></stop>
+            <stop stop-color="#B3B3B3" stop-opacity="0.1" offset="54%"></stop>
+            <stop stop-color="#B3B3B3" stop-opacity="0.05" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="49.9938748%" y1="100%" x2="49.9938748%" y2="0%" id="linearGradient-3">
+            <stop stop-color="#B3B3B3" stop-opacity="0.25" offset="0%"></stop>
+            <stop stop-color="#B3B3B3" stop-opacity="0.1" offset="54%"></stop>
+            <stop stop-color="#B3B3B3" stop-opacity="0.05" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Landing-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.400762649">
+        <g id="landing-page" transform="translate(-1128.000000, -2839.000000)" fill-rule="nonzero">
+            <g id="explore-docs" transform="translate(751.000000, 2658.000000)">
+                <g id="undraw_files1_9ool-(1)" transform="translate(377.000000, 181.000000)">
+                    <polygon id="Shape" fill="#80A6D6" opacity="0.697154018" points="130 197 0 197 0 45.8126188 19.6420604 24 130 24"></polygon>
+                    <polygon id="Shape" fill="#FAFAFA" points="130 194 5 194 5 49.8046803 23.8850206 29 130 29"></polygon>
+                    <polygon id="Rectangle-path" fill="#E0E0E0" points="13 45 76 45 76 58 13 58"></polygon>
+                    <polygon id="Rectangle-path" fill="#E0E0E0" points="13 74 59 74 59 87 13 87"></polygon>
+                    <polygon id="Rectangle-path" fill="#386DB0" points="13 119 113 119 113 156 13 156"></polygon>
+                    <polygon id="Rectangle-path" fill="#F5F5F5" points="92 45 113 45 113 58 92 58"></polygon>
+                    <polygon id="Rectangle-path" fill="#F5F5F5" points="92 61 113 61 113 74 92 74"></polygon>
+                    <polygon id="Shape" fill="url(#linearGradient-1)" points="26 29 26 50 5 50 5 48.164114 23.9854202 29"></polygon>
+                    <polygon id="Shape" fill="#EEEEEE" points="5 50 26 29 26 50"></polygon>
+                    <polygon id="Shape" fill="#A6C1E2" points="38 181 38 29.8103727 57.6420604 8 168 8 168 181"></polygon>
+                    <polygon id="Shape" fill="#FAFAFA" points="167 176 42 176 42 31.8046803 60.8850206 11 167 11"></polygon>
+                    <polygon id="Rectangle-path" fill="#E0E0E0" points="54 32 117 32 117 45 54 45"></polygon>
+                    <polygon id="Rectangle-path" fill="#E0E0E0" points="55 61 101 61 101 74 55 74"></polygon>
+                    <polygon id="Rectangle-path" fill="#386DB0" points="55 102 155 102 155 139 55 139"></polygon>
+                    <polygon id="Rectangle-path" fill="#F5F5F5" points="133 32 154 32 154 45 133 45"></polygon>
+                    <polygon id="Rectangle-path" fill="#F5F5F5" points="133 49 154 49 154 62 133 62"></polygon>
+                    <polygon id="Shape" fill="url(#linearGradient-2)" points="63 12 63 33 42 33 42 31.164114 60.9854202 12"></polygon>
+                    <polygon id="Shape" fill="#EEEEEE" points="42 33 63 12 63 33"></polygon>
+                    <polygon id="Shape" fill="#A6C1E2" points="209 173 75 173 75 21.8126188 95.2437859 0 209 0"></polygon>
+                    <polygon id="Shape" fill="#FFFFFF" points="204 168 79 168 79 23.8021316 97.887573 3 204 3"></polygon>
+                    <polygon id="Rectangle-path" fill="#E0E0E0" points="92 21 155 21 155 34 92 34"></polygon>
+                    <polygon id="Rectangle-path" fill="#E0E0E0" points="97 49 143 49 143 62 97 62"></polygon>
+                    <polygon id="Rectangle-path" fill="#386DB0" points="96 90 196 90 196 127 96 127"></polygon>
+                    <polygon id="Rectangle-path" fill="#E0E0E0" points="172 21 193 21 193 34 172 34"></polygon>
+                    <polygon id="Rectangle-path" fill="#E0E0E0" points="172 32 193 32 193 45 172 45"></polygon>
+                    <polygon id="Rectangle-path" fill="#E0E0E0" points="172 49 193 49 193 62 172 62"></polygon>
+                    <polygon id="Shape" fill="url(#linearGradient-3)" points="100 3 100 24 79 24 79 22.1617663 97.985667 3"></polygon>
+                    <polygon id="Shape" fill="#EEEEEE" points="79 24 100 3 100 24"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

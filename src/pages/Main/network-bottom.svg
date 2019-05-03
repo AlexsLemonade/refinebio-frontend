@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="349px" height="84px" viewBox="0 0 349 84" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>network-illustration copy 2</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Landing-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.396577381">
+        <g id="landing-page" transform="translate(-261.000000, -2890.000000)" fill-rule="nonzero">
+            <g id="species-compendia" transform="translate(81.000000, 2658.000000)">
+                <g id="network-illustration">
+                    <g id="network-illustration-copy-2" transform="translate(437.002192, 298.075805) scale(-1, 1) rotate(-95.000000) translate(-437.002192, -298.075805) translate(389.502192, 37.075805)">
+                        <path d="M12.5,237.5 L52.5,262.5" id="Line-10" stroke="#AAC4E4" stroke-width="3" stroke-linecap="square"></path>
+                        <path d="M36.5,277.5 L53.5,272.5" id="Line-11" stroke="#AAC4E4" stroke-width="3" opacity="0.739676339" stroke-linecap="square"></path>
+                        <path d="M24.5,286.5 L12.5,426.5" id="Line-12" stroke="#AAC4E4" stroke-width="3" stroke-linecap="square"></path>
+                        <path d="M32.5,286.5 L69.5,375.5" id="Line-13" stroke="#AAC4E4" stroke-width="3" opacity="0.739676339" stroke-linecap="square"></path>
+                        <path d="M25.5,431.5 L69.5,394.5" id="Line-14" stroke="#AAC4E4" stroke-width="3" opacity="0.587555804" stroke-linecap="square"></path>
+                        <path d="M24.5,452.5 L75.5,506.5" id="Line-15" stroke="#AAC4E4" stroke-width="3" stroke-linecap="square"></path>
+                        <path d="M11.5,485.5 L75.5,510.5" id="Line-16" stroke="#AAC4E4" stroke-width="3" opacity="0.587555804" stroke-linecap="square"></path>
+                        <path d="M11.5,202.5 L50.5,188.5" id="Line-9" stroke="#AAC4E4" stroke-width="3" opacity="0.8359375" stroke-linecap="square"></path>
+                        <circle id="Oval-2" fill="#AAC4E4" cx="65" cy="266" r="15"></circle>
+                        <circle id="Oval-2" fill="#AAC4E4" cx="80" cy="383" r="15"></circle>
+                        <circle id="Oval-2" fill="#AAC4E4" cx="15" cy="442" r="15"></circle>
+                        <circle id="Oval-2" fill="#D8D8D8" cx="61.5" cy="182.5" r="12.5"></circle>
+                        <circle id="Oval-2" fill="#AAC4E4" cx="61.5" cy="182.5" r="12.5"></circle>
+                        <circle id="Oval-2" fill="#AAC4E4" cx="29.5" cy="279.5" r="8.5"></circle>
+                        <circle id="Oval-2" fill="#AAC4E4" cx="82" cy="513" r="9"></circle>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
