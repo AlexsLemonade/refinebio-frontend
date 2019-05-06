@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import DownloadDatasetImage from '../Downloads/DataSet/download-dataset.svg';
@@ -90,5 +89,3 @@ export default function DownloadPage({ location }) {
     </div>
   );
 }
-
-DownloadPage = withRouter(DownloadPage);

@@ -35,7 +35,6 @@ export default function EmailSection() {
                 type="text"
                 name="b_1ed0ac5b8f11380ee862cf278_074bca87ce"
                 tabIndex="-1"
-                value=""
               />
             </div>
             <div className="flex-button-container">

@@ -50,7 +50,7 @@ export default function SpeciesCompendia() {
                   standardized pipelines curated by the
                 </div>
                 <a
-                  href=""
+                  href="#a"
                   className="button button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -65,7 +65,7 @@ export default function SpeciesCompendia() {
                   including gene expression matrices and sample metadata.
                 </div>
                 <a
-                  href=""
+                  href="#a"
                   className="button button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
