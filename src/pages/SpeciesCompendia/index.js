@@ -39,6 +39,41 @@ export default function SpeciesCompendia() {
             <p>
               <i>Examples coming soon</i>
             </p>
+
+            <div className="species-compendia__example-list hidden">
+              <div className="mobile-p">
+                <h1>multiPLIER</h1>
+                <div className="mb-2">
+                  Search the collection of harmonized RNA-seq and microarray
+                  data from publicly available sources like GEO, ArrayExpress,
+                  and SRA. The data has been processed with a set of
+                  standardized pipelines curated by the
+                </div>
+                <a
+                  href=""
+                  className="button button--secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Examples
+                </a>
+              </div>
+              <div>
+                <h1>Predict missing metadata</h1>
+                <div className="mb-2">
+                  Build and download custom datasets tailored to your needs
+                  including gene expression matrices and sample metadata.
+                </div>
+                <a
+                  href=""
+                  className="button button--secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Examples
+                </a>
+              </div>
+            </div>
           </div>
 
           <div className="species-compendia__section">

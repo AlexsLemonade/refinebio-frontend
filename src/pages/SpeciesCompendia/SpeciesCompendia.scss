@@ -69,6 +69,26 @@
     font-size: 1.8rem;
     margin-bottom: 48px;
   }
+
+  &__example-list {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+      justify-content: space-between;
+
+      > div {
+        max-width: 400px;
+        text-align: left;
+      }
+    }
+
+    @include desktop {
+      padding-left: 80px;
+      padding-right: 80px;
+    }
+  }
 }
 
 .download-compendia {
