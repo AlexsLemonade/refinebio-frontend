@@ -94,7 +94,7 @@ async function fetchCompendiaData() {
 }
 
 async function downloadCompendia(organism, token) {
-  // refetch the compendias, now sending the token id to retrieve the download urls
+  // refetch the compendia, now sending the token id to retrieve the download urls
   const data = await Ajax.get('/compendia', null, { 'API-KEY': token });
 
   const computedFile = data

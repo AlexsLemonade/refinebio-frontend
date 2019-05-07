@@ -33,7 +33,7 @@ export default function SpeciesCompendia() {
               Data scientists and computational biologists can use species
               compendia to quickly construct training and testing sets and
               extract features from a diverse set of biological contexts and
-              conditions
+              conditions.
             </div>
 
             <p>

@@ -69,7 +69,7 @@ export default function DownloadPage({ location }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Learn how the species compendia is created
+              Learn how the species compendia are created
             </a>
           </p>
           <p className="mb-2">
