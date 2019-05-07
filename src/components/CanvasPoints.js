@@ -33,10 +33,10 @@ export default class CanvasPoints extends React.Component {
     ctx.lineWidth = 2;
     ctx.clearRect(0, 0, this.props.width, this.props.height);
     for (let point of this.points) {
-      for (var i in point.closest) {
+      for (let closePoint of point.closest) {
         ctx.beginPath();
         ctx.moveTo(point.x, point.y);
-        ctx.lineTo(point.closest[i].x, point.closest[i].y);
+        ctx.lineTo(closePoint.x, closePoint.y);
         ctx.strokeStyle = 'rgba(175, 196, 255, 1)';
         ctx.stroke();
       }
@@ -79,12 +79,12 @@ export default class CanvasPoints extends React.Component {
   static generatePoints(cuadrants, width, height) {
     const points = [];
     const step = 45;
-    for (var x = 0; x < width; x += step) {
-      for (var y = 0; y < height; y += step) {
-        var px = x + Math.random() * step;
-        var py = y + Math.random() * step;
+    for (let x = 0; x < width; x += step) {
+      for (let y = 0; y < height; y += step) {
+        const px = x + Math.random() * step;
+        const py = y + Math.random() * step;
         const circleRadius = 5 + Math.random() * 3;
-        var p = { x: px, originX: px, y: py, originY: py, circleRadius };
+        const p = { x: px, originX: px, y: py, originY: py, circleRadius };
         points.push(p);
       }
     }
