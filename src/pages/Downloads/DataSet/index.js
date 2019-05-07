@@ -325,7 +325,7 @@ DataSetExpired = connect(
   }
 )(DataSetExpired);
 
-function DataSetNextSteps({}) {
+function DataSetNextSteps() {
   return (
     <div className="dataset__next-steps">
       <img src={TubeyAdventureImage} alt="" />
@@ -366,7 +366,6 @@ function DataSetNextSteps({}) {
         <p>
           <a
             href="http://docs.refine.bio/en/latest/index.html"
-            rel="nofollow"
             className="link"
             target="_blank"
             rel="noopener noreferrer nofollow"
