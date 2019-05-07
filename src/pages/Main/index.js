@@ -7,7 +7,6 @@ import SearchInput from '../../components/SearchInput';
 import { Link } from 'react-router-dom';
 import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
-import ExploreIcon from '../../common/icons/explore.svg';
 import './Main.scss';
 import {
   SamplesPerSpeciesGraph,
