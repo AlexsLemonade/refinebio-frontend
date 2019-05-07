@@ -230,14 +230,12 @@ let Main = ({ searchTerm, fetchResults, push }) => {
                 applications.
               </div>
               <div className="main__explore-card__actions">
-                <a
-                  href=""
+                <Link
+                  to="/species-compendia"
                   className="button button--secondary "
-                  target="_blank"
-                  rel="noopener noreferrer"
                 >
                   Learn More
-                </a>
+                </Link>
               </div>
             </div>
             <div
