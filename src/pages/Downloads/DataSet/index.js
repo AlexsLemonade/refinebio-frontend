@@ -24,6 +24,7 @@ import Spinner from '../../../components/Spinner';
 import NoMatch from '../../NoMatch';
 import DataSetLoader from './DataSetLoader';
 import { getDataSet } from '../../../api/dataSet';
+import TubeyAdventureImage from './tubey-adventure.svg';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -198,19 +199,22 @@ function DataSetProcessing({ email, dataSetId }) {
   );
 
   return (
-    <div className="dataset__container">
-      <div className="dataset__message">
-        <div className="dataset__way-container">
-          <div className="dataset__processed-text">
-            <h1>Your dataset is being processed.</h1>
-            {message}
-          </div>
-          <div className="dataset__way-image">
-            <ProcessingGears />
+    <>
+      <div className="dataset__container">
+        <div className="dataset__message">
+          <div className="dataset__way-container">
+            <div className="dataset__processed-text">
+              <h1>Your dataset is being processed.</h1>
+              {message}
+            </div>
+            <div className="dataset__way-image">
+              <ProcessingGears />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <DataSetNextSteps />
+    </>
   );
 }
 
@@ -239,41 +243,47 @@ class DataSetReady extends React.Component {
 
   render() {
     return (
-      <div className="dataset__container">
-        <div className="dataset__message">
-          <div className="dataset__way-container">
-            <div className="dataset__processed-text">
-              <h1>Your dataset is ready for download!</h1>
+      <>
+        <div className="dataset__container">
+          <div className="dataset__message">
+            <div className="dataset__way-container">
+              <div className="dataset__processed-text">
+                <h1>Your dataset is ready for download!</h1>
 
-              {!!this.props.dataSet.size_in_bytes && (
-                <div className="mb-1">
-                  Download size: {formatBytes(this.props.dataSet.size_in_bytes)}
-                </div>
-              )}
-
-              <div className="dataset__way-container">
-                {!this.props.hasToken && (
-                  <TermsOfUse
-                    agreedToTerms={this.state.agreedToTerms}
-                    handleToggle={this.handleAgreedToTerms}
-                  />
+                {!!this.props.dataSet.size_in_bytes && (
+                  <div className="mb-1">
+                    Download size:{' '}
+                    {formatBytes(this.props.dataSet.size_in_bytes)}
+                  </div>
                 )}
 
-                <Button
-                  onClick={this.handleSubmit}
-                  isDisabled={!this.state.agreedToTerms && !this.props.hasToken}
-                >
-                  Download Now
-                </Button>
-              </div>
-            </div>
+                <div className="dataset__way-container">
+                  {!this.props.hasToken && (
+                    <TermsOfUse
+                      agreedToTerms={this.state.agreedToTerms}
+                      handleToggle={this.handleAgreedToTerms}
+                    />
+                  )}
 
-            <div className="dataset__way-image">
-              <img src={DownloadImage} alt="" />
+                  <Button
+                    onClick={this.handleSubmit}
+                    isDisabled={
+                      !this.state.agreedToTerms && !this.props.hasToken
+                    }
+                  >
+                    Download Now
+                  </Button>
+                </div>
+              </div>
+
+              <div className="dataset__way-image">
+                <img src={DownloadImage} alt="" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <DataSetNextSteps />
+      </>
     );
   }
 }
@@ -314,3 +324,57 @@ DataSetExpired = connect(
     regenerateDataSet
   }
 )(DataSetExpired);
+
+function DataSetNextSteps({}) {
+  return (
+    <div className="dataset__next-steps">
+      <img src={TubeyAdventureImage} alt="" />
+
+      <div>
+        <h1>Explore what you can do with your refine.bio dataset!</h1>
+
+        <p>
+          <a
+            href="http://docs.refine.bio/en/latest/getting_started.html#getting-started-with-a-refine-bio-dataset"
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            Get started with your dataset
+          </a>
+        </p>
+        <p>
+          <a
+            href="https://github.com/AlexsLemonade/refinebio-examples/tree/master/ensembl-id-convert"
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            Convert ENSEMBL IDs to Gene Symbols
+          </a>
+        </p>
+        <p>
+          <a
+            href="https://github.com/AlexsLemonade/refinebio-examples/tree/master/differential-expression"
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            Follow an example differential expression analysis
+          </a>
+        </p>
+        <p>
+          <a
+            href="http://docs.refine.bio/en/latest/index.html"
+            rel="nofollow"
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            Learn more about how we source and process data
+          </a>
+        </p>
+      </div>
+    </div>
+  );
+}
