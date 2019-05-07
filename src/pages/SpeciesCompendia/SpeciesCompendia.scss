@@ -1,0 +1,134 @@
+@import '../../common/styles/variables';
+
+.species-compendia {
+  margin-bottom: 100px;
+
+  &__header {
+    position: relative;
+    background: linear-gradient(
+      179.93deg,
+      rgba(12, 52, 131, 0.94) 0%,
+      rgba(25, 64, 142, 0.95) 16.45%,
+      #6b8cce 70%,
+      #a2b6df 90%,
+      #a2b6df 100%
+    );
+  }
+
+  &__header-background {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -120px;
+    bottom: 0;
+
+    z-index: 20;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+
+  &__header-inner {
+    color: $whisper;
+    text-align: center;
+    position: relative;
+    padding: 0 8px 16px 8px;
+
+    max-width: 1075px;
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+    flex-direction: column;
+    z-index: 30;
+
+    @include desktop {
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+
+      padding-top: 56px;
+      padding-bottom: 96px;
+    }
+  }
+
+  &__title {
+    font-size: 1.8rem;
+  }
+
+  &__section {
+    text-align: center;
+    padding-top: 100px;
+
+    + .species-compendia__section {
+      margin-top: 100px;
+      border-top: 3px solid #f2f2f2;
+    }
+  }
+
+  &__section-title {
+    font-size: 1.8rem;
+    margin-bottom: 48px;
+  }
+
+  &__example-list {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+      justify-content: space-between;
+
+      > div {
+        max-width: 400px;
+        text-align: left;
+      }
+    }
+
+    @include desktop {
+      padding-left: 80px;
+      padding-right: 80px;
+    }
+  }
+}
+
+.download-compendia {
+  background-color: $whisper;
+  padding: 24px 48px;
+  border-radius: 4px;
+  box-shadow: 0 4px 21px 0 rgba(0, 0, 0, 0.2);
+  color: $font-color;
+  text-align: center;
+
+  flex-shrink: 0;
+
+  &__title {
+    font-size: 1.9rem;
+    margin-bottom: 28px;
+  }
+
+  &__choose {
+    font-size: 1.3rem;
+    margin-right: 8px;
+  }
+
+  &__button {
+    font-size: 18px;
+    margin-left: 8px;
+  }
+
+  &__row {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+    }
+  }
+
+  @include desktop {
+    margin-left: 68px;
+  }
+}
