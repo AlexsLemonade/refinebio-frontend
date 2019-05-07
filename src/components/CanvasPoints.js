@@ -10,7 +10,6 @@ export default class CanvasPoints extends React.Component {
     super(props);
 
     this.points = CanvasPoints.generatePoints(
-      this.props.cuadrants,
       this.props.width,
       this.props.height
     );
@@ -22,7 +21,6 @@ export default class CanvasPoints extends React.Component {
 
   componentDidUpdate() {
     this.points = CanvasPoints.generatePoints(
-      this.props.cuadrants,
       this.props.width,
       this.props.height
     );
@@ -76,7 +74,7 @@ export default class CanvasPoints extends React.Component {
     );
   }
 
-  static generatePoints(cuadrants, width, height) {
+  static generatePoints(width, height) {
     const points = [];
     const step = 45;
     for (let x = 0; x < width; x += step) {
@@ -89,7 +87,7 @@ export default class CanvasPoints extends React.Component {
       }
     }
 
-    // for each point find the 5 closest points
+    // for each point find the 3 closest points
     for (let point of points) {
       point.closest = [...points]
         .sort(
@@ -104,6 +102,7 @@ export default class CanvasPoints extends React.Component {
   }
 
   static getDistance(p1, p2) {
+    // get square of distance for sorting purposes
     return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
   }
 }
