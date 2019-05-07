@@ -2,6 +2,8 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import classnames from 'classnames';
+import SpeciesCompendia from './SpeciesCompendia';
+import SpeciesCompendiaDownload from './SpeciesCompendia/DownloadPage';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import history from '../history';
@@ -71,6 +73,14 @@ const App = () => {
                 <Switch>
                   <Route exact path="/" component={Main} />
                   <Route exact path="/about" component={About} />
+                  <Route
+                    path="/species-compendia/download"
+                    component={SpeciesCompendiaDownload}
+                  />
+                  <Route
+                    path="/species-compendia"
+                    component={SpeciesCompendia}
+                  />
                   <Route
                     path="/experiments/:id/:slug?"
                     component={Experiment}

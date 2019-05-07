@@ -42,7 +42,9 @@ class Header extends React.Component {
    * much sense to invest a lot of time improving this.
    */
   _invertColors() {
-    return ['/', '/about'].includes(this.props.location.pathname);
+    return ['/', '/about', '/species-compendia'].includes(
+      this.props.location.pathname
+    );
   }
 }
 Header = withRouter(Header);
@@ -58,6 +60,13 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
         activePath={[searchUrl()]}
       >
         Search
+      </HeaderLink>{' '}
+      <HeaderLink
+        to="/species-compendia"
+        onClick={itemClicked}
+        location={location}
+      >
+        Species Compendia
       </HeaderLink>
       <li className="header__link">
         <a

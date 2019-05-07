@@ -26,17 +26,18 @@ export class Accordion extends React.Component {
     );
     return (
       <div className="accordion">
-        {!this.props.hideExpandAll && children.length > 2 && (
-          <Checkbox
-            className="accordion__expand-all"
-            onClick={() => this._toggleAll()}
-            checked={!this.state.activeElements.includes(false)}
-            name="expand-all"
-            readOnly
-          >
-            Expand all
-          </Checkbox>
-        )}
+        {!this.props.hideExpandAll &&
+          children.length > 2 && (
+            <Checkbox
+              className="accordion__expand-all"
+              onClick={() => this._toggleAll()}
+              checked={!this.state.activeElements.includes(false)}
+              name="expand-all"
+              readOnly
+            >
+              Expand all
+            </Checkbox>
+          )}
 
         {children}
       </div>
