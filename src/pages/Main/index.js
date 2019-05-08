@@ -224,7 +224,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
             >
               <div className="main__explore-card__title">Species Compendia</div>
               <div className="main__explore-card__body">
-                Our Species compendia offers datasets which has been processed
+                Our Species Compendia offers datasets which have been processed
                 and aggregated by species built for machine learning
                 applications.
               </div>
