@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="47px" viewBox="0 0 80 47" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>icon-heatmap</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="52.7695656%" y1="-19.5136876%" x2="52.7695656%" y2="149.532303%" id="linearGradient-1">
+            <stop stop-color="#0C3483" stop-opacity="0.937981205" offset="0%"></stop>
+            <stop stop-color="#6B8CCE" offset="49.9452381%"></stop>
+            <stop stop-color="#A2B6DF" offset="100%"></stop>
+            <stop stop-color="#A1B6DF" offset="100%"></stop>
+            <stop stop-color="#A2B6DF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Landing-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="landing-page" transform="translate(-103.000000, -1279.000000)">
+            <g id="examples" transform="translate(1.000000, 1065.000000)">
+                <g id="example-workflows" transform="translate(78.000000, 190.000000)">
+                    <g id="diff-exp-card">
+                        <g id="icon-heatmap" transform="translate(24.000000, 24.000000)">
+                            <rect id="Rectangle" fill="#F2F2F2" x="0" y="0" width="80" height="47" rx="2"></rect>
+                            <g id="heatmap" transform="translate(4.000000, 3.000000)">
+                                <rect id="Rectangle" fill="#386DB0" x="0" y="0" width="32.9411765" height="9.75"></rect>
+                                <rect id="Rectangle" fill="#FDFDFD" x="0" y="9.75" width="32.9411765" height="9.75"></rect>
+                                <rect id="Rectangle" fill="#80A6D6" x="0" y="19.5" width="32.9411765" height="9.75"></rect>
+                                <rect id="Rectangle" fill="#D4E1F1" x="0" y="29.25" width="32.9411765" height="9.75"></rect>
+                                <rect id="Rectangle" fill="#80A6D6" x="37.0588235" y="0" width="32.9411765" height="9.75"></rect>
+                                <rect id="Rectangle" fill="#D4E1F1" x="37.0588235" y="9.75" width="32.9411765" height="9.75"></rect>
+                                <rect id="Rectangle" fill="#FDFDFD" x="37.0588235" y="19.5" width="32.9411765" height="9.75"></rect>
+                                <rect id="Rectangle" fill="#AAC4E4" x="37.0588235" y="29.25" width="32.9411765" height="9.75"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
