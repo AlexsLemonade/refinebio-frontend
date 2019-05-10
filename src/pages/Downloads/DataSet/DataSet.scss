@@ -90,6 +90,26 @@
     background-color: #f2f2f2;
     padding: 8px;
   }
+
+  &__next-steps {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    align-items: center;
+    border-top: 1px solid $border-color;
+
+    img {
+      margin-right: 90px;
+      display: none;
+      width: 380px;
+      height: 380px;
+
+      @include desktop {
+        display: block;
+      }
+    }
+  }
 }
 
 .form-edit-email {
