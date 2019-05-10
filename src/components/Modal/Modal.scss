@@ -78,4 +78,11 @@
     max-height: 100%;
     overflow: hidden;
   }
+
+  &--full-page {
+    max-width: 100%;
+    border: none;
+    padding: 0;
+    display: block;
+  }
 }

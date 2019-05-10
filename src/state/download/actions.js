@@ -290,10 +290,10 @@ export const startDownload = ({
 
 /**
  * Once generated the datasets are immutable on the server, so to be able to re-generate one we have
- * to create a new dataset and redirect to the associated page.
+ * to create a new dataset with the same data and redirect to it's page.
  */
-export const regenerateDataSet = () => async (dispatch, getState) => {
-  let { data, aggregate_by, scale_by } = getState().dataSet;
+export const regenerateDataSet = dataSet => async (dispatch, getState) => {
+  let { data, aggregate_by, scale_by } = dataSet;
 
   try {
     // 1. create a new dataset

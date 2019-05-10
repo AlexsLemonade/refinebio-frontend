@@ -2,6 +2,8 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
+
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
 import ExpandButton from './ExpandButton';
@@ -19,18 +21,17 @@ import SampleIcon from '../../common/icons/sample.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import BackToTop from '../../components/BackToTop';
 
-import SamplesTable from '../../components/SamplesTable/SamplesTable';
-import DataSetSampleActions from '../../components/DataSetSampleActions';
+import Anchor from '../../components/Anchor';
+import Spinner from '../../components/Spinner';
+import InfoBox from '../../components/InfoBox';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
 import DataSetStats from '../../common/DataSetStats';
-import Spinner from '../../components/Spinner';
-import ScrollTopOnMount from '../../components/ScrollTopOnMount';
-import Anchor from '../../components/Anchor';
 import Technology, { getTechnologies } from './Technology';
-import InfoBox from '../../components/InfoBox';
-import classnames from 'classnames';
 import { NDownloadableSamples } from '../../components/Strings';
+import ScrollTopOnMount from '../../components/ScrollTopOnMount';
+import SamplesTable from '../../components/SamplesTable/SamplesTable';
+import DataSetSampleActions from '../../components/DataSetSampleActions';
 
 import { searchUrl } from '../../routes';
 import { getExperiment } from '../../api/experiments';
@@ -38,6 +39,7 @@ import NoMatch from '../NoMatch';
 import { ServerError } from '../../common/errors';
 import ServerErrorPage from '../ServerError';
 import { Hightlight, HText } from '../../components/HighlightedText';
+import RequestExperimentButton from './RequestExperimentButton';
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
@@ -48,11 +50,13 @@ const DatabaseNames = {
 let Experiment = ({ match, location: { search, state }, goBack }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
+  const accessionCode = match.params.id;
+
   return (
     <Hightlight match={comesFromSearch && state.query}>
       <Loader
-        fetch={() => getExperiment(match.params.id)}
-        updateProps={match.params.id}
+        fetch={() => getExperiment(accessionCode)}
+        updateProps={accessionCode}
       >
         {({ isLoading, hasError, error, data: experiment }) => {
           if (hasError) {
@@ -131,14 +135,20 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                       <HText>{experimentData.title || 'No Title.'}</HText>
                     </h1>
                     <div>
-                      <DataSetSampleActions
-                        dataSetSlice={{
-                          [experimentData.accession_code]: {
-                            all: true,
-                            total: totalProcessedSamples
-                          }
-                        }}
-                      />
+                      {totalProcessedSamples === 0 ? (
+                        <RequestExperimentButton
+                          accessionCode={accessionCode}
+                        />
+                      ) : (
+                        <DataSetSampleActions
+                          dataSetSlice={{
+                            [experimentData.accession_code]: {
+                              all: true,
+                              total: totalProcessedSamples
+                            }
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
 

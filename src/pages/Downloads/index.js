@@ -34,7 +34,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
         <title>Download Dataset - refine.bio</title>
       </Helmet>
       <BackToTop />
-      <h1 className="downloads__heading">Download Dataset</h1>
+      <h1 className="downloads__heading">My Dataset</h1>
       <Loader fetch={() => fetchDataSetDetails(dataSetId)}>
         {({ isLoading }) =>
           isLoading ? (

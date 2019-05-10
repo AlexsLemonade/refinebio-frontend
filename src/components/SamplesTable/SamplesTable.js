@@ -21,6 +21,7 @@ import { formatSentenceCase } from '../../common/helpers';
 import debounce from 'lodash/debounce';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import apiData from '../../apiData.json';
+import { Hightlight, HText } from '../HighlightedText';
 
 class SamplesTable extends React.Component {
   static defaultProps = {
@@ -106,7 +107,9 @@ class SamplesTable extends React.Component {
                   </div>
                   <div className="samples-table-layout__main">
                     <HorizontalScroll targetSelector=".rt-table">
-                      {makeTable()}
+                      <Hightlight match={state.filterBy}>
+                        {makeTable()}
+                      </Hightlight>
                     </HorizontalScroll>
                   </div>
                   <div className="samples-table-layout__footer">
@@ -258,7 +261,7 @@ function CustomCell({ value }) {
     return <div className="experiment__not-provided">NA</div>;
   }
 
-  return value;
+  return <HText>{value}</HText>;
 }
 
 /**
