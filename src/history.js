@@ -48,4 +48,14 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
+history.listen((location, action) => {
+  // ref https://github.com/ReactTraining/history#listening
+  // reset the scroll position when the user navigates to a new page
+  // except when the action is 'POP', for this case the scroll restoration
+  // will take care
+  if (action !== 'POP') {
+    window.scrollTo(0, 0);
+  }
+});
+
 export default history;
