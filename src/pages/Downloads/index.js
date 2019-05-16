@@ -34,7 +34,6 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
         <title>Download Dataset - refine.bio</title>
       </Helmet>
       <BackToTop />
-      <h1 className="downloads__heading">My Dataset</h1>
       <Loader fetch={() => fetchDataSetDetails(dataSetId)}>
         {({ isLoading }) =>
           isLoading ? (
@@ -42,7 +41,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
           ) : !dataSetCanBeDownloaded ? (
             <DownloadEmpty />
           ) : (
-            <Fragment>
+            <>
               <DownloadBar
                 dataSetId={dataSetId}
                 aggregate_by={aggregate_by}
@@ -52,7 +51,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
                 {...download}
                 onRefreshDataSet={() => fetchDataSetDetails(dataSetId)}
               />
-            </Fragment>
+            </>
           )
         }
       </Loader>

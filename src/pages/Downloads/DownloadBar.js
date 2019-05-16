@@ -17,6 +17,8 @@ import {
   editAggregation,
   editTransformation
 } from '../../state/download/actions';
+import Checkbox from '../../components/Checkbox';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
 let DownloadBar = ({
   dataSetId,
@@ -25,6 +27,7 @@ let DownloadBar = ({
   editAggregation,
   editTransformation
 }) => {
+  const [advancedOptions, setAdvancedOptions] = React.useState(false);
   const aggregation = formatSentenceCase(aggregate_by);
 
   const transformation = getTransformationOptionFromName(
@@ -33,8 +36,12 @@ let DownloadBar = ({
 
   return (
     <div className="downloads__bar">
-      <div className="flex-button-container flex-button-container--left tablet-p">
-        <ShareDatasetButton dataSetId={dataSetId} />
+      <div className="flex-row mb-2">
+        <div className="downloads__heading">My Dataset</div>
+
+        <div>
+          <ShareDatasetButton dataSetId={dataSetId} />
+        </div>
       </div>
 
       <div className="downloads__actions">
@@ -76,6 +83,10 @@ let DownloadBar = ({
               }
             />
           </label>
+          <AdvancedOptionsToggle
+            visible={advancedOptions}
+            onClick={() => setAdvancedOptions(!advancedOptions)}
+          />
         </div>
         <div className="flex-button-container flex-button-container--left">
           <Link className="button" to={`/download?start=true`}>
@@ -83,6 +94,27 @@ let DownloadBar = ({
           </Link>
         </div>
       </div>
+
+      {advancedOptions && (
+        <div className="downloads__advanced-options">
+          <p>
+            <b>Advanced Options</b>
+          </p>
+
+          <Checkbox
+            className="terms-of-use__checkbox"
+            onClick={false}
+            checked={advancedOptions}
+            name="termsOfUse"
+          >
+            <span>Skip quantile normalization for RNA-seq samples</span>
+            <HelpIcon
+              alt="What is quantile normalization?"
+              url="http://docs.refine.bio/en/latest/main_text.html#transformations"
+            />
+          </Checkbox>
+        </div>
+      )}
     </div>
   );
 };
@@ -104,6 +136,14 @@ function HelpIcon({ url = 'http://docs.refine.bio/', alt = '' }) {
       title="What is this?"
     >
       <img className="downloads__help-icon" src={HelpIconImage} alt={alt} />
+    </a>
+  );
+}
+
+function AdvancedOptionsToggle({ visible, onClick }) {
+  return (
+    <a href="javascript:void(0)" onClick={onClick} className="link flex-row">
+      Advanced Options {visible ? <IoIosArrowUp /> : <IoIosArrowDown />}
     </a>
   );
 }
