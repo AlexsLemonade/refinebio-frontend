@@ -1,0 +1,18 @@
+.alert {
+  background-color: #fdfdfd;
+  box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+
+  &__icon {
+    color: #dace00;
+    font-size: 25px;
+    vertical-align: bottom;
+    margin-right: 8px;
+  }
+
+  &__dismiss {
+    margin-left: 8px;
+  }
+}

@@ -19,6 +19,7 @@ import {
 } from '../../state/download/actions';
 import Checkbox from '../../components/Checkbox';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import Alert from '../../components/Alert';
 
 let DownloadBar = ({
   dataSetId,
@@ -27,7 +28,7 @@ let DownloadBar = ({
   editAggregation,
   editTransformation
 }) => {
-  const [advancedOptions, setAdvancedOptions] = React.useState(false);
+  const [advancedOptions, setAdvancedOptions] = React.useState(true);
   const aggregation = formatSentenceCase(aggregate_by);
 
   const transformation = getTransformationOptionFromName(
@@ -100,6 +101,11 @@ let DownloadBar = ({
           <p>
             <b>Advanced Options</b>
           </p>
+
+          <Alert dismissableKey="skip_quantile_normalization">
+            Skipping quantile normalization will make your dataset less
+            comparable to other refine.bio data
+          </Alert>
 
           <Checkbox
             className="terms-of-use__checkbox"
