@@ -61,8 +61,8 @@
 
   &__advanced-options {
     margin-top: 1rem;
-  }
-
-  &__advanced-options-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
