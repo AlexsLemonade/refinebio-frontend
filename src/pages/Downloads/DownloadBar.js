@@ -84,10 +84,14 @@ let DownloadBar = ({
               }
             />
           </label>
-          <AdvancedOptionsToggle
-            visible={advancedOptions}
+          <a
+            href="javascript:void(0)"
             onClick={() => setAdvancedOptions(!advancedOptions)}
-          />
+            className="link flex-row"
+          >
+            Advanced Options{' '}
+            {advancedOptions ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </a>
         </div>
         <div className="flex-button-container flex-button-container--left">
           <Link className="button" to={`/download?start=true`}>
@@ -142,14 +146,6 @@ function HelpIcon({ url = 'http://docs.refine.bio/', alt = '' }) {
       title="What is this?"
     >
       <img className="downloads__help-icon" src={HelpIconImage} alt={alt} />
-    </a>
-  );
-}
-
-function AdvancedOptionsToggle({ visible, onClick }) {
-  return (
-    <a href="javascript:void(0)" onClick={onClick} className="link flex-row">
-      Advanced Options {visible ? <IoIosArrowUp /> : <IoIosArrowDown />}
     </a>
   );
 }

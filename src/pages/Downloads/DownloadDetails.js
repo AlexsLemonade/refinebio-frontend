@@ -172,6 +172,9 @@ const SpeciesSamples = ({
             <h2 className="downloads__species-title">
               {formatSentenceCase(speciesName)} Samples
             </h2>
+            <div className="dot-label dot-label--info">
+              Quantile Normalization will be skipped for RNA-seq samples
+            </div>
             <div className="downloads__sample-stats">
               <p className="downloads__sample-stat">
                 {samplesInSpecie.length}{' '}
@@ -250,6 +253,9 @@ class ExperimentsView extends React.Component {
                   >
                     {experiment.title}
                   </Link>
+                  <div className="dot-label dot-label--info">
+                    Quantile Normalization will be skipped
+                  </div>
                   <div className="downloads__sample-stats">
                     <div className="downloads__sample-stat">
                       <img
