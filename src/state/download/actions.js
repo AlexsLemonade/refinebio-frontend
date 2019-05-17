@@ -204,7 +204,8 @@ export const editDataSet = ({ dataSetId, ...params }) => async (
     is_processing,
     is_processed,
     aggregate_by,
-    scale_by
+    scale_by,
+    quantile_normalize
   } = await Ajax.put(`/dataset/${dataSetId}/`, {
     data: dataSet,
     ...params
@@ -216,7 +217,8 @@ export const editDataSet = ({ dataSetId, ...params }) => async (
       is_processing,
       is_processed,
       aggregate_by,
-      scale_by
+      scale_by,
+      quantile_normalize
     })
   );
 };
@@ -226,6 +228,9 @@ export const editAggregation = ({ dataSetId, aggregation }) =>
 
 export const editTransformation = ({ dataSetId, transformation }) =>
   editDataSet({ dataSetId, scale_by: transformation.toUpperCase() });
+
+export const editQuantileNormalize = ({ dataSetId, quantile_normalize }) =>
+  editDataSet({ dataSetId, quantile_normalize });
 
 export const startDownload = ({
   dataSetId,

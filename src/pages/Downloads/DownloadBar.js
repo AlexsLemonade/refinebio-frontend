@@ -15,7 +15,8 @@ import {
 import { formatSentenceCase } from '../../common/helpers';
 import {
   editAggregation,
-  editTransformation
+  editTransformation,
+  editQuantileNormalize
 } from '../../state/download/actions';
 import Checkbox from '../../components/Checkbox';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
@@ -25,10 +26,14 @@ let DownloadBar = ({
   dataSetId,
   aggregate_by,
   scale_by,
+  quantile_normalize,
   editAggregation,
-  editTransformation
+  editTransformation,
+  editQuantileNormalize
 }) => {
-  const [advancedOptions, setAdvancedOptions] = React.useState(true);
+  const [advancedOptions, setAdvancedOptions] = React.useState(
+    !quantile_normalize
+  );
   const aggregation = formatSentenceCase(aggregate_by);
 
   const transformation = getTransformationOptionFromName(
@@ -84,14 +89,13 @@ let DownloadBar = ({
               }
             />
           </label>
-          <a
-            href="javascript:void(0)"
-            onClick={() => setAdvancedOptions(!advancedOptions)}
+          <button
             className="link flex-row"
+            onClick={() => setAdvancedOptions(!advancedOptions)}
           >
             Advanced Options{' '}
             {advancedOptions ? <IoIosArrowUp /> : <IoIosArrowDown />}
-          </a>
+          </button>
         </div>
         <div className="flex-button-container flex-button-container--left">
           <Link className="button" to={`/download?start=true`}>
@@ -106,15 +110,22 @@ let DownloadBar = ({
             <b>Advanced Options</b>
           </p>
 
-          <Alert dismissableKey="skip_quantile_normalization">
-            Skipping quantile normalization will make your dataset less
-            comparable to other refine.bio data
-          </Alert>
+          {!quantile_normalize && (
+            <Alert dismissableKey="skip_quantile_normalization">
+              Skipping quantile normalization will make your dataset less
+              comparable to other refine.bio data
+            </Alert>
+          )}
 
           <Checkbox
             className="terms-of-use__checkbox"
-            onClick={false}
-            checked={advancedOptions}
+            onClick={() =>
+              editQuantileNormalize({
+                dataSetId,
+                quantile_normalize: !quantile_normalize
+              })
+            }
+            checked={!quantile_normalize}
             name="termsOfUse"
           >
             <span>Skip quantile normalization for RNA-seq samples</span>
@@ -132,7 +143,8 @@ DownloadBar = connect(
   null,
   {
     editAggregation,
-    editTransformation
+    editTransformation,
+    editQuantileNormalize
   }
 )(DownloadBar);
 export default DownloadBar;

@@ -32,6 +32,8 @@ import union from 'lodash/union';
 
 import * as routes from '../../routes';
 
+const RNA_SEQ = 'RNA-SEQ';
+
 let DownloadDetails = ({
   dataSetId,
   dataSet,
@@ -39,6 +41,7 @@ let DownloadDetails = ({
   experiments,
   aggregate_by,
   scale_by,
+  quantile_normalize,
 
   removeSamples,
   removeExperiment,
@@ -114,6 +117,7 @@ let DownloadDetails = ({
             samplesBySpecies={samplesBySpecies}
             removeSamples={removeSamples}
             isImmutable={isImmutable}
+            quantile_normalize={quantile_normalize}
           />
           <ExperimentsView
             dataSetId={dataSetId}
@@ -122,6 +126,7 @@ let DownloadDetails = ({
             experiments={experiments}
             removeExperiment={removeExperiment}
             isImmutable={isImmutable}
+            quantile_normalize={quantile_normalize}
           />
         </TabControl>
       </section>
@@ -144,6 +149,7 @@ const SpeciesSamples = ({
   dataSet,
   samplesBySpecies,
   experiments,
+  quantile_normalize,
   removeSamples,
   isImmutable = false
 }) => (
@@ -166,15 +172,26 @@ const SpeciesSamples = ({
         );
       sampleMetadataFields = union(...sampleMetadataFields);
 
+      // we can deduct that there're rna seq samples for this organism if some of the
+      // experiments has samples of the same organism and it's also rna seq
+      const hasRnaSeqExperiments = Object.values(experiments).some(
+        experiment =>
+          experiment.technology === RNA_SEQ &&
+          experiment.organisms.includes(speciesName)
+      );
+
       return (
         <div className="downloads__sample" key={speciesName}>
           <div className="downloads__sample-info">
             <h2 className="downloads__species-title">
               {formatSentenceCase(speciesName)} Samples
             </h2>
-            <div className="dot-label dot-label--info">
-              Quantile Normalization will be skipped for RNA-seq samples
-            </div>
+            {hasRnaSeqExperiments &&
+              !quantile_normalize && (
+                <div className="dot-label dot-label--info">
+                  Quantile Normalization will be skipped for RNA-seq samples
+                </div>
+              )}
             <div className="downloads__sample-stats">
               <p className="downloads__sample-stat">
                 {samplesInSpecie.length}{' '}
@@ -218,6 +235,7 @@ class ExperimentsView extends React.Component {
       dataSet,
       experiments,
       removeExperiment,
+      quantile_normalize,
       isImmutable = false
     } = this.props;
 
@@ -253,9 +271,12 @@ class ExperimentsView extends React.Component {
                   >
                     {experiment.title}
                   </Link>
-                  <div className="dot-label dot-label--info">
-                    Quantile Normalization will be skipped
-                  </div>
+                  {experiment.technology === RNA_SEQ &&
+                    !quantile_normalize && (
+                      <div className="dot-label dot-label--info">
+                        Quantile Normalization will be skipped
+                      </div>
+                    )}
                   <div className="downloads__sample-stats">
                     <div className="downloads__sample-stat">
                       <img
