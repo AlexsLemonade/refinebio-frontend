@@ -111,7 +111,7 @@ let DownloadBar = ({
           </p>
 
           {!quantile_normalize && (
-            <Alert dismissableKey="skip_quantile_normalization">
+            <Alert dismissableKey={`skip_quantile_normalization_${dataSetId}`}>
               Skipping quantile normalization will make your dataset less
               comparable to other refine.bio data
             </Alert>
