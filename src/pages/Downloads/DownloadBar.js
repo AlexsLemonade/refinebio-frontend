@@ -15,16 +15,25 @@ import {
 import { formatSentenceCase } from '../../common/helpers';
 import {
   editAggregation,
-  editTransformation
+  editTransformation,
+  editQuantileNormalize
 } from '../../state/download/actions';
+import Checkbox from '../../components/Checkbox';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import Alert from '../../components/Alert';
 
 let DownloadBar = ({
   dataSetId,
   aggregate_by,
   scale_by,
+  quantile_normalize,
   editAggregation,
-  editTransformation
+  editTransformation,
+  editQuantileNormalize
 }) => {
+  const [advancedOptions, setAdvancedOptions] = React.useState(
+    !quantile_normalize
+  );
   const aggregation = formatSentenceCase(aggregate_by);
 
   const transformation = getTransformationOptionFromName(
@@ -33,8 +42,12 @@ let DownloadBar = ({
 
   return (
     <div className="downloads__bar">
-      <div className="flex-button-container flex-button-container--left tablet-p">
-        <ShareDatasetButton dataSetId={dataSetId} />
+      <div className="flex-row mb-2">
+        <div className="downloads__heading">My Dataset</div>
+
+        <div>
+          <ShareDatasetButton dataSetId={dataSetId} />
+        </div>
       </div>
 
       <div className="downloads__actions">
@@ -76,6 +89,13 @@ let DownloadBar = ({
               }
             />
           </label>
+          <button
+            className="link flex-row"
+            onClick={() => setAdvancedOptions(!advancedOptions)}
+          >
+            Advanced Options{' '}
+            {advancedOptions ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
         </div>
         <div className="flex-button-container flex-button-container--left">
           <Link className="button" to={`/download?start=true`}>
@@ -83,6 +103,37 @@ let DownloadBar = ({
           </Link>
         </div>
       </div>
+
+      {advancedOptions && (
+        <div className="downloads__advanced-options">
+          <p>
+            <b>Advanced Options</b>
+          </p>
+
+          {!quantile_normalize && (
+            <Alert dismissableKey={`skip_quantile_normalization_${dataSetId}`}>
+              Skipping quantile normalization will make your dataset less
+              comparable to other refine.bio data
+            </Alert>
+          )}
+
+          <Checkbox
+            onClick={() =>
+              editQuantileNormalize({
+                dataSetId,
+                quantile_normalize: !quantile_normalize
+              })
+            }
+            checked={!quantile_normalize}
+          >
+            <span>Skip quantile normalization for RNA-seq samples</span>
+            <HelpIcon
+              alt="What is quantile normalization?"
+              url="http://docs.refine.bio/en/latest/main_text.html#transformations"
+            />
+          </Checkbox>
+        </div>
+      )}
     </div>
   );
 };
@@ -90,7 +141,8 @@ DownloadBar = connect(
   null,
   {
     editAggregation,
-    editTransformation
+    editTransformation,
+    editQuantileNormalize
   }
 )(DownloadBar);
 export default DownloadBar;

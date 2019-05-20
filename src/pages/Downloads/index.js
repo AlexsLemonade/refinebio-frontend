@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
@@ -14,7 +14,13 @@ import DownloadStart from './DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
 
 let Download = ({ download, location, fetchDataSetDetails }) => {
-  const { dataSetId, dataSet, aggregate_by, scale_by } = download;
+  const {
+    dataSetId,
+    dataSet,
+    aggregate_by,
+    scale_by,
+    quantile_normalize
+  } = download;
   const dataSetCanBeDownloaded = dataSet && Object.keys(dataSet).length > 0;
   const params = getQueryParamObject(location.search);
 
@@ -34,7 +40,6 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
         <title>Download Dataset - refine.bio</title>
       </Helmet>
       <BackToTop />
-      <h1 className="downloads__heading">My Dataset</h1>
       <Loader fetch={() => fetchDataSetDetails(dataSetId)}>
         {({ isLoading }) =>
           isLoading ? (
@@ -42,17 +47,18 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
           ) : !dataSetCanBeDownloaded ? (
             <DownloadEmpty />
           ) : (
-            <Fragment>
+            <>
               <DownloadBar
                 dataSetId={dataSetId}
                 aggregate_by={aggregate_by}
                 scale_by={scale_by}
+                quantile_normalize={quantile_normalize}
               />
               <DownloadDetails
                 {...download}
                 onRefreshDataSet={() => fetchDataSetDetails(dataSetId)}
               />
-            </Fragment>
+            </>
           )
         }
       </Loader>

@@ -193,5 +193,14 @@ fieldset {
   }
 }
 
+.flex-row {
+  display: flex;
+  flex-flow: row wrap;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
 @import 'common/styles/type';
 @import 'common/styles/form';

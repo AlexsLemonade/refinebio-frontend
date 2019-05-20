@@ -1,3 +1,5 @@
+@import '../../common/styles/variables';
+
 .share-link-modal {
   padding: 40px 80px;
   max-width: 625px;
@@ -11,4 +13,56 @@
   vertical-align: super;
   width: 16px;
   height: 16px;
+}
+
+.downloads {
+  &__heading {
+    font-size: 1.625rem;
+  }
+
+  &__bar,
+  &__fieldset {
+    display: flex;
+  }
+
+  &__fieldset {
+    margin-bottom: 2 * 8px;
+    align-items: center;
+
+    @include tablet {
+      margin-bottom: 0;
+    }
+  }
+
+  &__bar {
+    border-bottom: 1px solid $gray;
+    padding-bottom: 1rem;
+    flex-direction: column;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+
+    @include tablet {
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 0;
+
+      flex: 2 100%;
+      justify-content: space-between;
+    }
+
+    @include desktop {
+      flex: 1 auto;
+    }
+  }
+
+  &__advanced-options {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

@@ -32,6 +32,7 @@
     position: relative;
     padding-left: 24px;
     word-break: break-all;
+    display: flex;
 
     &:before,
     &:after {
