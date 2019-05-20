@@ -118,7 +118,6 @@ let DownloadBar = ({
           )}
 
           <Checkbox
-            className="terms-of-use__checkbox"
             onClick={() =>
               editQuantileNormalize({
                 dataSetId,
@@ -126,7 +125,6 @@ let DownloadBar = ({
               })
             }
             checked={!quantile_normalize}
-            name="termsOfUse"
           >
             <span>Skip quantile normalization for RNA-seq samples</span>
             <HelpIcon

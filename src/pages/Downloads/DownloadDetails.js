@@ -172,7 +172,7 @@ const SpeciesSamples = ({
         );
       sampleMetadataFields = union(...sampleMetadataFields);
 
-      // we can deduct that there're rna seq samples for this organism if some of the
+      // we can deduce that there're rna seq samples for this organism if some of the
       // experiments has samples of the same organism and it's also rna seq
       const hasRnaSeqExperiments = Object.values(experiments).some(
         experiment =>
