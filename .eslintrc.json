@@ -1,3 +1,17 @@
 {
-  "extends": ["airbnb", "react-app"]
+  "extends": ["airbnb", "react-app"],
+  "plugins": ["react-hooks"],
+  "rules": {
+    "camelcase": "warn",
+    "comma-dangle": 0,
+    "react/jsx-filename-extension": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "react/prop-types": 0,
+    "arrow-parens": 0,
+    "no-console": ["error", { "allow": ["error"] }],
+    "no-nested-ternary": "warn",
+    "react/require-default-props": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
 }
