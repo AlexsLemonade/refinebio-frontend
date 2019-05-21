@@ -32,6 +32,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'class-methods-use-this': 0,
+    'no-use-before-define': 0,
 
     // Not sure if we should enforce these rules.
     'react/prop-types': 0,
