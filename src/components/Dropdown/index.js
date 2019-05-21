@@ -6,7 +6,7 @@ const Dropdown = ({
   selectedOption = '',
   onChange,
   disabled = false,
-  label = x => x
+  label = x => x,
 }) => {
   return (
     <div className="dropdown">

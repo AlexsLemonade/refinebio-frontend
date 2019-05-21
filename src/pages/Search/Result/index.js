@@ -4,16 +4,20 @@ import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
 import './Result.scss';
-import { formatSentenceCase, getMetadataFields } from '../../../common/helpers';
+import {
+  formatSentenceCase,
+  getMetadataFields,
+  formatPlatformName,
+} from '../../../common/helpers';
 import DataSetSampleActions from '../../../components/DataSetSampleActions';
 import * as routes from '../../../routes';
 import { HText } from '../../../components/HighlightedText';
 import TechnologyBadge, {
   MICROARRAY,
-  RNA_SEQ
+  RNA_SEQ,
 } from '../../../components/TechnologyBadge';
 import { NDownloadableSamples } from '../../../components/Strings';
-import { formatPlatformName } from '../../../common/helpers';
+
 import RequestExperimentButton from '../../Experiment/RequestExperimentButton';
 
 const Result = ({ result, query }) => {
@@ -47,8 +51,8 @@ const Result = ({ result, query }) => {
                 source_url: result.source_url,
                 source_database: result.source_database,
                 organism_names: result.organism_names,
-                samples: []
-              }
+                samples: [],
+              },
             })}
           >
             {result.title ? <HText>{result.title}</HText> : 'No title.'}
@@ -62,8 +66,8 @@ const Result = ({ result, query }) => {
             dataSetSlice={{
               [result.accession_code]: {
                 all: true,
-                total: result.num_processed_samples
-              }
+                total: result.num_processed_samples,
+              },
             }}
           />
         )}
@@ -133,8 +137,8 @@ const Result = ({ result, query }) => {
               source_url: result.source_url,
               source_database: result.source_database,
               organism_names: result.organism_names,
-              samples: []
-            }
+              samples: [],
+            },
           })}
         >
           View Samples

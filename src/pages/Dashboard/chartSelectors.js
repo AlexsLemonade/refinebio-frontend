@@ -11,7 +11,7 @@ const formatTimeLabel = (date, range) => {
       day: 'HH:00',
       week: 'dddd',
       month: 'MMM Do',
-      year: 'MMMM'
+      year: 'MMMM',
     }[range] || null;
   return moment(date).format(format);
 };
@@ -22,16 +22,16 @@ export function getTotalLengthOfQueuesByType(stats) {
   return [
     {
       name: 'Survey',
-      value: survey_jobs.open + survey_jobs.pending
+      value: survey_jobs.open + survey_jobs.pending,
     },
     {
       name: 'Downloader',
-      value: downloader_jobs.open + downloader_jobs.pending
+      value: downloader_jobs.open + downloader_jobs.pending,
     },
     {
       name: 'Processor',
-      value: processor_jobs.open + processor_jobs.pending
-    }
+      value: processor_jobs.open + processor_jobs.pending,
+    },
   ];
 }
 
@@ -39,20 +39,20 @@ export function getJobsByStatus(stats) {
   return JOB_NAMES.reduce((accum, jobType) => {
     accum[jobType] = JOB_STATUS.map(status => ({
       name: status,
-      value: stats[jobType][status]
+      value: stats[jobType][status],
     }));
     return accum;
   }, {});
 }
 
 function convertSecToMinHours(sec) {
-  const hours = Math.floor(sec / 3600),
-    minutes = Math.round((sec % 3600) / 60);
+  const hours = Math.floor(sec / 3600);
+
+  const minutes = Math.round((sec % 3600) / 60);
   if (isNaN(hours) || isNaN(minutes)) {
     return `N/A`;
-  } else {
-    return `${hours} hr ${minutes} min`;
   }
+  return `${hours} hr ${minutes} min`;
 }
 
 export function getAllAverageTimeTilCompletion(stats) {
@@ -104,12 +104,12 @@ export function getJobsCompletedOverTime(stats, range) {
     ([
       { date, total: survey },
       { total: downloader },
-      { total: processor }
+      { total: processor },
     ]) => ({
       date,
       survey,
       downloader,
-      processor
+      processor,
     })
   );
 }
@@ -125,8 +125,8 @@ export function getVolumeOfDataOverTime(stats, range) {
 export function getExperimentsCreatedOverTime(stats, range) {
   return transformTimeline(stats.experiments.timeline, range).map(
     ({ date, total }) => ({
-      date: date,
-      experiments: total
+      date,
+      experiments: total,
     })
   );
 }
@@ -143,11 +143,11 @@ export function getSamplesOverTime(stats, range) {
   return zip(samplesTimeline, processedSamplesTimeline).map(
     ([
       { date, total: totalSamplesUnprocessed },
-      { total: totalSamplesProcessed }
+      { total: totalSamplesProcessed },
     ]) => ({
-      date: date,
+      date,
       unprocessed: totalSamplesUnprocessed,
-      processed: totalSamplesProcessed
+      processed: totalSamplesProcessed,
     })
   );
 }
@@ -160,7 +160,7 @@ export function getJobsByType(runningJobs, pendingJobs) {
   return Object.keys(runningJobs).map(name => ({
     name,
     running: runningJobs[name],
-    pending: pendingJobs[name]
+    pending: pendingJobs[name],
   }));
 }
 
@@ -174,19 +174,19 @@ export function getJobsByType(runningJobs, pendingJobs) {
 function transformTimeline(timeline, range, fields = ['total']) {
   const result = [...getTimeline(range)].map(date => {
     const result = {
-      date
+      date,
     };
-    for (let field of fields) {
+    for (const field of fields) {
       result[field] = 0;
     }
     return result;
   });
 
-  for (let observation of timeline) {
-    let observationDate = observation.start;
+  for (const observation of timeline) {
+    const observationDate = observation.start;
     // find the closest datapoint to `data.start`
     let closestTemp = null;
-    for (let graphPoint of result) {
+    for (const graphPoint of result) {
       if (
         !closestTemp ||
         Math.abs(moment(observationDate).diff(graphPoint.date)) <
@@ -197,7 +197,7 @@ function transformTimeline(timeline, range, fields = ['total']) {
     }
     if (closestTemp) {
       // add the total samples to that datapoint
-      for (let field of fields) {
+      for (const field of fields) {
         closestTemp[field] = observation[field];
       }
     }
@@ -205,7 +205,7 @@ function transformTimeline(timeline, range, fields = ['total']) {
 
   return result.map(({ date, ...rest }) => ({
     ...rest,
-    date: formatTimeLabel(date, range)
+    date: formatTimeLabel(date, range),
   }));
 }
 
@@ -223,32 +223,32 @@ function* getTimeline(range) {
   const data = {
     day: {
       start: now.clone().subtract(1, 'days'),
-      interval: moment.duration(1, 'hour')
+      interval: moment.duration(1, 'hour'),
     },
     week: {
       start: now
         .clone()
         .subtract(6, 'days')
         .startOf('day'),
-      interval: moment.duration(1, 'days')
+      interval: moment.duration(1, 'days'),
     },
     month: {
       start: now
         .clone()
         .subtract(30, 'days')
         .startOf('day'),
-      interval: moment.duration(1, 'days')
+      interval: moment.duration(1, 'days'),
     },
     year: {
       start: now
         .clone()
         .subtract(365, 'days')
         .startOf('month'),
-      interval: moment.duration(1, 'months')
-    }
+      interval: moment.duration(1, 'months'),
+    },
   };
   let nextDate = data[range].start;
-  let interval = data[range].interval;
+  const interval = data[range].interval;
   yield nextDate.format();
 
   while (true) {

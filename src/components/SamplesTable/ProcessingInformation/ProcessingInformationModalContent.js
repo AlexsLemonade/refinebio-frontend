@@ -14,7 +14,7 @@ export default class ProcessingInformationModalContent extends React.Component {
 
     const pipelinesText = results.map(result => result.processor.name);
     const isSubmitterProcessed = isEqual(pipelinesText, [
-      'Submitter-processed'
+      'Submitter-processed',
     ]);
 
     return (
@@ -127,7 +127,7 @@ export default class ProcessingInformationModalContent extends React.Component {
     MultiQC: null,
     Tximport: TxtimportProtocol,
 
-    'Submitter-processed': SubmitterSuppliedProtocol
+    'Submitter-processed': SubmitterSuppliedProtocol,
   };
 
   _getProtocolDescription(name) {

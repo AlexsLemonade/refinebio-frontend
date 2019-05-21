@@ -14,7 +14,7 @@ export function useDom(ref, fn) {
     if (ref.current) {
       setResult(fn(ref.current));
     }
-  });
+  }, [ref, fn]);
 
   return result;
 }
@@ -31,24 +31,22 @@ export function useInterval(callback, delay) {
   });
 
   // Set up the interval.
-  React.useEffect(
-    () => {
-      function tick() {
-        savedCallback.current();
-      }
-      if (delay !== null) {
-        let id = setInterval(tick, delay);
-        return () => clearInterval(id);
-      }
-    },
-    [delay]
-  );
+  React.useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      const id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+    return null;
+  }, [delay]);
 }
 
 export function useHistory() {
   return {
     pathname: history.location.pathname,
-    params: getQueryParamObject(history.location.search)
+    params: getQueryParamObject(history.location.search),
   };
 }
 

@@ -1,6 +1,6 @@
-import { fetchDataSet, startDownload } from './actions';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { fetchDataSet, startDownload } from './actions';
 import { REPORT_ERROR } from '../reportError';
 
 const middlewares = [thunk];
@@ -24,7 +24,7 @@ describe('fetchDataSet', () => {
     expect(global.fetch.mock.calls[0][0]).toEqual(`/dataset/${DataSetId}/`);
     expect(store.getActions().map(x => x.type)).toEqual([
       'DOWNLOAD_DATASET_FETCH',
-      'DOWNLOAD_DATASET_UPDATE'
+      'DOWNLOAD_DATASET_UPDATE',
     ]);
   });
 
@@ -43,7 +43,7 @@ describe('fetchDataSet', () => {
     expect(store.getActions().map(x => x.type)).toEqual([
       'DOWNLOAD_DATASET_FETCH',
       'DOWNLOAD_CLEAR',
-      REPORT_ERROR
+      REPORT_ERROR,
     ]);
   });
 
@@ -64,7 +64,7 @@ describe('fetchDataSet', () => {
     expect(global.fetch.mock.calls[0][0]).toEqual(`/dataset/${DataSetId}/`);
     expect(store.getActions().map(x => x.type)).toEqual([
       'DOWNLOAD_DATASET_FETCH',
-      'DOWNLOAD_CLEAR'
+      'DOWNLOAD_CLEAR',
     ]);
   });
 });
@@ -81,19 +81,19 @@ describe('startDownload', () => {
       );
 
     const store = mockStore({
-      download: { dataSetId: DataSetId, dataSet: DataSet }
+      download: { dataSetId: DataSetId, dataSet: DataSet },
     });
 
     await store.dispatch(
       startDownload({
         dataSetId: DataSetId,
-        dataSet: DataSet
+        dataSet: DataSet,
       })
     );
     expect(store.getActions().map(x => x.type)).toEqual([
       'LOAD_TOKEN',
       'DOWNLOAD_CLEAR',
-      'refinebio/CALL_HISTORY_METHOD'
+      'refinebio/CALL_HISTORY_METHOD',
     ]);
   });
 });

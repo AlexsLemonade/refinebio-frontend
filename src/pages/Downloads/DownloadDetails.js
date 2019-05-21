@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { Link } from 'react-router-dom';
+import mapValues from 'lodash/mapValues';
+import union from 'lodash/union';
 import Button from '../../components/Button';
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
@@ -15,20 +18,16 @@ import SamplesTable from '../../components/SamplesTable/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 
 import Radio from '../../components/Radio';
-import { Link } from 'react-router-dom';
 import {
   getTotalSamplesAdded,
   getExperimentCountBySpecies,
-  getTotalExperimentsAdded
+  getTotalExperimentsAdded,
 } from '../../state/download/reducer';
 import {
   removeExperiment,
   removeSamples,
-  clearDataSet
+  clearDataSet,
 } from '../../state/download/actions';
-
-import mapValues from 'lodash/mapValues';
-import union from 'lodash/union';
 
 import * as routes from '../../routes';
 
@@ -48,13 +47,13 @@ let DownloadDetails = ({
   clearDataSet,
   isImmutable = false,
   isEmbed = false,
-  onRefreshDataSet
+  onRefreshDataSet,
 }) => {
   const totalSamples = getTotalSamplesAdded({ dataSet });
   const totalExperiments = getTotalExperimentsAdded({ dataSet });
   const experimentCountBySpecies = getExperimentCountBySpecies({
     experiments,
-    dataSet
+    dataSet,
   });
 
   return (
@@ -138,7 +137,7 @@ DownloadDetails = connect(
   {
     removeSamples,
     removeExperiment,
-    clearDataSet
+    clearDataSet,
   }
 )(DownloadDetails);
 export default DownloadDetails;
@@ -151,7 +150,7 @@ const SpeciesSamples = ({
   experiments,
   quantile_normalize,
   removeSamples,
-  isImmutable = false
+  isImmutable = false,
 }) => (
   <div className="downloads__card">
     {Object.keys(samplesBySpecies).map(speciesName => {
@@ -186,12 +185,11 @@ const SpeciesSamples = ({
             <h2 className="downloads__species-title">
               {formatSentenceCase(speciesName)} Samples
             </h2>
-            {hasRnaSeqExperiments &&
-              !quantile_normalize && (
-                <div className="dot-label dot-label--info">
-                  Quantile Normalization will be skipped for RNA-seq samples
-                </div>
-              )}
+            {hasRnaSeqExperiments && !quantile_normalize && (
+              <div className="dot-label dot-label--info">
+                Quantile Normalization will be skipped for RNA-seq samples
+              </div>
+            )}
             <div className="downloads__sample-stats">
               <p className="downloads__sample-stat">
                 {samplesInSpecie.length}{' '}
@@ -206,7 +204,7 @@ const SpeciesSamples = ({
                 isImmutable={isImmutable}
                 fetchSampleParams={{
                   dataset_id: dataSetId,
-                  organism__name: speciesName
+                  organism__name: speciesName,
                 }}
                 sampleMetadataFields={sampleMetadataFields}
               />
@@ -236,7 +234,7 @@ class ExperimentsView extends React.Component {
       experiments,
       removeExperiment,
       quantile_normalize,
-      isImmutable = false
+      isImmutable = false,
     } = this.props;
 
     if (!dataSet || !Object.keys(dataSet).length) {
@@ -271,12 +269,11 @@ class ExperimentsView extends React.Component {
                   >
                     {experiment.title}
                   </Link>
-                  {experiment.technology === RNA_SEQ &&
-                    !quantile_normalize && (
-                      <div className="dot-label dot-label--info">
-                        Quantile Normalization will be skipped
-                      </div>
-                    )}
+                  {experiment.technology === RNA_SEQ && !quantile_normalize && (
+                    <div className="dot-label dot-label--info">
+                      Quantile Normalization will be skipped
+                    </div>
+                  )}
                   <div className="downloads__sample-stats">
                     <div className="downloads__sample-stat">
                       <img
@@ -323,7 +320,7 @@ class ExperimentsView extends React.Component {
                       <ViewSamplesButtonModal
                         fetchSampleParams={{
                           dataset_id: this.props.dataSetId,
-                          experiment_accession_code: experiment.accession_code
+                          experiment_accession_code: experiment.accession_code,
                         }}
                         onRefreshDataSet={onRefreshDataSet}
                         dataSet={{ [experiment.accession_code]: addedSamples }}
@@ -351,7 +348,7 @@ class ExperimentsView extends React.Component {
   }
 
   _renderFilters() {
-    let organismsList = Object.keys(this.props.dataSet)
+    const organismsList = Object.keys(this.props.dataSet)
       .map(id => this.props.experiments[id].organisms)
       // flatten array https://stackoverflow.com/a/33680003/763705
       .reduce((accum, organisms) => accum.concat(organisms), []);
@@ -380,7 +377,7 @@ class ExperimentsView extends React.Component {
             <Radio
               readOnly
               checked={this.state.organism === organism}
-              onClick={() => this.setState({ organism: organism })}
+              onClick={() => this.setState({ organism })}
             >
               {formatSentenceCase(organism)}
             </Radio>
@@ -399,11 +396,11 @@ class ExperimentsView extends React.Component {
  */
 class ViewSamplesButtonModal extends React.Component {
   static defaultProps = {
-    sampleMetadataFields: []
+    sampleMetadataFields: [],
   };
 
   state = {
-    dataSet: {}
+    dataSet: {},
   };
 
   render() {
@@ -417,7 +414,7 @@ class ViewSamplesButtonModal extends React.Component {
               // copy the list of accession codes before displaying the modal dialog. So that the list doesn't get
               // modified if the user adds/removes any sample
               this.setState((state, props) => ({
-                dataSet: props.dataSet
+                dataSet: props.dataSet,
               }));
               showModal();
             }}
@@ -427,8 +424,8 @@ class ViewSamplesButtonModal extends React.Component {
           className: 'samples-modal',
           fillPage: true,
           style: {
-            content: { maxWidth: this.modalWidth() }
-          }
+            content: { maxWidth: this.modalWidth() },
+          },
         }}
         onClose={() =>
           this.props.onRefreshDataSet &&
@@ -455,12 +452,13 @@ class ViewSamplesButtonModal extends React.Component {
     // https://github.com/AlexsLemonade/refinebio-frontend/issues/495#issuecomment-459504896
     if (totalColumns <= 5) {
       return 1100;
-    } else if (totalColumns === 6) {
-      return 1300;
-    } else if (totalColumns === 7) {
-      return 1500;
-    } else {
-      return 1800;
     }
+    if (totalColumns === 6) {
+      return 1300;
+    }
+    if (totalColumns === 7) {
+      return 1500;
+    }
+    return 1800;
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
 import './Layout.scss';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import Notification from '../Notification';
 
 let Layout = ({ children, location }) => {

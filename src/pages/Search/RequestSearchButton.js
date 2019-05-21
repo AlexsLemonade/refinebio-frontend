@@ -33,8 +33,8 @@ let RequestSearchButton = ({ query, push }) => {
               push({
                 pathname: '/',
                 state: {
-                  message: 'Request for Experiment Received!'
-                }
+                  message: 'Request for Experiment Received!',
+                },
               });
             }}
             renderHeader={({ errors, touched }) => (
@@ -53,12 +53,11 @@ let RequestSearchButton = ({ query, push }) => {
                     Only accessions from GEO, SRA, and ArrayExpress are
                     accepted.
                   </div>
-                  {touched['accession_codes'] &&
-                    errors['accession_codes'] && (
-                      <div className="color-error">
-                        {errors['accession_codes']}
-                      </div>
-                    )}
+                  {touched['accession_codes'] && errors['accession_codes'] && (
+                    <div className="color-error">
+                      {errors['accession_codes']}
+                    </div>
+                  )}
                   <Field
                     type="text"
                     name="accession_codes"

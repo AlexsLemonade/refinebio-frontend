@@ -11,7 +11,7 @@ const Radio = ({
   disabled,
   onClick,
   readOnly,
-  onBlur
+  onBlur,
 }) => (
   <div className={classnames('radio', className)}>
     <input
@@ -26,7 +26,7 @@ const Radio = ({
       onBlur={onBlur}
     />
     <label className="radio__label" htmlFor={name} onClick={onClick}>
-      {children ? children : name}
+      {children || name}
     </label>
   </div>
 );
@@ -39,7 +39,7 @@ export const RadioField = ({
   id,
   label,
   className,
-  value
+  value,
 }) => (
   <Radio
     name={name}

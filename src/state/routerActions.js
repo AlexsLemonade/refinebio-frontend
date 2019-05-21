@@ -5,7 +5,7 @@ export const CALL_HISTORY_METHOD = 'refinebio/CALL_HISTORY_METHOD';
 function updateLocation(method) {
   return (...args) => ({
     type: CALL_HISTORY_METHOD,
-    payload: { method, args }
+    payload: { method, args },
   });
 }
 

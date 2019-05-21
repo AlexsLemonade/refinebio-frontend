@@ -6,7 +6,7 @@ NProgress.configure({
   easing: 'ease',
   speed: 500,
   trickleSpeed: 200,
-  minimum: 0.65
+  minimum: 0.65,
 });
 
 /**

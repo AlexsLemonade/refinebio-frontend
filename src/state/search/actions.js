@@ -1,8 +1,8 @@
+import pickBy from 'lodash/pickBy';
 import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { getUrlParams } from './reducer';
-import pickBy from 'lodash/pickBy';
 
 export const MOST_SAMPLES = 'MostSamples';
 
@@ -11,7 +11,7 @@ export const Ordering = {
   MostSamples: '-num_processed_samples',
   LeastSamples: 'num_processed_samples',
   Newest: '-source_first_published',
-  Oldest: 'source_first_published'
+  Oldest: 'source_first_published',
 };
 
 // This action updates the current search url with new paramters, which in turn triggers a call
@@ -26,7 +26,7 @@ const navigateToResults = ({
   size,
   filters,
   filterOrder,
-  ordering
+  ordering,
 }) => {
   const urlParams = {
     q: query,
@@ -35,11 +35,11 @@ const navigateToResults = ({
     ordering: ordering !== '' ? ordering : undefined,
     filter_order:
       filterOrder && filterOrder.length > 0 ? filterOrder.join(',') : undefined,
-    ...filters
+    ...filters,
   };
 
   return push({
-    search: `${getQueryString(urlParams)}`
+    search: `${getQueryString(urlParams)}`,
   });
 };
 
@@ -54,7 +54,7 @@ export function fetchResults({
   size = 10,
   ordering = Ordering.BestMatch,
   filterOrder = [],
-  filters: appliedFilters
+  filters: appliedFilters,
 }) {
   return async (dispatch, getState) => {
     try {
@@ -63,13 +63,13 @@ export function fetchResults({
         limit: size,
         offset: (page - 1) * size,
         ordering: ordering || Ordering.BestMatch,
-        ...appliedFilters
+        ...appliedFilters,
       });
 
       // do accession code search
       if (isAccessionCode(query) && page === 1) {
-        let { results: topResults } = await Ajax.get('/es/', {
-          search: `accession_code:${query}`
+        const { results: topResults } = await Ajax.get('/es/', {
+          search: `accession_code:${query}`,
         });
 
         // mark top results
@@ -99,8 +99,8 @@ export function fetchResults({
             limit: 1,
             ...{
               ...appliedFilters,
-              [lastFilterName]: undefined
-            }
+              [lastFilterName]: undefined,
+            },
           });
           previousFilters = transformFacets(previousFacets);
         }
@@ -109,7 +109,7 @@ export function fetchResults({
           ...filters,
           // on the last filter category, use the numbers from the previous set
           // to enable interactive filtering
-          [lastFilterName]: previousFilters[lastFilterName]
+          [lastFilterName]: previousFilters[lastFilterName],
         };
       }
 
@@ -128,8 +128,8 @@ export function fetchResults({
           // example keep the other parameters
           resultsPerPage: size,
           currentPage: page,
-          appliedFilters
-        }
+          appliedFilters,
+        },
       });
     } catch (error) {
       dispatch(reportError(error));
@@ -150,7 +150,7 @@ function transformFacets(facets) {
     publication: facets['has_publication']
       ? { has_publication: facets['has_publication']['true'] || 0 }
       : null,
-    platform: facets['platform_accession_codes']
+    platform: facets['platform_accession_codes'],
   };
 }
 
@@ -163,7 +163,7 @@ export const triggerSearch = searchTerm => (dispatch, getState) => {
       query: searchTerm,
       page: 1,
       filters: {},
-      ordering: Ordering.MostSamples
+      ordering: Ordering.MostSamples,
     })
   );
 };
@@ -183,7 +183,7 @@ export function toggledFilter(filterType, filterValue, trackOrder = true) {
           filters,
           type: filterType,
           value: filterValue,
-          filterOrder
+          filterOrder,
         })
       : [];
 
@@ -202,14 +202,14 @@ export const updateFilters = (newFilters, filterOrder = []) => (
     navigateToResults({
       ...params,
       page: 1,
-      filterOrder: filterOrder,
-      filters: newFilters
+      filterOrder,
+      filters: newFilters,
     })
   );
 };
 
 export const clearFilters = () => dispatch => {
-  let newFilters = {};
+  const newFilters = {};
   dispatch(updateFilters(newFilters));
 };
 
@@ -220,7 +220,7 @@ export const updateOrdering = newOrdering => (dispatch, getState) => {
     navigateToResults({
       ...params,
       page: 1,
-      ordering: newOrdering
+      ordering: newOrdering,
     })
   );
 };
@@ -230,7 +230,7 @@ export const updatePage = page => async (dispatch, getState) => {
   dispatch(
     navigateToResults({
       ...params,
-      page
+      page,
     })
   );
 };
@@ -243,7 +243,7 @@ export const updateResultsPerPage = resultsPerPage => async (
   dispatch(
     navigateToResults({
       ...params,
-      size: resultsPerPage
+      size: resultsPerPage,
     })
   );
 };
@@ -273,7 +273,7 @@ export function toggleFilterHelper(filters, type, value) {
 
   const newFilters = {
     ...filters,
-    [type]: appliedFilterType
+    [type]: appliedFilterType,
   };
 
   return newFilters;
@@ -283,7 +283,7 @@ export function updateFilterOrderHelper({
   filters,
   type,
   value,
-  filterOrder = []
+  filterOrder = [],
 }) {
   // check if the filter has been applied, in which case it should be removed from the order
   if (filters[type] && filters[type].includes(value)) {

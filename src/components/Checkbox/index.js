@@ -11,12 +11,12 @@ const Checkbox = ({
   disabled,
   onClick,
   readOnly,
-  error
+  error,
 }) => (
   <div
     className={classnames('checkbox', className, {
       'checkbox--disabled': disabled,
-      'checkbox--error': error
+      'checkbox--error': error,
     })}
   >
     <input
@@ -29,8 +29,13 @@ const Checkbox = ({
       onChange={onChange}
       readOnly={readOnly || !onChange}
     />
-    <label className="checkbox__label" htmlFor={name} onClick={onClick}>
-      {children ? children : name}
+    <label
+      id={name}
+      className="checkbox__label"
+      htmlFor={name}
+      onClick={onClick}
+    >
+      {children || name}
     </label>
   </div>
 );
@@ -44,7 +49,7 @@ export const CheckboxField = ({
   field,
   form: { errors, touched, setFieldValue },
   label,
-  className
+  className,
 }) => (
   <React.Fragment>
     {errors[field.name] && <p className="color-error">{errors[field.name]}</p>}

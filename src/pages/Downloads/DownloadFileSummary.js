@@ -3,7 +3,7 @@ import { formatSentenceCase } from '../../common/helpers';
 import { getTransformationOptionFromName } from './transformation';
 import {
   downloadsFilesDataBySpecies,
-  downloadsFilesDataByExperiment
+  downloadsFilesDataByExperiment,
 } from './downloadFilesData';
 
 const DownloadFileSummary = ({
@@ -11,11 +11,11 @@ const DownloadFileSummary = ({
   samplesBySpecies,
   aggregate_by,
   scale_by,
-  isEmbed = false
+  isEmbed = false,
 }) => {
   if (!dataSet) return null;
 
-  let summaryData =
+  const summaryData =
     aggregate_by === 'SPECIES'
       ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
       : downloadsFilesDataByExperiment(dataSet);

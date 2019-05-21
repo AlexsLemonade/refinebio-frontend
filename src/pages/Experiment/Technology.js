@@ -1,9 +1,9 @@
 import React from 'react';
+import uniq from 'lodash/uniq';
 import TechnologyBadge, {
   MICROARRAY,
-  RNA_SEQ
+  RNA_SEQ,
 } from '../../components/TechnologyBadge';
-import uniq from 'lodash/uniq';
 import { formatPlatformName } from '../../common/helpers';
 
 export default function Technology({ samples }) {

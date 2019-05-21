@@ -1,12 +1,12 @@
 import React from 'react';
-import { Accordion, AccordionItem } from '../../../components/Accordion';
+import { Accordion, AccordionItem } from '../../Accordion';
 import { formatSentenceCase, truncateOnWord } from '../../../common/helpers';
 import styles from './SubmitterSuppliedProtocol.scss';
 
 const PROTOCOLS_BY_SAMPLE_TYPE = {
   GEO: GeoSubmitterSuppliedProtocol,
   SRA: SRASubmitterSuppliedProtocol,
-  ARRAY_EXPRESS: ArrayExpressSuppliedProtocol
+  ARRAY_EXPRESS: ArrayExpressSuppliedProtocol,
 };
 
 /**
@@ -18,9 +18,9 @@ const PROTOCOLS_BY_SAMPLE_TYPE = {
 export default function SubmitterSuppliedProtocol({
   sample,
   results,
-  isSubmitterProcessed = false
+  isSubmitterProcessed = false,
 }) {
-  let Component = PROTOCOLS_BY_SAMPLE_TYPE[sample.source_database];
+  const Component = PROTOCOLS_BY_SAMPLE_TYPE[sample.source_database];
   if (!Component) {
     return null;
   }
@@ -74,7 +74,7 @@ function ArrayExpressSuppliedProtocol({ protocol_info }) {
 
 function GeoSubmitterSuppliedProtocol({
   protocol_info,
-  isSubmitterProcessed = false
+  isSubmitterProcessed = false,
 }) {
   return (
     <div>
@@ -84,7 +84,7 @@ function GeoSubmitterSuppliedProtocol({
           'Label protocol',
           'Hybridization protocol',
           'Scan protocol',
-          'Data processing'
+          'Data processing',
         ].map(
           field =>
             protocol_info[field] && (

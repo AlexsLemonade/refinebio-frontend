@@ -7,11 +7,11 @@ class Pagination extends Component {
   getPaginationRange(currentPage, totalPages) {
     if (currentPage <= 2) {
       return [2, 3];
-    } else if (currentPage >= totalPages - 1) {
-      return [totalPages - 2, totalPages - 1];
-    } else {
-      return [currentPage - 1, currentPage, currentPage + 1];
     }
+    if (currentPage >= totalPages - 1) {
+      return [totalPages - 2, totalPages - 1];
+    }
+    return [currentPage - 1, currentPage, currentPage + 1];
   }
 
   renderPages() {

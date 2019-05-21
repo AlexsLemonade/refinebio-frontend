@@ -9,11 +9,11 @@ import ResearcherLookingImage from './illustration-forms.svg';
 
 import './RequestData.scss';
 
-let RequestDataForm = ({
+const RequestDataForm = ({
   renderHeader,
   onSubmit,
   onClose,
-  useMissingDataImage = true
+  useMissingDataImage = true,
 }) => {
   return (
     <div>
@@ -28,7 +28,7 @@ let RequestDataForm = ({
               accession_codes: '',
               pediatric_cancer: '',
               approach: '',
-              email: ''
+              email: '',
             }}
             onSubmit={(values, actions) => onSubmit(values)}
             validationSchema={Yup.object().shape({
@@ -40,7 +40,7 @@ let RequestDataForm = ({
               ),
               email: Yup.string()
                 .email('Please enter a valid email address')
-                .required('Please enter your email address')
+                .required('Please enter your email address'),
             })}
           >
             {({ handleSubmit, touched, errors, isSubmitting }) => (
@@ -80,10 +80,9 @@ let RequestDataForm = ({
                     Which of these most closely describes your primary approach?{' '}
                     <span className="search-request__required">(required)</span>
                   </div>
-                  {touched['approach'] &&
-                    errors['approach'] && (
-                      <div className="color-error">{errors['approach']}</div>
-                    )}
+                  {touched['approach'] && errors['approach'] && (
+                    <div className="color-error">{errors['approach']}</div>
+                  )}
                   <fieldset>
                     <Field
                       component={RadioField}
@@ -128,10 +127,9 @@ let RequestDataForm = ({
                     Be notified when your requested experiment(s) become
                     available
                   </div>
-                  {touched['email'] &&
-                    errors['email'] && (
-                      <div className="color-error">{errors['email']}</div>
-                    )}
+                  {touched['email'] && errors['email'] && (
+                    <div className="color-error">{errors['email']}</div>
+                  )}
                   <Field type="text" name="email" className="input-text" />
                   <Field
                     component={CheckboxField}

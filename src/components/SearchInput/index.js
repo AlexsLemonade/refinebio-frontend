@@ -6,7 +6,7 @@ import './SearchInput.scss';
 export default class SearchInput extends Component {
   static defaultProps = {
     searchTerm: '',
-    buttonStyle: 'secondary'
+    buttonStyle: 'secondary',
   };
 
   formik = React.createRef();

@@ -61,7 +61,7 @@ function firstTimeUser() {
 class InfoBox extends React.Component {
   state = {
     // The infobox should only be displayed when it's first loaded, on the page where the user landed initially
-    showInfoBox: firstTimeUser() && LANDING_PAGE === window.location.href
+    showInfoBox: firstTimeUser() && LANDING_PAGE === window.location.href,
   };
 
   render() {

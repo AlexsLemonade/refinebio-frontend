@@ -1,6 +1,6 @@
 import React from 'react';
-import FundIcon from '../../common/icons/fund-icon.svg';
 import { Link } from 'react-router-dom';
+import FundIcon from '../../common/icons/fund-icon.svg';
 import './Footer.scss';
 
 import apiData from '../../apiData.json';
@@ -89,12 +89,11 @@ const Footer = () => (
       <a className="footer__link" href="mailto:ccdl@alexslemonade.org">
         Contact
       </a>
-      {apiData.version &&
-        apiData.apiVersion && (
-          <div className="footer__version">
-            Version {apiData.apiVersion.substr(1)} - {apiData.version.substr(1)}
-          </div>
-        )}
+      {apiData.version && apiData.apiVersion && (
+        <div className="footer__version">
+          Version {apiData.apiVersion.substr(1)} - {apiData.version.substr(1)}
+        </div>
+      )}
     </div>
   </footer>
 );

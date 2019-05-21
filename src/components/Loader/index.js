@@ -1,6 +1,6 @@
 import React from 'react';
-import { REPORT_ERROR } from '../../state/reportError';
 import isEqual from 'lodash/isEqual';
+import { REPORT_ERROR } from '../../state/reportError';
 
 // Component abtract the logic of loading content from the server before displaying something,
 // Example Usage:
@@ -15,7 +15,7 @@ export default class Loader extends React.Component {
   state = {
     error: null,
     isLoading: true,
-    data: null
+    data: null,
   };
 
   componentDidMount() {
@@ -39,7 +39,7 @@ export default class Loader extends React.Component {
     return this.props.children({
       ...this.state,
       // for some cases might be more convenient to use `hasError`
-      hasError: !!this.state.error
+      hasError: !!this.state.error,
     });
   }
 
@@ -77,7 +77,7 @@ export function useLoader(fetch, updateProps = []) {
   const [state, setState] = React.useState({
     error: null,
     isLoading: true,
-    data: null
+    data: null,
   });
 
   // ref that is active while the component is mounted
@@ -92,7 +92,7 @@ export function useLoader(fetch, updateProps = []) {
   React.useEffect(() => {
     mounted.current += 1;
     _fetch(mounted.current);
-  }, updateProps);
+  }, [_fetch]);
 
   async function _fetch(version) {
     setState({ ...state, isLoading: true, error: null });
@@ -117,6 +117,6 @@ export function useLoader(fetch, updateProps = []) {
     refresh: async () => {
       mounted.current += 1;
       await _fetch(mounted.current);
-    }
+    },
   };
 }

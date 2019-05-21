@@ -8,11 +8,9 @@ import {
   CartesianGrid,
   Tooltip,
   Line,
-  Legend
+  Legend,
 } from 'recharts';
 import { COLORS } from '../../common/constants';
-
-import './LineChart.scss';
 
 import './LineChart.scss';
 
@@ -21,7 +19,7 @@ type Props = {
   data: Array<{ date: string }>,
   isLoading: boolean,
   formatValue: Function,
-  formatLabel: Function
+  formatLabel: Function,
 };
 
 const LineChart = (props: Props) => {
@@ -68,7 +66,7 @@ function TooltipContent({
   active,
   range,
   formatLabel,
-  formatValue
+  formatValue,
 }) {
   if (!active) return null;
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Accordion, AccordionItem } from '../../../components/Accordion';
-import styles from './ProcessorVersion.scss';
 import classnames from 'classnames';
 import pick from 'lodash/pick';
+import { Accordion, AccordionItem } from '../../Accordion';
+import styles from './ProcessorVersion.scss';
 
 /**
  * Returns an object with the primary versions that should be displayed in the modal
@@ -78,7 +78,7 @@ export default class ProcessorVersion extends React.Component {
                 <VersionTable
                   versions={{
                     'genome build':
-                      salmonProcessedResult.organism_index.assembly_name
+                      salmonProcessedResult.organism_index.assembly_name,
                   }}
                 />
               </tbody>

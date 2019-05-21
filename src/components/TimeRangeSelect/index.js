@@ -5,10 +5,10 @@ import './TimeRangeSelect.scss';
 
 type Props = {
   selectedTimeRange: (value: number) => {},
-  options: Array<{ value: number, label: string }>
+  options: Array<{ value: number, label: string }>,
 };
 
-let TimeRangeSelect = ({ selectedOption, options, onChange }: Props) => (
+const TimeRangeSelect = ({ selectedOption, options, onChange }: Props) => (
   <div className="time-range-select">
     <div className="time-range-select__field">
       <label className="time-range-select__label" htmlFor="timeRange">

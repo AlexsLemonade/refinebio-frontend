@@ -11,13 +11,15 @@ export async function postToSlack(params) {
     'https://hooks.slack.com/services/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',
     {
       method: 'POST',
-      body: JSON.stringify(params)
+      body: JSON.stringify(params),
     }
   );
 }
 
 export async function submitSearchDataRequest(query, values) {
-  let { ip } = await (await fetch('https://api.ipify.org?format=json')).json();
+  const { ip } = await (await fetch(
+    'https://api.ipify.org?format=json'
+  )).json();
 
   await postToSlack({
     attachments: [
@@ -30,45 +32,47 @@ export async function submitSearchDataRequest(query, values) {
           {
             title: 'Accession Codes',
             value: values.accession_codes,
-            short: true
+            short: true,
           },
           {
             title: 'Pediatric Cancer Research',
             value: values.pediatric_cancer,
-            short: true
+            short: true,
           },
           {
             title: 'Primary Approach',
             value: values.approach,
-            short: true
+            short: true,
           },
           {
             title: 'Email',
             value: `${values.email}${
               values.email_updates ? ' _(wants updates)_' : ''
             }`,
-            short: false
+            short: false,
           },
           ...(values.comments
             ? [
                 {
                   title: 'Additional Notes',
                   value: values.comments,
-                  short: false
-                }
+                  short: false,
+                },
               ]
-            : [])
+            : []),
         ],
         footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
-        ts: Date.now() / 1000 // unix time
-      }
-    ]
+        ts: Date.now() / 1000, // unix time
+      },
+    ],
   });
 }
 
 export async function submitExperimentDataRequest(accessionCode, values) {
-  let { ip } = await (await fetch('https://api.ipify.org?format=json')).json();
+  const { ip } = await (await fetch(
+    'https://api.ipify.org?format=json'
+  )).json();
 
   await postToSlack({
     attachments: [
@@ -81,34 +85,34 @@ export async function submitExperimentDataRequest(accessionCode, values) {
           {
             title: 'Pediatric Cancer Research',
             value: values.pediatric_cancer,
-            short: true
+            short: true,
           },
           {
             title: 'Primary Approach',
             value: values.approach,
-            short: true
+            short: true,
           },
           {
             title: 'Email',
             value: `${values.email}${
               values.email_updates ? ' _(wants updates)_' : ''
             }`,
-            short: false
+            short: false,
           },
           ...(values.comments
             ? [
                 {
                   title: 'Additional Notes',
                   value: values.comments,
-                  short: false
-                }
+                  short: false,
+                },
               ]
-            : [])
+            : []),
         ],
         footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
-        ts: Date.now() / 1000 // unix time
-      }
-    ]
+        ts: Date.now() / 1000, // unix time
+      },
+    ],
   });
 }

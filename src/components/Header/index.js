@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+
 import logo from '../../common/icons/logo-beta.svg';
 import { fetchDataSet } from '../../state/download/actions';
 import { getTotalSamplesAdded } from '../../state/download/reducer';
-import { withRouter } from 'react-router';
 import './Header.scss';
 import classnames from 'classnames';
-import Loader from '../../components/Loader';
-import SideMenu from '../../components/SideMenu';
-import ResponsiveSwitch from '../../components/ResponsiveSwitch';
+import Loader from '../Loader';
+import SideMenu from '../SideMenu';
+import ResponsiveSwitch from '../ResponsiveSwitch';
 import { searchUrl } from '../../routes';
 import { IoMdMenu } from 'react-icons/io';
 
@@ -18,7 +18,7 @@ class Header extends React.Component {
     return (
       <header
         className={classnames('header', 'js-header', {
-          'header--inverted header--scroll': this._invertColors()
+          'header--inverted header--scroll': this._invertColors(),
         })}
       >
         <div className="header__container">
@@ -101,20 +101,20 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
 };
 HeaderLinks = connect(
   ({ download: { dataSet } }) => ({
-    totalSamples: getTotalSamplesAdded({ dataSet })
+    totalSamples: getTotalSamplesAdded({ dataSet }),
   }),
   {
-    fetchDataSet
+    fetchDataSet,
   }
 )(HeaderLinks);
 
-let HeaderLink = ({ to, onClick, children, location, activePath = [] }) => {
+const HeaderLink = ({ to, onClick, children, location, activePath = [] }) => {
   return (
     <li
       className={classnames('header__link', {
         'header__link--active':
           location &&
-          (location.pathname === to || activePath.includes(location.pathname))
+          (location.pathname === to || activePath.includes(location.pathname)),
       })}
     >
       <Link to={to} onClick={onClick}>

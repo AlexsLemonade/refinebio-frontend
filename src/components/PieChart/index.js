@@ -6,12 +6,12 @@ import {
   Pie,
   Cell,
   Tooltip,
-  Legend
+  Legend,
 } from 'recharts';
 import { COLORS } from '../../common/constants';
 
 type Props = {
-  data: Array<{ value: any, name: string }>
+  data: Array<{ value: any, name: string }>,
 };
 
 const PieChart = (props: Props) => {
@@ -26,7 +26,7 @@ const PieChart = (props: Props) => {
           nameKey="name"
           cx="50%"
           cy="50%"
-          outerRadius={'100%'}
+          outerRadius="100%"
           fill="#8884d8"
           paddingAngle={0}
           label
@@ -35,7 +35,7 @@ const PieChart = (props: Props) => {
             <Cell key={index} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Legend iconType={'circle'} iconSize={10} />
+        <Legend iconType="circle" iconSize={10} />
       </PieRechart>
     </ResponsiveContainer>
   );

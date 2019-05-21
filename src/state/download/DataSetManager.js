@@ -13,7 +13,7 @@ export default class DataSetManager {
   removeExperiment(accessionCodesToRemove) {
     const result = {};
 
-    for (let experimentId in this.dataSet) {
+    for (const experimentId in this.dataSet) {
       if (accessionCodesToRemove.includes(experimentId)) continue;
       result[experimentId] = this.dataSet[experimentId];
     }
@@ -22,8 +22,8 @@ export default class DataSetManager {
   }
 
   add(dataSetSlice) {
-    let result = { ...this.dataSet };
-    for (let accessionCode of Object.keys(dataSetSlice)) {
+    const result = { ...this.dataSet };
+    for (const accessionCode of Object.keys(dataSetSlice)) {
       if (dataSetSlice[accessionCode].all) {
         // special code to add all samples from an experiment
         // https://github.com/AlexsLemonade/refinebio-frontend/issues/496#issuecomment-456543865
@@ -31,7 +31,7 @@ export default class DataSetManager {
       } else {
         result[accessionCode] = uniq([
           ...(result[accessionCode] || []),
-          ...dataSetSlice[accessionCode]
+          ...dataSetSlice[accessionCode],
         ]);
       }
     }
@@ -39,8 +39,8 @@ export default class DataSetManager {
   }
 
   remove(dataSetSlice) {
-    let result = { ...this.dataSet };
-    for (let accessionCode of Object.keys(dataSetSlice)) {
+    const result = { ...this.dataSet };
+    for (const accessionCode of Object.keys(dataSetSlice)) {
       if (!result[accessionCode]) continue;
 
       const samplesStillSelected = difference(

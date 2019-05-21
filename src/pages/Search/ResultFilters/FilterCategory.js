@@ -10,7 +10,7 @@ const MAX_FILTERS = 6;
 class FilterCategory extends React.Component {
   state = {
     query: '',
-    collapsed: true
+    collapsed: true,
   };
 
   render() {
@@ -18,7 +18,7 @@ class FilterCategory extends React.Component {
       categoryFilters,
       category,
       toggledFilter,
-      appliedFilters
+      appliedFilters,
     } = this.props;
     const filters = Object.keys(categoryFilters);
 
@@ -78,20 +78,19 @@ class FilterCategory extends React.Component {
               ) : null // Do not display a checkbox if the filter is null
           )}
 
-        {filters.length > MAX_FILTERS &&
-          !this.state.query && (
-            <Button
-              text={
-                this.state.collapsed
-                  ? `+ ${filters.length - MAX_FILTERS} more`
-                  : `- see less`
-              }
-              buttonStyle="link"
-              onClick={() =>
-                this.setState(state => ({ collapsed: !state.collapsed }))
-              }
-            />
-          )}
+        {filters.length > MAX_FILTERS && !this.state.query && (
+          <Button
+            text={
+              this.state.collapsed
+                ? `+ ${filters.length - MAX_FILTERS} more`
+                : `- see less`
+            }
+            buttonStyle="link"
+            onClick={() =>
+              this.setState(state => ({ collapsed: !state.collapsed }))
+            }
+          />
+        )}
       </section>
     );
   }

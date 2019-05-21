@@ -2,9 +2,9 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import classnames from 'classnames';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import SpeciesCompendia from './SpeciesCompendia';
 import SpeciesCompendiaDownload from './SpeciesCompendia/DownloadPage';
-import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import history from '../history';
 import store from '../store/store';

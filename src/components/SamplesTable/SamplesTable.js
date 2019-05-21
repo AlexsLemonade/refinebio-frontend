@@ -1,21 +1,21 @@
 import React from 'react';
-import RefineTable from '../../components/RefineTable';
+import RefineTable from '../RefineTable';
 import 'react-table/react-table.css';
 
-import Pagination from '../../components/Pagination';
-import Dropdown from '../../components/Dropdown';
+import Pagination from '../Pagination';
+import Dropdown from '../Dropdown';
 
 import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../common/constants';
 import ProcessingInformationCell from './ProcessingInformationCell';
-import DataSetSampleActions from '../../components/DataSetSampleActions';
+import DataSetSampleActions from '../DataSetSampleActions';
 import './SamplesTable.scss';
-import HorizontalScroll from '../../components/HorizontalScroll';
+import HorizontalScroll from '../HorizontalScroll';
 
 import MetadataAnnotationsCell from './MetadataAnnotationsCell';
-import { InputClear } from '../../components/Input';
-import Button from '../../components/Button';
+import { InputClear } from '../Input';
+import Button from '../Button';
 import SampleDetailsLoader from './SampleDetailsLoader';
 import { formatSentenceCase } from '../../common/helpers';
 import debounce from 'lodash/debounce';
@@ -30,7 +30,7 @@ class SamplesTable extends React.Component {
         Show {dropdown} of {totalSamples} Samples
       </React.Fragment>
     ),
-    sampleMetadataFields: []
+    sampleMetadataFields: [],
   };
 
   columns = this._getColumns();
@@ -53,11 +53,11 @@ class SamplesTable extends React.Component {
 
           return (
             <RefineTable
-              manual={true}
+              manual
               onFetchData={tableState =>
                 state.onUpdate({
                   isLoading: true,
-                  orderBy: this._getSortParam(tableState)
+                  orderBy: this._getSortParam(tableState),
                 })
               }
               loading={state.isLoading}
@@ -76,7 +76,7 @@ class SamplesTable extends React.Component {
               getNoDataProps={() => ({
                 hasError: state.hasError,
                 // send a callback to allow retrying
-                fetchData: state.refresh
+                fetchData: state.refresh,
               })}
             >
               {(tableState, makeTable, instance) => (
@@ -94,7 +94,7 @@ class SamplesTable extends React.Component {
                               }
                             />
                           ),
-                          totalSamples: state.totalSamples
+                          totalSamples: state.totalSamples,
                         })}
                       </div>
                       {pageActionComponent &&
@@ -167,12 +167,12 @@ class SamplesTable extends React.Component {
         ),
         width: 190,
         className: 'samples-table__add-remove',
-        show: !this.props.isImmutable
+        show: !this.props.isImmutable,
       },
       {
         id: 'id',
         accessor: d => d.id,
-        show: false
+        show: false,
       },
       {
         Header: 'Accession Code',
@@ -181,14 +181,14 @@ class SamplesTable extends React.Component {
         minWidth: 160,
         width: 175,
         style: { textAlign: 'right' },
-        Cell: CustomCell
+        Cell: CustomCell,
       },
       {
         Header: 'Title',
         id: 'title',
         accessor: d => d.title,
         minWidth: 180,
-        Cell: CustomCell
+        Cell: CustomCell,
       },
       // list the columns in the experiment's metadata
       ...this.props.sampleMetadataFields.map(field => ({
@@ -196,22 +196,22 @@ class SamplesTable extends React.Component {
         accessor: d => d[field],
         Header: formatSentenceCase(field),
         minWidth: 160,
-        Cell: CustomCell
+        Cell: CustomCell,
       })),
       {
         Header: 'Processing Information',
         id: 'processing_information',
         sortable: false,
         Cell: ProcessingInformationCell,
-        width: 200
+        width: 200,
       },
       {
         Header: 'Additional Metadata',
         id: 'additional_metadata',
         sortable: false,
         Cell: MetadataAnnotationsCell,
-        width: 200
-      }
+        width: 200,
+      },
     ];
   }
 
@@ -220,7 +220,7 @@ class SamplesTable extends React.Component {
    * @param {*} tableState State from the table, as given to `fetchData`
    */
   _getSortParam(tableState) {
-    let orderBy = undefined;
+    let orderBy;
 
     const { sorted } = tableState;
     // check table sort
@@ -339,7 +339,7 @@ function AddRemoveCell({ sample, experimentAccessionCodes }) {
 
 class SamplesTableFilter extends React.Component {
   state = {
-    filterBy: ''
+    filterBy: '',
   };
 
   onChangeDebounced = debounce(this.props.onChange, 400);

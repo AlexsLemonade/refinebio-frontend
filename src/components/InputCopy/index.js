@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../../components/Button';
+import Button from '../Button';
 import './InputCopy.scss';
 import '../Input/Input.scss';
 import { IoIosCheckmarkCircle } from 'react-icons/io';
@@ -8,7 +8,7 @@ import { IoIosCheckmarkCircle } from 'react-icons/io';
 // the input is copied to the keyboard.
 export default class InputCopy extends React.Component {
   state = {
-    alert: false
+    alert: false,
   };
 
   render() {

@@ -1,14 +1,14 @@
 // @flow
 import { createStore, applyMiddleware, compose } from 'redux';
-import rootReducer from '../state/rootReducer';
 import thunk from 'redux-thunk';
+import throttle from 'lodash/throttle';
+import * as Sentry from '@sentry/browser';
+import rootReducer from '../state/rootReducer';
 import history from '../history';
 import { CALL_HISTORY_METHOD } from '../state/routerActions';
 import { REPORT_ERROR } from '../state/reportError';
-import throttle from 'lodash/throttle';
 import progressMiddleware from './progressMiddleware';
 import { ApiVersionMismatchError } from '../common/errors';
-import * as Sentry from '@sentry/browser';
 
 const initialState = loadInitialState();
 
@@ -17,7 +17,7 @@ const errorMiddleware = () => next => action => {
     return next(action);
   }
 
-  let error = action.data;
+  const error = action.data;
 
   if (error instanceof ApiVersionMismatchError) {
     // refresh the current page when the version of the api changes
@@ -82,7 +82,7 @@ function routerMiddleware(history) {
     }
 
     const {
-      payload: { method, args }
+      payload: { method, args },
     } = action;
     history[method](...args);
   };
@@ -103,8 +103,8 @@ function routerMiddleware(history) {
 function loadInitialState() {
   return {
     download: {
-      dataSetId: localStorage.getItem('dataSetId')
+      dataSetId: localStorage.getItem('dataSetId'),
     },
-    token: localStorage.getItem('token')
+    token: localStorage.getItem('token'),
   };
 }

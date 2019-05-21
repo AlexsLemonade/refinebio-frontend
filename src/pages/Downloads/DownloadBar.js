@@ -5,18 +5,18 @@ import Dropdown from '../../components/Dropdown';
 import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
-import { getDomain } from '../../common/helpers';
+import { getDomain, formatSentenceCase } from '../../common/helpers';
 import { Link } from 'react-router-dom';
 import HelpIconImage from '../../common/icons/help.svg';
 import {
   getTransformationNameFromOption,
-  getTransformationOptionFromName
+  getTransformationOptionFromName,
 } from './transformation';
-import { formatSentenceCase } from '../../common/helpers';
+
 import {
   editAggregation,
   editTransformation,
-  editQuantileNormalize
+  editQuantileNormalize,
 } from '../../state/download/actions';
 import Checkbox from '../../components/Checkbox';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
@@ -29,7 +29,7 @@ let DownloadBar = ({
   quantile_normalize,
   editAggregation,
   editTransformation,
-  editQuantileNormalize
+  editQuantileNormalize,
 }) => {
   const [advancedOptions, setAdvancedOptions] = React.useState(
     !quantile_normalize
@@ -84,7 +84,7 @@ let DownloadBar = ({
                   dataSetId,
                   transformation: getTransformationNameFromOption(
                     transformation
-                  )
+                  ),
                 })
               }
             />
@@ -98,7 +98,7 @@ let DownloadBar = ({
           </button>
         </div>
         <div className="flex-button-container flex-button-container--left">
-          <Link className="button" to={`/download?start=true`}>
+          <Link className="button" to="/download?start=true">
             Download
           </Link>
         </div>
@@ -121,7 +121,7 @@ let DownloadBar = ({
             onClick={() =>
               editQuantileNormalize({
                 dataSetId,
-                quantile_normalize: !quantile_normalize
+                quantile_normalize: !quantile_normalize,
               })
             }
             checked={!quantile_normalize}
@@ -142,7 +142,7 @@ DownloadBar = connect(
   {
     editAggregation,
     editTransformation,
-    editQuantileNormalize
+    editQuantileNormalize,
   }
 )(DownloadBar);
 export default DownloadBar;

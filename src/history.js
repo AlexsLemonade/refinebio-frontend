@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === 'production') {
   history.listen(location => registerPageView(location));
 
   function registerPageView(location) {
-    let url = location.pathname + location.search;
+    const url = location.pathname + location.search;
     ReactGA.set({ page: url });
     ReactGA.pageview(url);
   }

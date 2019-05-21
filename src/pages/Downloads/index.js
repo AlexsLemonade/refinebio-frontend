@@ -6,7 +6,7 @@ import BackToTop from '../../components/BackToTop';
 import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
-import NoDatasetsImage from './../../common/images/no-datasets.svg';
+import NoDatasetsImage from '../../common/images/no-datasets.svg';
 import Loader from '../../components/Loader';
 import { fetchDataSetDetails } from '../../state/download/actions';
 import { getQueryParamObject } from '../../common/helpers';
@@ -19,7 +19,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
     dataSet,
     aggregate_by,
     scale_by,
-    quantile_normalize
+    quantile_normalize,
   } = download;
   const dataSetCanBeDownloaded = dataSet && Object.keys(dataSet).length > 0;
   const params = getQueryParamObject(location.search);
@@ -28,10 +28,9 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
   if (params.start === 'true') {
     if (dataSetCanBeDownloaded) {
       return <DownloadStart dataSetId={dataSetId} dataSet={dataSet} />;
-    } else {
-      // if the dataset can't be downloaded, go back to the downloads page.
-      return <Redirect to="/download" params={{ returning: 1 }} />;
     }
+    // if the dataset can't be downloaded, go back to the downloads page.
+    return <Redirect to="/download" params={{ returning: 1 }} />;
   }
 
   return (
@@ -68,7 +67,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
 Download = connect(
   ({ download }) => ({ download }),
   {
-    fetchDataSetDetails
+    fetchDataSetDetails,
   }
 )(Download);
 export default Download;

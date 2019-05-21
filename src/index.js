@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import App from './pages/App';
 import smoothscroll from 'smoothscroll-polyfill';
+import App from './pages/App';
 import 'delayed-scroll-restoration-polyfill';
 import apiData from './apiData.json';
 import * as Sentry from '@sentry/browser';
@@ -29,8 +29,8 @@ if (process.env.NODE_ENV === 'production') {
       window.location.host === 'www.refine.bio'
         ? 'production'
         : window.location.host === 'staging.refine.bio'
-          ? 'staging'
-          : 'dev'
+        ? 'staging'
+        : 'dev',
   });
 }
 

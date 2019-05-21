@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from './Button';
 import { IoIosWarning } from 'react-icons/io';
+import Button from './Button';
 import './Alert.scss';
 import { useLocalStorage } from '../common/hooks';
 

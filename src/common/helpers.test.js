@@ -2,7 +2,7 @@ import {
   getQueryString,
   getQueryParamObject,
   Ajax,
-  stringEnumerate
+  stringEnumerate,
 } from './helpers';
 
 describe('getQueryString', () => {
@@ -36,13 +36,13 @@ describe('getQueryParamObject', () => {
     expect(getQueryParamObject('a=0&b=false&c=1')).toEqual({
       a: '0',
       b: 'false',
-      c: '1'
+      c: '1',
     });
   });
 
   it('parses query with array parameters', () => {
     expect(getQueryParamObject('a=1&a=2&a=3')).toEqual({
-      a: ['1', '2', '3']
+      a: ['1', '2', '3'],
     });
   });
 
@@ -55,7 +55,7 @@ describe('getQueryParamObject', () => {
       '?filter_order=platform&platform=%5BHG-U133_Plus_2%5D%20Affymetrix%20Human%20Genome%20U133%20Plus%202.0%20Array';
     expect(getQueryParamObject(url)).toEqual({
       filter_order: 'platform',
-      platform: '[HG-U133_Plus_2] Affymetrix Human Genome U133 Plus 2.0 Array'
+      platform: '[HG-U133_Plus_2] Affymetrix Human Genome U133 Plus 2.0 Array',
     });
   });
 });
@@ -88,9 +88,9 @@ describe('Ajax', () => {
           body: '{"a":1,"b":2}',
           method: 'POST',
           headers: {
-            'content-type': 'application/json'
-          }
-        }
+            'content-type': 'application/json',
+          },
+        },
       ]);
     });
   });
@@ -104,9 +104,9 @@ describe('Ajax', () => {
           body: '{"a":1,"b":2}',
           method: 'PUT',
           headers: {
-            'content-type': 'application/json'
-          }
-        }
+            'content-type': 'application/json',
+          },
+        },
       ]);
     });
   });

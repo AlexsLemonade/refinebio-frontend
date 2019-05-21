@@ -10,7 +10,7 @@ import useVisibility from 'react-use-visibility';
 export default class HorizontalScroll extends React.Component {
   state = {
     disableLeftButton: false,
-    disableRightButton: false
+    disableRightButton: false,
   };
 
   componentDidMount() {
@@ -45,7 +45,7 @@ export default class HorizontalScroll extends React.Component {
     const element = this._getElement();
     this.setState({
       disableLeftButton: element.scrollLeft <= 0,
-      disableRightButton: element.scrollLeft >= this.getMaxScrollPosition()
+      disableRightButton: element.scrollLeft >= this.getMaxScrollPosition(),
     });
   };
 
@@ -53,7 +53,7 @@ export default class HorizontalScroll extends React.Component {
     this._getElement().scrollBy({
       top: 0,
       left: -100,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   };
 
@@ -61,7 +61,7 @@ export default class HorizontalScroll extends React.Component {
     this._getElement().scrollBy({
       top: 0,
       left: 100,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   };
 
@@ -102,7 +102,7 @@ function ButtonLeft({ onClick, disabled }) {
     <div
       className={classnames({
         'horizontal-scroll__left': true,
-        'horizontal-scroll__disabled': disabled
+        'horizontal-scroll__disabled': disabled,
       })}
       onClick={onClick}
     >
@@ -119,7 +119,7 @@ function ButtonRight({ onClick, disabled }) {
     <div
       className={classnames({
         'horizontal-scroll__right': true,
-        'horizontal-scroll__disabled': disabled
+        'horizontal-scroll__disabled': disabled,
       })}
       onClick={onClick}
     >
@@ -127,7 +127,7 @@ function ButtonRight({ onClick, disabled }) {
         ref={ref}
         className={classnames({
           'horizontal-scroll__button': true,
-          'horizontal-scroll__button--animate': isVisible
+          'horizontal-scroll__button--animate': isVisible,
         })}
       >
         {'>'}

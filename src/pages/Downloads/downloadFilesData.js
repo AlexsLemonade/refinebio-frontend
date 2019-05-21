@@ -10,19 +10,19 @@ export function downloadsFilesDataBySpecies(dataSet, samplesBySpecies) {
       {
         title: `${totalSpecies} Gene Expression Matrices`,
         description: '1 file per Species',
-        format: 'tsv'
+        format: 'tsv',
       },
       {
         title: `${totalExperiments} Sample Metadata Files`,
         description: '1 file per Experiment',
-        format: 'tsv'
+        format: 'tsv',
       },
       {
         title: `${totalSpecies} Species Metadata`,
         description: '1 file per Species',
-        format: 'json'
-      }
-    ]
+        format: 'json',
+      },
+    ],
   };
 
   return data;
@@ -40,19 +40,19 @@ export function downloadsFilesDataByExperiment(dataSet) {
       {
         title: `${totalExperiments} Gene Expression Matrices`,
         description: '1 file per Experiment',
-        format: 'tsv'
+        format: 'tsv',
       },
       {
         title: `${totalExperiments} Sample Metadata Files`,
         description: '1 file per Experiment',
-        format: 'tsv'
+        format: 'tsv',
       },
       {
         title: `${totalExperiments} Experiment Metadata Files`,
         description: '1 file per Experiment',
-        format: 'json'
-      }
-    ]
+        format: 'json',
+      },
+    ],
   };
 
   return data;

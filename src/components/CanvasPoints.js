@@ -30,8 +30,8 @@ export default class CanvasPoints extends React.Component {
   drawCanvas = ctx => {
     ctx.lineWidth = 2;
     ctx.clearRect(0, 0, this.props.width, this.props.height);
-    for (let point of this.points) {
-      for (let closePoint of point.closest) {
+    for (const point of this.points) {
+      for (const closePoint of point.closest) {
         ctx.beginPath();
         ctx.moveTo(point.x, point.y);
         ctx.lineTo(closePoint.x, closePoint.y);
@@ -59,7 +59,7 @@ export default class CanvasPoints extends React.Component {
       onComplete: () => {
         const wait = 2 + 1 * Math.random();
         setTimeout(() => this.animatePoints(point), wait);
-      }
+      },
     });
   };
 
@@ -88,7 +88,7 @@ export default class CanvasPoints extends React.Component {
     }
 
     // for each point find the 3 closest points
-    for (let point of points) {
+    for (const point of points) {
       point.closest = [...points]
         .sort(
           (p1, p2) =>

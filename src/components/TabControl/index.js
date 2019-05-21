@@ -8,12 +8,12 @@ import Toggle from '../Toggle';
  */
 export default class TabControl extends React.Component {
   state = {
-    tabIndex: 0
+    tabIndex: 0,
   };
 
   handleTabChange = tabIndex => {
     this.setState({
-      tabIndex
+      tabIndex,
     });
   };
 

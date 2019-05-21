@@ -10,7 +10,7 @@ import ExpandButton from './ExpandButton';
 import {
   formatSentenceCase,
   truncateOnWord,
-  maxTableWidth
+  maxTableWidth,
 } from '../../common/helpers';
 import slugify from '../../common/slugify';
 import './Experiment.scss';
@@ -44,7 +44,7 @@ import RequestExperimentButton from './RequestExperimentButton';
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',
   SRA: 'Sequence Read Archive (SRA)',
-  ARRAY_EXPRESS: 'ArrayExpress'
+  ARRAY_EXPRESS: 'ArrayExpress',
 };
 
 let Experiment = ({ match, location: { search, state }, goBack }) => {
@@ -76,7 +76,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           let displaySpinner = isLoading;
           let experimentData = experiment || { samples: [] };
           let totalSamples = experimentData.samples.length;
-          let totalProcessedSamples = experimentData.samples.filter(
+          const totalProcessedSamples = experimentData.samples.filter(
             x => x.is_processed
           ).length;
           let organisms = experimentData.organisms;
@@ -86,7 +86,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
             displaySpinner = false;
             experimentData = {
               ...state.result,
-              samples: []
+              samples: [],
             };
             totalSamples = state.result.total_samples_count;
             organisms = state.result.organism_names;
@@ -144,8 +144,8 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                           dataSetSlice={{
                             [experimentData.accession_code]: {
                               all: true,
-                              total: totalProcessedSamples
-                            }
+                              total: totalProcessedSamples,
+                            },
                           }}
                         />
                       )}
@@ -177,7 +177,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                     <div
                       className={classnames('experiment__stats-item', {
                         'experiment__stats-item--lg':
-                          getTechnologies(experimentData.samples).length > 3
+                          getTechnologies(experimentData.samples).length > 3,
                       })}
                     >
                       <Technology samples={experimentData.samples} />
@@ -234,7 +234,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
                     <ExperimentHeaderRow label="Submitter’s Institution">
                       <Link
                         to={searchUrl({
-                          q: experimentData.submitter_institution
+                          q: experimentData.submitter_institution,
                         })}
                         className="link"
                       >
@@ -338,7 +338,7 @@ function SamplesTableBlock({ experiment }) {
   const style = expanded
     ? { maxWidth: Math.max(1175, maxTableWidth(totalColumns)) }
     : {};
-  let totalProcessedSamples = experiment
+  const totalProcessedSamples = experiment
     ? experiment.samples.filter(x => x.is_processed).length
     : 0;
 
@@ -357,8 +357,8 @@ function SamplesTableBlock({ experiment }) {
                   dataSetSlice={{
                     [experiment.accession_code]: {
                       all: true,
-                      total: totalProcessedSamples
-                    }
+                      total: totalProcessedSamples,
+                    },
                   }}
                 />
               )}
@@ -391,7 +391,7 @@ function SamplesTableBlock({ experiment }) {
 
 class ExperimentSamplesTable extends React.Component {
   state = {
-    showOnlyAddedSamples: false
+    showOnlyAddedSamples: false,
   };
 
   render() {
@@ -403,13 +403,13 @@ class ExperimentSamplesTable extends React.Component {
         experimentSampleAssociations={{
           [experiment.accession_code]: this.props.experiment.samples.map(
             x => x.accession_code
-          )
+          ),
         }}
         fetchSampleParams={{
           experiment_accession_code: experiment.accession_code,
           dataset_id: this.state.showOnlyAddedSamples
             ? this.props.dataSetId
-            : undefined
+            : undefined,
         }}
         pageSizeDropdown={({ dropdown, totalSamples }) => (
           <React.Fragment>
@@ -431,7 +431,7 @@ class ExperimentSamplesTable extends React.Component {
                   checked={this.state.showOnlyAddedSamples}
                   onChange={() =>
                     this.setState(state => ({
-                      showOnlyAddedSamples: !state.showOnlyAddedSamples
+                      showOnlyAddedSamples: !state.showOnlyAddedSamples,
                     }))
                   }
                   disabled={
@@ -459,11 +459,11 @@ class ExperimentSamplesTable extends React.Component {
     return {
       [experiment.accession_code]: DataSetStats.mapAccessions(
         experiment.samples
-      )
+      ),
     };
   }
 }
 ExperimentSamplesTable = connect(({ download: { dataSetId, dataSet } }) => ({
   dataSetId,
-  dataSet
+  dataSet,
 }))(ExperimentSamplesTable);

@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { IoIosCheckmarkCircle, IoIosInformationCircle } from 'react-icons/io';
 import Button from './Button';
 import { addSamples, removeSamples } from '../state/download/actions';
 import DataSetStats from '../common/DataSetStats';
-import { IoIosCheckmarkCircle, IoIosInformationCircle } from 'react-icons/io';
 
 /**
  * Given a dataset and a set of samples, this component renders the correct buttons
@@ -29,7 +29,7 @@ class DataSetSampleActions extends React.Component {
       meta,
       // in some cases we don't want to show the AddRemaining state, like for example adding
       // the current samples in a table
-      enableAddRemaining = true
+      enableAddRemaining = true,
     } = this.props;
 
     const stats = new DataSetStats(dataSet, dataSetSlice);
@@ -37,19 +37,17 @@ class DataSetSampleActions extends React.Component {
     if (!stats.anyProcessedSamples()) {
       // if there're no processed samples to be added, then just show the add button disabled
       return (
-        <Button
-          text={meta.addText}
-          isDisabled={true}
-          buttonStyle={meta.buttonStyle}
-        />
+        <Button text={meta.addText} isDisabled buttonStyle={meta.buttonStyle} />
       );
-    } else if (stats.allProcessedInDataSet()) {
+    }
+    if (stats.allProcessedInDataSet()) {
       return (
         <RemoveFromDatasetButton
           onRemove={() => removeSamples(stats.getAddedSlice())}
         />
       );
-    } else if (enableAddRemaining && stats.totalSamplesInDataSet() > 0) {
+    }
+    if (enableAddRemaining && stats.totalSamplesInDataSet() > 0) {
       return (
         <AddRemainingSamples
           totalSamplesInDataset={stats.totalSamplesInDataSet()}
@@ -75,12 +73,12 @@ DataSetSampleActions = connect(
       addText: 'Add to Dataset',
       buttonStyle: null,
       // allow extending default properties with meta
-      ...meta
-    }
+      ...meta,
+    },
   }),
   {
     addSamples,
-    removeSamples
+    removeSamples,
   }
 )(DataSetSampleActions);
 export default DataSetSampleActions;
@@ -88,7 +86,7 @@ export default DataSetSampleActions;
 export function RemoveFromDatasetButton({
   onRemove,
   totalAdded,
-  samplesInDataset
+  samplesInDataset,
 }) {
   return (
     <div className="dataset-remove-button">
@@ -112,7 +110,7 @@ export function RemoveFromDatasetButton({
 export function AddToDatasetButton({
   onAdd,
   addMessage = 'Add to Dataset',
-  buttonStyle = null
+  buttonStyle = null,
 }) {
   return (
     <div className="dataset-add-button">
@@ -124,7 +122,7 @@ export function AddToDatasetButton({
 function AddRemainingSamples({ onAdd, totalSamplesInDataset }) {
   return (
     <div className="dataset-add-button">
-      <Button text={'Add Remaining'} buttonStyle="secondary" onClick={onAdd} />
+      <Button text="Add Remaining" buttonStyle="secondary" onClick={onAdd} />
       <p className="dataset-add-button__info-text">
         <IoIosInformationCircle className="dataset-remove-button__info-icon" />{' '}
         {totalSamplesInDataset} Samples are already in Dataset
