@@ -36,20 +36,20 @@ export function getQueryParamObject(queryString) {
   const queryObj = {};
   queryString.split('&').forEach(queryParam => {
     if (!queryParam) return;
-    let [key, value] = queryParam.split('=');
-    value = decodeURIComponent(value);
+    const [key, value] = queryParam.split('=');
+    const decodedValue = decodeURIComponent(value);
     // check if the parameter has already been seen, in which case we have to parse it as an array
     if (queryObj[key]) {
       if (!Array.isArray(queryObj[key])) {
         // save the parameter as an array
-        queryObj[key] = [queryObj[key], value];
+        queryObj[key] = [queryObj[key], decodedValue];
       } else {
         // if it's already an array just add it
-        queryObj[key].push(value);
+        queryObj[key].push(decodedValue);
       }
-    } else if (value) {
+    } else if (decodedValue) {
       // only add the parameter if there's an actual value to add
-      queryObj[key] = value;
+      queryObj[key] = decodedValue;
     }
   });
   return queryObj;
@@ -63,7 +63,7 @@ export function getQueryParamObject(queryString) {
  */
 export function getRange(n) {
   const result = [];
-  for (let i = 1; i <= n; i++) {
+  for (let i = 1; i <= n; i += 1) {
     result.push(i);
   }
   return result;
@@ -173,7 +173,7 @@ export function formatNumber(number, decimals = 2, decPoint, thousandsSep) {
     .replace(new RegExp(uDec, 'g'), '.')
     .replace(new RegExp('[^0-9+-Ee.]', 'g'), '');
 
-  const n = !isFinite(+number) ? 0 : +number;
+  const n = !Number.isFinite(+number) ? 0 : +number;
   let s = '';
   const toFixedFix = function(nArg, decimalsArg) {
     return `${+`${Math.round(
@@ -292,7 +292,7 @@ export function formatBytes(bytes, decimals = 2) {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+  return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 }
 
 /**
@@ -302,12 +302,12 @@ export function formatBytes(bytes, decimals = 2) {
 export function formatPlatformName(platformName) {
   if (!platformName) return '';
   if (platformName.includes(']')) {
-    let [accessionCode, name] = platformName.split(']');
-    accessionCode = accessionCode
+    const [accessionCode, name] = platformName.split(']');
+    const formattedAccessionCode = accessionCode
       .substr(1)
       .toLowerCase()
       .replace(/[-_\s]/g, '');
-    return `${name} (${accessionCode})`;
+    return `${name} (${formattedAccessionCode})`;
   }
   return platformName;
 }

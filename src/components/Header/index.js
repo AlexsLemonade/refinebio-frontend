@@ -1,17 +1,17 @@
 import React from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+import { IoMdMenu } from 'react-icons/io';
 
 import logo from '../../common/icons/logo-beta.svg';
 import { fetchDataSet } from '../../state/download/actions';
 import { getTotalSamplesAdded } from '../../state/download/reducer';
 import './Header.scss';
-import classnames from 'classnames';
 import Loader from '../Loader';
 import SideMenu from '../SideMenu';
 import ResponsiveSwitch from '../ResponsiveSwitch';
 import { searchUrl } from '../../routes';
-import { IoMdMenu } from 'react-icons/io';
 
 class Header extends React.Component {
   render() {
@@ -133,7 +133,7 @@ function HeaderLinksMobile({ location }) {
     <SideMenu
       orientation="top"
       component={showMenu => (
-        <button onClick={showMenu}>
+        <button onClick={showMenu} type="button">
           <IoMdMenu className="header__burger" />
         </button>
       )}
@@ -143,7 +143,9 @@ function HeaderLinksMobile({ location }) {
           <HeaderLinks itemClicked={hideMenu} location={location} />
 
           <div className="header__menu-close">
-            <button onClick={hideMenu}>&times;</button>
+            <button onClick={hideMenu} type="button">
+              &times;
+            </button>
           </div>
         </div>
       )}

@@ -30,7 +30,6 @@ describe('fetchDataSet', () => {
 
   it('current dataset is removed with a fetch error', async () => {
     const DataSetId = '08c429ab-01dd-43c7-b51a-c850ad4b9902';
-    const DataSet = { id: DataSetId, data: {} };
 
     global.fetch = jest.fn().mockImplementation(() => {
       throw new Error('');

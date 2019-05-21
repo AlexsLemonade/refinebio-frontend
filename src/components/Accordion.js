@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import Button from './Button';
 import Checkbox from './Checkbox';
 import './Accordion.scss';
-import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
 export class Accordion extends React.Component {
   constructor(props) {

@@ -80,7 +80,7 @@ let Experiment = ({ match, location: { search, state }, goBack }) => {
           const totalProcessedSamples = experimentData.samples.filter(
             x => x.is_processed
           ).length;
-          let organisms = experimentData.organisms;
+          let { organisms } = experimentData;
 
           // for users coming from the search, see if there's any experiment's data in the url state
           if (isLoading && comesFromSearch && state.result) {

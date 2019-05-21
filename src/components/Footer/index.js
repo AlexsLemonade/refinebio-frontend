@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { IoLogoTwitter, IoLogoGithub } from 'react-icons/io';
 import FundIcon from '../../common/icons/fund-icon.svg';
 import './Footer.scss';
 
 import apiData from '../../apiData.json';
-import { IoLogoTwitter, IoLogoGithub } from 'react-icons/io';
 
 const Footer = () => (
   <footer className="footer">

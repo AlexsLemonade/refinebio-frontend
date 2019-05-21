@@ -7,7 +7,7 @@ export async function getDataSet(dataSetId, tokenId = null) {
       }
     : {};
 
-  return await Ajax.get(`/dataset/${dataSetId}/`, null, headers);
+  return Ajax.get(`/dataset/${dataSetId}/`, null, headers);
 }
 
 export async function getDataSetDetails(dataSetId, tokenId = null) {
@@ -33,7 +33,7 @@ export async function getDataSetDetails(dataSetId, tokenId = null) {
  * Creates a new dataset
  */
 export async function createDataSet() {
-  return await Ajax.post('/dataset/create/', { data: {} });
+  return Ajax.post('/dataset/create/', { data: {} });
 }
 
 export async function updateDataSet(dataSetId, dataSet, details = false) {

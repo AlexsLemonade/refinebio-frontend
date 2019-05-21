@@ -7,7 +7,7 @@
  * @param {object} params Slack webhooks params
  */
 export async function postToSlack(params) {
-  return await fetch(
+  return fetch(
     'https://hooks.slack.com/services/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',
     {
       method: 'POST',

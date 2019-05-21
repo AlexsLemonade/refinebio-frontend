@@ -24,7 +24,7 @@ const Dropdown = ({
         {/* Set the value of each option to the index selected, to be able to return the correct selected option
         on the `onChange` handler */}
         {options.map((option, index) => (
-          <option key={index} value={index}>
+          <option key={label(option)} value={index}>
             {label(option)}
           </option>
         ))}

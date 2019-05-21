@@ -19,7 +19,7 @@ let progressStackCount = 0;
  * This middleware intercepts all asynchonous actions, and shows the top progress bar when there's an
  * async action pending.
  */
-const progressMiddleware = ({ dispatch, getState }) => next => async action => {
+const progressMiddleware = () => next => async action => {
   // async actions are functions
   if (typeof action === 'function') {
     if (progressStackCount === 0) {

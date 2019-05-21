@@ -199,7 +199,7 @@ export const editDataSet = ({ dataSetId, ...params }) => async (
   dispatch,
   getState
 ) => {
-  const dataSet = getState().download.dataSet;
+  const { dataSet } = getState().download;
   const {
     data,
     is_processing,

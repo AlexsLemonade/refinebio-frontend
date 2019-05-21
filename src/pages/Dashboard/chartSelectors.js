@@ -247,7 +247,7 @@ function* getTimeline(range) {
     },
   };
   let nextDate = data[range].start;
-  const interval = data[range].interval;
+  const { interval } = data[range];
   yield nextDate.format();
 
   while (true) {

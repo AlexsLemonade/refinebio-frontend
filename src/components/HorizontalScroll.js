@@ -70,7 +70,9 @@ export default class HorizontalScroll extends React.Component {
       <div className="horizontal-scroll">
         <div
           className="horizontal-scroll__content"
-          ref={x => (this._targetContainer = x)}
+          ref={x => {
+            this._targetContainer = x;
+          }}
         >
           {this.props.children}
         </div>
@@ -99,7 +101,8 @@ export default class HorizontalScroll extends React.Component {
 
 function ButtonLeft({ onClick, disabled }) {
   return (
-    <div
+    <button
+      type="button"
       className={classnames({
         'horizontal-scroll__left': true,
         'horizontal-scroll__disabled': disabled,
@@ -107,7 +110,7 @@ function ButtonLeft({ onClick, disabled }) {
       onClick={onClick}
     >
       <div className="horizontal-scroll__button">{'<'}</div>
-    </div>
+    </button>
   );
 }
 
@@ -116,7 +119,8 @@ function ButtonRight({ onClick, disabled }) {
   const isVisible = useVisibility(ref.current);
 
   return (
-    <div
+    <button
+      type="button"
       className={classnames({
         'horizontal-scroll__right': true,
         'horizontal-scroll__disabled': disabled,
@@ -132,6 +136,6 @@ function ButtonRight({ onClick, disabled }) {
       >
         {'>'}
       </div>
-    </div>
+    </button>
   );
 }

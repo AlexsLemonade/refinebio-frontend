@@ -1,6 +1,8 @@
 import React from 'react';
-import RefineTable from '../RefineTable';
 import 'react-table/react-table.css';
+import debounce from 'lodash/debounce';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import RefineTable from '../RefineTable';
 
 import Pagination from '../Pagination';
 import Dropdown from '../Dropdown';
@@ -18,8 +20,7 @@ import { InputClear } from '../Input';
 import Button from '../Button';
 import SampleDetailsLoader from './SampleDetailsLoader';
 import { formatSentenceCase } from '../../common/helpers';
-import debounce from 'lodash/debounce';
-import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+
 import apiData from '../../apiData.json';
 import { Hightlight, HText } from '../HighlightedText';
 

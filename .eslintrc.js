@@ -31,10 +31,9 @@ module.exports = {
     'react/require-default-props': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-    'class-methods-use-this': 0,
-    'no-use-before-define': 0,
 
     // Not sure if we should enforce these rules.
+    'class-methods-use-this': 0,
     'react/prop-types': 0,
     'no-nested-ternary': 'warn',
     'no-class-assign': 0,
@@ -43,12 +42,15 @@ module.exports = {
     'react/destructuring-assignment': 0,
     'react/no-unescaped-entities': 0,
     'jsx-a11y/click-events-have-key-events': 0,
+    'import/prefer-default-export': 0,
+    'no-use-before-define': 0,
 
     // these should be enabled gradually
     'import/no-mutable-exports': 0,
+    'react/no-did-update-set-state': 'warn',
+    'no-unused-vars': 'warn',
     'dot-notation': 0, // <- make it so it only transforms camel case identifiers
     'react/no-multi-comp': 'warn',
-    'no-use-before-define': 'warn',
     'no-underscore-dangle': 'warn',
     'react/sort-comp': 'warn', // sorting of methods
     'no-shadow': 'warn',

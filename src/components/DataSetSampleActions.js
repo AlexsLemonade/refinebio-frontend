@@ -19,53 +19,50 @@ import DataSetStats from '../common/DataSetStats';
  * Note: When using this component you must ensure that all the sample accession codes in `dataSetSlice`
  * are from samples that have been processed.
  */
-class DataSetSampleActions extends React.Component {
-  render() {
-    const {
-      dataSetSlice,
-      dataSet,
-      removeSamples,
-      addSamples,
-      meta,
-      // in some cases we don't want to show the AddRemaining state, like for example adding
-      // the current samples in a table
-      enableAddRemaining = true,
-    } = this.props;
+let DataSetSampleActions = ({
+  dataSetSlice,
+  dataSet,
+  removeSamples,
+  addSamples,
+  meta,
+  // in some cases we don't want to show the AddRemaining state, like for example adding
+  // the current samples in a table
+  enableAddRemaining = true,
+}) => {
+  const stats = new DataSetStats(dataSet, dataSetSlice);
 
-    const stats = new DataSetStats(dataSet, dataSetSlice);
-
-    if (!stats.anyProcessedSamples()) {
-      // if there're no processed samples to be added, then just show the add button disabled
-      return (
-        <Button text={meta.addText} isDisabled buttonStyle={meta.buttonStyle} />
-      );
-    }
-    if (stats.allProcessedInDataSet()) {
-      return (
-        <RemoveFromDatasetButton
-          onRemove={() => removeSamples(stats.getAddedSlice())}
-        />
-      );
-    }
-    if (enableAddRemaining && stats.totalSamplesInDataSet() > 0) {
-      return (
-        <AddRemainingSamples
-          totalSamplesInDataset={stats.totalSamplesInDataSet()}
-          onAdd={() => addSamples(dataSetSlice)}
-        />
-      );
-    }
-
-    // if there're processed samples that aren't part of the current dataset, show the button to add samples
+  if (!stats.anyProcessedSamples()) {
+    // if there're no processed samples to be added, then just show the add button disabled
     return (
-      <AddToDatasetButton
-        addMessage={meta.addText}
-        onAdd={() => addSamples(dataSetSlice)}
-        buttonStyle={meta.buttonStyle}
+      <Button text={meta.addText} isDisabled buttonStyle={meta.buttonStyle} />
+    );
+  }
+
+  if (stats.allProcessedInDataSet()) {
+    return (
+      <RemoveFromDatasetButton
+        onRemove={() => removeSamples(stats.getAddedSlice())}
       />
     );
   }
-}
+
+  if (enableAddRemaining && stats.totalSamplesInDataSet() > 0) {
+    return (
+      <AddRemainingSamples
+        totalSamplesInDataset={stats.totalSamplesInDataSet()}
+        onAdd={() => addSamples(dataSetSlice)}
+      />
+    );
+  } // if there're processed samples that aren't part of the current dataset, show the button to add samples
+
+  return (
+    <AddToDatasetButton
+      addMessage={meta.addText}
+      onAdd={() => addSamples(dataSetSlice)}
+      buttonStyle={meta.buttonStyle}
+    />
+  );
+};
 DataSetSampleActions = connect(
   ({ download: { dataSet } }, { meta = {} }) => ({
     dataSet,

@@ -14,6 +14,7 @@ const Button = ({
   return (
     <button
       {...props}
+      type="button"
       className={classnames('button', buttonStyleClass, className)}
       disabled={isDisabled}
     >

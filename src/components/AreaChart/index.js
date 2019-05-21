@@ -15,7 +15,6 @@ import { COLORS } from '../../common/constants';
 type Props = {
   series: Array<string>,
   data: Array<{ date: string }>,
-  isLoading: boolean,
   formatValue: Function,
   formatLabel: Function,
 };

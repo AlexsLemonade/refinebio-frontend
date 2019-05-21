@@ -9,13 +9,13 @@ export default function HighlightedText({ text, highlight }) {
 
   // Split on highlight term and include term into parts, ignore case
   const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
-  return parts.map((part, i) =>
+  return parts.map(part =>
     part && part.toLowerCase() === highlight.toLowerCase() ? (
-      <span key={i} className="text-highlight">
+      <span key={part} className="text-highlight">
         {part}
       </span>
     ) : (
-      <React.Fragment key={i}>{part}</React.Fragment>
+      <React.Fragment key={part}>{part}</React.Fragment>
     )
   );
 }
