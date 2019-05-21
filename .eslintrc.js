@@ -42,6 +42,7 @@ module.exports = {
     'no-continue': 0,
     'react/destructuring-assignment': 0,
     'react/no-unescaped-entities': 0,
+    'no-unused-vars': 'warn',
 
     // these should be enabled gradually
     'dot-notation': 0, // <- make it so it only transforms camel case identifiers

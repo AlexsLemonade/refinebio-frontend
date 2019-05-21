@@ -6,6 +6,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install --ignore-engines
+      - run: yarn eslint
       - run: yarn test
 
   # end to end tests. These are sepparated because they take longer since chrome needs to be launched

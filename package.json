@@ -43,6 +43,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow",
+    "eslint": "eslint src/",
     "cacheBackend": "node cacheBackend.js",
     "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
