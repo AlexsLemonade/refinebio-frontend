@@ -12,7 +12,7 @@ const DashboardSection = props => {
         {charts.map((chart, i) => {
           return (
             <DashboardItem
-              key={i}
+              key={i} // eslint-disable-line react/no-array-index-key
               {...chart}
               isLoading={isLoading}
               range={range}

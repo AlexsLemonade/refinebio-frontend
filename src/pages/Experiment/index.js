@@ -14,7 +14,6 @@ import {
 } from '../../common/helpers';
 import slugify from '../../common/slugify';
 import './Experiment.scss';
-import * as routes from '../../routes';
 
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
@@ -33,13 +32,15 @@ import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import SamplesTable from '../../components/SamplesTable/SamplesTable';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
 
-import { searchUrl } from '../../routes';
+import * as routes from '../../routes';
 import { getExperiment } from '../../api/experiments';
 import NoMatch from '../NoMatch';
 import { ServerError } from '../../common/errors';
 import ServerErrorPage from '../ServerError';
 import { Hightlight, HText } from '../../components/HighlightedText';
 import RequestExperimentButton from './RequestExperimentButton';
+
+const { searchUrl } = routes;
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',

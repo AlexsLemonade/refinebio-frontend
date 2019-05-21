@@ -4,7 +4,6 @@ import Dropdown from '../Dropdown';
 import './TimeRangeSelect.scss';
 
 type Props = {
-  selectedTimeRange: (value: number) => {},
   options: Array<{ value: number, label: string }>,
 };
 

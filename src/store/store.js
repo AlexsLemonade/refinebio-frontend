@@ -26,7 +26,7 @@ const errorMiddleware = () => next => action => {
 
   if (process.env.NODE_ENV === 'development') {
     // log exception in console on development
-    console.log(error);
+    console.error(error);
   } else {
     // on Production Report error https://docs.sentry.io/error-reporting/capturing/?platform=browsernpm
     Sentry.captureException(error);
@@ -85,6 +85,7 @@ function routerMiddleware(history) {
       payload: { method, args },
     } = action;
     history[method](...args);
+    return null;
   };
 }
 

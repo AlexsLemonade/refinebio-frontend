@@ -38,7 +38,7 @@ const DownloadFileSummary = ({
 
       <div className="downloads__cards">
         {summaryData.files.map((card, i) => (
-          <div className="downloads__card" key={i}>
+          <div className="downloads__card" key={card.title + card.description}>
             <h4>{card.title}</h4>
             <div className="downloads__card-stats">
               <div className="downloads__card-stat">{card.description}</div>

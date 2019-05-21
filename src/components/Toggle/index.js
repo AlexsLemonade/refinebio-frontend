@@ -33,6 +33,7 @@ class Toggle extends Component {
               !!tab && (
                 <li key={tab.toString()} className="toggle__item">
                   <button
+                    type="button"
                     className={`toggle__button ${
                       i === this.state.activeTabIndex
                         ? 'toggle__button--active'

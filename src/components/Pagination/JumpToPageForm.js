@@ -20,9 +20,9 @@ export default function JumpToPageForm({ onPaginate, totalPages }) {
           .max(totalPages, `Page number must be lower than ${totalPages + 1}`),
       })}
     >
-      {({ touched, errors, values }) => (
+      {({ touched, errors }) => (
         <Form>
-          <label>
+          <label htmlFor="page">
             Jump to page
             <div className="input-wrap">
               {touched.page && errors.page ? (

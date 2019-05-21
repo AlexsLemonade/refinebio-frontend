@@ -1,25 +1,24 @@
-import { connect } from 'react-redux';
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import Button from '../../components/Button';
 import Dropdown from '../../components/Dropdown';
 import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
 import { getDomain, formatSentenceCase } from '../../common/helpers';
-import { Link } from 'react-router-dom';
 import HelpIconImage from '../../common/icons/help.svg';
 import {
   getTransformationNameFromOption,
   getTransformationOptionFromName,
 } from './transformation';
-
 import {
   editAggregation,
   editTransformation,
   editQuantileNormalize,
 } from '../../state/download/actions';
 import Checkbox from '../../components/Checkbox';
-import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import Alert from '../../components/Alert';
 
 let DownloadBar = ({
@@ -52,7 +51,7 @@ let DownloadBar = ({
 
       <div className="downloads__actions">
         <div className="downloads__fieldset">
-          <label className="downloads__label">
+          <label htmlFor="aggregation" className="downloads__label">
             <div className="downloads__label-text">
               Aggregate{' '}
               <HelpIcon
@@ -61,6 +60,7 @@ let DownloadBar = ({
               />
             </div>{' '}
             <Dropdown
+              name="aggregation"
               options={['Experiment', 'Species']}
               selectedOption={aggregation}
               onChange={aggregation =>
@@ -68,7 +68,7 @@ let DownloadBar = ({
               }
             />
           </label>
-          <label className="downloads__label">
+          <label htmlFor="transformation" className="downloads__label">
             <div className="downloads__label-text">
               Transformation{' '}
               <HelpIcon
@@ -77,6 +77,7 @@ let DownloadBar = ({
               />
             </div>{' '}
             <Dropdown
+              name="transformation"
               options={['None', 'Z-score', 'Zero to One']}
               selectedOption={transformation}
               onChange={transformation =>
@@ -90,6 +91,7 @@ let DownloadBar = ({
             />
           </label>
           <button
+            type="button"
             className="link flex-row"
             onClick={() => setAdvancedOptions(!advancedOptions)}
           >

@@ -58,13 +58,15 @@ export function fetchResults({
 }) {
   return async (dispatch, getState) => {
     try {
-      let { results, count: totalResults, facets } = await Ajax.get('/es/', {
+      const apiResults = await Ajax.get('/es/', {
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
         ordering: ordering || Ordering.BestMatch,
         ...appliedFilters,
       });
+      let { results } = apiResults;
+      const { count: totalResults, facets } = apiResults;
 
       // do accession code search
       if (isAccessionCode(query) && page === 1) {
@@ -73,7 +75,9 @@ export function fetchResults({
         });
 
         // mark top results
-        topResults.forEach(experiment => (experiment._isTopResult = true));
+        topResults.forEach(experiment => {
+          experiment._isTopResult = true;
+        });
 
         // filter out top results
         results = results.filter(x =>

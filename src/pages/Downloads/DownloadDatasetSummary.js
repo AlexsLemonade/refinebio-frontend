@@ -25,9 +25,9 @@ const DownloadDatasetSummary = props => {
 };
 
 function SpeciesRow({ samplesBySpecies, experimentCountBySpecies }) {
-  return Object.keys(samplesBySpecies).map((organism, i) => {
+  return Object.keys(samplesBySpecies).map(organism => {
     return (
-      <tr className="downloads__table-row" key={i}>
+      <tr className="downloads__table-row" key={organism}>
         <td className="downloads__table-cell">
           {formatSentenceCase(organism)}
         </td>

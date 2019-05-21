@@ -1,9 +1,9 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import Header from '../Header';
 import Footer from '../Footer';
-import './Layout.scss';
-import { withRouter } from 'react-router-dom';
 import Notification from '../Notification';
+import './Layout.scss';
 
 let Layout = ({ children, location }) => {
   // in some cases it's useful to mark the root object with a class to identify the current page, in case

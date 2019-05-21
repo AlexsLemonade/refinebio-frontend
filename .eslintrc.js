@@ -16,7 +16,7 @@ module.exports = {
         code: 80,
         tabWidth: 2,
         comments: 80,
-        ignoreComments: false,
+        ignoreComments: true, // let's disable warnings on the comments
         ignoreTrailingComments: true,
         ignoreUrls: true,
         ignoreStrings: true,
@@ -42,9 +42,10 @@ module.exports = {
     'no-continue': 0,
     'react/destructuring-assignment': 0,
     'react/no-unescaped-entities': 0,
-    'no-unused-vars': 'warn',
+    'jsx-a11y/click-events-have-key-events': 0,
 
     // these should be enabled gradually
+    'import/no-mutable-exports': 0,
     'dot-notation': 0, // <- make it so it only transforms camel case identifiers
     'react/no-multi-comp': 'warn',
     'no-use-before-define': 'warn',

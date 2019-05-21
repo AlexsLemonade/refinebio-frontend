@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import { formatBytes } from '../../../common/helpers';
@@ -6,7 +7,6 @@ import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
 import Button from '../../../components/Button';
-import { connect } from 'react-redux';
 import {
   startDownload,
   regenerateDataSet,
@@ -224,7 +224,7 @@ class DataSetReady extends React.Component {
   };
 
   handleAgreedToTerms = () => {
-    this.setState({ agreedToTerms: !this.state.agreedToTerms });
+    this.setState(state => ({ agreedToTerms: !state.agreedToTerms }));
   };
 
   handleSubmit = async () => {

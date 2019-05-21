@@ -275,6 +275,7 @@ function ThComponent({ toggleSort, className, children, ...rest }) {
       className={`rt-th ${className} samples-table__th`}
       onClick={e => toggleSort && toggleSort(e)}
       role="columnheader"
+      tabIndex={0}
       {...rest}
     >
       {children}

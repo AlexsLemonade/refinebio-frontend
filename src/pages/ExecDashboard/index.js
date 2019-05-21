@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import AppRunningSpeed from './AppRunningSpeed';
 import SampleBreakdownBlock from './SampleBreakdownBlock';
 import { useLoader } from '../../components/Loader';
@@ -9,7 +10,6 @@ import SamplesProcessedBlock from './SamplesProcessedBlock';
 import { fetchDashboardData } from '../../api/dashboad';
 import { useInterval, useHistory } from '../../common/hooks';
 import Header from './Header';
-import classnames from 'classnames';
 import ServerErrorPage from '../ServerError';
 
 export default function ExecutiveDashboard() {

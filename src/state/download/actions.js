@@ -135,7 +135,7 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
   const dataSetId = getDataSetId(getState());
 
   if (!dataSetId) {
-    return;
+    return null;
   }
 
   dispatch({
@@ -168,6 +168,7 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
     // Also report the error
     await dispatch(reportError(e));
   }
+  return null;
 };
 
 /**
@@ -271,7 +272,7 @@ export const startDownload = ({
     await dispatch(reportError(e));
     // if there's an error, redirect to the dataset page, and show a message
     // also with a button to try again
-    return await dispatch(
+    return dispatch(
       replace({
         pathname: `/dataset/${dataSetId}`,
         state: { hasError: true },
@@ -286,7 +287,7 @@ export const startDownload = ({
   }
 
   // redirect to the dataset page, and send the email address in the state
-  return await dispatch(
+  return dispatch(
     replace({
       pathname: `/dataset/${dataSetId}`,
       state: { email_address: email },

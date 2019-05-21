@@ -357,7 +357,7 @@ class ExperimentsView extends React.Component {
     const uniqueOrganisms = [...new Set(organismsList)];
 
     if (uniqueOrganisms.length <= 1) {
-      return;
+      return null;
     }
 
     return (
@@ -372,8 +372,8 @@ class ExperimentsView extends React.Component {
             All Species
           </Radio>
         </div>
-        {uniqueOrganisms.map((organism, key) => (
-          <div className="downloads__species-filter-item" key={key}>
+        {uniqueOrganisms.map(organism => (
+          <div className="downloads__species-filter-item" key={organism}>
             <Radio
               readOnly
               checked={this.state.organism === organism}

@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
-import smoothscroll from 'smoothscroll-polyfill';
-import App from './pages/App';
-import 'delayed-scroll-restoration-polyfill';
-import apiData from './apiData.json';
 import * as Sentry from '@sentry/browser';
+import 'delayed-scroll-restoration-polyfill';
+import smoothscroll from 'smoothscroll-polyfill';
+import './index.scss';
+import App from './pages/App';
+import apiData from './apiData.json';
 
 // kick off the polyfill!
 smoothscroll.polyfill();

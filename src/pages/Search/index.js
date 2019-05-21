@@ -193,6 +193,7 @@ class SearchResults extends Component {
   }
 
   _parseUrl() {
+    /* eslint-disable prefer-const */
     let {
       q: query,
       p: page = 1,
@@ -201,6 +202,7 @@ class SearchResults extends Component {
       filter_order = '',
       ...filters
     } = getQueryParamObject(this.props.location.search);
+    /* eslint-enable */
 
     // for consistency, ensure all values in filters are arrays
     // the method `getQueryParamObject` will return a single value for parameters that only

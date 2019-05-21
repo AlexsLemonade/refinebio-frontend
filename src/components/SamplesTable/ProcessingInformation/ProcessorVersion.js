@@ -17,10 +17,13 @@ function getPrimaryPackages(processor) {
     case 'Affymetrix SCAN':
       return pick(processor.environment.R, ['SCAN.UPC', 'Brainarray']);
     case 'Salmon Quant':
-      let salmonVersion = processor.environment.cmd_line['salmon --version'];
       // salmon version contains the text 'salmon', remove it
-      salmonVersion = salmonVersion.replace('salmon ', '');
-      return { salmon: salmonVersion };
+      return {
+        salmon: processor.environment.cmd_line['salmon --version'].replace(
+          'salmon ',
+          ''
+        ),
+      };
     case 'Tximport':
       return pick(processor.environment.R, ['tximport']);
     default:

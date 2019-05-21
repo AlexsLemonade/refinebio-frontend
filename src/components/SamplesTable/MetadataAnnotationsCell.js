@@ -2,12 +2,12 @@ import React from 'react';
 import pickBy from 'lodash/pickBy';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
+import fromPairs from 'lodash/fromPairs';
 import ModalManager from '../Modal/ModalManager';
 import Button from '../Button';
 import InfoIcon from '../../common/icons/info-badge.svg';
 import Input from '../Input';
 import './MetadataAnnotationsCell.scss';
-import fromPairs from 'lodash/fromPairs';
 import { isValidURL } from '../../common/helpers';
 import HighlightedText from '../HighlightedText';
 
@@ -64,7 +64,7 @@ class AnnotationsModalContent extends React.Component {
         {anyAnnotationsMatchingFilter ? (
           <div className="metadata-modal__annotations">
             {annotations.map((meta, index) => (
-              <div key={index}>
+              <div key={Object.keys(meta).join()}>
                 {Object.keys(meta).map(field => (
                   <Annotation
                     key={field}
@@ -152,12 +152,13 @@ function Annotation({ field, value, highlight = '' }) {
   );
 }
 
-function AnnotationValue({ value, level = 0, highlight = '' }) {
+function AnnotationValue({ value, highlight = '' }) {
   if (isString(value)) {
     return <AnnotationText value={value} highlight={highlight} />;
   }
   if (Array.isArray(value)) {
     return value.map((x, index) => (
+      // eslint-disable-next-line react/no-array-index-key
       <div key={index} style={{ marginTop: index > 0 ? 8 : 0 }}>
         <AnnotationValue value={x} highlight={highlight} />
       </div>

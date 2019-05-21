@@ -47,7 +47,7 @@ export function getExperimentCountBySpecies({ experiments, dataSet }) {
     const { organisms } = experimentInfo;
     for (const organism of organisms) {
       if (!species[organism]) species[organism] = 0;
-      species[organism]++;
+      species[organism] += 1;
     }
   }
 

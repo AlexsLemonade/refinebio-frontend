@@ -19,7 +19,7 @@ let DownloadStart = ({ dataSetId, dataSet, agreedToTerms, startDownload }) => {
   const [emailAddress, setEmailAddress] = useLocalStorage('email-address', '');
   const submitEmailForm = async ({ email, termsOfService, receiveUpdates }) => {
     setEmailAddress(email);
-    return await startDownload({
+    return startDownload({
       email,
       termsOfService,
       receiveUpdates,

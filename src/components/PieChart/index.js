@@ -32,7 +32,10 @@ const PieChart = (props: Props) => {
           label
         >
           {data.map((entry, index) => (
-            <Cell key={index} fill={COLORS[index % COLORS.length]} />
+            <Cell
+              key={COLORS[index % COLORS.length]}
+              fill={COLORS[index % COLORS.length]}
+            />
           ))}
         </Pie>
         <Legend iconType="circle" iconSize={10} />
