@@ -17,7 +17,6 @@ const PROTOCOLS_BY_SAMPLE_TYPE = {
  */
 export default function SubmitterSuppliedProtocol({
   sample,
-  results,
   isSubmitterProcessed = false,
 }) {
   const Component = PROTOCOLS_BY_SAMPLE_TYPE[sample.source_database];

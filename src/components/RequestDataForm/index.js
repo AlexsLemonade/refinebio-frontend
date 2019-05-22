@@ -30,7 +30,7 @@ const RequestDataForm = ({
               approach: '',
               email: '',
             }}
-            onSubmit={(values, actions) => onSubmit(values)}
+            onSubmit={values => onSubmit(values)}
             validationSchema={Yup.object().shape({
               pediatric_cancer: Yup.string().required(
                 'Are you using this for pediatric cancer research?'

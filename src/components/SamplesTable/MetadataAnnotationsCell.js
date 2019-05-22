@@ -63,7 +63,7 @@ class AnnotationsModalContent extends React.Component {
 
         {anyAnnotationsMatchingFilter ? (
           <div className="metadata-modal__annotations">
-            {annotations.map((meta, index) => (
+            {annotations.map(meta => (
               <div key={Object.keys(meta).join()}>
                 {Object.keys(meta).map(field => (
                   <Annotation

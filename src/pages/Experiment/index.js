@@ -48,7 +48,7 @@ const DatabaseNames = {
   ARRAY_EXPRESS: 'ArrayExpress',
 };
 
-let Experiment = ({ match, location: { search, state }, goBack }) => {
+let Experiment = ({ match, location: { state }, goBack }) => {
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
   const accessionCode = match.params.id;
@@ -419,7 +419,7 @@ class ExperimentSamplesTable extends React.Component {
         )}
         filterActionComponent={this.props.filterActionComponent}
         // Render prop for the button that adds the samples to the dataset
-        pageActionComponent={samplesDisplayed => {
+        pageActionComponent={() => {
           const stats = new DataSetStats(
             this.props.dataSet,
             this._getDataSetSlice()

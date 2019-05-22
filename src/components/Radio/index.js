@@ -36,7 +36,6 @@ export default Radio;
 export const RadioField = ({
   field: { name, value: fieldValue, onBlur },
   form,
-  id,
   label,
   className,
   value,
@@ -45,7 +44,7 @@ export const RadioField = ({
     name={name}
     className={className}
     checked={fieldValue === value}
-    onClick={e => {
+    onClick={() => {
       form.setFieldValue(name, value);
     }}
     readOnly

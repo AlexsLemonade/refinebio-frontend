@@ -268,7 +268,6 @@ let NumberOfResults = ({
   resultsPerPage,
   totalResults,
   updateResultsPerPage,
-  searchTerm,
 }) => (
   <React.Fragment>
     {// Only show the dropdown if there're enough elements

@@ -6,7 +6,7 @@ import Button from './Button';
 
 import './Notification.scss';
 
-let Notification = ({ location: { search, state } }) => {
+let Notification = ({ location: { state } }) => {
   const [closed, setClosed] = React.useState(false);
 
   if (closed || !state || !state.message) return null;

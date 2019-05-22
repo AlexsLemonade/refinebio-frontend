@@ -46,7 +46,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 ErrorBoundary = connect(
-  state => ({}),
+  null,
   { reportError }
 )(ErrorBoundary);
 ErrorBoundary = withRouter(ErrorBoundary);

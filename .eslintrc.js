@@ -44,13 +44,13 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 0,
     'import/prefer-default-export': 0,
     'no-use-before-define': 0,
+    'react/no-multi-comp': 0,
+    // without decorators it's harder to create components that need to call `connect`
+    'import/no-mutable-exports': 0,
 
     // these should be enabled gradually
-    'import/no-mutable-exports': 0,
     'react/no-did-update-set-state': 'warn',
-    'no-unused-vars': 'warn',
     'dot-notation': 0, // <- make it so it only transforms camel case identifiers
-    'react/no-multi-comp': 'warn',
     'no-underscore-dangle': 'warn',
     'react/sort-comp': 'warn', // sorting of methods
     'no-shadow': 'warn',

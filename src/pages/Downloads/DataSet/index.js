@@ -126,12 +126,7 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
   );
 }
 
-let DataSetErrorDownloading = ({
-  dataSetId,
-  dataSet,
-  startDownload,
-  token,
-}) => {
+const DataSetErrorDownloading = ({ dataSet }) => {
   return (
     <div className="dataset__container">
       <div className="dataset__message">
@@ -179,14 +174,8 @@ let DataSetErrorDownloading = ({
     </div>
   );
 };
-DataSetErrorDownloading = connect(
-  ({ token }) => ({ token }),
-  {
-    startDownload,
-  }
-)(DataSetErrorDownloading);
 
-function DataSetProcessing({ email, dataSetId }) {
+function DataSetProcessing({ email }) {
   const message = email ? (
     <p>
       An email with a download link will be sent to <strong>{email}</strong>{' '}

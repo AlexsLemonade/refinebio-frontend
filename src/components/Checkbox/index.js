@@ -47,7 +47,7 @@ export default Checkbox;
  */
 export const CheckboxField = ({
   field,
-  form: { errors, touched, setFieldValue },
+  form: { errors, touched },
   label,
   className,
 }) => (

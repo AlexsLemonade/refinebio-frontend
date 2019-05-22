@@ -29,7 +29,7 @@ export const createOrUpdateDataSet = ({
   data,
   dataSetId = null,
   details = false,
-}) => async dispatch => {
+}) => async () => {
   // first create the dataset, since adding experiments with special key `[ALL]`
   // only works with edit operations
   if (!dataSetId) {
@@ -93,7 +93,7 @@ const dataSetUpdateOperation = (modifier, details = false) => async (
  * Takes an array of experiment objects and adds to users dataset via endpoint
  * @param {object} dataSetSlice
  */
-export const addSamples = dataSetSlice => async (dispatch, getState) =>
+export const addSamples = dataSetSlice => async dispatch =>
   dispatch(
     dataSetUpdateOperation(dataSet =>
       new DataSetManager(dataSet).add(dataSetSlice)
@@ -116,10 +116,10 @@ export const removeExperiment = (accessionCodes, details = false) => dispatch =>
  * Removes all samples with corresponding ids from each experiment in dataset.
  * @param {object} dataSetSlice
  */
-export const removeSamples = (dataSetSlice, details = false) => async (
-  dispatch,
-  getState
-) =>
+export const removeSamples = (
+  dataSetSlice,
+  details = false
+) => async dispatch =>
   dispatch(
     dataSetUpdateOperation(
       dataSet => new DataSetManager(dataSet).remove(dataSetSlice),
@@ -299,7 +299,7 @@ export const startDownload = ({
  * Once generated the datasets are immutable on the server, so to be able to re-generate one we have
  * to create a new dataset with the same data and redirect to it's page.
  */
-export const regenerateDataSet = dataSet => async (dispatch, getState) => {
+export const regenerateDataSet = dataSet => async dispatch => {
   const { data, aggregate_by, scale_by } = dataSet;
 
   try {

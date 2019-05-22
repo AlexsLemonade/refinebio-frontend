@@ -3,7 +3,6 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { push } from '../../state/routerActions';
-import { fetchResults } from '../../state/search/actions';
 import SearchInput from '../../components/SearchInput';
 import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
@@ -25,7 +24,7 @@ import heatmapIcon from './icon-heatmap.svg';
 import networkBottomIcon from './network-combined.svg';
 import networkDocsIcon from './icon-docs.svg';
 
-let Main = ({ searchTerm, fetchResults, push }) => {
+let Main = ({ push }) => {
   return (
     <div className="main">
       <Helmet>
@@ -271,8 +270,8 @@ let Main = ({ searchTerm, fetchResults, push }) => {
   );
 };
 Main = connect(
-  ({ search: { searchTerm } }) => ({ searchTerm }),
-  { fetchResults, push }
+  null,
+  { push }
 )(Main);
 
 export default Main;

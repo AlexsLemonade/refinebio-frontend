@@ -80,7 +80,7 @@ class SamplesTable extends React.Component {
                 fetchData: state.refresh,
               })}
             >
-              {(tableState, makeTable, instance) => (
+              {(tableState, makeTable) => (
                 <div className="samples-table-layout">
                   <div className="samples-table-layout__header">
                     <div className="experiment__sample-commands">
