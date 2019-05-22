@@ -1,5 +1,11 @@
 module.exports = {
-  extends: ['airbnb', 'prettier', 'prettier/react', 'prettier/flowtype'],
+  extends: [
+    'airbnb',
+    'react-app',
+    'prettier',
+    'prettier/react',
+    'prettier/flowtype',
+  ],
   plugins: ['react-hooks'],
   parser: 'babel-eslint',
   env: {
@@ -28,9 +34,6 @@ module.exports = {
     'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx'] }],
     'react/jsx-one-expression-per-line': 0,
     'no-console': ['error', { allow: ['error'] }], // only allow `console.error` calls
-    'react/require-default-props': 'off',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
 
     // Not sure if we should enforce these rules.
     'class-methods-use-this': 0,
