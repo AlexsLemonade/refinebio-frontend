@@ -34,6 +34,7 @@ module.exports = {
     'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx'] }],
     'react/jsx-one-expression-per-line': 0,
     'no-console': ['error', { allow: ['error'] }], // only allow `console.error` calls
+    'no-unused-vars': 2,
 
     // Not sure if we should enforce these rules.
     'class-methods-use-this': 0,

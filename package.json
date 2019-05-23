@@ -31,7 +31,15 @@
     "smoothscroll-polyfill": "^0.4.3",
     "yup": "^0.26.10"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
+    "src/**/*.js": [
+      "eslint"
+    ],
     "src/**/*.{js,jsx,json,css,scss}": [
       "prettier --single-quote --write",
       "git add"
@@ -39,7 +47,6 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
-    "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
