@@ -63,8 +63,10 @@ class AnnotationsModalContent extends React.Component {
 
         {anyAnnotationsMatchingFilter ? (
           <div className="metadata-modal__annotations">
-            {annotations.map(meta => (
-              <div key={Object.keys(meta).join()}>
+            {annotations.map((meta, index) => (
+              // Not sure what unique key to use here, look into shortid.
+              // eslint-disable-next-line react/no-array-index-key
+              <div key={index}>
                 {Object.keys(meta).map(field => (
                   <Annotation
                     key={field}
