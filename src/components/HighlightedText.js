@@ -1,4 +1,5 @@
 import React from 'react';
+import shortid from 'shortid';
 
 /**
  * Hightlight portions of a text.
@@ -8,14 +9,17 @@ export default function HighlightedText({ text, highlight }) {
   if (!highlight) return text;
 
   // Split on highlight term and include term into parts, ignore case
-  const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
-  return parts.map(part =>
+  const parts = text
+    .split(new RegExp(`(${highlight})`, 'gi'))
+    .map(part => ({ part, id: shortid() }));
+
+  return parts.map(({ part, id }) =>
     part && part.toLowerCase() === highlight.toLowerCase() ? (
-      <span key={part} className="text-highlight">
+      <span key={id} className="text-highlight">
         {part}
       </span>
     ) : (
-      <React.Fragment key={part}>{part}</React.Fragment>
+      <React.Fragment key={id}>{part}</React.Fragment>
     )
   );
 }

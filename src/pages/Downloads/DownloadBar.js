@@ -156,8 +156,9 @@ function HelpIcon({ url = 'http://docs.refine.bio/', alt = '' }) {
       target="_blank"
       rel="noopener noreferrer"
       title="What is this?"
+      className="downloads__help-icon"
     >
-      <img className="downloads__help-icon" src={HelpIconImage} alt={alt} />
+      <img src={HelpIconImage} alt={alt} />
     </a>
   );
 }

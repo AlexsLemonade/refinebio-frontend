@@ -72,8 +72,8 @@ class FilterCategory extends React.Component {
                   <HighlightedText
                     text={category.format(filter)}
                     highlight={this.state.query}
-                  />{' '}
-                  <span className="nowrap">({categoryFilters[filter]})</span>
+                  />
+                  <span className="nowrap"> ({categoryFilters[filter]})</span>
                 </Checkbox>
               ) : null // Do not display a checkbox if the filter is null
           )}
