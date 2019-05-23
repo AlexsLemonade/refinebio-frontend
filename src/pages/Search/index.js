@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
+import isEqual from 'lodash/isEqual';
+import fromPairs from 'lodash/fromPairs';
 import Result from './Result';
 import ResultFilters, { anyFilterApplied } from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
@@ -12,21 +15,20 @@ import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../common/constants';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import DistressedTubey from '../../common/images/distressed-tubey.svg';
-import { Link } from 'react-router-dom';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
-import isEqual from 'lodash/isEqual';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
-import { Ordering, updateOrdering } from '../../state/search/actions';
-import Spinner from '../../components/Spinner';
 import {
+  Ordering,
+  updateOrdering,
   fetchResults,
   updatePage,
   triggerSearch,
   clearFilters,
-  updateResultsPerPage
+  updateResultsPerPage,
 } from '../../state/search/actions';
-import fromPairs from 'lodash/fromPairs';
+import Spinner from '../../components/Spinner';
+
 import InfoBox from '../../components/InfoBox';
 import { searchUrl } from '../../routes';
 import './SearchResults.scss';
@@ -37,7 +39,7 @@ import RequestSearchButton from './RequestSearchButton';
 class SearchResults extends Component {
   state = {
     query: '',
-    filters: {}
+    filters: {},
   };
 
   constructor(props) {
@@ -46,7 +48,7 @@ class SearchResults extends Component {
     const searchArgs = this._parseUrl();
     this.state = {
       query: searchArgs.query,
-      filters: searchArgs.filters
+      filters: searchArgs.filters,
     };
   }
 
@@ -58,7 +60,7 @@ class SearchResults extends Component {
 
     this.setState({
       query: searchArgs.query,
-      filters: searchArgs.filters
+      filters: searchArgs.filters,
     });
 
     // check if the search term and the filters are the same, in which case we don't need to
@@ -91,7 +93,7 @@ class SearchResults extends Component {
       results,
       pagination: { totalResults, currentPage, resultsPerPage },
       triggerSearch,
-      updatePage
+      updatePage,
     } = this.props;
     const totalPages = Math.ceil(totalResults / resultsPerPage);
 
@@ -191,6 +193,7 @@ class SearchResults extends Component {
   }
 
   _parseUrl() {
+    /* eslint-disable prefer-const */
     let {
       q: query,
       p: page = 1,
@@ -199,11 +202,12 @@ class SearchResults extends Component {
       filter_order = '',
       ...filters
     } = getQueryParamObject(this.props.location.search);
+    /* eslint-enable */
 
     // for consistency, ensure all values in filters are arrays
     // the method `getQueryParamObject` will return a single value for parameters that only
     // appear once in the url
-    for (let key of Object.keys(filters)) {
+    for (const key of Object.keys(filters)) {
       if (!Array.isArray(filters[key])) {
         filters[key] = [filters[key]];
       }
@@ -220,18 +224,18 @@ class SearchResults extends Component {
 }
 SearchResults = connect(
   ({
-    search: { results, pagination, searchTerm, appliedFilters, ordering }
+    search: { results, pagination, searchTerm, appliedFilters, ordering },
   }) => ({
     results,
     pagination,
     searchTerm,
     appliedFilters,
-    ordering
+    ordering,
   }),
   {
     updatePage,
     fetchResults,
-    triggerSearch
+    triggerSearch,
   }
 )(SearchResults);
 export default SearchResults;
@@ -244,7 +248,7 @@ function AddPageToDataSetButton({ results }) {
   const resultsDataSetSlice = fromPairs(
     results.map(result => [
       result.accession_code,
-      { all: true, total: result.num_processed_samples }
+      { all: true, total: result.num_processed_samples },
     ])
   );
 
@@ -254,7 +258,7 @@ function AddPageToDataSetButton({ results }) {
       enableAddRemaining={false}
       meta={{
         buttonStyle: 'secondary',
-        addText: 'Add Page to Dataset'
+        addText: 'Add Page to Dataset',
       }}
     />
   );
@@ -264,7 +268,6 @@ let NumberOfResults = ({
   resultsPerPage,
   totalResults,
   updateResultsPerPage,
-  searchTerm
 }) => (
   <React.Fragment>
     {// Only show the dropdown if there're enough elements
@@ -289,12 +292,12 @@ NumberOfResults = connect(
   ({
     search: {
       searchTerm,
-      pagination: { totalResults, resultsPerPage }
-    }
+      pagination: { totalResults, resultsPerPage },
+    },
   }) => ({
     searchTerm,
     totalResults,
-    resultsPerPage
+    resultsPerPage,
   }),
   { updateResultsPerPage }
 )(NumberOfResults);
@@ -341,7 +344,7 @@ const NoSearchResults = ({ query }) => (
 let NoSearchResultsTooManyFilters = ({
   query,
   appliedFilters,
-  clearFilters
+  clearFilters,
 }) => (
   <div className="results__container results__container--empty">
     <div className="results__filters">
@@ -372,7 +375,7 @@ let NoSearchResultsTooManyFilters = ({
 NoSearchResultsTooManyFilters = connect(
   null,
   {
-    clearFilters
+    clearFilters,
   }
 )(NoSearchResultsTooManyFilters);
 
@@ -382,7 +385,7 @@ let OrderingDropdown = ({ ordering, updateOrdering }) => {
     { label: 'Most No. of samples', value: Ordering.MostSamples },
     { label: 'Least No. of samples', value: Ordering.LeastSamples },
     { label: 'Newest Experiment First', value: Ordering.Newest },
-    { label: 'Oldest Experiment First', value: Ordering.Oldest }
+    { label: 'Oldest Experiment First', value: Ordering.Oldest },
   ];
 
   const selectedOption = options.find(x => x.value === ordering) || options[0];
@@ -401,9 +404,9 @@ let OrderingDropdown = ({ ordering, updateOrdering }) => {
 };
 OrderingDropdown = connect(
   ({ search: { ordering } }) => ({
-    ordering
+    ordering,
   }),
   {
-    updateOrdering
+    updateOrdering,
   }
 )(OrderingDropdown);

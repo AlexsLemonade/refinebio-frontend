@@ -1,25 +1,25 @@
 import React from 'react';
 import './ResultFilters.scss';
+import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
+import { IoMdClose } from 'react-icons/io';
 import {
   formatSentenceCase,
-  formatPlatformName
+  formatPlatformName,
 } from '../../../common/helpers';
 import Button from '../../../components/Button';
-import { connect } from 'react-redux';
 import {
   toggledFilter,
   clearFilters,
   updateFilters,
-  toggleFilterHelper
+  toggleFilterHelper,
 } from '../../../state/search/actions';
 import ResponsiveSwitch from '../../../components/ResponsiveSwitch';
 import SideMenu from '../../../components/SideMenu';
 
 import FilterIcon from '../../../common/icons/filter-icon.svg';
 import { useDom } from '../../../common/hooks';
-import isEmpty from 'lodash/isEmpty';
 import FilterCategory from './FilterCategory';
-import { IoMdClose } from 'react-icons/io';
 import cache from '../../../apiData.json';
 
 let FilterList = ({
@@ -27,9 +27,9 @@ let FilterList = ({
   filters,
   toggledFilter,
   clearFilters,
-  style
+  style,
 }) => {
-  let filterApplied = anyFilterApplied(appliedFilters);
+  const filterApplied = anyFilterApplied(appliedFilters);
 
   return (
     <div className="result-filters" style={style}>
@@ -75,7 +75,7 @@ let FiltersDesktop = props => {
             size.bottom > window.innerHeight
               ? 0
               : window.innerHeight - size.bottom,
-          paddingBottom: 200
+          paddingBottom: 200,
         }
       : null;
 
@@ -90,7 +90,7 @@ FiltersDesktop = connect(
   { toggledFilter, clearFilters }
 )(FiltersDesktop);
 
-let Filters = props => (
+const Filters = props => (
   <ResponsiveSwitch
     mobile={() => <FiltersMobile {...props} />}
     desktop={() => <FiltersDesktop {...props} />}
@@ -105,14 +105,14 @@ const filterCategories = [
   {
     name: 'publication',
     queryField: 'has_publication',
-    format: formatSentenceCase
+    format: formatSentenceCase,
   },
   {
     name: 'platform',
     queryField: 'platform',
     format: accessionCode =>
-      formatPlatformName(cache.platforms[accessionCode] || accessionCode)
-  }
+      formatPlatformName(cache.platforms[accessionCode] || accessionCode),
+  },
 ];
 
 /**
@@ -127,7 +127,7 @@ class FiltersMobile extends React.Component {
     // modifying the filters before clicking apply
     // in desktop we call the action creators directly
     this.state = {
-      filters: props.appliedFilters
+      filters: props.appliedFilters,
     };
   }
 
@@ -197,7 +197,7 @@ class FiltersMobile extends React.Component {
 
   _toggleFilter(type, value) {
     this.setState(({ filters }) => ({
-      filters: toggleFilterHelper(filters, type, value)
+      filters: toggleFilterHelper(filters, type, value),
     }));
   }
 }
@@ -206,7 +206,7 @@ FiltersMobile = connect(
   {
     toggledFilter,
     updateFilters,
-    clearFilters
+    clearFilters,
   }
 )(FiltersMobile);
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import { formatBytes } from '../../../common/helpers';
@@ -6,10 +7,9 @@ import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import './DataSet.scss';
 import Button from '../../../components/Button';
-import { connect } from 'react-redux';
 import {
   startDownload,
-  regenerateDataSet
+  regenerateDataSet,
 } from '../../../state/download/actions';
 import { createToken } from '../../../state/token';
 
@@ -36,8 +36,8 @@ import TubeyAdventureImage from './tubey-adventure.svg';
 export default function DataSet({
   location,
   match: {
-    params: { id: dataSetId }
-  }
+    params: { id: dataSetId },
+  },
 }) {
   // Check if the user arrived here and wants to regenerate the current page.
   if (location.state && location.state.regenerate) {
@@ -81,8 +81,8 @@ export default function DataSet({
                 </div>
               </div>
               <DownloadDetails
-                isImmutable={true}
-                isEmbed={true}
+                isImmutable
+                isEmbed
                 {...dataSet}
                 dataSet={dataSet.data}
                 dataSetId={dataSetId}
@@ -104,7 +104,7 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
     is_processing,
     is_available,
     expires_on,
-    success
+    success,
   } = dataSet;
 
   // success can sometimes be `null`
@@ -126,12 +126,7 @@ function DataSetPageHeader({ dataSetId, email_address, hasError, dataSet }) {
   );
 }
 
-let DataSetErrorDownloading = ({
-  dataSetId,
-  dataSet,
-  startDownload,
-  token
-}) => {
+const DataSetErrorDownloading = ({ dataSet }) => {
   return (
     <div className="dataset__container">
       <div className="dataset__message">
@@ -179,15 +174,9 @@ let DataSetErrorDownloading = ({
     </div>
   );
 };
-DataSetErrorDownloading = connect(
-  ({ token }) => ({ token }),
-  {
-    startDownload
-  }
-)(DataSetErrorDownloading);
 
-function DataSetProcessing({ email, dataSetId }) {
-  let message = !!email ? (
+function DataSetProcessing({ email }) {
+  const message = email ? (
     <p>
       An email with a download link will be sent to <strong>{email}</strong>{' '}
       when the dataset is ready or you can come back to this page later.
@@ -220,11 +209,11 @@ function DataSetProcessing({ email, dataSetId }) {
 
 class DataSetReady extends React.Component {
   state = {
-    agreedToTerms: false
+    agreedToTerms: false,
   };
 
   handleAgreedToTerms = () => {
-    this.setState({ agreedToTerms: !this.state.agreedToTerms });
+    this.setState(state => ({ agreedToTerms: !state.agreedToTerms }));
   };
 
   handleSubmit = async () => {
@@ -291,7 +280,7 @@ DataSetReady = connect(
   ({ token }) => ({ hasToken: !!token }),
   {
     startDownload,
-    createToken
+    createToken,
   }
 )(DataSetReady);
 
@@ -321,7 +310,7 @@ let DataSetExpired = ({ dataSet, regenerateDataSet }) => (
 DataSetExpired = connect(
   null,
   {
-    regenerateDataSet
+    regenerateDataSet,
   }
 )(DataSetExpired);
 

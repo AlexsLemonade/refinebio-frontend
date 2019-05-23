@@ -6,10 +6,11 @@ import './SideMenu.scss';
 
 export default class SideMenu extends React.Component {
   state = {
-    menuOpen: false
+    menuOpen: false,
   };
 
   showMenu = () => this.setState({ menuOpen: true });
+
   hideMenu = () => this.setState({ menuOpen: false });
 
   render() {
@@ -20,15 +21,15 @@ export default class SideMenu extends React.Component {
         <Modal
           isOpen={this.state.menuOpen}
           onRequestClose={this.hideMenu}
-          overlayClassName={`modal-backdrop`}
+          overlayClassName="modal-backdrop"
           className={classnames('side-menu', {
-            'side-menu--top': this.props.orientation === 'top'
+            'side-menu--top': this.props.orientation === 'top',
           })}
           bodyOpenClassName="modal-open"
         >
           <div className="side-menu__content">
             {this.props.children({
-              hideMenu: this.hideMenu
+              hideMenu: this.hideMenu,
             })}
           </div>
         </Modal>

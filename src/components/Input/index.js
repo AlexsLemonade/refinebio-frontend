@@ -1,12 +1,12 @@
 import React from 'react';
 import './Input.scss';
-import Button from '../Button';
 import classnames from 'classnames';
 import { IoMdClose, IoMdSearch } from 'react-icons/io';
+import Button from '../Button';
 
 type Props = {
   value: string,
-  onChange: (newValue: string) => void
+  onChange: (newValue: string) => void,
 };
 
 const Input = ({ onChange, className = 'input', ...props }: Props) => (

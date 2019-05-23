@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import SpilledSample from './spilled-sample.svg';
-import Button from '../../components/Button';
-import { goBack } from '../../state/routerActions';
 import * as Sentry from '@sentry/browser';
+import SpilledSample from './spilled-sample.svg';
+import Button from '../Button';
+import { goBack } from '../../state/routerActions';
 
 let AppError = ({ goBack }) => (
   <div className="error-page">
@@ -36,7 +36,7 @@ let AppError = ({ goBack }) => (
 AppError = connect(
   null,
   {
-    goBack
+    goBack,
   }
 )(AppError);
 

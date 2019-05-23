@@ -16,15 +16,15 @@ import { useLocalStorage } from '../../../common/hooks';
  * This component gets rendereded in the DataSet page, when no email has been assigned
  */
 let DownloadStart = ({ dataSetId, dataSet, agreedToTerms, startDownload }) => {
-  let [emailAddress, setEmailAddress] = useLocalStorage('email-address', '');
-  let submitEmailForm = async ({ email, termsOfService, receiveUpdates }) => {
+  const [emailAddress, setEmailAddress] = useLocalStorage('email-address', '');
+  const submitEmailForm = async ({ email, termsOfService, receiveUpdates }) => {
     setEmailAddress(email);
-    return await startDownload({
+    return startDownload({
       email,
       termsOfService,
       receiveUpdates,
       dataSetId,
-      dataSet
+      dataSet,
     });
   };
 
@@ -62,10 +62,10 @@ let DownloadStart = ({ dataSetId, dataSet, agreedToTerms, startDownload }) => {
 };
 DownloadStart = connect(
   state => ({
-    agreedToTerms: !!state.token
+    agreedToTerms: !!state.token,
   }),
   {
-    startDownload
+    startDownload,
   }
 )(DownloadStart);
 export default DownloadStart;

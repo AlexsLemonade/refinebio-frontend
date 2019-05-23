@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { formatSentenceCase } from '../../common/helpers';
 import {
   ResponsiveContainer,
   BarChart,
@@ -9,10 +8,11 @@ import {
   YAxis,
   Tooltip,
   Line,
-  LineChart
+  LineChart,
 } from 'recharts';
 import moment from 'moment';
-import { accumulateByKeys } from '../../common/helpers';
+import { formatSentenceCase, accumulateByKeys } from '../../common/helpers';
+
 import { push } from '../../state/routerActions';
 import apiData from '../../apiData.json';
 import { searchUrl } from '../../routes';
@@ -23,7 +23,7 @@ function getSamplesPerSpecies() {
     .map(name => ({
       name: formatSentenceCase(name),
       organism: name,
-      samples: organism[name]
+      samples: organism[name],
     }))
     .sort((x, y) => y.samples - x.samples)
     .slice(0, 10);
@@ -45,7 +45,7 @@ let SamplesPerSpeciesGraph = ({ push }) => {
                 value: 'Number of Samples',
                 angle: -90,
                 position: 'insideLeft',
-                offset: -22
+                offset: -22,
               }}
             />
             <Tooltip />
@@ -104,7 +104,7 @@ export function SamplesOverTimeGraph() {
                 value: 'Number of Samples',
                 angle: -90,
                 position: 'insideLeft',
-                offset: -24
+                offset: -24,
               }}
             />
             <Tooltip

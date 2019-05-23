@@ -1,11 +1,11 @@
 import React from 'react';
+import moment from 'moment';
 import Spinner from '../../components/Spinner';
 import Dropdown from '../../components/Dropdown';
 import LineChart from '../../components/LineChart';
 import { useLoader } from '../../components/Loader';
 import { fetchDashboardData } from '../../api/dashboad';
 import { formatNumber, numberFormatter } from '../../common/helpers';
-import moment from 'moment';
 
 const YESTERDAY = 'Yesterday';
 const WEEK = 'Last Week';
@@ -18,12 +18,12 @@ export default function SamplesProcessedBlock() {
     interval === YESTERDAY
       ? 'day'
       : interval === WEEK
-        ? 'week'
-        : interval === MONTH
-          ? 'month'
-          : 'year';
+      ? 'week'
+      : interval === MONTH
+      ? 'month'
+      : 'year';
   const { data, isLoading } = useLoader(() => fetchDashboardData(rangeParam), [
-    rangeParam
+    rangeParam,
   ]);
   const totalSamples = !isLoading
     ? data.processed_samples.timeline.reduce((acc, x) => acc + x.total, 0)
@@ -74,7 +74,7 @@ export default function SamplesProcessedBlock() {
                       day: 'HH:00',
                       week: 'dddd',
                       month: 'MMM Do',
-                      year: 'MMMM'
+                      year: 'MMMM',
                     }[rangeParam] || null;
                   return moment(label).format(format);
                 }}
@@ -99,13 +99,13 @@ export default function SamplesProcessedBlock() {
 function transformSamplesTimeline(timeline, range) {
   const result = [...getTimeline(range)].map(date => ({
     date,
-    samples: 0
+    samples: 0,
   }));
 
-  for (let observation of timeline) {
+  for (const observation of timeline) {
     // find the closest datapoint to `data.start`
     let closestTemp = null;
-    for (let graphPoint of result) {
+    for (const graphPoint of result) {
       if (
         !closestTemp ||
         Math.abs(moment(observation.start).diff(graphPoint.date)) <
@@ -133,26 +133,26 @@ function* getTimeline(range) {
   const data = {
     day: {
       start: now.clone().subtract(1, 'days'),
-      interval: moment.duration(1, 'hour')
+      interval: moment.duration(1, 'hour'),
     },
     week: {
       start: now.clone().subtract(1, 'weeks'),
-      interval: moment.duration(1, 'days')
+      interval: moment.duration(1, 'days'),
     },
     month: {
       start: now.clone().subtract(30, 'days'),
-      interval: moment.duration(1, 'days')
+      interval: moment.duration(1, 'days'),
     },
     year: {
       start: now
         .clone()
         .subtract(365, 'days')
         .startOf('month'),
-      interval: moment.duration(1, 'months')
-    }
+      interval: moment.duration(1, 'months'),
+    },
   };
   let nextDate = data[range].start;
-  let interval = data[range].interval;
+  const { interval } = data[range];
   yield nextDate.format();
 
   while (true) {

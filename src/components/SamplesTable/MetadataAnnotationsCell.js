@@ -1,15 +1,15 @@
 import React from 'react';
-import ModalManager from '../../components/Modal/ModalManager';
-import Button from '../../components/Button';
-import InfoIcon from '../../common/icons/info-badge.svg';
 import pickBy from 'lodash/pickBy';
-import Input from '../../components/Input';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
-import './MetadataAnnotationsCell.scss';
 import fromPairs from 'lodash/fromPairs';
+import ModalManager from '../Modal/ModalManager';
+import Button from '../Button';
+import InfoIcon from '../../common/icons/info-badge.svg';
+import Input from '../Input';
+import './MetadataAnnotationsCell.scss';
 import { isValidURL } from '../../common/helpers';
-import HighlightedText from '../../components/HighlightedText';
+import HighlightedText from '../HighlightedText';
 
 /**
  * Component that renders the content in "Additional Metadata" column on the Samples Table
@@ -19,7 +19,7 @@ export default function MetadataAnnotationsCell({ original: sample }) {
     return <div className="experiment__not-provided">NA</div>;
   }
 
-  let annotations = sample.annotations.map(entry => entry.data);
+  const annotations = sample.annotations.map(entry => entry.data);
   return (
     <ModalManager
       component={showModal => (
@@ -34,11 +34,11 @@ export default function MetadataAnnotationsCell({ original: sample }) {
 
 class AnnotationsModalContent extends React.Component {
   state = {
-    filter: ''
+    filter: '',
   };
 
   render() {
-    let annotations = this._getAnnotations();
+    const annotations = this._getAnnotations();
     const anyAnnotationsMatchingFilter = annotations.some(
       meta => Object.keys(meta).length > 0
     );
@@ -64,6 +64,8 @@ class AnnotationsModalContent extends React.Component {
         {anyAnnotationsMatchingFilter ? (
           <div className="metadata-modal__annotations">
             {annotations.map((meta, index) => (
+              // Not sure what unique key to use here, look into shortid.
+              // eslint-disable-next-line react/no-array-index-key
               <div key={index}>
                 {Object.keys(meta).map(field => (
                   <Annotation
@@ -152,16 +154,19 @@ function Annotation({ field, value, highlight = '' }) {
   );
 }
 
-function AnnotationValue({ value, level = 0, highlight = '' }) {
+function AnnotationValue({ value, highlight = '' }) {
   if (isString(value)) {
     return <AnnotationText value={value} highlight={highlight} />;
-  } else if (Array.isArray(value)) {
+  }
+  if (Array.isArray(value)) {
     return value.map((x, index) => (
+      // eslint-disable-next-line react/no-array-index-key
       <div key={index} style={{ marginTop: index > 0 ? 8 : 0 }}>
         <AnnotationValue value={x} highlight={highlight} />
       </div>
     ));
-  } else if (isObject(value)) {
+  }
+  if (isObject(value)) {
     if (Object.keys(value).length === 2 && !!value.value) {
       const keyParam = Object.keys(value).find(x => x !== 'value');
       return (
@@ -181,10 +186,9 @@ function AnnotationValue({ value, level = 0, highlight = '' }) {
         <AnnotationValue value={value[key]} highlight={highlight} />
       </div>
     ));
-  } else {
-    // it's a single value
-    return value;
   }
+  // it's a single value
+  return value;
 }
 
 function AnnotationText({ value, highlight = '' }) {

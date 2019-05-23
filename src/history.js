@@ -40,12 +40,6 @@ if (process.env.NODE_ENV === 'production') {
   registerPageView(window.location);
 
   history.listen(location => registerPageView(location));
-
-  function registerPageView(location) {
-    let url = location.pathname + location.search;
-    ReactGA.set({ page: url });
-    ReactGA.pageview(url);
-  }
 }
 
 history.listen((location, action) => {
@@ -57,5 +51,11 @@ history.listen((location, action) => {
     window.scrollTo(0, 0);
   }
 });
+
+function registerPageView(location) {
+  const url = location.pathname + location.search;
+  ReactGA.set({ page: url });
+  ReactGA.pageview(url);
+}
 
 export default history;

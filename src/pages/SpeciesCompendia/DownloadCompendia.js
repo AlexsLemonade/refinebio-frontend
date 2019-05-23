@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import uniq from 'lodash/uniq';
 import Dropdown from '../../components/Dropdown';
 import Button from '../../components/Button';
 import { Ajax, formatSentenceCase } from '../../common/helpers';
 import { useLoader } from '../../components/Loader';
-import { Link } from 'react-router-dom';
 import Checkbox from '../../components/Checkbox';
 
 import { createToken } from '../../state/token';
-import uniq from 'lodash/uniq';
 import { push } from '../../state/routerActions';
 
 let DownloadCompendia = ({ token, createToken, push }) => {
@@ -67,7 +67,7 @@ let DownloadCompendia = ({ token, createToken, push }) => {
               );
               push({
                 pathname: '/species-compendia/download',
-                state: { organism: selectedOrganism, downloadUrl }
+                state: { organism: selectedOrganism, downloadUrl },
               });
             }}
           />
@@ -78,7 +78,7 @@ let DownloadCompendia = ({ token, createToken, push }) => {
 };
 DownloadCompendia = connect(
   state => ({
-    token: state.token
+    token: state.token,
   }),
   { createToken, push }
 )(DownloadCompendia);

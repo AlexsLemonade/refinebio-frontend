@@ -8,16 +8,15 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  Area
+  Area,
 } from 'recharts';
 import { COLORS } from '../../common/constants';
 
 type Props = {
   series: Array<string>,
   data: Array<{ date: string }>,
-  isLoading: boolean,
   formatValue: Function,
-  formatLabel: Function
+  formatLabel: Function,
 };
 
 const AreaChart = (props: Props) => {

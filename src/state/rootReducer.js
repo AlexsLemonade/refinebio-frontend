@@ -6,7 +6,7 @@ import token from './token';
 const rootReducer = combineReducers({
   download,
   search,
-  token
+  token,
 });
 
 export default rootReducer;

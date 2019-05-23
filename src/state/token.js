@@ -18,12 +18,12 @@ export default function token(state = initialState, action) {
 }
 
 export const clearToken = () => ({
-  type: CLEAR_TOKEN
+  type: CLEAR_TOKEN,
 });
 
 export const loadToken = token => ({
   type: LOAD_TOKEN,
-  data: token
+  data: token,
 });
 
 export const createToken = () => async dispatch => {

@@ -11,7 +11,7 @@ import Error from '../../../components/Error';
 /**
  * This form can be used to edit the email that's associated with a dataset
  */
-let EmailForm = ({ onSubmit, agreedToTerms, emailAddress }) => (
+const EmailForm = ({ onSubmit, agreedToTerms, emailAddress }) => (
   <Formik
     onSubmit={async (values, { setErrors, setValues, setSubmitting }) => {
       try {
@@ -21,12 +21,12 @@ let EmailForm = ({ onSubmit, agreedToTerms, emailAddress }) => (
         if (e instanceof InvalidTokenError) {
           setErrors({
             termsOfService:
-              'Please accept our terms of use to process and download data'
+              'Please accept our terms of use to process and download data',
           });
           setValues({
             email: values.email,
             termsOfService: false,
-            receiveUpdates: true
+            receiveUpdates: true,
           });
           setSubmitting(false);
         } else {
@@ -38,7 +38,7 @@ let EmailForm = ({ onSubmit, agreedToTerms, emailAddress }) => (
     initialValues={{
       receiveUpdates: true,
       email: emailAddress,
-      termsOfService: agreedToTerms
+      termsOfService: agreedToTerms,
     }}
     validationSchema={Yup.object().shape({
       email: Yup.string()
@@ -47,7 +47,7 @@ let EmailForm = ({ onSubmit, agreedToTerms, emailAddress }) => (
       termsOfService: Yup.bool().oneOf(
         [true],
         'Please accept our terms of use to process and download data'
-      )
+      ),
     })}
   >
     {({ values, isSubmitting, handleChange, touched, errors }) => (

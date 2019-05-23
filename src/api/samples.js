@@ -16,20 +16,20 @@ export async function getDetailedSample(sampleId) {
  * @param {number} limit
  */
 export async function getAllDetailedSamples({ orderBy, filterBy, ...params }) {
-  let { count, results } = await Ajax.get('/samples/', {
+  const { count, results } = await Ajax.get('/samples/', {
     ...params,
     // send the accession codes as a string, otherwise they will be converted to an array parameter
     order_by: orderBy,
-    filter_by: filterBy || undefined // don't send the parameter  if `filterBy === ''`
+    filter_by: filterBy || undefined, // don't send the parameter  if `filterBy === ''`
   });
   return { count, data: results };
 }
 
 export async function getGenomeBuild(organism) {
   try {
-    let { assembly_name } = await Ajax.get('/transcriptome_indices/', {
+    const { assembly_name } = await Ajax.get('/transcriptome_indices/', {
       organism,
-      length: 'long'
+      length: 'long',
     });
 
     return assembly_name;

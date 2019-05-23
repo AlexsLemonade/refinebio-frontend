@@ -1,12 +1,12 @@
 import React from 'react';
-import FileIcon from './file.svg';
-import ProcessIcon from './process.svg';
+import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 import { stringEnumerate } from '../../../common/helpers';
 import './ProcessingInformation.scss';
 import SubmitterSuppliedProtocol from './SubmitterSuppliedProtocol';
 import ProcessorVersion from './ProcessorVersion';
-import isEqual from 'lodash/isEqual';
-import isEmpty from 'lodash/isEmpty';
+import FileIcon from './file.svg';
+import ProcessIcon from './process.svg';
 
 export default class ProcessingInformationModalContent extends React.Component {
   render() {
@@ -14,7 +14,7 @@ export default class ProcessingInformationModalContent extends React.Component {
 
     const pipelinesText = results.map(result => result.processor.name);
     const isSubmitterProcessed = isEqual(pipelinesText, [
-      'Submitter-processed'
+      'Submitter-processed',
     ]);
 
     return (
@@ -127,7 +127,7 @@ export default class ProcessingInformationModalContent extends React.Component {
     MultiQC: null,
     Tximport: TxtimportProtocol,
 
-    'Submitter-processed': SubmitterSuppliedProtocol
+    'Submitter-processed': SubmitterSuppliedProtocol,
   };
 
   _getProtocolDescription(name) {

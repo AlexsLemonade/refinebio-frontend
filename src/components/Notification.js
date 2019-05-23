@@ -1,12 +1,12 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
+import { IoMdCheckmarkCircle, IoMdClose } from 'react-icons/io';
+
 import Button from './Button';
-import { IoMdCheckmarkCircle } from 'react-icons/io';
-import { IoMdClose } from 'react-icons/io';
 
 import './Notification.scss';
 
-let Notification = ({ location: { search, state } }) => {
+let Notification = ({ location: { state } }) => {
   const [closed, setClosed] = React.useState(false);
 
   if (closed || !state || !state.message) return null;

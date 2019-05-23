@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import * as Sentry from '@sentry/browser';
+import 'delayed-scroll-restoration-polyfill';
+import smoothscroll from 'smoothscroll-polyfill';
 import './index.scss';
 import App from './pages/App';
-import smoothscroll from 'smoothscroll-polyfill';
-import 'delayed-scroll-restoration-polyfill';
 import apiData from './apiData.json';
-import * as Sentry from '@sentry/browser';
 
 // kick off the polyfill!
 smoothscroll.polyfill();
@@ -29,8 +29,8 @@ if (process.env.NODE_ENV === 'production') {
       window.location.host === 'www.refine.bio'
         ? 'production'
         : window.location.host === 'staging.refine.bio'
-          ? 'staging'
-          : 'dev'
+        ? 'staging'
+        : 'dev',
   });
 }
 

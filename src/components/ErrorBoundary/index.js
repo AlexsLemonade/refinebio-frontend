@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import AppError from './AppError';
 import reportError from '../../state/reportError';
-import { withRouter } from 'react-router';
 
 /**
  * This component wraps the entire application, and shows the `AppError` page in order to recover
@@ -21,6 +21,7 @@ class ErrorBoundary extends React.Component {
   componentDidUpdate(prevProps) {
     // if the location is updated, reset the `hasError` state, so that the app can recover
     if (prevProps.location !== this.props.location) {
+      // todo remove this https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#alternative-1-reset-uncontrolled-component-with-an-id-prop
       this.setState({ hasError: false });
     }
   }
@@ -45,7 +46,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 ErrorBoundary = connect(
-  state => ({}),
+  null,
   { reportError }
 )(ErrorBoundary);
 ErrorBoundary = withRouter(ErrorBoundary);

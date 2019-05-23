@@ -19,7 +19,7 @@ export default class RefineTable extends ReactTable {
 
     if (skipNextSort) {
       this.setStateWithData({
-        skipNextSort: false
+        skipNextSort: false,
       });
       return;
     }
@@ -46,7 +46,7 @@ export default class RefineTable extends ReactTable {
     this.setStateWithData(
       {
         page: !sorted.length && newSorted.length ? 0 : this.state.page,
-        sorted: newSorted
+        sorted: newSorted,
       },
       () => onSortedChange && onSortedChange(newSorted, column)
     );

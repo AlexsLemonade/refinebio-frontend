@@ -1,8 +1,8 @@
 import React from 'react';
+import { IoMdClose } from 'react-icons/io';
 import ResponsiveSwitch from './ResponsiveSwitch';
 import './InfoBox.scss';
 import Button from './Button';
-import { IoMdClose } from 'react-icons/io';
 
 function InfoBoxDesktop({ onClose }) {
   return (
@@ -61,7 +61,7 @@ function firstTimeUser() {
 class InfoBox extends React.Component {
   state = {
     // The infobox should only be displayed when it's first loaded, on the page where the user landed initially
-    showInfoBox: firstTimeUser() && LANDING_PAGE === window.location.href
+    showInfoBox: firstTimeUser() && LANDING_PAGE === window.location.href,
   };
 
   render() {

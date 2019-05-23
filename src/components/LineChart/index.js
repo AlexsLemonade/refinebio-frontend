@@ -8,20 +8,17 @@ import {
   CartesianGrid,
   Tooltip,
   Line,
-  Legend
+  Legend,
 } from 'recharts';
 import { COLORS } from '../../common/constants';
-
-import './LineChart.scss';
 
 import './LineChart.scss';
 
 type Props = {
   series: Array<string>,
   data: Array<{ date: string }>,
-  isLoading: boolean,
   formatValue: Function,
-  formatLabel: Function
+  formatLabel: Function,
 };
 
 const LineChart = (props: Props) => {
@@ -48,7 +45,7 @@ const LineChart = (props: Props) => {
         {series.map((set, i) => (
           <Line
             isAnimationActive={false}
-            key={i}
+            key={COLORS[i]}
             type="monotone"
             dataKey={set}
             stroke={COLORS[i]}
@@ -62,14 +59,7 @@ const LineChart = (props: Props) => {
 
 export default LineChart;
 
-function TooltipContent({
-  payload,
-  label,
-  active,
-  range,
-  formatLabel,
-  formatValue
-}) {
+function TooltipContent({ payload, label, active, formatLabel, formatValue }) {
   if (!active) return null;
 
   return (

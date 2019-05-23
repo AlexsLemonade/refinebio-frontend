@@ -13,7 +13,7 @@ export default class ResponsiveSwitch extends React.Component {
     super();
 
     this.state = {
-      width: window.innerWidth
+      width: window.innerWidth,
     };
   }
 
@@ -33,13 +33,12 @@ export default class ResponsiveSwitch extends React.Component {
 
   render() {
     const { mobile, desktop } = this.props;
-    let isMobile = this.state.width < this._getLimit();
+    const isMobile = this.state.width < this._getLimit();
 
     if (isMobile) {
       return mobile();
-    } else {
-      return desktop();
     }
+    return desktop();
   }
 
   _getLimit() {

@@ -11,7 +11,7 @@ const Radio = ({
   disabled,
   onClick,
   readOnly,
-  onBlur
+  onBlur,
 }) => (
   <div className={classnames('radio', className)}>
     <input
@@ -26,7 +26,7 @@ const Radio = ({
       onBlur={onBlur}
     />
     <label className="radio__label" htmlFor={name} onClick={onClick}>
-      {children ? children : name}
+      {children || name}
     </label>
   </div>
 );
@@ -36,16 +36,15 @@ export default Radio;
 export const RadioField = ({
   field: { name, value: fieldValue, onBlur },
   form,
-  id,
   label,
   className,
-  value
+  value,
 }) => (
   <Radio
     name={name}
     className={className}
     checked={fieldValue === value}
-    onClick={e => {
+    onClick={() => {
       form.setFieldValue(name, value);
     }}
     readOnly

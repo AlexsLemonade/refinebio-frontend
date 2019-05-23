@@ -1,8 +1,8 @@
 import React from 'react';
-import { Accordion, AccordionItem } from '../../../components/Accordion';
-import styles from './ProcessorVersion.scss';
 import classnames from 'classnames';
 import pick from 'lodash/pick';
+import { Accordion, AccordionItem } from '../../Accordion';
+import styles from './ProcessorVersion.scss';
 
 /**
  * Returns an object with the primary versions that should be displayed in the modal
@@ -17,10 +17,13 @@ function getPrimaryPackages(processor) {
     case 'Affymetrix SCAN':
       return pick(processor.environment.R, ['SCAN.UPC', 'Brainarray']);
     case 'Salmon Quant':
-      let salmonVersion = processor.environment.cmd_line['salmon --version'];
       // salmon version contains the text 'salmon', remove it
-      salmonVersion = salmonVersion.replace('salmon ', '');
-      return { salmon: salmonVersion };
+      return {
+        salmon: processor.environment.cmd_line['salmon --version'].replace(
+          'salmon ',
+          ''
+        ),
+      };
     case 'Tximport':
       return pick(processor.environment.R, ['tximport']);
     default:
@@ -78,7 +81,7 @@ export default class ProcessorVersion extends React.Component {
                 <VersionTable
                   versions={{
                     'genome build':
-                      salmonProcessedResult.organism_index.assembly_name
+                      salmonProcessedResult.organism_index.assembly_name,
                   }}
                 />
               </tbody>
