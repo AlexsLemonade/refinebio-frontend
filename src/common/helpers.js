@@ -267,6 +267,7 @@ export function isValidURL(str) {
 }
 
 function accumulate(array, sum) {
+  if (!array || array.length === 0) return [];
   const result = [array[0]];
   for (let i = 1; i < array.length; i += 1) {
     result.push(sum(array[i], result[i - 1]));

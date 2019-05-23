@@ -2,7 +2,7 @@ import React from 'react';
 import isEqual from 'lodash/isEqual';
 import { REPORT_ERROR } from '../../state/reportError';
 
-// Component abtract the logic of loading content from the server before
+// Component that abstracts the logic of loading content from the server before
 // displaying something,
 // Example Usage:
 // <Loader fetch={()=>fetch('www.google.com', {param: 1})}>
