@@ -167,7 +167,7 @@ export const triggerSearch = searchTerm => (dispatch, getState) => {
       query: searchTerm,
       page: 1,
       filters: {},
-      ordering: Ordering.MostSamples,
+      ordering: Ordering.BestMatch,
     })
   );
 };
