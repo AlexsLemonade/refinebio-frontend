@@ -8,12 +8,15 @@ const Button = ({
   isDisabled = false,
   className,
   children,
+  type = 'button',
   ...props
 }) => {
   const buttonStyleClass = buttonStyle ? `button--${buttonStyle}` : '';
+  /* eslint-disable react/button-has-type */
   return (
     <button
       {...props}
+      type={type}
       className={classnames('button', buttonStyleClass, className)}
       disabled={isDisabled}
     >

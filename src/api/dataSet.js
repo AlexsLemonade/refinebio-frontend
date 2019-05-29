@@ -3,21 +3,21 @@ import { Ajax } from '../common/helpers';
 export async function getDataSet(dataSetId, tokenId = null) {
   const headers = tokenId
     ? {
-        'API-KEY': tokenId
+        'API-KEY': tokenId,
       }
     : {};
 
-  return await Ajax.get(`/dataset/${dataSetId}/`, null, headers);
+  return Ajax.get(`/dataset/${dataSetId}/`, null, headers);
 }
 
 export async function getDataSetDetails(dataSetId, tokenId = null) {
   const headers = tokenId
     ? {
-        'API-KEY': tokenId
+        'API-KEY': tokenId,
       }
     : {};
 
-  let response = await Ajax.get(
+  const response = await Ajax.get(
     `/dataset/${dataSetId}/`,
     { details: true },
     headers
@@ -25,7 +25,7 @@ export async function getDataSetDetails(dataSetId, tokenId = null) {
 
   return {
     ...response,
-    experiments: formatExperiments(response.experiments)
+    experiments: formatExperiments(response.experiments),
   };
 }
 
@@ -33,7 +33,7 @@ export async function getDataSetDetails(dataSetId, tokenId = null) {
  * Creates a new dataset
  */
 export async function createDataSet() {
-  return await Ajax.post('/dataset/create/', { data: {} });
+  return Ajax.post('/dataset/create/', { data: {} });
 }
 
 export async function updateDataSet(dataSetId, dataSet, details = false) {
@@ -52,7 +52,7 @@ export async function updateDataSet(dataSetId, dataSet, details = false) {
   return details
     ? {
         ...result,
-        experiments: formatExperiments(result.experiments)
+        experiments: formatExperiments(result.experiments),
       }
     : result;
 }

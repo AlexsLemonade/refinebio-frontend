@@ -1,6 +1,6 @@
 import React from 'react';
 import { getAllDetailedSamples } from '../../api/samples';
-import Loader from '../../components/Loader';
+import Loader from '../Loader';
 
 /**
  * Takes care of loading a set of samples
@@ -8,7 +8,7 @@ import Loader from '../../components/Loader';
 export default class SampleDetailsLoader extends React.Component {
   static defaultProps = {
     // Additional props that should be sent when fetching the samples
-    fetchSampleParams: {}
+    fetchSampleParams: {},
   };
 
   state = {
@@ -19,7 +19,7 @@ export default class SampleDetailsLoader extends React.Component {
 
     totalSamples: 0,
     samples: [],
-    isLoading: false
+    isLoading: false,
   };
 
   loader = React.createRef();
@@ -55,7 +55,7 @@ export default class SampleDetailsLoader extends React.Component {
 
             // Use this callback to update parameters like: page, pageSize, filter, orderBy
             onUpdate: params => this.setState(params),
-            refresh: () => this.loader.current && this.loader.current.refresh()
+            refresh: () => this.loader.current && this.loader.current.refresh(),
           })
         }
       </Loader>
@@ -74,7 +74,7 @@ export default class SampleDetailsLoader extends React.Component {
       orderBy,
       offset,
       limit: pageSize,
-      filterBy
+      filterBy,
     };
   }
 
@@ -86,7 +86,7 @@ export default class SampleDetailsLoader extends React.Component {
 
     this.setState({
       totalSamples,
-      samples
+      samples,
     });
   };
 }

@@ -7,7 +7,7 @@ import React from 'react';
 export default function ProcessingGears({
   width = 209,
   height = 128,
-  duration = 13
+  duration = 13,
 }) {
   return (
     <svg width={`${width}px`} height={`${height}px`} viewBox="0 0 209 128">

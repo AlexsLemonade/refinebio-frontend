@@ -50,6 +50,14 @@
       border-color: $processed-submitter;
     }
   }
+
+  &--info {
+    background-color: #d6e8ff;
+
+    &:before {
+      border-color: #002f6c;
+    }
+  }
 }
 
 .arrow {

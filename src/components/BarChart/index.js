@@ -8,7 +8,7 @@ import {
   Legend,
   XAxis,
   YAxis,
-  CartesianGrid
+  CartesianGrid,
 } from 'recharts';
 import { COLORS } from '../../common/constants';
 

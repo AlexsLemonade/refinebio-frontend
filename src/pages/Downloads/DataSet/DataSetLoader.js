@@ -6,11 +6,12 @@ import { timeout } from '../../../common/helpers';
 
 class DataSetLoader extends React.Component {
   _loader = React.createRef();
+
   _liveUpdate = true;
 
   state = {
     dataSet: {},
-    firstUpdate: true
+    firstUpdate: true,
   };
 
   componentWillUnmount() {
@@ -32,7 +33,7 @@ class DataSetLoader extends React.Component {
     // override the current dataset with the newest state
     this.setState(state => ({
       firstUpdate: false,
-      dataSet: { ...this.state.dataSet, ...dataSet }
+      dataSet: { ...state.dataSet, ...dataSet },
     }));
   }
 
@@ -57,7 +58,7 @@ class DataSetLoader extends React.Component {
           this.props.children({
             isLoading: isLoading && this.state.firstUpdate,
             hasError,
-            dataSet: this.state.dataSet
+            dataSet: this.state.dataSet,
           })
         }
       </Loader>

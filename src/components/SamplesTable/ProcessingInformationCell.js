@@ -1,13 +1,10 @@
 import React from 'react';
-import Button from '../../components/Button';
-import ModalManager from '../../components/Modal/ModalManager';
 import moment from 'moment';
+import Button from '../Button';
+import ModalManager from '../Modal/ModalManager';
 import ProcessingInformationModalContent from './ProcessingInformation/ProcessingInformationModalContent';
 
-export default function ProcessingInformationCell({
-  original: sample,
-  ...props
-}) {
+export default function ProcessingInformationCell({ original: sample }) {
   if (!sample.results || !sample.results.length) {
     return <div className="experiment__not-provided">NA</div>;
   }

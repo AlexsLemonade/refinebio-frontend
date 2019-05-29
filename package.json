@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "@sentry/browser": "^4.6.4",
+    "babel-eslint": "^10.0.1",
+    "classnames": "^2.2.6",
     "delayed-scroll-restoration-polyfill": "^0.1.1",
-    "gsap": "^2.0.2",
     "formik": "^1.5.0",
+    "gsap": "^2.0.2",
     "history": "^4.7.2",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
@@ -15,20 +17,29 @@
     "react-dom": "^16.8.1",
     "react-ga": "^2.5.7",
     "react-helmet": "^5.2.0",
-    "react-icons": "^3.4.0",
+    "react-icons": "^3.7.0",
     "react-modal": "^3.8.1",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.5",
+    "react-scripts": "3.0.1",
     "react-table": "^6.9.1",
     "react-use-visibility": "^0.2.0",
     "recharts": "^1.4.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "shortid": "^2.2.14",
     "smoothscroll-polyfill": "^0.4.3",
     "yup": "^0.26.10"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
+    "src/**/*.js": [
+      "eslint"
+    ],
     "src/**/*.{js,jsx,json,css,scss}": [
       "prettier --single-quote --write",
       "git add"
@@ -36,17 +47,26 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
-    "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow",
+    "eslint": "eslint src/",
     "cacheBackend": "node cacheBackend.js",
     "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
     "axios": "^0.18.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-babel": "^9.0.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react-hooks": "^1.6.0",
     "flow-bin": "^0.68.0",
     "husky": "^1.3.1",
     "jest-puppeteer": "^3.7.0",

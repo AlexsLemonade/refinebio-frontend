@@ -3,50 +3,6 @@
 .downloads {
   margin-bottom: 9 * 8px;
 
-  &__bar,
-  &__fieldset {
-    display: flex;
-  }
-
-  &__fieldset {
-    margin-bottom: 2 * 8px;
-
-    @include tablet {
-      margin-bottom: 0;
-    }
-  }
-
-  &__bar {
-    border-bottom: 1px solid $gray;
-    padding-bottom: 1rem;
-    flex-direction: column;
-
-    @include tablet {
-      flex-flow: row wrap;
-      align-items: center;
-    }
-  }
-
-  &__actions {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 8px;
-
-    @include tablet {
-      align-items: center;
-      flex-direction: row;
-      margin-bottom: 0;
-
-      flex: 2 100%;
-      justify-content: space-between;
-    }
-
-    @include desktop {
-      flex: 1 auto;
-      justify-content: flex-end;
-    }
-  }
-
   &__species-title {
     text-transform: capitalize;
   }

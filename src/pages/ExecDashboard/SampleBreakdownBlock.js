@@ -1,7 +1,7 @@
 import React from 'react';
+import pick from 'lodash/pick';
 import Dropdown from '../../components/Dropdown';
 import { formatSentenceCase, numberFormatter } from '../../common/helpers';
-import pick from 'lodash/pick';
 
 const ORGANISMS = 'Organisms';
 const TECHNOLOGIES = 'Technologies';
@@ -52,7 +52,7 @@ function getTotalData(total, data) {
   );
   return {
     ...pick(data, topKeys),
-    other: total - totalSelected
+    other: total - totalSelected,
   };
 }
 

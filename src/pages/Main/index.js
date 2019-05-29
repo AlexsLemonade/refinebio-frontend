@@ -1,17 +1,16 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { push } from '../../state/routerActions';
 import { connect } from 'react-redux';
-import { fetchResults } from '../../state/search/actions';
-import SearchInput from '../../components/SearchInput';
 import { Link } from 'react-router-dom';
+import { push } from '../../state/routerActions';
+import SearchInput from '../../components/SearchInput';
 import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
 import './Main.scss';
 import {
   SamplesPerSpeciesGraph,
   SamplesOverTimeGraph,
-  getSamplesOverTime
+  getSamplesOverTime,
 } from './graphs';
 import TabControl from '../../components/TabControl';
 import apiData from '../../apiData.json';
@@ -25,7 +24,7 @@ import heatmapIcon from './icon-heatmap.svg';
 import networkBottomIcon from './network-combined.svg';
 import networkDocsIcon from './icon-docs.svg';
 
-let Main = ({ searchTerm, fetchResults, push }) => {
+let Main = ({ push }) => {
   return (
     <div className="main">
       <Helmet>
@@ -201,7 +200,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
             <TabControl
               tabs={[
                 apiData.organism ? 'Samples per Species' : false,
-                getSamplesOverTime() ? 'Samples over Time' : false
+                getSamplesOverTime() ? 'Samples over Time' : false,
               ]}
               toggleClassName="toggle--statics-tabs"
             >
@@ -219,7 +218,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
               className="main__explore-card"
               style={{
                 backgroundImage: `url(${networkBottomIcon})`,
-                backgroundSize: '80%'
+                backgroundSize: '80%',
               }}
             >
               <div className="main__explore-card__title">Species Compendia</div>
@@ -241,7 +240,7 @@ let Main = ({ searchTerm, fetchResults, push }) => {
               className="main__explore-card"
               style={{
                 backgroundImage: `url(${networkDocsIcon})`,
-                backgroundPositionX: 260
+                backgroundPositionX: 260,
               }}
             >
               <div className="main__explore-card__title">Explore the docs</div>
@@ -271,8 +270,8 @@ let Main = ({ searchTerm, fetchResults, push }) => {
   );
 };
 Main = connect(
-  ({ search: { searchTerm } }) => ({ searchTerm }),
-  { fetchResults, push }
+  null,
+  { push }
 )(Main);
 
 export default Main;

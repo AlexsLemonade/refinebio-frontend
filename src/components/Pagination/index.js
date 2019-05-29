@@ -7,11 +7,11 @@ class Pagination extends Component {
   getPaginationRange(currentPage, totalPages) {
     if (currentPage <= 2) {
       return [2, 3];
-    } else if (currentPage >= totalPages - 1) {
-      return [totalPages - 2, totalPages - 1];
-    } else {
-      return [currentPage - 1, currentPage, currentPage + 1];
     }
+    if (currentPage >= totalPages - 1) {
+      return [totalPages - 2, totalPages - 1];
+    }
+    return [currentPage - 1, currentPage, currentPage + 1];
   }
 
   renderPages() {
@@ -27,6 +27,7 @@ class Pagination extends Component {
         {totalPages < 5 ? null : (
           <span>
             <button
+              type="button"
               onClick={() => onPaginate(1)}
               className={`pagination__page ${
                 currentPage === 1 ? 'pagination__page--active' : ''
@@ -39,10 +40,11 @@ class Pagination extends Component {
             )}
           </span>
         )}
-        {pageArray.map((page, i) => {
+        {pageArray.map(page => {
           return (
             <button
-              key={i}
+              key={page}
+              type="button"
               onClick={() => onPaginate(page)}
               className={`pagination__page ${
                 currentPage === page ? 'pagination__page--active' : ''
@@ -58,6 +60,7 @@ class Pagination extends Component {
               <span className="pagination__ellipsis">...</span>
             )}
             <button
+              type="button"
               onClick={() => onPaginate(totalPages)}
               className={`pagination__page ${
                 currentPage === totalPages ? 'pagination__page--active' : ''
@@ -79,6 +82,7 @@ class Pagination extends Component {
       <div className="pagination">
         <div className="mobile-p">
           <button
+            type="button"
             onClick={() => onPaginate(currentPage - 1)}
             disabled={currentPage <= 1}
             className="pagination__ends"
@@ -87,6 +91,7 @@ class Pagination extends Component {
           </button>
           {this.renderPages()}
           <button
+            type="button"
             onClick={() => onPaginate(currentPage + 1)}
             disabled={currentPage >= totalPages}
             className="pagination__ends"

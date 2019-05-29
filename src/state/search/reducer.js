@@ -7,8 +7,8 @@ const initialState = {
   pagination: {
     totalResults: 0,
     resultsPerPage: 10,
-    currentPage: 1
-  }
+    currentPage: 1,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
         appliedFilters,
         filterOrder, // array with the name of the applied filters
         resultsPerPage,
-        ordering
+        ordering,
       } = action.data;
 
       return {
@@ -38,8 +38,8 @@ export default (state = initialState, action) => {
           ...state.pagination,
           totalResults,
           currentPage,
-          resultsPerPage
-        }
+          resultsPerPage,
+        },
       };
     }
     default:
@@ -57,5 +57,5 @@ export const getUrlParams = ({ search }) => ({
   size: search.pagination.resultsPerPage,
   filters: search.appliedFilters,
   filterOrder: search.filterOrder,
-  ordering: search.ordering
+  ordering: search.ordering,
 });

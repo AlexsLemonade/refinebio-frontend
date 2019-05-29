@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
@@ -6,7 +6,7 @@ import BackToTop from '../../components/BackToTop';
 import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
-import NoDatasetsImage from './../../common/images/no-datasets.svg';
+import NoDatasetsImage from '../../common/images/no-datasets.svg';
 import Loader from '../../components/Loader';
 import { fetchDataSetDetails } from '../../state/download/actions';
 import { getQueryParamObject } from '../../common/helpers';
@@ -14,7 +14,13 @@ import DownloadStart from './DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
 
 let Download = ({ download, location, fetchDataSetDetails }) => {
-  const { dataSetId, dataSet, aggregate_by, scale_by } = download;
+  const {
+    dataSetId,
+    dataSet,
+    aggregate_by,
+    scale_by,
+    quantile_normalize,
+  } = download;
   const dataSetCanBeDownloaded = dataSet && Object.keys(dataSet).length > 0;
   const params = getQueryParamObject(location.search);
 
@@ -22,10 +28,9 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
   if (params.start === 'true') {
     if (dataSetCanBeDownloaded) {
       return <DownloadStart dataSetId={dataSetId} dataSet={dataSet} />;
-    } else {
-      // if the dataset can't be downloaded, go back to the downloads page.
-      return <Redirect to="/download" params={{ returning: 1 }} />;
     }
+    // if the dataset can't be downloaded, go back to the downloads page.
+    return <Redirect to="/download" params={{ returning: 1 }} />;
   }
 
   return (
@@ -34,7 +39,6 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
         <title>Download Dataset - refine.bio</title>
       </Helmet>
       <BackToTop />
-      <h1 className="downloads__heading">My Dataset</h1>
       <Loader fetch={() => fetchDataSetDetails(dataSetId)}>
         {({ isLoading }) =>
           isLoading ? (
@@ -42,17 +46,18 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
           ) : !dataSetCanBeDownloaded ? (
             <DownloadEmpty />
           ) : (
-            <Fragment>
+            <>
               <DownloadBar
                 dataSetId={dataSetId}
                 aggregate_by={aggregate_by}
                 scale_by={scale_by}
+                quantile_normalize={quantile_normalize}
               />
               <DownloadDetails
                 {...download}
                 onRefreshDataSet={() => fetchDataSetDetails(dataSetId)}
               />
-            </Fragment>
+            </>
           )
         }
       </Loader>
@@ -62,7 +67,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
 Download = connect(
   ({ download }) => ({ download }),
   {
-    fetchDataSetDetails
+    fetchDataSetDetails,
   }
 )(Download);
 export default Download;

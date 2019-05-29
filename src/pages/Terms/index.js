@@ -108,9 +108,9 @@ const Terms = () => (
           any logins, passwords, or other credentials that you select or that
           are provided to you for use on the CCDL; and (c) maintain and promptly
           update the Registration Data, and any other information you provide to
-          us, and keep all such information accurate, current and complete.
-          You must notify us as soon as practicable of any unauthorized use of
-          your account or any other breach of security by emailing us at
+          us, and keep all such information accurate, current and complete. You
+          must notify us as soon as practicable of any unauthorized use of your
+          account or any other breach of security by emailing us at
           ccdl@alexslemonade.org.
         </p>
       </li>

@@ -1,8 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
-import Button from '../Button';
 import classnames from 'classnames';
 import { IoMdClose } from 'react-icons/io';
+import Button from '../Button';
 
 import './Modal.scss';
 
@@ -26,13 +26,13 @@ export default class ModalManager extends React.Component {
       center: false,
 
       // Prevents the modal from being bigger than the screen when true
-      fillPage: false
-    }
+      fillPage: false,
+    },
   };
 
   state = {
     modalOpen: false,
-    childOpen: false
+    childOpen: false,
   };
 
   render() {
@@ -65,7 +65,7 @@ export default class ModalManager extends React.Component {
                   // one is displayed. Others are hidden with this class.
                   hidden: this.state.childOpen,
                   'modal-backdrop--center': this.props.modalProps.center,
-                  'modal-backdrop--top': !this.props.modalProps.center
+                  'modal-backdrop--top': !this.props.modalProps.center,
                 })}
                 className={`modal ${this.props.modalProps.className || ''}  ${
                   this.props.modalProps.fillPage ? 'modal--fill-page' : ''
@@ -80,10 +80,10 @@ export default class ModalManager extends React.Component {
                     onBack={() =>
                       this.setState({ modalOpen: true, childOpen: false })
                     }
-                    hasParent={true}
+                    hasParent
                   >
                     {this.props.children({
-                      hideModal: handleHideModal
+                      hideModal: handleHideModal,
                     })}
                   </ModalStackProvider>
 
@@ -118,7 +118,7 @@ const ModalContext = React.createContext({
   hasParent: false,
   stackModal: () => {},
   popModal: () => {},
-  onBack: () => {}
+  onBack: () => {},
 });
 
 // Provider for React Context https://reactjs.org/docs/context.html
@@ -128,15 +128,15 @@ export function ModalStackProvider({
   hasParent,
   onOpen,
   onClose,
-  onBack
+  onBack,
 }) {
   return (
     <ModalContext.Provider
       value={{
-        hasParent: hasParent,
+        hasParent,
         stackModal: () => onOpen && onOpen(),
         popModal: () => onClose && onClose(),
-        onBack: () => onBack && onBack()
+        onBack: () => onBack && onBack(),
       }}
     >
       {children}

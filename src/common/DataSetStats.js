@@ -19,7 +19,7 @@ export class DataSetOperations {
       Object.keys(d1),
       Object.keys(d2)
     );
-    for (let experimentAccession of addedExperimentAccession) {
+    for (const experimentAccession of addedExperimentAccession) {
       if (d2[experimentAccession].all) {
         result[experimentAccession] = d1[experimentAccession];
       } else if (d1[experimentAccession].all) {
@@ -53,20 +53,18 @@ export class DataSetOperations {
       return false;
     }
 
-    for (let accession of d1Keys) {
+    for (const accession of d1Keys) {
       if (d1[accession].all) {
         if (d1[accession].total !== d2[accession].length) {
           return false;
-        } else {
-          continue;
         }
+        continue;
       }
       if (d2[accession].all) {
         if (d2[accession].total !== d1[accession].length) {
           return false;
-        } else {
-          continue;
         }
+        continue;
       }
       if (!DataSetOperations._sameItems(d1[accession], d2[accession])) {
         return false;

@@ -7,7 +7,7 @@ const initialState = {
   experiments: {},
   organism_samples: {}, // samples grouped by organism
   isLoading: false,
-  areDetailsFetched: false
+  areDetailsFetched: false,
 };
 
 export default (state = initialState, action) => {
@@ -16,13 +16,13 @@ export default (state = initialState, action) => {
       const { dataSetId } = action.data;
       return {
         ...state, // keep previous state
-        dataSetId
+        dataSetId,
       };
     }
     case 'DOWNLOAD_DATASET_UPDATE': {
       return {
         ...state,
-        ...action.data
+        ...action.data,
       };
     }
     case 'DOWNLOAD_CLEAR': {
@@ -40,14 +40,14 @@ export const getDataSetId = state => state.download && state.download.dataSetId;
 export function getExperimentCountBySpecies({ experiments, dataSet }) {
   if (!dataSet || !experiments) return {};
   const species = {};
-  for (let accessionCode of Object.keys(dataSet)) {
+  for (const accessionCode of Object.keys(dataSet)) {
     const experimentInfo = experiments[accessionCode];
     if (!experimentInfo) return {};
 
     const { organisms } = experimentInfo;
-    for (let organism of organisms) {
+    for (const organism of organisms) {
       if (!species[organism]) species[organism] = 0;
-      species[organism]++;
+      species[organism] += 1;
     }
   }
 

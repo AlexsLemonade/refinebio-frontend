@@ -3,9 +3,10 @@ import CanvasPoints from '../../components/CanvasPoints';
 
 export default class PointsBackground extends React.Component {
   container = React.createRef();
+
   state = {
     width: 0,
-    height: 0
+    height: 0,
   };
 
   componentDidMount() {
@@ -22,7 +23,7 @@ export default class PointsBackground extends React.Component {
 
     this.setState({
       width: this.container.current.clientWidth,
-      height: this.container.current.clientHeight
+      height: this.container.current.clientHeight,
     });
   };
 

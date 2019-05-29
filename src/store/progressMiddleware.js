@@ -6,7 +6,7 @@ NProgress.configure({
   easing: 'ease',
   speed: 500,
   trickleSpeed: 200,
-  minimum: 0.65
+  minimum: 0.65,
 });
 
 /**
@@ -19,19 +19,19 @@ let progressStackCount = 0;
  * This middleware intercepts all asynchonous actions, and shows the top progress bar when there's an
  * async action pending.
  */
-const progressMiddleware = ({ dispatch, getState }) => next => async action => {
+const progressMiddleware = () => next => async action => {
   // async actions are functions
   if (typeof action === 'function') {
     if (progressStackCount === 0) {
       NProgress.start();
     }
-    progressStackCount++;
+    progressStackCount += 1;
     let result;
 
     try {
       result = await next(action);
     } finally {
-      progressStackCount--;
+      progressStackCount -= 1;
       if (progressStackCount === 0) {
         NProgress.done();
       }

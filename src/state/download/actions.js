@@ -3,7 +3,7 @@ import {
   getDataSet,
   getDataSetDetails,
   updateDataSet,
-  createDataSet
+  createDataSet,
 } from '../../api/dataSet';
 import reportError from '../reportError';
 import DataSetManager from './DataSetManager';
@@ -14,12 +14,12 @@ import { ServerError, InvalidTokenError } from '../../common/errors';
 
 // Remove all dataset
 export const clearDataSet = () => ({
-  type: 'DOWNLOAD_CLEAR'
+  type: 'DOWNLOAD_CLEAR',
 });
 
 export const updateDownloadDataSet = data => ({
   type: 'DOWNLOAD_DATASET_UPDATE',
-  data
+  data,
 });
 
 /**
@@ -28,15 +28,15 @@ export const updateDownloadDataSet = data => ({
 export const createOrUpdateDataSet = ({
   data,
   dataSetId = null,
-  details = false
-}) => async dispatch => {
+  details = false,
+}) => async () => {
   // first create the dataset, since adding experiments with special key `[ALL]`
   // only works with edit operations
   if (!dataSetId) {
     ({ id: dataSetId } = await createDataSet());
   }
 
-  let { id, data: dataSet, ...dataSetDetails } = await updateDataSet(
+  const { id, data: dataSet, ...dataSetDetails } = await updateDataSet(
     dataSetId,
     data,
     details
@@ -45,7 +45,7 @@ export const createOrUpdateDataSet = ({
   return {
     dataSetId: id,
     dataSet,
-    ...dataSetDetails
+    ...dataSetDetails,
   };
 };
 
@@ -81,7 +81,7 @@ const dataSetUpdateOperation = (modifier, details = false) => async (
       updateDownloadDataSet({
         ...dataSetDetails,
         dataSetId: updatedDataSetId,
-        dataSet: updatedDataSet
+        dataSet: updatedDataSet,
       })
     );
   } catch (err) {
@@ -93,7 +93,7 @@ const dataSetUpdateOperation = (modifier, details = false) => async (
  * Takes an array of experiment objects and adds to users dataset via endpoint
  * @param {object} dataSetSlice
  */
-export const addSamples = dataSetSlice => async (dispatch, getState) =>
+export const addSamples = dataSetSlice => async dispatch =>
   dispatch(
     dataSetUpdateOperation(dataSet =>
       new DataSetManager(dataSet).add(dataSetSlice)
@@ -116,10 +116,10 @@ export const removeExperiment = (accessionCodes, details = false) => dispatch =>
  * Removes all samples with corresponding ids from each experiment in dataset.
  * @param {object} dataSetSlice
  */
-export const removeSamples = (dataSetSlice, details = false) => async (
-  dispatch,
-  getState
-) =>
+export const removeSamples = (
+  dataSetSlice,
+  details = false
+) => async dispatch =>
   dispatch(
     dataSetUpdateOperation(
       dataSet => new DataSetManager(dataSet).remove(dataSetSlice),
@@ -131,18 +131,18 @@ export const removeSamples = (dataSetSlice, details = false) => async (
  * Use the dataset from the state
  */
 export const fetchDataSet = (details = false) => async (dispatch, getState) => {
-  let tokenId = getState().token;
+  const tokenId = getState().token;
   const dataSetId = getDataSetId(getState());
 
   if (!dataSetId) {
-    return;
+    return null;
   }
 
   dispatch({
     type: 'DOWNLOAD_DATASET_FETCH',
     data: {
-      dataSetId
-    }
+      dataSetId,
+    },
   });
 
   try {
@@ -159,7 +159,7 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
     dispatch(
       updateDownloadDataSet({
         ...data,
-        dataSet: data.data
+        dataSet: data.data,
       })
     );
   } catch (e) {
@@ -168,6 +168,7 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
     // Also report the error
     await dispatch(reportError(e));
   }
+  return null;
 };
 
 /**
@@ -176,16 +177,16 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
  * by species.
  */
 export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
-  let tokenId = getState().token;
+  const tokenId = getState().token;
   if (!dataSetId) {
     return;
   }
 
-  let response = await getDataSetDetails(dataSetId, tokenId);
+  const response = await getDataSetDetails(dataSetId, tokenId);
   dispatch(
     updateDownloadDataSet({
       ...response,
-      dataSet: response.data
+      dataSet: response.data,
     })
   );
 };
@@ -198,16 +199,17 @@ export const editDataSet = ({ dataSetId, ...params }) => async (
   dispatch,
   getState
 ) => {
-  const dataSet = getState().download.dataSet;
+  const { dataSet } = getState().download;
   const {
     data,
     is_processing,
     is_processed,
     aggregate_by,
-    scale_by
+    scale_by,
+    quantile_normalize,
   } = await Ajax.put(`/dataset/${dataSetId}/`, {
     data: dataSet,
-    ...params
+    ...params,
   });
 
   dispatch(
@@ -216,7 +218,8 @@ export const editDataSet = ({ dataSetId, ...params }) => async (
       is_processing,
       is_processed,
       aggregate_by,
-      scale_by
+      scale_by,
+      quantile_normalize,
     })
   );
 };
@@ -227,11 +230,14 @@ export const editAggregation = ({ dataSetId, aggregation }) =>
 export const editTransformation = ({ dataSetId, transformation }) =>
   editDataSet({ dataSetId, scale_by: transformation.toUpperCase() });
 
+export const editQuantileNormalize = ({ dataSetId, quantile_normalize }) =>
+  editDataSet({ dataSetId, quantile_normalize });
+
 export const startDownload = ({
   dataSetId,
   dataSet,
   email,
-  receiveUpdates = false
+  receiveUpdates = false,
 }) => async (dispatch, getState) => {
   let tokenId = getState().token;
   if (!tokenId) {
@@ -246,11 +252,12 @@ export const startDownload = ({
         start: true,
         data: dataSet,
         token_id: tokenId,
+        quantile_normalize: false,
         ...(receiveUpdates ? { email_ccdl_ok: true } : {}),
-        ...(email ? { email_address: email } : {})
+        ...(email ? { email_address: email } : {}),
       },
       {
-        'API-KEY': tokenId
+        'API-KEY': tokenId,
       }
     );
   } catch (e) {
@@ -265,25 +272,25 @@ export const startDownload = ({
     await dispatch(reportError(e));
     // if there's an error, redirect to the dataset page, and show a message
     // also with a button to try again
-    return await dispatch(
+    return dispatch(
       replace({
         pathname: `/dataset/${dataSetId}`,
-        state: { hasError: true }
+        state: { hasError: true },
       })
     );
   }
 
-  let currentDataSet = getState().download.dataSetId;
+  const currentDataSet = getState().download.dataSetId;
   if (currentDataSet === dataSetId) {
     // clear the current dataset if a download is started for it.
     await dispatch(clearDataSet());
   }
 
   // redirect to the dataset page, and send the email address in the state
-  return await dispatch(
+  return dispatch(
     replace({
       pathname: `/dataset/${dataSetId}`,
-      state: { email_address: email }
+      state: { email_address: email },
     })
   );
 };
@@ -292,24 +299,24 @@ export const startDownload = ({
  * Once generated the datasets are immutable on the server, so to be able to re-generate one we have
  * to create a new dataset with the same data and redirect to it's page.
  */
-export const regenerateDataSet = dataSet => async (dispatch, getState) => {
-  let { data, aggregate_by, scale_by } = dataSet;
+export const regenerateDataSet = dataSet => async dispatch => {
+  const { data, aggregate_by, scale_by } = dataSet;
 
   try {
     // 1. create a new dataset
-    let { id: dataSetId } = await createDataSet();
+    const { id: dataSetId } = await createDataSet();
     // 2. add the same data
     await Ajax.put(`/dataset/${dataSetId}/`, {
       data,
       aggregate_by,
-      scale_by
+      scale_by,
     });
 
     // 3. redirect to the new dataset page, where the user will be able to add an email
     dispatch(
       push({
         pathname: `/dataset/${dataSetId}`,
-        state: { regenerate: true, dataSetId, dataSet: data }
+        state: { regenerate: true, dataSetId, dataSet: data },
       })
     );
   } catch (e) {

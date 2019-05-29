@@ -6,7 +6,7 @@ class Toggle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTabIndex: 0
+      activeTabIndex: 0,
     };
   }
 
@@ -14,7 +14,7 @@ class Toggle extends Component {
     const { onToggle } = this.props;
 
     this.setState({
-      activeTabIndex: tabIndex
+      activeTabIndex: tabIndex,
     });
 
     if (onToggle) {
@@ -31,8 +31,9 @@ class Toggle extends Component {
           {tabs.map(
             (tab, i) =>
               !!tab && (
-                <li key={tab.toString()} className={`toggle__item`}>
+                <li key={tab.toString()} className="toggle__item">
                   <button
+                    type="button"
                     className={`toggle__button ${
                       i === this.state.activeTabIndex
                         ? 'toggle__button--active'

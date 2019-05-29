@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import DistressedTubey from '../common/images/distressed-tubey.svg';
 import './NoMatch/NoMatch.scss';
 
-let ServerError = () => (
+const ServerError = () => (
   <div className="error-page">
     <Helmet>
       <title>We’re a little overwhelmed at the moment - refine.bio</title>

@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
-import Button from '../../components/Button';
-import './BackToTop.scss';
 import { IoIosArrowUp } from 'react-icons/io';
+import Button from '../Button';
+import './BackToTop.scss';
 
 class BackToTop extends Component {
   state = {
-    activeClass: false
-  };
-
-  handleScroll = () => {
-    if (window.pageYOffset >= window.innerHeight / 2) {
-      this.setState({
-        activeClass: true
-      });
-    } else {
-      this.setState({
-        activeClass: false
-      });
-    }
+    activeClass: false,
   };
 
   componentDidMount() {
@@ -27,6 +15,18 @@ class BackToTop extends Component {
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   }
+
+  handleScroll = () => {
+    if (window.pageYOffset >= window.innerHeight / 2) {
+      this.setState({
+        activeClass: true,
+      });
+    } else {
+      this.setState({
+        activeClass: false,
+      });
+    }
+  };
 
   render() {
     return (

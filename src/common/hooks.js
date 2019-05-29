@@ -14,7 +14,7 @@ export function useDom(ref, fn) {
     if (ref.current) {
       setResult(fn(ref.current));
     }
-  });
+  }, [ref, fn]);
 
   return result;
 }
@@ -31,24 +31,22 @@ export function useInterval(callback, delay) {
   });
 
   // Set up the interval.
-  React.useEffect(
-    () => {
-      function tick() {
-        savedCallback.current();
-      }
-      if (delay !== null) {
-        let id = setInterval(tick, delay);
-        return () => clearInterval(id);
-      }
-    },
-    [delay]
-  );
+  React.useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      const id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+    return null;
+  }, [delay]);
 }
 
 export function useHistory() {
   return {
     pathname: history.location.pathname,
-    params: getQueryParamObject(history.location.search)
+    params: getQueryParamObject(history.location.search),
   };
 }
 
@@ -68,7 +66,7 @@ export function useLocalStorage(key, initialValue) {
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       // If error also return initialValue
-      console.log(error);
+      console.error(error);
       return initialValue;
     }
   });
@@ -86,7 +84,7 @@ export function useLocalStorage(key, initialValue) {
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
     } catch (error) {
       // A more advanced implementation would handle the error case
-      console.log(error);
+      console.error(error);
     }
   };
 

@@ -7,7 +7,7 @@ const RunningStatus = {
   NotRunning: 0,
   RunningSlow: 3,
   Running: 1,
-  RunningFast: 2
+  RunningFast: 2,
 };
 
 export default function AppRunningSpeed({ data }) {
@@ -20,7 +20,7 @@ export default function AppRunningSpeed({ data }) {
         We’re processing data at super sonic speed!
       </div>
     ) : speed === RunningStatus.Running ||
-    speed === RunningStatus.RunningSlow ? (
+      speed === RunningStatus.RunningSlow ? (
       <div>
         <IoMdCheckmarkCircle /> We’re processing data
       </div>
@@ -34,7 +34,7 @@ export default function AppRunningSpeed({ data }) {
       className={classnames('running-status', {
         'running-status--not-running': speed === RunningStatus.NotRunning,
         'running-status--running': speed === RunningStatus.Running,
-        'running-status--running-fast': speed === RunningStatus.RunningFast
+        'running-status--running-fast': speed === RunningStatus.RunningFast,
       })}
     >
       {title}
@@ -53,11 +53,12 @@ function getRunningSpeed(stats) {
 
   if (activeVolumes > 5 && runningNomadJobs > 200) {
     return RunningStatus.RunningFast;
-  } else if (activeVolumes > 5 && runningNomadJobs > 50) {
-    return RunningStatus.Running;
-  } else if (activeVolumes > 0 && runningNomadJobs > 10) {
-    return RunningStatus.RunningSlow;
-  } else {
-    return RunningStatus.NotRunning;
   }
+  if (activeVolumes > 5 && runningNomadJobs > 50) {
+    return RunningStatus.Running;
+  }
+  if (activeVolumes > 0 && runningNomadJobs > 10) {
+    return RunningStatus.RunningSlow;
+  }
+  return RunningStatus.NotRunning;
 }

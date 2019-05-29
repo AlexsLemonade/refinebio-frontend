@@ -3,7 +3,7 @@ import { formatSentenceCase } from '../../common/helpers';
 import { getTransformationOptionFromName } from './transformation';
 import {
   downloadsFilesDataBySpecies,
-  downloadsFilesDataByExperiment
+  downloadsFilesDataByExperiment,
 } from './downloadFilesData';
 
 const DownloadFileSummary = ({
@@ -11,11 +11,11 @@ const DownloadFileSummary = ({
   samplesBySpecies,
   aggregate_by,
   scale_by,
-  isEmbed = false
+  isEmbed = false,
 }) => {
   if (!dataSet) return null;
 
-  let summaryData =
+  const summaryData =
     aggregate_by === 'SPECIES'
       ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
       : downloadsFilesDataByExperiment(dataSet);
@@ -37,8 +37,8 @@ const DownloadFileSummary = ({
       )}
 
       <div className="downloads__cards">
-        {summaryData.files.map((card, i) => (
-          <div className="downloads__card" key={i}>
+        {summaryData.files.map(card => (
+          <div className="downloads__card" key={card.title + card.description}>
             <h4>{card.title}</h4>
             <div className="downloads__card-stats">
               <div className="downloads__card-stat">{card.description}</div>

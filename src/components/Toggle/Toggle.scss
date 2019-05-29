@@ -29,12 +29,12 @@
     }
 
     &:hover {
-      background: #F2F2F2;
+      background: #f2f2f2;
     }
 
     &:focus,
     &:active {
-      background: darken(#F2F2F2, 5%);
+      background: darken(#f2f2f2, 5%);
     }
   }
 }
