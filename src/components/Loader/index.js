@@ -115,7 +115,7 @@ export function useLoader(fetch, updateProps = []) {
       mounted.current += 1;
       fetchDataCallback(mounted.current);
     },
-    [fetchDataCallback, ...updateProps] // eslint-disable-line react-hooks/exhaustive-deps
+    updateProps // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return {
