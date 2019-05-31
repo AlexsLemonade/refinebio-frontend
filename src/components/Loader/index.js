@@ -74,56 +74,76 @@ export default class Loader extends React.Component {
   }
 }
 
+/**
+ * https://www.robinwieruch.de/react-hooks-fetch-data/
+ * @param {*} state
+ * @param {*} action
+ */
+const dataFetchReducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_INIT':
+      return {
+        ...state,
+        isLoading: true,
+        hasError: false,
+        error: null,
+      };
+    case 'FETCH_SUCCESS':
+      return {
+        ...state,
+        isLoading: false,
+        hasError: false,
+        error: null,
+        data: action.payload,
+      };
+    case 'FETCH_FAILURE':
+      return {
+        ...state,
+        isLoading: false,
+        hasError: true,
+        error: action.payload,
+      };
+    default:
+      throw new Error();
+  }
+};
+
+/**
+ *
+ * @param {*} fetch Async function that returns data
+ * @param {*} updateProps Similar to `useEffect` dependencies, you can add any values here that invalidate the result of `fetch`
+ */
 export function useLoader(fetch, updateProps = []) {
-  const [state, setState] = React.useState({
+  // Using a reducer helps remove the `state` dependency from the effect below
+  // React guarantees that `dispatch` is unique accross renders.
+  // https://overreacted.io/a-complete-guide-to-useeffect/#why-usereducer-is-the-cheat-mode-of-hooks
+  const [state, dispatch] = React.useReducer(dataFetchReducer, {
     error: null,
     isLoading: true,
     data: null,
   });
 
-  // ref that is active while the component is mounted
-  // thanks to https://medium.com/@pshrmn/react-hook-gotchas-e6ca52f49328
-  const mounted = React.useRef(1);
-  React.useEffect(() => {
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
-
   const fetchDataCallback = React.useCallback(
-    async function fetchData(version) {
-      setState({ ...state, isLoading: true, error: null });
+    async function fetchData() {
+      dispatch({ type: 'FETCH_INIT' });
 
       try {
         const data = await fetch();
-
-        // before modifying the state ensure that the component is still mounted
-        // and that no other `fetch` calls have been made. In which case this response
-        // would be obsolete.
-        if (!mounted.current || version !== mounted.current) return;
-        setState({ error: null, isLoading: false, data });
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (error) {
-        if (!mounted.current || version !== mounted.current) return;
-        setState({ ...state, isLoading: false, error });
+        dispatch({ type: 'FETCH_FAILURE', payload: error });
       }
     },
-    [fetch, state]
+    [fetch]
   );
 
-  React.useEffect(
-    () => {
-      mounted.current += 1;
-      fetchDataCallback(mounted.current);
-    },
-    updateProps // eslint-disable-line react-hooks/exhaustive-deps
-  );
+  React.useEffect(() => {
+    fetchDataCallback();
+  }, [fetchDataCallback, ...updateProps]);
 
   return {
     ...state,
     hasError: !!state.error,
-    refresh: async () => {
-      mounted.current += 1;
-      await fetchDataCallback(mounted.current);
-    },
+    refresh: fetchDataCallback,
   };
 }
