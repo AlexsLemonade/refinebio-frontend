@@ -110,20 +110,19 @@ export function useLoader(fetch, updateProps = []) {
     [fetch, state]
   );
 
-  React.useEffect(
-    () => {
+  const refreshDataCallback = React.useCallback(
+    function incrementAndFetchData() {
       mounted.current += 1;
       fetchDataCallback(mounted.current);
     },
-    updateProps // eslint-disable-line react-hooks/exhaustive-deps
+    [fetchDataCallback]
   );
+
+  React.useEffect(refreshDataCallback, updateProps);
 
   return {
     ...state,
     hasError: !!state.error,
-    refresh: async () => {
-      mounted.current += 1;
-      await fetchDataCallback(mounted.current);
-    },
+    refresh: refreshDataCallback,
   };
 }
