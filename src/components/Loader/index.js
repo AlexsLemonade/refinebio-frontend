@@ -139,7 +139,7 @@ export function useLoader(fetch, updateProps = []) {
 
   React.useEffect(() => {
     fetchDataCallback();
-  }, [fetchDataCallback, ...updateProps]);
+  }, [fetchDataCallback, ...updateProps]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     ...state,
