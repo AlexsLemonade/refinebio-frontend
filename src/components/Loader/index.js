@@ -114,19 +114,9 @@ const dataFetchReducer = (state, action) => {
  * @param {*} updateProps Similar to `useEffect` dependencies, you can add any values here that invalidate the result of `fetch`
  */
 export function useLoader(fetch, updateProps = []) {
-  // Using a reducer helps remove the `state` dependency from the effect below
-  // React guarantees that `dispatch` is unique accross renders.
-  // https://overreacted.io/a-complete-guide-to-useeffect/#why-usereducer-is-the-cheat-mode-of-hooks
-  const [state, dispatch] = React.useReducer(dataFetchReducer, {
-    error: null,
-    isLoading: true,
-    data: null,
-  });
-
   const fetchDataCallback = React.useCallback(
     async function fetchData() {
       dispatch({ type: 'FETCH_INIT' });
-
       try {
         const data = await fetch();
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -134,16 +124,23 @@ export function useLoader(fetch, updateProps = []) {
         dispatch({ type: 'FETCH_FAILURE', payload: error });
       }
     },
-    [fetch]
+    [fetch, ...updateProps] // eslint-disable-line react-hooks/exhaustive-deps
   );
+  // Using a reducer helps remove the `state` dependency from the effect below
+  // React guarantees that `dispatch` is unique accross renders.
+  // https://overreacted.io/a-complete-guide-to-useeffect/#why-usereducer-is-the-cheat-mode-of-hooks
+  const [state, dispatch] = React.useReducer(dataFetchReducer, {
+    refresh: fetchDataCallback,
+    isLoading: true,
+    error: null,
+    hasError: false,
+    data: null,
+  });
 
+  // Call fetch when properties change.
   React.useEffect(() => {
     fetchDataCallback();
-  }, [fetchDataCallback, ...updateProps]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [...updateProps]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return {
-    ...state,
-    hasError: !!state.error,
-    refresh: fetchDataCallback,
-  };
+  return state;
 }

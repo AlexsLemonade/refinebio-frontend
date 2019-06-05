@@ -11,18 +11,15 @@ import { getQueryParamObject, formatBytes } from '../../common/helpers';
 import './Dashboard.scss';
 
 function Dashboard(props) {
-  const [chartUpdating, setChartUpdating] = React.useState(true);
   let { range: rangeParam } = getQueryParamObject(props.location.search);
   if (!['day', 'week', 'month', 'year'].includes(rangeParam)) {
     rangeParam = 'day';
   }
   const [range, setRange] = React.useState(rangeParam);
-  const fetchCallback = React.useCallback(async () => {
+  const { data, refresh, isLoading, hasError } = useLoader(async () => {
     const stats = await fetchDashboardData(range);
-    setChartUpdating(false);
     return getDashboardChartConfig(stats, range);
   }, [range]);
-  const { data, refresh, hasError } = useLoader(fetchCallback, [range]);
 
   // refresh data every 10 mins
   useInterval(() => {
@@ -44,15 +41,12 @@ function Dashboard(props) {
             { label: 'Last Month', value: 'month' },
             { label: 'Last Year', value: 'year' },
           ]}
-          onChange={range => {
-            setChartUpdating(true);
-            setRange(range);
-          }}
+          onChange={selected => setRange(selected)}
         />
 
         <p>* All dates in UTC</p>
 
-        {!data || chartUpdating ? (
+        {!data || isLoading ? (
           <Spinner />
         ) : (
           data.map(section => {
