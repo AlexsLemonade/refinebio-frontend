@@ -58,7 +58,7 @@ export function fetchResults({
 }) {
   return async (dispatch, getState) => {
     try {
-      const apiResults = await Ajax.get('/es/', {
+      const apiResults = await Ajax.get('/search/', {
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
@@ -70,7 +70,7 @@ export function fetchResults({
 
       // do accession code search
       if (isAccessionCode(query) && page === 1) {
-        const { results: topResults } = await Ajax.get('/es/', {
+        const { results: topResults } = await Ajax.get('/search/', {
           search: `accession_code:${query}`,
         });
 
@@ -98,7 +98,7 @@ export function fetchResults({
 
         if (!previousFilters) {
           // make another request to the api to fetch the results
-          const { facets: previousFacets } = await Ajax.get('/es/', {
+          const { facets: previousFacets } = await Ajax.get('/search/', {
             ...(query ? { search: query } : {}),
             limit: 1,
             ...{
