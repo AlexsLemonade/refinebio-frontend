@@ -33,7 +33,7 @@ export async function getDataSetDetails(dataSetId, tokenId = null) {
  * Creates a new dataset
  */
 export async function createDataSet() {
-  return Ajax.post('/dataset/create/', { data: {} });
+  return Ajax.post('/dataset/', { data: {} });
 }
 
 export async function updateDataSet(dataSetId, dataSet, details = false) {
@@ -60,8 +60,11 @@ export async function updateDataSet(dataSetId, dataSet, details = false) {
 // Takes in arrays of samples and experiments as formatted by the serializer
 // and turns them into objects where the keys are experiment accession codes
 export function formatExperiments(experiments) {
-  return experiments.reduce((accum, experiment) => {
-    accum[experiment.accession_code] = experiment;
-    return accum;
-  }, {});
+  return experiments.reduce(
+    (accum, experiment) => ({
+      ...accum,
+      [experiment.accession_code]: experiment,
+    }),
+    {}
+  );
 }
