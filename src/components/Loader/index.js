@@ -114,6 +114,12 @@ const dataFetchReducer = (state, action) => {
  * @param {*} updateProps Similar to `useEffect` dependencies, you can add any values here that invalidate the result of `fetch`
  */
 export function useLoader(fetch, updateProps = []) {
+  // memoize the fetch
+  const fetchRef = React.useRef(fetch);
+  React.useEffect(() => {
+    fetchRef.current = fetch;
+  }, [fetchRef, fetch]); // updates more often than needed but its never stale and doesnt affect rendering because its in a ref
+  // const {current: updatePropsMemo} = updatePropsRef;
   // Using a reducer helps remove the `state` dependency from the effect below
   // React guarantees that `dispatch` is unique accross renders.
   // https://overreacted.io/a-complete-guide-to-useeffect/#why-usereducer-is-the-cheat-mode-of-hooks
@@ -123,24 +129,21 @@ export function useLoader(fetch, updateProps = []) {
     data: null,
   });
 
-  const fetchDataCallback = React.useCallback(
-    async function fetchData() {
-      dispatch({ type: 'FETCH_INIT' });
+  const fetchDataCallback = React.useCallback(async () => {
+    dispatch({ type: 'FETCH_INIT' });
 
-      try {
-        const data = await fetch();
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
-      } catch (error) {
-        dispatch({ type: 'FETCH_FAILURE', payload: error });
-      }
-    },
-    [fetch]
-  );
-
+    try {
+      const data = await fetchRef.current();
+      dispatch({ type: 'FETCH_SUCCESS', payload: data });
+    } catch (error) {
+      dispatch({ type: 'FETCH_FAILURE', payload: error });
+    }
+  }, [fetchRef]); // never changes
+  // useLoader will fetch Data when updateProps changes
   React.useEffect(() => {
     fetchDataCallback();
   }, [fetchDataCallback, ...updateProps]); // eslint-disable-line react-hooks/exhaustive-deps
-
+  // returned for use in your component
   return {
     ...state,
     hasError: !!state.error,
