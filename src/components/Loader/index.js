@@ -119,7 +119,6 @@ export function useLoader(fetch, updateProps = []) {
   React.useEffect(() => {
     fetchRef.current = fetch;
   }, [fetchRef, fetch]);
-  // const {current: updatePropsMemo} = updatePropsRef;
   // Using a reducer helps remove the `state` dependency from the effect below
   // React guarantees that `dispatch` is unique accross renders.
   // https://overreacted.io/a-complete-guide-to-useeffect/#why-usereducer-is-the-cheat-mode-of-hooks
