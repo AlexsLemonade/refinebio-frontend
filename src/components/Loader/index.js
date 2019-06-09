@@ -118,7 +118,7 @@ export function useLoader(fetch, updateProps = []) {
   const fetchRef = React.useRef(fetch);
   React.useEffect(() => {
     fetchRef.current = fetch;
-  }, [fetchRef, fetch]); // updates more often than needed but its never stale and doesnt affect rendering because its in a ref
+  }, [fetchRef, fetch]);
   // const {current: updatePropsMemo} = updatePropsRef;
   // Using a reducer helps remove the `state` dependency from the effect below
   // React guarantees that `dispatch` is unique accross renders.
