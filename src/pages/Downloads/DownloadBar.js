@@ -130,8 +130,8 @@ let DownloadBar = ({
           >
             <span>Skip quantile normalization for RNA-seq samples</span>
             <HelpIcon
-              alt="What is quantile normalization?"
-              url="http://docs.refine.bio/en/latest/main_text.html#transformations"
+              alt="What does it mean to skip quantile normalization for RNA-seq samples?"
+              url="http://docs.refine.bio/en/latest/faq.html#what-does-it-mean-to-skip-quantile-normalization-for-rna-seq-samples"
             />
           </Checkbox>
         </div>
