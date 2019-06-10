@@ -9,6 +9,4 @@ global.localStorage = localStorageMock;
 
 // Remove warning when running tests
 // thanks to https://github.com/facebook/create-react-app/issues/3199#issuecomment-332634063
-global.requestAnimationFrame = function(callback) {
-  setTimeout(callback, 0);
-};
+global.requestAnimationFrame = callback => setTimeout(callback, 0);
