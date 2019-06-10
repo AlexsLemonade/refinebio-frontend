@@ -149,13 +149,13 @@ DownloadBar = connect(
 )(DownloadBar);
 export default DownloadBar;
 
-function HelpIcon({ url = 'http://docs.refine.bio/', alt = '' }) {
+function HelpIcon({ url = 'http://docs.refine.bio/', alt = 'What is this?' }) {
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      title="What is this?"
+      title={alt}
       className="downloads__help-icon"
     >
       <img src={HelpIconImage} alt={alt} />
