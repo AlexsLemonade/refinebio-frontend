@@ -8,8 +8,8 @@ export const MOST_SAMPLES = 'MostSamples';
 
 export const Ordering = {
   BestMatch: '_score',
-  MostSamples: '-num_processed_samples',
-  LeastSamples: 'num_processed_samples',
+  MostSamples: '-num_downloadable_samples',
+  LeastSamples: 'num_downloadable_samples',
   Newest: '-source_first_published',
   Oldest: 'source_first_published',
 };
