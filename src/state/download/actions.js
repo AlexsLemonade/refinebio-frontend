@@ -132,7 +132,11 @@ export const removeSamples = (
  */
 export const fetchDataSet = (details = false) => async (dispatch, getState) => {
   const tokenId = getState().token;
-  const dataSetId = getDataSetId(getState());
+
+  // try reading the dataset id from the local storage in case another tab created one.
+  // bug https://github.com/AlexsLemonade/refinebio-frontend/issues/653
+  const dataSetId =
+    getDataSetId(getState()) || localStorage.getItem('dataSetId');
 
   if (!dataSetId) {
     return null;
