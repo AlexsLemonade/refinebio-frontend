@@ -12,9 +12,9 @@ import { push, replace } from '../routerActions';
 import { createToken, clearToken } from '../token';
 import { ServerError, InvalidTokenError } from '../../common/errors';
 
-// Remove all dataset
-export const clearDataSet = () => ({
-  type: 'DOWNLOAD_CLEAR',
+// Drop the current dataset from the storage, it will still be saved in the backend
+export const dropDataSet = () => () => ({
+  type: 'DOWNLOAD_DROP',
 });
 
 export const updateDownloadDataSet = data => ({
@@ -133,10 +133,7 @@ export const removeSamples = (
 export const fetchDataSet = (details = false) => async (dispatch, getState) => {
   const tokenId = getState().token;
 
-  // try reading the dataset id from the local storage in case another tab created one.
-  // bug https://github.com/AlexsLemonade/refinebio-frontend/issues/653
-  const dataSetId =
-    getDataSetId(getState()) || localStorage.getItem('dataSetId');
+  const dataSetId = getDataSetId(getState());
 
   if (!dataSetId) {
     return null;
@@ -157,7 +154,7 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
     if (data.is_processing || data.is_processed) {
       // if for any reason the user ends up in a state where the current dataset is already processed
       // we should clear it, since this dataset is immutable
-      return await dispatch(clearDataSet());
+      return await dispatch(dropDataSet());
     }
 
     dispatch(
@@ -168,12 +165,16 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
     );
   } catch (e) {
     // Check if there was any error fetching the dataset, in which case restart it's status
-    await dispatch(clearDataSet());
+    await dispatch(dropDataSet());
     // Also report the error
     await dispatch(reportError(e));
   }
   return null;
 };
+
+// Remove all dataset
+export const clearDataSet = () => dispatch =>
+  dispatch(dataSetUpdateOperation(dataSet => ({})));
 
 /**
  * Gets detailed information about the samples and experiments associated with
@@ -287,7 +288,7 @@ export const startDownload = ({
   const currentDataSet = getState().download.dataSetId;
   if (currentDataSet === dataSetId) {
     // clear the current dataset if a download is started for it.
-    await dispatch(clearDataSet());
+    await dispatch(dropDataSet());
   }
 
   // redirect to the dataset page, and send the email address in the state
