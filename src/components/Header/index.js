@@ -12,8 +12,20 @@ import Loader from '../Loader';
 import SideMenu from '../SideMenu';
 import ResponsiveSwitch from '../ResponsiveSwitch';
 import { searchUrl } from '../../routes';
+import githubCorner from './github-corner.svg';
 
 class Header extends React.Component {
+  /**
+   * In general this is a bad approach, where the header component knows about other pages.
+   * But in the future we'll unify the header styles and have a single color. So it doesn't make
+   * much sense to invest a lot of time improving this.
+   */
+  _invertColors() {
+    return ['/', '/about', '/species-compendia'].includes(
+      this.props.location.pathname
+    );
+  }
+
   render() {
     return (
       <header
@@ -32,18 +44,9 @@ class Header extends React.Component {
             desktop={() => <HeaderLinks location={this.props.location} />}
           />
         </div>
-      </header>
-    );
-  }
 
-  /**
-   * In general this is a bad approach, where the header component knows about other pages.
-   * But in the future we'll unify the header styles and have a single color. So it doesn't make
-   * much sense to invest a lot of time improving this.
-   */
-  _invertColors() {
-    return ['/', '/about', '/species-compendia'].includes(
-      this.props.location.pathname
+        <GithubCorner />
+      </header>
     );
   }
 }
@@ -150,5 +153,18 @@ function HeaderLinksMobile({ location }) {
         </div>
       )}
     </SideMenu>
+  );
+}
+
+function GithubCorner() {
+  return (
+    <a
+      href="https://github.com/AlexsLemonade"
+      target="_blank"
+      rel="nofollow noopener noreferrer"
+      className="github-corner"
+    >
+      <img src={githubCorner} />
+    </a>
   );
 }
