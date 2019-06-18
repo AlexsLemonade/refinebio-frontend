@@ -18,7 +18,7 @@ export class Accordion extends React.Component {
     return React.Children.count(this.props.children);
   }
 
-  _toggleAll() {
+  toggleAll() {
     if (!this.state.activeElements.includes(false)) {
       this.setState({
         activeElements: new Array(this.getChildrenCount()).fill(false),
@@ -30,7 +30,7 @@ export class Accordion extends React.Component {
     }
   }
 
-  _toggleElement(index) {
+  toggleElement(index) {
     this.setState(state => ({
       activeElements: state.activeElements.map((x, i) =>
         i === index ? !x : x
@@ -45,7 +45,7 @@ export class Accordion extends React.Component {
         child &&
         React.cloneElement(child, {
           isExpanded: this.state.activeElements[index],
-          onToggle: () => this._toggleElement(index),
+          onToggle: () => this.toggleElement(index),
         })
     );
     return (
@@ -53,7 +53,7 @@ export class Accordion extends React.Component {
         {!this.props.hideExpandAll && children.length > 2 && (
           <Checkbox
             className="accordion__expand-all"
-            onClick={() => this._toggleAll()}
+            onClick={() => this.toggleAll()}
             checked={!this.state.activeElements.includes(false)}
             name="expand-all"
             readOnly
