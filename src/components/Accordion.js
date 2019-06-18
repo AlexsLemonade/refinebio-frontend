@@ -10,18 +10,18 @@ export class Accordion extends React.Component {
     super(props);
 
     this.state = {
-      activeElements: new Array(this._totalChildren()).fill(false),
+      activeElements: new Array(this.getChildrenCount()).fill(false),
     };
   }
 
   _toggleAll() {
     if (!this.state.activeElements.includes(false)) {
       this.setState({
-        activeElements: new Array(this._totalChildren()).fill(false),
+        activeElements: new Array(this.getChildrenCount()).fill(false),
       });
     } else {
       this.setState({
-        activeElements: new Array(this._totalChildren()).fill(true),
+        activeElements: new Array(this.getChildrenCount()).fill(true),
       });
     }
   }
@@ -34,7 +34,7 @@ export class Accordion extends React.Component {
     }));
   }
 
-  _totalChildren() {
+  getChildrenCount() {
     return React.Children.count(this.props.children);
   }
 
