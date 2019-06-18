@@ -14,6 +14,30 @@ export class Accordion extends React.Component {
     };
   }
 
+  _toggleAll() {
+    if (!this.state.activeElements.includes(false)) {
+      this.setState({
+        activeElements: new Array(this._totalChildren()).fill(false),
+      });
+    } else {
+      this.setState({
+        activeElements: new Array(this._totalChildren()).fill(true),
+      });
+    }
+  }
+
+  _toggleElement(index) {
+    this.setState(state => ({
+      activeElements: state.activeElements.map((x, i) =>
+        i === index ? !x : x
+      ),
+    }));
+  }
+
+  _totalChildren() {
+    return React.Children.count(this.props.children);
+  }
+
   render() {
     const children = React.Children.map(
       this.props.children,
@@ -41,30 +65,6 @@ export class Accordion extends React.Component {
         {children}
       </div>
     );
-  }
-
-  _toggleAll() {
-    if (!this.state.activeElements.includes(false)) {
-      this.setState({
-        activeElements: new Array(this._totalChildren()).fill(false),
-      });
-    } else {
-      this.setState({
-        activeElements: new Array(this._totalChildren()).fill(true),
-      });
-    }
-  }
-
-  _toggleElement(index) {
-    this.setState(state => ({
-      activeElements: state.activeElements.map((x, i) =>
-        i === index ? !x : x
-      ),
-    }));
-  }
-
-  _totalChildren() {
-    return React.Children.count(this.props.children);
   }
 }
 
