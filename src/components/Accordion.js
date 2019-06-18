@@ -14,6 +14,10 @@ export class Accordion extends React.Component {
     };
   }
 
+  getChildrenCount() {
+    return React.Children.count(this.props.children);
+  }
+
   _toggleAll() {
     if (!this.state.activeElements.includes(false)) {
       this.setState({
@@ -32,10 +36,6 @@ export class Accordion extends React.Component {
         i === index ? !x : x
       ),
     }));
-  }
-
-  getChildrenCount() {
-    return React.Children.count(this.props.children);
   }
 
   render() {
