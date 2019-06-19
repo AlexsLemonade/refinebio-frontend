@@ -66,7 +66,7 @@ export default class HorizontalScroll extends React.Component {
   };
 
   _getElement() {
-    let result = this._targetContainer;
+    let result = this.targetContainer;
 
     if (result && this.props.targetSelector) {
       result = result.querySelector(this.props.targetSelector);
@@ -81,7 +81,7 @@ export default class HorizontalScroll extends React.Component {
         <div
           className="horizontal-scroll__content"
           ref={x => {
-            this._targetContainer = x;
+            this.targetContainer = x;
           }}
         >
           {this.props.children}
