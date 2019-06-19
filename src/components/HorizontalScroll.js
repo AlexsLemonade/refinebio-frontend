@@ -14,7 +14,7 @@ export default class HorizontalScroll extends React.Component {
   };
 
   componentDidMount() {
-    this._getElement().addEventListener(
+    this.getElement().addEventListener(
       'scroll',
       this.disableScrollButtonsIfNecessary
     );
@@ -29,7 +29,7 @@ export default class HorizontalScroll extends React.Component {
   }
 
   componentWillUnmount() {
-    this._getElement().removeEventListener(
+    this.getElement().removeEventListener(
       'scroll',
       this.disableScrollButtonsIfNecessary
     );
@@ -37,12 +37,12 @@ export default class HorizontalScroll extends React.Component {
   }
 
   getMaxScrollPosition = () => {
-    const element = this._getElement();
+    const element = this.getElement();
     return element.scrollWidth - element.clientWidth;
   };
 
   disableScrollButtonsIfNecessary = () => {
-    const element = this._getElement();
+    const element = this.getElement();
     this.setState({
       disableLeftButton: element.scrollLeft <= 0,
       disableRightButton: element.scrollLeft >= this.getMaxScrollPosition(),
@@ -50,7 +50,7 @@ export default class HorizontalScroll extends React.Component {
   };
 
   scrollLeft = () => {
-    this._getElement().scrollBy({
+    this.getElement().scrollBy({
       top: 0,
       left: -100,
       behavior: 'smooth',
@@ -58,14 +58,14 @@ export default class HorizontalScroll extends React.Component {
   };
 
   scrollRight = () => {
-    this._getElement().scrollBy({
+    this.getElement().scrollBy({
       top: 0,
       left: 100,
       behavior: 'smooth',
     });
   };
 
-  _getElement() {
+  getElement() {
     let result = this.targetContainer;
 
     if (result && this.props.targetSelector) {
