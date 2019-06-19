@@ -36,6 +36,16 @@ export default class HorizontalScroll extends React.Component {
     window.removeEventListener('resize', this.disableScrollButtonsIfNecessary);
   }
 
+  getElement() {
+    let result = this.targetContainer;
+
+    if (result && this.props.targetSelector) {
+      result = result.querySelector(this.props.targetSelector);
+    }
+
+    return result;
+  }
+
   getMaxScrollPosition = () => {
     const element = this.getElement();
     return element.scrollWidth - element.clientWidth;
@@ -64,16 +74,6 @@ export default class HorizontalScroll extends React.Component {
       behavior: 'smooth',
     });
   };
-
-  getElement() {
-    let result = this.targetContainer;
-
-    if (result && this.props.targetSelector) {
-      result = result.querySelector(this.props.targetSelector);
-    }
-
-    return result;
-  }
 
   render() {
     return (
