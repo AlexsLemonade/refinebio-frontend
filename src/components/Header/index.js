@@ -12,41 +12,42 @@ import Loader from '../Loader';
 import SideMenu from '../SideMenu';
 import ResponsiveSwitch from '../ResponsiveSwitch';
 import { searchUrl } from '../../routes';
+import githubCorner from './github-corner.svg';
 
-class Header extends React.Component {
-  render() {
-    return (
-      <header
-        className={classnames('header', 'js-header', {
-          'header--inverted header--scroll': this._invertColors(),
-        })}
-      >
-        <div className="header__container">
-          <Link to="/">
-            <img src={logo} alt="refine.bio" className="header__logo" />
-          </Link>
-
-          <ResponsiveSwitch
-            break="mobile"
-            mobile={() => <HeaderLinksMobile location={this.props.location} />}
-            desktop={() => <HeaderLinks location={this.props.location} />}
-          />
-        </div>
-      </header>
-    );
-  }
-
-  /**
-   * In general this is a bad approach, where the header component knows about other pages.
-   * But in the future we'll unify the header styles and have a single color. So it doesn't make
-   * much sense to invest a lot of time improving this.
-   */
-  _invertColors() {
-    return ['/', '/about', '/species-compendia'].includes(
-      this.props.location.pathname
-    );
-  }
+/**
+ * In general this is a bad approach, where the header component knows about other pages.
+ * But in the future we'll unify the header styles and have a single color. So it doesn't make
+ * much sense to invest a lot of time improving this.
+ */
+function shouldInvertColors(pathname) {
+  return ['/', '/about', '/species-compendia'].includes(pathname);
 }
+
+let Header = ({ location }) => {
+  return (
+    <header
+      className={classnames('header', 'js-header', {
+        'header--inverted header--scroll': shouldInvertColors(
+          location.pathname
+        ),
+      })}
+    >
+      <div className="header__container">
+        <Link to="/">
+          <img src={logo} alt="refine.bio" className="header__logo" />
+        </Link>
+
+        <ResponsiveSwitch
+          break="mobile"
+          mobile={() => <HeaderLinksMobile location={location} />}
+          desktop={() => <HeaderLinks location={location} />}
+        />
+      </div>
+
+      <GithubCorner />
+    </header>
+  );
+};
 Header = withRouter(Header);
 export default Header;
 
@@ -150,5 +151,18 @@ function HeaderLinksMobile({ location }) {
         </div>
       )}
     </SideMenu>
+  );
+}
+
+function GithubCorner() {
+  return (
+    <a
+      href="https://github.com/AlexsLemonade"
+      target="_blank"
+      rel="nofollow noopener noreferrer"
+      className="github-corner"
+    >
+      <img src={githubCorner} alt="github link" />
+    </a>
   );
 }
