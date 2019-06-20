@@ -3,6 +3,7 @@ import './HorizontalScroll.scss';
 import classnames from 'classnames';
 import useVisibility from 'react-use-visibility';
 
+let didShowAnimation = false;
 /**
  * Adds buttons to modify the horizontal scroll position of an element. It's usually
  * the container of the children, unless a specific `targetSelector` is passed.
@@ -117,11 +118,10 @@ function ButtonLeft({ onClick, disabled }) {
 function ButtonRight({ onClick, disabled }) {
   const ref = useRef();
   const isVisible = useVisibility(ref.current);
-  const didAnimateRef = useRef(false);
-  const animate = !didAnimateRef.current && (isVisible && !disabled);
+  const animate = !didShowAnimation && (isVisible && !disabled);
 
   React.useEffect(() => {
-    didAnimateRef.current = animate;
+    if (animate) didShowAnimation = true;
   }, [animate]);
 
   return (
