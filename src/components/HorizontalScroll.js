@@ -117,6 +117,12 @@ function ButtonLeft({ onClick, disabled }) {
 function ButtonRight({ onClick, disabled }) {
   const ref = useRef();
   const isVisible = useVisibility(ref.current);
+  const wasVisibleRef = useRef(false);
+  const animate = isVisible && !wasVisibleRef.current;
+
+  React.useEffect(() => {
+    wasVisibleRef.current = wasVisibleRef.current || (isVisible && !disabled);
+  }, [isVisible, disabled]);
 
   return (
     <button
@@ -131,7 +137,7 @@ function ButtonRight({ onClick, disabled }) {
         ref={ref}
         className={classnames({
           'horizontal-scroll__button': true,
-          'horizontal-scroll__button--animate': isVisible,
+          'horizontal-scroll__button--animate': animate,
         })}
       >
         {'>'}
