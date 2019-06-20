@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
         ...action.data,
       };
     }
-    case 'DOWNLOAD_CLEAR': {
+    case 'DOWNLOAD_DROP': {
       return initialState;
     }
 

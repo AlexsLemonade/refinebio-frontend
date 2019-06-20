@@ -41,7 +41,7 @@ describe('fetchDataSet', () => {
 
     expect(store.getActions().map(x => x.type)).toEqual([
       'DOWNLOAD_DATASET_FETCH',
-      'DOWNLOAD_CLEAR',
+      'DOWNLOAD_DROP',
       REPORT_ERROR,
     ]);
   });
@@ -63,7 +63,7 @@ describe('fetchDataSet', () => {
     expect(global.fetch.mock.calls[0][0]).toEqual(`/dataset/${DataSetId}/`);
     expect(store.getActions().map(x => x.type)).toEqual([
       'DOWNLOAD_DATASET_FETCH',
-      'DOWNLOAD_CLEAR',
+      'DOWNLOAD_DROP',
     ]);
   });
 });
@@ -91,7 +91,7 @@ describe('startDownload', () => {
     );
     expect(store.getActions().map(x => x.type)).toEqual([
       'LOAD_TOKEN',
-      'DOWNLOAD_CLEAR',
+      'DOWNLOAD_DROP',
       'refinebio/CALL_HISTORY_METHOD',
     ]);
   });
