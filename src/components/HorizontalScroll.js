@@ -117,12 +117,12 @@ function ButtonLeft({ onClick, disabled }) {
 function ButtonRight({ onClick, disabled }) {
   const ref = useRef();
   const isVisible = useVisibility(ref.current);
-  const wasVisibleRef = useRef(false);
-  const animate = !wasVisibleRef.current && (isVisible && !disabled);
+  const didAnimateRef = useRef(false);
+  const animate = !didAnimateRef.current && (isVisible && !disabled);
 
   React.useEffect(() => {
-    wasVisibleRef.current = wasVisibleRef.current || (isVisible && !disabled);
-  }, [isVisible, disabled]);
+    didAnimateRef.current = animate;
+  }, [animate]);
 
   return (
     <button
