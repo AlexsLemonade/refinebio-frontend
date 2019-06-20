@@ -12,14 +12,22 @@ import { push, replace } from '../routerActions';
 import { createToken, clearToken } from '../token';
 import { ServerError, InvalidTokenError } from '../../common/errors';
 
-// Drop the current dataset from the storage, it will still be saved in the backend
-export const dropDataSet = () => () => ({
-  type: 'DOWNLOAD_DROP',
-});
+// Drop the current dataset from the storage, it will still remain in the db
+export const dropDataSet = () => dispatch => {
+  dispatch({
+    type: 'DOWNLOAD_DROP',
+    persist: {
+      dataSetId: null,
+    },
+  });
+};
 
 export const updateDownloadDataSet = data => ({
   type: 'DOWNLOAD_DATASET_UPDATE',
   data,
+  persist: {
+    dataSetId: data.dataSetId,
+  },
 });
 
 /**
@@ -133,7 +141,10 @@ export const removeSamples = (
 export const fetchDataSet = (details = false) => async (dispatch, getState) => {
   const tokenId = getState().token;
 
-  const dataSetId = getDataSetId(getState());
+  // try reading the dataset id from the local storage in case another tab created one.
+  // bug https://github.com/AlexsLemonade/refinebio-frontend/issues/653
+  const dataSetId =
+    getDataSetId(getState()) || localStorage.getItem('dataSetId');
 
   if (!dataSetId) {
     return null;

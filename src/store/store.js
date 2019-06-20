@@ -35,6 +35,23 @@ const errorMiddleware = () => next => action => {
   return next(action);
 };
 
+/**
+ * Persist values in the localStorage
+ */
+const persistMiddleware = () => next => action => {
+  if (action.persist) {
+    for (const key of Object.keys(action.persist)) {
+      if (action.persist[key]) {
+        localStorage.setItem(key, action.persist[key]);
+      } else {
+        localStorage.removeItem(key);
+      }
+    }
+  }
+
+  return next(action);
+};
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
@@ -45,7 +62,8 @@ const store = createStore(
       progressMiddleware,
       thunk,
       routerMiddleware(history),
-      errorMiddleware
+      errorMiddleware,
+      persistMiddleware
     )
   )
 );
@@ -53,11 +71,6 @@ const store = createStore(
 store.subscribe(
   throttle(() => {
     const state = store.getState();
-    if (state.download && state.download.dataSetId) {
-      localStorage.setItem('dataSetId', state.download.dataSetId);
-    } else {
-      localStorage.removeItem('dataSetId');
-    }
     if (state.token) {
       localStorage.setItem('token', state.token);
     } else {
