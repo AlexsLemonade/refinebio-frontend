@@ -26,6 +26,7 @@ import {
   triggerSearch,
   clearFilters,
   updateResultsPerPage,
+  getAccessionCodes,
 } from '../../state/search/actions';
 import Spinner from '../../components/Spinner';
 import InfoBox from '../../components/InfoBox';
@@ -190,7 +191,12 @@ class SearchResults extends Component {
                     appliedFilters={this.state.filters}
                   />
                   <div className="results__list">
-                    <Hightlight match={this.state.query}>
+                    <Hightlight
+                      match={[
+                        this.state.query,
+                        ...getAccessionCodes(this.state.query),
+                      ]}
+                    >
                       {results.map((result, index) => (
                         <React.Fragment key={result.accession_code}>
                           <Result result={result} query={this.state.query} />

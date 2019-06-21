@@ -50,7 +50,7 @@ const ACCESSION_CODE_REGEX = /^(GSE|ERP|SRP)(\d{3,6}$)|(E-[A-Z]{4}-\d{2,4}$)/i;
  * Returns an array with all the accession codes in the search query (if any)
  * @param {string} query search query
  */
-function getAccessionCodes(query) {
+export function getAccessionCodes(query) {
   if (!query) return [];
   const accessionCodes = query.split(/,| /i);
   return accessionCodes.filter(code => ACCESSION_CODE_REGEX.test(code));
