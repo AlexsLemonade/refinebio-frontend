@@ -3,7 +3,22 @@ import './HorizontalScroll.scss';
 import classnames from 'classnames';
 import useVisibility from 'react-use-visibility';
 
-let didShowAnimation = false;
+/**
+ * Keep track of a global timer for nudging the user to view the
+ * right scroll button. This resets every 10min starting after the
+ * first time it is animated.
+ */
+let showAnimation = true;
+let animationTimer = false;
+const didAnimate = () => {
+  showAnimation = false;
+  animationTimer =
+    animationTimer ||
+    setInterval(() => {
+      showAnimation = true;
+    }, 10 * 60 * 1000);
+};
+
 /**
  * Adds buttons to modify the horizontal scroll position of an element. It's usually
  * the container of the children, unless a specific `targetSelector` is passed.
@@ -118,10 +133,10 @@ function ButtonLeft({ onClick, disabled }) {
 function ButtonRight({ onClick, disabled }) {
   const ref = useRef();
   const isVisible = useVisibility(ref.current);
-  const animate = !didShowAnimation && (isVisible && !disabled);
+  const animate = showAnimation && (isVisible && !disabled);
 
   React.useEffect(() => {
-    if (animate) didShowAnimation = true;
+    if (animate) didAnimate();
   }, [animate]);
 
   return (
