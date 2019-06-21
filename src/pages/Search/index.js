@@ -28,7 +28,6 @@ import {
   updateResultsPerPage,
 } from '../../state/search/actions';
 import Spinner from '../../components/Spinner';
-
 import InfoBox from '../../components/InfoBox';
 import { searchUrl } from '../../routes';
 import './SearchResults.scss';
@@ -45,7 +44,7 @@ class SearchResults extends Component {
   constructor(props) {
     super(props);
 
-    const searchArgs = this._parseUrl();
+    const searchArgs = this.parseUrl();
     this.state = {
       query: searchArgs.query,
       filters: searchArgs.filters,
@@ -56,7 +55,7 @@ class SearchResults extends Component {
    * Reads the search query and other parameters from the url and submits a new request to update the results.
    */
   async updateResults() {
-    const searchArgs = this._parseUrl();
+    const searchArgs = this.parseUrl();
 
     this.setState({
       query: searchArgs.query,
@@ -65,7 +64,7 @@ class SearchResults extends Component {
 
     // check if the search term and the filters are the same, in which case we don't need to
     // fetch the results again
-    if (this._resultsAreFetched()) {
+    if (this.resultsAreFetched()) {
       return;
     }
 
@@ -74,8 +73,8 @@ class SearchResults extends Component {
     await this.props.fetchResults(searchArgs);
   }
 
-  _resultsAreFetched() {
-    const searchArgs = this._parseUrl();
+  resultsAreFetched() {
+    const searchArgs = this.parseUrl();
 
     return (
       this.props.results &&
@@ -86,6 +85,36 @@ class SearchResults extends Component {
       searchArgs.page === this.props.pagination.currentPage &&
       searchArgs.size === this.props.pagination.resultsPerPage
     );
+  }
+
+  parseUrl() {
+    /* eslint-disable prefer-const */
+    let {
+      q: query,
+      p: page = 1,
+      size = 10,
+      ordering = '',
+      filter_order = '',
+      ...filters
+    } = getQueryParamObject(this.props.location.search);
+    /* eslint-enable */
+
+    // for consistency, ensure all values in filters are arrays
+    // the method `getQueryParamObject` will return a single value for parameters that only
+    // appear once in the url
+    for (const key of Object.keys(filters)) {
+      if (!Array.isArray(filters[key])) {
+        filters[key] = [filters[key]];
+      }
+    }
+
+    // parse parameters from url
+    query = query ? decodeURIComponent(query) : undefined;
+    page = parseInt(page, 10);
+    size = parseInt(size, 10);
+    const filterOrder = filter_order ? filter_order.split(',') : [];
+
+    return { query, page, size, ordering, filters, filterOrder };
   }
 
   render() {
@@ -126,19 +155,26 @@ class SearchResults extends Component {
             updateProps={this.props.location.search}
             fetch={() => this.updateResults()}
           >
-            {({ isLoading, hasError }) =>
-              isLoading && !this._resultsAreFetched() ? (
-                <Spinner />
-              ) : hasError ? (
-                <ErrorApiUnderHeavyLoad />
-              ) : !results.length && !anyFilterApplied(this.state.filters) ? (
-                <NoSearchResults query={this.state.query} />
-              ) : !results.length ? (
-                <NoSearchResultsTooManyFilters
-                  query={this.state.query}
-                  appliedFilters={this.state.filters}
-                />
-              ) : (
+            {({ isLoading, hasError }) => {
+              if (isLoading && !this.resultsAreFetched()) {
+                return <Spinner />;
+              }
+              if (hasError) {
+                return <ErrorApiUnderHeavyLoad />;
+              }
+              if (!results.length && !anyFilterApplied(this.state.filters)) {
+                return <NoSearchResults query={this.state.query} />;
+              }
+              if (!results.length) {
+                return (
+                  <NoSearchResultsTooManyFilters
+                    query={this.state.query}
+                    appliedFilters={this.state.filters}
+                  />
+                );
+              }
+
+              return (
                 <div className="results__container">
                   <div className="results__top-bar">
                     <div className="results__number-results">
@@ -184,42 +220,12 @@ class SearchResults extends Component {
                     />
                   </div>
                 </div>
-              )
-            }
+              );
+            }}
           </Loader>
         </div>
       </div>
     );
-  }
-
-  _parseUrl() {
-    /* eslint-disable prefer-const */
-    let {
-      q: query,
-      p: page = 1,
-      size = 10,
-      ordering = '',
-      filter_order = '',
-      ...filters
-    } = getQueryParamObject(this.props.location.search);
-    /* eslint-enable */
-
-    // for consistency, ensure all values in filters are arrays
-    // the method `getQueryParamObject` will return a single value for parameters that only
-    // appear once in the url
-    for (const key of Object.keys(filters)) {
-      if (!Array.isArray(filters[key])) {
-        filters[key] = [filters[key]];
-      }
-    }
-
-    // parse parameters from url
-    query = query ? decodeURIComponent(query) : undefined;
-    page = parseInt(page, 10);
-    size = parseInt(size, 10);
-    const filterOrder = filter_order ? filter_order.split(',') : [];
-
-    return { query, page, size, ordering, filters, filterOrder };
   }
 }
 SearchResults = connect(
