@@ -43,9 +43,16 @@ const navigateToResults = ({
   });
 };
 
-function isAccessionCode(accessionCode) {
-  if (!accessionCode) return false;
-  return /^(GSE|ERP|SRP)(\d{3,6}$)|(E-[A-Z]{4}-\d{2,4}$)/i.test(accessionCode);
+const ACCESSION_CODE_REGEX = /^(GSE|ERP|SRP)(\d{3,6}$)|(E-[A-Z]{4}-\d{2,4}$)/i;
+
+/**
+ * Returns an array with all the accession codes in the search query (if any)
+ * @param {string} query search query
+ */
+function getAccessionCodes(query) {
+  if (!query) return [];
+  const accessionCodes = query.split(/,| /i);
+  return accessionCodes.filter(code => ACCESSION_CODE_REGEX.test(code));
 }
 
 export function fetchResults({
@@ -68,11 +75,18 @@ export function fetchResults({
       let { results } = apiResults;
       const { count: totalResults, facets } = apiResults;
 
+      const accessionCodes = getAccessionCodes(query);
+
       // do accession code search
-      if (isAccessionCode(query) && page === 1) {
-        const { results: topResults } = await Ajax.get('/es/', {
-          search: `accession_code:${query}`,
-        });
+      if (accessionCodes.length > 0 && page === 1) {
+        const promises = await Promise.all(
+          accessionCodes.map(code =>
+            Ajax.get('/es/', {
+              search: `accession_code:${code}`,
+            })
+          )
+        );
+        const topResults = [].concat(...promises.map(({ results }) => results));
 
         // mark top results
         topResults.forEach(experiment => {
