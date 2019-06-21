@@ -1,4 +1,5 @@
 import pickBy from 'lodash/pickBy';
+import uniqBy from 'lodash/uniqBy';
 import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
@@ -79,6 +80,7 @@ export function fetchResults({
 
       // do accession code search
       if (accessionCodes.length > 0 && page === 1) {
+        // each accession code requires an specific query to fetch the exact experiment
         const promises = await Promise.all(
           accessionCodes.map(code =>
             Ajax.get('/es/', {
@@ -86,21 +88,18 @@ export function fetchResults({
             })
           )
         );
-        const topResults = [].concat(...promises.map(({ results }) => results));
+        const topResults = []
+          .concat(...promises.map(data => data.results))
+          .map(result => ({
+            ...result,
+            // this is a hack to mark the results that should be displayed in the top region
+            // these are usually from accession code search
+            _isTopResult: true,
+          }));
 
-        // mark top results
-        topResults.forEach(experiment => {
-          experiment._isTopResult = true;
-        });
-
-        // filter out top results
-        results = results.filter(x =>
-          topResults.some(
-            topExperiment => x.accession_code !== topExperiment.accession_code
-          )
-        );
-
-        results = [...topResults, ...results];
+        // since we made multiple queries to the server, make sure that there are
+        // no repeated experiments.
+        results = uniqBy([...topResults, ...results], x => x.accession_code);
       }
 
       let filters = transformFacets(facets);
