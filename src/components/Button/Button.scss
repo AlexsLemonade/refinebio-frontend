@@ -136,7 +136,8 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
       color: transparent;
     }
 
-    .button--indicator {
+    &:before {
+      content: '';
       visibility: visible;
       display: inline-block;
       vertical-align: baseline;
@@ -164,7 +165,7 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
 
     &.button--plain,
     &.button--link {
-      .button--indicator {
+      &:before {
         top: auto;
         right: 0;
         animation-name: border-color-change, loading-spin-inline;
