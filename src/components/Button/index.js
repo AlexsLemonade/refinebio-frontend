@@ -48,7 +48,6 @@ const Button = ({
       })}
       disabled={isDisabled}
     >
-      {isLoading && <span className="button--indicator" />}
       {text || children}
     </button>
   );
