@@ -102,23 +102,25 @@ const dataSetUpdateOperation = (modifier, details = false) => async (
  * @param {object} dataSetSlice
  */
 export const addSamples = dataSetSlice => async dispatch =>
-  dispatch(
-    dataSetUpdateOperation(dataSet =>
+  dispatch({
+    queueChannel: 'dataSetUpdateOperation',
+    queuedAction: dataSetUpdateOperation(dataSet =>
       new DataSetManager(dataSet).add(dataSetSlice)
-    )
-  );
+    ),
+  });
 
 /**
  * Removes all experiments with the corresponding accession codes from dataset
  * @param {array} accessionCodes
  */
 export const removeExperiment = (accessionCodes, details = false) => dispatch =>
-  dispatch(
-    dataSetUpdateOperation(
+  dispatch({
+    queueChannel: 'dataSetUpdateOperation',
+    queuedAction: dataSetUpdateOperation(
       dataSet => new DataSetManager(dataSet).removeExperiment(accessionCodes),
       details
-    )
-  );
+    ),
+  });
 
 /**
  * Removes all samples with corresponding ids from each experiment in dataset.
@@ -128,12 +130,13 @@ export const removeSamples = (
   dataSetSlice,
   details = false
 ) => async dispatch =>
-  dispatch(
-    dataSetUpdateOperation(
+  dispatch({
+    queueChannel: 'dataSetUpdateOperation',
+    queuedAction: dataSetUpdateOperation(
       dataSet => new DataSetManager(dataSet).remove(dataSetSlice),
       details
-    )
-  );
+    ),
+  });
 
 /**
  * Use the dataset from the state
@@ -185,7 +188,10 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
 
 // Remove all dataset
 export const clearDataSet = () => dispatch =>
-  dispatch(dataSetUpdateOperation(dataSet => ({})));
+  dispatch({
+    queueChannel: 'dataSetUpdateOperation',
+    queuedAction: dataSetUpdateOperation(dataSet => ({})),
+  });
 
 /**
  * Gets detailed information about the samples and experiments associated with

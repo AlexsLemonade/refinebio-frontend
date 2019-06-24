@@ -8,6 +8,7 @@ import history from '../history';
 import { CALL_HISTORY_METHOD } from '../state/routerActions';
 import { REPORT_ERROR } from '../state/reportError';
 import progressMiddleware from './progressMiddleware';
+import queueMiddleware from './queueMiddleware';
 import { ApiVersionMismatchError } from '../common/errors';
 
 const initialState = loadInitialState();
@@ -63,7 +64,8 @@ const store = createStore(
       thunk,
       routerMiddleware(history),
       errorMiddleware,
-      persistMiddleware
+      persistMiddleware,
+      queueMiddleware
     )
   )
 );
