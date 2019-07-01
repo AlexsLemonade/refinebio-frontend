@@ -161,7 +161,7 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                       />{' '}
                       {organisms.length
                         ? organisms
-                            .map(organism => formatSentenceCase(organism.name))
+                            .map(organism => formatSentenceCase(organism))
                             .join(', ')
                         : 'No species.'}
                     </div>
