@@ -171,7 +171,7 @@ let Main = ({ push }) => {
               </div>
               <div className="main__use-card__actions">
                 <a
-                  href="http://docs.refine.bio/en/latest/main_text.html#quantile-normalizing-your-own-data-with-refine-bio-reference-distribution"
+                  href="http://docs.refine.bio/en/latest/main_text.html#transcriptome-index"
                   className="button button--secondary mr-1"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -179,7 +179,7 @@ let Main = ({ push }) => {
                   See Indices
                 </a>
                 <a
-                  href="http://docs.refine.bio/en/latest/main_text.html#transcriptome-index"
+                  href="http://docs.refine.bio/en/latest/main_text.html#quantile-normalizing-your-own-data-with-refine-bio-reference-distribution"
                   className="button button--secondary "
                   target="_blank"
                   rel="noopener noreferrer"

@@ -248,7 +248,7 @@ function AddPageToDataSetButton({ results }) {
   const resultsDataSetSlice = fromPairs(
     results.map(result => [
       result.accession_code,
-      { all: true, total: result.num_processed_samples },
+      { all: true, total: result.num_downloadable_samples },
     ])
   );
 
