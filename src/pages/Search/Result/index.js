@@ -59,14 +59,14 @@ const Result = ({ result, query }) => {
           </Link>
         </div>
 
-        {result.num_processed_samples === 0 ? (
+        {result.num_downloadable_samples === 0 ? (
           <RequestExperimentButton accessionCode={result.accession_code} />
         ) : (
           <DataSetSampleActions
             dataSetSlice={{
               [result.accession_code]: {
                 all: true,
-                total: result.num_processed_samples,
+                total: result.num_downloadable_samples,
               },
             }}
           />
@@ -87,7 +87,7 @@ const Result = ({ result, query }) => {
         </li>
         <li className="result__stat">
           <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
-          <NDownloadableSamples total={result.num_processed_samples} />
+          <NDownloadableSamples total={result.num_downloadable_samples} />
         </li>
         <li className="result__stat">
           <TechnologyBadge
