@@ -7,11 +7,13 @@ import shortid from 'shortid';
  * @param {highlight} can be a string or an array of string with the text to highlight
  */
 export default function HighlightedText({ text, highlight }) {
-  if (!highlight) return text;
+  const highlightText = Array.isArray(highlight)
+    ? highlight.filter(x => x).join('|')
+    : highlight;
 
-  const highlightRegex = Array.isArray(highlight)
-    ? new RegExp(`(${highlight.join('|')})`, 'gi')
-    : new RegExp(`(${highlight})`, 'gi');
+  if (!highlightText) return text;
+
+  const highlightRegex = new RegExp(`(${highlightText})`, 'gi');
 
   // Split on highlight term and include term into parts, ignore case
   const parts = text
