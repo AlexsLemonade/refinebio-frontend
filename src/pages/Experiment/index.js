@@ -77,10 +77,9 @@ let Experiment = ({ match, location: { state }, goBack }) => {
           let displaySpinner = isLoading;
           let experimentData = experiment || { samples: [] };
           let totalSamples = experimentData.samples.length;
-          const totalProcessedSamples = experimentData.samples.filter(
-            x => x.is_processed
-          ).length;
-          let { organisms } = experimentData;
+          const numDownloadableSamples =
+            experimentData['num_downloadable_samples'];
+          let organisms = experimentData.organism_names;
 
           // for users coming from the search, see if there's any experiment's data in the url state
           if (isLoading && comesFromSearch && state.result) {
@@ -136,7 +135,7 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                       <HText>{experimentData.title || 'No Title.'}</HText>
                     </h1>
                     <div>
-                      {totalProcessedSamples === 0 ? (
+                      {numDownloadableSamples === 0 ? (
                         <RequestExperimentButton
                           accessionCode={accessionCode}
                         />
@@ -145,7 +144,7 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                           dataSetSlice={{
                             [experimentData.accession_code]: {
                               all: true,
-                              total: totalProcessedSamples,
+                              total: numDownloadableSamples,
                             },
                           }}
                         />
@@ -162,7 +161,7 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                       />{' '}
                       {organisms.length
                         ? organisms
-                            .map(organism => formatSentenceCase(organism.name))
+                            .map(organism => formatSentenceCase(organism))
                             .join(', ')
                         : 'No species.'}
                     </div>
@@ -172,7 +171,7 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                         className="experiment__stats-icon"
                         alt="Sample Icon"
                       />{' '}
-                      <NDownloadableSamples total={totalProcessedSamples} />
+                      <NDownloadableSamples total={numDownloadableSamples} />
                     </div>
 
                     <div

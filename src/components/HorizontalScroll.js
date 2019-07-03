@@ -14,20 +14,12 @@ export default class HorizontalScroll extends React.Component {
   };
 
   componentDidMount() {
-    this._getElement().addEventListener(
+    this.getElement().addEventListener(
       'scroll',
       this.disableScrollButtonsIfNecessary
     );
 
     window.addEventListener('resize', this.disableScrollButtonsIfNecessary);
-  }
-
-  componentWillUnmount() {
-    this._getElement().removeEventListener(
-      'scroll',
-      this.disableScrollButtonsIfNecessary
-    );
-    window.removeEventListener('resize', this.disableScrollButtonsIfNecessary);
   }
 
   componentDidUpdate(prevProps) {
@@ -36,13 +28,31 @@ export default class HorizontalScroll extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.getElement().removeEventListener(
+      'scroll',
+      this.disableScrollButtonsIfNecessary
+    );
+    window.removeEventListener('resize', this.disableScrollButtonsIfNecessary);
+  }
+
+  getElement() {
+    let result = this.targetContainer;
+
+    if (result && this.props.targetSelector) {
+      result = result.querySelector(this.props.targetSelector);
+    }
+
+    return result;
+  }
+
   getMaxScrollPosition = () => {
-    const element = this._getElement();
+    const element = this.getElement();
     return element.scrollWidth - element.clientWidth;
   };
 
   disableScrollButtonsIfNecessary = () => {
-    const element = this._getElement();
+    const element = this.getElement();
     this.setState({
       disableLeftButton: element.scrollLeft <= 0,
       disableRightButton: element.scrollLeft >= this.getMaxScrollPosition(),
@@ -50,7 +60,7 @@ export default class HorizontalScroll extends React.Component {
   };
 
   scrollLeft = () => {
-    this._getElement().scrollBy({
+    this.getElement().scrollBy({
       top: 0,
       left: -100,
       behavior: 'smooth',
@@ -58,7 +68,7 @@ export default class HorizontalScroll extends React.Component {
   };
 
   scrollRight = () => {
-    this._getElement().scrollBy({
+    this.getElement().scrollBy({
       top: 0,
       left: 100,
       behavior: 'smooth',
@@ -71,7 +81,7 @@ export default class HorizontalScroll extends React.Component {
         <div
           className="horizontal-scroll__content"
           ref={x => {
-            this._targetContainer = x;
+            this.targetContainer = x;
           }}
         >
           {this.props.children}
@@ -86,16 +96,6 @@ export default class HorizontalScroll extends React.Component {
         />
       </div>
     );
-  }
-
-  _getElement() {
-    let result = this._targetContainer;
-
-    if (result && this.props.targetSelector) {
-      result = result.querySelector(this.props.targetSelector);
-    }
-
-    return result;
   }
 }
 

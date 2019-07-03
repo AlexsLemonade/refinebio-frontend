@@ -1,4 +1,5 @@
 import pickBy from 'lodash/pickBy';
+import uniqBy from 'lodash/uniqBy';
 import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
 import reportError from '../reportError';
@@ -8,8 +9,8 @@ export const MOST_SAMPLES = 'MostSamples';
 
 export const Ordering = {
   BestMatch: '_score',
-  MostSamples: '-num_processed_samples',
-  LeastSamples: 'num_processed_samples',
+  MostSamples: '-num_downloadable_samples',
+  LeastSamples: 'num_downloadable_samples',
   Newest: '-source_first_published',
   Oldest: 'source_first_published',
 };
@@ -43,9 +44,16 @@ const navigateToResults = ({
   });
 };
 
-function isAccessionCode(accessionCode) {
-  if (!accessionCode) return false;
-  return /^(GSE|ERP|SRP)(\d{3,6}$)|(E-[A-Z]{4}-\d{2,4}$)/i.test(accessionCode);
+const ACCESSION_CODE_REGEX = /^(GSE|ERP|SRP)(\d{3,6}$)|(E-[A-Z]{4}-\d{2,4}$)/i;
+
+/**
+ * Returns an array with all the accession codes in the search query (if any)
+ * @param {string} query search query
+ */
+export function getAccessionCodes(query) {
+  if (!query) return [];
+  const accessionCodes = query.split(/,| /i);
+  return accessionCodes.filter(code => ACCESSION_CODE_REGEX.test(code));
 }
 
 export function fetchResults({
@@ -68,25 +76,30 @@ export function fetchResults({
       let { results } = apiResults;
       const { count: totalResults, facets } = apiResults;
 
+      const accessionCodes = getAccessionCodes(query);
+
       // do accession code search
-      if (isAccessionCode(query) && page === 1) {
-        const { results: topResults } = await Ajax.get('/search/', {
-          search: `accession_code:${query}`,
-        });
-
-        // mark top results
-        topResults.forEach(experiment => {
-          experiment._isTopResult = true;
-        });
-
-        // filter out top results
-        results = results.filter(x =>
-          topResults.some(
-            topExperiment => x.accession_code !== topExperiment.accession_code
+      if (accessionCodes.length > 0 && page === 1) {
+        // each accession code requires an specific query to fetch the exact experiment
+        const promises = await Promise.all(
+          accessionCodes.map(code =>
+            Ajax.get('/search/', {
+              search: `accession_code:${code}`,
+            })
           )
         );
+        const topResults = []
+          .concat(...promises.map(data => data.results))
+          .map(result => ({
+            ...result,
+            // this is a hack to mark the results that should be displayed in the top region
+            // these are usually from accession code search
+            _isTopResult: true,
+          }));
 
-        results = [...topResults, ...results];
+        // since we made multiple queries to the server, make sure that there are
+        // no repeated experiments.
+        results = uniqBy([...topResults, ...results], x => x.accession_code);
       }
 
       let filters = transformFacets(facets);

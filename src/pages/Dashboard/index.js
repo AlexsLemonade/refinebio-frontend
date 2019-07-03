@@ -17,12 +17,11 @@ function Dashboard(props) {
     rangeParam = 'day';
   }
   const [range, setRange] = React.useState(rangeParam);
-  const fetchCallback = React.useCallback(async () => {
+  const { data, refresh, hasError } = useLoader(async () => {
     const stats = await fetchDashboardData(range);
     setChartUpdating(false);
     return getDashboardChartConfig(stats, range);
   }, [range]);
-  const { data, refresh, hasError } = useLoader(fetchCallback, [range]);
 
   // refresh data every 10 mins
   useInterval(() => {

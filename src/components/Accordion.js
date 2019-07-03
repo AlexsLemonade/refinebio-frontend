@@ -10,8 +10,32 @@ export class Accordion extends React.Component {
     super(props);
 
     this.state = {
-      activeElements: new Array(this._totalChildren()).fill(false),
+      activeElements: new Array(this.getChildrenCount()).fill(false),
     };
+  }
+
+  getChildrenCount() {
+    return React.Children.count(this.props.children);
+  }
+
+  toggleAll() {
+    if (!this.state.activeElements.includes(false)) {
+      this.setState({
+        activeElements: new Array(this.getChildrenCount()).fill(false),
+      });
+    } else {
+      this.setState({
+        activeElements: new Array(this.getChildrenCount()).fill(true),
+      });
+    }
+  }
+
+  toggleElement(index) {
+    this.setState(state => ({
+      activeElements: state.activeElements.map((x, i) =>
+        i === index ? !x : x
+      ),
+    }));
   }
 
   render() {
@@ -21,7 +45,7 @@ export class Accordion extends React.Component {
         child &&
         React.cloneElement(child, {
           isExpanded: this.state.activeElements[index],
-          onToggle: () => this._toggleElement(index),
+          onToggle: () => this.toggleElement(index),
         })
     );
     return (
@@ -29,7 +53,7 @@ export class Accordion extends React.Component {
         {!this.props.hideExpandAll && children.length > 2 && (
           <Checkbox
             className="accordion__expand-all"
-            onClick={() => this._toggleAll()}
+            onClick={() => this.toggleAll()}
             checked={!this.state.activeElements.includes(false)}
             name="expand-all"
             readOnly
@@ -41,30 +65,6 @@ export class Accordion extends React.Component {
         {children}
       </div>
     );
-  }
-
-  _toggleAll() {
-    if (!this.state.activeElements.includes(false)) {
-      this.setState({
-        activeElements: new Array(this._totalChildren()).fill(false),
-      });
-    } else {
-      this.setState({
-        activeElements: new Array(this._totalChildren()).fill(true),
-      });
-    }
-  }
-
-  _toggleElement(index) {
-    this.setState(state => ({
-      activeElements: state.activeElements.map((x, i) =>
-        i === index ? !x : x
-      ),
-    }));
-  }
-
-  _totalChildren() {
-    return React.Children.count(this.props.children);
   }
 }
 

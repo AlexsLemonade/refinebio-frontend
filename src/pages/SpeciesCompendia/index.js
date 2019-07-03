@@ -1,6 +1,5 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import Button from '../../components/Button';
 import './SpeciesCompendia.scss';
 import EmailSection from '../Main/EmailSection';
 import PointsBackground from './PointsBackground';
@@ -84,7 +83,14 @@ export default function SpeciesCompendia() {
               quantile normalization.
             </div>
 
-            <Button text="Learn More" buttonStyle="secondary" />
+            <a
+              href="http://docs.refine.bio/en/latest/main_text.html#species-compendia"
+              className="button button--secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn More
+            </a>
           </div>
         </div>
       </div>

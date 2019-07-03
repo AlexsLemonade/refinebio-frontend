@@ -85,10 +85,10 @@ describe('fetching a dataset', () => {
   it('pass ordering parameter', async () => {
     const store = mockStore();
     await store.dispatch(
-      fetchResults({ query: 'cancer', ordering: 'num_processed_samples' })
+      fetchResults({ query: 'cancer', ordering: 'num_downloadable_samples' })
     );
     expect(global.fetch.mock.calls[0]).toEqual([
-      '/search/?search=cancer&limit=10&offset=0&ordering=num_processed_samples',
+      '/search/?search=cancer&limit=10&offset=0&ordering=num_downloadable_samples',
     ]);
   });
 });
