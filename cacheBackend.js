@@ -65,15 +65,16 @@ async function generateSitemap() {
   } = await axios.get(`${ApiHost}/search/?limit=${0}`);
 
   const pageOffsets = _.range(0, count, limit);
-
-  (await Promise.all(
+  const experimentPages = await Promise.all(
     pageOffsets.map(offset =>
       axios
         .get(`${ApiHost}/search/?limit=${limit}&offset=${offset}`)
         .then(request => request.data.results)
         .catch(ignore => [])
     )
-  )).map(results => {
+  );
+
+  for (const results of experimentPages) {
     for (const experiment of results) {
       sitemap.add({
         url: `/experiments/${experiment.accession_code}/${slugify(
@@ -82,8 +83,7 @@ async function generateSitemap() {
         priority: 0.8,
       });
     }
-    return null;
-  });
+  }
 
   console.log(`Sitemap generated. ${count} experiments found.`);
   fs.writeFileSync('./public/sitemap.xml', sitemap.toString());
