@@ -6,8 +6,9 @@
 
 const axios = require('axios');
 const fs = require('fs');
-const slugify = require('./src/common/slugify');
 const sm = require('sitemap');
+const _ = require('lodash');
+const slugify = require('./src/common/slugify');
 
 const version = process.env.VERSION || '0.0.0';
 const ApiHost = process.env.REACT_APP_API_HOST || 'https://api.refine.bio';
@@ -17,38 +18,27 @@ cacheServerData();
 generateSitemap();
 
 async function cacheServerData() {
-  console.log('Fetching data to be cached from endpoint: ' + ApiHost);
-  Promise.all([
+  console.log(`Fetching data to be cached from endpoint: ${ApiHost}`);
+  const [
+    stats,
+    { organism, apiVersion },
+    qnTargets,
+    platforms,
+  ] = await Promise.all([
     getStats(),
-    // fetch samples per organisms, also used on the landing page
-    axios
-      .get(ApiHost + '/es/?limit=1&offset=0')
-      .then(function(response) {
-        return {
-          organism: response.data.filters.organism,
-          apiVersion: response.headers['x-source-revision']
-        };
-      })
-      .catch(error => false),
-    axios
-      .get(ApiHost + '/qn_targets_available')
-      .then(response => response.data)
-      .catch(_ => []),
-    getPlatforms()
-  ]).then(function([stats, { organism, apiVersion }, qnTargets, platforms]) {
-    const cache = {
-      version: version, // remove `v` at the start of each version
-      apiVersion: apiVersion,
-      stats,
-      organism,
-      qnTargets: qnTargets.reduce(
-        (accum, organism) => ({ ...accum, [organism.name]: true }),
-        {}
-      ),
-      platforms
-    };
-    fs.writeFileSync(`src/apiData.json`, JSON.stringify(cache));
-  });
+    getSamplesPerOrganism(),
+    getQnTargets(),
+    getPlatforms(),
+  ]);
+  const cache = {
+    version, // remove `v` at the start of each version
+    apiVersion,
+    stats,
+    organism,
+    qnTargets,
+    platforms,
+  };
+  fs.writeFileSync(`src/apiData.json`, JSON.stringify(cache));
 }
 
 /**
@@ -58,43 +48,44 @@ async function generateSitemap() {
   console.log('Building sitemap...');
   // number of experiments retrieved on each request
   const limit = 500;
-  let sitemap = sm.createSitemap({
+  const sitemap = sm.createSitemap({
     hostname: 'https://www.refine.bio',
     cacheTime: 600000,
     urls: [
       { url: '/about', priority: 0.5 },
       { url: '/license', priority: 0.5 },
       { url: '/privacy', priority: 0.5 },
-      { url: '/terms', priority: 0.5 }
-    ]
+      { url: '/terms', priority: 0.5 },
+    ],
   });
 
-  for (let page = 0; ; page++) {
-    const offset = page * limit;
-    try {
-      const {
-        data: { count, results }
-      } = await axios.get(ApiHost + `/es/?limit=${limit}&offset=${offset}`);
+  // get the total number of experiments
+  const {
+    data: { count },
+  } = await axios.get(`${ApiHost}/search/?limit=${0}`);
 
-      for (let experiment of results) {
-        sitemap.add({
-          url: `/experiments/${experiment.accession_code}/${slugify(
-            experiment.title
-          )}`,
-          priority: 0.8
-        });
-      }
+  const pageOffsets = _.range(0, count, limit);
+  const experimentPages = await Promise.all(
+    pageOffsets.map(offset =>
+      axios
+        .get(`${ApiHost}/search/?limit=${limit}&offset=${offset}`)
+        .then(request => request.data.results)
+        .catch(ignore => [])
+    )
+  );
 
-      // break if we're on the last page
-      if ((page + 1) * limit > count) {
-        console.log(`Sitemap generated. ${count} experiments found.`);
-        break;
-      }
-    } catch (e) {
-      console.log(e);
-      return;
+  for (const results of experimentPages) {
+    for (const experiment of results) {
+      sitemap.add({
+        url: `/experiments/${experiment.accession_code}/${slugify(
+          experiment.title
+        )}`,
+        priority: 0.8,
+      });
     }
   }
+
+  console.log(`Sitemap generated. ${count} experiments found.`);
   fs.writeFileSync('./public/sitemap.xml', sitemap.toString());
 }
 
@@ -103,13 +94,13 @@ async function generateSitemap() {
  */
 async function getStats() {
   try {
-    let { data: stats } = await axios.get(ApiHost + '/stats/?range=year');
+    const { data: stats } = await axios.get(`${ApiHost}/stats/?range=year`);
     return stats;
   } catch (e) {
     try {
       console.log('Error fetching stats with ranges, trying again...');
       // try getting general stats if the range fails
-      let { data: stats } = await axios.get(ApiHost + '/stats/');
+      const { data: stats } = await axios.get(`${ApiHost}/stats/`);
       return stats;
     } catch (e1) {
       // return nothing if that also fails
@@ -126,11 +117,11 @@ async function getStats() {
  */
 async function getPlatforms() {
   try {
-    const { data: platforms } = await axios.get(ApiHost + '/platforms');
+    const { data: platforms } = await axios.get(`${ApiHost}/platforms`);
     return platforms.reduce(
       (accum, { platform_name, platform_accession_code }) => ({
         ...accum,
-        [platform_accession_code]: platform_name
+        [platform_accession_code]: platform_name,
       }),
       {}
     );
@@ -138,4 +129,25 @@ async function getPlatforms() {
     console.log('Error fetching platforms');
     return {};
   }
+}
+
+async function getQnTargets() {
+  const { data: qnTargets } = await axios.get(`${ApiHost}/qn_targets`);
+  return qnTargets.reduce(
+    (accum, { name: organismName }) => ({
+      ...accum,
+      [organismName]: true,
+    }),
+    {}
+  );
+}
+
+function getSamplesPerOrganism() {
+  return axios
+    .get(`${ApiHost}/search/?limit=1&offset=0`)
+    .then(response => ({
+      organism: response.data.filters.organism,
+      apiVersion: response.headers['x-source-revision'],
+    }))
+    .catch(error => false);
 }

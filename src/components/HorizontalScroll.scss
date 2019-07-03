@@ -70,11 +70,12 @@
       animation-fill-mode: both;
       animation-name: eva-shake;
       animation-duration: 1s;
+      animation-delay: 1s;
     }
   }
 
   &__disabled {
-    display: none;
+    visibility: hidden;
   }
 }
 

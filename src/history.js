@@ -1,4 +1,4 @@
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 import ReactGA from 'react-ga';
 
 // Thanks to https://github.com/fabe/gatsby-universal/issues/4
@@ -21,7 +21,7 @@ const getUserConfirmation = (location, callback) => {
 
 let history;
 if (typeof document !== 'undefined') {
-  history = createHistory({ getUserConfirmation });
+  history = createBrowserHistory({ getUserConfirmation });
 
   // `block` must return a string to conform.
   // We send both the pathname and action to `getUserConfirmation`.
