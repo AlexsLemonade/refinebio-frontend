@@ -86,7 +86,7 @@ export default DownloadCompendia;
 
 async function fetchCompendiaData() {
   try {
-    const data = await Ajax.get('/compendia');
+    const data = await Ajax.get('/compendia/');
     return uniq(data.map(x => x.organism_name));
   } catch (e) {
     return [];

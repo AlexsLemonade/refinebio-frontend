@@ -19,7 +19,7 @@ export async function getAllDetailedSamples({ orderBy, filterBy, ...params }) {
   const { count, results } = await Ajax.get('/samples/', {
     ...params,
     // send the accession codes as a string, otherwise they will be converted to an array parameter
-    order_by: orderBy,
+    ordering: orderBy,
     filter_by: filterBy || undefined, // don't send the parameter  if `filterBy === ''`
   });
   return { count, data: results };
