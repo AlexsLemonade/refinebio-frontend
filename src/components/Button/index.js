@@ -2,23 +2,53 @@ import React from 'react';
 import './Button.scss';
 import classnames from 'classnames';
 
+const useWaitForAsync = func => {
+  const activeRef = React.useRef(true);
+  const [waiting, setWaiting] = React.useState(false);
+
+  React.useEffect(() => {
+    activeRef.current = true;
+    return () => {
+      activeRef.current = false;
+    };
+  }, [waiting]);
+
+  return [
+    waiting,
+    async (...args) => {
+      if (typeof func === 'function') {
+        setWaiting(true);
+        await func(...args);
+        if (activeRef.current) setWaiting(false);
+      }
+    },
+  ];
+};
+
 const Button = ({
-  text,
-  buttonStyle,
-  isDisabled = false,
-  className,
-  children,
   type = 'button',
+  onClick,
+  className = false,
+  buttonStyle = false,
+  isDisabled = false,
+  text,
+  children,
   ...props
 }) => {
-  const buttonStyleClass = buttonStyle ? `button--${buttonStyle}` : '';
+  const [loading, buttonClick] = useWaitForAsync(onClick);
   /* eslint-disable react/button-has-type */
   return (
     <button
       {...props}
       type={type}
-      className={classnames('button', buttonStyleClass, className)}
+      onClick={buttonClick}
       disabled={isDisabled}
+      className={classnames({
+        button: true,
+        [className]: className,
+        [`button--${buttonStyle}`]: buttonStyle,
+        'button--loading': loading,
+      })}
     >
       {text || children}
     </button>
