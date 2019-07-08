@@ -191,7 +191,7 @@ export const triggerSearch = searchTerm => (dispatch, getState) => {
  * @param {string} filterValue Value of the filter
  * @param {boolean} trackOrder Allow disabling interactive filtering (used on mobile devices)
  */
-export function toggledFilter(filterType, filterValue, trackOrder = true) {
+export function toggleFilter(filterType, filterValue, trackOrder = true) {
   return (dispatch, getState) => {
     const { filters, filterOrder } = getUrlParams(getState());
     const newFilters = toggleFilterHelper(filters, filterType, filterValue);

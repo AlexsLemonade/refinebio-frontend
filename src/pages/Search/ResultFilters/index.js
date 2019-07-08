@@ -9,7 +9,7 @@ import {
 } from '../../../common/helpers';
 import Button from '../../../components/Button';
 import {
-  toggledFilter,
+  toggleFilter,
   clearFilters,
   updateFilters,
   toggleFilterHelper,
@@ -25,7 +25,7 @@ import cache from '../../../apiData.json';
 let FilterList = ({
   appliedFilters,
   filters,
-  toggledFilter,
+  toggleFilter,
   clearFilters,
   style,
 }) => {
@@ -49,7 +49,7 @@ let FilterList = ({
               key={category.name}
               categoryFilters={filters[category.name]}
               category={category}
-              toggledFilter={toggledFilter}
+              toggleFilter={toggleFilter}
               appliedFilters={appliedFilters}
             />
           )
@@ -87,7 +87,7 @@ let FiltersDesktop = props => {
 };
 FiltersDesktop = connect(
   null,
-  { toggledFilter, clearFilters }
+  { toggleFilter, clearFilters }
 )(FiltersDesktop);
 
 const Filters = props => (
@@ -105,6 +105,11 @@ const filterCategories = [
   {
     name: 'publication',
     queryField: 'has_publication',
+    format: formatSentenceCase,
+  },
+  {
+    name: 'num_downloadable_samples',
+    queryField: 'num_downloadable_samples__gt',
     format: formatSentenceCase,
   },
   {
@@ -131,6 +136,12 @@ class FiltersMobile extends React.Component {
     };
   }
 
+  _toggleFilter(type, value) {
+    this.setState(({ filters }) => ({
+      filters: toggleFilterHelper(filters, type, value),
+    }));
+  }
+
   render() {
     const { appliedFilters } = this.props;
     return (
@@ -150,7 +161,7 @@ class FiltersMobile extends React.Component {
                   key={`${filterKey}${filterValue}`}
                   value={filterValue}
                   onClick={() =>
-                    this.props.toggledFilter(filterKey, filterValue, false)
+                    this.props.toggleFilter(filterKey, filterValue, false)
                   }
                 />
               ))
@@ -170,7 +181,7 @@ class FiltersMobile extends React.Component {
 
             <FilterList
               appliedFilters={this.state.filters}
-              toggledFilter={(type, value) => this._toggleFilter(type, value)}
+              toggleFilter={(type, value) => this._toggleFilter(type, value)}
               clearFilters={() => {
                 // if no changes were applied, there won't be any search and we want to reset the state filters
                 this.setState({ filters: appliedFilters });
@@ -194,20 +205,10 @@ class FiltersMobile extends React.Component {
       </SideMenu>
     );
   }
-
-  _toggleFilter(type, value) {
-    this.setState(({ filters }) => ({
-      filters: toggleFilterHelper(filters, type, value),
-    }));
-  }
 }
 FiltersMobile = connect(
-  () => ({}),
-  {
-    toggledFilter,
-    updateFilters,
-    clearFilters,
-  }
+  null,
+  { toggleFilter, updateFilters, clearFilters }
 )(FiltersMobile);
 
 function FilterLabel({ value, onClick }) {
