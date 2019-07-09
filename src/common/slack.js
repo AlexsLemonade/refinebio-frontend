@@ -2,18 +2,18 @@
  * This file contains helper methods that post to the CCDL slack channel
  */
 
+const SLACK_HOOK_URL =
+  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JMOVQ1MlA2My9KeU5qNmhHamM3U09YZXNnMDFCU2k0VzE=';
+
 /**
  * Send data to slack, configured in CCDL channel
  * @param {object} params Slack webhooks params
  */
 export async function postToSlack(params) {
-  return fetch(
-    'https://hooks.slack.com/services/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',
-    {
-      method: 'POST',
-      body: JSON.stringify(params),
-    }
-  );
+  return fetch(atob(SLACK_HOOK_URL), {
+    method: 'POST',
+    body: JSON.stringify(params),
+  });
 }
 
 export async function submitSearchDataRequest(query, values) {
