@@ -186,10 +186,7 @@ class SearchResults extends Component {
                   <div className="results__add-samples">
                     <AddPageToDataSetButton results={results} />
                   </div>
-                  <ResultFilters
-                    results={results}
-                    appliedFilters={this.state.filters}
-                  />
+                  <ResultFilters appliedFilters={this.state.filters} />
                   <div className="results__list">
                     <Hightlight
                       match={[

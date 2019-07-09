@@ -17,9 +17,10 @@ class FilterCategory extends React.Component {
     const {
       categoryFilters,
       category,
-      toggleFilter,
+      onToggleFilter,
       appliedFilters,
     } = this.props;
+
     const filters = Object.keys(categoryFilters);
 
     return (
@@ -57,7 +58,7 @@ class FilterCategory extends React.Component {
                   name={filter}
                   className="result-filters__filter-check"
                   onChange={() =>
-                    toggleFilter(
+                    onToggleFilter(
                       category.queryField,
                       filter === 'has_publication' ? 'true' : filter
                     )
