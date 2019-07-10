@@ -16,11 +16,9 @@ const useWaitForAsync = func => {
   return [
     waiting,
     async (...args) => {
-      if (typeof func === 'function') {
-        setWaiting(true);
-        await func(...args);
-        if (activeRef.current) setWaiting(false);
-      }
+      setWaiting(true);
+      func && (await func(...args));
+      if (activeRef.current) setWaiting(false);
     },
   ];
 };
