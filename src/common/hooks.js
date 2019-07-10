@@ -100,12 +100,12 @@ export function useWaitForAsync(func) {
   const mountedRef = React.useRef(true);
   const [waiting, setWaiting] = React.useState(false);
 
-  React.useEffect(() => {
-    mountedRef.current = true;
-    return () => {
+  React.useEffect(
+    () => () => {
       mountedRef.current = false;
-    };
-  }, [waiting]);
+    },
+    []
+  );
 
   return [
     waiting,
