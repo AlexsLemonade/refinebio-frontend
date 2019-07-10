@@ -1,27 +1,7 @@
 import React from 'react';
 import './Button.scss';
 import classnames from 'classnames';
-
-const useWaitForAsync = func => {
-  const mountedRef = React.useRef(true);
-  const [waiting, setWaiting] = React.useState(false);
-
-  React.useEffect(() => {
-    mountedRef.current = true;
-    return () => {
-      mountedRef.current = false;
-    };
-  }, [waiting]);
-
-  return [
-    waiting,
-    async (...args) => {
-      setWaiting(true);
-      func && (await func(...args));
-      if (mountedRef.current) setWaiting(false);
-    },
-  ];
-};
+import { useWaitForAsync } from '../../common/hooks';
 
 const Button = ({
   type = 'button',
