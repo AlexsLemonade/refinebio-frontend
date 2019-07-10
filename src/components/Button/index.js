@@ -3,13 +3,13 @@ import './Button.scss';
 import classnames from 'classnames';
 
 const useWaitForAsync = func => {
-  const activeRef = React.useRef(true);
+  const mountedRef = React.useRef(true);
   const [waiting, setWaiting] = React.useState(false);
 
   React.useEffect(() => {
-    activeRef.current = true;
+    mountedRef.current = true;
     return () => {
-      activeRef.current = false;
+      mountedRef.current = false;
     };
   }, [waiting]);
 
@@ -18,7 +18,7 @@ const useWaitForAsync = func => {
     async (...args) => {
       setWaiting(true);
       func && (await func(...args));
-      if (activeRef.current) setWaiting(false);
+      if (mountedRef.current) setWaiting(false);
     },
   ];
 };
