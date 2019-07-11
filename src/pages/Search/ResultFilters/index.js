@@ -102,12 +102,11 @@ let FilterList = ({
       )}
 
       <SingleValueFilter
-        queryField="num_downloadable_samples__gt"
+        queryField="empty"
         filterLabel="Show results with 0 downloadable samples"
-        filterValue="0"
+        filterValue="true"
         filterActive={
-          appliedFilters['num_downloadable_samples__gt'] &&
-          appliedFilters['num_downloadable_samples__gt'].includes('0')
+          appliedFilters['empty'] && appliedFilters['empty'].includes('true')
         }
         onToggleFilter={onToggleFilter}
       />

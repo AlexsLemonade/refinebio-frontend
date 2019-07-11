@@ -10,7 +10,6 @@ import ResultFilters, { anyFilterApplied } from './ResultFilters';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
 import BackToTop from '../../components/BackToTop';
-import { getQueryParamObject } from '../../common/helpers';
 import Dropdown from '../../components/Dropdown';
 import { PAGE_SIZES } from '../../common/constants';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
@@ -27,6 +26,7 @@ import {
   clearFilters,
   updateResultsPerPage,
   getAccessionCodes,
+  parseUrl,
 } from '../../state/search/actions';
 import Spinner from '../../components/Spinner';
 import InfoBox from '../../components/InfoBox';
@@ -45,7 +45,7 @@ class SearchResults extends Component {
   constructor(props) {
     super(props);
 
-    const searchArgs = this.parseUrl();
+    const searchArgs = parseUrl(props.location.search);
     this.state = {
       query: searchArgs.query,
       filters: searchArgs.filters,
@@ -56,7 +56,7 @@ class SearchResults extends Component {
    * Reads the search query and other parameters from the url and submits a new request to update the results.
    */
   async updateResults() {
-    const searchArgs = this.parseUrl();
+    const searchArgs = parseUrl(this.props.location.search);
 
     this.setState({
       query: searchArgs.query,
@@ -75,7 +75,7 @@ class SearchResults extends Component {
   }
 
   resultsAreFetched() {
-    const searchArgs = this.parseUrl();
+    const searchArgs = parseUrl(this.props.location.search);
 
     return (
       this.props.results &&
@@ -86,36 +86,6 @@ class SearchResults extends Component {
       searchArgs.page === this.props.pagination.currentPage &&
       searchArgs.size === this.props.pagination.resultsPerPage
     );
-  }
-
-  parseUrl() {
-    /* eslint-disable prefer-const */
-    let {
-      q: query,
-      p: page = 1,
-      size = 10,
-      ordering = '',
-      filter_order = '',
-      ...filters
-    } = getQueryParamObject(this.props.location.search);
-    /* eslint-enable */
-
-    // for consistency, ensure all values in filters are arrays
-    // the method `getQueryParamObject` will return a single value for parameters that only
-    // appear once in the url
-    for (const key of Object.keys(filters)) {
-      if (!Array.isArray(filters[key])) {
-        filters[key] = [filters[key]];
-      }
-    }
-
-    // parse parameters from url
-    query = query ? decodeURIComponent(query) : undefined;
-    page = parseInt(page, 10);
-    size = parseInt(size, 10);
-    const filterOrder = filter_order ? filter_order.split(',') : [];
-
-    return { query, page, size, ordering, filters, filterOrder };
   }
 
   render() {

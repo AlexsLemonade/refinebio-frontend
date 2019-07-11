@@ -89,7 +89,7 @@ export function SingleValueFilter({
       <Checkbox
         name={queryField}
         className="result-filters__filter-check"
-        onChange={() => onToggleFilter(queryField, filterValue)}
+        onChange={() => onToggleFilter(queryField, filterValue, false)}
         checked={filterActive}
       >
         {filterLabel}

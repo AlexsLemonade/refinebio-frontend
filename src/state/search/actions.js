@@ -1,6 +1,10 @@
 import uniqBy from 'lodash/uniqBy';
 import { push } from '../routerActions';
-import { getQueryString, Ajax } from '../../common/helpers';
+import {
+  getQueryString,
+  Ajax,
+  getQueryParamObject,
+} from '../../common/helpers';
 import reportError from '../reportError';
 import { getUrlParams } from './reducer';
 
@@ -13,6 +17,36 @@ export const Ordering = {
   Newest: '-source_first_published',
   Oldest: 'source_first_published',
 };
+
+export function parseUrl(locationSearch) {
+  /* eslint-disable prefer-const */
+  let {
+    q: query,
+    p: page = 1,
+    size = 10,
+    ordering = Ordering.BestMatch,
+    filter_order: filterOrder = '',
+    ...filters
+  } = getQueryParamObject(locationSearch);
+  /* eslint-enable */
+
+  // for consistency, ensure all values in filters are arrays
+  // the method `getQueryParamObject` will return a single value for parameters that only
+  // appear once in the url
+  for (const key of Object.keys(filters)) {
+    if (!Array.isArray(filters[key])) {
+      filters[key] = [filters[key]];
+    }
+  }
+
+  // parse parameters from url
+  query = query ? decodeURIComponent(query) : undefined;
+  page = parseInt(page, 10);
+  size = parseInt(size, 10);
+  filterOrder = filterOrder ? filterOrder.split(',') : [];
+
+  return { query, page, size, ordering, filters, filterOrder };
+}
 
 // This action updates the current search url with new paramters, which in turn triggers a call
 // to `fethResults` from the view. Components wanting to modify the search results should call this
@@ -32,7 +66,8 @@ const navigateToResults = ({
     q: query,
     p: page > 1 ? page : undefined,
     size: size !== 10 ? size : undefined,
-    ordering: ordering !== '' ? ordering : undefined,
+    ordering:
+      ordering !== '' && ordering !== Ordering.BestMatch ? ordering : undefined,
     filter_order:
       filterOrder && filterOrder.length > 0 ? filterOrder.join(',') : undefined,
     ...filters,
@@ -71,6 +106,12 @@ export function fetchResults({
         offset: (page - 1) * size,
         ordering: ordering || Ordering.BestMatch,
         ...appliedFilters,
+        // ?empty=true only exists in the FE to signal that we should display experiments
+        // with no downloadable samples. When the parameter is not present we query the API
+        // with `num_downloadable_samples__gt: 0`
+        ...(!appliedFilters['empty']
+          ? { num_downloadable_samples__gt: 0 }
+          : { include_empty: undefined }),
       });
       let { results } = apiResults;
       const { count: totalResults, facets } = apiResults;
@@ -101,7 +142,11 @@ export function fetchResults({
         results = uniqBy([...topResults, ...results], x => x.accession_code);
       }
 
-      let filters = facets;
+      let filters = {
+        ...facets,
+        organism: facets.organism_names,
+        platform: facets.platform_accession_codes,
+      };
 
       if (filterOrder.length > 0) {
         // merge both filter objects to enable interactive filtering
