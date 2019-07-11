@@ -1,4 +1,3 @@
-import pickBy from 'lodash/pickBy';
 import uniqBy from 'lodash/uniqBy';
 import { push } from '../routerActions';
 import { getQueryString, Ajax } from '../../common/helpers';
@@ -102,7 +101,7 @@ export function fetchResults({
         results = uniqBy([...topResults, ...results], x => x.accession_code);
       }
 
-      let filters = transformFacets(facets);
+      let filters = facets;
 
       if (filterOrder.length > 0) {
         // merge both filter objects to enable interactive filtering
@@ -119,7 +118,7 @@ export function fetchResults({
               [lastFilterName]: undefined,
             },
           });
-          previousFilters = transformFacets(previousFacets);
+          previousFilters = previousFacets;
         }
 
         filters = {
@@ -153,21 +152,6 @@ export function fetchResults({
       // rethrow the error
       throw error;
     }
-  };
-}
-
-/**
- * Transform filters object that is sent from the API
- */
-function transformFacets(facets) {
-  return {
-    organism: facets['organism_names'],
-    // We want to hide `Unknown` from the technologies if it has 0 processed samples
-    technology: pickBy(facets['technology'], totalSamples => totalSamples > 0),
-    publication: facets['has_publication']
-      ? { has_publication: facets['has_publication']['true'] || 0 }
-      : null,
-    platform: facets['platform_accession_codes'],
   };
 }
 

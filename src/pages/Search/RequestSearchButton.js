@@ -11,7 +11,7 @@ let RequestSearchButton = ({ query, push }) => {
   const [requestOpen, setRequestOpen] = React.useState(false);
 
   // consider undefined/null as a blank string
-  query = query || '';
+  const queryParam = query || '';
 
   return (
     <>
@@ -27,7 +27,7 @@ let RequestSearchButton = ({ query, push }) => {
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
               // 1. report to slack
-              await submitSearchDataRequest(query, values);
+              await submitSearchDataRequest(queryParam, values);
 
               // 2. redirect to landing page with notification
               push({
@@ -46,7 +46,7 @@ let RequestSearchButton = ({ query, push }) => {
                 <div className="search-request__section">
                   <div className="search-request__label">
                     List experiment accessions (separated by commas) you expect
-                    for search term ‘<b>{query}</b>’{' '}
+                    for search term ‘<b>{queryParam}</b>’{' '}
                     <span className="search-request__required">(required)</span>
                   </div>
                   <div className="search-request__note">

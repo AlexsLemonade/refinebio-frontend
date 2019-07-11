@@ -19,7 +19,7 @@ import SideMenu from '../../../components/SideMenu';
 
 import FilterIcon from '../../../common/icons/filter-icon.svg';
 import { useDom } from '../../../common/hooks';
-import FilterCategory from './FilterCategory';
+import { FilterCategory, SingleValueFilter } from './FilterCategory';
 import cache from '../../../apiData.json';
 
 export default function Filters({ appliedFilters }) {
@@ -52,24 +52,76 @@ let FilterList = ({
         )}
       </div>
 
-      {filterCategories.map(
-        category =>
-          !isEmpty(filters[category.name]) && (
-            <FilterCategory
-              key={category.name}
-              categoryFilters={filters[category.name]}
-              category={category}
-              onToggleFilter={onToggleFilter}
-              appliedFilters={appliedFilters}
-            />
-          )
+      {!isEmpty(filters['organism']) && (
+        <FilterCategory
+          title="Organism"
+          queryField="organism"
+          filterValues={filters['organism']}
+          activeValues={appliedFilters['organism']}
+          formatValue={formatSentenceCase}
+          onToggleFilter={onToggleFilter}
+        />
       )}
+
+      {!isEmpty(filters['technology']) && (
+        <FilterCategory
+          title="Technology"
+          queryField="technology"
+          filterValues={filters['technology']}
+          activeValues={appliedFilters['technology']}
+          formatValue={formatSentenceCase}
+          onToggleFilter={onToggleFilter}
+        />
+      )}
+
+      {!isEmpty(filters['platform']) && (
+        <FilterCategory
+          title="Platform"
+          queryField="platform"
+          filterValues={filters['platform']}
+          activeValues={appliedFilters['platform']}
+          formatValue={accessionCode =>
+            formatPlatformName(cache.platforms[accessionCode] || accessionCode)
+          }
+          onToggleFilter={onToggleFilter}
+        />
+      )}
+
+      {filters['has_publication'] && (
+        <SingleValueFilter
+          queryField="has_publication"
+          filterLabel="Includes Publication"
+          filterValue="true"
+          filterActive={
+            appliedFilters['has_publication'] &&
+            appliedFilters['has_publication'].includes('true')
+          }
+          count={filters['has_publication']['true']}
+          onToggleFilter={onToggleFilter}
+        />
+      )}
+
+      <SingleValueFilter
+        queryField="num_downloadable_samples__gt"
+        filterLabel="Show results with 0 downloadable samples"
+        filterValue="0"
+        filterActive={
+          appliedFilters['num_downloadable_samples__gt'] &&
+          appliedFilters['num_downloadable_samples__gt'].includes('0')
+        }
+        onToggleFilter={onToggleFilter}
+      />
     </div>
   );
 };
 FilterList = connect(({ search: { filters } }) => ({ filters }))(FilterList);
 
-let FiltersDesktop = ({ appliedFilters, results }) => {
+let FiltersDesktop = ({
+  appliedFilters,
+  results,
+  onToggleFilter,
+  onClearFilters,
+}) => {
   const ref = React.useRef();
   const size = useDom(ref, el => el.getBoundingClientRect());
   // If the user scrolls down the filters should be fixed on the screen
@@ -91,7 +143,12 @@ let FiltersDesktop = ({ appliedFilters, results }) => {
 
   return (
     <div className="results__filters" ref={ref}>
-      <FilterList appliedFilters={appliedFilters} style={style} />
+      <FilterList
+        appliedFilters={appliedFilters}
+        style={style}
+        onToggleFilter={onToggleFilter}
+        onClearFilters={onClearFilters}
+      />
     </div>
   );
 };
@@ -99,27 +156,6 @@ FiltersDesktop = connect(
   ({ search: { results } }) => ({ results }),
   { onToggleFilter: toggleFilter, onClearFilters: clearFilters }
 )(FiltersDesktop);
-
-const filterCategories = [
-  { name: 'organism', queryField: 'organism', format: formatSentenceCase },
-  { name: 'technology', queryField: 'technology', format: formatSentenceCase },
-  {
-    name: 'publication',
-    queryField: 'has_publication',
-    format: formatSentenceCase,
-  },
-  {
-    name: 'num_downloadable_samples',
-    queryField: 'num_downloadable_samples__gt',
-    format: formatSentenceCase,
-  },
-  {
-    name: 'platform',
-    queryField: 'platform',
-    format: accessionCode =>
-      formatPlatformName(cache.platforms[accessionCode] || accessionCode),
-  },
-];
 
 /**
  * Mobile version of the filters. In this case we want to show the filters in a
@@ -144,15 +180,19 @@ function FiltersMobile({
             </div>
           </Button>
 
-          {Object.keys(appliedFilters).map(filterKey =>
-            appliedFilters[filterKey].map(filterValue => (
-              <FilterLabel
-                key={`${filterKey}${filterValue}`}
-                value={filterValue}
-                onClick={() => onToggleFilter(filterKey, filterValue, false)}
-              />
-            ))
-          )}
+          {Object.keys(appliedFilters)
+            .filter(filter =>
+              ['organism', 'platform', 'technology'].includes(filter)
+            )
+            .map(filterKey =>
+              appliedFilters[filterKey].map(filterValue => (
+                <FilterLabel
+                  key={`${filterKey}${filterValue}`}
+                  value={filterValue}
+                  onClick={() => onToggleFilter(filterKey, filterValue, false)}
+                />
+              ))
+            )}
         </div>
       )}
     >
