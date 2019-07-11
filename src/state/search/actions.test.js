@@ -78,7 +78,7 @@ describe('fetching a dataset', () => {
     const store = mockStore();
     await store.dispatch(fetchResults({ query: 'cancer', ordering: '' }));
     expect(global.fetch.mock.calls[0]).toEqual([
-      '/search/?search=cancer&limit=10&offset=0&ordering=_score',
+      '/search/?search=cancer&limit=10&offset=0&ordering=_score&num_downloadable_samples__gt=0',
     ]);
   });
 
@@ -88,7 +88,7 @@ describe('fetching a dataset', () => {
       fetchResults({ query: 'cancer', ordering: 'num_downloadable_samples' })
     );
     expect(global.fetch.mock.calls[0]).toEqual([
-      '/search/?search=cancer&limit=10&offset=0&ordering=num_downloadable_samples',
+      '/search/?search=cancer&limit=10&offset=0&ordering=num_downloadable_samples&num_downloadable_samples__gt=0',
     ]);
   });
 });

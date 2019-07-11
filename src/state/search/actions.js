@@ -109,7 +109,7 @@ export function fetchResults({
         // ?empty=true only exists in the FE to signal that we should display experiments
         // with no downloadable samples. When the parameter is not present we query the API
         // with `num_downloadable_samples__gt: 0`
-        ...(!appliedFilters['empty']
+        ...(!appliedFilters || !appliedFilters['empty']
           ? { num_downloadable_samples__gt: 0 }
           : { include_empty: undefined }),
       });
