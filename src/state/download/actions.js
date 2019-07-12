@@ -26,7 +26,7 @@ export const updateDownloadDataSet = data => ({
   type: 'DOWNLOAD_DATASET_UPDATE',
   data,
   persist: {
-    dataSetId: data.dataSetId || data.id,
+    dataSetId: data.dataSetId,
   },
 });
 
@@ -171,6 +171,7 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
     dispatch(
       updateDownloadDataSet({
         ...data,
+        dataSetId: data.id,
         dataSet: data.data,
       })
     );
