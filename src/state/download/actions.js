@@ -26,7 +26,7 @@ export const updateDownloadDataSet = data => ({
   type: 'DOWNLOAD_DATASET_UPDATE',
   data,
   persist: {
-    dataSetId: data.dataSetId,
+    dataSetId: data.dataSetId || data.id,
   },
 });
 

@@ -33,7 +33,8 @@ export default function AppRunningSpeed({ data }) {
     <div
       className={classnames('running-status', {
         'running-status--not-running': speed === RunningStatus.NotRunning,
-        'running-status--running': speed === RunningStatus.Running,
+        'running-status--running':
+          speed === RunningStatus.Running || RunningStatus.RunningSlow,
         'running-status--running-fast': speed === RunningStatus.RunningFast,
       })}
     >

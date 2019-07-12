@@ -126,7 +126,87 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
     font-size: 16px;
     padding: 8px 32px;
   }
+
+  &--loading {
+    position: relative;
+    color: transparent;
+    &:hover,
+    &:active,
+    &:focus {
+      color: transparent;
+    }
+
+    &:before {
+      content: '';
+      visibility: visible;
+      display: inline-block;
+      vertical-align: baseline;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: 0;
+      width: 10px;
+      height: 10px;
+      background-color: transparent;
+      border-top: 1px solid transparent;
+      border-right: 1px solid transparent;
+      border-left: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      border-radius: 50%;
+
+      animation: border-color-change, loading-spin-center;
+      animation-duration: 1.2s;
+      animation-iteration-count: infinite;
+
+      + * {
+        visibility: hidden;
+      }
+    }
+
+    &.button--plain,
+    &.button--link {
+      &:before {
+        top: auto;
+        right: 0;
+        animation-name: border-color-change, loading-spin-inline;
+      }
+    }
+  }
 }
 
 .button__icon {
+}
+
+@keyframes border-color-change {
+  from,
+  to {
+    border-top-color: white;
+    border-right-color: $azure;
+    border-bottom-color: white;
+    border-left-color: $azure;
+  }
+  50% {
+    border-top-color: $azure;
+    border-right-color: white;
+    border-bottom-color: $azure;
+    border-left-color: white;
+  }
+}
+
+@keyframes loading-spin-center {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes loading-spin-inline {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
