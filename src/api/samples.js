@@ -5,7 +5,7 @@ import { Ajax } from '../common/helpers';
  * @param {number} sampleId Id of the Sample
  */
 export async function getDetailedSample(sampleId) {
-  return Ajax.get(`/samples/${sampleId}/`);
+  return Ajax.get(`/v1/samples/${sampleId}/`);
 }
 
 /**
@@ -16,7 +16,7 @@ export async function getDetailedSample(sampleId) {
  * @param {number} limit
  */
 export async function getAllDetailedSamples({ orderBy, filterBy, ...params }) {
-  const { count, results } = await Ajax.get('/samples/', {
+  const { count, results } = await Ajax.get('/v1/samples/', {
     ...params,
     // send the accession codes as a string, otherwise they will be converted to an array parameter
     ordering: orderBy,
@@ -27,7 +27,7 @@ export async function getAllDetailedSamples({ orderBy, filterBy, ...params }) {
 
 export async function getGenomeBuild(organism) {
   try {
-    const { assembly_name } = await Ajax.get('/transcriptome_indices/', {
+    const { assembly_name } = await Ajax.get('/v1/transcriptome_indices/', {
       organism,
       length: 'long',
     });
