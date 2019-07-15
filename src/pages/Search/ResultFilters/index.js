@@ -100,16 +100,6 @@ let FilterList = ({
           onToggleFilter={onToggleFilter}
         />
       )}
-
-      <SingleValueFilter
-        queryField="empty"
-        filterLabel="Show results with 0 downloadable samples"
-        filterValue="true"
-        filterActive={
-          appliedFilters['empty'] && appliedFilters['empty'].includes('true')
-        }
-        onToggleFilter={onToggleFilter}
-      />
     </div>
   );
 };

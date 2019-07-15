@@ -23,6 +23,7 @@ import {
   fetchResults,
   updatePage,
   triggerSearch,
+  toggleFilter,
   clearFilters,
   updateResultsPerPage,
   getAccessionCodes,
@@ -35,6 +36,7 @@ import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
 import { Hightlight } from '../../components/HighlightedText';
 import RequestSearchButton from './RequestSearchButton';
+import { SingleValueFilter } from './ResultFilters/FilterCategory';
 
 class SearchResults extends Component {
   state = {
@@ -147,12 +149,7 @@ class SearchResults extends Component {
 
               return (
                 <div className="results__container">
-                  <div className="results__top-bar">
-                    <div className="results__number-results">
-                      <NumberOfResults />
-                      <OrderingDropdown />
-                    </div>
-                  </div>
+                  <ResultsTopBar />
                   <div className="results__add-samples">
                     <AddPageToDataSetButton results={results} />
                   </div>
@@ -389,3 +386,33 @@ OrderingDropdown = connect(
     updateOrdering,
   }
 )(OrderingDropdown);
+
+function ResultsTopBar({ appliedFilters, onToggleFilter }) {
+  return (
+    <div className="results__top-bar">
+      <div className="results__number-results">
+        <NumberOfResults />
+        <OrderingDropdown />
+
+        <SingleValueFilter
+          queryField="empty"
+          filterLabel="Hide non-downloadable experiments"
+          filterValue="true"
+          filterActive={
+            !appliedFilters['empty'] ||
+            !appliedFilters['empty'].includes('true')
+          }
+          onToggleFilter={onToggleFilter}
+        />
+      </div>
+    </div>
+  );
+}
+ResultsTopBar = connect(
+  ({ search: { appliedFilters } }) => ({
+    appliedFilters,
+  }),
+  {
+    onToggleFilter: toggleFilter,
+  }
+)(ResultsTopBar);
