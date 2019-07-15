@@ -90,3 +90,29 @@ export function useLocalStorage(key, initialValue) {
 
   return [storedValue, setValue];
 }
+
+/**
+ * Get a state variable that's true while passed in function is being executed asynchronously.
+ * Returns array containing waiting state and wrapped function that updates waiting state.
+ * @param {*} func Function that will be wrapped.
+ */
+export function useWaitForAsync(func) {
+  const mountedRef = React.useRef(true);
+  const [waiting, setWaiting] = React.useState(false);
+
+  React.useEffect(
+    () => () => {
+      mountedRef.current = false;
+    },
+    []
+  );
+
+  return [
+    waiting,
+    async (...args) => {
+      setWaiting(true);
+      func && (await func(...args));
+      if (mountedRef.current) setWaiting(false);
+    },
+  ];
+}

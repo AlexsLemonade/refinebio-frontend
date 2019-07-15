@@ -171,6 +171,7 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
     dispatch(
       updateDownloadDataSet({
         ...data,
+        dataSetId: data.id,
         dataSet: data.data,
       })
     );
@@ -202,6 +203,7 @@ export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
   dispatch(
     updateDownloadDataSet({
       ...response,
+      dataSetId,
       dataSet: response.data,
     })
   );
@@ -230,6 +232,7 @@ export const editDataSet = ({ dataSetId, ...params }) => async (
 
   dispatch(
     updateDownloadDataSet({
+      dataSetId,
       dataSet: data,
       is_processing,
       is_processed,
