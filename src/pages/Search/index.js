@@ -395,6 +395,7 @@ function ResultsTopBar({ appliedFilters, onToggleFilter }) {
         <OrderingDropdown />
 
         <SingleValueFilter
+          className="results__top-bar__filter"
           queryField="empty"
           filterLabel="Hide non-downloadable experiments"
           filterValue="true"

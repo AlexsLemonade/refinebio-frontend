@@ -1,5 +1,6 @@
 import React from 'react';
 import isNumber from 'lodash/isNumber';
+import classnames from 'classnames';
 import Checkbox from '../../../components/Checkbox';
 import Button from '../../../components/Button';
 import { InputSearch } from '../../../components/Input';
@@ -81,11 +82,12 @@ export function SingleValueFilter({
   filterValue,
   count = null,
   filterActive,
+  className,
 
   onToggleFilter,
 }) {
   return (
-    <section className="result-filters__section">
+    <section className={classnames('result-filters__section', className)}>
       <Checkbox
         name={queryField}
         className="result-filters__filter-check"
