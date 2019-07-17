@@ -24,6 +24,18 @@ import { formatSentenceCase } from '../../common/helpers';
 import apiData from '../../apiData.json';
 import { Hightlight, HText } from '../HighlightedText';
 
+// https://github.com/AlexsLemonade/refinebio-frontend/issues/698
+// Collect all the sizes smaller than totalSamples plus the first size larger if it exists
+function getPageSizesFor(totalSamples) {
+  const sizes = [];
+  for (const size of PAGE_SIZES) {
+    sizes.push(size);
+
+    if (size >= totalSamples) break;
+  }
+  return sizes;
+}
+
 class SamplesTable extends React.Component {
   static defaultProps = {
     pageSizeDropdown: ({ dropdown, totalSamples }) => (
@@ -47,10 +59,7 @@ class SamplesTable extends React.Component {
       <SampleDetailsLoader fetchSampleParams={this.props.fetchSampleParams}>
         {state => {
           // Calculate page size options to exclude ones greater than the number of samples.
-          const pageSizes =
-            state.totalSamples < 10
-              ? [state.totalSamples]
-              : PAGE_SIZES.filter(size => size <= state.totalSamples);
+          const pageSizes = getPageSizesFor(state.totalSamples);
 
           return (
             <RefineTable
