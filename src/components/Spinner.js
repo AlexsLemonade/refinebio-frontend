@@ -2,8 +2,8 @@ import React from 'react';
 import './Spinner.scss';
 
 export default function Spinner({
-  helixColor = '#143f77',
-  basePairColor = '#dcd011',
+  helixColor = '#002f6c',
+  basePairColor = '#dace00',
   scale = 1,
   width = 24,
   height = 50,
