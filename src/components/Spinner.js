@@ -18,14 +18,15 @@ export default function Spinner({
     2 * strokeWidth,
   ].map(value => value * scale);
 
-  // shape of the helix origin is 0, 0
+  // helix curve as points for [start, control, control, end]
   const bezierPoints = [
+    [0, 0],
     [0, sHeight / 2],
     [sWidth, sHeight / 2],
     [sWidth, sHeight],
   ];
 
-  // get a function to get position of the helix
+  // generic function for defining a cubic bezier timing function returns [x(t), y(t)]
   const getBezier = (p0, p1, p2, p3) => {
     return [0, 1].map(axis => {
       return t =>
@@ -36,20 +37,23 @@ export default function Spinner({
     });
   };
 
-  // get the helix position at % of x or y
-  const [getOffsetX] = getBezier([0, 0], ...bezierPoints);
+  // split the bezier points to be comsumed by svg syntax
+  const [m, ...c] = bezierPoints;
 
   const helixPath = {
-    d: ['M 0 0', 'C', [].concat(...bezierPoints).join(', ')].join(' '),
+    d: [`M ${m.join(' ')}`, 'C', [].concat(...c).join(', ')].join(' '),
     stroke: helixColor,
     strokeWidth: sStrokeWidth,
     strokeLinecap: 'round',
     fill: 'transparent',
   };
 
+  // get the helix position at % of x
+  const [getOffsetX] = getBezier(...bezierPoints);
+
   const basePairLines = [...Array(10)]
     .map((val, i, lines) => {
-      // change value to index to help with animation
+      // change value to a modified index to help with scheduling the animations
       // looks like [0,1,2,3,4,4,3,2,1,0]
       const half = lines.length / 2;
       return i < half ? i : half - ((i % half) + 1);
@@ -74,7 +78,7 @@ export default function Spinner({
       };
     });
 
-  // short hand
+  // transforms to flip over center
   const flipX = `scale(-1, 1) translate(${-sWidth}, 0)`;
   const flipY = `scale(1, -1) translate(0, ${-sHeight})`;
 
