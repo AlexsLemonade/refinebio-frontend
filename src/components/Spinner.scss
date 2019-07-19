@@ -1,6 +1,48 @@
 .spinner {
-  width: 54px;
-  height: 54px;
-  margin-left: auto;
-  margin-right: auto;
+  display: block;
+  padding: 20px;
+
+  svg {
+    display: block;
+    margin: auto;
+    animation: spinner-spin 3.2s ease-in-out infinite;
+
+    line {
+      animation: spinner-pair-fall 3.2s steps(6) infinite;
+    }
+  }
+}
+
+@keyframes spinner-spin {
+  0%,
+  86% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@for $i from 0 through 4 {
+  @keyframes spinner-pair-#{$i} {
+    0% {
+      opacity: 1;
+    }
+    #{ceil(($i/6)*100)}%,
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+@for $i from 0 through 4 {
+  @keyframes spinner-pair-reverse-#{$i} {
+    0% {
+      opacity: 0;
+    }
+    #{ceil(($i/6)*100)}%,
+    100% {
+      opacity: 1;
+    }
+  }
 }
