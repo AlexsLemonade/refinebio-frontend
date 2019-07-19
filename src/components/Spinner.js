@@ -51,32 +51,21 @@ export default function Spinner({
   // get the helix position at % of x
   const [getOffsetX] = getBezier(...bezierPoints);
 
-  const basePairLines = [...Array(10)]
-    .map((val, i, lines) => {
-      // change value to a modified index to help with scheduling the animations
-      // looks like [0,1,2,3,4,4,3,2,1,0]
-      const half = lines.length / 2;
-      return i < half ? i : half - ((i % half) + 1);
-    })
-    .map((i, index, lines) => {
-      const y = i * (sHeight / (lines.length + 1));
-      const x = getOffsetX(1 - (sHeight - y) / sHeight) + sPadding;
+  const basePairLines = [...Array(5)].map((i, index, lines) => {
+    const y = index * (sHeight / (lines.length * 2 + 1));
+    const x = getOffsetX(1 - (sHeight - y) / sHeight) + sPadding;
 
-      return {
-        key: `pair-${index}`,
-        x1: x,
-        y1: y,
-        x2: sWidth - x,
-        y2: y,
-        stroke: basePairColor,
-        strokeWidth: sStrokeWidth,
-        strokeLinecap: 'round',
-        style: {
-          opacity: i === index ? 1 : 0,
-          animationName: `spinner-pair${i === index ? '' : '-reverse'}-${i}`,
-        },
-      };
-    });
+    return {
+      key: `pair-${index}`,
+      x1: x,
+      y1: y,
+      x2: sWidth - x,
+      y2: y,
+      stroke: basePairColor,
+      strokeWidth: sStrokeWidth,
+      strokeLinecap: 'round',
+    };
+  });
 
   // transforms to flip over center
   const flipX = `scale(-1, 1) translate(${-sWidth}, 0)`;
@@ -95,7 +84,18 @@ export default function Spinner({
         {basePairLines.map((line, index, pairs) => (
           <line
             {...line}
-            {...{ transform: index < pairs.length / 2 ? undefined : flipY }}
+            style={{
+              animationName: `spinner-pair-${index}`,
+            }}
+          />
+        ))}
+        {[...basePairLines].reverse().map((line, index, pairs) => (
+          <line
+            {...line}
+            {...{ transform: flipY }}
+            style={{
+              animationName: `spinner-pair-reverse-${index}`,
+            }}
           />
         ))}
       </svg>
