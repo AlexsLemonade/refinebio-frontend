@@ -37,7 +37,7 @@ export default function Spinner({
     });
   };
 
-  // split the bezier points to be comsumed by svg syntax
+  // split the bezier points to be consumed by svg path
   const [m, ...c] = bezierPoints;
 
   const helixPath = {
