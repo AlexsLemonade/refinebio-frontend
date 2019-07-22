@@ -41,7 +41,7 @@ export default function Spinner({
   const [m, ...c] = bezierPoints;
 
   const helixPath = {
-    d: [`M ${m.join(' ')}`, 'C', [].concat(...c).join(', ')].join(' '),
+    d: `M ${m.join(' ')} C ${[].concat(...c).join(', ')}`,
     stroke: helixColor,
     strokeWidth: sStrokeWidth,
     strokeLinecap: 'round',
