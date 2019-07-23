@@ -24,12 +24,12 @@ const errorMiddleware = () => next => action => {
     window.location.reload();
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    // log exception in console on development
-    console.error(error);
-  } else {
+  if (isProduction()) {
     // on Production Report error https://docs.sentry.io/error-reporting/capturing/?platform=browsernpm
     Sentry.captureException(error);
+  } else {
+    // log exception in console on development
+    console.error(error);
   }
 
   return next(action);
@@ -121,4 +121,14 @@ function loadInitialState() {
     },
     token: localStorage.getItem('token'),
   };
+}
+
+/**
+ * Returns true if the app is running on www.refine.bio or staging.refine.bio
+ */
+function isProduction() {
+  return (
+    process.env.NODE_ENV === 'production' &&
+    ['staging.refine.bio', 'www.refine.bio'].includes(window.location.host)
+  );
 }
