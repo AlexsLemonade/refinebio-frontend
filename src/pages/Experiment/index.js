@@ -234,7 +234,9 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                     <ExperimentHeaderRow label="Submitter’s Institution">
                       <Link
                         to={searchUrl({
-                          q: experimentData.submitter_institution,
+                          q: `submitter_institution: ${
+                            experimentData.submitter_institution
+                          }`,
                         })}
                         className="link"
                       >
@@ -246,7 +248,9 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                         experimentData.publication_authors
                           .map(author => (
                             <Link
-                              to={searchUrl({ q: author })}
+                              to={searchUrl({
+                                q: `publication_authors:${author}`,
+                              })}
                               className="link"
                             >
                               <HText>{author}</HText>
