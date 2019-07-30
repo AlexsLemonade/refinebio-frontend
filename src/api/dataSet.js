@@ -7,7 +7,7 @@ export async function getDataSet(dataSetId, tokenId = null) {
       }
     : {};
 
-  return Ajax.get(`/dataset/${dataSetId}/`, null, headers);
+  return Ajax.get(`/v1/dataset/${dataSetId}/`, null, headers);
 }
 
 export async function getDataSetDetails(dataSetId, tokenId = null) {
@@ -18,7 +18,7 @@ export async function getDataSetDetails(dataSetId, tokenId = null) {
     : {};
 
   const response = await Ajax.get(
-    `/dataset/${dataSetId}/`,
+    `/v1/dataset/${dataSetId}/`,
     { details: true },
     headers
   );
@@ -33,7 +33,7 @@ export async function getDataSetDetails(dataSetId, tokenId = null) {
  * Creates a new dataset
  */
 export async function createDataSet() {
-  return Ajax.post('/dataset/', { data: {} });
+  return Ajax.post('/v1/dataset/', { data: {} });
 }
 
 export async function updateDataSet(dataSetId, dataSet, details = false) {
@@ -45,7 +45,7 @@ export async function updateDataSet(dataSetId, dataSet, details = false) {
   // When the api seels the `?details` parameter, it will include `experiments` and `organism_samples`
   // in the response.
   const result = await Ajax.put(
-    `/dataset/${dataSetId}/${details ? '?details=true' : ''}`,
+    `/v1/dataset/${dataSetId}/${details ? '?details=true' : ''}`,
     { data: dataSet }
   );
 
