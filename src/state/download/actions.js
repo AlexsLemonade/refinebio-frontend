@@ -26,7 +26,7 @@ export const updateDownloadDataSet = data => ({
   type: 'DOWNLOAD_DATASET_UPDATE',
   data,
   persist: {
-    dataSetId: data.dataSetId || data.id,
+    dataSetId: data.dataSetId,
   },
 });
 
@@ -171,6 +171,7 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
     dispatch(
       updateDownloadDataSet({
         ...data,
+        dataSetId: data.id,
         dataSet: data.data,
       })
     );
@@ -202,6 +203,7 @@ export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
   dispatch(
     updateDownloadDataSet({
       ...response,
+      dataSetId,
       dataSet: response.data,
     })
   );
@@ -223,13 +225,14 @@ export const editDataSet = ({ dataSetId, ...params }) => async (
     aggregate_by,
     scale_by,
     quantile_normalize,
-  } = await Ajax.put(`/dataset/${dataSetId}/`, {
+  } = await Ajax.put(`/v1/dataset/${dataSetId}/`, {
     data: dataSet,
     ...params,
   });
 
   dispatch(
     updateDownloadDataSet({
+      dataSetId,
       dataSet: data,
       is_processing,
       is_processed,
@@ -263,7 +266,7 @@ export const startDownload = ({
 
   try {
     await Ajax.put(
-      `/dataset/${dataSetId}/`,
+      `/v1/dataset/${dataSetId}/`,
       {
         start: true,
         data: dataSet,
@@ -322,7 +325,7 @@ export const regenerateDataSet = dataSet => async dispatch => {
     // 1. create a new dataset
     const { id: dataSetId } = await createDataSet();
     // 2. add the same data
-    await Ajax.put(`/dataset/${dataSetId}/`, {
+    await Ajax.put(`/v1/dataset/${dataSetId}/`, {
       data,
       aggregate_by,
       scale_by,
