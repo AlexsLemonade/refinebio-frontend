@@ -86,7 +86,7 @@ export default DownloadCompendia;
 
 async function fetchCompendiaData() {
   try {
-    const data = await Ajax.get('/compendia/');
+    const data = await Ajax.get('/v1/compendia/');
     return uniq(data.map(x => x.organism_name));
   } catch (e) {
     return [];
@@ -95,7 +95,7 @@ async function fetchCompendiaData() {
 
 async function downloadCompendia(organism, token) {
   // refetch the compendia, now sending the token id to retrieve the download urls
-  const data = await Ajax.get('/compendia', null, { 'API-KEY': token });
+  const data = await Ajax.get('/v1/compendia', null, { 'API-KEY': token });
 
   const computedFile = data
     .filter(x => x.organism_name === organism)
