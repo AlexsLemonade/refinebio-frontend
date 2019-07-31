@@ -9,7 +9,7 @@ import {
 } from '../../../common/helpers';
 import Button from '../../../components/Button';
 import {
-  toggledFilter,
+  toggleFilter,
   clearFilters,
   updateFilters,
   toggleFilterHelper,
@@ -19,14 +19,23 @@ import SideMenu from '../../../components/SideMenu';
 
 import FilterIcon from '../../../common/icons/filter-icon.svg';
 import { useDom } from '../../../common/hooks';
-import FilterCategory from './FilterCategory';
+import { FilterCategory, SingleValueFilter } from './FilterCategory';
 import cache from '../../../apiData.json';
+
+export default function Filters({ appliedFilters }) {
+  return (
+    <ResponsiveSwitch
+      mobile={() => <FiltersMobile appliedFilters={appliedFilters} />}
+      desktop={() => <FiltersDesktop appliedFilters={appliedFilters} />}
+    />
+  );
+}
 
 let FilterList = ({
   appliedFilters,
   filters,
-  toggledFilter,
-  clearFilters,
+  onToggleFilter,
+  onClearFilters,
   style,
 }) => {
   const filterApplied = anyFilterApplied(appliedFilters);
@@ -37,35 +46,77 @@ let FilterList = ({
         <h2 className="result-filters__title">Filters</h2>
 
         {filterApplied && (
-          <Button onClick={clearFilters} buttonStyle="link">
+          <Button onClick={onClearFilters} buttonStyle="link">
             clear all
           </Button>
         )}
       </div>
-      {filterCategories.map(
-        category =>
-          !isEmpty(filters[category.name]) && (
-            <FilterCategory
-              key={category.name}
-              categoryFilters={filters[category.name]}
-              category={category}
-              toggledFilter={toggledFilter}
-              appliedFilters={appliedFilters}
-            />
-          )
+
+      {!isEmpty(filters['organism']) && (
+        <FilterCategory
+          title="Organism"
+          queryField="organism"
+          filterValues={filters['organism']}
+          activeValues={appliedFilters['organism']}
+          formatValue={formatSentenceCase}
+          onToggleFilter={onToggleFilter}
+        />
+      )}
+
+      {!isEmpty(filters['technology']) && (
+        <FilterCategory
+          title="Technology"
+          queryField="technology"
+          filterValues={filters['technology']}
+          activeValues={appliedFilters['technology']}
+          formatValue={formatSentenceCase}
+          onToggleFilter={onToggleFilter}
+        />
+      )}
+
+      {!isEmpty(filters['platform']) && (
+        <FilterCategory
+          title="Platform"
+          queryField="platform"
+          filterValues={filters['platform']}
+          activeValues={appliedFilters['platform']}
+          formatValue={accessionCode =>
+            formatPlatformName(cache.platforms[accessionCode] || accessionCode)
+          }
+          onToggleFilter={onToggleFilter}
+        />
+      )}
+
+      {filters['has_publication'] && (
+        <SingleValueFilter
+          queryField="has_publication"
+          filterLabel="Includes Publication"
+          filterValue="true"
+          filterActive={
+            appliedFilters['has_publication'] &&
+            appliedFilters['has_publication'].includes('true')
+          }
+          count={filters['has_publication']['true']}
+          onToggleFilter={onToggleFilter}
+        />
       )}
     </div>
   );
 };
 FilterList = connect(({ search: { filters } }) => ({ filters }))(FilterList);
 
-let FiltersDesktop = props => {
+let FiltersDesktop = ({
+  appliedFilters,
+  results,
+  onToggleFilter,
+  onClearFilters,
+}) => {
   const ref = React.useRef();
   const size = useDom(ref, el => el.getBoundingClientRect());
   // If the user scrolls down the filters should be fixed on the screen
   // and also scrollable
   const style =
-    size && size.top < 150 && props.results && props.results.length > 3
+    size && size.top < 150 && results && results.length > 3
       ? {
           position: 'fixed',
           top: 150,
@@ -81,132 +132,103 @@ let FiltersDesktop = props => {
 
   return (
     <div className="results__filters" ref={ref}>
-      <FilterList {...props} style={style} />
+      <FilterList
+        appliedFilters={appliedFilters}
+        style={style}
+        onToggleFilter={onToggleFilter}
+        onClearFilters={onClearFilters}
+      />
     </div>
   );
 };
 FiltersDesktop = connect(
-  null,
-  { toggledFilter, clearFilters }
+  ({ search: { results } }) => ({ results }),
+  { onToggleFilter: toggleFilter, onClearFilters: clearFilters }
 )(FiltersDesktop);
-
-const Filters = props => (
-  <ResponsiveSwitch
-    mobile={() => <FiltersMobile {...props} />}
-    desktop={() => <FiltersDesktop {...props} />}
-  />
-);
-
-export default Filters;
-
-const filterCategories = [
-  { name: 'organism', queryField: 'organism', format: formatSentenceCase },
-  { name: 'technology', queryField: 'technology', format: formatSentenceCase },
-  {
-    name: 'publication',
-    queryField: 'has_publication',
-    format: formatSentenceCase,
-  },
-  {
-    name: 'platform',
-    queryField: 'platform',
-    format: accessionCode =>
-      formatPlatformName(cache.platforms[accessionCode] || accessionCode),
-  },
-];
 
 /**
  * Mobile version of the filters. In this case we want to show the filters in a
  * side menu
  */
-class FiltersMobile extends React.Component {
-  constructor(props) {
-    super(props);
+function FiltersMobile({
+  appliedFilters,
+  onToggleFilter,
+  onClearFilters,
+  onUpdateFilters,
+}) {
+  const [filters, setFilters] = React.useState([]);
 
-    // the filters object needs to be duplicated in this component's state, to allow
-    // modifying the filters before clicking apply
-    // in desktop we call the action creators directly
-    this.state = {
-      filters: props.appliedFilters,
-    };
-  }
+  return (
+    <SideMenu
+      component={showMenu => (
+        <div className="vertical-center">
+          <Button onClick={showMenu} buttonStyle="secondary" className="mr-1">
+            <div className="vertical-center">
+              <img src={FilterIcon} className="button__icon" alt="" />
+              <span>Filters</span>
+            </div>
+          </Button>
 
-  render() {
-    const { appliedFilters } = this.props;
-    return (
-      <SideMenu
-        component={showMenu => (
-          <div className="vertical-center">
-            <Button onClick={showMenu} buttonStyle="secondary" className="mr-1">
-              <div className="vertical-center">
-                <img src={FilterIcon} className="button__icon" alt="" />
-                <span>Filters</span>
-              </div>
-            </Button>
-
-            {Object.keys(appliedFilters).map(filterKey =>
+          {Object.keys(appliedFilters)
+            .filter(filter =>
+              ['organism', 'platform', 'technology'].includes(filter)
+            )
+            .map(filterKey =>
               appliedFilters[filterKey].map(filterValue => (
                 <FilterLabel
                   key={`${filterKey}${filterValue}`}
                   value={filterValue}
-                  onClick={() =>
-                    this.props.toggledFilter(filterKey, filterValue, false)
-                  }
+                  onClick={() => onToggleFilter(filterKey, filterValue, false)}
                 />
               ))
             )}
-          </div>
-        )}
-      >
-        {({ hideMenu }) => (
-          <div>
-            <Button
-              className="side-menu__close"
-              onClick={hideMenu}
-              buttonStyle="transparent"
-            >
-              <IoMdClose className="icon" />
-            </Button>
+        </div>
+      )}
+    >
+      {({ hideMenu }) => (
+        <div>
+          <Button
+            className="side-menu__close"
+            onClick={hideMenu}
+            buttonStyle="transparent"
+          >
+            <IoMdClose className="icon" />
+          </Button>
 
-            <FilterList
-              appliedFilters={this.state.filters}
-              toggledFilter={(type, value) => this._toggleFilter(type, value)}
-              clearFilters={() => {
-                // if no changes were applied, there won't be any search and we want to reset the state filters
-                this.setState({ filters: appliedFilters });
-                this.props.clearFilters();
+          <FilterList
+            appliedFilters={filters}
+            onToggleFilter={(type, value) =>
+              setFilters(toggleFilterHelper(filters, type, value))
+            }
+            onClearFilters={() => {
+              // if no changes were applied, there won't be any search and we want to reset the state filters
+              setFilters(appliedFilters);
+              onClearFilters();
+              hideMenu();
+            }}
+          />
+
+          <div className="flex-button-container">
+            <Button
+              onClick={() => {
+                onUpdateFilters(filters);
                 hideMenu();
               }}
-            />
-
-            <div className="flex-button-container">
-              <Button
-                onClick={() => {
-                  this.props.updateFilters(this.state.filters);
-                  hideMenu();
-                }}
-              >
-                Apply Filters
-              </Button>
-            </div>
+            >
+              Apply Filters
+            </Button>
           </div>
-        )}
-      </SideMenu>
-    );
-  }
-
-  _toggleFilter(type, value) {
-    this.setState(({ filters }) => ({
-      filters: toggleFilterHelper(filters, type, value),
-    }));
-  }
+        </div>
+      )}
+    </SideMenu>
+  );
 }
 FiltersMobile = connect(
-  () => ({}),
+  null,
   {
-    toggledFilter,
-    updateFilters,
-    clearFilters,
+    onToggleFilter: toggleFilter,
+    onUpdateFilters: updateFilters,
+    onClearFilters: clearFilters,
   }
 )(FiltersMobile);
 
@@ -225,6 +247,9 @@ function FilterLabel({ value, onClick }) {
   );
 }
 
+/**
+ * Returns true if there's any filter active in `filters`
+ */
 export function anyFilterApplied(filters) {
   return Object.keys(filters)
     .map(x => filters[x])
