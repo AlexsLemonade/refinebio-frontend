@@ -1,7 +1,10 @@
-import pickBy from 'lodash/pickBy';
 import uniqBy from 'lodash/uniqBy';
 import { push } from '../routerActions';
-import { getQueryString, Ajax } from '../../common/helpers';
+import {
+  getQueryString,
+  Ajax,
+  getQueryParamObject,
+} from '../../common/helpers';
 import reportError from '../reportError';
 import { getUrlParams } from './reducer';
 
@@ -14,6 +17,36 @@ export const Ordering = {
   Newest: '-source_first_published',
   Oldest: 'source_first_published',
 };
+
+export function parseUrl(locationSearch) {
+  /* eslint-disable prefer-const */
+  let {
+    q: query,
+    p: page = 1,
+    size = 10,
+    ordering = Ordering.BestMatch,
+    filter_order: filterOrder = '',
+    ...filters
+  } = getQueryParamObject(locationSearch);
+  /* eslint-enable */
+
+  // for consistency, ensure all values in filters are arrays
+  // the method `getQueryParamObject` will return a single value for parameters that only
+  // appear once in the url
+  for (const key of Object.keys(filters)) {
+    if (!Array.isArray(filters[key])) {
+      filters[key] = [filters[key]];
+    }
+  }
+
+  // parse parameters from url
+  query = query ? decodeURIComponent(query) : undefined;
+  page = parseInt(page, 10);
+  size = parseInt(size, 10);
+  filterOrder = filterOrder ? filterOrder.split(',') : [];
+
+  return { query, page, size, ordering, filters, filterOrder };
+}
 
 // This action updates the current search url with new paramters, which in turn triggers a call
 // to `fethResults` from the view. Components wanting to modify the search results should call this
@@ -33,7 +66,8 @@ const navigateToResults = ({
     q: query,
     p: page > 1 ? page : undefined,
     size: size !== 10 ? size : undefined,
-    ordering: ordering !== '' ? ordering : undefined,
+    ordering:
+      ordering !== '' && ordering !== Ordering.BestMatch ? ordering : undefined,
     filter_order:
       filterOrder && filterOrder.length > 0 ? filterOrder.join(',') : undefined,
     ...filters,
@@ -66,12 +100,18 @@ export function fetchResults({
 }) {
   return async (dispatch, getState) => {
     try {
-      const apiResults = await Ajax.get('/search/', {
+      const apiResults = await Ajax.get('/v1/search/', {
         ...(query ? { search: query } : {}),
         limit: size,
         offset: (page - 1) * size,
         ordering: ordering || Ordering.BestMatch,
         ...appliedFilters,
+        // ?empty=true only exists in the FE to signal that we should display experiments
+        // with no downloadable samples. When the parameter is not present we query the API
+        // with `num_downloadable_samples__gt: 0`
+        ...(!appliedFilters || !appliedFilters['empty']
+          ? { num_downloadable_samples__gt: 0 }
+          : { include_empty: undefined }),
       });
       let { results } = apiResults;
       const { count: totalResults, facets } = apiResults;
@@ -83,7 +123,7 @@ export function fetchResults({
         // each accession code requires an specific query to fetch the exact experiment
         const promises = await Promise.all(
           accessionCodes.map(code =>
-            Ajax.get('/search/', {
+            Ajax.get('/v1/search/', {
               search: `accession_code:${code}`,
             })
           )
@@ -102,7 +142,11 @@ export function fetchResults({
         results = uniqBy([...topResults, ...results], x => x.accession_code);
       }
 
-      let filters = transformFacets(facets);
+      let filters = {
+        ...facets,
+        organism: facets.organism_names,
+        platform: facets.platform_accession_codes,
+      };
 
       if (filterOrder.length > 0) {
         // merge both filter objects to enable interactive filtering
@@ -111,7 +155,7 @@ export function fetchResults({
 
         if (!previousFilters) {
           // make another request to the api to fetch the results
-          const { facets: previousFacets } = await Ajax.get('/search/', {
+          const { facets: previousFacets } = await Ajax.get('/v1/search/', {
             ...(query ? { search: query } : {}),
             limit: 1,
             ...{
@@ -119,7 +163,7 @@ export function fetchResults({
               [lastFilterName]: undefined,
             },
           });
-          previousFilters = transformFacets(previousFacets);
+          previousFilters = previousFacets;
         }
 
         filters = {
@@ -156,21 +200,6 @@ export function fetchResults({
   };
 }
 
-/**
- * Transform filters object that is sent from the API
- */
-function transformFacets(facets) {
-  return {
-    organism: facets['organism_names'],
-    // We want to hide `Unknown` from the technologies if it has 0 processed samples
-    technology: pickBy(facets['technology'], totalSamples => totalSamples > 0),
-    publication: facets['has_publication']
-      ? { has_publication: facets['has_publication']['true'] || 0 }
-      : null,
-    platform: facets['platform_accession_codes'],
-  };
-}
-
 export const triggerSearch = searchTerm => (dispatch, getState) => {
   const params = getUrlParams(getState());
   // when a new search is performed, remove the filters, and go back to the first page
@@ -191,7 +220,7 @@ export const triggerSearch = searchTerm => (dispatch, getState) => {
  * @param {string} filterValue Value of the filter
  * @param {boolean} trackOrder Allow disabling interactive filtering (used on mobile devices)
  */
-export function toggledFilter(filterType, filterValue, trackOrder = true) {
+export function toggleFilter(filterType, filterValue, trackOrder = true) {
   return (dispatch, getState) => {
     const { filters, filterOrder } = getUrlParams(getState());
     const newFilters = toggleFilterHelper(filters, filterType, filterValue);
