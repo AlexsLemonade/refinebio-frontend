@@ -38,30 +38,6 @@ export default class SampleDetailsLoader extends React.Component {
     return Math.ceil(this.state.totalSamples / this.state.pageSize);
   }
 
-  render() {
-    return (
-      <Loader
-        ref={this.loader}
-        fetch={this.fetchSamples}
-        updateProps={this.getFetchSamplesParams()}
-      >
-        {({ isLoading, hasError }) =>
-          this.props.children({
-            ...this.state,
-            totalPages: this.totalPages,
-            isLoading,
-            hasError,
-            samples: !hasError ? this.state.samples : [],
-
-            // Use this callback to update parameters like: page, pageSize, filter, orderBy
-            onUpdate: params => this.setState(params),
-            refresh: () => this.loader.current && this.loader.current.refresh(),
-          })
-        }
-      </Loader>
-    );
-  }
-
   /**
    * Given the current state, returns the parameters that should be used
    */
@@ -89,4 +65,37 @@ export default class SampleDetailsLoader extends React.Component {
       samples,
     });
   };
+
+  render() {
+    return (
+      <Loader
+        ref={this.loader}
+        fetch={this.fetchSamples}
+        updateProps={this.getFetchSamplesParams()}
+      >
+        {({ isLoading, hasError }) =>
+          this.props.children({
+            ...this.state,
+            totalPages: this.totalPages,
+            isLoading,
+            hasError,
+            samples: !hasError ? this.state.samples : [],
+
+            // Use this callback to update parameters like: page, pageSize, filter, orderBy
+            onUpdate: params => {
+              this.setState(state => ({
+                ...params,
+                // reset the current page if the filter changes
+                page:
+                  params.filterBy && state.filterBy !== params.filterBy
+                    ? 1
+                    : params.page || 1,
+              }));
+            },
+            refresh: () => this.loader.current && this.loader.current.refresh(),
+          })
+        }
+      </Loader>
+    );
+  }
 }
