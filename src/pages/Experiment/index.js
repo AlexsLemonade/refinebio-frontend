@@ -232,21 +232,31 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                       {totalSamples}
                     </ExperimentHeaderRow>
                     <ExperimentHeaderRow label="Submitter’s Institution">
-                      <Link
-                        to={searchUrl({
-                          q: experimentData.submitter_institution,
-                        })}
-                        className="link"
-                      >
-                        <HText>{experimentData.submitter_institution}</HText>
-                      </Link>
+                      {(experimentData.submitter_institution && (
+                        <Link
+                          to={searchUrl({
+                            q: `submitter_institution: ${
+                              experimentData.submitter_institution
+                            }`,
+                          })}
+                          className="link"
+                        >
+                          <HText>{experimentData.submitter_institution}</HText>
+                        </Link>
+                      )) || (
+                        <i className="experiment__not-provided">
+                          No associated institution
+                        </i>
+                      )}
                     </ExperimentHeaderRow>
                     <ExperimentHeaderRow label="Authors">
                       {experimentData.publication_authors.length > 0 ? (
                         experimentData.publication_authors
                           .map(author => (
                             <Link
-                              to={searchUrl({ q: author })}
+                              to={searchUrl({
+                                q: `publication_authors:${author}`,
+                              })}
                               className="link"
                             >
                               <HText>{author}</HText>
