@@ -8,7 +8,7 @@ describe('refine.bio integration tests', () => {
     'landing page loads',
     async () => {
       await page.goto(BASE_URL);
-      await expect(page).toMatch('Search for harmonized transcriptome data');
+      await expect(page).toMatch('Search for normalized transcriptome data');
     },
     TIMEOUT
   );
