@@ -13,7 +13,7 @@ const Footer = () => (
         <p>
           refine.bio is a repository of uniformly processed and normalized,
           ready-to-use transcriptome data from publicly available sources.
-          refine.bio is a project of the Childhood Cancer Data Lab (CCDL)
+          refine.bio is a project of the{' '}
           <a
             className="link"
             href="https://www.ccdatalab.org/"
