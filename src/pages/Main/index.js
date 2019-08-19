@@ -37,7 +37,7 @@ let Main = ({ push }) => {
       <div>
         <div className="main__container main__container--searchbox">
           <h1 className="main__heading-1">
-            Search for harmonized transcriptome data
+            Search for normalized transcriptome data
           </h1>
           <SearchInput
             onSubmit={query => push(searchUrl(query ? { q: query } : null))}
