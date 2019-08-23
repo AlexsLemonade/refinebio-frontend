@@ -7,7 +7,6 @@
 const axios = require('axios');
 const fs = require('fs');
 const _ = require('lodash');
-const slugify = require('./src/common/slugify');
 
 const version = process.env.VERSION || '0.0.0';
 const ApiVersion = 'v1';
