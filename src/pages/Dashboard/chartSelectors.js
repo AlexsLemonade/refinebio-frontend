@@ -8,7 +8,7 @@ export const JOB_STATUS = ['open', 'pending', 'successful', 'failed'];
 const formatTimeLabel = (date, range) => {
   const format =
     {
-      day: 'HH:00',
+      day: 'h A',
       week: 'dddd',
       month: 'MMM Do',
       year: 'MMMM',
@@ -213,11 +213,7 @@ function transformTimeline(timeline, range, fields = ['total']) {
  * @param {*} range day/ | week | month | year
  */
 function* getTimeline(range) {
-  let now = moment.utc();
-  if (range === 'day') {
-    // remove last hour when viewing daily stats
-    now = now.startOf('hour').subtract(1, 'hour');
-  }
+  const now = moment.utc();
 
   const data = {
     day: {
@@ -246,15 +242,10 @@ function* getTimeline(range) {
       interval: moment.duration(1, 'months'),
     },
   };
-  let nextDate = data[range].start;
+  const nextDate = data[range].start;
   const { interval } = data[range];
-  yield nextDate.format();
 
-  while (true) {
-    nextDate = nextDate.add(interval);
-    if (nextDate.isAfter(now)) {
-      break;
-    }
+  while (!nextDate.add(interval).isAfter(now)) {
     yield nextDate.format();
   }
 }
