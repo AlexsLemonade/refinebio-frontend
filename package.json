@@ -54,6 +54,7 @@
     "flow": "flow",
     "eslint": "eslint src/",
     "cacheBackend": "node cacheBackend.js",
+    "buildSitemap": "node sitemap.js",
     "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
