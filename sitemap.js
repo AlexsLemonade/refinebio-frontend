@@ -3,16 +3,16 @@ const fs = require('fs');
 const { createSitemapIndex } = require('sitemap');
 const slugify = require('./src/common/slugify');
 
-const hostName = process.env.HOST_NAME || 'https://refine.bio';
+const hostname = process.env.HOST_NAME || 'https://refine.bio';
 const targetFolder = `${__dirname}/public`;
 
-const ApiVersion = process.env.REACT_APP_API_VERSION || 'v1';
-const ApiHost = process.env.REACT_APP_API_HOST || 'https://api.refine.bio';
-const Api = `${ApiHost}/${ApiVersion}`;
+const ApiVersion = 'v1';
+const ApiHost = `${process.env.REACT_APP_API_HOST || 'https://api.refine.bio'}/${ApiVersion}`;
+
 const limit = 1000;
 
-const resourceUrls = {
-  experiments: `${Api}/search/?limit=${limit}&ordering=id`,
+const resourceEndpoints = {
+  experiments: `${ApiHost}/search/?limit=${limit}&ordering=id`,
  // samples: `${Api}/samples?limit=${limit}&ordering=id`,
 };
 
@@ -37,7 +37,7 @@ const getUrlsForResources = async (...resources) => {
   const urls = [];
   for (const resource of resources) {
     const getUrl = getSitemapUrlForResource(resource);
-    let next = resourceUrls[resource];
+    let next = resourceEndpoints[resource];
     while (next) {
       try {
         console.log(`Fetching ${resource} from ${next}`);
