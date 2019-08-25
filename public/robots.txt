@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /download
 Disallow: /dataset/*
-Sitemap: https://www.refine.bio/sitemap.xml
+Sitemap: https://www.refine.bio/sitemap-index.xml
