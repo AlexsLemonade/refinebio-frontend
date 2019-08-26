@@ -3,7 +3,7 @@ const fs = require('fs');
 const { createSitemapIndex } = require('sitemap');
 const slugify = require('./src/common/slugify');
 
-const hostname = process.env.HOST_NAME || 'https://refine.bio';
+const hostname = process.env.HOST_NAME || 'https://www.refine.bio';
 const targetFolder = `${__dirname}/public`;
 
 const ApiVersion = 'v1';
