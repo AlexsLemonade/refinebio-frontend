@@ -21,8 +21,10 @@ branch=$(get_master_or_dev)
 
 if [[ $branch == "master" ]]; then
     base_host="refine.bio"
+    host_name="https://www.refine.bio"
 elif [[ $branch == "dev" ]]; then
     base_host="staging.refine.bio"
+    host_name="https://staging.refine.bio"
 else
     echo "Why in the world was update_docker_img.sh called from a branch other than dev or master?!?!?"
     exit 1
@@ -35,6 +37,8 @@ yarn install --ignore-engines
 VERSION=$(git describe --abbrev=0 --tags)
 
 VERSION=$VERSION REACT_APP_API_HOST=https://api.$base_host yarn run cacheBackend
+
+HOST_NAME=$host_name REACT_APP_API_HOST=https://api.$base_host yarn run buildSitemap
 
 CI=false REACT_APP_API_HOST=https://api.$base_host yarn run build
 

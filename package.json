@@ -54,6 +54,7 @@
     "flow": "flow",
     "eslint": "eslint src/",
     "cacheBackend": "node cacheBackend.js",
+    "buildSitemap": "node sitemap.js",
     "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
@@ -77,7 +78,7 @@
     "prettier": "^1.11.1",
     "puppeteer": "^1.11.0",
     "redux-mock-store": "^1.5.1",
-    "sitemap": "^2.1.0",
+    "sitemap": "^4.1.1",
     "source-map-explorer": "^1.6.0"
   },
   "proxy": "http://localhost:8000/",
