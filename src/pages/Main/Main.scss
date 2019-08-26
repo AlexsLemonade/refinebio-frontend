@@ -180,7 +180,7 @@
     }
   }
 
-  &__mailchimp-form {
+  &__email-section-form {
     display: flex;
     flex-direction: column;
 
@@ -191,7 +191,7 @@
     }
   }
 
-  &__mailchimp-input {
+  &__email-section-input {
     margin-right: 2 * 8px;
     width: 100%;
     margin-bottom: 0.5rem;
@@ -203,7 +203,7 @@
     }
   }
 
-  &__mailchimp-button {
+  &__email-section-button {
     background: $white;
     color: $azure;
     border: none;
