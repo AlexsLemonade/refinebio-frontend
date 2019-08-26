@@ -122,19 +122,19 @@ function getDashboardChartConfig(state, range) {
       title: 'Experiments and Samples',
       charts: [
         {
-          title: 'Total experiments created',
+          title: 'Total experiments surveyed',
           data: experimentsCount,
           type: 'text',
           size: 'small',
         },
         {
-          title: 'Total samples created',
+          title: 'Total samples surveyed',
           data: state.unprocessed_samples.total + state.processed_samples.total,
           type: 'text',
           size: 'small',
         },
         {
-          title: 'Total samples processed',
+          title: 'Total samples available for download',
           data: state.processed_samples.total,
           type: 'text',
           size: 'small',
@@ -147,7 +147,7 @@ function getDashboardChartConfig(state, range) {
           size: 'large',
         },
         {
-          title: 'Experiments created over time',
+          title: 'Experiments surveyed',
           data: chartSelectors.getExperimentsCreatedOverTime(state, range),
           series: ['experiments'],
           type: 'line',
@@ -263,7 +263,7 @@ function getDashboardChartConfig(state, range) {
           title: 'Jobs over time by type',
           data: jobsCompletedOverTime,
           type: 'line',
-          series: ['survey', 'processor', 'downloader'],
+          series: ['surveyor', 'processor', 'downloader'],
           size: 'large',
         },
         {
@@ -273,7 +273,7 @@ function getDashboardChartConfig(state, range) {
           size: 'medium',
         },
         {
-          title: 'Survey jobs by status',
+          title: 'Surveyor jobs by status',
           data: jobsByStatus.survey_jobs,
           type: 'pie',
           size: 'medium',
@@ -291,13 +291,13 @@ function getDashboardChartConfig(state, range) {
           size: 'medium',
         },
         {
-          title: 'Average time: Survey jobs',
+          title: 'Average time: Surveyor jobs',
           data: averageTimesTilCompletion.survey_jobs,
           type: 'text',
           size: 'small',
         },
         {
-          title: 'Estimated time till completion: Survey jobs',
+          title: 'Estimated time till completion: Surveyor jobs',
           data: estimatedTimesTilCompletion.survey_jobs,
           type: 'text',
           size: 'small',
@@ -334,7 +334,7 @@ function getDashboardChartConfig(state, range) {
           size: 'large',
         },
         {
-          title: 'Survey jobs over time by status',
+          title: 'Surveyor jobs over time by status',
           data: surveyJobsOverTimeByStatus,
           type: 'line',
           series: chartSelectors.JOB_STATUS,
