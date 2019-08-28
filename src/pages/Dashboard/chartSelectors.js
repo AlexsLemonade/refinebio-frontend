@@ -216,7 +216,10 @@ function* getTimeline(range) {
   const now = moment.utc();
   const data = {
     day: {
-      start: now.clone().subtract(1, 'days'),
+      start: now
+        .clone()
+        .subtract(1, 'day')
+        .startOf('hour'),
       interval: moment.duration(1, 'hour'),
     },
     week: {
