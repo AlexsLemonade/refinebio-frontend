@@ -137,9 +137,15 @@ export function fetchResults({
             _isTopResult: true,
           }));
 
-        // since we made multiple queries to the server, make sure that there are
-        // no repeated experiments.
-        results = uniqBy([...topResults, ...results], x => x.accession_code);
+        if (topResults.length > 0) {
+          // since we made multiple queries to the server, make sure that there are
+          // no repeated experiments.
+          results = uniqBy([...topResults, ...results], x => x.accession_code);
+        } else if (accessionCodes.length === 1) {
+          // clear the results if the users searched for a single accession code and
+          // we don't get any results.
+          results = [];
+        }
       }
 
       let filters = {
