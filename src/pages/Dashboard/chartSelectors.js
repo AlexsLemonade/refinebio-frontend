@@ -245,7 +245,7 @@ function* getTimeline(range) {
     [range]: { interval, start: nextDate },
   } = data;
 
-  while (!nextDate.add(interval).isAfter(now)) {
+  while (nextDate.add(interval).isBefore(now)) {
     yield nextDate.format();
   }
 }
