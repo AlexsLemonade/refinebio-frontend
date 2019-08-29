@@ -46,10 +46,102 @@ class SamplesTable extends React.Component {
     sampleMetadataFields: [],
   };
 
-  columns = this._getColumns();
+  columns = this.getColumns();
 
   get totalColumns() {
     return this.columns.length;
+  }
+
+  /**
+   * Returns the columns that should be displayed in the table
+   */
+  getColumns() {
+    // Get the headers that do not depend on isImmutable first
+    return [
+      {
+        Header: 'Add/Remove',
+        id: 'add_remove',
+        sortable: false,
+        Cell: ({ original: sample }) => (
+          <AddRemoveCell
+            sample={sample}
+            experimentAccessionCodes={Object.keys(
+              this.props.experimentSampleAssociations
+            ).filter(experimentAccessionCode =>
+              this.props.experimentSampleAssociations[
+                experimentAccessionCode
+              ].includes(sample.accession_code)
+            )}
+          />
+        ),
+        width: 190,
+        className: 'samples-table__add-remove',
+        show: !this.props.isImmutable,
+      },
+      {
+        id: 'id',
+        accessor: d => d.id,
+        show: false,
+      },
+      {
+        Header: 'Accession Code',
+        id: 'accession_code',
+        accessor: d => d.accession_code,
+        minWidth: 160,
+        width: 175,
+        style: { textAlign: 'right' },
+        Cell: CustomCell,
+      },
+      {
+        Header: 'Title',
+        id: 'title',
+        accessor: d => d.title,
+        minWidth: 180,
+        Cell: CustomCell,
+      },
+      // list the columns in the experiment's metadata
+      ...this.props.sampleMetadataFields.map(field => ({
+        id: field,
+        accessor: d => d[field],
+        Header: formatSentenceCase(field),
+        minWidth: 160,
+        Cell: CustomCell,
+      })),
+      {
+        Header: 'Processing Information',
+        id: 'processing_information',
+        sortable: false,
+        Cell: ProcessingInformationCell,
+        width: 200,
+      },
+      {
+        Header: 'Additional Metadata',
+        id: 'additional_metadata',
+        sortable: false,
+        Cell: MetadataAnnotationsCell,
+        width: 200,
+      },
+    ];
+  }
+
+  /**
+   * Returns the sort parameter as required from the backend
+   * @param {*} tableState State from the table, as given to `fetchData`
+   */
+  getSortParam(tableState) {
+    let orderBy;
+
+    const { sorted } = tableState;
+    // check table sort
+    if (sorted && sorted.length > 0) {
+      // we don't support sorting by multiple columns, so only consider the first one
+      const { id, desc } = sorted[0];
+      // ref: https://github.com/AlexsLemonade/refinebio/pull/298
+      orderBy = `${desc ? '-' : ''}${id}`;
+    } else {
+      orderBy = undefined;
+    }
+    return orderBy;
   }
 
   render() {
@@ -67,7 +159,7 @@ class SamplesTable extends React.Component {
               onFetchData={tableState =>
                 state.onUpdate({
                   isLoading: true,
-                  orderBy: this._getSortParam(tableState),
+                  orderBy: this.getSortParam(tableState),
                 })
               }
               loading={state.isLoading}
@@ -151,98 +243,6 @@ class SamplesTable extends React.Component {
         }}
       </SampleDetailsLoader>
     );
-  }
-
-  /**
-   * Returns the columns that should be displayed in the table
-   */
-  _getColumns() {
-    // Get the headers that do not depend on isImmutable first
-    return [
-      {
-        Header: 'Add/Remove',
-        id: 'add_remove',
-        sortable: false,
-        Cell: ({ original: sample }) => (
-          <AddRemoveCell
-            sample={sample}
-            experimentAccessionCodes={Object.keys(
-              this.props.experimentSampleAssociations
-            ).filter(experimentAccessionCode =>
-              this.props.experimentSampleAssociations[
-                experimentAccessionCode
-              ].includes(sample.accession_code)
-            )}
-          />
-        ),
-        width: 190,
-        className: 'samples-table__add-remove',
-        show: !this.props.isImmutable,
-      },
-      {
-        id: 'id',
-        accessor: d => d.id,
-        show: false,
-      },
-      {
-        Header: 'Accession Code',
-        id: 'accession_code',
-        accessor: d => d.accession_code,
-        minWidth: 160,
-        width: 175,
-        style: { textAlign: 'right' },
-        Cell: CustomCell,
-      },
-      {
-        Header: 'Title',
-        id: 'title',
-        accessor: d => d.title,
-        minWidth: 180,
-        Cell: CustomCell,
-      },
-      // list the columns in the experiment's metadata
-      ...this.props.sampleMetadataFields.map(field => ({
-        id: field,
-        accessor: d => d[field],
-        Header: formatSentenceCase(field),
-        minWidth: 160,
-        Cell: CustomCell,
-      })),
-      {
-        Header: 'Processing Information',
-        id: 'processing_information',
-        sortable: false,
-        Cell: ProcessingInformationCell,
-        width: 200,
-      },
-      {
-        Header: 'Additional Metadata',
-        id: 'additional_metadata',
-        sortable: false,
-        Cell: MetadataAnnotationsCell,
-        width: 200,
-      },
-    ];
-  }
-
-  /**
-   * Returns the sort parameter as required from the backend
-   * @param {*} tableState State from the table, as given to `fetchData`
-   */
-  _getSortParam(tableState) {
-    let orderBy;
-
-    const { sorted } = tableState;
-    // check table sort
-    if (sorted && sorted.length > 0) {
-      // we don't support sorting by multiple columns, so only consider the first one
-      const { id, desc } = sorted[0];
-      // ref: https://github.com/AlexsLemonade/refinebio/pull/298
-      orderBy = `${desc ? '-' : ''}${id}`;
-    } else {
-      orderBy = undefined;
-    }
-    return orderBy;
   }
 }
 export default SamplesTable;
