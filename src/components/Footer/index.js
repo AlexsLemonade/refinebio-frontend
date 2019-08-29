@@ -11,8 +11,9 @@ const Footer = () => (
     <div className="footer__container footer__container--main footer__flex">
       <div className="footer__left">
         <p>
-          refine.bio is a repository of harmonized, ready-to-use transcriptome
-          data from publicly available sources. refine.bio is a project of the{' '}
+          refine.bio is a repository of uniformly processed and normalized,
+          ready-to-use transcriptome data from publicly available sources.
+          refine.bio is a project of the{' '}
           <a
             className="link"
             href="https://www.ccdatalab.org/"

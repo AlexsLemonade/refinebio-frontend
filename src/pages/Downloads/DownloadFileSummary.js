@@ -1,4 +1,5 @@
 import React from 'react';
+import InfoIcon from '../../common/icons/info-badge.svg';
 import { formatSentenceCase } from '../../common/helpers';
 import { getTransformationOptionFromName } from './transformation';
 import {
@@ -46,6 +47,23 @@ const DownloadFileSummary = ({
             </div>
           </div>
         ))}
+      </div>
+      <div className="downloads-processed-info info">
+        <img className="info__icon" src={InfoIcon} alt="" />
+        <div>
+          <div className="nowrap">
+            All data you download from refine.bio has been uniformly processed
+            and normalized.{' '}
+            <a
+              href="http://docs.refine.bio/en/latest/main_text.html#processing-information"
+              className="link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn more
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );

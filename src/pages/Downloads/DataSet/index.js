@@ -26,6 +26,9 @@ import DataSetLoader from './DataSetLoader';
 import { getDataSet } from '../../../api/dataSet';
 import TubeyAdventureImage from './tubey-adventure.svg';
 
+import apiData from '../../../apiData.json';
+import InfoIcon from '../../../common/icons/info-badge.svg';
+
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
  * - Processing: The download file is being created
@@ -284,6 +287,18 @@ DataSetReady = connect(
   }
 )(DataSetReady);
 
+/**
+ * Returns true if there's a difference between the two minor versions given
+ */
+function minorVersionChanged(v1, v2) {
+  if (!v1 || !v2) return false;
+  const regex = /\.\d+\./gm;
+  const v1Match = v1.match(regex);
+  const v2Match = v2.match(regex);
+  if (!v1Match || !v2Match) return false;
+  return v1Match[0] !== v2Match[0];
+}
+
 let DataSetExpired = ({ dataSet, regenerateDataSet }) => (
   <div className="dataset__container">
     <div className="dataset__message">
@@ -298,6 +313,22 @@ let DataSetExpired = ({ dataSet, regenerateDataSet }) => (
               Regenerate Files
             </Button>
           </div>
+          {minorVersionChanged(apiData.apiVersion, dataSet.worker_version) && (
+            <div className="dataset__tip-info info">
+              <img className="info__icon" src={InfoIcon} alt="" />
+              <span>
+                Some expression values may differ.{' '}
+                <a
+                  href="http://docs.refine.bio/en/latest/faq.html#why-are-the-expression-values-different-if-i-regenerate-a-dataset"
+                  className="link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Learn why
+                </a>
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="dataset__way-image">

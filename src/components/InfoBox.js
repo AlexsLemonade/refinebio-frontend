@@ -12,8 +12,8 @@ function InfoBoxDesktop({ onClose }) {
           Build and Download Custom Datasets
         </div>
         <div>
-          Refine.bio helps you build experiment-ready datasets using
-          transcriptomic data from all of the world's genetic databases.
+          refine.bio helps you build ready-to-use datasets with normalized
+          transcriptome data from all of the world’s genetic databases.
         </div>
       </div>
 
@@ -31,7 +31,7 @@ function InfoBoxDesktop({ onClose }) {
 function InfoBoxMobile({ onClose }) {
   return (
     <div className="info-box">
-      Browse the collection of harmonized transcriptome data.
+      Search and download from a collection of normalized transcriptome data.
       <Button
         className="info-box__close"
         onClick={onClose}

@@ -29,6 +29,20 @@ let Main = ({ push }) => {
     <div className="main">
       <Helmet>
         <title>Search for harmonized transcriptome data - refine.bio</title>
+        <script type="application/ld+json">
+          {`
+          {
+            "@context": "http://schema.org",
+            "@type": "WebSite",
+            "url": "https://www.refine.bio/",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://www.refine.bio/search/?q={searchbox_target}",
+              "query-input": "required name=searchbox_target"
+            }
+          }
+        `}
+        </script>
       </Helmet>
       <section className="main__section main__section--searchbox">
         <img src={circusPlot} className="about__header-bg" alt="Circus Plot" />
@@ -37,7 +51,7 @@ let Main = ({ push }) => {
       <div>
         <div className="main__container main__container--searchbox">
           <h1 className="main__heading-1">
-            Search for harmonized transcriptome data
+            Search for normalized transcriptome data
           </h1>
           <SearchInput
             onSubmit={query => push(searchUrl(query ? { q: query } : null))}

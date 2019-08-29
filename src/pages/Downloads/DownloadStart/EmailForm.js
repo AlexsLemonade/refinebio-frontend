@@ -7,6 +7,21 @@ import Checkbox from '../../../components/Checkbox';
 import Button from '../../../components/Button';
 import { InvalidTokenError } from '../../../common/errors';
 import Error from '../../../components/Error';
+import { Ajax } from '../../../common/helpers';
+
+const subscribe = async email => {
+  const portalId = '5187852';
+  const formGuid = 'ea5b970d-c22f-4b42-b569-26f84b1cea2f';
+  const formUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+  try {
+    await Ajax.post(formUrl, {
+      fields: [{ name: 'email', value: email }],
+    });
+  } catch (err) {
+    // Show error message?"
+    // console.log(err);
+  }
+};
 
 /**
  * This form can be used to edit the email that's associated with a dataset
@@ -16,6 +31,7 @@ const EmailForm = ({ onSubmit, agreedToTerms, emailAddress }) => (
     onSubmit={async (values, { setErrors, setValues, setSubmitting }) => {
       try {
         await onSubmit(values);
+        if (values.receiveUpdates) subscribe(values.email);
       } catch (e) {
         // expect server errors here
         if (e instanceof InvalidTokenError) {

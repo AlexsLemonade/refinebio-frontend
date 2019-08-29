@@ -16,7 +16,7 @@
 
     @include desktop {
       grid-template-columns: 250px auto;
-      grid-template-rows: 55px auto;
+      grid-template-rows: 85px auto;
       grid-template-areas:
         'side top-bar'
         'side main';
@@ -52,6 +52,12 @@
 
     @include desktop {
       margin-bottom: 24px;
+    }
+
+    &__filter {
+      padding: 0;
+      line-height: 1.5;
+      flex-basis: 100%;
     }
   }
 
@@ -145,14 +151,10 @@
   }
 
   &__number-results {
-    line-height: 32px;
-
-    @include tablet {
-      line-height: inherit;
-    }
+    display: flex;
+    flex-wrap: wrap;
 
     > div {
-      display: inline-block;
       margin-right: 24px;
     }
   }
