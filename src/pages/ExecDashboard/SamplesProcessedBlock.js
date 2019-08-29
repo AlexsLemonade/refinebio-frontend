@@ -7,27 +7,36 @@ import { useLoader } from '../../components/Loader';
 import { fetchDashboardData } from '../../api/dashboad';
 import { formatNumber, numberFormatter } from '../../common/helpers';
 
-const YESTERDAY = 'Yesterday';
-const WEEK = 'Last Week';
-const MONTH = 'Last Month';
-const YEAR = 'Last Year';
-
 export default function SamplesProcessedBlock() {
-  const [interval, setInterval] = React.useState(YEAR);
-  const rangeParam =
-    interval === YESTERDAY
-      ? 'day'
-      : interval === WEEK
-      ? 'week'
-      : interval === MONTH
-      ? 'month'
-      : 'year';
-  const { data, isLoading } = useLoader(() => fetchDashboardData(rangeParam), [
-    rangeParam,
-  ]);
-  const totalSamples = !isLoading
-    ? data.processed_samples.timeline.reduce((acc, x) => acc + x.total, 0)
-    : 0;
+  const ranges = {
+    day: 'Yesterday',
+    week: 'Last Week',
+    month: 'Last Month',
+    year: 'Last Year',
+  };
+  const [interval, setInterval] = React.useState(ranges.year);
+  const rangeParam = Object.keys(ranges).find(r => ranges[r] === interval);
+  const { data, isLoading, hasError, refresh } = useLoader(
+    () => fetchDashboardData(rangeParam),
+    [rangeParam]
+  );
+
+  React.useEffect(() => {
+    let cancel = false;
+    if (!isLoading && hasError) {
+      setTimeout(() => {
+        if (!isLoading && !cancel) refresh();
+      }, 3000);
+    }
+    return () => {
+      cancel = true;
+    };
+  }, [hasError, refresh, isLoading]);
+
+  const totalSamples =
+    !isLoading && data
+      ? data.processed_samples.timeline.reduce((acc, x) => acc + x.total, 0)
+      : 0;
 
   return (
     <div className="exec-dash__sample-graph">
@@ -37,13 +46,13 @@ export default function SamplesProcessedBlock() {
           View:{' '}
           <Dropdown
             selectedOption={interval}
-            options={[YESTERDAY, WEEK, MONTH, YEAR]}
-            onChange={selected => setInterval(selected)}
+            options={Object.values(ranges)}
+            onChange={i => setInterval(i)}
           />
         </div>
       </div>
 
-      {isLoading ? (
+      {isLoading || !data ? (
         <Spinner />
       ) : (
         <>
