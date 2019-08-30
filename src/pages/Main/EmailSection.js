@@ -24,8 +24,8 @@ export default function EmailSection() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const result = await Ajax.post(formUrl, getFormData());
-      setSubscribed(result.inlineMessage);
+      await Ajax.post(formUrl, getFormData());
+      setSubscribed(true);
     } catch (err) {
       // Show error message setError(true); "Please submit a valid e-mail address."
       // console.log(err);
@@ -39,9 +39,15 @@ export default function EmailSection() {
         {subscribed && 'Thanks!'}
       </div>
       <div className="main__blurp-text">
-        {!subscribed &&
-          'Be the first to know about new features, compendia releases, and more!'}
-        {subscribed}
+        {subscribed ? (
+          <span>
+            {' '}
+            Thank you for subscribing. Updates will be sent to{' '}
+            <span style={{ color: '#f3e503' }}>{email}</span>
+          </span>
+        ) : (
+          'Be the first to know about new features, compendia releases, and more!'
+        )}
       </div>
       {/* Email Subscribe Form */}
       <div id="email-form">
@@ -54,6 +60,9 @@ export default function EmailSection() {
           target="_blank"
           onSubmit={handleSubmit}
           noValidate
+          style={{
+            visibility: subscribed ? 'hidden' : 'visible',
+          }}
         >
           <div id="hs_embed_signup_scroll" className="main__email-section-form">
             <input
