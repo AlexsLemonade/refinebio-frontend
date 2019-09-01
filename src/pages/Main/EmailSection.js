@@ -59,7 +59,7 @@ export default function EmailSection() {
           validationSchema={Yup.object().shape({
             email: Yup.string()
               .email('Please enter a valid email')
-              .required('Please enter your email adress'),
+              .required('Please enter your email address'),
           })}
         >
           {({ values, isSubmitting, handleChange, touched, errors }) => (
