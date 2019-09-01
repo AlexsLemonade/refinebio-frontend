@@ -64,6 +64,11 @@ export default function EmailSection() {
         >
           {({ values, isSubmitting, handleChange, touched, errors }) => (
             <Form>
+              <div>
+                {touched.email && errors.email ? (
+                  <Error>{errors.email}</Error>
+                ) : null}
+              </div>
               <div
                 id="embed_signup_scroll"
                 className="main__email-section-form"
@@ -85,11 +90,6 @@ export default function EmailSection() {
                     className="button--inverted main__email-section-button"
                   />
                 </div>
-              </div>
-              <div>
-                {touched.email && errors.email ? (
-                  <Error>{errors.email}</Error>
-                ) : null}
               </div>
             </Form>
           )}
