@@ -213,7 +213,7 @@ function transformTimeline(timeline, range, fields = ['total']) {
  * @param {*} range day/ | week | month | year
  */
 function* getTimeline(range) {
-  const now = moment.utc();
+  const now = moment();
   const data = {
     day: {
       start: now
