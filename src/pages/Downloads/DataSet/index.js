@@ -56,6 +56,7 @@ export default function DataSet({
     <div>
       <Helmet>
         <title>Dataset - refine.bio</title>
+        <meta name="robots" content="noindex, nofollow" />
         <meta
           name="description"
           content="Explore and download this custom harmonized childhood cancer transcriptome dataset."
