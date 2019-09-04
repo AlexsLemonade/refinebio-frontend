@@ -25,7 +25,7 @@ export default function ExecutiveDashboard() {
   const { params } = useHistory();
   const isTv = !!params.tv;
   const processorJobs = data
-    ? [...data.processor_jobs.timeline].slice(0, -1)
+    ? [...data.processor_jobs.timeline.slice(0, -1)]
     : [];
 
   return (
