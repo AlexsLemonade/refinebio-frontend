@@ -35,23 +35,8 @@ export default function EmailSection() {
     setSubmitting(false);
   };
 
-  return (
-    <div className="main__container">
-      <div className="main__heading-1">
-        {email ? 'Thanks' : 'Sign Up for Updates'}
-      </div>
-      <div className="main__blurp-text">
-        {email ? (
-          <span>
-            {' '}
-            Thank you for subscribing. Updates will be sent to{' '}
-            <span style={{ color: '#f3e503' }}>{email}</span>
-          </span>
-        ) : (
-          'Be the first to know about new features, compendia releases, and more!'
-        )}
-      </div>
-      {/* Email Subscribe Form */}
+  const emailForm = () => {
+    return (
       <div id="email-form">
         <Formik
           onSubmit={handleSubmit}
@@ -93,6 +78,26 @@ export default function EmailSection() {
           )}
         </Formik>
       </div>
+    );
+  };
+
+  return (
+    <div className="main__container">
+      <div className="main__heading-1">
+        {email ? 'Thanks' : 'Sign Up for Updates'}
+      </div>
+      <div className="main__blurp-text">
+        {email ? (
+          <span>
+            {' '}
+            Thank you for subscribing. Updates will be sent to{' '}
+            <span style={{ color: '#f3e503' }}>{email}</span>
+          </span>
+        ) : (
+          'Be the first to know about new features, compendia releases, and more!'
+        )}
+      </div>
+      {!email && emailForm()}
     </div>
   );
 }
