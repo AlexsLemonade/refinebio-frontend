@@ -204,11 +204,17 @@
   }
 
   &__email-section-button {
-    background: $white;
-    color: $azure;
-    border: none;
     padding-top: 7px;
     padding-bottom: 7px;
+  }
+
+  &__email-section-error-container {
+    display: block;
+    text-align: left;
+    margin: 0 auto;
+    @include tablet {
+      width: 50%;
+    }
   }
 
   &__stats-placeholder {
