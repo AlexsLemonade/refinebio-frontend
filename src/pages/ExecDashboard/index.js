@@ -42,7 +42,7 @@ export default function ExecutiveDashboard() {
             <AppRunningSpeed data={data} />
 
             <div className="exec-dash__block">
-              <div>Processed Jobs</div>
+              <div>Newly Processed Samples</div>
               <div className="exec-dash__block-number">
                 {data.processor_jobs.timeline.length > 0
                   ? Math.ceil(
@@ -51,11 +51,11 @@ export default function ExecutiveDashboard() {
                     )
                   : '-'}
               </div>
-              <div className="exec-dash__block-small">jobs/hr</div>
+              <div className="exec-dash__block-small">samples/hr</div>
             </div>
 
             <div className="exec-dash__block">
-              <div>Downloadable Samples</div>
+              <div>Newly Downloadable Samples</div>
               <div className="exec-dash__block-number">
                 {data.processed_samples.last_hour > 0
                   ? data.processed_samples.last_hour

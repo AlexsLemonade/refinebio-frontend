@@ -41,6 +41,10 @@
       margin-left: 2em;
       margin-right: 2em;
     }
+
+    @include desktop {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
   }
 
   &__block {
