@@ -140,14 +140,14 @@ function getDashboardChartConfig(state, range) {
           size: 'small',
         },
         {
-          title: 'Processed Samples over time',
+          title: 'Downloadable Samples over time',
           data: chartSelectors.getProcessedSamplesOverTime(state, range),
           series: ['total'],
           type: 'area',
           size: 'large',
         },
         {
-          title: 'Unprocessed Samples over time',
+          title: 'Surveyed Samples over time',
           data: chartSelectors.getUnprocessedSamplesOverTime(state, range),
           series: ['total'],
           type: 'area',
