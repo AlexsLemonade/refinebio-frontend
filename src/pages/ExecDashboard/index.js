@@ -13,7 +13,9 @@ import Header from './Header';
 import ServerErrorPage from '../ServerError';
 
 export default function ExecutiveDashboard() {
-  const { data, hasError, refresh } = useLoader(fetchDashboardData);
+  const { data, hasError, refresh } = useLoader(() =>
+    fetchDashboardData('day')
+  );
 
   // refresh data every 5 mins
   useInterval(() => {
@@ -22,6 +24,9 @@ export default function ExecutiveDashboard() {
 
   const { params } = useHistory();
   const isTv = !!params.tv;
+  const processorJobs = data
+    ? [...data.processor_jobs.timeline.slice(0, -1)]
+    : [];
 
   return (
     <div className={classnames({ 'exec-dash': true, 'exec-dash--tv': isTv })}>
@@ -37,7 +42,20 @@ export default function ExecutiveDashboard() {
             <AppRunningSpeed data={data} />
 
             <div className="exec-dash__block">
-              <div>Processing Speed</div>
+              <div>Newly Processed Samples</div>
+              <div className="exec-dash__block-number">
+                {data.processor_jobs.timeline.length > 0
+                  ? Math.ceil(
+                      processorJobs.reduce((a, b) => a + b.successful, 0) /
+                        processorJobs.length
+                    )
+                  : '-'}
+              </div>
+              <div className="exec-dash__block-small">samples/hr</div>
+            </div>
+
+            <div className="exec-dash__block">
+              <div>Newly Downloadable Samples</div>
               <div className="exec-dash__block-number">
                 {data.processed_samples.last_hour > 0
                   ? data.processed_samples.last_hour
