@@ -37,13 +37,13 @@
     margin-right: 1em;
 
     @include tablet {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       margin-left: 2em;
       margin-right: 2em;
     }
 
     @include desktop {
-      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     }
   }
 
@@ -86,10 +86,6 @@
     text-align: left;
 
     @include tablet {
-      grid-column: span 2;
-    }
-
-    @include desktop {
       grid-column: span 3;
     }
   }

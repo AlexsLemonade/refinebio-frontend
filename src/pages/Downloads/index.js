@@ -37,6 +37,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
     <div className="downloads">
       <Helmet>
         <title>Download Dataset - refine.bio</title>
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <BackToTop />
       <Loader fetch={() => fetchDataSetDetails(dataSetId)}>

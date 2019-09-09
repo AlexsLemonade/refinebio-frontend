@@ -151,6 +151,14 @@ export function getSamplesOverTime(stats, range) {
   );
 }
 
+export function getProcessedSamplesOverTime(stats, range) {
+  return transformTimeline(stats.processed_samples.timeline, range);
+}
+
+export function getUnprocessedSamplesOverTime(stats, range) {
+  return transformTimeline(stats.unprocessed_samples.timeline, range);
+}
+
 export function getJobsByStatusOverTime(jobsTimeline, range) {
   return transformTimeline(jobsTimeline, range, JOB_STATUS);
 }
@@ -213,7 +221,7 @@ function transformTimeline(timeline, range, fields = ['total']) {
  * @param {*} range day/ | week | month | year
  */
 function* getTimeline(range) {
-  const now = moment.utc();
+  const now = moment();
   const data = {
     day: {
       start: now

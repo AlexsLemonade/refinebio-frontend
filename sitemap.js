@@ -58,7 +58,7 @@ const generateSitemap = async (resources) => {
   console.log('Building Site Sitemap...');
 
   const resourceUrls = await getUrlsForResources('experiments');
-  const staticUrls = ['/about', '/license', '/privacy', '/terms'].map(
+  const staticUrls = ['/', '/about', '/license', '/privacy', '/terms'].map(
     url => ({ url, priority: 0.5 })
   );
   const urls = [...staticUrls, ...resourceUrls];

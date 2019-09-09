@@ -140,9 +140,16 @@ function getDashboardChartConfig(state, range) {
           size: 'small',
         },
         {
-          title: 'Samples processed over time',
-          data: chartSelectors.getSamplesOverTime(state, range),
-          series: ['unprocessed', 'processed'],
+          title: 'Downloadable Samples over time',
+          data: chartSelectors.getProcessedSamplesOverTime(state, range),
+          series: ['total'],
+          type: 'area',
+          size: 'large',
+        },
+        {
+          title: 'Surveyed Samples over time',
+          data: chartSelectors.getUnprocessedSamplesOverTime(state, range),
+          series: ['total'],
           type: 'area',
           size: 'large',
         },
@@ -152,70 +159,6 @@ function getDashboardChartConfig(state, range) {
           series: ['experiments'],
           type: 'line',
           size: 'large',
-        },
-      ],
-    },
-    {
-      title: 'Downloads',
-      charts: [
-        {
-          title: 'Total datasets processed',
-          data: state.dataset.total,
-          type: 'text',
-          size: 'small',
-        },
-        {
-          title: 'Aggregate',
-          data: [
-            {
-              name: 'Experiment',
-              value: state.dataset.aggregated_by_experiment,
-            },
-            {
-              name: 'Species',
-              value: state.dataset.aggregated_by_species,
-            },
-          ],
-          type: 'pie',
-          size: 'medium',
-        },
-        {
-          title: 'Transformation',
-          data: [
-            {
-              name: 'None',
-              value: state.dataset.scale_by_none,
-            },
-            {
-              name: 'Minmax',
-              value: state.dataset.scale_by_minmax,
-            },
-            {
-              name: 'Standard',
-              value: state.dataset.scale_by_standard,
-            },
-            {
-              name: 'Robust',
-              value: state.dataset.scale_by_robust,
-            },
-          ],
-          type: 'pie',
-          size: 'medium',
-        },
-        {
-          title: "Dataset's processed over time",
-          data: chartSelectors.getDatasetsOverTime(state, range),
-          series: ['total'],
-          type: 'line',
-          size: 'large',
-        },
-        {
-          title: 'Volume of data downloaded over time',
-          data: chartSelectors.getVolumeOfDataOverTime(state, range),
-          series: ['total_size'],
-          type: 'line',
-          size: 'large',
-          formatValue: x => formatBytes(x),
         },
       ],
     },
@@ -346,6 +289,70 @@ function getDashboardChartConfig(state, range) {
           type: 'line',
           series: chartSelectors.JOB_STATUS,
           size: 'large',
+        },
+      ],
+    },
+    {
+      title: 'Downloads',
+      charts: [
+        {
+          title: 'Total datasets processed',
+          data: state.dataset.total,
+          type: 'text',
+          size: 'small',
+        },
+        {
+          title: 'Aggregate',
+          data: [
+            {
+              name: 'Experiment',
+              value: state.dataset.aggregated_by_experiment,
+            },
+            {
+              name: 'Species',
+              value: state.dataset.aggregated_by_species,
+            },
+          ],
+          type: 'pie',
+          size: 'medium',
+        },
+        {
+          title: 'Transformation',
+          data: [
+            {
+              name: 'None',
+              value: state.dataset.scale_by_none,
+            },
+            {
+              name: 'Minmax',
+              value: state.dataset.scale_by_minmax,
+            },
+            {
+              name: 'Standard',
+              value: state.dataset.scale_by_standard,
+            },
+            {
+              name: 'Robust',
+              value: state.dataset.scale_by_robust,
+            },
+          ],
+          type: 'pie',
+          size: 'medium',
+        },
+        {
+          title: "Dataset's processed over time",
+          data: chartSelectors.getDatasetsOverTime(state, range),
+          series: ['total'],
+          type: 'line',
+          size: 'large',
+        },
+        {
+          title: 'Volume of data downloaded over time',
+          data: chartSelectors.getVolumeOfDataOverTime(state, range),
+          series: ['total_size'],
+          type: 'line',
+          size: 'large',
+          formatValue: x => formatBytes(x),
         },
       ],
     },

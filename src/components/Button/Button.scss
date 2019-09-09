@@ -62,6 +62,11 @@ $default-active-shadow: 0 3px 4px 0 rgba($black, 0.3);
     }
   }
 
+  &--inverted {
+    background-color: $white;
+    color: $azure;
+  }
+
   &--remove {
     @extend .button--secondary;
     color: $black;
