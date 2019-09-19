@@ -126,7 +126,8 @@ let DownloadBar = ({
                 quantile_normalize: !quantile_normalize,
               })
             }
-            checked={!quantile_normalize}
+            checked={!quantile_normalize && aggregate_by !== 'SPECIES'}
+            disabled={aggregate_by === 'SPECIES'}
           >
             <span>Skip quantile normalization for RNA-seq samples</span>
             <HelpIcon
