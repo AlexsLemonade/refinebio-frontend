@@ -23,8 +23,6 @@ const Footer = () => (
             Childhood Cancer Data Lab (CCDL)
           </a>
         </p>
-      </div>
-      <div className="footer__right">
         <div className="footer__socials">
           <a
             href="https://secure.squarespace.com/checkout/donate?donatePageId=5b046884575d1f9eea37935b"
@@ -35,22 +33,24 @@ const Footer = () => (
             <img src={FundIcon} className="footer__icon" alt="fund-icon" /> Fund
             the CCDL
           </a>
-          <a
-            href="https://twitter.com/CancerDataLab"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer__link-twitter"
-          >
-            <IoLogoTwitter className="footer__social" />
-          </a>
-          <a
-            href="https://github.com/AlexsLemonade/refinebio"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer__link-github"
-          >
-            <IoLogoGithub className="footer__social" />
-          </a>
+          <div>
+            <a
+              href="https://twitter.com/CancerDataLab"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer__link-twitter"
+            >
+              <IoLogoTwitter className="footer__social" />
+            </a>
+            <a
+              href="https://github.com/AlexsLemonade/refinebio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer__link-github"
+            >
+              <IoLogoGithub className="footer__social" />
+            </a>
+          </div>
         </div>
         <p className="footer__author">
           Developed by the{' '}
@@ -73,6 +73,33 @@ const Footer = () => (
           >
             Alex's Lemonade Stand Foundation
           </a>
+        </p>
+      </div>
+      <div className="footer__right">
+        <div>
+          <b>Cite refine.bio</b>
+        </div>
+        <p>
+          Casey S. Greene, Dongbo Hu, Richard W. W. Jones, Stephanie Liu, David
+          S. Mejia, Rob Patro, Stephen R. Piccolo, Ariel Rodriguez Romero, Hirak
+          Sarkar, Candace L. Savonen, Jaclyn N. Taroni, William E. Vauclain,
+          Deepashree Venkatesh Prasad, Kurt G. Wheeler.{' '}
+          <strong>
+            refine.bio: a resource of uniformly processed publicly available
+            gene expression datasets.
+          </strong>
+          <br />
+          URL:{' '}
+          <a href="https://www.refine.bio" rel="nofollow">
+            https://www.refine.bio
+          </a>
+          <br />
+          <br />
+          <em>
+            Note that the contributor list is in alphabetical order as we
+            prepare a manuscript for submission
+          </em>
+          .
         </p>
       </div>
     </div>

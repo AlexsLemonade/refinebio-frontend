@@ -32,21 +32,16 @@
 
   @include tablet {
     &__left {
-      flex: 3;
+      flex: 1;
       margin-right: 21 * 8px;
 
       @include tablet {
-        margin-right: 40px;
-        max-width: 570px;
+        margin-right: 160px;
       }
     }
 
     &__right {
-      flex: 2;
-
-      @include tablet {
-        max-width: 340px;
-      }
+      flex: 1;
     }
   }
 
@@ -57,7 +52,7 @@
     margin-top: 2 * 8px;
 
     @include tablet {
-      margin-top: 0;
+      margin-top: 56px;
     }
   }
 
@@ -118,7 +113,7 @@
   }
 
   &__author {
-    margin-top: 5 * 8px;
+    margin-top: 2 * 8px;
   }
 
   &__icon {
