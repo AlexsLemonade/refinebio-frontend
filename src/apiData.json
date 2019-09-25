@@ -1,12 +1,12 @@
 {
   "version": "0.0.0",
+  "aboutStats": {
+    "experiments_processed": 44446,
+    "samples_available": 1295975,
+    "supported_organisms": 202,
+    "total_size_in_bytes": 832195361132962
+  },
   "stats": {
-    "about": {
-      "supported_organisms": 30,
-      "total_size_in_bytes": 12946813467845,
-      "samples_available": 1230234,
-      "experiments_processed": 35094
-    },
     "survey_jobs": {
       "total": 123492,
       "successful": 44364,

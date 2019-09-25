@@ -43,36 +43,36 @@ function About() {
           <div className="box about__top-box">
             <div className="about__top-box-tagline">
               refine.bio has harmonized{' '}
-              {formatNumber(apiData.stats.about.experiments_processed, 0)} gene
+              {formatNumber(apiData.aboutStats.experiments_processed, 0)} gene
               expression experiments
             </div>
 
             <div className="about__stats-list">
               <div className="about__stat-item">
                 <div className="about__stat">
-                  {numberFormatter(apiData.stats.about.samples_available)}
+                  {numberFormatter(apiData.aboutStats.samples_available, 1)}
                 </div>
                 <div className="about__stat-text">
-                  {numberFormatter(apiData.stats.about.samples_available)}{' '}
+                  {numberFormatter(apiData.aboutStats.samples_available, 1)}{' '}
                   samples available
                 </div>
               </div>
               <div className="about__stat-item">
                 <div className="about__stat">
-                  {numberFormatter(apiData.stats.about.supported_organisms)}
+                  {numberFormatter(apiData.aboutStats.supported_organisms)}
                 </div>
                 <div className="about__stat-text">
                   Support for{' '}
-                  {formatNumber(apiData.stats.about.supported_organisms, 0)}{' '}
+                  {formatNumber(apiData.aboutStats.supported_organisms, 0)}{' '}
                   organisms
                 </div>
               </div>
               <div className="about__stat-item">
                 <div className="about__stat">
-                  {formatBytes(apiData.stats.about.total_size_in_bytes, 1)}
+                  {formatBytes(apiData.aboutStats.total_size_in_bytes, 1)}
                 </div>
                 <div className="about__stat-text">
-                  {formatBytes(apiData.stats.about.total_size_in_bytes, 1)} of
+                  {formatBytes(apiData.aboutStats.total_size_in_bytes, 1)} of
                   raw data processed
                 </div>
               </div>
