@@ -1,5 +1,11 @@
 {
   "version": "0.0.0",
+  "aboutStats": {
+    "experiments_processed": 44446,
+    "samples_available": 1295975,
+    "supported_organisms": 202,
+    "total_size_in_bytes": 832195361132962
+  },
   "stats": {
     "survey_jobs": {
       "total": 123492,
@@ -595,8 +601,7 @@
     "citrus": "[Citrus] Affymetrix Citrus Genome Array",
     "clariomdhuman": "[Clariom_D_Human] Affymetrix Human Clariom D Assay",
     "clariomshuman": "[Clariom_S_Human] Affymetrix Clariom S Human array",
-    "clariomshumanht":
-      "[Clariom_S_Human_HT] Affymetrix Clariom S Pico Assay HT",
+    "clariomshumanht": "[Clariom_S_Human_HT] Affymetrix Clariom S Pico Assay HT",
     "clariomsmouse": "[Clariom_S_Mouse] Affymetrix Mouse Clariom S Array",
     "clariomsrat": "[Clariom_S_Rat] Affymetrix Rat Clariom S Assay",
     "cotton": "[Cotton] Affymetrix Cotton Genome Array",
@@ -610,55 +615,36 @@
     "equgene10st": "[EquGene-1_0-st] Equus caballus Gene 1.0 ST Array",
     "felgene10st": "[FelGene-1_0] Feline Gene 1.0 ST Array",
     "GPL10088": "AB SOLiD System 3.0 (Arabidopsis thaliana)",
-    "GPL10123":
-      "Agilent-022060 SurePrint G3 Human CGH Microarray 4x180K (Feature Number version)",
+    "GPL10123": "Agilent-022060 SurePrint G3 Human CGH Microarray 4x180K (Feature Number version)",
     "GPL10262": "Renji Hospital ABI Human TaqMan MicroRNA Assays V2.0",
-    "GPL10526":
-      "[HG-U133_Plus_2] Affymetrix GeneChip Human Genome HG-U133 Plus 2 Array [Brainarray Version 12]",
-    "GPL10708":
-      "Applied Biosystems TaqMan MicroRNA Array (v 1.0, Early Access)",
-    "GPL10787":
-      "Agilent-028005 SurePrint G3 Mouse GE 8x60K Microarray (Probe Name version)",
-    "GPL10989":
-      "NimbleGen Mouse CGH 3x720K Whole-Genome Tiling Array (Build MM9) [080603_MM9_WG_CGH_HX3]",
+    "GPL10526": "[HG-U133_Plus_2] Affymetrix GeneChip Human Genome HG-U133 Plus 2 Array [Brainarray Version 12]",
+    "GPL10708": "Applied Biosystems TaqMan MicroRNA Array (v 1.0, Early Access)",
+    "GPL10787": "Agilent-028005 SurePrint G3 Mouse GE 8x60K Microarray (Probe Name version)",
+    "GPL10989": "NimbleGen Mouse CGH 3x720K Whole-Genome Tiling Array (Build MM9) [080603_MM9_WG_CGH_HX3]",
     "GPL11093": "[scrGLYCO-v1F] Custom Affymetrix Glyco v1 GeneChip",
-    "GPL11157":
-      "[Cytogenetics_Array] Affymetrix Cytogenetics Whole-Genome 2.7M Array",
+    "GPL11157": "[Cytogenetics_Array] Affymetrix Cytogenetics Whole-Genome 2.7M Array",
     "GPL1211": "NIA MGC, Mammalian Genome Collection",
-    "GPL13118":
-      "NimbleGen Human DNA Methylation 3x720K CpG Island Plus RefSeq Promoter Array [100718_HG18_CpG_Refseq_Prom_MeDIP]",
+    "GPL13118": "NimbleGen Human DNA Methylation 3x720K CpG Island Plus RefSeq Promoter Array [100718_HG18_CpG_Refseq_Prom_MeDIP]",
     "GPL13147": "[MOUSEDIVm520650] Affymetrix Mouse Diversity Genotyping Array",
     "GPL13328": "TaqMan(r) Array Human MicroRNA A Cards v2.0",
-    "GPL13497":
-      "Agilent-026652 Whole Human Genome Microarray 4x44K v2 (Probe Name version)",
+    "GPL13497": "Agilent-026652 Whole Human Genome Microarray 4x44K v2 (Probe Name version)",
     "GPL1352": "[U133_X3P] Affymetrix Human X3P Array",
-    "GPL13534":
-      "Illumina HumanMethylation450 BeadChip (HumanMethylation450_15017482)",
+    "GPL13534": "Illumina HumanMethylation450 BeadChip (HumanMethylation450_15017482)",
     "GPL13685": "Agilent-017075 human hg18 promoter 800-200",
-    "GPL13825":
-      "Arraystar Human LncRNA microarray V2.0 (Agilent-033010 Feature Number version)",
+    "GPL13825": "Arraystar Human LncRNA microarray V2.0 (Agilent-033010 Feature Number version)",
     "GPL143": "Atlas Human cDNA Expression Array (Cat. #7740-1)",
     "GPL1444": "Hopkins Tag Array",
-    "GPL14550":
-      "Agilent-028004 SurePrint G3 Human GE 8x60K Microarray (Probe Name Version)",
+    "GPL14550": "Agilent-028004 SurePrint G3 Human GE 8x60K Microarray (Probe Name Version)",
     "GPL14613": "[miRNA-2] Affymetrix Multispecies miRNA-2 Array",
-    "GPL15018":
-      "Agilent-031181 Unrestricted_Human_miRNA_V16.0_Microarray 030840 (Feature Number version)",
-    "GPL15076":
-      "Agilent-014695 Mouse Genome CGH Microarray 244A (G4415A)(Probe Name version)",
-    "GPL15236":
-      "[HuEx-1_0-st] Affymetrix Human Exon 1.0 ST Array [CDF: Brainarray Version 12.1.0]",
-    "GPL15436":
-      "NimbleGen Human CGH 3x720K Whole-Genome Tiling v3.0 Array [090527_HG18_WG_CGH_v3.1_HX3]",
-    "GPL15547":
-      "Agilent-035430 mouse miRNA array (miRBase release 17 miRNA ID version)",
+    "GPL15018": "Agilent-031181 Unrestricted_Human_miRNA_V16.0_Microarray 030840 (Feature Number version)",
+    "GPL15076": "Agilent-014695 Mouse Genome CGH Microarray 244A (G4415A)(Probe Name version)",
+    "GPL15236": "[HuEx-1_0-st] Affymetrix Human Exon 1.0 ST Array [CDF: Brainarray Version 12.1.0]",
+    "GPL15436": "NimbleGen Human CGH 3x720K Whole-Genome Tiling v3.0 Array [090527_HG18_WG_CGH_v3.1_HX3]",
+    "GPL15547": "Agilent-035430 mouse miRNA array (miRBase release 17 miRNA ID version)",
     "GPL16131": "[CytoScanHD_Array] Affymetrix CytoScan HD Array",
-    "GPL16275":
-      "Agilent-035430 mouse miRNA array (miRNA_107_Sep09 miRNA ID version)",
-    "GPL16284":
-      "NimbleGen Human DNA Methylation 2.1M Deluxe Promoter Array [100929_HG19_Deluxe_Prom_Meth_HX1]",
-    "GPL16304":
-      "Illumina HumanMethylation450 BeadChip [UBC enhanced annotation v1.0]",
+    "GPL16275": "Agilent-035430 mouse miRNA array (miRNA_107_Sep09 miRNA ID version)",
+    "GPL16284": "NimbleGen Human DNA Methylation 2.1M Deluxe Promoter Array [100929_HG19_Deluxe_Prom_Meth_HX1]",
+    "GPL16304": "Illumina HumanMethylation450 BeadChip [UBC enhanced annotation v1.0]",
     "GPL16384": "[miRNA-3] Affymetrix Multispecies miRNA-3 Array",
     "GPL16417": "Illumina MiSeq (Mus musculus)",
     "GPL16558": "AB 5500 Genetic Analyzer (Homo sapiens)",
@@ -666,24 +652,18 @@
     "GPL17327": "Agilent-021441 NCode Human Long Non-coding RNA microarray",
     "GPL18270": "Agilent-037264 mouse 400K custom CGH array",
     "GPL18602": "[OncoScan] Affymetrix OncoScan FFPE Assay",
-    "GPL18609":
-      "miRCURY LNA microRNA Array, 5th and 7th generation combined - hsa, mmu & rno (miRBase 19.0)",
+    "GPL18609": "miRCURY LNA microRNA Array, 5th and 7th generation combined - hsa, mmu & rno (miRBase 19.0)",
     "GPL19197": "Agilent-041648 CMGG Human V1.1 60k [Probe Name Version]",
     "GPL199": "[Ecoli_ASv2] Affymetrix E. coli Antisense Genome Array",
     "GPL20": "Incyte Drosophila LifeArray v1.0",
-    "GPL2004":
-      "[Mapping50K_Hind240] Affymetrix Human Mapping 50K Hind240 SNP Array",
-    "GPL2005":
-      "[Mapping50K_Xba240] Affymetrix Human Mapping 50K Xba240 SNP Array",
+    "GPL2004": "[Mapping50K_Hind240] Affymetrix Human Mapping 50K Hind240 SNP Array",
+    "GPL2005": "[Mapping50K_Xba240] Affymetrix Human Mapping 50K Xba240 SNP Array",
     "GPL201": "[HG-Focus] Affymetrix Human HG-Focus Target Array",
     "GPL2040": "UHN Human CpG 12K Array (HCGI12K)",
-    "GPL21185":
-      "Agilent-072363 SurePrint G3 Human GE v3 8x60K Microarray 039494 [Probe Name Version]",
-    "GPL21572":
-      "[miRNA-4] Affymetrix Multispecies miRNA-4 Array [ProbeSet ID version]",
+    "GPL21185": "Agilent-072363 SurePrint G3 Human GE v3 8x60K Microarray 039494 [Probe Name Version]",
+    "GPL21572": "[miRNA-4] Affymetrix Multispecies miRNA-4 Array [ProbeSet ID version]",
     "GPL223": "SAGE:10:NlaIII:Bos taurus",
-    "GPL23434":
-      "Arraystar Human LncRNA microarray V2.0 (Agilent-033010; custom-annotation)",
+    "GPL23434": "Arraystar Human LncRNA microarray V2.0 (Agilent-033010; custom-annotation)",
     "GPL236": "NIA_Mouse_15K_Array",
     "GPL2641": "[Mapping10K_Xba142] Affymetrix Human Mapping 10K 2.0 Array",
     "GPL2695": "SHBB",
@@ -691,10 +671,8 @@
     "GPL2705": "SHBV",
     "GPL2719": "intestine-spleen combined array",
     "GPL273": "UCSF 3OPHs version 1 human long oligo array",
-    "GPL2891":
-      "GE Healthcare/Amersham Biosciences CodeLink   UniSet Human 20K I Bioarray",
-    "GPL2894":
-      "GE Healthcare/Amersham Biosciences CodeLink   UniSet Mouse 20K I Bioarray",
+    "GPL2891": "GE Healthcare/Amersham Biosciences CodeLink   UniSet Human 20K I Bioarray",
+    "GPL2894": "GE Healthcare/Amersham Biosciences CodeLink   UniSet Mouse 20K I Bioarray",
     "GPL2995": "ABI Mouse Genome Survey Microarray",
     "GPL3254": "SHCK",
     "GPL3322": "SHDL",
@@ -705,42 +683,30 @@
     "GPL3787": "Nimblegen Human 1.5 kb promoter",
     "GPL3930": "Nimblegen human 5K promoter array 2",
     "GPL4": "SAGE:10:NlaIII:Homo sapiens",
-    "GPL4091":
-      "Agilent-014693 Human Genome CGH Microarray 244A (Feature number version)",
-    "GPL4092":
-      "Agilent-014695 Mouse Genome CGH Microarray 244A (G4415A) (Feature Number version)",
-    "GPL4124":
-      "Agilent-014706 Human Promoter ChIP-on-Chip Set 244K, Microarray 1 of 2 G4489A (Feature Number version)",
-    "GPL4126":
-      "Agilent-014791 Human CpG Island ChIP-on-Chip Microarray 244K (G4492A) (Feature Number version)",
-    "GPL4128":
-      "Agilent-014716 Mouse Promoter ChIP-on-Chip Set 244K, Microarray 1 of 2 (G4490A) (Feature Number version)",
-    "GPL4133":
-      "Agilent-014850 Whole Human Genome Microarray 4x44K G4112F (Feature Number version)",
-    "GPL4134":
-      "Agilent-014868 Whole Mouse Genome Microarray 4x44K G4122F (Feature Number version)",
+    "GPL4091": "Agilent-014693 Human Genome CGH Microarray 244A (Feature number version)",
+    "GPL4092": "Agilent-014695 Mouse Genome CGH Microarray 244A (G4415A) (Feature Number version)",
+    "GPL4124": "Agilent-014706 Human Promoter ChIP-on-Chip Set 244K, Microarray 1 of 2 G4489A (Feature Number version)",
+    "GPL4126": "Agilent-014791 Human CpG Island ChIP-on-Chip Microarray 244K (G4492A) (Feature Number version)",
+    "GPL4128": "Agilent-014716 Mouse Promoter ChIP-on-Chip Set 244K, Microarray 1 of 2 (G4490A) (Feature Number version)",
+    "GPL4133": "Agilent-014850 Whole Human Genome Microarray 4x44K G4112F (Feature Number version)",
+    "GPL4134": "Agilent-014868 Whole Mouse Genome Microarray 4x44K G4122F (Feature Number version)",
     "GPL4723": "SWEGENE_BAC_32K_Full",
     "GPL4861": "Swegene Human 27K RAP (positions from file)",
     "GPL4910": "[Hs35b_P01R] Affymetrix Human Tiling 2.0R Set, Array 1",
     "GPL5082": "[Hs_PromPR] Affymetrix Human Promoter 1.0R Array",
-    "GPL5175":
-      "[HuEx-1_0-st] Affymetrix Human Exon 1.0 ST Array [transcript (gene) version]",
+    "GPL5175": "[HuEx-1_0-st] Affymetrix Human Exon 1.0 ST Array [transcript (gene) version]",
     "GPL5373": "Agilent Homo sapiens 44k custom array",
     "GPL560": "Developmental Toxicity of the Mouse Embryo (DTME)",
     "GPL5770": "Operon Human V3.0.2 printed oligonucleotide array",
     "GPL5811": "[Mm_PromPR] Affymetrix Mouse Promoter 1.0R Array",
-    "GPL5820":
-      "NimbleGen Homo sapiens HG18 Whole Genome CGH Tiling Set (7 of 8)",
+    "GPL5820": "NimbleGen Homo sapiens HG18 Whole Genome CGH Tiling Set (7 of 8)",
     "GPL5826": "DASL Human Cancer Panel by Probe",
-    "GPL6096":
-      "[MoEx-1_0-st] Affymetrix Mouse Exon 1.0 ST Array [transcript (gene) version]",
+    "GPL6096": "[MoEx-1_0-st] Affymetrix Mouse Exon 1.0 ST Array [transcript (gene) version]",
     "GPL6182": "NimbleGen custom murine genomic tiling array",
-    "GPL6193":
-      "[MoEx-1_0-st] Affymetrix Mouse Exon 1.0 ST Array [probe set (exon) version]",
+    "GPL6193": "[MoEx-1_0-st] Affymetrix Mouse Exon 1.0 ST Array [probe set (exon) version]",
     "GPL6434": "Illumina HumanHap550 Genotyping BeadChip v3",
     "GPL6436": "NimbleGen Mouse 2.1M NCBI36",
-    "GPL6480":
-      "Agilent-014850 Whole Human Genome Microarray 4x44K G4112F (Probe Name version)",
+    "GPL6480": "Agilent-014850 Whole Human Genome Microarray 4x44K G4112F (Probe Name version)",
     "GPL6603": "HGS17_min_promoter_set",
     "GPL6604": "HG17_HELP_Promoter",
     "GPL6673": "Nimblegen human 16MB custom tiling array (HG17) design1",
@@ -748,32 +714,24 @@
     "GPL6801": "[GenomeWideSNP_6] Affymetrix Genome-Wide Human SNP 6.0 Array",
     "GPL6804": "[GenomeWideSNP_5] Affymetrix Genome-Wide Human SNP 5.0 Array",
     "GPL6844": "FHCRC miRNA Array v1.8.1",
-    "GPL6985":
-      "Illumina HumanCNV370-QuadV3 DNA Analysis BeadChip (HumanCNV370-QuadV3_C)",
+    "GPL6985": "Illumina HumanCNV370-QuadV3 DNA Analysis BeadChip (HumanCNV370-QuadV3_C)",
     "GPL70": "Affymetrix roDROMEGAa Drosophila full genome",
-    "GPL7202":
-      "Agilent-014868 Whole Mouse Genome Microarray 4x44K G4122F (Probe Name version)",
-    "GPL7546":
-      "Affymetrix GeneChip Mouse Genome 430 2.0 Array [CDF: Mm_ENTREZG_10]",
+    "GPL7202": "Agilent-014868 Whole Mouse Genome Microarray 4x44K G4122F (Probe Name version)",
+    "GPL7546": "Affymetrix GeneChip Mouse Genome 430 2.0 Array [CDF: Mm_ENTREZG_10]",
     "GPL7566": "Human Genome U133 A 2.0 Custom CDF Version 9",
     "GPL7723": "miRCURY LNA microRNA Array, v.11.0 - hsa, mmu & rno",
     "GPL80": "[Hu6800] Affymetrix Human Full Length HuGeneFL Array",
     "GPL8179": "Illumina Human v2 MicroRNA expression beadchip",
     "GPL8234": "Illumina HumanWG6_V2 chip",
     "GPL8432": "Illumina HumanRef-8 WG-DASL v3.0",
-    "GPL8490":
-      "Illumina HumanMethylation27 BeadChip (HumanMethylation27_270596_v.1.2)",
+    "GPL8490": "Illumina HumanMethylation27 BeadChip (HumanMethylation27_270596_v.1.2)",
     "GPL875": "Agilent Human 1 cDNA Microarray (G4100A) [layout A]",
     "GPL8786": "[miRNA-1] Affymetrix Multispecies miRNA-1 Array",
-    "GPL885":
-      "Agilent-011521 Human 1A Microarray G4110A  (Feature Number version)",
-    "GPL890":
-      "Agilent-011868 Rat Oligo Microarray G4130A (Feature Number version)",
+    "GPL885": "Agilent-011521 Human 1A Microarray G4110A  (Feature Number version)",
+    "GPL890": "Agilent-011868 Rat Oligo Microarray G4130A (Feature Number version)",
     "GPL891": "Agilent-011978 Mouse Microarray G4121A (Feature Number version)",
-    "GPL9081":
-      "Agilent-016436 Human miRNA Microarray 1.0 G4472A (miRNA ID version)",
-    "GPL9128":
-      "Agilent-014693 Human Genome CGH Microarray 244A (Probe name version)",
+    "GPL9081": "Agilent-016436 Human miRNA Microarray 1.0 G4472A (miRNA ID version)",
+    "GPL9128": "Agilent-014693 Human Genome CGH Microarray 244A (Probe name version)",
     "GPL9138": "AB SOLiD System 2.0 (Homo sapiens)",
     "GPL9186": "454 GS FLX (Homo sapiens)",
     "GPL9442": "AB SOLiD System 3.0 (Homo sapiens)",
@@ -782,8 +740,7 @@
     "hgu133a": "[HG-U133A] Affymetrix Human Genome U133A Array",
     "hgu133a2": "[HG-U133A_2] Affymetrix Human Genome U133A 2.0 Array",
     "hgu133b": "[HG-U133B] Affymetrix Human Genome U133B Array",
-    "hgu133plus2":
-      "[HG-U133_Plus_2] Affymetrix Human Genome U133 Plus 2.0 Array",
+    "hgu133plus2": "[HG-U133_Plus_2] Affymetrix Human Genome U133 Plus 2.0 Array",
     "hgu219": "[HG-U219] Affymetrix Human Genome U219 Array",
     "hgu95a": "[HG_U95A] Affymetrix Human Genome U95A Array",
     "hgu95av2": "[HG_U95Av2] Affymetrix Human Genome U95 Version 2 Array",
@@ -794,8 +751,7 @@
     "HiSeqXTen": "HiSeqXTen",
     "hta20": "[HTA-2_0] Affymetrix Human Transcriptome Array 2.0",
     "hthgu133a": "[HT_HG-U133A] Affymetrix HT Human Genome U133A Array",
-    "hthgu133pluspm":
-      "[HT_HG-U133_Plus_PM] Affymetrix HT HG-U133+ PM Array Plate",
+    "hthgu133pluspm": "[HT_HG-U133_Plus_PM] Affymetrix HT HG-U133+ PM Array Plate",
     "htmg430a": "[HT_MG-430A] Affymetrix HT Mouse Genome 430A Array",
     "htmg430pm": "[HT_MG-430_PM] Affymetrix HT MG-430 PM Array Plate",
     "htrat230pm": "[HT_Rat230_PM] Affymetrix HT RG-230 PM Array Plate",
@@ -823,28 +779,20 @@
     "IlluminaHiSeq4000": "Illumina HiSeq 4000",
     "Illumina_Human-6_v1.0": "Sentrix Human-6 Expression BeadChip",
     "Illumina_Human-6_V2.0": "Sentrix Human-6 v2 Expression BeadChip",
-    "Illumina_HumanHT-12_V3.0":
-      "Illumina HumanHT-12 V3.0 expression beadchip [ILMN_gene symbol]",
-    "Illumina_HumanHT-12_V4.0":
-      "Illumina HumanHT-12 V4.0 expression beadchip (reannotation)",
+    "Illumina_HumanHT-12_V3.0": "Illumina HumanHT-12 V3.0 expression beadchip [ILMN_gene symbol]",
+    "Illumina_HumanHT-12_V4.0": "Illumina HumanHT-12 V4.0 expression beadchip (reannotation)",
     "Illumina_HumanRef-8_v1.0": "Illumina humanRef-8 v1.0 expression beadchip",
     "Illumina_HumanRef-8_v2.0": "Sentrix HumanRef-8 v2 Expression BeadChip",
-    "Illumina_HumanRef-8_v3.0":
-      "Illumina HumanRef-8 v3.0 expression beadchip (Search Key version)",
-    "Illumina_HumanWG-6_V3.0":
-      "Illumina HumanWG-6 v3.0 expression beadchip (gene symbol)",
+    "Illumina_HumanRef-8_v3.0": "Illumina HumanRef-8 v3.0 expression beadchip (Search Key version)",
+    "Illumina_HumanWG-6_V3.0": "Illumina HumanWG-6 v3.0 expression beadchip (gene symbol)",
     "IlluminaMiSeq": "Illumina MiSeq",
-    "Illumina_Mouse-6_V1.0":
-      "University of Cambridge/Illumina Sentrix Mouse-6 Expression BeadChip v1",
+    "Illumina_Mouse-6_V1.0": "University of Cambridge/Illumina Sentrix Mouse-6 Expression BeadChip v1",
     "Illumina_Mouse-6_v1.1": "mouse-6 v1.1 (Illumina)",
-    "Illumina_MouseRef-8_V1.0":
-      "Sentrix MouseRef-8 Expression BeadChip (Target ID)",
+    "Illumina_MouseRef-8_V1.0": "Sentrix MouseRef-8 Expression BeadChip (Target ID)",
     "Illumina_MouseRef-8_V1.1": "VUmc/Illumina Sentrix MouseRef8 v1.1",
     "Illumina_MouseRef-8_v2.0": "MouseRef-8 v2.0 Expression BeadChip",
-    "Illumina_MouseWG-6_v2.0":
-      "University at Buffalo Illumina MouseWG-6 v2.0 expression beadchip (Gene version)",
-    "Illumina_RatRef-12_V1.0":
-      "Univ of Montreal Illumina ratRef-12 v1.0 expression beadchip",
+    "Illumina_MouseWG-6_v2.0": "University at Buffalo Illumina MouseWG-6 v2.0 expression beadchip (Gene version)",
+    "Illumina_RatRef-12_V1.0": "Univ of Montreal Illumina ratRef-12 v1.0 expression beadchip",
     "IonTorrentPGM": "Ion Torrent PGM",
     "IonTorrentProton": "Ion Torrent Proton",
     "maize": "[Maize] Affymetrix Maize Genome Array",
@@ -873,15 +821,13 @@
     "PacBioRS": "PacBio RS",
     "PacBioRSII": "PacBioRSII",
     "paeg1a": "[Pae_G1a] Affymetrix Pseudomonas aeruginosa Array",
-    "plasmodiumanopheles":
-      "[Plasmodium_Anopheles] Affymetrix Plasmodium/Anopheles Genome Array",
+    "plasmodiumanopheles": "[Plasmodium_Anopheles] Affymetrix Plasmodium/Anopheles Genome Array",
     "poplar": "[Poplar] Affymetrix Poplar Genome Array",
     "porcine": "[Porcine] Affymetrix Porcine Genome Array",
     "porgene10st": "[PorGene-1_0-st] Porcine Gene 1.0 ST Array",
     "porgene11st": "[PorGene-1_1-st] Porcine Gene 1.1 ST Array",
     "primeview": "[PrimeView] Affymetrix Human Gene Expression Array",
-    "primeview_spikeins":
-      "GeneChip® PrimeView™ Human Gene Expression Array (with External spike-in RNAs)",
+    "primeview_spikeins": "GeneChip® PrimeView™ Human Gene Expression Array (with External spike-in RNAs)",
     "rae230a": "[RAE230A] Affymetrix Rat Expression 230A Array",
     "rae230b": "[RAE230B] Affymetrix Rat Expression 230B Array",
     "ragene10st": "[RaGene-1_0-st] Affymetrix Rat Gene 1.0 ST Array",
@@ -889,8 +835,7 @@
     "ragene20st": "[RaGene-2_0-st] Affymetrix Rat Gene 2.0 ST Array",
     "ragene21st": "[RaGene-2_1-st] Affymetrix Rat Gene 2.1 ST Array",
     "rat2302": "[Rat230_2] Affymetrix Rat Genome 230 2.0 Array",
-    "rcngene10st":
-      "[RCnGene-1_0-st] Affymetrix Rice (Chinese Build) Gene 1.0 ST Array",
+    "rcngene10st": "[RCnGene-1_0-st] Affymetrix Rice (Chinese Build) Gene 1.0 ST Array",
     "rcngene11st": "[RCnGene-1_1-st] Affymetrix Rice Gene 1.1 ST Array",
     "rgu34a": "[RG_U34A] Affymetrix Rat Genome U34 Array",
     "rgu34b": "[RG_U34B] Affymetrix Rat Genome U34 Array",
@@ -909,12 +854,10 @@
     "soygene11st": "[SoyGene-1_1-st] Affymetrix Soybean Gene 1.1 ST Array",
     "sugarcane": "[Sugar_Cane] Affymetrix Sugar Cane Genome Array",
     "tomato": "[Tomato] Affymetrix Tomato Genome Array",
-    "u133aaofav2":
-      "[U133AAofAv2] Affymetrix GeneChip HT-HG_U133A Early Access Array",
+    "u133aaofav2": "[U133AAofAv2] Affymetrix GeneChip HT-HG_U133A Early Access Array",
     "UNKNOWN": "UNKNOWN",
     "unspecified": "unspecified",
-    "vitisvinifera":
-      "[Vitis_Vinifera] Affymetrix Vitis vinifera (Grape) Genome Array",
+    "vitisvinifera": "[Vitis_Vinifera] Affymetrix Vitis vinifera (Grape) Genome Array",
     "wheat": "[wheat] Affymetrix Wheat Genome Array",
     "xenopuslaevis": "[Xenopus_laevis] Affymetrix Xenopus laevis Genome Array",
     "xlaevis2": "[X_laevis_2] Affymetrix Xenopus laevis Genome 2.0 Array",
@@ -922,8 +865,7 @@
     "yeast2": "[Yeast_2] Affymetrix Yeast Genome 2.0 Array",
     "ygs98": "[YG_S98] Affymetrix Yeast Genome S98 Array",
     "zebgene10st": "[ZebGene-1_0-st] Zebrafish Gene 1.0 ST Array",
-    "zebgene11st":
-      "[ZebGene-1_1-st] Affymetrix Genechip Zebrafish ST Genome Array 1.1",
+    "zebgene11st": "[ZebGene-1_1-st] Affymetrix Genechip Zebrafish ST Genome Array 1.1",
     "zebrafish": "[Zebrafish] Affymetrix Zebrafish Genome Array"
   }
 }
