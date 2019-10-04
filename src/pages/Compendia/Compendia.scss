@@ -1,0 +1,275 @@
+@import '../../common/styles/variables';
+
+.compendia {
+  margin-bottom: 100px;
+
+  mark {
+    color: #db3b28;
+    background-color: #f2f2f2;
+    padding: 0 6px;
+  }
+
+  &__header {
+    position: relative;
+    box-shadow: 0 4px 21px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  &__header-background {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -120px;
+    bottom: 0;
+
+    pointer-events: none;
+    background: linear-gradient(#dfe9f3 0%, #ffffff 100%);
+    canvas {
+      opacity: 0.1;
+    }
+  }
+
+  &__header-inner {
+    color: $info-badge;
+    text-align: center;
+    position: relative;
+    padding: 0 8px 16px 8px;
+
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    @include desktop {
+      flex-direction: row;
+      align-items: center;
+
+      padding-top: 56px;
+      padding-bottom: 96px;
+    }
+  }
+
+  &__title {
+    font-size: 1.8rem;
+  }
+
+  &__tabs {
+    display: block;
+    list-style: none;
+    text-align: center;
+    margin: 72px 0 125px;
+    padding: 0;
+  }
+
+  &__tab {
+    display: inline-block;
+    color: #386db0;
+    font-size: 26px;
+    line-height: 24px;
+    margin: 0 32px;
+
+    &--active {
+      border-bottom: 4px solid #386db0;
+      font-weight: bold;
+    }
+  }
+
+  &__tabs--container {
+  }
+
+  &__section {
+    text-align: center;
+    padding: 100px 52px 0;
+    width: 100%;
+    max-width: 1141px;
+    margin: 0 auto;
+
+    &--inline {
+      display: flex;
+      justify-content: space-between;
+      padding: 100px 0 0;
+
+      p {
+        display: block;
+        max-width: 380px;
+        width: 100%;
+        margin: 16px 0;
+      }
+
+      .compendia__section {
+        padding: 0 52px;
+        margin: 0;
+        text-align: left;
+
+        @include desktop {
+          flex: 2 1;
+
+          + .compendia__section {
+            flex: 1 0;
+          }
+        }
+      }
+
+      .compendia__section-title {
+        font-size: 22px;
+        line-height: 27px;
+        margin: 32px 0;
+      }
+    }
+
+    + .species-compendia__section {
+      margin-top: 100px;
+      border-top: 3px solid #f2f2f2;
+    }
+  }
+
+  &__section-title {
+    font-size: 1.8rem;
+    margin: 0 0 48px 0;
+  }
+
+  &__example-list {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+      justify-content: space-between;
+
+      > div {
+        max-width: 400px;
+        text-align: left;
+      }
+    }
+
+    @include desktop {
+      padding-left: 80px;
+      padding-right: 80px;
+    }
+  }
+
+  .compendia__icon {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    box-shadow: 0 4px 21px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px 15.25px;
+    background-color: #fdfdfd;
+
+    img {
+      display: block;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .compendia__list {
+    position: relative;
+    background: linear-gradient(
+      180deg,
+      rgba(12, 52, 131, 0.94) 0%,
+      #4b6db1 100%
+    );
+  }
+
+  &__download {
+    background: linear-gradient(
+      180deg,
+      rgba(12, 52, 131, 0.94) 0%,
+      #6b8cce 44.84%,
+      #a2b6df 100%,
+      #a1b6df 100%,
+      #a2b6df 100%
+    );
+    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  &__name {
+    padding: 69px 0 40px;
+    text-align: center;
+    color: #fdfdfd;
+    font-size: 28px;
+    line-height: 33px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  &__process-download {
+    padding: 0 0 72px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    max-width: 1041px;
+    margin: 0 auto;
+
+    mark {
+      background-color: #aac4e4;
+    }
+  }
+
+  &__process {
+    width: 483px;
+    color: #f2f2f2;
+    font-size: 22px;
+    line-height: 27px;
+  }
+}
+
+.download-compendia {
+  background-color: $whisper;
+  padding: 24px 40px;
+  border-radius: 4px;
+  box-shadow: 0 4px 21px 0 rgba(0, 0, 0, 0.2);
+  color: $font-color;
+  text-align: left;
+  max-width: 465px;
+  width: 100%;
+
+  flex-shrink: 0;
+
+  &__title {
+    font-size: 1.6rem;
+    margin-bottom: 28px;
+  }
+
+  &__choose {
+    font-size: 1.3rem;
+    margin-right: 8px;
+    flex: 1 1 100%;
+  }
+
+  &__info {
+    margin: 26px 0 0 0;
+    font-size: 14px;
+    line-height: 21px;
+    img {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 8px 0 0;
+    }
+  }
+
+  &__button {
+    font-size: 18px;
+    margin-left: 8px;
+  }
+
+  &__row {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+    }
+  }
+
+  @include desktop {
+    margin-left: 68px;
+  }
+}

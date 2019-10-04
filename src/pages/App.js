@@ -3,8 +3,8 @@ import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import classnames from 'classnames';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
-import SpeciesCompendia from './SpeciesCompendia';
-import SpeciesCompendiaDownload from './SpeciesCompendia/DownloadPage';
+import Compendia from './Compendia';
+import CompendiaDownload from './Compendia/DownloadPage';
 
 import history from '../history';
 import store from '../store/store';
@@ -67,25 +67,20 @@ const App = () => {
         <Router history={history}>
           <Switch>
             <Route path="/executive-dashboard" component={ExecutiveDashboard} />
-
             <Layout>
               <ErrorBoundary>
                 <Switch>
                   <Route exact path="/" component={Main} />
                   <Route exact path="/about" component={About} />
                   <Route
-                    path="/species-compendia/download"
-                    component={SpeciesCompendiaDownload}
+                    path="/compendia/download"
+                    component={CompendiaDownload}
                   />
-                  <Route
-                    path="/species-compendia"
-                    component={SpeciesCompendia}
-                  />
+                  <Route path="/compendia*" component={Compendia} />
                   <Route
                     path="/experiments/:id/:slug?"
                     component={Experiment}
                   />
-
                   <Route
                     exact
                     path="/docs"
@@ -93,7 +88,6 @@ const App = () => {
                       <ExternalRedirect to="http://docs.refine.bio/" />
                     )}
                   />
-
                   <Route path="/" component={AppContent} />
                 </Switch>
               </ErrorBoundary>

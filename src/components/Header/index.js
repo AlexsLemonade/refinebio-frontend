@@ -13,14 +13,17 @@ import SideMenu from '../SideMenu';
 import ResponsiveSwitch from '../ResponsiveSwitch';
 import { searchUrl } from '../../routes';
 import githubCorner from './github-corner.svg';
-
+import { push } from '../../state/routerActions';
 /**
  * In general this is a bad approach, where the header component knows about other pages.
  * But in the future we'll unify the header styles and have a single color. So it doesn't make
  * much sense to invest a lot of time improving this.
  */
 function shouldInvertColors(pathname) {
-  return ['/', '/about', '/species-compendia'].includes(pathname);
+  return ['/', '/about'].includes(pathname);
+}
+function shouldHaveLightBackground(pathname) {
+  return pathname.indexOf('/compendia') === 0;
 }
 
 let Header = ({ location }) => {
@@ -28,6 +31,9 @@ let Header = ({ location }) => {
     <header
       className={classnames('header', 'js-header', {
         'header--inverted header--scroll': shouldInvertColors(
+          location.pathname
+        ),
+        'header--light header--scroll': shouldHaveLightBackground(
           location.pathname
         ),
       })}
@@ -62,13 +68,28 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
       >
         Search
       </HeaderLink>{' '}
-      <HeaderLink
-        to="/species-compendia"
+      <HeaderDropDownLink
+        to={[
+          {
+            title: 'Normalized Compendia',
+            location: {
+              path: '/compendia',
+              hash: '#normalized',
+            },
+          },
+          {
+            title: 'RNA-seq Sample Compendia',
+            location: {
+              path: '/compendia',
+              hash: '#rna-seq-sample',
+            },
+          },
+        ]}
         onClick={itemClicked}
         location={location}
       >
-        Species Compendia
-      </HeaderLink>
+        Compendia
+      </HeaderDropDownLink>
       <li className="header__link">
         <a
           href="http://docs.refine.bio"
@@ -124,6 +145,78 @@ const HeaderLink = ({ to, onClick, children, location, activePath = [] }) => {
     </li>
   );
 };
+
+let HeaderDropDownLink = ({
+  to = [],
+  onClick,
+  children,
+  location,
+  activePath = [],
+  push,
+}) => {
+  const [open, setOpen] = React.useState(false);
+  const toggleOpen = () => {
+    setTimeout(() => {
+      setOpen(!open);
+    }, 20);
+  };
+
+  return (
+    <li
+      onBlur={toggleOpen}
+      className={classnames('header__dropdown', {
+        'header__link--active':
+          location &&
+          to.map(({ location }) => location).indexOf(location.pathname) >= 0,
+      })}
+    >
+      <ul>
+        <li className="header__link">
+          <button type="button" onClick={toggleOpen}>
+            {children}
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              strokeWidth="0"
+              viewBox="0 0 512 512"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z" />
+            </svg>
+          </button>
+        </li>
+        <li>
+          <ul
+            className={classnames('header__dropdown--links', {
+              'header__dropdown--open': open,
+            })}
+          >
+            {to.map(({ title, location }) => (
+              <li key={title}>
+                <Link
+                  to={location}
+                  onClick={(...click) => {
+                    setOpen(false);
+                    if (onClick) onClick(...click);
+                  }}
+                >
+                  {title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </li>
+      </ul>
+    </li>
+  );
+};
+
+HeaderDropDownLink = connect(
+  null,
+  { push }
+)(HeaderDropDownLink);
 
 /**
  * On mobile the links should appear on a menu at the top. This component adds that functionality
