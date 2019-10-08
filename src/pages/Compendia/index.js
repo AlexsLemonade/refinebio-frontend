@@ -51,7 +51,7 @@ const Compendia = function Compendia({ location, replace }, ...props) {
               >
                 <Link
                   to={{
-                    path: location.path,
+                    pathname: location.path,
                     hash: compendia.hash,
                   }}
                   replace

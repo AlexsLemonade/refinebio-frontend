@@ -73,18 +73,19 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
           {
             title: 'Normalized Compendia',
             location: {
-              path: '/compendia',
+              pathname: '/compendia',
               hash: '#normalized',
             },
           },
           {
             title: 'RNA-seq Sample Compendia',
             location: {
-              path: '/compendia',
+              pathname: '/compendia',
               hash: '#rna-seq-sample',
             },
           },
         ]}
+        replace
         onClick={itemClicked}
         location={location}
       >
@@ -153,6 +154,7 @@ let HeaderDropDownLink = ({
   location,
   activePath = [],
   push,
+  replace,
 }) => {
   const [open, setOpen] = React.useState(false);
   const toggleOpen = () => {
@@ -201,6 +203,7 @@ let HeaderDropDownLink = ({
                     setOpen(false);
                     if (onClick) onClick(...click);
                   }}
+                  replace={replace}
                 >
                   {title}
                 </Link>
