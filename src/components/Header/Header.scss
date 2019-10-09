@@ -66,6 +66,7 @@
           a {
             padding: 0 5px;
             display: block;
+            color: #000000;
           }
           &:first-child {
             padding-top: 0;
@@ -172,13 +173,12 @@
   }
 }
 
-.header--light {
-  background-color: rgba(223, 233, 243, 0.15);
+.header--light,
+.header--inverted {
+  background: transparent;
 }
 
 .header--inverted {
-  background-color: rgba(12, 52, 131, 0.94);
-
   .header__logo {
     filter: brightness(0) invert(1);
   }
@@ -221,7 +221,8 @@
 
 // disable stick
 .header--scroll {
-  position: relative;
+  position: absolute;
+  width: 100%;
 }
 
 .github-corner {

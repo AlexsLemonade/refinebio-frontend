@@ -44,14 +44,14 @@
     @include desktop {
       flex-direction: row;
       align-items: center;
-
-      padding-top: 56px;
+      min-height: 375px;
+      padding-top: 163px;
       padding-bottom: 96px;
     }
   }
 
   &__title {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   &__tabs {

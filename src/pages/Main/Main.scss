@@ -72,10 +72,6 @@
       text-align: center;
       color: $white;
       padding: 9 * 8px 0;
-
-      @include tablet {
-        padding: 17 * 8px 0;
-      }
     }
 
     &--searchbox {
@@ -90,14 +86,12 @@
         #a2b6df 69.1%,
         #a2b6df 100%
       );
+      box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.2);
       overflow: hidden;
-
-      @include tablet {
-        padding: 10 * 8px 0 0;
-      }
 
       @include desktop() {
         overflow: visible;
+        min-height: 487px;
       }
     }
 
