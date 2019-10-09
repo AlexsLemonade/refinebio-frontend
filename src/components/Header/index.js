@@ -14,28 +14,16 @@ import ResponsiveSwitch from '../ResponsiveSwitch';
 import { searchUrl } from '../../routes';
 import githubCorner from './github-corner.svg';
 import { push } from '../../state/routerActions';
-/**
- * In general this is a bad approach, where the header component knows about other pages.
- * But in the future we'll unify the header styles and have a single color. So it doesn't make
- * much sense to invest a lot of time improving this.
- */
-function shouldInvertColors(pathname) {
-  return ['/', '/about'].includes(pathname);
-}
-function shouldHaveLightBackground(pathname) {
-  return pathname.indexOf('/compendia') === 0;
-}
+
+import { useTheme } from '../../common/ThemeContext';
 
 let Header = ({ location }) => {
+  const [theme] = useTheme();
   return (
     <header
       className={classnames('header', 'js-header', {
-        'header--inverted header--scroll': shouldInvertColors(
-          location.pathname
-        ),
-        'header--light header--scroll': shouldHaveLightBackground(
-          location.pathname
-        ),
+        'header--inverted header--scroll': theme.header === 'inverted',
+        'header--light header--scroll': theme.header === 'light',
       })}
     >
       <div className="header__container">
@@ -54,6 +42,7 @@ let Header = ({ location }) => {
     </header>
   );
 };
+
 Header = withRouter(Header);
 export default Header;
 

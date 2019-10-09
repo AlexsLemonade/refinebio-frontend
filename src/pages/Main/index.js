@@ -24,7 +24,10 @@ import heatmapIcon from './icon-heatmap.svg';
 import networkBottomIcon from './network-combined.svg';
 import networkDocsIcon from './icon-docs.svg';
 
+import { useTheme } from '../../common/ThemeContext';
+
 let Main = ({ push }) => {
+  useTheme('inverted');
   return (
     <div className="main">
       <Helmet>

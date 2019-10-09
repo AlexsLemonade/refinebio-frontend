@@ -9,8 +9,10 @@ import oneRepo from './one-repo.svg';
 import betterMed from './better-med.svg';
 import alsfLogo from './ALSFsquare.jpg';
 import ccdlLogo from './CCDL-logo.jpg';
+import { useTheme } from '../../common/ThemeContext';
 
 function About() {
+  useTheme('inverted');
   return (
     <div>
       <Helmet>

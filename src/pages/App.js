@@ -3,19 +3,18 @@ import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import classnames from 'classnames';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
-import Compendia from './Compendia';
-import CompendiaDownload from './Compendia/DownloadPage';
 
 import history from '../history';
 import store from '../store/store';
 import Layout from '../components/Layout';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { ThemeProvider } from '../common/ThemeContext';
 
 import Main from './Main';
 import Search from './Search';
 import Experiment from './Experiment';
-import Dashboard from './Dashboard';
-import ExecutiveDashboard from './ExecDashboard';
+import Compendia from './Compendia';
+import CompendiaDownload from './Compendia/DownloadPage';
 import Downloads from './Downloads';
 import DataSet from './Downloads/DataSet';
 import NoMatch from './NoMatch';
@@ -23,6 +22,8 @@ import Privacy from './Privacy';
 import Terms from './Terms';
 import License from './License';
 import About from './About';
+import Dashboard from './Dashboard';
+import ExecutiveDashboard from './ExecDashboard';
 import './App.scss';
 
 /**
@@ -64,36 +65,41 @@ const App = () => {
       </Helmet>
 
       <Provider store={store}>
-        <Router history={history}>
-          <Switch>
-            <Route path="/executive-dashboard" component={ExecutiveDashboard} />
-            <Layout>
-              <ErrorBoundary>
-                <Switch>
-                  <Route exact path="/" component={Main} />
-                  <Route exact path="/about" component={About} />
-                  <Route
-                    path="/compendia/download"
-                    component={CompendiaDownload}
-                  />
-                  <Route path="/compendia*" component={Compendia} />
-                  <Route
-                    path="/experiments/:id/:slug?"
-                    component={Experiment}
-                  />
-                  <Route
-                    exact
-                    path="/docs"
-                    component={() => (
-                      <ExternalRedirect to="http://docs.refine.bio/" />
-                    )}
-                  />
-                  <Route path="/" component={AppContent} />
-                </Switch>
-              </ErrorBoundary>
-            </Layout>
-          </Switch>
-        </Router>
+        <ThemeProvider>
+          <Router history={history}>
+            <Switch>
+              <Route
+                path="/executive-dashboard"
+                component={ExecutiveDashboard}
+              />
+              <Layout>
+                <ErrorBoundary>
+                  <Switch>
+                    <Route exact path="/" component={Main} />
+                    <Route exact path="/about" component={About} />
+                    <Route
+                      path="/compendia/download"
+                      component={CompendiaDownload}
+                    />
+                    <Route path="/compendia*" component={Compendia} />
+                    <Route
+                      path="/experiments/:id/:slug?"
+                      component={Experiment}
+                    />
+                    <Route
+                      exact
+                      path="/docs"
+                      component={() => (
+                        <ExternalRedirect to="http://docs.refine.bio/" />
+                      )}
+                    />
+                    <Route path="/" component={AppContent} />
+                  </Switch>
+                </ErrorBoundary>
+              </Layout>
+            </Switch>
+          </Router>
+        </ThemeProvider>
       </Provider>
     </div>
   );
