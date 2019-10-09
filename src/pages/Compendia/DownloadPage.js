@@ -25,7 +25,7 @@ export default function DownloadPage({ location }) {
             <div className="dataset__processed-text">
               <h1>
                 <IoMdCheckmarkCircle className="color-success" /> Downloading{' '}
-                {formatSentenceCase(organism)} compendia...
+                {formatSentenceCase(organism.organism_name)} compendia...
               </h1>
               <p>
                 If the download did not start,{' '}

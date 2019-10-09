@@ -28,6 +28,7 @@ let DownloadCompendia = ({
   if (isLoading)
     return (
       <div className="download-compendia">
+        <p className="download-compendia__title">Fetching {title}</p>
         <Spinner />
       </div>
     );
@@ -50,9 +51,9 @@ let DownloadCompendia = ({
           <Dropdown
             multiple={false}
             options={data}
-            selectedOption={selected ? selected.organism_name : null}
+            selectedOption={selected}
             label={c => formatSentenceCase(c.organism_name)}
-            onChange={setSelected}
+            onChange={s => setSelected(s)}
           />
         </div>
 
@@ -90,11 +91,12 @@ let DownloadCompendia = ({
               const tokenId = token || (await createToken());
               const selectedOrganism = selected || data[0];
               const downloadUrl = await downloadCompendia(
-                selectedOrganism,
-                tokenId
+                filter,
+                tokenId,
+                selectedOrganism
               );
               push({
-                pathname: '/species-compendia/download',
+                pathname: '/compendia/download',
                 state: { organism: selectedOrganism, downloadUrl },
               });
             }}
@@ -112,7 +114,7 @@ DownloadCompendia = connect(
 )(DownloadCompendia);
 export default DownloadCompendia;
 
-const filterForLatestCompendia = data => {
+const filterForLatestCompendia = (data, organism = false) => {
   data.forEach(c => {
     c.organism_name = c.result.annotations[0].data.organism_name;
   });
@@ -126,12 +128,14 @@ const filterForLatestCompendia = data => {
       .sort((x, y) => y.compendia_version - x.compendia_version);
     filtered.push(organismCompendium[0]);
   }
+
+  if (organism) return filtered.find(c => c.organism_name === organism);
   return filtered.sort((a, b) =>
     b.organism_name.toUpperCase() < a.organism_name.toUpperCase() ? 1 : -1
   );
 };
 
-async function fetchCompendiaData(additionalFilters = {}) {
+async function fetchCompendiaData(additionalFilters = {}, token) {
   try {
     const filters = {
       ...{
@@ -141,12 +145,16 @@ async function fetchCompendiaData(additionalFilters = {}) {
       },
       ...additionalFilters,
     };
+
+    const tokenObject = token ? { 'API-KEY': token } : null;
     const values = Object.entries(filters).map(([key, value]) => {
       return `${key}=${value}`;
     });
 
     const { results: data } = await Ajax.get(
-      `/v1/computed_files/?${values.join('&')}`
+      `/v1/computed_files/?${values.join('&')}`,
+      null,
+      tokenObject
     );
     return filterForLatestCompendia(data);
   } catch (e) {
@@ -154,16 +162,17 @@ async function fetchCompendiaData(additionalFilters = {}) {
   }
 }
 
-async function downloadCompendia(organism, token) {
+async function downloadCompendia(additionalFilters = {}, token, organism) {
   // refetch the compendia, now sending the token id to retrieve the download urls
-  const data = await Ajax.get('/v1/computed_files', null, { 'API-KEY': token });
-
-  const computedFile = data
-    .filter(x => x.organism_name === organism)
-    .sort((x, y) => y.compendia_version - x.compendia_version);
-
-  // set the download url
-  return computedFile[0].download_url;
+  const computedFiles = await fetchCompendiaData(additionalFilters, token);
+  const downloadableFile = computedFiles.find(
+    c => c.organism_name === organism.organism_name
+  );
+  if (downloadableFile && downloadableFile.download_url) {
+    return downloadableFile.download_url;
+  }
+  // throw error? or alert slack
+  return '';
 }
 
 const getPrettyFileSize = size => {

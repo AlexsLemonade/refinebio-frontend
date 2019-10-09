@@ -17,7 +17,7 @@ export default function RNASeqSampleCompendia({ title }) {
             Get the collection of Salmon output as <mark>quant.sf</mark> files
             for an organism's RNA-seq samples for maximum flexibility
           </p>
-          <DownloadCompendia title={title} filter={{}}>
+          <DownloadCompendia title={title} filter={{ quant_sf_only: true }}>
             <div className="download-compendia__info">
               <img src={InfoBadge} alt="Attention" />
               Data is not normalized or aggregated.
