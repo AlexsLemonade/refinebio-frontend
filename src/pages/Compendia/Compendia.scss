@@ -51,7 +51,17 @@
   }
 
   &__title {
-    font-size: 2rem;
+    font-size: 1.2rem;
+    margin: 60px auto;
+
+    @include tablet {
+      font-size: 2rem;
+      margin: 80px auto;
+    }
+
+    @include desktop {
+      margin: 0 auto;
+    }
   }
 
   &__tabs {
@@ -198,12 +208,13 @@
   }
 
   &__process-download {
-    padding: 0 0 72px;
+    padding: 0 32px 72px;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    max-width: 1041px;
+    max-width: 1105px;
     margin: 0 auto;
+    flex-wrap: wrap;
 
     mark {
       background-color: #aac4e4;
@@ -215,6 +226,11 @@
     color: #f2f2f2;
     font-size: 22px;
     line-height: 27px;
+  }
+
+  &__process,
+  .download-compendia {
+    margin: 20px auto;
   }
 }
 
