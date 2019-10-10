@@ -34,7 +34,8 @@ BUCKET_NAME=s3://$base_host
 
 yarn install --ignore-engines
 
-VERSION=$(git describe --abbrev=0 --tags)
+# Use an abbreviated version of the latest commit as the frontend version
+VERSION=$(git show -s --format=%h)
 
 VERSION=$VERSION REACT_APP_API_HOST=https://api.$base_host yarn run cacheBackend
 
