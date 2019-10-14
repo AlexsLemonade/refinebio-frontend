@@ -10,6 +10,13 @@ import betterMed from './better-med.svg';
 import alsfLogo from './ALSFsquare.jpg';
 import ccdlLogo from './CCDL-logo.jpg';
 
+import apiData from '../../apiData.json';
+import {
+  formatNumber,
+  numberFormatter,
+  formatBytes,
+} from '../../common/helpers';
+
 function About() {
   return (
     <div>
@@ -35,27 +42,38 @@ function About() {
         <div className="about__section">
           <div className="box about__top-box">
             <div className="about__top-box-tagline">
-              refine.bio will have harmonized over 60,000 gene expression
-              experiments
+              refine.bio has harmonized{' '}
+              {formatNumber(apiData.aboutStats.experiments_processed, 0)} gene
+              expression experiments
             </div>
 
             <div className="about__stats-list">
               <div className="about__stat-item">
-                <div className="about__stat">1.5M</div>
+                <div className="about__stat">
+                  {numberFormatter(apiData.aboutStats.samples_available, 1)}
+                </div>
                 <div className="about__stat-text">
-                  1.5 million samples will be available
+                  {numberFormatter(apiData.aboutStats.samples_available, 1)}{' '}
+                  samples available
                 </div>
               </div>
               <div className="about__stat-item">
-                <div className="about__stat">3K</div>
+                <div className="about__stat">
+                  {numberFormatter(apiData.aboutStats.supported_organisms)}
+                </div>
                 <div className="about__stat-text">
-                  There will be support for 3000 organisms
+                  Support for{' '}
+                  {formatNumber(apiData.aboutStats.supported_organisms, 0)}{' '}
+                  organisms
                 </div>
               </div>
               <div className="about__stat-item">
-                <div className="about__stat">1 PB</div>
+                <div className="about__stat">
+                  {formatBytes(apiData.aboutStats.total_size_in_bytes, 1)}
+                </div>
                 <div className="about__stat-text">
-                  Over a petabyte of raw data will be processed
+                  {formatBytes(apiData.aboutStats.total_size_in_bytes, 1)} of
+                  raw data processed
                 </div>
               </div>
             </div>
