@@ -48,6 +48,7 @@
       &.header__dropdown--links {
         position: absolute;
         left: -10px;
+        transform: translate(0, 2px);
         opacity: 0;
         visibility: hidden;
         background-color: #fdfdfd;
