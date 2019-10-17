@@ -9,7 +9,7 @@ import RNASeqSampleCompendia from './RNASeqSampleCompendia';
 import EmailSection from '../Main/EmailSection';
 import { useTheme } from '../../common/ThemeContext';
 
-const Compendia = function Compendia({ location, replace }, ...props) {
+const Compendia = function Compendia({ location, replace }) {
   useTheme('light');
   const compendiaOptions = [
     {
