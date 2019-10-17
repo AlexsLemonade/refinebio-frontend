@@ -118,15 +118,11 @@ const filterForLatestCompendia = (data, organism = false) => {
     c.organism_name = c.result.annotations[0].data.organism_name;
   });
 
-  const organismNames = uniq(data.map(c => c.organism_name));
-  const filtered = [];
-
-  for (const organismName of organismNames) {
-    const organismCompendium = data
-      .filter(c => c.organism_name === organismName)
-      .sort((x, y) => y.compendia_version - x.compendia_version);
-    filtered.push(organismCompendium[0]);
-  }
+  const filtered = uniq(data.map(c => c.organism_name)).map(o => {
+    return data
+      .filter(c => c.organism_name === o)
+      .sort((x, y) => y.compendia_version - x.compendia_version)[0];
+  });
 
   if (organism) return filtered.find(c => c.organism_name === organism);
   return filtered.sort((a, b) =>
