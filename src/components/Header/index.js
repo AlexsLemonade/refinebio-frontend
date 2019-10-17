@@ -13,7 +13,6 @@ import SideMenu from '../SideMenu';
 import ResponsiveSwitch from '../ResponsiveSwitch';
 import { searchUrl } from '../../routes';
 import githubCorner from './github-corner.svg';
-import { push } from '../../state/routerActions';
 
 import { useTheme } from '../../common/ThemeContext';
 
@@ -77,6 +76,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
         replace
         onClick={itemClicked}
         location={location}
+        activePath={['/compendia']}
       >
         Compendia
       </HeaderDropDownLink>
@@ -136,7 +136,7 @@ const HeaderLink = ({ to, onClick, children, location, activePath = [] }) => {
   );
 };
 
-let HeaderDropDownLink = ({
+const HeaderDropDownLink = ({
   to = [],
   onClick,
   children,
@@ -146,24 +146,26 @@ let HeaderDropDownLink = ({
   replace,
 }) => {
   const [open, setOpen] = React.useState(false);
-  const toggleOpen = () => {
-    setTimeout(() => {
-      setOpen(!open);
-    }, 20);
-  };
+  const openDropdown = () => setOpen(true);
+  const closeDropdown = () => setOpen(false);
 
   return (
     <li
-      onBlur={toggleOpen}
-      className={classnames('header__dropdown', {
-        'header__link--active':
-          location &&
-          to.map(({ location }) => location).indexOf(location.pathname) >= 0,
-      })}
+      className="header__dropdown"
+      onMouseOver={openDropdown}
+      onMouseOut={closeDropdown}
+      onFocus={openDropdown}
+      onBlur={closeDropdown}
+      onClick={openDropdown}
     >
       <ul>
-        <li className="header__link">
-          <button type="button" onClick={toggleOpen}>
+        <li
+          className={classnames('header__link', {
+            'header__link--active':
+              location && activePath.includes(location.pathname),
+          })}
+        >
+          <button type="button">
             {children}
             <svg
               stroke="currentColor"
@@ -184,12 +186,12 @@ let HeaderDropDownLink = ({
               'header__dropdown--open': open,
             })}
           >
-            {to.map(({ title, location }) => (
+            {to.map(({ title, location: toLocation }) => (
               <li key={title}>
                 <Link
-                  to={location}
+                  to={toLocation}
                   onClick={(...click) => {
-                    setOpen(false);
+                    closeDropdown();
                     if (onClick) onClick(...click);
                   }}
                   replace={replace}
@@ -204,11 +206,6 @@ let HeaderDropDownLink = ({
     </li>
   );
 };
-
-HeaderDropDownLink = connect(
-  null,
-  { push }
-)(HeaderDropDownLink);
 
 /**
  * On mobile the links should appear on a menu at the top. This component adds that functionality
