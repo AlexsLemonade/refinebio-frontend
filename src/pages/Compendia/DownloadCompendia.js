@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import uniq from 'lodash/uniq';
 import Dropdown from '../../components/Dropdown';
 import Button from '../../components/Button';
-import { Ajax, formatSentenceCase } from '../../common/helpers';
+import { Ajax, formatSentenceCase, formatBytes } from '../../common/helpers';
 import { useLoader } from '../../components/Loader';
 import Checkbox from '../../components/Checkbox';
 import Spinner from '../../components/Spinner';
@@ -80,8 +80,7 @@ let DownloadCompendia = ({
         )}
         <div className="download-compendia__row">
           <span>
-            Download Size:{' '}
-            {getPrettyFileSize((selected || data[0]).size_in_bytes)}{' '}
+            Download Size: {formatBytes((selected || data[0]).size_in_bytes)}{' '}
           </span>
           <Button
             text="Download Now"
@@ -174,12 +173,3 @@ async function downloadCompendia(additionalFilters = {}, token, organism) {
   // throw error? or alert slack
   return '';
 }
-
-const getPrettyFileSize = size => {
-  for (const unit of ['B', 'KB', 'MB', 'GB', 'TB']) {
-    if (Math.abs(size) < 1024.0) return `${size.toFixed(1)}${unit}`;
-    size /= 1024.0;
-  }
-
-  return '';
-};
