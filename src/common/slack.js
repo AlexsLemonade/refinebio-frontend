@@ -3,7 +3,7 @@
  */
 
 const SLACK_HOOK_URL =
-  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JMOVQ1MlA2My9KeU5qNmhHamM3U09YZXNnMDFCU2k0VzE=';
+  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JRNEFKQUdLRy9HSERXVXpGcHJWM2Vxa3JtOVMwNHhRajE=';
 
 /**
  * Send data to slack, configured in CCDL channel
