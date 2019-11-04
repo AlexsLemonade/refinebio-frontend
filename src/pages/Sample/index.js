@@ -103,7 +103,7 @@ function JobRow({ job }) {
           <td />
           <td colSpan="8">
             {jobOomKilled ? (
-              'Looks like the job was OOM-Killed?'
+              'Looks like the job was OOM-Killed (no failure_reason)'
             ) : (
               <p>{job.failure_reason || 'No failure reason'}</p>
             )}
