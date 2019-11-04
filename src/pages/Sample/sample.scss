@@ -1,0 +1,13 @@
+.jobs-table {
+  width: 100%;
+
+  th {
+    text-align: left;
+  }
+
+  &__job {
+    > td {
+      padding-top: 16px;
+    }
+  }
+}
