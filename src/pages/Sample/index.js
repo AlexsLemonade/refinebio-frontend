@@ -2,8 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
 import { Ajax } from '../../common/helpers';
-import { useLoader } from '../../components/Loader';
 import './sample.scss';
+import SampleDebugContext, { SampleDebugProvider } from './SampleDebugContext';
 
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
@@ -14,32 +14,39 @@ export default function Sample({ match }) {
   //   accessionCode,
   // ]);
 
-  const { data: jobs } = useLoader(() => loadJobs(accessionCode));
-
   return (
     <div>
       <h1>Sample {accessionCode}</h1>
 
-      <div>
+      <SampleDebugProvider accessionCode={accessionCode}>
         <h3>Downloader and Processor Job Info</h3>
-        <table className="jobs-table">
-          <thead>
-            <tr>
-              <th scope="col">id</th>
-              <th scope="col" />
-              <th scope="col">num retries</th>
-              <th scope="col">retried</th>
-              <th scope="col">worker_version</th>
-              <th scope="col">created at</th>
-              <th scope="col">running time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {jobs && jobs.map(job => <JobRow id={job.id} job={job} />)}
-          </tbody>
-        </table>
-      </div>
+        <JobTable />
+      </SampleDebugProvider>
     </div>
+  );
+}
+
+function JobTable({}) {
+  const { data } = React.useContext(SampleDebugContext);
+  const { jobs } = data || {};
+
+  return (
+    <table className="jobs-table">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col" />
+          <th scope="col">num retries</th>
+          <th scope="col">retried</th>
+          <th scope="col">worker_version</th>
+          <th scope="col">created at</th>
+          <th scope="col">running time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {jobs && jobs.map(job => <JobRow key={job.id} job={job} />)}
+      </tbody>
+    </table>
   );
 }
 
@@ -116,31 +123,4 @@ function JobRow({ job }) {
 
 export async function getSample(accessionCode) {
   return Ajax.get(`/v1/samples/${accessionCode}/`);
-}
-
-export async function loadJobs(accessionCode) {
-  const processorJobs = (await getProcessorJobs(accessionCode)).results.map(
-    job => ({ ...job, type: 'processor' })
-  );
-  const downloaderJobs = (await getDownloaderJobs(accessionCode)).results.map(
-    job => ({ ...job, type: 'downloader' })
-  );
-
-  return [...processorJobs, ...downloaderJobs].sort((job1, job2) => {
-    const date1 = job1.start_time || job1.created_at;
-    const date2 = job2.start_time || job2.created_at;
-    return moment(date1).isBefore(date2) ? 1 : -1;
-  });
-}
-
-export async function getDownloaderJobs(accessionCode) {
-  return Ajax.get(`/v1/jobs/downloader/`, {
-    sample_accession_code: accessionCode,
-  });
-}
-
-export async function getProcessorJobs(accessionCode) {
-  return Ajax.get(`/v1/jobs/processor/`, {
-    sample_accession_code: accessionCode,
-  });
 }
