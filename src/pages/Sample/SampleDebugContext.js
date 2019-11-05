@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { Ajax } from '../../common/helpers';
 import { useLoader } from '../../components/Loader';
+import { getDetailedSample } from '../../api/samples';
 
 const SampleDebugContext = React.createContext({});
 
@@ -11,15 +12,34 @@ export default SampleDebugContext;
 
 export function SampleDebugProvider({ accessionCode, children }) {
   const { data, isLoading } = useLoader(() => loadData(accessionCode));
+  const [selectedOriginalFiles, setSelectedOriginalFiles] = React.useState({});
+  const contextValue = {
+    data: data || {},
+    isLoading,
+    isFileSelected: id => selectedOriginalFiles[id],
+    toggleFile: id =>
+      setSelectedOriginalFiles({
+        ...selectedOriginalFiles,
+        [id]: !selectedOriginalFiles[id],
+      }),
+  };
+
   return (
-    <SampleDebugContext.Provider value={{ data, isLoading }}>
+    <SampleDebugContext.Provider value={contextValue}>
       {children}
     </SampleDebugContext.Provider>
   );
 }
 
 export async function loadData(accessionCode) {
+  const sample = await getDetailedSample(accessionCode);
+  const originalFiles = await Ajax.get('/v1/original_files/', {
+    samples: sample.id,
+  });
+
   return {
+    sample,
+    originalFiles: originalFiles.results,
     jobs: await loadJobs(accessionCode),
   };
 }

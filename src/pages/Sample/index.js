@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Ajax } from '../../common/helpers';
 import './sample.scss';
 import SampleDebugContext, { SampleDebugProvider } from './SampleDebugContext';
+import Checkbox from '../../components/Checkbox';
 
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
@@ -19,38 +20,77 @@ export default function Sample({ match }) {
       <h1>Sample {accessionCode}</h1>
 
       <SampleDebugProvider accessionCode={accessionCode}>
-        <h3>Downloader and Processor Job Info</h3>
+        <OriginalFileFilers />
         <JobTable />
       </SampleDebugProvider>
     </div>
   );
 }
 
-function JobTable({}) {
-  const { data } = React.useContext(SampleDebugContext);
-  const { jobs } = data || {};
+function OriginalFileFilers() {
+  const {
+    data: { originalFiles },
+    isFileSelected,
+    toggleFile,
+  } = React.useContext(SampleDebugContext);
 
   return (
-    <table className="jobs-table">
-      <thead>
-        <tr>
-          <th scope="col">id</th>
-          <th scope="col" />
-          <th scope="col">num retries</th>
-          <th scope="col">retried</th>
-          <th scope="col">worker_version</th>
-          <th scope="col">created at</th>
-          <th scope="col">running time</th>
-        </tr>
-      </thead>
-      <tbody>
-        {jobs && jobs.map(job => <JobRow key={job.id} job={job} />)}
-      </tbody>
-    </table>
+    <div className="sample-debug-section">
+      <h3>Original Files</h3>
+      {originalFiles &&
+        originalFiles.map(file => (
+          <Checkbox
+            key={file.id}
+            name={file.id}
+            onChange={() => toggleFile(file.id)}
+            checked={isFileSelected(file.id)}
+            className={classnames({
+              'sample-debug__cancel':
+                file.processor_jobs.length + file.downloader_jobs.length === 0,
+            })}
+          >
+            {file.filename}
+            {file.filename !== file.source_filename ? ' (from archive) ' : ' '}
+            <a href={file.source_url} className="link">
+              download
+            </a>
+          </Checkbox>
+        ))}
+    </div>
+  );
+}
+
+function JobTable() {
+  const {
+    data: { jobs },
+  } = React.useContext(SampleDebugContext);
+
+  return (
+    <div className="sample-debug-section">
+      <h3>Downloader and Processor Job Info</h3>
+
+      <table className="jobs-table">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col" />
+            <th scope="col">num retries</th>
+            <th scope="col">retried</th>
+            <th scope="col">worker_version</th>
+            <th scope="col">created at</th>
+            <th scope="col">running time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {jobs && jobs.map(job => <JobRow key={job.id} job={job} />)}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 function JobRow({ job }) {
+  const { isFileSelected } = React.useContext(SampleDebugContext);
   const jobOomKilled = job.start_time && !job.end_time && !job.failure_reason;
 
   return (
@@ -61,6 +101,7 @@ function JobRow({ job }) {
           'jobs-table__job': true,
           error: job.success === false,
           'color-success': job.success === true,
+          'jobs-table__job--select': job.original_files.some(isFileSelected),
         })}
       >
         <td>
@@ -105,6 +146,7 @@ function JobRow({ job }) {
           className={classnames({
             error: job.success === false,
             'color-success': job.success === true,
+            'jobs-table__job--select': job.original_files.some(isFileSelected),
           })}
         >
           <td />
