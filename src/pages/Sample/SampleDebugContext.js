@@ -33,29 +33,52 @@ export function SampleDebugProvider({ accessionCode, children }) {
 
 export async function loadData(accessionCode) {
   const sample = await getDetailedSample(accessionCode);
-  const originalFiles = await Ajax.get('/v1/original_files/', {
-    samples: sample.id,
-  });
+
+  const [
+    originalFiles,
+    computedFiles,
+    processorJobs,
+    downloaderJobs,
+    runningJobs,
+  ] = await Promise.all([
+    Ajax.get('/v1/original_files/', {
+      samples: sample.id,
+    }),
+    Ajax.get('/v1/computed_files/', {
+      samples: sample.id,
+    }),
+    getProcessorJobs(accessionCode),
+    getDownloaderJobs(accessionCode),
+    getRunningJobs(),
+  ]);
 
   return {
     sample,
     originalFiles: originalFiles.results,
-    jobs: await loadJobs(accessionCode),
+    computedFiles: computedFiles.results,
+    jobs: mergeJobs(processorJobs.results, downloaderJobs.results, runningJobs),
   };
 }
 
-export async function loadJobs(accessionCode) {
-  const processorJobs = (await getProcessorJobs(accessionCode)).results.map(
-    job => ({ ...job, type: 'processor' })
+export function mergeJobs(processorJobs, downloaderJobs, runningJobs) {
+  const processorJobsResult = processorJobs.map(job => ({
+    ...job,
+    type: 'processor',
+    isRunning: runningJobs.includes(job.nomad_job_id),
+  }));
+  const downloaderJobsResult = downloaderJobs.map(job => ({
+    ...job,
+    type: 'downloader',
+    isRunning: runningJobs.includes(job.nomad_job_id),
+  }));
+
+  return [...processorJobsResult, ...downloaderJobsResult].sort(
+    (job1, job2) => {
+      const date1 = job1.start_time || job1.created_at;
+      const date2 = job2.start_time || job2.created_at;
+      return moment(date1).isBefore(date2) ? 1 : -1;
+    }
   );
-  const downloaderJobs = (await getDownloaderJobs(accessionCode)).results.map(
-    job => ({ ...job, type: 'downloader' })
-  );
-  return [...processorJobs, ...downloaderJobs].sort((job1, job2) => {
-    const date1 = job1.start_time || job1.created_at;
-    const date2 = job2.start_time || job2.created_at;
-    return moment(date1).isBefore(date2) ? 1 : -1;
-  });
 }
 
 export async function getDownloaderJobs(accessionCode) {
@@ -68,4 +91,20 @@ export async function getProcessorJobs(accessionCode) {
   return Ajax.get(`/v1/jobs/processor/`, {
     sample_accession_code: accessionCode,
   });
+}
+
+async function getRunningJobs() {
+  const [processorJobs, downloaderJobs] = await Promise.all([
+    Ajax.get(`/v1/jobs/downloader/`, {
+      nomad: true,
+    }),
+    Ajax.get(`/v1/jobs/processor/`, {
+      nomad: true,
+    }),
+  ]);
+
+  return [
+    ...processorJobs.results.map(job => job.nomad_job_id),
+    ...downloaderJobs.results.map(job => job.nomad_job_id),
+  ];
 }

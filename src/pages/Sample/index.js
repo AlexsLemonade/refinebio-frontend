@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
+import { IoMdSync } from 'react-icons/io';
 import { Ajax } from '../../common/helpers';
 import './sample.scss';
 import SampleDebugContext, { SampleDebugProvider } from './SampleDebugContext';
@@ -20,14 +21,17 @@ export default function Sample({ match }) {
       <h1>Sample {accessionCode}</h1>
 
       <SampleDebugProvider accessionCode={accessionCode}>
-        <OriginalFileFilers />
+        <div className="flex-row">
+          <OriginalFileFilters />
+          <ComputedFiles />
+        </div>
         <JobTable />
       </SampleDebugProvider>
     </div>
   );
 }
 
-function OriginalFileFilers() {
+function OriginalFileFilters() {
   const {
     data: { originalFiles },
     isFileSelected,
@@ -56,6 +60,19 @@ function OriginalFileFilers() {
             </a>
           </Checkbox>
         ))}
+    </div>
+  );
+}
+
+function ComputedFiles() {
+  const {
+    data: { computedFiles },
+  } = React.useContext(SampleDebugContext);
+
+  return (
+    <div className="sample-debug-section">
+      <h3>Computed Files</h3>
+      {computedFiles && computedFiles.map(file => <div>{file.filename}</div>)}
     </div>
   );
 }
@@ -121,10 +138,11 @@ function JobRow({ job }) {
             {job.id}
           </a>
         </td>
-        <td>
+        <td title={job.isRunning ? 'This job is currently running' : null}>
           {job.type === 'processor'
             ? `${job.pipeline_applied} (${job.ram_amount})`
-            : job.downloader_task}
+            : job.downloader_task}{' '}
+          {job.isRunning ? <IoMdSync /> : null}
         </td>
         <td>{job.num_retries}</td>
         <td>{job.retried ? 'yes' : 'no'}</td>
