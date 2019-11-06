@@ -11,7 +11,9 @@ export const SampleDebugConsumer = SampleDebugContext.Consumer;
 export default SampleDebugContext;
 
 export function SampleDebugProvider({ accessionCode, children }) {
-  const { data, isLoading } = useLoader(() => loadData(accessionCode));
+  const { data, isLoading } = useLoader(() => loadData(accessionCode), [
+    accessionCode,
+  ]);
   const [selectedOriginalFiles, setSelectedOriginalFiles] = React.useState({});
   const contextValue = {
     data: data || {},
