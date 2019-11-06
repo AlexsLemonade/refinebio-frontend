@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import * as chartSelectors from './chartSelectors';
 import DashboardSection from './DashboardSection';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
@@ -20,7 +21,10 @@ function Dashboard(props) {
   const { data, refresh, hasError } = useLoader(async () => {
     const stats = await fetchDashboardData(range);
     setChartUpdating(false);
-    return getDashboardChartConfig(stats, range);
+    return {
+      charts: getDashboardChartConfig(stats, range),
+      generatedOn: stats.generated_on,
+    };
   }, [range]);
 
   // refresh data every 10 mins
@@ -49,12 +53,14 @@ function Dashboard(props) {
           }}
         />
 
-        <p>* All dates in UTC</p>
+        <p>
+          <DashboardUpdatedOn time={data && data.generatedOn} />
+        </p>
 
         {!data || chartUpdating ? (
           <Spinner />
         ) : (
-          data.map(section => {
+          data.charts.map(section => {
             const { title, charts } = section;
             return (
               <DashboardSection
@@ -71,6 +77,14 @@ function Dashboard(props) {
   );
 }
 export default Dashboard;
+
+function DashboardUpdatedOn({ time }) {
+  if (!time) {
+    return 'Updated ...';
+  }
+  const duration = moment.duration(moment().diff(time)).humanize();
+  return `Updated ${duration} ago`;
+}
 
 /**
  * Returns the options for the charts in the dashboard
