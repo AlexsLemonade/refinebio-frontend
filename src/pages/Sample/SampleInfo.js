@@ -46,11 +46,43 @@ export default function SampleInfo({ sample }) {
       <h4 className="experiment__title">Sample Metadata Fields</h4>
 
       <div>
-        <div className="experiment__row">
-          <div className="experiment__row-label">label</div>
-          <div>asd</div>
-        </div>
+        <SampleMetadataFields sample={sample} />
       </div>
     </div>
   );
 }
+
+function SampleMetadataFields({ sample }) {
+  const fields = SAMPLE_METADATA_FIELDS.map(
+    field =>
+      sample[field] && (
+        <div key={field} className="experiment__row">
+          <div className="experiment__row-label">
+            {formatSentenceCase(field)}
+          </div>
+          <div>{sample[field]}</div>
+        </div>
+      )
+  );
+
+  if (!fields.some(x => x)) {
+    return 'No metadata fields';
+  }
+
+  return fields;
+}
+
+const SAMPLE_METADATA_FIELDS = [
+  'sex',
+  'age',
+  'specimen_part',
+  'genotype',
+  'disease',
+  'disease_stage',
+  'cell_line',
+  'treatment',
+  'race',
+  'subject',
+  'compound',
+  'time',
+];
