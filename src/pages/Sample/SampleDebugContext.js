@@ -51,7 +51,7 @@ export async function loadData(accessionCode) {
     }),
     getProcessorJobs(accessionCode),
     getDownloaderJobs(accessionCode),
-    getRunningJobs(),
+    getRunningJobs(accessionCode),
   ]);
 
   return {
@@ -95,12 +95,14 @@ export async function getProcessorJobs(accessionCode) {
   });
 }
 
-async function getRunningJobs() {
+async function getRunningJobs(accessionCode) {
   const [processorJobs, downloaderJobs] = await Promise.all([
     Ajax.get(`/v1/jobs/downloader/`, {
+      sample_accession_code: accessionCode,
       nomad: true,
     }),
     Ajax.get(`/v1/jobs/processor/`, {
+      sample_accession_code: accessionCode,
       nomad: true,
     }),
   ]);
