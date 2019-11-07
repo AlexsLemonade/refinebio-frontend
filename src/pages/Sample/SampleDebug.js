@@ -12,7 +12,7 @@ const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 export default function SampleDebug({ accessionCode }) {
   return (
     <SampleDebugProvider accessionCode={accessionCode}>
-      <div className="flex-row">
+      <div className="flex-row flex-row--top">
         <OriginalFileFilters />
         <ComputedFiles />
       </div>
@@ -119,12 +119,8 @@ function JobRow({ job }) {
             rel="noopener noreferrer"
             href={
               job.type === 'processor'
-                ? `https://api.refine.bio/v1/jobs/processor/?format=json&id=${
-                    job.id
-                  }`
-                : `https://api.refine.bio/v1/jobs/downloader/?format=json&id=${
-                    job.id
-                  }`
+                ? `https://api.refine.bio/v1/jobs/processor/?format=json&id=${job.id}`
+                : `https://api.refine.bio/v1/jobs/downloader/?format=json&id=${job.id}`
             }
           >
             {job.id}
