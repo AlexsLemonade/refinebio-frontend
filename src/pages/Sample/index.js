@@ -5,6 +5,7 @@ import { Accordion, AccordionItem } from '../../components/Accordion';
 import { useLoader } from '../../components/Loader';
 import { getDetailedSample } from '../../api/samples';
 import SampleInfo from './SampleInfo';
+import Spinner from '../../components/Spinner';
 
 export default function Sample({ match }) {
   const accessionCode = match.params.id;
@@ -15,8 +16,8 @@ export default function Sample({ match }) {
   );
 
   return (
-    <div>
-      {!isLoading && <SampleInfo sample={data} />}
+    <div className="sample-page">
+      {isLoading ? <Spinner /> : <SampleInfo sample={data} />}
 
       <Accordion>
         <AccordionItem title="Debug Information">

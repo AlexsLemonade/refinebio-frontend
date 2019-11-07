@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Ajax } from '../../common/helpers';
 import { useLoader } from '../../components/Loader';
 import { getDetailedSample } from '../../api/samples';
+import Spinner from '../../components/Spinner';
 
 const SampleDebugContext = React.createContext({});
 
@@ -28,7 +29,7 @@ export function SampleDebugProvider({ accessionCode, children }) {
 
   return (
     <SampleDebugContext.Provider value={contextValue}>
-      {children}
+      {isLoading ? <Spinner /> : children}
     </SampleDebugContext.Provider>
   );
 }
