@@ -31,25 +31,29 @@ function OriginalFileFilters() {
   return (
     <div className="sample-debug-section">
       <h3>Original Files</h3>
-      {originalFiles &&
-        originalFiles.map(file => (
-          <Checkbox
-            key={file.id}
-            name={file.id}
-            onChange={() => toggleFile(file.id)}
-            checked={isFileSelected(file.id)}
-            className={classnames({
-              'sample-debug__cancel':
-                file.processor_jobs.length + file.downloader_jobs.length === 0,
-            })}
-          >
-            {file.filename}
-            {file.filename !== file.source_filename ? ' (from archive) ' : ' '}
-            <a href={file.source_url} className="link">
-              download
-            </a>
-          </Checkbox>
-        ))}
+      {originalFiles && originalFiles.length > 0
+        ? originalFiles.map(file => (
+            <Checkbox
+              key={file.id}
+              name={file.id}
+              onChange={() => toggleFile(file.id)}
+              checked={isFileSelected(file.id)}
+              className={classnames({
+                'sample-debug__cancel':
+                  file.processor_jobs.length + file.downloader_jobs.length ===
+                  0,
+              })}
+            >
+              {file.filename}
+              {file.filename !== file.source_filename
+                ? ' (from archive) '
+                : ' '}
+              <a href={file.source_url} className="link">
+                download
+              </a>
+            </Checkbox>
+          ))
+        : 'None'}
     </div>
   );
 }
@@ -119,8 +123,12 @@ function JobRow({ job }) {
             rel="noopener noreferrer"
             href={
               job.type === 'processor'
-                ? `https://api.refine.bio/v1/jobs/processor/?format=json&id=${job.id}`
-                : `https://api.refine.bio/v1/jobs/downloader/?format=json&id=${job.id}`
+                ? `https://api.refine.bio/v1/jobs/processor/?format=json&id=${
+                    job.id
+                  }`
+                : `https://api.refine.bio/v1/jobs/downloader/?format=json&id=${
+                    job.id
+                  }`
             }
           >
             {job.id}
@@ -160,7 +168,13 @@ function JobRow({ job }) {
             {jobOomKilled ? (
               'Looks like the job was OOM-Killed (no failure_reason)'
             ) : (
-              <p>{job.failure_reason || 'No failure reason'}</p>
+              <p>
+                {job.failure_reason
+                  ? job.failure_reason
+                      .split('\\n')
+                      .map(fragment => <div>{fragment}</div>)
+                  : 'No failure reason'}
+              </p>
             )}
           </td>
         </tr>

@@ -44,12 +44,8 @@ export async function loadData(accessionCode) {
     downloaderJobs,
     runningJobs,
   ] = await Promise.all([
-    Ajax.get('/v1/original_files/', {
-      samples: sample.id,
-    }),
-    Ajax.get('/v1/computed_files/', {
-      samples: sample.id,
-    }),
+    getOriginalFiles(sample.id),
+    getComputedFiles(sample.id),
     getProcessorJobs(accessionCode),
     getDownloaderJobs(accessionCode),
     getRunningJobs(accessionCode),
@@ -61,6 +57,26 @@ export async function loadData(accessionCode) {
     computedFiles: computedFiles.results,
     jobs: mergeJobs(processorJobs.results, downloaderJobs.results, runningJobs),
   };
+}
+
+export async function getOriginalFiles(sampleId) {
+  try {
+    return await Ajax.get('/v1/original_files/', {
+      samples: sampleId,
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function getComputedFiles(sampleId) {
+  try {
+    return await Ajax.get('/v1/computed_files/', {
+      samples: sampleId,
+    });
+  } catch {
+    return [];
+  }
 }
 
 export function mergeJobs(processorJobs, downloaderJobs, runningJobs) {
