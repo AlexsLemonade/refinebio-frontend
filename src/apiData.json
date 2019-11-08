@@ -563,18 +563,7 @@
       "25": 0
     }
   },
-  "qnTargets": {
-    "GALLUS_GALLUS": true,
-    "DANIO_RERIO": true,
-    "MUS_MUSCULUS": true,
-    "HOMO_SAPIENS": true,
-    "ARABIDOPSIS_THALIANA": true,
-    "SUS_SCROFA": true,
-    "ESCHERICHIA_COLI": true,
-    "PSEUDOMONAS_AERUGINOSA": true,
-    "ORYZA_SATIVA": true,
-    "BOS_INDICUS": true
-  },
+  "qnTargets": false,
   "platforms": {
     "454GSFLX": "454GSFLX",
     "454GSFLXTitanium": "454GSFLXTitanium",

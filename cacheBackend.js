@@ -112,7 +112,7 @@ async function getQnTargets() {
     );
   } catch {
     console.log('Error fetching qn targets');
-    return {};
+    return false;
   }
 }
 
