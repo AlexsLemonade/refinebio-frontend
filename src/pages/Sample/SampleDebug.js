@@ -7,7 +7,7 @@ import './sample.scss';
 import SampleDebugContext, { SampleDebugProvider } from './SampleDebugContext';
 import Checkbox from '../../components/Checkbox';
 
-const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
+const DATE_FORMAT = 'MM/DD/YYYY HH:mm';
 
 export default function SampleDebug({ accessionCode }) {
   return (
