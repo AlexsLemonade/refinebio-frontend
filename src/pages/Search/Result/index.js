@@ -50,7 +50,7 @@ const Result = ({ result, query }) => {
                 publication_authors: result.publication_authors,
                 source_url: result.source_url,
                 source_database: result.source_database,
-                organism_names: result.organism_names,
+                organisms: result.organism_names,
                 samples: [],
               },
             })}
