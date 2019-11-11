@@ -53,9 +53,7 @@ function Dashboard(props) {
           }}
         />
 
-        <p>
-          <DashboardUpdatedOn time={data && data.generatedOn} />
-        </p>
+        <DashboardUpdatedOn time={data && data.generatedOn} />
 
         {!data || chartUpdating ? (
           <Spinner />
@@ -79,11 +77,12 @@ function Dashboard(props) {
 export default Dashboard;
 
 function DashboardUpdatedOn({ time }) {
-  if (!time) {
-    return 'Updated ...';
+  let result = 'Updated ...';
+  if (time) {
+    const duration = moment.duration(moment().diff(time)).humanize();
+    result = `Updated ${duration} ago`;
   }
-  const duration = moment.duration(moment().diff(time)).humanize();
-  return `Updated ${duration} ago`;
+  return <p>{result}</p>;
 }
 
 /**
