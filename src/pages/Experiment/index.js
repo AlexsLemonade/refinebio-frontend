@@ -79,7 +79,7 @@ let Experiment = ({ match, location: { state }, goBack }) => {
           let totalSamples = experimentData.samples.length;
           const numDownloadableSamples =
             experimentData['num_downloadable_samples'];
-          let organisms = experimentData.organism_names;
+          let { organisms } = experimentData;
 
           // for users coming from the search, see if there's any experiment's data in the url state
           if (isLoading && comesFromSearch && state.result) {
@@ -89,7 +89,7 @@ let Experiment = ({ match, location: { state }, goBack }) => {
               samples: [],
             };
             totalSamples = state.result.total_samples_count;
-            organisms = state.result.organism_names;
+            organisms = state.result.organisms;
           }
 
           // Ensure that the url has the correct slug
