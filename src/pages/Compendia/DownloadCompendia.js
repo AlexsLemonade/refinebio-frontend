@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import uniq from 'lodash/uniq';
+
+import { formatSentenceCase, formatBytes } from '../../common/helpers';
+
 import Dropdown from '../../components/Dropdown';
 import Button from '../../components/Button';
-import { Ajax, formatSentenceCase, formatBytes } from '../../common/helpers';
 import { useLoader } from '../../components/Loader';
 import Checkbox from '../../components/Checkbox';
 import Spinner from '../../components/Spinner';
 
+import { fetchCompendium, fetchCompendiaData } from '../../api/compendia';
 import { createToken } from '../../state/token';
 import { push } from '../../state/routerActions';
 
@@ -32,7 +34,6 @@ let DownloadCompendia = ({
         <Spinner />
       </div>
     );
-
   if (!isLoading && data.length === 0)
     return (
       <div className="download-compendia">
@@ -52,7 +53,7 @@ let DownloadCompendia = ({
             multiple={false}
             options={data}
             selectedOption={selected}
-            label={c => formatSentenceCase(c.organism_name)}
+            label={c => formatSentenceCase(c.primary_organism)}
             onChange={s => setSelected(s)}
           />
         </div>
@@ -80,7 +81,8 @@ let DownloadCompendia = ({
         )}
         <div className="download-compendia__row">
           <span>
-            Download Size: {formatBytes((selected || data[0]).size_in_bytes)}{' '}
+            Download Size:{' '}
+            {formatBytes((selected || data[0]).computed_file.size_in_bytes)}{' '}
           </span>
           <Button
             text="Download Now"
@@ -88,15 +90,10 @@ let DownloadCompendia = ({
             isDisabled={!agree}
             onClick={async () => {
               const tokenId = token || (await createToken());
-              const selectedOrganism = selected || data[0];
-              const downloadUrl = await downloadCompendia(
-                filter,
-                tokenId,
-                selectedOrganism
-              );
+              const selectedCompendium = selected || data[0];
               push({
                 pathname: '/compendia/download',
-                state: { organism: selectedOrganism, downloadUrl },
+                state: await fetchCompendium(tokenId, selectedCompendium),
               });
             }}
           />
@@ -111,61 +108,5 @@ DownloadCompendia = connect(
   }),
   { createToken, push }
 )(DownloadCompendia);
+
 export default DownloadCompendia;
-
-const filterForLatestCompendia = (data, organism = false) => {
-  data.forEach(c => {
-    c.organism_name = c.result.annotations[0].data.organism_name;
-  });
-
-  const filtered = uniq(data.map(c => c.organism_name)).map(o => {
-    return data
-      .filter(c => c.organism_name === o)
-      .sort((x, y) => y.compendia_version - x.compendia_version)[0];
-  });
-
-  if (organism) return filtered.find(c => c.organism_name === organism);
-  return filtered.sort((a, b) =>
-    b.organism_name.toUpperCase() < a.organism_name.toUpperCase() ? 1 : -1
-  );
-};
-
-async function fetchCompendiaData(additionalFilters = {}, token) {
-  try {
-    const filters = {
-      ...{
-        is_compendia: true,
-        is_public: true,
-        is_qn_target: false,
-      },
-      ...additionalFilters,
-    };
-
-    const tokenObject = token ? { 'API-KEY': token } : null;
-    const values = Object.entries(filters).map(([key, value]) => {
-      return `${key}=${value}`;
-    });
-
-    const { results: data } = await Ajax.get(
-      `/v1/computed_files/?${values.join('&')}`,
-      null,
-      tokenObject
-    );
-    return filterForLatestCompendia(data);
-  } catch (e) {
-    return [];
-  }
-}
-
-async function downloadCompendia(additionalFilters = {}, token, organism) {
-  // refetch the compendia, now sending the token id to retrieve the download urls
-  const computedFiles = await fetchCompendiaData(additionalFilters, token);
-  const downloadableFile = computedFiles.find(
-    c => c.organism_name === organism.organism_name
-  );
-  if (downloadableFile && downloadableFile.download_url) {
-    return downloadableFile.download_url;
-  }
-  // throw error? or alert slack
-  return '';
-}
