@@ -7,10 +7,10 @@ import PointsBackground from './PointsBackground';
 import NormalizedCompendia from './NormalizedCompendia';
 import RNASeqSampleCompendia from './RNASeqSampleCompendia';
 import EmailSection from '../Main/EmailSection';
-import { useTheme } from '../../common/ThemeContext';
+import { themes, useTheme } from '../../common/ThemeContext';
 
 const Compendia = function Compendia({ location, replace }) {
-  useTheme('light');
+  useTheme(themes.light);
   const compendiaOptions = [
     {
       hash: '#normalized',

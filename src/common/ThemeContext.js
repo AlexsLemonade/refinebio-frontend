@@ -1,6 +1,6 @@
 import React from 'react';
 
-const themes = {
+const options = {
   default: {
     header: 'default',
   },
@@ -12,12 +12,18 @@ const themes = {
   },
 };
 
-const ThemeContext = React.createContext([themes.default, () => {}]);
+// {default:"default", inverted:"inverted"...}
+const themes = Object.assign(
+  {},
+  ...Object.keys(options).map(t => ({ [t]: t }))
+);
+
+const ThemeContext = React.createContext([options.default, () => {}]);
 
 const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = React.useState(themes.default);
+  const [theme, setTheme] = React.useState(options.default);
   const setAvailableTheme = themeName => {
-    if (themes[themeName]) setTheme(themes[themeName]);
+    if (options[themeName]) setTheme(options[themeName]);
   };
 
   return (
@@ -28,6 +34,10 @@ const ThemeProvider = ({ children }) => {
 };
 
 const useTheme = (themeName = false) => {
+  if (themeName && !options[themeName]) {
+    throw Error(`"${themeName}" is not a supported theme.`);
+  }
+
   const [theme, setTheme] = React.useContext(ThemeContext);
   React.useEffect(() => {
     if (themeName) setTheme(themeName);
