@@ -137,6 +137,13 @@ let DownloadBar = ({
           </Checkbox>
         </div>
       )}
+
+      <div style={{ marginTop: 24, display: 'flex' }}>
+        <Alert>
+          The dataset will not be quantile normalized. Quantile normalization
+          will be available later.
+        </Alert>
+      </div>
     </div>
   );
 };

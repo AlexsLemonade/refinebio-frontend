@@ -48,7 +48,7 @@ const DownloadFileSummary = ({
           </div>
         ))}
       </div>
-      <div className="downloads-processed-info info">
+      <div className="downloads-processed-info info hidden">
         <img className="info__icon" src={InfoIcon} alt="" />
         <div>
           <div className="nowrap">
