@@ -6,7 +6,6 @@
 
 const axios = require('axios');
 const fs = require('fs');
-const _ = require('lodash');
 
 const version = process.env.VERSION || '0.0.0';
 const ApiVersion = 'v1';
@@ -45,7 +44,8 @@ async function cacheServerData() {
 
 function getAboutStats() {
   try {
-    return axios.get(`${ApiHost}/stats-about/?dummy=1`);
+    const { data } = axios.get(`${ApiHost}/stats-about/?dummy=1`);
+    return data;
   } catch {
     // these numbers are important for the about page, if the requests fails
     // use these numbers instead.
@@ -101,22 +101,29 @@ async function getPlatforms() {
 }
 
 async function getQnTargets() {
-  const { data: qnTargets } = await axios.get(`${ApiHost}/qn_targets`);
-  return qnTargets.reduce(
-    (accum, { name: organismName }) => ({
-      ...accum,
-      [organismName]: true,
-    }),
-    {}
-  );
+  try {
+    const { data: qnTargets } = await axios.get(`${ApiHost}/qn_targets`);
+    return qnTargets.reduce(
+      (accum, { name: organismName }) => ({
+        ...accum,
+        [organismName]: true,
+      }),
+      {}
+    );
+  } catch {
+    console.log('Error fetching qn targets');
+    return false;
+  }
 }
 
-function getSamplesPerOrganism() {
-  return axios
-    .get(`${ApiHost}/search/?limit=1&offset=0`)
-    .then(response => ({
+async function getSamplesPerOrganism() {
+  try {
+    const response = axios.get(`${ApiHost}/search/?limit=1&offset=0`);
+    return {
       organism: response.data.filters.organism,
       apiVersion: response.headers['x-source-revision'],
-    }))
-    .catch(error => false);
+    };
+  } catch {
+    return {};
+  }
 }
