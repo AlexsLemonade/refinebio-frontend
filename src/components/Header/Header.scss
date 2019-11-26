@@ -60,6 +60,17 @@
         &.header__dropdown--open {
           opacity: 1;
           visibility: visible;
+
+          // this allows for better hover states
+          &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            height: 20px;
+            top: -20px;
+            right: 0;
+            width: 50%;
+          }
         }
 
         li {
