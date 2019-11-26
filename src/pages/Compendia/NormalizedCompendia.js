@@ -15,7 +15,7 @@ export default function NormalizedCompendia({ title }) {
             Normalized Compendia are the collection of all the samples available
             on refine.bio, aggregated and normalized by species.
           </p>
-          <DownloadCompendia title={title} />
+          <DownloadCompendia title={title} filter={{ quant_sf_only: false }} />
         </div>
       </div>
       <div className="compendia__section">
