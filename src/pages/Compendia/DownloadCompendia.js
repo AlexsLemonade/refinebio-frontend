@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { formatSentenceCase, formatBytes } from '../../common/helpers';
+import InfoBadge from '../../common/icons/info-badge.svg';
 
 import Dropdown from '../../components/Dropdown';
 import Button from '../../components/Button';
@@ -59,6 +60,23 @@ let DownloadCompendia = ({
         </div>
 
         {children}
+
+        {(selected || data[0]).organisms.length > 1 && (
+          <div className="download-compendia__info">
+            <img src={InfoBadge} alt="Attention" />
+            <p>
+              Also contains small number of samples from other
+              <br />
+              organisms from the same species.{' '}
+              <a
+                target="_blank"
+                href="http://docs.refine.bio/en/latest/main_text.html#normalized-compendia"
+              >
+                View list
+              </a>
+            </p>
+          </div>
+        )}
 
         {!agreedToTerms && (
           <div className="download-compendia__terms download-compendia__row">
