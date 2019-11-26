@@ -26,7 +26,12 @@ let DownloadCompendia = ({
   const agreedToTerms = !!token;
   const [selected, setSelected] = React.useState(null);
   const [agree, setAgree] = React.useState(agreedToTerms);
-  const { data, isLoading } = useLoader(() => fetchCompendiaData(filter));
+  const { data, isLoading } = useLoader(() =>
+    fetchCompendiaData({
+      latest_version: true,
+      ...filter,
+    })
+  );
 
   if (isLoading) {
     return (
@@ -73,6 +78,7 @@ let DownloadCompendia = ({
               organisms from the same species.{' '}
               <a
                 target="_blank"
+                rel="noopener noreferrer"
                 href="http://docs.refine.bio/en/latest/main_text.html#normalized-compendia"
               >
                 View list
