@@ -120,7 +120,7 @@ let DownloadCompendia = ({
               const selectedCompendium = selected || data[0];
               push({
                 pathname: '/compendia/download',
-                state: await fetchCompendium(tokenId, selectedCompendium),
+                state: await fetchCompendium(tokenId, selectedCompendium.id),
               });
             }}
           />
