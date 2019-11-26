@@ -45,8 +45,14 @@
     width: 100%;
     overflow: hidden;
 
-    @include desktop() {
+    @include tablet {
+      padding-top: 120px;
+    }
+
+    @include desktop {
       overflow: visible;
+      min-height: 572px;
+      padding-top: 200px;
     }
   }
 
@@ -58,10 +64,6 @@
     opacity: 0.1;
     bottom: 0;
     pointer-events: none;
-
-    @include tablet() {
-      z-index: 20;
-    }
 
     @include desktop() {
       width: 1348px;

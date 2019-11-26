@@ -32,6 +32,67 @@
     }
   }
 
+  &__dropdown {
+    .header__link {
+      cursor: pointer;
+      svg {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      &.header__dropdown--links {
+        position: absolute;
+        left: -10px;
+        transform: translate(0, 2px);
+        opacity: 0;
+        visibility: hidden;
+        background-color: #fdfdfd;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.21);
+        padding: 5px 0;
+        font-size: 16px;
+        line-height: 24px;
+        transition: opacity 0.1s ease-in-out;
+        &.header__dropdown--open {
+          opacity: 1;
+          visibility: visible;
+
+          // this allows for better hover states
+          &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            height: 20px;
+            top: -20px;
+            right: 0;
+            width: 50%;
+          }
+        }
+
+        li {
+          padding-top: 10px;
+          a {
+            padding: 0 5px;
+            display: block;
+            color: #000000;
+          }
+          &:first-child {
+            padding-top: 0;
+          }
+          &.header__link--active a,
+          a:hover {
+            background-color: #386db0;
+            color: #fdfdfd;
+          }
+        }
+      }
+    }
+  }
+
   &__link {
     margin: 48px 1rem 0 1rem;
     padding: 0;
@@ -64,6 +125,13 @@
     &--button-wrap,
     &--button-wrap:hover {
       border-bottom-color: transparent;
+    }
+
+    &__dropdown {
+      cursor: pointer;
+      position: absolute;
+      width: 100%;
+      opacity: 0;
     }
   }
 
@@ -117,9 +185,12 @@
   }
 }
 
+.header--light,
 .header--inverted {
-  background-color: rgba(12, 52, 131, 0.94);
+  background: transparent;
+}
 
+.header--inverted {
   .header__logo {
     filter: brightness(0) invert(1);
   }
@@ -162,7 +233,8 @@
 
 // disable stick
 .header--scroll {
-  position: relative;
+  position: absolute;
+  width: 100%;
 }
 
 .github-corner {

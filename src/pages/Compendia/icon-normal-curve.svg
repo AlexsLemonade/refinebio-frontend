@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="63px" height="46px" viewBox="0 0 63 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>icon-normal-curve</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Species-Compendia" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <g id="compendium-species-compendia" transform="translate(-688.000000, -557.000000)" stroke="#386DB0">
+            <g id="icon-normalized-compendia" transform="translate(666.000000, 527.000000)">
+                <g id="icon-normal-curve" transform="translate(24.000000, 32.000000)">
+                    <g>
+                        <path d="M59,42.5 L0,42.5" id="Path-4" stroke-width="3" stroke-linejoin="round"></path>
+                        <path d="M12,35 C13.85,35 15.4990865,30.8141547 15.7,30.2702703 C23.091255,10.2617122 23.1,7.50096164e-16 29.575,0 C36.05,0 37.1504402,10.874151 44.375,30.2702703 C44.6876311,31.1096057 46.2574623,35 49,35" id="Line-9" stroke-width="3" stroke-linejoin="bevel" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

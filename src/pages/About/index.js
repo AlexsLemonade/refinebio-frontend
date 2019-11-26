@@ -9,6 +9,7 @@ import oneRepo from './one-repo.svg';
 import betterMed from './better-med.svg';
 import alsfLogo from './ALSFsquare.jpg';
 import ccdlLogo from './CCDL-logo.jpg';
+import { themes, useTheme } from '../../common/ThemeContext';
 
 import apiData from '../../apiData.json';
 import {
@@ -18,6 +19,7 @@ import {
 } from '../../common/helpers';
 
 function About() {
+  useTheme(themes.inverted);
   return (
     <div>
       <Helmet>
