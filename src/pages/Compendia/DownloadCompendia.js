@@ -28,14 +28,16 @@ let DownloadCompendia = ({
   const [agree, setAgree] = React.useState(agreedToTerms);
   const { data, isLoading } = useLoader(() => fetchCompendiaData(filter));
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <div className="download-compendia">
         <p className="download-compendia__title">Fetching {title}</p>
         <Spinner />
       </div>
     );
-  if (!isLoading && data.length === 0)
+  }
+
+  if (data.length === 0) {
     return (
       <div className="download-compendia">
         Download unavailable at this time.
@@ -43,6 +45,7 @@ let DownloadCompendia = ({
         Please check again soon!
       </div>
     );
+  }
 
   return (
     <div className="download-compendia">
