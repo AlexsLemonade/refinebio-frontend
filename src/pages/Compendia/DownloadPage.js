@@ -7,15 +7,15 @@ import { formatSentenceCase } from '../../common/helpers';
 
 export default function DownloadPage({ location }) {
   React.useEffect(() => {
-    if (location.state && location.state.downloadUrl) {
+    if (location.state && location.state.compendium) {
       window.location = location.state.downloadUrl;
     }
   });
-
+  // this needs to account for rna-seq or normalized
   if (!location.state || !location.state.downloadUrl) {
     return <Redirect to="/species-compendia" />;
   }
-  const { organism, downloadUrl } = location.state;
+  const { compendium, downloadUrl } = location.state;
 
   return (
     <div className="layout__content">
@@ -25,7 +25,7 @@ export default function DownloadPage({ location }) {
             <div className="dataset__processed-text">
               <h1>
                 <IoMdCheckmarkCircle className="color-success" /> Downloading{' '}
-                {formatSentenceCase(organism)} compendia...
+                {formatSentenceCase(compendium.primary_organism)} compendium...
               </h1>
               <p>
                 If the download did not start,{' '}

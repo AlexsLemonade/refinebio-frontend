@@ -62,6 +62,9 @@ module.exports = {
     'prefer-destructuring': 'warn',
     'no-param-reassign': 'warn',
 
+    // this should be fixed in header/headerA
+    'jsx-a11y/no-noninteractive-element-interactions': 'warn',
+
     // deprecated
     'jsx-a11y/label-has-for': 0,
   },
