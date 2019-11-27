@@ -137,22 +137,6 @@ let DownloadBar = ({
           </Checkbox>
         </div>
       )}
-
-      <div style={{ marginTop: 24, display: 'flex' }}>
-        <Alert>
-          The dataset will not be quantile normalized. Quantile normalization
-          will be available later. Follow us on twitter (
-          <a
-            href="https://twitter.com/CancerDataLab"
-            target="_blank"
-            rel="nofollow noopener noreferrer"
-            className="link"
-          >
-            @CancerDataLab
-          </a>
-          ) for updates.
-        </Alert>
-      </div>
     </div>
   );
 };
