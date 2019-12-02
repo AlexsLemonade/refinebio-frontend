@@ -38,7 +38,7 @@ const Compendia = function Compendia({ location, replace }) {
             <h1 className="compendia__title">
               refine.bio Compendia packages the data processed by refine.bio
               pipelines for flexible and broad use by computational biologists
-              and data sceientists
+              and data scientists
             </h1>
           </div>
         </div>
