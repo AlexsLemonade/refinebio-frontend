@@ -29,10 +29,7 @@ export default class PointsBackground extends React.Component {
 
   render() {
     return (
-      <div
-        ref={this.container}
-        className="species-compendia__header-background"
-      >
+      <div ref={this.container} className="compendia__header-background">
         <CanvasPoints width={this.state.width} height={this.state.height} />
       </div>
     );
