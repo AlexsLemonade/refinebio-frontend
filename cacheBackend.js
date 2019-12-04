@@ -42,9 +42,9 @@ async function cacheServerData() {
   fs.writeFileSync(`src/apiData.json`, JSON.stringify(cache));
 }
 
-function getAboutStats() {
+async function getAboutStats() {
   try {
-    const { data } = axios.get(`${ApiHost}/stats-about/?dummy=1`);
+    const { data } = await axios.get(`${ApiHost}/stats-about/`);
     return data;
   } catch {
     // these numbers are important for the about page, if the requests fails
