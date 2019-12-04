@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import logo from '../../common/icons/logo-beta.svg';
+import logo from '../../common/icons/logo.svg';
 
 export default function Header({ isTv }) {
   return (

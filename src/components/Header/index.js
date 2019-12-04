@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { IoMdMenu } from 'react-icons/io';
 
-import logo from '../../common/icons/logo-beta.svg';
+import logo from '../../common/icons/logo.svg';
 import { fetchDataSet } from '../../state/download/actions';
 import { getTotalSamplesAdded } from '../../state/download/reducer';
 import './Header.scss';
