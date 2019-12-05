@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 import { formatSentenceCase, formatBytes } from '../../common/helpers';
 import InfoBadge from '../../common/icons/info-badge.svg';
@@ -32,6 +33,27 @@ let DownloadCompendia = ({
       ...filter,
     })
   );
+
+  const trackDownloadType = compendium => {
+    if (process.env.NODE_ENV === 'production') {
+      const type = compendium.quant_sf_only ? 'RNA-seq' : 'Normalized';
+      ReactGA.event({
+        category: 'Compendia',
+        action: `${type} Download`,
+        label: compendium.primary_organism,
+      });
+    }
+  };
+
+  const clickDownload = async () => {
+    const tokenId = token || (await createToken());
+    const selectedCompendium = selected || data[0];
+    trackDownloadType(selectedCompendium);
+    push({
+      pathname: '/compendia/download',
+      state: await fetchCompendium(tokenId, selectedCompendium.id),
+    });
+  };
 
   if (isLoading) {
     return (
@@ -115,14 +137,7 @@ let DownloadCompendia = ({
             text="Download Now"
             className="download-compendia__button"
             isDisabled={!agree}
-            onClick={async () => {
-              const tokenId = token || (await createToken());
-              const selectedCompendium = selected || data[0];
-              push({
-                pathname: '/compendia/download',
-                state: await fetchCompendium(tokenId, selectedCompendium.id),
-              });
-            }}
+            onClick={clickDownload}
           />
         </div>
       </div>
