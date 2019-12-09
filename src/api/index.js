@@ -17,3 +17,9 @@ export {
   getDataSetDetails,
   updateDataSet,
 } from './dataSet';
+
+export { getDownloaderJobs, getProcessorJobs, getRunningJobs } from './jobs';
+
+export { getComputedFiles } from './computedFiles';
+
+export { getOriginalFiles } from './originalFiles';

@@ -1,9 +1,15 @@
 import React from 'react';
 import moment from 'moment';
-import { Ajax } from '../../common/helpers';
 import { useLoader } from '../../components/Loader';
-import { getDetailedSample } from '../../api/samples';
 import Spinner from '../../components/Spinner';
+import {
+  getDownloaderJobs,
+  getProcessorJobs,
+  getRunningJobs,
+  getComputedFiles,
+  getOriginalFiles,
+  getDetailedSample,
+} from '../../api';
 
 const SampleDebugContext = React.createContext({});
 
@@ -59,26 +65,6 @@ export async function loadData(accessionCode) {
   };
 }
 
-export async function getOriginalFiles(sampleId) {
-  try {
-    return await Ajax.get('/v1/original_files/', {
-      samples: sampleId,
-    });
-  } catch {
-    return [];
-  }
-}
-
-export async function getComputedFiles(sampleId) {
-  try {
-    return await Ajax.get('/v1/computed_files/', {
-      samples: sampleId,
-    });
-  } catch {
-    return [];
-  }
-}
-
 export function mergeJobs(processorJobs, downloaderJobs, runningJobs) {
   const processorJobsResult = processorJobs.map(job => ({
     ...job,
@@ -98,34 +84,4 @@ export function mergeJobs(processorJobs, downloaderJobs, runningJobs) {
       return moment(date1).isBefore(date2) ? 1 : -1;
     }
   );
-}
-
-export async function getDownloaderJobs(accessionCode) {
-  return Ajax.get(`/v1/jobs/downloader/`, {
-    sample_accession_code: accessionCode,
-  });
-}
-
-export async function getProcessorJobs(accessionCode) {
-  return Ajax.get(`/v1/jobs/processor/`, {
-    sample_accession_code: accessionCode,
-  });
-}
-
-async function getRunningJobs(accessionCode) {
-  const [processorJobs, downloaderJobs] = await Promise.all([
-    Ajax.get(`/v1/jobs/downloader/`, {
-      sample_accession_code: accessionCode,
-      nomad: true,
-    }),
-    Ajax.get(`/v1/jobs/processor/`, {
-      sample_accession_code: accessionCode,
-      nomad: true,
-    }),
-  ]);
-
-  return [
-    ...processorJobs.results.map(job => job.nomad_job_id),
-    ...downloaderJobs.results.map(job => job.nomad_job_id),
-  ];
 }
