@@ -81,11 +81,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
         Compendia
       </HeaderDropDownLink>
       <li className="header__link">
-        <a
-          href="http://docs.refine.bio"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="//docs.refine.bio" target="_blank" rel="noopener noreferrer">
           Docs
         </a>
       </li>

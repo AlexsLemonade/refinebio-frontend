@@ -220,7 +220,7 @@ class SamplesTable extends React.Component {
                       <div>
                         Some fields may be harmonized.{' '}
                         <a
-                          href="http://docs.refine.bio/en/latest/main_text.html#refine-bio-harmonized-metadata"
+                          href="//docs.refine.bio/en/latest/main_text.html#refine-bio-harmonized-metadata"
                           target="_blank"
                           className="link"
                           rel="noopener noreferrer"
@@ -328,7 +328,7 @@ function AddRemoveCell({ sample, experimentAccessionCodes }) {
         <div>
           <div className="nowrap">Sample not processed</div>
           <a
-            href="http://docs.refine.bio/en/latest/faq.html#why-can-t-i-add-certain-samples-to-my-dataset"
+            href="//docs.refine.bio/en/latest/faq.html#why-can-t-i-add-certain-samples-to-my-dataset"
             className="link"
             target="_blank"
             rel="noopener noreferrer"

@@ -54,7 +54,7 @@ export default function DownloadPage({ location }) {
 
           <p>
             <a
-              href="http://docs.refine.bio/en/latest/getting_started.html#getting-started-with-species-compendia"
+              href="//docs.refine.bio/en/latest/getting_started.html#getting-started-with-species-compendia"
               className="link"
               target="_blank"
               rel="noopener noreferrer"
@@ -64,7 +64,7 @@ export default function DownloadPage({ location }) {
           </p>
           <p>
             <a
-              href="http://docs.refine.bio/en/latest/main_text.html#species-compendia"
+              href="//docs.refine.bio/en/latest/main_text.html#species-compendia"
               className="link"
               target="_blank"
               rel="noopener noreferrer"

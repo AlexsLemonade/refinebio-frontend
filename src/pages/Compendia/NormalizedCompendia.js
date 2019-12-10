@@ -26,7 +26,7 @@ export default function NormalizedCompendia({ title }) {
           normalization.
         </div>
         <a
-          href="http://docs.refine.bio/en/latest/main_text.html#normalized-compendia"
+          href="//docs.refine.bio/en/latest/main_text.html#normalized-compendia"
           className="button button--secondary"
           target="_blank"
           rel="noopener noreferrer"

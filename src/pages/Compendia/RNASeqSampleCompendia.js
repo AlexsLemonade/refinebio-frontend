@@ -45,7 +45,7 @@ export default function RNASeqSampleCompendia({ title }) {
             Note: This compendia is not normalized or aggregated.
           </p>
           <a
-            href="http://docs.refine.bio/en/latest/main_text.html#rna-seq-sample-compendia"
+            href="//docs.refine.bio/en/latest/main_text.html#rna-seq-sample-compendia"
             className="button button--secondary"
             target="_blank"
             rel="noopener noreferrer"
