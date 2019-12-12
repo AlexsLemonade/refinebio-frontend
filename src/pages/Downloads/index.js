@@ -41,12 +41,10 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
       </Helmet>
       <BackToTop />
       <Loader fetch={() => fetchDataSetDetails(dataSetId)}>
-        {({ isLoading }) =>
-          isLoading ? (
-            <Spinner />
-          ) : !dataSetCanBeDownloaded ? (
-            <DownloadEmpty />
-          ) : (
+        {({ isLoading }) => {
+          if (isLoading) return <Spinner />;
+          if (!dataSetCanBeDownloaded) return <DownloadEmpty />;
+          return (
             <>
               <DownloadBar
                 dataSetId={dataSetId}
@@ -59,8 +57,8 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
                 onRefreshDataSet={() => fetchDataSetDetails(dataSetId)}
               />
             </>
-          )
-        }
+          );
+        }}
       </Loader>
     </div>
   );
