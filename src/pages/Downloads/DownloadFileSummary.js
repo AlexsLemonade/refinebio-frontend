@@ -55,7 +55,7 @@ const DownloadFileSummary = ({
             All data you download from refine.bio has been uniformly processed
             and normalized.{' '}
             <a
-              href="http://docs.refine.bio/en/latest/main_text.html#processing-information"
+              href="//docs.refine.bio/en/latest/main_text.html#processing-information"
               className="link"
               target="_blank"
               rel="noopener noreferrer"

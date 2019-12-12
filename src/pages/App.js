@@ -91,7 +91,7 @@ const App = () => {
                       exact
                       path="/docs"
                       component={() => (
-                        <ExternalRedirect to="http://docs.refine.bio/" />
+                        <ExternalRedirect to="//docs.refine.bio/" />
                       )}
                     />
                     <Route path="/" component={AppContent} />

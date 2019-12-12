@@ -320,7 +320,7 @@ let DataSetExpired = ({ dataSet, regenerateDataSet }) => (
               <span>
                 Some expression values may differ.{' '}
                 <a
-                  href="http://docs.refine.bio/en/latest/faq.html#why-are-the-expression-values-different-if-i-regenerate-a-dataset"
+                  href="//docs.refine.bio/en/latest/faq.html#why-are-the-expression-values-different-if-i-regenerate-a-dataset"
                   className="link"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -356,7 +356,7 @@ function DataSetNextSteps() {
 
         <p>
           <a
-            href="http://docs.refine.bio/en/latest/getting_started.html#getting-started-with-a-refine-bio-dataset"
+            href="//docs.refine.bio/en/latest/getting_started.html#getting-started-with-a-refine-bio-dataset"
             className="link"
             target="_blank"
             rel="noopener noreferrer nofollow"
@@ -386,7 +386,7 @@ function DataSetNextSteps() {
         </p>
         <p>
           <a
-            href="http://docs.refine.bio/en/latest/index.html"
+            href="//docs.refine.bio/en/latest/index.html"
             className="link"
             target="_blank"
             rel="noopener noreferrer nofollow"

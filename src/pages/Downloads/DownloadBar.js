@@ -56,7 +56,7 @@ let DownloadBar = ({
               Aggregate{' '}
               <HelpIcon
                 alt="What does aggregate mean?"
-                url="http://docs.refine.bio/en/latest/main_text.html#aggregations"
+                url="//docs.refine.bio/en/latest/main_text.html#aggregations"
               />
             </div>{' '}
             <Dropdown
@@ -73,7 +73,7 @@ let DownloadBar = ({
               Transformation{' '}
               <HelpIcon
                 alt="What does transformation mean?"
-                url="http://docs.refine.bio/en/latest/main_text.html#transformations"
+                url="//docs.refine.bio/en/latest/main_text.html#transformations"
               />
             </div>{' '}
             <Dropdown
@@ -132,7 +132,7 @@ let DownloadBar = ({
             <span>Skip quantile normalization for RNA-seq samples</span>
             <HelpIcon
               alt="What does it mean to skip quantile normalization for RNA-seq samples?"
-              url="http://docs.refine.bio/en/latest/faq.html#what-does-it-mean-to-skip-quantile-normalization-for-rna-seq-samples"
+              url="//docs.refine.bio/en/latest/faq.html#what-does-it-mean-to-skip-quantile-normalization-for-rna-seq-samples"
             />
           </Checkbox>
         </div>
@@ -150,7 +150,7 @@ DownloadBar = connect(
 )(DownloadBar);
 export default DownloadBar;
 
-function HelpIcon({ url = 'http://docs.refine.bio/', alt = 'What is this?' }) {
+function HelpIcon({ url = '//docs.refine.bio/', alt = 'What is this?' }) {
   return (
     <a
       href={url}
