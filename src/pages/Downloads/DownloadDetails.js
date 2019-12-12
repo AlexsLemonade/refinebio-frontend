@@ -75,36 +75,7 @@ let DownloadDetails = ({
       <section className="downloads__section">
         <div className="downloads__sample-header">
           <h2>Samples</h2>
-          {isImmutable || (
-            <ModalManager
-              component={showModal => (
-                <Button
-                  buttonStyle="remove"
-                  text="Remove All"
-                  onClick={showModal}
-                />
-              )}
-              modalProps={{ center: true }}
-            >
-              {({ hideModal }) => (
-                <div>
-                  <h1>Are you sure you want to remove all samples?</h1>
-                  <div className="downloads__remove-confirmation">
-                    <Button
-                      buttonStyle="remove"
-                      text="Yes, remove all samples"
-                      onClick={clearDataSet}
-                    />
-                    <Button
-                      buttonStyle="secondary"
-                      text="No, keep all samples"
-                      onClick={hideModal}
-                    />
-                  </div>
-                </div>
-              )}
-            </ModalManager>
-          )}
+          {isImmutable || <ClearDatasetButton clearDataSet={clearDataSet} />}
         </div>
 
         <TabControl tabs={['Species View', 'Experiments View']}>
@@ -141,6 +112,35 @@ DownloadDetails = connect(
   }
 )(DownloadDetails);
 export default DownloadDetails;
+
+function ClearDatasetButton({ clearDataSet }) {
+  return (
+    <ModalManager
+      component={showModal => (
+        <Button buttonStyle="remove" text="Remove All" onClick={showModal} />
+      )}
+      modalProps={{ center: true }}
+    >
+      {({ hideModal }) => (
+        <div>
+          <h1>Are you sure you want to remove all samples?</h1>
+          <div className="downloads__remove-confirmation">
+            <Button
+              buttonStyle="remove"
+              text="Yes, remove all samples"
+              onClick={clearDataSet}
+            />
+            <Button
+              buttonStyle="secondary"
+              text="No, keep all samples"
+              onClick={hideModal}
+            />
+          </div>
+        </div>
+      )}
+    </ModalManager>
+  );
+}
 
 const SpeciesSamples = ({
   onRefreshDataSet,
