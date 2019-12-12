@@ -2,11 +2,12 @@ import React from 'react';
 import 'react-table/react-table.css';
 import debounce from 'lodash/debounce';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import { Link } from 'react-router-dom';
+
 import RefineTable from '../RefineTable';
 
 import Pagination from '../Pagination';
 import Dropdown from '../Dropdown';
-
 import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../common/constants';
@@ -90,7 +91,7 @@ class SamplesTable extends React.Component {
         minWidth: 160,
         width: 175,
         style: { textAlign: 'right' },
-        Cell: CustomCell,
+        Cell: AccessionCodeCell,
       },
       {
         Header: 'Title',
@@ -262,6 +263,14 @@ const NoDataComponent = ({ hasError, children, fetchData }) =>
   ) : (
     <div className="samples-table__message">{children}</div>
   );
+
+function AccessionCodeCell({ value }) {
+  return (
+    <HText>
+      <Link to={`/samples/${value}`}>{value}</Link>
+    </HText>
+  );
+}
 
 /**
  * Custom cell component used to display N/A when there's no value

@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import isFunction from 'lodash/isFunction';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import Button from './Button';
 import Checkbox from './Checkbox';
@@ -73,7 +74,9 @@ export function AccordionItem({ title, children, onToggle, isExpanded }) {
   return (
     <div className={classnames('accordion-item')}>
       <div className="accordion-item__header">
-        <div className="accourdion-item__title">{title(isExpanded)}</div>
+        <div className="accourdion-item__title">
+          {isFunction(title) ? title(isExpanded) : title}
+        </div>
 
         {hasChildren && (
           <Button onClick={onToggle} buttonStyle="transparent">

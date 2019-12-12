@@ -1,0 +1,36 @@
+.sample-page {
+  padding-bottom: 56px;
+}
+
+.jobs-table {
+  width: 100%;
+
+  th {
+    text-align: left;
+  }
+
+  &__job {
+    > td {
+      padding-top: 16px;
+    }
+
+    &--select {
+      font-weight: bold;
+    }
+  }
+}
+
+.job-group {
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+.sample-debug {
+  &__cancel {
+    text-decoration: line-through;
+  }
+}
+
+.sample-debug-section {
+  margin-bottom: 48px;
+}

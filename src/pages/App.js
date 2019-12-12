@@ -13,6 +13,7 @@ import { ThemeProvider } from '../common/ThemeContext';
 import Main from './Main';
 import Search from './Search';
 import Experiment from './Experiment';
+import Sample from './Sample';
 import Compendia from './Compendia';
 import CompendiaDownload from './Compendia/DownloadPage';
 import Downloads from './Downloads';
@@ -44,7 +45,7 @@ const AppContent = () => (
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/license" component={License} />
-
+      <Route path="/samples/:id/:slug?" component={Sample} />
       {/* Custom route to be able to redirect to the 404 page */}
       <Route path="/not-found" component={NoMatch} />
       <Route path="*" component={NoMatch} />
