@@ -42,7 +42,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
       </Helmet>
       <BackToTop />
       <DownloadBar dataSet={download} />
-      <DownloadDetails {...download} onRefreshDataSet={refresh} />
+      <DownloadDetails dataSet={download} onRefreshDataSet={refresh} />
     </div>
   );
 };

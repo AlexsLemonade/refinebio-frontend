@@ -84,13 +84,7 @@ export default function DataSet({
                   <ShareDatasetButton dataSetId={dataSetId} />
                 </div>
               </div>
-              <DownloadDetails
-                isImmutable
-                isEmbed
-                {...dataSet}
-                dataSet={dataSet.data}
-                dataSetId={dataSetId}
-              />
+              <DownloadDetails isImmutable isEmbed dataSet={dataSet} />
             </div>
           );
         }}

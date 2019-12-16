@@ -34,13 +34,7 @@ import * as routes from '../../routes';
 const RNA_SEQ = 'RNA-SEQ';
 
 let DownloadDetails = ({
-  dataSetId,
   dataSet,
-  organism_samples: samplesBySpecies,
-  experiments,
-  aggregate_by,
-  scale_by,
-  quantile_normalize,
 
   removeSamples,
   removeExperiment,
@@ -49,10 +43,19 @@ let DownloadDetails = ({
   isEmbed = false,
   onRefreshDataSet,
 }) => {
-  const totalSamples = getTotalSamplesAdded(dataSet);
-  const totalExperiments = getTotalExperimentsAdded(dataSet);
+  const {
+    id: dataSetId,
+    organism_samples: samplesBySpecies,
+    experiments,
+    aggregate_by,
+    scale_by,
+    quantile_normalize,
+  } = dataSet;
+
+  const totalSamples = getTotalSamplesAdded(dataSet.data);
+  const totalExperiments = getTotalExperimentsAdded(dataSet.data);
   const experimentCountBySpecies = getExperimentCountBySpecies(
-    dataSet,
+    dataSet.data,
     experiments
   );
 
@@ -73,7 +76,7 @@ let DownloadDetails = ({
       )}
 
       <DownloadFileSummary
-        dataSet={dataSet}
+        dataSet={dataSet.data}
         samplesBySpecies={samplesBySpecies}
         aggregate_by={aggregate_by}
       />
@@ -93,7 +96,7 @@ let DownloadDetails = ({
         <TabControl tabs={['Species View', 'Experiments View']}>
           <SpeciesSamples
             dataSetId={dataSetId}
-            dataSet={dataSet}
+            dataSet={dataSet.data}
             onRefreshDataSet={onRefreshDataSet}
             experiments={experiments}
             samplesBySpecies={samplesBySpecies}
@@ -104,7 +107,7 @@ let DownloadDetails = ({
           <ExperimentsView
             dataSetId={dataSetId}
             onRefreshDataSet={onRefreshDataSet}
-            dataSet={dataSet}
+            dataSet={dataSet.data}
             experiments={experiments}
             removeExperiment={removeExperiment}
             isImmutable={isImmutable}
