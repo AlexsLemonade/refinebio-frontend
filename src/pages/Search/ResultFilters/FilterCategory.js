@@ -5,6 +5,7 @@ import Checkbox from '../../../components/Checkbox';
 import Button from '../../../components/Button';
 import { InputSearch } from '../../../components/Input';
 import HighlightedText from '../../../components/HighlightedText';
+import { useLocalStorage } from '../../../common/hooks';
 
 const MAX_FILTERS = 6;
 
@@ -18,12 +19,20 @@ export function FilterCategory({
   filterValues,
   activeValues,
   formatValue = x => x,
-
   onToggleFilter,
 }) {
   const [query, setQuery] = React.useState('');
+  const [savedQuery, setSavedQuery] = useLocalStorage(
+    `saved-search-filter-query-${title}`,
+    false
+  );
   const [collapsed, setCollapsed] = React.useState(true);
-
+  React.useEffect(() => {
+    if (!query.length && savedQuery) {
+      setQuery(savedQuery);
+      setSavedQuery(false);
+    }
+  }, [savedQuery, setSavedQuery, query, setQuery]);
   // create an array with all the filter values, sometimes the API returns
   // a `'null'` value which we want to ignore.
   const filters = Object.keys(filterValues).filter(x => x !== 'null');
@@ -55,7 +64,10 @@ export function FilterCategory({
           key={filter}
           name={filter}
           className="result-filters__filter-check"
-          onChange={() => onToggleFilter(queryField, filter)}
+          onChange={() => {
+            setSavedQuery(query);
+            onToggleFilter(queryField, filter);
+          }}
           checked={activeValues && activeValues.includes(filter)}
         >
           <HighlightedText text={formatValue(filter)} highlight={query} />
@@ -83,7 +95,6 @@ export function SingleValueFilter({
   count = null,
   filterActive,
   className,
-
   onToggleFilter,
 }) {
   return (
