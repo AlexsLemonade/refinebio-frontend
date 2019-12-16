@@ -18,11 +18,7 @@ import SamplesTable from '../../components/SamplesTable/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
 import { getTransformationOptionFromName } from './transformation';
 import Radio from '../../components/Radio';
-import {
-  getTotalSamplesAdded,
-  getExperimentCountBySpecies,
-  getTotalExperimentsAdded,
-} from '../../state/download/reducer';
+
 import {
   removeExperiment,
   removeSamples,
@@ -52,13 +48,6 @@ let DownloadDetails = ({
     quantile_normalize,
   } = dataSet;
 
-  const totalSamples = getTotalSamplesAdded(dataSet.data);
-  const totalExperiments = getTotalExperimentsAdded(dataSet.data);
-  const experimentCountBySpecies = getExperimentCountBySpecies(
-    dataSet.data,
-    experiments
-  );
-
   return (
     <div>
       <h2>Download Files Summary</h2>
@@ -80,12 +69,7 @@ let DownloadDetails = ({
         samplesBySpecies={samplesBySpecies}
         aggregate_by={aggregate_by}
       />
-      <DownloadDatasetSummary
-        samplesBySpecies={samplesBySpecies}
-        totalSamples={totalSamples}
-        totalExperiments={totalExperiments}
-        experimentCountBySpecies={experimentCountBySpecies}
-      />
+      <DownloadDatasetSummary dataSet={dataSet} />
 
       <section className="downloads__section">
         <div className="downloads__sample-header">
