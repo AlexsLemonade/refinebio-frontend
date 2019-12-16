@@ -1,19 +1,12 @@
 import React from 'react';
 import InfoIcon from '../../common/icons/info-badge.svg';
-import { formatSentenceCase } from '../../common/helpers';
-import { getTransformationOptionFromName } from './transformation';
+
 import {
   downloadsFilesDataBySpecies,
   downloadsFilesDataByExperiment,
 } from './downloadFilesData';
 
-const DownloadFileSummary = ({
-  dataSet,
-  samplesBySpecies,
-  aggregate_by,
-  scale_by,
-  isEmbed = false,
-}) => {
+const DownloadFileSummary = ({ dataSet, samplesBySpecies, aggregate_by }) => {
   if (!dataSet) return null;
 
   const summaryData =
@@ -23,20 +16,6 @@ const DownloadFileSummary = ({
 
   return (
     <section className="downloads__section">
-      <h2>Download Files Summary</h2>
-
-      {isEmbed && (
-        <div>
-          <div className="downloads__file-modifier">
-            Aggregated by: {formatSentenceCase(aggregate_by)}
-          </div>
-          <div className="downloads__file-modifier">
-            Transformation:{' '}
-            {formatSentenceCase(getTransformationOptionFromName(scale_by))}
-          </div>
-        </div>
-      )}
-
       <div className="downloads__cards">
         {summaryData.files.map(card => (
           <div className="downloads__card" key={card.title + card.description}>

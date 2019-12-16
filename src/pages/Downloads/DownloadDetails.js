@@ -16,7 +16,7 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../../components/SamplesTable/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
-
+import { getTransformationOptionFromName } from './transformation';
 import Radio from '../../components/Radio';
 import {
   getTotalSamplesAdded,
@@ -58,12 +58,24 @@ let DownloadDetails = ({
 
   return (
     <div>
+      <h2>Download Files Summary</h2>
+
+      {isEmbed && (
+        <div>
+          <div className="downloads__file-modifier">
+            Aggregated by: {formatSentenceCase(aggregate_by)}
+          </div>
+          <div className="downloads__file-modifier">
+            Transformation:{' '}
+            {formatSentenceCase(getTransformationOptionFromName(scale_by))}
+          </div>
+        </div>
+      )}
+
       <DownloadFileSummary
         dataSet={dataSet}
         samplesBySpecies={samplesBySpecies}
         aggregate_by={aggregate_by}
-        scale_by={scale_by}
-        isEmbed={isEmbed}
       />
       <DownloadDatasetSummary
         samplesBySpecies={samplesBySpecies}
