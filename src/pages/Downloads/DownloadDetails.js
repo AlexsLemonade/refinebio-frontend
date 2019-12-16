@@ -70,7 +70,7 @@ let DownloadDetails = ({
       <section className="downloads__section">
         <div className="downloads__sample-header">
           <h2>Samples</h2>
-          {isImmutable || <ClearDatasetButton clearDataSet={clearDataSet} />}
+          {!isImmutable && <ClearDatasetButton clearDataSet={clearDataSet} />}
         </div>
 
         <TabControl tabs={['Species View', 'Experiments View']}>
