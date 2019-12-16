@@ -2,11 +2,12 @@ import React from 'react';
 import 'react-table/react-table.css';
 import debounce from 'lodash/debounce';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import { Link } from 'react-router-dom';
+
 import RefineTable from '../RefineTable';
 
 import Pagination from '../Pagination';
 import Dropdown from '../Dropdown';
-
 import InfoIcon from '../../common/icons/info-badge.svg';
 
 import { PAGE_SIZES } from '../../common/constants';
@@ -90,7 +91,7 @@ class SamplesTable extends React.Component {
         minWidth: 160,
         width: 175,
         style: { textAlign: 'right' },
-        Cell: CustomCell,
+        Cell: AccessionCodeCell,
       },
       {
         Header: 'Title',
@@ -220,7 +221,7 @@ class SamplesTable extends React.Component {
                       <div>
                         Some fields may be harmonized.{' '}
                         <a
-                          href="http://docs.refine.bio/en/latest/main_text.html#refine-bio-harmonized-metadata"
+                          href="//docs.refine.bio/en/latest/main_text.html#refine-bio-harmonized-metadata"
                           target="_blank"
                           className="link"
                           rel="noopener noreferrer"
@@ -262,6 +263,14 @@ const NoDataComponent = ({ hasError, children, fetchData }) =>
   ) : (
     <div className="samples-table__message">{children}</div>
   );
+
+function AccessionCodeCell({ value }) {
+  return (
+    <HText>
+      <Link to={`/samples/${value}`}>{value}</Link>
+    </HText>
+  );
+}
 
 /**
  * Custom cell component used to display N/A when there's no value
@@ -328,7 +337,7 @@ function AddRemoveCell({ sample, experimentAccessionCodes }) {
         <div>
           <div className="nowrap">Sample not processed</div>
           <a
-            href="http://docs.refine.bio/en/latest/faq.html#why-can-t-i-add-certain-samples-to-my-dataset"
+            href="//docs.refine.bio/en/latest/faq.html#why-can-t-i-add-certain-samples-to-my-dataset"
             className="link"
             target="_blank"
             rel="noopener noreferrer"
