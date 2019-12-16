@@ -49,12 +49,12 @@ let DownloadDetails = ({
   isEmbed = false,
   onRefreshDataSet,
 }) => {
-  const totalSamples = getTotalSamplesAdded({ dataSet });
-  const totalExperiments = getTotalExperimentsAdded({ dataSet });
-  const experimentCountBySpecies = getExperimentCountBySpecies({
-    experiments,
+  const totalSamples = getTotalSamplesAdded(dataSet);
+  const totalExperiments = getTotalExperimentsAdded(dataSet);
+  const experimentCountBySpecies = getExperimentCountBySpecies(
     dataSet,
-  });
+    experiments
+  );
 
   return (
     <div>
