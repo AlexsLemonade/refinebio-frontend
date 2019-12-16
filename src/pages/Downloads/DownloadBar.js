@@ -22,14 +22,12 @@ import Checkbox from '../../components/Checkbox';
 import Alert from '../../components/Alert';
 
 let DownloadBar = ({
-  dataSetId,
-  aggregate_by,
-  scale_by,
-  quantile_normalize,
+  dataSet,
   editAggregation,
   editTransformation,
   editQuantileNormalize,
 }) => {
+  const { dataSetId, aggregate_by, scale_by, quantile_normalize } = dataSet;
   const [advancedOptions, setAdvancedOptions] = React.useState(
     !quantile_normalize
   );

@@ -14,13 +14,7 @@ import DownloadStart from './DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
 
 let Download = ({ download, location, fetchDataSetDetails }) => {
-  const {
-    dataSetId,
-    dataSet,
-    aggregate_by,
-    scale_by,
-    quantile_normalize,
-  } = download;
+  const { dataSetId, dataSet } = download;
   const { isLoading, refresh } = useLoader(() =>
     fetchDataSetDetails(dataSetId)
   );
@@ -47,12 +41,7 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <BackToTop />
-      <DownloadBar
-        dataSetId={dataSetId}
-        aggregate_by={aggregate_by}
-        scale_by={scale_by}
-        quantile_normalize={quantile_normalize}
-      />
+      <DownloadBar dataSet={download} />
       <DownloadDetails {...download} onRefreshDataSet={refresh} />
     </div>
   );
