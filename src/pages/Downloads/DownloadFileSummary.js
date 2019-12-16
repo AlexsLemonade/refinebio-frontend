@@ -1,18 +1,16 @@
 import React from 'react';
 import InfoIcon from '../../common/icons/info-badge.svg';
 
-import {
-  downloadsFilesDataBySpecies,
-  downloadsFilesDataByExperiment,
-} from './downloadFilesData';
+import downloadFilesData from './downloadFilesData';
 
 const DownloadFileSummary = ({ dataSet, samplesBySpecies, aggregate_by }) => {
   if (!dataSet) return null;
 
-  const summaryData =
-    aggregate_by === 'SPECIES'
-      ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
-      : downloadsFilesDataByExperiment(dataSet);
+  const summaryData = downloadFilesData(
+    dataSet,
+    samplesBySpecies,
+    aggregate_by
+  );
 
   return (
     <section className="downloads__section">
