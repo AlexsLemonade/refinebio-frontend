@@ -43,8 +43,6 @@ let DownloadDetails = ({
     id: dataSetId,
     organism_samples: samplesBySpecies,
     experiments,
-    aggregate_by,
-    scale_by,
     quantile_normalize,
   } = dataSet;
 
@@ -55,20 +53,18 @@ let DownloadDetails = ({
       {isEmbed && (
         <div>
           <div className="downloads__file-modifier">
-            Aggregated by: {formatSentenceCase(aggregate_by)}
+            Aggregated by: {formatSentenceCase(dataSet.aggregate_by)}
           </div>
           <div className="downloads__file-modifier">
             Transformation:{' '}
-            {formatSentenceCase(getTransformationOptionFromName(scale_by))}
+            {formatSentenceCase(
+              getTransformationOptionFromName(dataSet.scale_by)
+            )}
           </div>
         </div>
       )}
 
-      <DownloadFileSummary
-        dataSet={dataSet.data}
-        samplesBySpecies={samplesBySpecies}
-        aggregate_by={aggregate_by}
-      />
+      <DownloadFileSummary dataSet={dataSet} />
       <DownloadDatasetSummary dataSet={dataSet} />
 
       <section className="downloads__section">
@@ -81,21 +77,21 @@ let DownloadDetails = ({
           <SpeciesSamples
             dataSetId={dataSetId}
             dataSet={dataSet.data}
-            onRefreshDataSet={onRefreshDataSet}
             experiments={experiments}
             samplesBySpecies={samplesBySpecies}
+            quantile_normalize={quantile_normalize}
+            onRefreshDataSet={onRefreshDataSet}
             removeSamples={removeSamples}
             isImmutable={isImmutable}
-            quantile_normalize={quantile_normalize}
           />
           <ExperimentsView
             dataSetId={dataSetId}
             onRefreshDataSet={onRefreshDataSet}
             dataSet={dataSet.data}
             experiments={experiments}
+            quantile_normalize={quantile_normalize}
             removeExperiment={removeExperiment}
             isImmutable={isImmutable}
-            quantile_normalize={quantile_normalize}
           />
         </TabControl>
       </section>

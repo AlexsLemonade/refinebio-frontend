@@ -3,13 +3,15 @@ import InfoIcon from '../../common/icons/info-badge.svg';
 
 import downloadFilesData from './downloadFilesData';
 
-const DownloadFileSummary = ({ dataSet, samplesBySpecies, aggregate_by }) => {
-  if (!dataSet) return null;
+const DownloadFileSummary = ({ dataSet }) => {
+  if (!dataSet.data) return null;
+
+  const samplesBySpecies = dataSet.organism_samples;
 
   const summaryData = downloadFilesData(
-    dataSet,
+    dataSet.data,
     samplesBySpecies,
-    aggregate_by
+    dataSet.aggregate_by
   );
 
   return (
