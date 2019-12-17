@@ -136,6 +136,13 @@ export const removeSamples = (
   );
 
 /**
+ * Replaces the the entire data of the current dataset
+ * @param {*} newDataSet New dataset slice to be replaced
+ */
+export const replaceSamples = newDataSet => async dispatch =>
+  dispatch(dataSetUpdateOperation(() => newDataSet));
+
+/**
  * Use the dataset from the state
  */
 export const fetchDataSet = (details = false) => async (dispatch, getState) => {

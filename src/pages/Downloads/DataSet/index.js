@@ -1,5 +1,10 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Formik, Field } from 'formik';
+import { IoIosWarning } from 'react-icons/io';
+
 import './DataSet.scss';
 
 import { SpeciesSamples, ExperimentsView } from '../DownloadDetails';
@@ -15,6 +20,12 @@ import { getTransformationOptionFromName } from '../transformation';
 
 import DataSetPageHeader from './DataSetPageHeader';
 import TabControl from '../../../components/TabControl';
+import Button from '../../../components/Button';
+import ModalManager from '../../../components/Modal/ModalManager';
+import { getTotalSamplesAdded } from '../../../state/download/reducer';
+import { addSamples, replaceSamples } from '../../../state/download/actions';
+
+import { RadioField } from '../../../components/Radio';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -66,8 +77,10 @@ export default function DataSet({
                 hasError={location.state && location.state.hasError}
               />
               <div className="downloads__bar">
-                <div className="flex-button-container flex-button-container--left">
+                <div className="flex-row">
                   <ShareDatasetButton dataSetId={dataSetId} />
+
+                  <MoveToDatasetButtonModal dataSet={dataSet} />
                 </div>
               </div>
               <DatasetDetails dataSet={dataSet} />
@@ -112,3 +125,94 @@ function DatasetDetails({ dataSet }) {
     </div>
   );
 }
+
+function MoveToDatasetButtonModal({
+  dataSet,
+  currentDataSet,
+  addSamples,
+  replaceSamples,
+}) {
+  const totalSamples = getTotalSamplesAdded(currentDataSet.data);
+
+  return (
+    <ModalManager
+      component={showModal => (
+        <Button
+          text="Move to Dataset"
+          buttonStyle="secondary"
+          onClick={showModal}
+        />
+      )}
+      modalProps={{ center: true, className: 'modify-dataset-modal' }}
+    >
+      {({ hideModal }) => (
+        <Formik
+          initialValues={{ append: true }}
+          onSubmit={({ append }) => {
+            if (append) {
+              addSamples(dataSet.data);
+            } else {
+              replaceSamples(dataSet.data);
+            }
+            hideModal();
+          }}
+        >
+          {({ handleSubmit, isSubmitting }) => (
+            <form onSubmit={handleSubmit}>
+              <h2>
+                <IoIosWarning
+                  style={{
+                    fontSize: '160%',
+                    color: 'red',
+                    verticalAlign: 'bottom',
+                    marginRight: 16,
+                  }}
+                />
+                There are {totalSamples} samples in{' '}
+                <Link to="/download" className="link" target="_blank">
+                  My Dataset
+                </Link>
+              </h2>
+
+              <fieldset className="modify-dataset-modal__options">
+                <Field
+                  component={RadioField}
+                  name="append"
+                  label="Append samples to My Dataset"
+                  value
+                />
+                <Field
+                  component={RadioField}
+                  name="append"
+                  label="Replace samples in My Dataset"
+                />
+              </fieldset>
+
+              <div className="modify-dataset-modal__actions">
+                <Button
+                  text="Cancel"
+                  buttonStyle="secondary"
+                  onClick={hideModal}
+                />
+                <Button
+                  text="Move Samples"
+                  type="submit"
+                  disabled={isSubmitting}
+                />
+              </div>
+            </form>
+          )}
+        </Formik>
+      )}
+    </ModalManager>
+  );
+}
+MoveToDatasetButtonModal = connect(
+  ({ download }) => ({
+    currentDataSet: download,
+  }),
+  {
+    addSamples,
+    replaceSamples,
+  }
+)(MoveToDatasetButtonModal);

@@ -133,3 +133,23 @@
     flex-direction: row;
   }
 }
+
+.modify-dataset-modal {
+  padding: 40px 80px;
+  min-width: 580px;
+
+  &__options {
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+  }
+
+  &__actions {
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-around;
+  }
+}
