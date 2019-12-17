@@ -16,7 +16,6 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../../components/SamplesTable/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
-import { getTransformationOptionFromName } from './transformation';
 import Radio from '../../components/Radio';
 
 import {
@@ -29,29 +28,10 @@ import * as routes from '../../routes';
 
 const RNA_SEQ = 'RNA-SEQ';
 
-let DownloadDetails = ({
-  dataSet,
-  isImmutable = false,
-  isEmbed = false,
-  onRefreshDataSet,
-}) => {
+let DownloadDetails = ({ dataSet, isImmutable = false, onRefreshDataSet }) => {
   return (
     <div>
       <h2>Download Files Summary</h2>
-
-      {isEmbed && (
-        <div>
-          <div className="downloads__file-modifier">
-            Aggregated by: {formatSentenceCase(dataSet.aggregate_by)}
-          </div>
-          <div className="downloads__file-modifier">
-            Transformation:{' '}
-            {formatSentenceCase(
-              getTransformationOptionFromName(dataSet.scale_by)
-            )}
-          </div>
-        </div>
-      )}
 
       <DownloadFileSummary dataSet={dataSet} />
       <DownloadDatasetSummary dataSet={dataSet} />
@@ -59,7 +39,7 @@ let DownloadDetails = ({
       <section className="downloads__section">
         <div className="downloads__sample-header">
           <h2>Samples</h2>
-          {!isImmutable && <ClearDatasetButton />}
+          <ClearDatasetButton />
         </div>
 
         <TabControl tabs={['Species View', 'Experiments View']}>
@@ -121,7 +101,7 @@ ClearDatasetButton = connect(
   }
 )(ClearDatasetButton);
 
-function SpeciesSamples({
+export function SpeciesSamples({
   dataSet: {
     dataSetId,
     dataSet: dataSetData,
@@ -215,7 +195,7 @@ SpeciesSamples = connect(
   }
 )(SpeciesSamples);
 
-class ExperimentsView extends React.Component {
+export class ExperimentsView extends React.Component {
   state = { organism: false };
 
   render() {
