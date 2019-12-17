@@ -21,13 +21,9 @@ import { createToken } from '../../../state/token';
 /**
  * Renders the header of the dataset page
  */
-export default function DataSetPageHeader({
-  dataSetId,
-  email_address,
-  hasError,
-  dataSet,
-}) {
+export default function DataSetPageHeader({ emailAddress, hasError, dataSet }) {
   const {
+    id: dataSetId,
     is_processed,
     is_processing,
     is_available,
@@ -37,19 +33,25 @@ export default function DataSetPageHeader({
   // success can sometimes be `null`
   const processingError = success === false;
   const isExpired = moment(expires_on).isBefore(Date.now());
-  return hasError || processingError ? (
-    <DataSetErrorDownloading dataSetId={dataSetId} dataSet={dataSet} />
-  ) : is_processed ? (
-    is_available && !isExpired ? (
-      <DataSetReady dataSet={dataSet} />
-    ) : (
-      <DataSetExpired dataSet={dataSet} />
-    )
-  ) : is_processing ? (
-    <DataSetProcessing email={email_address} dataSetId={dataSetId} />
-  ) : (
-    <h1 className="downloads__heading">Shared Dataset</h1>
-  );
+
+  if (hasError || processingError) {
+    return <DataSetErrorDownloading dataSetId={dataSetId} dataSet={dataSet} />;
+  }
+
+  if (is_processed) {
+    if (is_available && !isExpired) {
+      return <DataSetReady dataSet={dataSet} />;
+    }
+    return <DataSetExpired dataSet={dataSet} />;
+  }
+
+  if (is_processing) {
+    return (
+      <DataSetProcessing emailAddress={emailAddress} dataSetId={dataSetId} />
+    );
+  }
+
+  return <h1 className="downloads__heading">Shared Dataset</h1>;
 }
 
 const DataSetErrorDownloading = ({ dataSet }) => {
@@ -101,11 +103,12 @@ const DataSetErrorDownloading = ({ dataSet }) => {
   );
 };
 
-function DataSetProcessing({ email }) {
-  const message = email ? (
+function DataSetProcessing({ emailAddress }) {
+  const message = emailAddress ? (
     <p>
-      An email with a download link will be sent to <strong>{email}</strong>{' '}
-      when the dataset is ready or you can come back to this page later.
+      An email with a download link will be sent to{' '}
+      <strong>{emailAddress}</strong> when the dataset is ready or you can come
+      back to this page later.
     </p>
   ) : (
     <p>
