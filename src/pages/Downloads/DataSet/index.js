@@ -24,6 +24,7 @@ import Button from '../../../components/Button';
 import ModalManager from '../../../components/Modal/ModalManager';
 import { getTotalSamplesAdded } from '../../../state/download/reducer';
 import { addSamples, replaceSamples } from '../../../state/download/actions';
+import { push } from '../../../state/routerActions';
 
 import { RadioField } from '../../../components/Radio';
 
@@ -131,14 +132,30 @@ function MoveToDatasetButtonModal({
   currentDataSet,
   addSamples,
   replaceSamples,
+  push,
 }) {
-  const totalSamples = getTotalSamplesAdded(currentDataSet.data);
+  const totalSamples = getTotalSamplesAdded(dataSet.data);
+  const totalSamplesinCurrentDataSet = getTotalSamplesAdded(
+    currentDataSet.data
+  );
 
-  function modifyCurrentDataSet(append = true) {
+  async function modifyCurrentDataSet(append = true) {
     if (append) {
-      addSamples(dataSet.data);
+      await addSamples(dataSet.data);
+      push({
+        pathname: '/download',
+        state: {
+          message: `Appended ${totalSamples} samples to My Dataset`,
+        },
+      });
     } else {
-      replaceSamples(dataSet.data);
+      await replaceSamples(dataSet.data);
+      push({
+        pathname: '/download',
+        state: {
+          message: `Moved ${totalSamples} samples to My Dataset`,
+        },
+      });
     }
   }
 
@@ -149,7 +166,7 @@ function MoveToDatasetButtonModal({
           text="Move to Dataset"
           buttonStyle="secondary"
           onClick={() => {
-            if (totalSamples > 0) {
+            if (totalSamplesinCurrentDataSet > 0) {
               showModal();
             } else {
               modifyCurrentDataSet();
@@ -163,7 +180,7 @@ function MoveToDatasetButtonModal({
         <Formik
           initialValues={{ append: true }}
           onSubmit={({ append }) => {
-            modifyCurrentDataSet(append);
+            modifyCurrentDataSet(!!append);
             hideModal();
           }}
         >
@@ -178,7 +195,7 @@ function MoveToDatasetButtonModal({
                     marginRight: 16,
                   }}
                 />
-                There are {totalSamples} samples in{' '}
+                There are {totalSamplesinCurrentDataSet} samples in{' '}
                 <Link to="/download" className="link" target="_blank">
                   My Dataset
                 </Link>
@@ -224,5 +241,6 @@ MoveToDatasetButtonModal = connect(
   {
     addSamples,
     replaceSamples,
+    push,
   }
 )(MoveToDatasetButtonModal);
