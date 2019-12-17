@@ -57,9 +57,8 @@ export default function DataSet({
           return (
             <div>
               <DataSetPageHeader
-                dataSetId={dataSetId}
                 dataSet={dataSet}
-                email_address={
+                emailAddress={
                   // the email is never returned from the api, check if it was passed
                   // on the url state on a previous step
                   location.state && location.state.email_address
@@ -106,8 +105,8 @@ function DatasetDetails({ dataSet }) {
         </div>
 
         <TabControl tabs={['Species View', 'Experiments View']}>
-          <SpeciesSamples dataSet={dataSet} />
-          <ExperimentsView dataSet={dataSet} />
+          <SpeciesSamples dataSet={dataSet} isImmutable />
+          <ExperimentsView dataSet={dataSet} isImmutable />
         </TabControl>
       </section>
     </div>
