@@ -108,6 +108,11 @@ function DatasetDetails({ dataSet }) {
             getTransformationOptionFromName(dataSet.scale_by)
           )}
         </div>
+        {dataSet.quantile_normalize && (
+          <div className="downloads__file-modifier">
+            Quantile Normailzation Skipped for RNA-seeq samples
+          </div>
+        )}
       </div>
 
       <DownloadFileSummary dataSet={dataSet} />
