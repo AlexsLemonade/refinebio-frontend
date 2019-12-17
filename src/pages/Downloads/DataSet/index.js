@@ -134,13 +134,27 @@ function MoveToDatasetButtonModal({
 }) {
   const totalSamples = getTotalSamplesAdded(currentDataSet.data);
 
+  function modifyCurrentDataSet(append = true) {
+    if (append) {
+      addSamples(dataSet.data);
+    } else {
+      replaceSamples(dataSet.data);
+    }
+  }
+
   return (
     <ModalManager
       component={showModal => (
         <Button
           text="Move to Dataset"
           buttonStyle="secondary"
-          onClick={showModal}
+          onClick={() => {
+            if (totalSamples > 0) {
+              showModal();
+            } else {
+              modifyCurrentDataSet();
+            }
+          }}
         />
       )}
       modalProps={{ center: true, className: 'modify-dataset-modal' }}
@@ -149,11 +163,7 @@ function MoveToDatasetButtonModal({
         <Formik
           initialValues={{ append: true }}
           onSubmit={({ append }) => {
-            if (append) {
-              addSamples(dataSet.data);
-            } else {
-              replaceSamples(dataSet.data);
-            }
+            modifyCurrentDataSet(append);
             hideModal();
           }}
         >
