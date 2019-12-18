@@ -44,6 +44,7 @@ function DatasetRegenerateOptions({ dataSet, regenerateDataSet }) {
       <DownloadOptionsForm
         dataSet={dataSet}
         onSubmit={options => regenerateDataSet({ ...dataSet, ...options })}
+        actionText="Regenerate Dataset"
       />
     );
   }

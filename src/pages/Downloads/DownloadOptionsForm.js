@@ -12,7 +12,12 @@ import Button from '../../components/Button';
 /**
  *
  */
-export default function DownloadOptionsForm({ dataSet, onSubmit, onChange }) {
+export default function DownloadOptionsForm({
+  dataSet,
+  onSubmit,
+  onChange,
+  actionText = 'Download',
+}) {
   const { dataSetId, aggregate_by, scale_by, quantile_normalize } = dataSet;
   const [advancedOptions, setAdvancedOptions] = React.useState(
     !quantile_normalize
@@ -73,7 +78,7 @@ export default function DownloadOptionsForm({ dataSet, onSubmit, onChange }) {
               </button>
             </div>
             <div className="flex-button-container flex-button-container--left">
-              <Button type="submit" text="Download" />
+              <Button type="submit" text={actionText} disabled={isSubmitting} />
             </div>
           </div>
 
