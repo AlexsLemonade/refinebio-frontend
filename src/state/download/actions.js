@@ -220,11 +220,8 @@ export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
  * edit some parameter of the dataset
  * @param {*} params additional params to be sent to the API
  */
-export const editDataSet = ({ dataSetId, ...params }) => async (
-  dispatch,
-  getState
-) => {
-  const { dataSet } = getState().download;
+export const editDataSet = ({ ...params }) => async (dispatch, getState) => {
+  const { id: dataSetId, dataSet } = getState().download;
   const {
     data,
     is_processing,
@@ -249,15 +246,6 @@ export const editDataSet = ({ dataSetId, ...params }) => async (
     })
   );
 };
-
-export const editAggregation = ({ dataSetId, aggregation }) =>
-  editDataSet({ dataSetId, aggregate_by: aggregation.toUpperCase() });
-
-export const editTransformation = ({ dataSetId, transformation }) =>
-  editDataSet({ dataSetId, scale_by: transformation.toUpperCase() });
-
-export const editQuantileNormalize = ({ dataSetId, quantile_normalize }) =>
-  editDataSet({ dataSetId, quantile_normalize });
 
 export const startDownload = ({
   dataSetId,

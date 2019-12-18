@@ -27,6 +27,12 @@ export default function DownloadOptionsForm({
     <Formik
       initialValues={{ aggregate_by, scale_by, quantile_normalize }}
       onSubmit={onSubmit}
+      validate={values => {
+        // hack to track changes to the entire form
+        // https://github.com/jaredpalmer/formik/issues/271#issuecomment-407869424
+        onChange(values);
+        return {};
+      }}
     >
       {({ handleSubmit, handleChange, isSubmitting, values }) => (
         <form onSubmit={handleSubmit}>

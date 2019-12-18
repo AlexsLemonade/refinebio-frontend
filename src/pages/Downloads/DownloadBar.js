@@ -5,38 +5,39 @@ import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
 import './DownloadBar.scss';
 import { getDomain } from '../../common/helpers';
-import {
-  editAggregation,
-  editTransformation,
-  editQuantileNormalize,
-} from '../../state/download/actions';
+import { editDataSet } from '../../state/download/actions';
+import DownloadOptionsForm from './DownloadOptionsForm';
+import { push } from '../../state/routerActions';
 
-let DownloadBar = ({ dataSet }) => {
-  const { dataSetId } = dataSet;
-
+let DownloadBar = ({ dataSet, push, editDataSet }) => {
   return (
     <div className="downloads__bar">
       <div className="flex-row mb-2">
         <div className="downloads__heading">My Dataset</div>
 
         <div>
-          <ShareDatasetButton dataSetId={dataSetId} />
+          <ShareDatasetButton dataSet={dataSet} />
         </div>
       </div>
+
+      <DownloadOptionsForm
+        dataSet={dataSet}
+        onChange={values => editDataSet(values)}
+        onSubmit={() => push('/download?start=true')}
+      />
     </div>
   );
 };
 DownloadBar = connect(
   null,
   {
-    editAggregation,
-    editTransformation,
-    editQuantileNormalize,
+    editDataSet,
+    push,
   }
 )(DownloadBar);
 export default DownloadBar;
 
-export function ShareDatasetButton({ dataSetId }) {
+export function ShareDatasetButton({ dataSet: { id: dataSetId } }) {
   return (
     <ModalManager
       component={showModal => (

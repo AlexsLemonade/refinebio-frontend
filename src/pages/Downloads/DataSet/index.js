@@ -74,7 +74,7 @@ export default function DataSet({
               />
               <div className="downloads__bar">
                 <div className="flex-row">
-                  <ShareDatasetButton dataSetId={dataSetId} />
+                  <ShareDatasetButton dataSet={dataSet} />
 
                   <MoveToDatasetButtonModal dataSet={dataSet} />
                 </div>
