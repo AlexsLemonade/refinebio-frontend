@@ -1,11 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import { SpeciesSamples, ExperimentsView } from '../DownloadDetails';
 import DownloadFileSummary from '../DownloadFileSummary';
 import DownloadDatasetSummary from '../DownloadDatasetSummary';
 import { formatSentenceCase } from '../../../common/helpers';
-import { getTransformationOptionFromName } from '../transformation';
 import TabControl from '../../../components/TabControl';
 import Button from '../../../components/Button';
+import { regenerateDataSet } from '../../../state/download/actions';
+import DownloadOptionsForm, {
+  getTransformationOptionFromName,
+} from '../DownloadOptionsForm';
 
 export default function DatasetDetails({ dataSet }) {
   return (
@@ -31,11 +36,16 @@ export default function DatasetDetails({ dataSet }) {
   );
 }
 
-function DatasetRegenerateOptions({ dataSet }) {
+function DatasetRegenerateOptions({ dataSet, regenerateDataSet }) {
   const [editable, setEditable] = React.useState(false);
 
   if (editable) {
-    return <DataSetRegenerateForm dataSet={dataSet} />;
+    return (
+      <DownloadOptionsForm
+        dataSet={dataSet}
+        onSubmit={options => regenerateDataSet({ ...dataSet, ...options })}
+      />
+    );
   }
 
   return (
@@ -44,8 +54,7 @@ function DatasetRegenerateOptions({ dataSet }) {
         Aggregated by: {formatSentenceCase(dataSet.aggregate_by)}
       </div>
       <div className="downloads__file-modifier">
-        Transformation:{' '}
-        {formatSentenceCase(getTransformationOptionFromName(dataSet.scale_by))}
+        Transformation: {getTransformationOptionFromName(dataSet.scale_by)}
       </div>
       {!dataSet.quantile_normalize && (
         <div className="downloads__file-modifier">
@@ -62,7 +71,9 @@ function DatasetRegenerateOptions({ dataSet }) {
     </div>
   );
 }
-
-function DataSetRegenerateForm({ dataSet }) {
-  return <h1>Regenerate options</h1>;
-}
+DatasetRegenerateOptions = connect(
+  null,
+  {
+    regenerateDataSet,
+  }
+)(DatasetRegenerateOptions);
