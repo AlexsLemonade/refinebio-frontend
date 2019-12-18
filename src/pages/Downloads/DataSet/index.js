@@ -7,19 +7,13 @@ import { IoIosWarning } from 'react-icons/io';
 
 import './DataSet.scss';
 
-import { SpeciesSamples, ExperimentsView } from '../DownloadDetails';
 import { ShareDatasetButton } from '../DownloadBar';
 import DownloadStart from '../DownloadStart/DownloadStart';
 import Spinner from '../../../components/Spinner';
 import NoMatch from '../../NoMatch';
 import DataSetLoader from './DataSetLoader';
-import DownloadFileSummary from '../DownloadFileSummary';
-import DownloadDatasetSummary from '../DownloadDatasetSummary';
-import { formatSentenceCase } from '../../../common/helpers';
-import { getTransformationOptionFromName } from '../transformation';
 
 import DataSetPageHeader from './DataSetPageHeader';
-import TabControl from '../../../components/TabControl';
 import Button from '../../../components/Button';
 import ModalManager from '../../../components/Modal/ModalManager';
 import { getTotalSamplesAdded } from '../../../state/download/reducer';
@@ -27,6 +21,7 @@ import { addSamples, replaceSamples } from '../../../state/download/actions';
 import { push } from '../../../state/routerActions';
 
 import { RadioField } from '../../../components/Radio';
+import DatasetDetails from './DatasetDetails';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
@@ -93,45 +88,6 @@ export default function DataSet({
   );
 }
 
-function DatasetDetails({ dataSet }) {
-  return (
-    <div>
-      <h2>Download Files Summary</h2>
-
-      <div>
-        <div className="downloads__file-modifier">
-          Aggregated by: {formatSentenceCase(dataSet.aggregate_by)}
-        </div>
-        <div className="downloads__file-modifier">
-          Transformation:{' '}
-          {formatSentenceCase(
-            getTransformationOptionFromName(dataSet.scale_by)
-          )}
-        </div>
-        {!dataSet.quantile_normalize && (
-          <div className="downloads__file-modifier">
-            Quantile Normailzation Skipped for RNA-seeq samples
-          </div>
-        )}
-      </div>
-
-      <DownloadFileSummary dataSet={dataSet} />
-      <DownloadDatasetSummary dataSet={dataSet} />
-
-      <section className="downloads__section">
-        <div className="downloads__sample-header">
-          <h2>Samples</h2>
-        </div>
-
-        <TabControl tabs={['Species View', 'Experiments View']}>
-          <SpeciesSamples dataSet={dataSet} isImmutable />
-          <ExperimentsView dataSet={dataSet} isImmutable />
-        </TabControl>
-      </section>
-    </div>
-  );
-}
-
 function MoveToDatasetButtonModal({
   dataSet,
   currentDataSet,
@@ -174,6 +130,7 @@ function MoveToDatasetButtonModal({
             if (totalSamplesinCurrentDataSet > 0) {
               showModal();
             } else {
+              // no need to show modal dialog if the current dataset is empty
               modifyCurrentDataSet();
             }
           }}
