@@ -1,7 +1,20 @@
 import React from 'react';
 import { formatSentenceCase } from '../../common/helpers';
+import {
+  getTotalSamplesAdded,
+  getExperimentCountBySpecies,
+  getTotalExperimentsAdded,
+} from '../../state/download/reducer';
 
-const DownloadDatasetSummary = props => {
+const DownloadDatasetSummary = ({ dataSet }) => {
+  const samplesBySpecies = dataSet.organism_samples;
+  const totalSamples = getTotalSamplesAdded(dataSet.data);
+  const totalExperiments = getTotalExperimentsAdded(dataSet.data);
+  const experimentCountBySpecies = getExperimentCountBySpecies(
+    dataSet.data,
+    dataSet.experiments
+  );
+
   return (
     <section className="downloads__section">
       <h2>Dataset Summary</h2>
@@ -15,8 +28,14 @@ const DownloadDatasetSummary = props => {
             </tr>
           </thead>
           <tbody>
-            <SpeciesRow {...props} />
-            <TotalsRow {...props} />
+            <SpeciesRow
+              samplesBySpecies={samplesBySpecies}
+              experimentCountBySpecies={experimentCountBySpecies}
+            />
+            <TotalsRow
+              totalSamples={totalSamples}
+              totalExperiments={totalExperiments}
+            />
           </tbody>
         </table>
       </div>

@@ -109,7 +109,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
 };
 HeaderLinks = connect(
   ({ download: { dataSet } }) => ({
-    totalSamples: getTotalSamplesAdded({ dataSet }),
+    totalSamples: getTotalSamplesAdded(dataSet),
   }),
   {
     fetchDataSet,
