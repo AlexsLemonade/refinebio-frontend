@@ -1,4 +1,20 @@
 /**
+ * Calculates estimates for filesizes given a dataset and how it's aggregated.
+ * @param {*} dataSet Dataset's Data
+ * @param {*} samplesBySpecies
+ * @param {*} aggregateBy Either 'EXPERIMENT' or 'SPECIES'
+ */
+export default function downloadFilesData(
+  dataSet,
+  samplesBySpecies,
+  aggregateBy
+) {
+  return aggregateBy === 'SPECIES'
+    ? downloadsFilesDataBySpecies(dataSet, samplesBySpecies)
+    : downloadsFilesDataByExperiment(dataSet);
+}
+
+/**
  * Calculates estimates for file sizes when the samples are aggregated by specie
  */
 export function downloadsFilesDataBySpecies(dataSet, samplesBySpecies) {

@@ -101,7 +101,7 @@ let DownloadCompendia = ({
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="//docs.refine.bio/en/latest/main_text.html#normalized-compendia"
+                href="//docs.refine.bio/en/latest/main_text.html#collapsing-by-genus"
               >
                 View list
               </a>

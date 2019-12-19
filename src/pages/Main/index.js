@@ -238,17 +238,15 @@ let Main = ({ push }) => {
                 backgroundSize: '80%',
               }}
             >
-              <div className="main__explore-card__title">Species Compendia</div>
+              <div className="main__explore-card__title">
+                refine.bio Compendia
+              </div>
               <div className="main__explore-card__body">
-                Our Species Compendia offers datasets which have been processed
-                and aggregated by species built for machine learning
-                applications.
+                refine.bio compendia are collections of samples that have been
+                processed and packaged for broad and felxible use.
               </div>
               <div className="main__explore-card__actions">
-                <Link
-                  to="/species-compendia"
-                  className="button button--secondary "
-                >
+                <Link to="/compendia" className="button button--secondary ">
                   Learn More
                 </Link>
               </div>

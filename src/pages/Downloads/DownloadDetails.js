@@ -16,13 +16,8 @@ import DownloadDatasetSummary from './DownloadDatasetSummary';
 import ModalManager from '../../components/Modal/ModalManager';
 import SamplesTable from '../../components/SamplesTable/SamplesTable';
 import { formatSentenceCase, getMetadataFields } from '../../common/helpers';
-
 import Radio from '../../components/Radio';
-import {
-  getTotalSamplesAdded,
-  getExperimentCountBySpecies,
-  getTotalExperimentsAdded,
-} from '../../state/download/reducer';
+
 import {
   removeExperiment,
   removeSamples,
@@ -33,99 +28,30 @@ import * as routes from '../../routes';
 
 const RNA_SEQ = 'RNA-SEQ';
 
-let DownloadDetails = ({
-  dataSetId,
-  dataSet,
-  organism_samples: samplesBySpecies,
-  experiments,
-  aggregate_by,
-  scale_by,
-  quantile_normalize,
-
-  removeSamples,
-  removeExperiment,
-  clearDataSet,
-  isImmutable = false,
-  isEmbed = false,
-  onRefreshDataSet,
-}) => {
-  const totalSamples = getTotalSamplesAdded({ dataSet });
-  const totalExperiments = getTotalExperimentsAdded({ dataSet });
-  const experimentCountBySpecies = getExperimentCountBySpecies({
-    experiments,
-    dataSet,
-  });
-
+let DownloadDetails = ({ dataSet, isImmutable = false, onRefreshDataSet }) => {
   return (
     <div>
-      <DownloadFileSummary
-        dataSet={dataSet}
-        samplesBySpecies={samplesBySpecies}
-        aggregate_by={aggregate_by}
-        scale_by={scale_by}
-        isEmbed={isEmbed}
-      />
-      <DownloadDatasetSummary
-        samplesBySpecies={samplesBySpecies}
-        totalSamples={totalSamples}
-        totalExperiments={totalExperiments}
-        experimentCountBySpecies={experimentCountBySpecies}
-      />
+      <h2>Download Files Summary</h2>
+
+      <DownloadFileSummary dataSet={dataSet} />
+      <DownloadDatasetSummary dataSet={dataSet} />
 
       <section className="downloads__section">
         <div className="downloads__sample-header">
           <h2>Samples</h2>
-          {isImmutable || (
-            <ModalManager
-              component={showModal => (
-                <Button
-                  buttonStyle="remove"
-                  text="Remove All"
-                  onClick={showModal}
-                />
-              )}
-              modalProps={{ center: true }}
-            >
-              {({ hideModal }) => (
-                <div>
-                  <h1>Are you sure you want to remove all samples?</h1>
-                  <div className="downloads__remove-confirmation">
-                    <Button
-                      buttonStyle="remove"
-                      text="Yes, remove all samples"
-                      onClick={clearDataSet}
-                    />
-                    <Button
-                      buttonStyle="secondary"
-                      text="No, keep all samples"
-                      onClick={hideModal}
-                    />
-                  </div>
-                </div>
-              )}
-            </ModalManager>
-          )}
+          <ClearDatasetButton />
         </div>
 
         <TabControl tabs={['Species View', 'Experiments View']}>
           <SpeciesSamples
-            dataSetId={dataSetId}
             dataSet={dataSet}
             onRefreshDataSet={onRefreshDataSet}
-            experiments={experiments}
-            samplesBySpecies={samplesBySpecies}
-            removeSamples={removeSamples}
             isImmutable={isImmutable}
-            quantile_normalize={quantile_normalize}
           />
           <ExperimentsView
-            dataSetId={dataSetId}
-            onRefreshDataSet={onRefreshDataSet}
             dataSet={dataSet}
-            experiments={experiments}
-            removeExperiment={removeExperiment}
+            onRefreshDataSet={onRefreshDataSet}
             isImmutable={isImmutable}
-            quantile_normalize={quantile_normalize}
           />
         </TabControl>
       </section>
@@ -135,109 +61,157 @@ let DownloadDetails = ({
 DownloadDetails = connect(
   null,
   {
-    removeSamples,
-    removeExperiment,
     clearDataSet,
   }
 )(DownloadDetails);
 export default DownloadDetails;
 
-const SpeciesSamples = ({
+function ClearDatasetButton({ clearDataSet }) {
+  return (
+    <ModalManager
+      component={showModal => (
+        <Button buttonStyle="remove" text="Remove All" onClick={showModal} />
+      )}
+      modalProps={{ center: true }}
+    >
+      {({ hideModal }) => (
+        <div>
+          <h1>Are you sure you want to remove all samples?</h1>
+          <div className="downloads__remove-confirmation">
+            <Button
+              buttonStyle="remove"
+              text="Yes, remove all samples"
+              onClick={clearDataSet}
+            />
+            <Button
+              buttonStyle="secondary"
+              text="No, keep all samples"
+              onClick={hideModal}
+            />
+          </div>
+        </div>
+      )}
+    </ModalManager>
+  );
+}
+ClearDatasetButton = connect(
+  null,
+  {
+    clearDataSet,
+  }
+)(ClearDatasetButton);
+
+export function SpeciesSamples({
+  dataSet: {
+    dataSetId,
+    dataSet: dataSetData,
+    organism_samples: samplesBySpecies,
+    quantile_normalize,
+    experiments,
+  },
   onRefreshDataSet,
-  dataSetId,
-  dataSet,
-  samplesBySpecies,
-  experiments,
-  quantile_normalize,
   removeSamples,
   isImmutable = false,
-}) => (
-  <div className="downloads__card">
-    {Object.keys(samplesBySpecies).map(speciesName => {
-      // get the accession codes associated with this species (`speciesName`)
-      const samplesInSpecie = samplesBySpecies[speciesName];
-      // filter the dataSet, and leave only the experiments that contain any of the samples
-      const specieDataSetSlice = mapValues(dataSet, samples =>
-        samples.filter(accessionCode => samplesInSpecie.includes(accessionCode))
-      );
-      // concatenate all the sample metadata fields of all experiments containing these samples
-      // This way we'll display all possible values of these samples
-      let sampleMetadataFields = Object.keys(specieDataSetSlice)
-        .filter(accessionCode => specieDataSetSlice[accessionCode].length > 0)
-        .map(
-          accessionCode =>
-            experiments[accessionCode] &&
-            experiments[accessionCode].sample_metadata
+}) {
+  return (
+    <div className="downloads__card">
+      {Object.keys(samplesBySpecies).map(speciesName => {
+        // get the accession codes associated with this species (`speciesName`)
+        const samplesInSpecie = samplesBySpecies[speciesName];
+        // filter the dataSet, and leave only the experiments that contain any of the samples
+        const specieDataSetSlice = mapValues(dataSetData, samples =>
+          samples.filter(accessionCode =>
+            samplesInSpecie.includes(accessionCode)
+          )
         );
-      sampleMetadataFields = union(...sampleMetadataFields);
+        // concatenate all the sample metadata fields of all experiments containing these samples
+        // This way we'll display all possible values of these samples
+        let sampleMetadataFields = Object.keys(specieDataSetSlice)
+          .filter(accessionCode => specieDataSetSlice[accessionCode].length > 0)
+          .map(
+            accessionCode =>
+              experiments[accessionCode] &&
+              experiments[accessionCode].sample_metadata
+          );
+        sampleMetadataFields = union(...sampleMetadataFields);
 
-      // we can deduce that there're rna seq samples for this organism if some of the
-      // experiments has samples of the same organism and it's also rna seq
-      const hasRnaSeqExperiments = Object.values(experiments).some(
-        experiment =>
-          experiment.technology === RNA_SEQ &&
-          experiment.organisms.includes(speciesName)
-      );
+        // we can deduce that there're rna seq samples for this organism if some of the
+        // experiments has samples of the same organism and it's also rna seq
+        const hasRnaSeqExperiments = Object.values(experiments).some(
+          experiment =>
+            experiment.technology === RNA_SEQ &&
+            experiment.organisms.includes(speciesName)
+        );
 
-      return (
-        <div className="downloads__sample" key={speciesName}>
-          <div className="downloads__sample-info">
-            <h2 className="downloads__species-title">
-              {formatSentenceCase(speciesName)} Samples
-            </h2>
-            {hasRnaSeqExperiments && !quantile_normalize && (
-              <div className="dot-label dot-label--info">
-                Quantile Normalization will be skipped for RNA-seq samples
+        return (
+          <div className="downloads__sample" key={speciesName}>
+            <div className="downloads__sample-info">
+              <h2 className="downloads__species-title">
+                {formatSentenceCase(speciesName)} Samples
+              </h2>
+              {hasRnaSeqExperiments && !quantile_normalize && (
+                <div className="dot-label dot-label--info">
+                  Quantile Normalization will be skipped for RNA-seq samples
+                </div>
+              )}
+              <div className="downloads__sample-stats">
+                <p className="downloads__sample-stat">
+                  {samplesInSpecie.length}{' '}
+                  {samplesInSpecie.length > 1 ? 'Samples' : 'Sample'}
+                </p>
               </div>
-            )}
-            <div className="downloads__sample-stats">
-              <p className="downloads__sample-stat">
-                {samplesInSpecie.length}{' '}
-                {samplesInSpecie.length > 1 ? 'Samples' : 'Sample'}
-              </p>
+
+              <div className="mobile-p">
+                <ViewSamplesButtonModal
+                  onRefreshDataSet={onRefreshDataSet}
+                  dataSet={specieDataSetSlice}
+                  isImmutable={isImmutable}
+                  fetchSampleParams={{
+                    dataset_id: dataSetId,
+                    organism__name: speciesName,
+                  }}
+                  sampleMetadataFields={sampleMetadataFields}
+                />
+              </div>
             </div>
 
-            <div className="mobile-p">
-              <ViewSamplesButtonModal
-                onRefreshDataSet={onRefreshDataSet}
-                dataSet={specieDataSetSlice}
-                isImmutable={isImmutable}
-                fetchSampleParams={{
-                  dataset_id: dataSetId,
-                  organism__name: speciesName,
-                }}
-                sampleMetadataFields={sampleMetadataFields}
+            {!isImmutable && (
+              <Button
+                text="Remove"
+                buttonStyle="remove"
+                onClick={() => removeSamples(specieDataSetSlice, true)}
               />
-            </div>
+            )}
           </div>
+        );
+      })}
+    </div>
+  );
+}
+SpeciesSamples = connect(
+  null,
+  {
+    removeSamples,
+  }
+)(SpeciesSamples);
 
-          {!isImmutable && (
-            <Button
-              text="Remove"
-              buttonStyle="remove"
-              onClick={() => removeSamples(specieDataSetSlice, true)}
-            />
-          )}
-        </div>
-      );
-    })}
-  </div>
-);
-
-class ExperimentsView extends React.Component {
+export class ExperimentsView extends React.Component {
   state = { organism: false };
 
   render() {
     const {
+      dataSet: {
+        id: dataSetId,
+        data: dataSetData,
+        experiments,
+        quantile_normalize,
+      },
       onRefreshDataSet,
-      dataSet,
-      experiments,
       removeExperiment,
-      quantile_normalize,
       isImmutable = false,
     } = this.props;
 
-    if (!dataSet || !Object.keys(dataSet).length) {
+    if (!dataSetData || !Object.keys(dataSetData).length) {
       return <p>No samples added to download dataset.</p>;
     }
 
@@ -246,8 +220,8 @@ class ExperimentsView extends React.Component {
         {this._renderFilters()}
 
         <div className="downloads__card">
-          {Object.keys(dataSet).map(experimentAccessionCode => {
-            const addedSamples = dataSet[experimentAccessionCode];
+          {Object.keys(dataSetData).map(experimentAccessionCode => {
+            const addedSamples = dataSetData[experimentAccessionCode];
             const experiment = experiments[experimentAccessionCode];
             const metadataFields = getMetadataFields(
               experiment.sample_metadata
@@ -319,7 +293,7 @@ class ExperimentsView extends React.Component {
                     <div className="mobile-p">
                       <ViewSamplesButtonModal
                         fetchSampleParams={{
-                          dataset_id: this.props.dataSetId,
+                          dataset_id: dataSetId,
                           experiment_accession_code: experiment.accession_code,
                         }}
                         onRefreshDataSet={onRefreshDataSet}
@@ -348,8 +322,8 @@ class ExperimentsView extends React.Component {
   }
 
   _renderFilters() {
-    const organismsList = Object.keys(this.props.dataSet)
-      .map(id => this.props.experiments[id].organisms)
+    const organismsList = Object.keys(this.props.dataSet.data)
+      .map(id => this.props.dataSet.experiments[id].organisms)
       // flatten array https://stackoverflow.com/a/33680003/763705
       .reduce((accum, organisms) => accum.concat(organisms), []);
 
@@ -387,6 +361,12 @@ class ExperimentsView extends React.Component {
     );
   }
 }
+ExperimentsView = connect(
+  null,
+  {
+    removeExperiment,
+  }
+)(ExperimentsView);
 
 /**
  * ViewSamples button, that when clicked shows a modal with a SamplesTable.

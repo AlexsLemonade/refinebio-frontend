@@ -7,20 +7,18 @@ import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import './Downloads.scss';
 import NoDatasetsImage from '../../common/images/no-datasets.svg';
-import Loader from '../../components/Loader';
+import { useLoader } from '../../components/Loader';
 import { fetchDataSetDetails } from '../../state/download/actions';
 import { getQueryParamObject } from '../../common/helpers';
 import DownloadStart from './DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
 
 let Download = ({ download, location, fetchDataSetDetails }) => {
-  const {
-    dataSetId,
-    dataSet,
-    aggregate_by,
-    scale_by,
-    quantile_normalize,
-  } = download;
+  const { dataSetId, dataSet } = download;
+  const { isLoading, refresh } = useLoader(() =>
+    fetchDataSetDetails(dataSetId)
+  );
+
   const dataSetCanBeDownloaded = dataSet && Object.keys(dataSet).length > 0;
   const params = getQueryParamObject(location.search);
 
@@ -33,6 +31,9 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
     return <Redirect to="/download" params={{ returning: 1 }} />;
   }
 
+  if (isLoading) return <Spinner />;
+  if (!dataSetCanBeDownloaded) return <DownloadEmpty />;
+
   return (
     <div className="downloads">
       <Helmet>
@@ -40,28 +41,8 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <BackToTop />
-      <Loader fetch={() => fetchDataSetDetails(dataSetId)}>
-        {({ isLoading }) =>
-          isLoading ? (
-            <Spinner />
-          ) : !dataSetCanBeDownloaded ? (
-            <DownloadEmpty />
-          ) : (
-            <>
-              <DownloadBar
-                dataSetId={dataSetId}
-                aggregate_by={aggregate_by}
-                scale_by={scale_by}
-                quantile_normalize={quantile_normalize}
-              />
-              <DownloadDetails
-                {...download}
-                onRefreshDataSet={() => fetchDataSetDetails(dataSetId)}
-              />
-            </>
-          )
-        }
-      </Loader>
+      <DownloadBar dataSet={download} />
+      <DownloadDetails dataSet={download} onRefreshDataSet={refresh} />
     </div>
   );
 };

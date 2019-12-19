@@ -136,6 +136,13 @@ export const removeSamples = (
   );
 
 /**
+ * Replaces the the entire data of the current dataset
+ * @param {*} newDataSet New dataset slice to be replaced
+ */
+export const replaceSamples = newDataSet => async dispatch =>
+  dispatch(dataSetUpdateOperation(() => newDataSet));
+
+/**
  * Use the dataset from the state
  */
 export const fetchDataSet = (details = false) => async (dispatch, getState) => {
@@ -213,11 +220,8 @@ export const fetchDataSetDetails = dataSetId => async (dispatch, getState) => {
  * edit some parameter of the dataset
  * @param {*} params additional params to be sent to the API
  */
-export const editDataSet = ({ dataSetId, ...params }) => async (
-  dispatch,
-  getState
-) => {
-  const { dataSet } = getState().download;
+export const editDataSet = ({ ...params }) => async (dispatch, getState) => {
+  const { id: dataSetId, dataSet } = getState().download;
   const {
     data,
     is_processing,
@@ -242,15 +246,6 @@ export const editDataSet = ({ dataSetId, ...params }) => async (
     })
   );
 };
-
-export const editAggregation = ({ dataSetId, aggregation }) =>
-  editDataSet({ dataSetId, aggregate_by: aggregation.toUpperCase() });
-
-export const editTransformation = ({ dataSetId, transformation }) =>
-  editDataSet({ dataSetId, scale_by: transformation.toUpperCase() });
-
-export const editQuantileNormalize = ({ dataSetId, quantile_normalize }) =>
-  editDataSet({ dataSetId, quantile_normalize });
 
 export const startDownload = ({
   dataSetId,
@@ -318,7 +313,7 @@ export const startDownload = ({
  * to create a new dataset with the same data and redirect to it's page.
  */
 export const regenerateDataSet = dataSet => async dispatch => {
-  const { data, aggregate_by, scale_by } = dataSet;
+  const { data, aggregate_by, scale_by, quantile_normalize } = dataSet;
 
   try {
     // 1. create a new dataset
@@ -328,6 +323,7 @@ export const regenerateDataSet = dataSet => async dispatch => {
       data,
       aggregate_by,
       scale_by,
+      quantile_normalize,
     });
 
     // 3. redirect to the new dataset page, where the user will be able to add an email
