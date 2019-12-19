@@ -313,7 +313,7 @@ export const startDownload = ({
  * to create a new dataset with the same data and redirect to it's page.
  */
 export const regenerateDataSet = dataSet => async dispatch => {
-  const { data, aggregate_by, scale_by } = dataSet;
+  const { data, aggregate_by, scale_by, quantile_normalize } = dataSet;
 
   try {
     // 1. create a new dataset
@@ -323,6 +323,7 @@ export const regenerateDataSet = dataSet => async dispatch => {
       data,
       aggregate_by,
       scale_by,
+      quantile_normalize,
     });
 
     // 3. redirect to the new dataset page, where the user will be able to add an email
