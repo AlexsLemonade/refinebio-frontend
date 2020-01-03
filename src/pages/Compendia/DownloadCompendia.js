@@ -6,7 +6,7 @@ import ReactGA from 'react-ga';
 import { formatSentenceCase, formatBytes } from '../../common/helpers';
 import InfoBadge from '../../common/icons/info-badge.svg';
 
-import Dropdown from '../../components/DropdownSearch';
+import DropdownSearch from '../../components/DropdownSearch';
 import Button from '../../components/Button';
 import { useLoader } from '../../components/Loader';
 import Checkbox from '../../components/Checkbox';
@@ -81,7 +81,7 @@ let DownloadCompendia = ({
         <span className="download-compendia__choose">Choose Organism</span>
         <div className="download-compendia__row">
           <div className="download-compendia__dropdown">
-            <Dropdown
+            <DropdownSearch
               options={data}
               selectedOption={selected}
               label={c => formatSentenceCase(c.primary_organism)}
