@@ -6,7 +6,7 @@ import ReactGA from 'react-ga';
 import { formatSentenceCase, formatBytes } from '../../common/helpers';
 import InfoBadge from '../../common/icons/info-badge.svg';
 
-import Dropdown from '../../components/Dropdown';
+import Dropdown from '../../components/DropdownSearch';
 import Button from '../../components/Button';
 import { useLoader } from '../../components/Loader';
 import Checkbox from '../../components/Checkbox';
@@ -79,14 +79,15 @@ let DownloadCompendia = ({
       <div>
         <div className="download-compendia__title">Download the {title}</div>
         <div className="download-compendia__row">
-          <span className="download-compendia__choose">Choose Organism</span>
-          <Dropdown
-            multiple={false}
-            options={data}
-            selectedOption={selected}
-            label={c => formatSentenceCase(c.primary_organism)}
-            onChange={s => setSelected(s)}
-          />
+          <div className="download-compendia__dropdown">
+            <Dropdown
+              options={data}
+              selectedOption={selected}
+              label={c => formatSentenceCase(c.primary_organism)}
+              onChange={s => setSelected(s)}
+              placeholder="Choose Organism"
+            />
+          </div>
         </div>
 
         {children}

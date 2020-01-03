@@ -1,0 +1,56 @@
+import React from 'react';
+
+const DropdownSearch = ({
+  options = [],
+  selectedOption = '',
+  onChange,
+  disabled = false,
+  label = x => x,
+}) => {
+
+  const [query, setQuery] = React.useState('')
+  const [filteredOptions, setFilteredOptions] = React.useState([])
+
+  React.useEffect(() => {
+    // should only elimate possibilities
+    if (options.indexOf(query) !== -1) setFilteredOptions([query])
+
+    if (query !== '' ) {
+      // fuzzy find to see if there are any matches
+      setFilteredOptions(options.filter((option) => {
+        // going to need to define what search means
+        const lquery = query.toLowerCase()
+        const loption = label(option)
+        if label(option).toLowerCase().indexOf(query.toLowerCase())
+      }))
+    }
+  }, [query, options])
+
+  const handleSelection = (selected) => {
+    if (query !== selected) {
+      setQuery(label(selected))
+      onChange(selected)
+    }
+  }
+
+  return (
+    <div className="dropdown-search">
+      <input type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value) }/>
+      <ul className="dropdown-search__dropdown">
+        { filteredOptions.map((option) => {
+          return (
+            <li key={label(option)}>
+              <button type="button" onClick={ () => handleSelection(option) }>
+                { label(option)} 
+              </button>
+            </li>
+          )
+        }) }
+      </ul>
+    </div>
+  );
+};
+
+export default DropdownSearch;
