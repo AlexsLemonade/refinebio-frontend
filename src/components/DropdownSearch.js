@@ -46,12 +46,28 @@ const DropdownSearch = ({
   };
 
   // highlighted ref is actually the last highlighted element
-  const goToHighlighted = () => {
+  // this can probably be cleaned up
+  const goToHighlighted = (isNext = true) => {
     if (highlightedRef.current) {
-      const { previousSibling } = highlightedRef.current;
-      const { offsetTop } = previousSibling || highlightedRef.current;
+      const {
+        current: { previousSibling, nextSibling },
+      } = highlightedRef;
+      const sibling = isNext ? nextSibling : previousSibling;
+      const el = sibling || highlightedRef.current;
+      const { offsetTop, offsetHeight } = el;
+      const {
+        current: { scrollTop, offsetHeight: scrollHeight },
+      } = scrollRef;
+      const nextScrollTo = offsetTop + scrollHeight - offsetHeight;
+      const scrollTo = isNext ? nextScrollTo : offsetTop;
 
-      scrollRef.current.scrollTo(0, offsetTop);
+      // check if highlighted is outside of viewport
+      const above = offsetTop < scrollTop;
+      const below = offsetTop > scrollTop + scrollHeight - offsetHeight;
+
+      if (above || below) {
+        scrollRef.current.scrollTo(0, scrollTo);
+      }
     }
   };
 
@@ -63,7 +79,7 @@ const DropdownSearch = ({
       const newIndex = Math.max(index - 1, 0);
       setHighlighted(filteredOptions[newIndex]);
     }
-    goToHighlighted();
+    goToHighlighted(false);
   };
 
   const handleNextHighlighted = () => {
@@ -141,9 +157,9 @@ const DropdownSearch = ({
               })}
               key={label(option)}
               ref={el => {
-                if (!isHighlighted(option)) return null;
-                highlightedRef.current = el;
-                return highlightedRef;
+                if (isHighlighted(option)) {
+                  highlightedRef.current = el;
+                }
               }}
             >
               <button
