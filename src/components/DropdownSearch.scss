@@ -1,9 +1,10 @@
 .dropdown-search {
   position: relative;
+
   &::after {
     content: ' ';
     position: absolute;
-    right: 6px;
+    right: 8px;
     top: 50%;
     pointer-events: none;
     margin-top: -2px;
@@ -12,10 +13,21 @@
     border-top: 6px solid black;
   }
 
+  &__wrap {
+    position: relative;
+
+    &__clear {
+      position: absolute;
+      left: 8px;
+      top: 6px;
+      font-size: 1.2rem;
+    }
+  }
+
   &__input {
     border: 2px solid #979797;
     border-radius: 3px;
-    padding: 8px;
+    padding: 8px 8px 8px 28px;
     font-size: 14px;
     width: 100%;
 
@@ -38,6 +50,7 @@
     list-style: none;
     visibility: hidden;
     border-radius: 3px;
+    z-index: 1;
 
     &__open {
       visibility: visible;

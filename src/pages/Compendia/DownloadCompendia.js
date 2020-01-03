@@ -78,6 +78,7 @@ let DownloadCompendia = ({
     <div className="download-compendia">
       <div>
         <div className="download-compendia__title">Download the {title}</div>
+        <span className="download-compendia__choose">Choose Organism</span>
         <div className="download-compendia__row">
           <div className="download-compendia__dropdown">
             <Dropdown
@@ -85,7 +86,7 @@ let DownloadCompendia = ({
               selectedOption={selected}
               label={c => formatSentenceCase(c.primary_organism)}
               onChange={s => setSelected(s)}
-              placeholder="Choose Organism"
+              placeholder="Search for an organism"
             />
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import './DropdownSearch.scss';
 import classnames from 'classnames';
+import { IoMdSearch } from 'react-icons/io';
 
 const DropdownSearch = ({
   options = [],
@@ -104,17 +105,22 @@ const DropdownSearch = ({
 
   return (
     <div className="dropdown-search">
-      <input
-        className="dropdown-search__input"
-        ref={inputRef}
-        type="text"
-        value={query}
-        onChange={e => setQuery(e.target.value)}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onKeyUp={handleKeyup}
-        placeholder={placeholder}
-      />
+      <div className="dropdown-search__wrap">
+        <div className="dropdown-search__wrap__clear">
+          <IoMdSearch className="icon" />
+        </div>
+        <input
+          className="dropdown-search__input"
+          ref={inputRef}
+          type="text"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onKeyUp={handleKeyup}
+          placeholder={placeholder}
+        />
+      </div>
       <ul
         ref={scrollRef}
         className={classnames({

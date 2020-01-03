@@ -85,9 +85,6 @@
     }
   }
 
-  &__tabs--container {
-  }
-
   &__section {
     text-align: center;
     padding: 100px 52px 0;
@@ -246,6 +243,10 @@
   &__title {
     font-size: 1.6rem;
     margin-bottom: 28px;
+  }
+
+  &__choose {
+    font-size: 1.3rem;
   }
 
   &__dropdown {
