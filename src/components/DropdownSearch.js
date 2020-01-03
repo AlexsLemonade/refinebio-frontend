@@ -78,8 +78,11 @@ const DropdownSearch = ({
   };
 
   const handleKeyup = e => {
+    // up arrow keyCode
     if (e.keyCode === 38) handlePreviousHighlighted();
+    // down arrow keyCode
     if (e.keyCode === 40) handleNextHighlighted();
+    // return keyCode
     if (e.keyCode === 13) handleSelection(highlighted);
   };
 
