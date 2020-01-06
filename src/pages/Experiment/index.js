@@ -89,7 +89,10 @@ let Experiment = ({ match, location: { state }, goBack }) => {
               samples: [],
             };
             totalSamples = state.result.total_samples_count;
-            organisms = state.result.organisms;
+            const {
+              result: { organism_names: organismNames },
+            } = state;
+            organisms = organismNames;
           }
 
           // Ensure that the url has the correct slug
