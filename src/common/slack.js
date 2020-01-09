@@ -2,8 +2,9 @@
  * This file contains helper methods that post to the CCDL slack channel
  */
 
+// btoa(webhook_url)
 const SLACK_HOOK_URL =
-  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JRNEFKQUdLRy9HSERXVXpGcHJWM2Vxa3JtOVMwNHhRajE=';
+  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JCUzUyVDc5OC9UWnZZSGkzcnFyY29aSWYyaFlCVDZVdTA=';
 
 /**
  * Send data to slack, configured in CCDL channel
