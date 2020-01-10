@@ -40,7 +40,7 @@ let DownloadCompendia = ({
       ReactGA.event({
         category: 'Compendia',
         action: `${type} Download`,
-        label: compendium.primary_organism,
+        label: compendium.primary_organism_name,
       });
     }
   };
@@ -84,7 +84,7 @@ let DownloadCompendia = ({
             multiple={false}
             options={data}
             selectedOption={selected}
-            label={c => formatSentenceCase(c.primary_organism)}
+            label={c => formatSentenceCase(c.primary_organism_name)}
             onChange={s => setSelected(s)}
           />
         </div>
