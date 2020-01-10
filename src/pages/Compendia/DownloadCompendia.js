@@ -80,7 +80,6 @@ let DownloadCompendia = ({
         <div className="download-compendia__title">Download the {title}</div>
         <span className="download-compendia__choose">Choose Organism</span>
         <div className="download-compendia__row">
-          <span className="download-compendia__choose">Choose Organism</span>
           <div className="download-compendia__dropdown">
             <DropdownSearch
               options={data}
