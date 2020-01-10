@@ -40,19 +40,7 @@ const Result = ({ result, query }) => {
             to={routes.experiments(result, {
               ref: 'search',
               query,
-              result: {
-                accession_code: result.accession_code,
-                title: result.title,
-                description: result.description,
-                pubmed_id: result.pubmed_id,
-                publication_title: result.publication_title,
-                submitter_institution: result.submitter_institution,
-                publication_authors: result.publication_authors,
-                source_url: result.source_url,
-                source_database: result.source_database,
-                organisms: result.organism_names,
-                samples: [],
-              },
+              result,
             })}
           >
             {result.title ? <HText>{result.title}</HText> : 'No title.'}
@@ -126,19 +114,7 @@ const Result = ({ result, query }) => {
           to={routes.experimentsSamples(result, {
             ref: 'search',
             query,
-            result: {
-              accession_code: result.accession_code,
-              title: result.title,
-              description: result.description,
-              pubmed_id: result.pubmed_id,
-              publication_title: result.publication_title,
-              submitter_institution: result.submitter_institution,
-              publication_authors: result.publication_authors,
-              source_url: result.source_url,
-              source_database: result.source_database,
-              organism_names: result.organism_names,
-              samples: [],
-            },
+            result,
           })}
         >
           View Samples
