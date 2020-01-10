@@ -229,7 +229,7 @@ export class ExperimentsView extends React.Component {
 
             if (
               this.state.organism &&
-              !experiment.organisms.includes(this.state.organism)
+              !experiment.organism_names.includes(this.state.organism)
             ) {
               return null;
             }
@@ -271,7 +271,7 @@ export class ExperimentsView extends React.Component {
                         className="downloads__sample-icon"
                         alt="Organism Icon"
                       />{' '}
-                      {experiment.organisms
+                      {experiment.organism_names
                         .map(organism => formatSentenceCase(organism))
                         .join(', ')}
                     </div>
@@ -323,7 +323,7 @@ export class ExperimentsView extends React.Component {
 
   _renderFilters() {
     const organismsList = Object.keys(this.props.dataSet.data)
-      .map(id => this.props.dataSet.experiments[id].organisms)
+      .map(id => this.props.dataSet.experiments[id].organism_names)
       // flatten array https://stackoverflow.com/a/33680003/763705
       .reduce((accum, organisms) => accum.concat(organisms), []);
 
