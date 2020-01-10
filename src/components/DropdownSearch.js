@@ -27,7 +27,7 @@ const DropdownSearch = ({
   const handleBlur = () => {
     setTimeout(() => {
       setOpenDropdown(false);
-    }, 100);
+    }, 150);
   };
 
   const handleSelection = selected => {

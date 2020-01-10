@@ -79,7 +79,6 @@ let Experiment = ({ match, location: { state }, goBack }) => {
           let totalSamples = experimentData.samples.length;
           const numDownloadableSamples =
             experimentData['num_downloadable_samples'];
-          let { organisms } = experimentData;
 
           // for users coming from the search, see if there's any experiment's data in the url state
           if (isLoading && comesFromSearch && state.result) {
@@ -89,7 +88,6 @@ let Experiment = ({ match, location: { state }, goBack }) => {
               samples: [],
             };
             totalSamples = state.result.total_samples_count;
-            organisms = state.result.organisms;
           }
 
           // Ensure that the url has the correct slug
@@ -159,8 +157,8 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                         className="experiment__stats-icon"
                         alt="Organism Icon"
                       />{' '}
-                      {organisms.length
-                        ? organisms
+                      {experimentData.organism_names.length
+                        ? experimentData.organism_names
                             .map(organism => formatSentenceCase(organism))
                             .join(', ')
                         : 'No species.'}
@@ -311,8 +309,8 @@ export default Experiment;
 function experimentSlugMatches(slug, experimentTitle) {
   if (!slug) return false;
   // since the slug is the last parameter it can contain a hash, ensure that's not considered
-  slug = slug.split('#')[0];
-  return slug === slugify(experimentTitle);
+  const slugWithoutHash = slug.split('#')[0];
+  return slugWithoutHash === slugify(experimentTitle);
 }
 
 function ExperimentHelmet({ experiment }) {
@@ -404,6 +402,20 @@ class ExperimentSamplesTable extends React.Component {
     showOnlyAddedSamples: false,
   };
 
+  /**
+   * Builds a dataset slice, that only contains the current experiment accession code
+   * with it's processed samples
+   */
+  getDataSetSlice() {
+    const { experiment } = this.props;
+
+    return {
+      [experiment.accession_code]: DataSetStats.mapAccessions(
+        experiment.samples
+      ),
+    };
+  }
+
   render() {
     const { experiment } = this.props;
 
@@ -431,7 +443,7 @@ class ExperimentSamplesTable extends React.Component {
         pageActionComponent={() => {
           const stats = new DataSetStats(
             this.props.dataSet,
-            this._getDataSetSlice()
+            this.getDataSetSlice()
           );
           return (
             <div className="experiment__sample-actions">
@@ -458,21 +470,8 @@ class ExperimentSamplesTable extends React.Component {
       />
     );
   }
-
-  /**
-   * Builds a dataset slice, that only contains the current experiment accession code
-   * with it's processed samples
-   */
-  _getDataSetSlice() {
-    const { experiment } = this.props;
-
-    return {
-      [experiment.accession_code]: DataSetStats.mapAccessions(
-        experiment.samples
-      ),
-    };
-  }
 }
+
 ExperimentSamplesTable = connect(({ download: { dataSetId, dataSet } }) => ({
   dataSetId,
   dataSet,

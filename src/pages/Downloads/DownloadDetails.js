@@ -140,7 +140,7 @@ export function SpeciesSamples({
         const hasRnaSeqExperiments = Object.values(experiments).some(
           experiment =>
             experiment.technology === RNA_SEQ &&
-            experiment.organisms.includes(speciesName)
+            experiment.organism_names.includes(speciesName)
         );
 
         return (
