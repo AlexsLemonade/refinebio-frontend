@@ -85,9 +85,6 @@
     }
   }
 
-  &__tabs--container {
-  }
-
   &__section {
     text-align: center;
     padding: 100px 52px 0;
@@ -250,7 +247,9 @@
 
   &__choose {
     font-size: 1.3rem;
-    margin-right: 8px;
+  }
+
+  &__dropdown {
     flex: 1 1 100%;
   }
 

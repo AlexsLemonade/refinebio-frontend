@@ -6,7 +6,7 @@ import ReactGA from 'react-ga';
 import { formatSentenceCase, formatBytes } from '../../common/helpers';
 import InfoBadge from '../../common/icons/info-badge.svg';
 
-import Dropdown from '../../components/Dropdown';
+import DropdownSearch from '../../components/DropdownSearch';
 import Button from '../../components/Button';
 import { useLoader } from '../../components/Loader';
 import Checkbox from '../../components/Checkbox';
@@ -78,20 +78,22 @@ let DownloadCompendia = ({
     <div className="download-compendia">
       <div>
         <div className="download-compendia__title">Download the {title}</div>
+        <span className="download-compendia__choose">Choose Organism</span>
         <div className="download-compendia__row">
-          <span className="download-compendia__choose">Choose Organism</span>
-          <Dropdown
-            multiple={false}
-            options={data}
-            selectedOption={selected}
-            label={c => formatSentenceCase(c.primary_organism_name)}
-            onChange={s => setSelected(s)}
-          />
+          <div className="download-compendia__dropdown">
+            <DropdownSearch
+              options={data}
+              selectedOption={selected}
+              label={c => formatSentenceCase(c.primary_organism_name)}
+              onChange={s => setSelected(s)}
+              placeholder="Search for an organism"
+            />
+          </div>
         </div>
 
         {children}
 
-        {(selected || data[0]).organisms.length > 1 && (
+        {(selected || data[0]).organism_names.length > 1 && (
           <div className="download-compendia__info">
             <img src={InfoBadge} alt="Attention" />
             <p>
