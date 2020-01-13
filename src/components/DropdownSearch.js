@@ -53,19 +53,24 @@ const DropdownSearch = ({
         current: { previousSibling, nextSibling },
       } = highlightedRef;
       const sibling = isNext ? nextSibling : previousSibling;
-      const el = sibling || highlightedRef.current;
-      const { offsetTop, offsetHeight } = el;
+      const { offsetTop: elTop, offsetHeight: elHeight } =
+        sibling || highlightedRef.current;
       const {
-        current: { scrollTop, offsetHeight: scrollHeight },
+        current: {
+          scrollTop,
+          offsetHeight: scrollWindowHeight,
+          clientHeight: scrollWindowClientHeight,
+        },
       } = scrollRef;
-      const nextScrollTo = offsetTop + scrollHeight - offsetHeight;
-      const scrollTo = isNext ? nextScrollTo : offsetTop;
+      const windowOffset = scrollWindowHeight - scrollWindowClientHeight;
+      const nextScrollTo = elTop + elHeight - scrollWindowHeight + windowOffset;
+      const scrollTo = isNext ? nextScrollTo : elTop;
 
       // check if highlighted is outside of viewport
-      const above = offsetTop < scrollTop;
-      const below = offsetTop > scrollTop + scrollHeight - offsetHeight;
+      const below = scrollTop + scrollWindowHeight <= elTop + elHeight;
+      const above = scrollTop > elTop;
 
-      if (above || below) {
+      if ((isNext && below) || (!isNext && above)) {
         scrollRef.current.scrollTo(0, scrollTo);
       }
     }

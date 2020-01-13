@@ -46,13 +46,14 @@ let DownloadCompendia = ({
   };
 
   const clickDownload = async () => {
-    const tokenId = token || (await createToken());
-    const selectedCompendium = selected || data[0];
-    trackDownloadType(selectedCompendium);
-    push({
-      pathname: '/compendia/download',
-      state: await fetchCompendium(tokenId, selectedCompendium.id),
-    });
+    if (selected) {
+      const tokenId = token || (await createToken());
+      trackDownloadType(selected);
+      push({
+        pathname: '/compendia/download',
+        state: await fetchCompendium(tokenId, selected.id),
+      });
+    }
   };
 
   if (isLoading) {
@@ -93,7 +94,7 @@ let DownloadCompendia = ({
 
         {children}
 
-        {(selected || data[0]).organism_names.length > 1 && (
+        {selected && selected.organism_names.length > 1 && (
           <div className="download-compendia__info">
             <img src={InfoBadge} alt="Attention" />
             <p>
@@ -132,8 +133,8 @@ let DownloadCompendia = ({
         )}
         <div className="download-compendia__row">
           <span>
-            Download Size:{' '}
-            {formatBytes((selected || data[0]).computed_file.size_in_bytes)}{' '}
+            {selected && 'Download Size: '}
+            {selected && formatBytes(selected.computed_file.size_in_bytes)}
           </span>
           <Button
             text="Download Now"
