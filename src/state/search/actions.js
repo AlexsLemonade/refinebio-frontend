@@ -169,7 +169,11 @@ export function fetchResults({
               [lastFilterName]: undefined,
             },
           });
-          previousFilters = previousFacets;
+          previousFilters = {
+            ...previousFacets,
+            organism: previousFacets.organism_names,
+            platform: previousFacets.platform_accession_codes,
+          };
         }
 
         filters = {
