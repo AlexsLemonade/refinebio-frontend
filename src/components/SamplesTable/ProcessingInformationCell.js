@@ -5,7 +5,7 @@ import ModalManager from '../Modal/ModalManager';
 import ProcessingInformationModalContent from './ProcessingInformation/ProcessingInformationModalContent';
 
 export default function ProcessingInformationCell({ original: sample }) {
-  if (!sample.results || !sample.results.length) {
+  if (!sample.is_processed || !sample.results || !sample.results.length) {
     return <div className="experiment__not-provided">NA</div>;
   }
 
