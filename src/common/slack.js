@@ -6,6 +6,21 @@
 const SLACK_HOOK_URL =
   'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JCUzUyVDc5OC9UWnZZSGkzcnFyY29aSWYyaFlCVDZVdTA=';
 
+// get IP
+const getIP = async () => {
+  let ip = 'N/A';
+
+  await fetch('https://api.ipify?format=json')
+    .then(resp => resp.json())
+    .then(json => json.ip)
+    .then(fetchedIP => {
+      ip = fetchedIP;
+    })
+    .catch(() => {}); // allow fetch to fail
+
+  return ip;
+};
+
 /**
  * Send data to slack, configured in CCDL channel
  * @param {object} params Slack webhooks params
@@ -18,10 +33,6 @@ export async function postToSlack(params) {
 }
 
 export async function submitSearchDataRequest(query, values) {
-  const { ip } = await (await fetch(
-    'https://api.ipify.org?format=json'
-  )).json();
-
   await postToSlack({
     attachments: [
       {
@@ -62,7 +73,7 @@ export async function submitSearchDataRequest(query, values) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
+        footer: `Refine.bio | ${await getIP} | ${navigator.userAgent}`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },
@@ -71,10 +82,6 @@ export async function submitSearchDataRequest(query, values) {
 }
 
 export async function submitExperimentDataRequest(accessionCode, values) {
-  const { ip } = await (await fetch(
-    'https://api.ipify.org?format=json'
-  )).json();
-
   await postToSlack({
     attachments: [
       {
@@ -110,7 +117,7 @@ export async function submitExperimentDataRequest(accessionCode, values) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
+        footer: `Refine.bio | ${await getIP()} | ${navigator.userAgent}`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },
