@@ -8,17 +8,13 @@ const SLACK_HOOK_URL =
 
 // get IP
 const getIP = async () => {
-  let ip = 'N/A';
-
-  await fetch('https://api.ipify?format=json')
-    .then(resp => resp.json())
-    .then(json => json.ip)
-    .then(fetchedIP => {
-      ip = fetchedIP;
-    })
-    .catch(() => {}); // allow fetch to fail
-
-  return ip;
+  try {
+    const resp = await fetch('https://api.ipify.org?format=json');
+    const json = await resp.json();
+    return json.ip || 'Unknown IP';
+  } catch {
+    return 'Unknown IP';
+  }
 };
 
 /**
@@ -73,7 +69,7 @@ export async function submitSearchDataRequest(query, values) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${await getIP} | ${navigator.userAgent}`,
+        footer: `Refine.bio | ${await getIP()} | ${navigator.userAgent}`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },
