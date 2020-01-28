@@ -29,6 +29,7 @@ export async function postToSlack(params) {
 }
 
 export async function submitSearchDataRequest(query, values) {
+  const ip = await getIP();
   await postToSlack({
     attachments: [
       {
@@ -69,7 +70,7 @@ export async function submitSearchDataRequest(query, values) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${await getIP()} | ${navigator.userAgent}`,
+        footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },
@@ -78,6 +79,7 @@ export async function submitSearchDataRequest(query, values) {
 }
 
 export async function submitExperimentDataRequest(accessionCode, values) {
+  const ip = await getIP();
   await postToSlack({
     attachments: [
       {
@@ -113,7 +115,7 @@ export async function submitExperimentDataRequest(accessionCode, values) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${await getIP()} | ${navigator.userAgent}`,
+        footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },
