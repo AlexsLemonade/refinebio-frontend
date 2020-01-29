@@ -198,6 +198,46 @@ SpeciesSamples = connect(
 export class ExperimentsView extends React.Component {
   state = { organism: false };
 
+  renderFilters() {
+    const organismsList = Object.keys(this.props.dataSet.data)
+      .map(id => this.props.dataSet.experiments[id].organism_names)
+      // flatten array https://stackoverflow.com/a/33680003/763705
+      .reduce((accum, organisms) => accum.concat(organisms), []);
+
+    // https://stackoverflow.com/a/14438954/763705
+    const uniqueOrganisms = [...new Set(organismsList)];
+
+    if (uniqueOrganisms.length <= 1) {
+      return null;
+    }
+
+    return (
+      <div className="downloads__species-filters">
+        <div className="downloads__species-filter-item">Show</div>
+        <div className="downloads__species-filter-item">
+          <Radio
+            readOnly
+            checked={!this.state.organism}
+            onClick={() => this.setState({ organism: false })}
+          >
+            All Species
+          </Radio>
+        </div>
+        {uniqueOrganisms.map(organism => (
+          <div className="downloads__species-filter-item" key={organism}>
+            <Radio
+              readOnly
+              checked={this.state.organism === organism}
+              onClick={() => this.setState({ organism })}
+            >
+              {formatSentenceCase(organism)}
+            </Radio>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   render() {
     const {
       dataSet: {
@@ -217,7 +257,7 @@ export class ExperimentsView extends React.Component {
 
     return (
       <div>
-        {this._renderFilters()}
+        {this.renderFilters()}
 
         <div className="downloads__card">
           {Object.keys(dataSetData).map(experimentAccessionCode => {
@@ -320,47 +360,8 @@ export class ExperimentsView extends React.Component {
       </div>
     );
   }
-
-  _renderFilters() {
-    const organismsList = Object.keys(this.props.dataSet.data)
-      .map(id => this.props.dataSet.experiments[id].organism_names)
-      // flatten array https://stackoverflow.com/a/33680003/763705
-      .reduce((accum, organisms) => accum.concat(organisms), []);
-
-    // https://stackoverflow.com/a/14438954/763705
-    const uniqueOrganisms = [...new Set(organismsList)];
-
-    if (uniqueOrganisms.length <= 1) {
-      return null;
-    }
-
-    return (
-      <div className="downloads__species-filters">
-        <div className="downloads__species-filter-item">Show</div>
-        <div className="downloads__species-filter-item">
-          <Radio
-            readOnly
-            checked={!this.state.organism}
-            onClick={() => this.setState({ organism: false })}
-          >
-            All Species
-          </Radio>
-        </div>
-        {uniqueOrganisms.map(organism => (
-          <div className="downloads__species-filter-item" key={organism}>
-            <Radio
-              readOnly
-              checked={this.state.organism === organism}
-              onClick={() => this.setState({ organism })}
-            >
-              {formatSentenceCase(organism)}
-            </Radio>
-          </div>
-        ))}
-      </div>
-    );
-  }
 }
+
 ExperimentsView = connect(
   null,
   {
@@ -382,6 +383,23 @@ class ViewSamplesButtonModal extends React.Component {
   state = {
     dataSet: {},
   };
+
+  modalWidth() {
+    const totalColumns = 4 + this.props.sampleMetadataFields.length;
+
+    // logic to decide the max-width of the modal
+    // https://github.com/AlexsLemonade/refinebio-frontend/issues/495#issuecomment-459504896
+    if (totalColumns <= 5) {
+      return 1100;
+    }
+    if (totalColumns === 6) {
+      return 1300;
+    }
+    if (totalColumns === 7) {
+      return 1500;
+    }
+    return 1800;
+  }
 
   render() {
     return (
@@ -423,22 +441,5 @@ class ViewSamplesButtonModal extends React.Component {
         )}
       </ModalManager>
     );
-  }
-
-  modalWidth() {
-    const totalColumns = 4 + this.props.sampleMetadataFields.length;
-
-    // logic to decide the max-width of the modal
-    // https://github.com/AlexsLemonade/refinebio-frontend/issues/495#issuecomment-459504896
-    if (totalColumns <= 5) {
-      return 1100;
-    }
-    if (totalColumns === 6) {
-      return 1300;
-    }
-    if (totalColumns === 7) {
-      return 1500;
-    }
-    return 1800;
   }
 }
