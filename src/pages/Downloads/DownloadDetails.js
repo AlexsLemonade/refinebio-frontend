@@ -103,7 +103,7 @@ ClearDatasetButton = connect(
 
 export function SpeciesSamples({
   dataSet: {
-    dataSetId,
+    id: dataSetId,
     dataSet: dataSetData,
     organism_samples: samplesBySpecies,
     quantile_normalize,
