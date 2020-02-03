@@ -118,7 +118,7 @@ async function getQnTargets() {
 
 async function getSamplesPerOrganism() {
   try {
-    const response = axios.get(`${ApiHost}/search/?limit=1&offset=0`);
+    const response = await axios.get(`${ApiHost}/search/?limit=1&offset=0`);
     return {
       organism: response.data.filters.organism,
       apiVersion: response.headers['x-source-revision'],
