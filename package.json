@@ -12,6 +12,7 @@
     "history": "^4.7.2",
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
+    "next": "^9.2.1",
     "nprogress": "^0.2.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
@@ -46,6 +47,9 @@
     ]
   },
   "scripts": {
+    "ndev": "next",
+    "nbuild": "next build",
+    "nstart": "next start",
     "analyze": "source-map-explorer build/static/js/main.*",
     "start": "react-scripts start",
     "build": "react-scripts build",
