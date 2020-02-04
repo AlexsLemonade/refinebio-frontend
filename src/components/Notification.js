@@ -1,12 +1,13 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'next/router';
 import { IoMdCheckmarkCircle, IoMdClose } from 'react-icons/io';
 
 import Button from './Button';
 
 import './Notification.scss';
 
-let Notification = ({ location: { pathname, state } }) => {
+let Notification = ({ router: location }) => {
+  const { pathname, state } = location;
   const [closed, setClosed] = React.useState({});
 
   if (!state || !state.message) return null;

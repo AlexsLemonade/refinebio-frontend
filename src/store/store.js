@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import throttle from 'lodash/throttle';
 import * as Sentry from '@sentry/browser';
 import rootReducer from '../state/rootReducer';
-import history from '../history';
+// import history from '../history';
 import { CALL_HISTORY_METHOD } from '../state/routerActions';
 import { REPORT_ERROR } from '../state/reportError';
 import progressMiddleware from './progressMiddleware';
@@ -52,7 +52,7 @@ const persistMiddleware = () => next => action => {
   return next(action);
 };
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = compose; // window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||;
 
 const store = createStore(
   rootReducer,
@@ -61,7 +61,7 @@ const store = createStore(
     applyMiddleware(
       progressMiddleware,
       thunk,
-      routerMiddleware(history),
+      // routerMiddleware(history),
       errorMiddleware,
       persistMiddleware
     )
@@ -88,19 +88,19 @@ export default store;
  * Thanks to https://github.com/reactjs/react-router-redux/blob/master/src/middleware.js
  * Initial idea from https://github.com/reactjs/react-router-redux#what-if-i-want-to-issue-navigation-events-via-redux-actions
  */
-function routerMiddleware(history) {
-  return () => next => action => {
-    if (action.type !== CALL_HISTORY_METHOD) {
-      return next(action);
-    }
+// function routerMiddleware(history) {
+//   return () => next => action => {
+//     if (action.type !== CALL_HISTORY_METHOD) {
+//       return next(action);
+//     }
 
-    const {
-      payload: { method, args },
-    } = action;
-    history[method](...args);
-    return null;
-  };
-}
+//     const {
+//       payload: { method, args },
+//     } = action;
+//     history[method](...args);
+//     return null;
+//   };
+// }
 
 /**
  * Loads the state from the localStorage, here are the keys that we're interested in persisting.
@@ -117,9 +117,9 @@ function routerMiddleware(history) {
 function loadInitialState() {
   return {
     download: {
-      dataSetId: localStorage.getItem('dataSetId'),
+      // dataSetId: localStorage.getItem('dataSetId'),
     },
-    token: localStorage.getItem('token'),
+    // token: localStorage.getItem('token'),
   };
 }
 
@@ -127,6 +127,7 @@ function loadInitialState() {
  * Returns true if the app is running on www.refine.bio or staging.refine.bio
  */
 function isProduction() {
+  return false;
   return (
     process.env.NODE_ENV === 'production' &&
     ['staging.refine.bio', 'www.refine.bio'].includes(window.location.host)

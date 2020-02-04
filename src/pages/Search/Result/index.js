@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
@@ -37,13 +37,13 @@ const Result = ({ result, query }) => {
           </div>
           <Link
             className="link result__title"
-            to={routes.experiments(result, {
+            href={routes.experiments(result, {
               ref: 'search',
               query,
               result,
             })}
           >
-            {result.title ? <HText>{result.title}</HText> : 'No title.'}
+            <a>{result.title ? <HText>{result.title}</HText> : 'No title.'}</a>
           </Link>
         </div>
 
@@ -111,13 +111,13 @@ const Result = ({ result, query }) => {
 
         <Link
           className="button button--secondary"
-          to={routes.experimentsSamples(result, {
+          href={routes.experimentsSamples(result, {
             ref: 'search',
             query,
             result,
           })}
         >
-          View Samples
+          <a>View Samples</a>
         </Link>
       </div>
     </div>

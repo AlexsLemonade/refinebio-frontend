@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import mapValues from 'lodash/mapValues';
 import union from 'lodash/union';
 import Button from '../../components/Button';
@@ -238,10 +238,10 @@ export class ExperimentsView extends React.Component {
               <div className="downloads__sample" key={experimentAccessionCode}>
                 <div className="downloads__dataSet-info">
                   <Link
-                    to={routes.experiments(experiment)}
+                    href={routes.experiments(experiment)}
                     className="downloads__experiment-title link"
                   >
-                    {experiment.title}
+                    <a>{experiment.title}</a>
                   </Link>
                   {experiment.technology === RNA_SEQ && !quantile_normalize && (
                     <div className="dot-label dot-label--info">

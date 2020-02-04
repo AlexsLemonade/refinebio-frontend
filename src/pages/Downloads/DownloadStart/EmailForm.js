@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import classnames from 'classnames';
@@ -102,12 +102,12 @@ const EmailForm = ({ onSubmit, agreedToTerms, emailAddress }) => (
             >
               I agree to the{' '}
               <Link
-                to="/terms"
+                href="/terms"
                 className="link"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Terms of Use
+                <a>Terms of Use</a>
               </Link>
             </Checkbox>
           </div>

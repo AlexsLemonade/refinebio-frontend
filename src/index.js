@@ -3,18 +3,13 @@ import ReactDOM from 'react-dom';
 import * as Sentry from '@sentry/browser';
 import 'delayed-scroll-restoration-polyfill';
 import smoothscroll from 'smoothscroll-polyfill';
-import './index.scss';
-import App from './pages/App';
 import apiData from './apiData.json';
 
 // kick off the polyfill!
 smoothscroll.polyfill();
 
 function initApp() {
-  // remove general meta description from header
-  document.querySelector('meta[name="description"]').remove();
-
-  ReactDOM.render(<App />, document.getElementById('root'));
+  // ReactDOM.render(<App />, document.getElementById('root'));
 }
 
 // initialize sentry on production

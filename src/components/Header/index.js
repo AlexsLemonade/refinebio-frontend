@@ -1,8 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import Link from 'next/link';
 import { IoMdMenu } from 'react-icons/io';
+import { withRouter } from 'next/router';
 
 import logo from '../../common/icons/logo.svg';
 import { fetchDataSet } from '../../state/download/actions';
@@ -16,7 +17,7 @@ import githubCorner from './github-corner.svg';
 
 import { useTheme } from '../../common/ThemeContext';
 
-let Header = ({ location }) => {
+let Header = ({ router: location }) => {
   const [theme] = useTheme();
   return (
     <header
@@ -26,8 +27,10 @@ let Header = ({ location }) => {
       })}
     >
       <div className="header__container">
-        <Link to="/">
-          <img src={logo} alt="refine.bio" className="header__logo" />
+        <Link href="/">
+          <a>
+            <img src={logo} alt="refine.bio" className="header__logo" />
+          </a>
         </Link>
 
         <ResponsiveSwitch
@@ -49,7 +52,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
   return (
     <ul className="header__menu">
       <HeaderLink
-        to="/"
+        href="/"
         onClick={itemClicked}
         location={location}
         activePath={[searchUrl()]}
@@ -57,7 +60,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
         Search
       </HeaderLink>{' '}
       <HeaderDropDownLink
-        to={[
+        href={[
           {
             title: 'Normalized Compendia',
             location: {
@@ -85,23 +88,25 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
           Docs
         </a>
       </li>
-      <HeaderLink to="/about" onClick={itemClicked} location={location}>
+      <HeaderLink href="/about" onClick={itemClicked} location={location}>
         About
       </HeaderLink>
       <li className="header__link header__link--button-wrap">
-        <Link
-          className="button button--secondary header__link-button"
-          to="/download"
-          onClick={itemClicked}
-        >
-          My Dataset
-          <Loader fetch={fetchDataSet}>
-            {({ isLoading }) =>
-              !isLoading && (
-                <div className="header__dataset-count">{totalSamples}</div>
-              )
-            }
-          </Loader>
+        <Link href="/download">
+          <a
+            className="button button--secondary header__link-button"
+            onClick={itemClicked}
+            role="button"
+          >
+            My Dataset
+            <Loader fetch={fetchDataSet}>
+              {({ isLoading }) =>
+                !isLoading && (
+                  <div className="header__dataset-count">{totalSamples}</div>
+                )
+              }
+            </Loader>
+          </a>
         </Link>
       </li>
     </ul>
@@ -116,24 +121,25 @@ HeaderLinks = connect(
   }
 )(HeaderLinks);
 
-const HeaderLink = ({ to, onClick, children, location, activePath = [] }) => {
+const HeaderLink = ({ href, onClick, children, location, activePath = [] }) => {
   return (
     <li
       className={classnames('header__link', {
         'header__link--active':
           location &&
-          (location.pathname === to || activePath.includes(location.pathname)),
+          (location.pathname === href ||
+            activePath.includes(location.pathname)),
       })}
     >
-      <Link to={to} onClick={onClick}>
-        {children}
+      <Link href={href}>
+        <a onClick={onClick}>{children}</a>
       </Link>
     </li>
   );
 };
 
 const HeaderDropDownLink = ({
-  to = [],
+  href = [],
   onClick,
   children,
   location,
@@ -182,17 +188,17 @@ const HeaderDropDownLink = ({
               'header__dropdown--open': open,
             })}
           >
-            {to.map(({ title, location: toLocation }) => (
+            {href.map(({ title, location: toLocation }) => (
               <li key={title}>
-                <Link
-                  to={toLocation}
-                  onClick={(...click) => {
-                    closeDropdown();
-                    if (onClick) onClick(...click);
-                  }}
-                  replace={replace}
-                >
-                  {title}
+                <Link href={toLocation} replace={replace}>
+                  <a
+                    onClick={(...click) => {
+                      closeDropdown();
+                      if (onClick) onClick(...click);
+                    }}
+                  >
+                    {title}
+                  </a>
                 </Link>
               </li>
             ))}

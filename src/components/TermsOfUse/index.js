@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Checkbox from '../Checkbox';
 import './TermsOfUse.scss';
 
@@ -13,8 +13,8 @@ export default function TermsOfUse({ agreedToTerms, handleToggle }) {
         name="termsOfUse"
       >
         I agree to the{' '}
-        <Link to="/terms" className="link">
-          Terms of Use
+        <Link href="/terms" className="link">
+          <a>Terms of Use</a>
         </Link>
       </Checkbox>
     </div>

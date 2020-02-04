@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Formik, Field } from 'formik';
 import { IoIosWarning } from 'react-icons/io';
 
@@ -158,8 +158,8 @@ function MoveToDatasetButtonModal({
                   }}
                 />
                 There are {totalSamplesinCurrentDataSet} samples in{' '}
-                <Link to="/download" className="link" target="_blank">
-                  My Dataset
+                <Link href="/download" className="link" target="_blank">
+                  <a>My Dataset</a>
                 </Link>
               </h2>
 

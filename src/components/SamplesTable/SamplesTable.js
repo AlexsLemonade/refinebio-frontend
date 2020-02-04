@@ -2,7 +2,7 @@ import React from 'react';
 import 'react-table/react-table.css';
 import debounce from 'lodash/debounce';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 import RefineTable from '../RefineTable';
 
@@ -266,8 +266,10 @@ const NoDataComponent = ({ hasError, children, fetchData }) =>
 
 function AccessionCodeCell({ value }) {
   return (
-    <Link to={`/samples/${value}`}>
-      <HText>{value}</HText>
+    <Link href={`/samples/${value}`}>
+      <a>
+        <HText>{value}</HText>
+      </a>
     </Link>
   );
 }

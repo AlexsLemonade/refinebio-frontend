@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import ReactGA from 'react-ga';
 
 import { formatSentenceCase, formatBytes } from '../../common/helpers';
@@ -121,12 +121,12 @@ let DownloadCompendia = ({
             >
               I agree to the{' '}
               <Link
-                to="/terms"
+                href="/terms"
                 className="link"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Terms of Use
+                <a>Terms of Use</a>
               </Link>
             </Checkbox>
           </div>

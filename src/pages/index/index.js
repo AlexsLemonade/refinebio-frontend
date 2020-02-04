@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { push } from '../../state/routerActions';
 import SearchInput from '../../components/SearchInput';
 import SearchIcon from '../../common/icons/search.svg';
@@ -16,7 +16,7 @@ import TabControl from '../../components/TabControl';
 import apiData from '../../apiData.json';
 import EmailSection from './EmailSection';
 import { searchUrl } from '../../routes';
-import circusPlot from '../About/circus-plot.svg';
+import circusPlot from '../about/circus-plot.svg';
 
 import pathwayIcon from './icon-pathway.svg';
 import processIcon from './icon-process.svg';
@@ -64,12 +64,8 @@ let Main = ({ push }) => {
             <p className="main__search-suggestion-label">Try searching for:</p>
 
             {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
-              <Link
-                className="main__search-suggestion"
-                to={searchUrl({ q })}
-                key={q}
-              >
-                {q}
+              <Link href={searchUrl({ q })} key={q}>
+                <a className="main__search-suggestion">{q}</a>
               </Link>
             ))}
           </div>
@@ -246,8 +242,8 @@ let Main = ({ push }) => {
                 processed and packaged for broad and felxible use.
               </div>
               <div className="main__explore-card__actions">
-                <Link to="/compendia" className="button button--secondary ">
-                  Learn More
+                <Link href="/compendia">
+                  <a className="button button--secondary ">Learn More</a>
                 </Link>
               </div>
             </div>

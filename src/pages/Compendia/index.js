@@ -1,15 +1,16 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
-import { Link, withRouter, Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { withRouter } from 'next/router';
 import './Compendia.scss';
 import PointsBackground from './PointsBackground';
 import NormalizedCompendia from './NormalizedCompendia';
 import RNASeqSampleCompendia from './RNASeqSampleCompendia';
-import EmailSection from '../Main/EmailSection';
+import EmailSection from '../index/EmailSection';
 import { themes, useTheme } from '../../common/ThemeContext';
 
-const Compendia = function Compendia({ location, replace }) {
+const Compendia = function Compendia({ router: location, replace }) {
   useTheme(themes.light);
   const compendiaOptions = [
     {
@@ -25,7 +26,7 @@ const Compendia = function Compendia({ location, replace }) {
   ];
 
   const active = compendiaOptions.find(c => c.hash === location.hash);
-  if (!active) return <Redirect to={{ hash: '#normalized' }} />;
+  if (!active) return <Redirect href={{ hash: '#normalized' }} />;
   return (
     <div>
       <Helmet>
@@ -52,13 +53,13 @@ const Compendia = function Compendia({ location, replace }) {
                 })}
               >
                 <Link
-                  to={{
+                  href={{
                     pathname: location.path,
                     hash: compendia.hash,
                   }}
                   replace
                 >
-                  {compendia.name}
+                  <a>{compendia.name}</a>
                 </Link>
               </li>
             ))}

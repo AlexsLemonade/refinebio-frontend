@@ -1,5 +1,5 @@
 import React from 'react';
-import history from '../history';
+// import history from '../history';
 import { getQueryParamObject } from './helpers';
 
 /**
@@ -44,10 +44,17 @@ export function useInterval(callback, delay) {
 }
 
 export function useHistory() {
+  // TODOX history
+
   return {
-    pathname: history.location.pathname,
-    params: getQueryParamObject(history.location.search),
+    pathname: '/',
+    params: {},
   };
+
+  // return {
+  //   pathname: history.location.pathname,
+  //   params: getQueryParamObject(history.location.search),
+  // };
 }
 
 /**

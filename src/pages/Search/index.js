@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import isEqual from 'lodash/isEqual';
 import fromPairs from 'lodash/fromPairs';
 import Result from './Result';
@@ -122,7 +122,7 @@ class SearchResults extends Component {
 
           {/* Passing `location.search` to the Loader component ensures that we call `updateResults`
           every time that the url is updated and also when the component is mounted.
-          We do several checks to determine what to display, eg: no results, when no search term has 
+          We do several checks to determine what to display, eg: no results, when no search term has
           been entered, etc */}
           <Loader
             updateProps={this.props.location.search}
@@ -298,10 +298,10 @@ const NoSearchResults = ({ query }) => (
       {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
         <Link
           className="link results__suggestion"
-          to={searchUrl({ q })}
+          href={searchUrl({ q })}
           key={q}
         >
-          {q}
+          <a>{q}</a>
         </Link>
       ))}
     </div>

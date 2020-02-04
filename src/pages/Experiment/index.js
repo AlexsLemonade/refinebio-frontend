@@ -95,7 +95,7 @@ let Experiment = ({ match, location: { state }, goBack }) => {
             !isLoading &&
             !experimentSlugMatches(match.params.slug, experiment.title)
           ) {
-            return <Redirect to={routes.experiments(experiment)} />;
+            return <Redirect href={routes.experiments(experiment)} />;
           }
 
           return displaySpinner ? (
@@ -232,14 +232,18 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                     <ExperimentHeaderRow label="Submitter’s Institution">
                       {(experimentData.submitter_institution && (
                         <Link
-                          to={searchUrl({
+                          href={searchUrl({
                             q: `submitter_institution: ${
                               experimentData.submitter_institution
                             }`,
                           })}
                           className="link"
                         >
-                          <HText>{experimentData.submitter_institution}</HText>
+                          <a>
+                            <HText>
+                              {experimentData.submitter_institution}
+                            </HText>
+                          </a>
                         </Link>
                       )) || (
                         <i className="experiment__not-provided">
@@ -252,12 +256,14 @@ let Experiment = ({ match, location: { state }, goBack }) => {
                         experimentData.publication_authors
                           .map(author => (
                             <Link
-                              to={searchUrl({
+                              href={searchUrl({
                                 q: `publication_authors:${author}`,
                               })}
                               className="link"
                             >
-                              <HText>{author}</HText>
+                              <a>
+                                <HText>{author}</HText>
+                              </a>
                             </Link>
                           ))
                           .reduce((previous, current) => (
