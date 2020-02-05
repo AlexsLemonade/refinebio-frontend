@@ -1,16 +1,14 @@
-// @flow
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import throttle from 'lodash/throttle';
 import * as Sentry from '@sentry/browser';
+import Router from 'next/router';
 import rootReducer from '../state/rootReducer';
 // import history from '../history';
 import { CALL_HISTORY_METHOD } from '../state/routerActions';
 import { REPORT_ERROR } from '../state/reportError';
 import progressMiddleware from './progressMiddleware';
 import { ApiVersionMismatchError } from '../common/errors';
-
-const initialState = loadInitialState();
 
 const errorMiddleware = () => next => action => {
   if (action.type !== REPORT_ERROR) {
@@ -54,32 +52,39 @@ const persistMiddleware = () => next => action => {
 
 const composeEnhancers = compose; // window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||;
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  composeEnhancers(
-    applyMiddleware(
-      progressMiddleware,
-      thunk,
-      // routerMiddleware(history),
-      errorMiddleware,
-      persistMiddleware
+export function initializeStore(initialState) {
+  const initialStateLoaded = {
+    ...loadInitialState(),
+    ...initialState,
+  };
+
+  const store = createStore(
+    rootReducer,
+    initialStateLoaded,
+    composeEnhancers(
+      applyMiddleware(
+        progressMiddleware,
+        thunk,
+        // routerMiddleware(history),
+        errorMiddleware,
+        persistMiddleware
+      )
     )
-  )
-);
+  );
 
-store.subscribe(
-  throttle(() => {
-    const state = store.getState();
-    if (state.token) {
-      localStorage.setItem('token', state.token);
-    } else {
-      localStorage.removeItem('token');
-    }
-  }, 1000)
-);
+  store.subscribe(
+    throttle(() => {
+      const state = store.getState();
+      if (state.token) {
+        localStorage.setItem('token', state.token);
+      } else {
+        localStorage.removeItem('token');
+      }
+    }, 1000)
+  );
 
-export default store;
+  return store;
+}
 
 /**
  * This middleware captures CALL_HISTORY_METHOD actions and calls the History Api.
@@ -88,19 +93,19 @@ export default store;
  * Thanks to https://github.com/reactjs/react-router-redux/blob/master/src/middleware.js
  * Initial idea from https://github.com/reactjs/react-router-redux#what-if-i-want-to-issue-navigation-events-via-redux-actions
  */
-// function routerMiddleware(history) {
-//   return () => next => action => {
-//     if (action.type !== CALL_HISTORY_METHOD) {
-//       return next(action);
-//     }
+function routerMiddleware(history) {
+  return () => next => action => {
+    if (action.type !== CALL_HISTORY_METHOD) {
+      return next(action);
+    }
 
-//     const {
-//       payload: { method, args },
-//     } = action;
-//     history[method](...args);
-//     return null;
-//   };
-// }
+    const {
+      payload: { method, args },
+    } = action;
+    Router[method](...args);
+    return null;
+  };
+}
 
 /**
  * Loads the state from the localStorage, here are the keys that we're interested in persisting.
