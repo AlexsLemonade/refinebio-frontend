@@ -1,8 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
-import { Link, Redirect } from 'react-router-dom';
-import { withRouter } from 'next/router';
+import Link from 'next/link';
+import Router, { withRouter } from 'next/router';
 import './Compendia.scss';
 import PointsBackground from './PointsBackground';
 import NormalizedCompendia from './NormalizedCompendia';
@@ -10,7 +10,7 @@ import RNASeqSampleCompendia from './RNASeqSampleCompendia';
 import EmailSection from '../index/EmailSection';
 import { themes, useTheme } from '../../common/ThemeContext';
 
-const Compendia = function Compendia({ router: location, replace }) {
+function Compendia({ router: location }) {
   useTheme(themes.light);
   const compendiaOptions = [
     {
@@ -25,8 +25,10 @@ const Compendia = function Compendia({ router: location, replace }) {
     },
   ];
 
-  const active = compendiaOptions.find(c => c.hash === location.hash);
-  if (!active) return <Redirect href={{ hash: '#normalized' }} />;
+  // when no hash is specified we render the normalized compendia
+  const active =
+    compendiaOptions.find(c => c.hash === location.hash) || compendiaOptions[0];
+
   return (
     <div>
       <Helmet>
@@ -72,6 +74,6 @@ const Compendia = function Compendia({ router: location, replace }) {
       </div>
     </div>
   );
-};
+}
 
 export default withRouter(Compendia);

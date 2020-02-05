@@ -72,5 +72,6 @@ module.exports = {
     'no-unused-vars': 0,
     'jsx-a11y/interactive-supports-focus': 0,
     'jsx-a11y/no-static-element-interactions': 0,
+    'jsx-a11y/anchor-is-valid': 0,
   },
 };

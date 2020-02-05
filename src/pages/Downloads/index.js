@@ -1,7 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import Link from 'next/link';
 import BackToTop from '../../components/BackToTop';
 import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
@@ -58,8 +59,8 @@ function DownloadEmpty() {
   return (
     <div className="downloads__empty">
       <h3 className="downloads__empty-heading">Your dataset is empty.</h3>
-      <Link className="button" href="/">
-        <a>Search and Add Samples</a>
+      <Link href="/">
+        <a className="button">Search and Add Samples</a>
       </Link>
       <img
         src={NoDatasetsImage}

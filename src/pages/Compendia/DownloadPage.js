@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { Router } from 'next/router';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import DownloadDatasetImage from '../Downloads/DataSet/download-dataset.svg';
 import TubeyAdventureImage from './tubey-adventure.svg';
@@ -13,7 +14,8 @@ export default function DownloadPage({ location }) {
   });
   // this needs to account for rna-seq or normalized
   if (!location.state || !location.state.downloadUrl) {
-    return <Redirect to="/species-compendia" />;
+    Router.push('/species-compendia');
+    return null;
   }
   const { compendium, downloadUrl } = location.state;
 
