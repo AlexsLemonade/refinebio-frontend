@@ -1,10 +1,10 @@
 import React from 'react';
 import { IoIosCheckmarkCircle } from 'react-icons/io';
-import { useLocalStorage } from '../../common/hooks';
-import Button from '../../components/Button';
-import PageModal from '../../components/Modal/PageModal';
-import RequestDataForm from '../../components/RequestDataForm';
-import { submitExperimentDataRequest } from '../../common/slack';
+import { useLocalStorage } from '../../../common/hooks';
+import Button from '../../../components/Button';
+import PageModal from '../../../components/Modal/PageModal';
+import RequestDataForm from '../../../components/RequestDataForm';
+import { submitExperimentDataRequest } from '../../../common/slack';
 
 export default function RequestExperimentButton({ accessionCode }) {
   const [requestOpen, setRequestOpen] = React.useState(false);

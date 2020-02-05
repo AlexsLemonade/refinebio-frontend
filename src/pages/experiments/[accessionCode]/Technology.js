@@ -3,8 +3,8 @@ import uniq from 'lodash/uniq';
 import TechnologyBadge, {
   MICROARRAY,
   RNA_SEQ,
-} from '../../components/TechnologyBadge';
-import { formatPlatformName } from '../../common/helpers';
+} from '../../../components/TechnologyBadge';
+import { formatPlatformName } from '../../../common/helpers';
 
 export default function Technology({ samples }) {
   if (!samples || !samples.length) return null;

@@ -1,3 +1,4 @@
+import fetch from 'isomorphic-unfetch';
 import { ApiVersionMismatchError, ServerError } from './errors';
 
 /**
