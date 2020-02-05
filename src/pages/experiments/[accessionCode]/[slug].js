@@ -1,8 +1,10 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
 import Loader from '../../../components/Loader';
 import Button from '../../../components/Button';
@@ -29,7 +31,6 @@ import DataSetStats from '../../../common/DataSetStats';
 import Technology, { getTechnologies } from './Technology';
 import { NDownloadableSamples } from '../../../components/Strings';
 import ScrollTopOnMount from '../../../components/ScrollTopOnMount';
-import SamplesTable from '../../../components/SamplesTable/SamplesTable';
 import DataSetSampleActions from '../../../components/DataSetSampleActions';
 
 import * as routes from '../../../routes';
@@ -40,6 +41,14 @@ import ServerErrorPage from '../../ServerError';
 import { Hightlight, HText } from '../../../components/HighlightedText';
 import RequestExperimentButton from './RequestExperimentButton';
 
+// Disable server side rendering for the samples table. (Temporarily)
+const SamplesTable = dynamic(
+  () => import('../../../components/SamplesTable/SamplesTable'),
+  {
+    ssr: false,
+  }
+);
+
 const { searchUrl } = routes;
 
 const DatabaseNames = {
@@ -48,260 +57,235 @@ const DatabaseNames = {
   ARRAY_EXPRESS: 'ArrayExpress',
 };
 
-let Experiment = ({ match, location: { state }, goBack }) => {
+let Experiment = ({
+  // location: { state },
+  goBack,
+  hasError,
+  error,
+  experiment,
+}) => {
+  const router = useRouter();
+  const state = {}; // TODO REMOVE
   // check for the parameter `ref=search` to ensure that the previous page was the search
   const comesFromSearch = state && state.ref === 'search';
-  const accessionCode = match.params.id;
+  const { accessionCode } = router.query;
 
-  return (
+  if (hasError) {
+    return (
+      <div className="layout__content">
+        {error && error instanceof ServerError && error.status === 404 ? (
+          <NoMatch />
+        ) : (
+          <ServerErrorPage />
+        )}
+      </div>
+    );
+  }
+
+  let displaySpinner = false; // isLoading;
+  let experimentData = experiment || { samples: [] };
+  let totalSamples = experimentData.samples.length;
+  const numDownloadableSamples = experimentData['num_downloadable_samples'];
+
+  // for users coming from the search, see if there's any experiment's data in the url state
+  if (comesFromSearch && state.result) {
+    displaySpinner = false;
+    experimentData = {
+      ...state.result,
+      samples: [],
+    };
+    totalSamples = state.result.total_samples_count;
+  }
+
+  return displaySpinner ? (
+    <div className="layout__content">
+      <Spinner />
+    </div>
+  ) : (
     <Hightlight match={comesFromSearch && state.query}>
-      <Loader
-        fetch={() => getExperiment(accessionCode)}
-        updateProps={accessionCode}
-      >
-        {({ isLoading, hasError, error, data: experiment }) => {
-          if (hasError) {
-            return (
-              <div className="layout__content">
-                {error &&
-                error instanceof ServerError &&
-                error.status === 404 ? (
-                  <NoMatch />
-                ) : (
-                  <ServerErrorPage />
-                )}
-              </div>
-            );
-          }
+      <div className="layout__content">
+        <InfoBox />
 
-          let displaySpinner = isLoading;
-          let experimentData = experiment || { samples: [] };
-          let totalSamples = experimentData.samples.length;
-          const numDownloadableSamples =
-            experimentData['num_downloadable_samples'];
+        <ScrollTopOnMount />
+        {comesFromSearch && (
+          <Button
+            text="Back to Results"
+            buttonStyle="secondary"
+            onClick={goBack}
+          />
+        )}
 
-          // for users coming from the search, see if there's any experiment's data in the url state
-          if (isLoading && comesFromSearch && state.result) {
-            displaySpinner = false;
-            experimentData = {
-              ...state.result,
-              samples: [],
-            };
-            totalSamples = state.result.total_samples_count;
-          }
+        <div className="experiment">
+          <ExperimentHelmet experiment={experimentData} />
+          <BackToTop />
+          <div className="experiment__accession">
+            <img
+              src={AccessionIcon}
+              className="experiment__stats-icon"
+              alt="Accession Icon"
+            />
+            <HText>{experimentData.accession_code}</HText>
+          </div>
 
-          // Ensure that the url has the correct slug
-          if (
-            !isLoading &&
-            !experimentSlugMatches(match.params.slug, experiment.title)
-          ) {
-            return <Redirect href={routes.experiments(experiment)} />;
-          }
-
-          return displaySpinner ? (
-            <div className="layout__content">
-              <Spinner />
+          <div className="experiment__header">
+            <h1 className="experiment__header-title mobile-p">
+              <HText>{experimentData.title || 'No Title.'}</HText>
+            </h1>
+            <div>
+              {numDownloadableSamples === 0 ? (
+                <RequestExperimentButton accessionCode={accessionCode} />
+              ) : (
+                <DataSetSampleActions
+                  dataSetSlice={{
+                    [experimentData.accession_code]: {
+                      all: true,
+                      total: numDownloadableSamples,
+                    },
+                  }}
+                />
+              )}
             </div>
-          ) : (
-            <>
-              <div className="layout__content">
-                <InfoBox />
+          </div>
 
-                <ScrollTopOnMount />
-                {comesFromSearch && (
-                  <Button
-                    text="Back to Results"
-                    buttonStyle="secondary"
-                    onClick={goBack}
-                  />
-                )}
+          <div className="experiment__stats">
+            <div className="experiment__stats-item">
+              <img
+                src={OrganismIcon}
+                className="experiment__stats-icon"
+                alt="Organism Icon"
+              />{' '}
+              {experimentData.organism_names.length
+                ? experimentData.organism_names
+                    .map(organism => formatSentenceCase(organism))
+                    .join(', ')
+                : 'No species.'}
+            </div>
+            <div className="experiment__stats-item">
+              <img
+                src={SampleIcon}
+                className="experiment__stats-icon"
+                alt="Sample Icon"
+              />{' '}
+              <NDownloadableSamples total={numDownloadableSamples} />
+            </div>
 
-                <div className="experiment">
-                  <ExperimentHelmet experiment={experimentData} />
-                  <BackToTop />
-                  <div className="experiment__accession">
-                    <img
-                      src={AccessionIcon}
-                      className="experiment__stats-icon"
-                      alt="Accession Icon"
-                    />
-                    <HText>{experimentData.accession_code}</HText>
-                  </div>
+            <div
+              className={classnames('experiment__stats-item', {
+                'experiment__stats-item--lg':
+                  getTechnologies(experimentData.samples).length > 3,
+              })}
+            >
+              <Technology samples={experimentData.samples} />
+            </div>
+          </div>
 
-                  <div className="experiment__header">
-                    <h1 className="experiment__header-title mobile-p">
-                      <HText>{experimentData.title || 'No Title.'}</HText>
-                    </h1>
-                    <div>
-                      {numDownloadableSamples === 0 ? (
-                        <RequestExperimentButton
-                          accessionCode={accessionCode}
-                        />
-                      ) : (
-                        <DataSetSampleActions
-                          dataSetSlice={{
-                            [experimentData.accession_code]: {
-                              all: true,
-                              total: numDownloadableSamples,
-                            },
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
+          <h4 className="experiment__title">Submitter Supplied Information</h4>
 
-                  <div className="experiment__stats">
-                    <div className="experiment__stats-item">
-                      <img
-                        src={OrganismIcon}
-                        className="experiment__stats-icon"
-                        alt="Organism Icon"
-                      />{' '}
-                      {experimentData.organism_names.length
-                        ? experimentData.organism_names
-                            .map(organism => formatSentenceCase(organism))
-                            .join(', ')
-                        : 'No species.'}
-                    </div>
-                    <div className="experiment__stats-item">
-                      <img
-                        src={SampleIcon}
-                        className="experiment__stats-icon"
-                        alt="Sample Icon"
-                      />{' '}
-                      <NDownloadableSamples total={numDownloadableSamples} />
-                    </div>
-
-                    <div
-                      className={classnames('experiment__stats-item', {
-                        'experiment__stats-item--lg':
-                          getTechnologies(experimentData.samples).length > 3,
+          <div>
+            <ExperimentHeaderRow label="Description">
+              <HText>{experimentData.description}</HText>
+            </ExperimentHeaderRow>
+            <ExperimentHeaderRow label="PubMed ID">
+              {(experimentData.pubmed_id && (
+                <a
+                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                    experimentData.pubmed_id
+                  }`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link"
+                >
+                  {experimentData.pubmed_id}
+                </a>
+              )) || (
+                <i className="experiment__not-provided">
+                  No associated PubMed ID
+                </i>
+              )}
+            </ExperimentHeaderRow>
+            <ExperimentHeaderRow label="Publication Title">
+              {(experimentData.publication_title && (
+                <a
+                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${
+                    experimentData.pubmed_id
+                  }`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link"
+                >
+                  <HText>{experimentData.publication_title}</HText>
+                </a>
+              )) || (
+                <i className="experiment__not-provided">
+                  No associated publication
+                </i>
+              )}
+            </ExperimentHeaderRow>
+            <ExperimentHeaderRow label="Total Samples">
+              {totalSamples}
+            </ExperimentHeaderRow>
+            <ExperimentHeaderRow label="Submitter’s Institution">
+              {(experimentData.submitter_institution && (
+                <Link
+                  href={searchUrl({
+                    q: `submitter_institution: ${
+                      experimentData.submitter_institution
+                    }`,
+                  })}
+                >
+                  <a className="link">
+                    <HText>{experimentData.submitter_institution}</HText>
+                  </a>
+                </Link>
+              )) || (
+                <i className="experiment__not-provided">
+                  No associated institution
+                </i>
+              )}
+            </ExperimentHeaderRow>
+            <ExperimentHeaderRow label="Authors">
+              {experimentData.publication_authors.length > 0 ? (
+                experimentData.publication_authors
+                  .map(author => (
+                    <Link
+                      href={searchUrl({
+                        q: `publication_authors:${author}`,
                       })}
                     >
-                      <Technology samples={experimentData.samples} />
-                    </div>
-                  </div>
-
-                  <h4 className="experiment__title">
-                    Submitter Supplied Information
-                  </h4>
-
-                  <div>
-                    <ExperimentHeaderRow label="Description">
-                      <HText>{experimentData.description}</HText>
-                    </ExperimentHeaderRow>
-                    <ExperimentHeaderRow label="PubMed ID">
-                      {(experimentData.pubmed_id && (
-                        <a
-                          href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                            experimentData.pubmed_id
-                          }`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="link"
-                        >
-                          {experimentData.pubmed_id}
-                        </a>
-                      )) || (
-                        <i className="experiment__not-provided">
-                          No associated PubMed ID
-                        </i>
-                      )}
-                    </ExperimentHeaderRow>
-                    <ExperimentHeaderRow label="Publication Title">
-                      {(experimentData.publication_title && (
-                        <a
-                          href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                            experimentData.pubmed_id
-                          }`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="link"
-                        >
-                          <HText>{experimentData.publication_title}</HText>
-                        </a>
-                      )) || (
-                        <i className="experiment__not-provided">
-                          No associated publication
-                        </i>
-                      )}
-                    </ExperimentHeaderRow>
-                    <ExperimentHeaderRow label="Total Samples">
-                      {totalSamples}
-                    </ExperimentHeaderRow>
-                    <ExperimentHeaderRow label="Submitter’s Institution">
-                      {(experimentData.submitter_institution && (
-                        <Link
-                          href={searchUrl({
-                            q: `submitter_institution: ${
-                              experimentData.submitter_institution
-                            }`,
-                          })}
-                          className="link"
-                        >
-                          <a>
-                            <HText>
-                              {experimentData.submitter_institution}
-                            </HText>
-                          </a>
-                        </Link>
-                      )) || (
-                        <i className="experiment__not-provided">
-                          No associated institution
-                        </i>
-                      )}
-                    </ExperimentHeaderRow>
-                    <ExperimentHeaderRow label="Authors">
-                      {experimentData.publication_authors.length > 0 ? (
-                        experimentData.publication_authors
-                          .map(author => (
-                            <Link
-                              href={searchUrl({
-                                q: `publication_authors:${author}`,
-                              })}
-                              className="link"
-                            >
-                              <a>
-                                <HText>{author}</HText>
-                              </a>
-                            </Link>
-                          ))
-                          .reduce((previous, current) => (
-                            <React.Fragment>
-                              {previous}
-                              {', '}
-                              {current}
-                            </React.Fragment>
-                          ))
-                      ) : (
-                        <i className="experiment__not-provided">
-                          No associated authors
-                        </i>
-                      )}
-                    </ExperimentHeaderRow>
-                    {experimentData.source_database && (
-                      <ExperimentHeaderRow label="Source Repository">
-                        <a
-                          href={experimentData.source_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="link"
-                        >
-                          {DatabaseNames[experimentData.source_database]}
-                        </a>
-                      </ExperimentHeaderRow>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <SamplesTableBlock
-                experiment={isLoading ? null : experimentData}
-              />
-            </>
-          );
-        }}
-      </Loader>
+                      <a className="link">
+                        <HText>{author}</HText>
+                      </a>
+                    </Link>
+                  ))
+                  .reduce((previous, current) => (
+                    <React.Fragment>
+                      {previous}
+                      {', '}
+                      {current}
+                    </React.Fragment>
+                  ))
+              ) : (
+                <i className="experiment__not-provided">
+                  No associated authors
+                </i>
+              )}
+            </ExperimentHeaderRow>
+            {experimentData.source_database && (
+              <ExperimentHeaderRow label="Source Repository">
+                <a
+                  href={experimentData.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link"
+                >
+                  {DatabaseNames[experimentData.source_database]}
+                </a>
+              </ExperimentHeaderRow>
+            )}
+          </div>
+        </div>
+      </div>
+      <SamplesTableBlock experiment={experimentData} />
     </Hightlight>
   );
 };
@@ -309,6 +293,18 @@ Experiment = connect(
   null,
   { goBack }
 )(Experiment);
+Experiment.getInitialProps = async ctx => {
+  const { accessionCode } = ctx.query;
+  let experiment;
+  try {
+    experiment = await getExperiment(accessionCode);
+  } catch (error) {
+    ctx.res.statusCode = error.status;
+    return { hasError: true, error };
+  }
+
+  return { experiment };
+};
 
 export default Experiment;
 
@@ -331,7 +327,7 @@ function ExperimentHelmet({ experiment }) {
       )}
       <link
         rel="canonical"
-        href={window.location.origin + routes.experiments(experiment)}
+        href={`https://www.refine.bio${routes.experiments(experiment)}`}
       />
     </Helmet>
   );

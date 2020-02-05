@@ -18,7 +18,7 @@ import TechnologyBadge, {
 } from '../../../components/TechnologyBadge';
 import { NDownloadableSamples } from '../../../components/Strings';
 
-import RequestExperimentButton from '../../Experiment/RequestExperimentButton';
+import RequestExperimentButton from '../../experiments/[accessionCode]/RequestExperimentButton';
 
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result.sample_metadata_fields);

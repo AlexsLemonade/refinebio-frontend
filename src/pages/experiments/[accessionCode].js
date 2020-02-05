@@ -33,7 +33,9 @@ export default class ExperimentRedirect extends React.Component {
       experiment = await getExperiment(accessionCode);
     } catch {
       // return 404 if the experiment wasn't found
-      ctx.res.statusCode = 404;
+      if (ctx.res) {
+        ctx.res.statusCode = 404;
+      }
       return { notFound: true };
     }
 
