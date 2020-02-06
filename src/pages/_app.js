@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import classnames from 'classnames';
 import App from 'next/app';
-
+import Router from 'next/router';
 import { initializeStore } from '../store/store';
 import Layout from '../components/Layout';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -36,6 +36,35 @@ export default class MyApp extends React.Component {
       ...appProps,
       initialReduxState: reduxStore.getState(),
     };
+  }
+
+  componentDidMount() {
+    // thanks to https://github.com/zeit/next.js/issues/3303#issuecomment-536166016
+    window.history.scrollRestoration = 'auto';
+    const cachedScrollPositions = [];
+    let shouldScrollRestore;
+
+    Router.events.on('routeChangeStart', () => {
+      cachedScrollPositions.push([window.scrollX, window.scrollY]);
+    });
+
+    Router.events.on('routeChangeComplete', () => {
+      if (shouldScrollRestore) {
+        const { x, y } = shouldScrollRestore;
+        window.scrollTo(x, y);
+        shouldScrollRestore = null;
+      }
+      window.history.scrollRestoration = 'auto';
+    });
+
+    Router.beforePopState(() => {
+      if (cachedScrollPositions.length > 0) {
+        const [x, y] = cachedScrollPositions.pop();
+        shouldScrollRestore = { x, y };
+      }
+      window.history.scrollRestoration = 'manual';
+      return true;
+    });
   }
 
   render() {
