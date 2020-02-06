@@ -2,6 +2,8 @@ import React from 'react';
 // import history from '../history';
 import { getQueryParamObject } from './helpers';
 
+const isServer = typeof window === 'undefined';
+
 /**
  * Calculate values from a dom node
  * @param {*} ref React ref to the dom node
@@ -67,6 +69,10 @@ export function useLocalStorage(key, initialValue) {
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = React.useState(() => {
     try {
+      if (isServer) {
+        return initialValue;
+      }
+
       // Get from local storage by key
       const item = window.localStorage.getItem(key);
       // Parse stored json or if none return initialValue
@@ -88,7 +94,9 @@ export function useLocalStorage(key, initialValue) {
       // Save state
       setStoredValue(valueToStore);
       // Save to local storage
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      if (!isServer) {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
     } catch (error) {
       // A more advanced implementation would handle the error case
       console.error(error);

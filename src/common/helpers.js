@@ -1,6 +1,9 @@
 import fetch from 'isomorphic-unfetch';
 import { ApiVersionMismatchError, ServerError } from './errors';
 
+const isServer = typeof window === 'undefined';
+export { isServer };
+
 /**
  * Generates a query string from a query object
  * @param {object} queryObj

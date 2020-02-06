@@ -5,7 +5,9 @@ const withImages = require('next-images');
 module.exports = withImages(
   withCSS(
     withSass({
-      /* config options here */
+      env: {
+        REACT_APP_API_HOST: process.env.REACT_APP_API_HOST,
+      },
     })
   )
 );

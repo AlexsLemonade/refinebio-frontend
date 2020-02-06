@@ -9,6 +9,7 @@ import { CALL_HISTORY_METHOD } from '../state/routerActions';
 import { REPORT_ERROR } from '../state/reportError';
 import progressMiddleware from './progressMiddleware';
 import { ApiVersionMismatchError } from '../common/errors';
+import { isServer } from '../common/helpers';
 
 const errorMiddleware = () => next => action => {
   if (action.type !== REPORT_ERROR) {
@@ -50,7 +51,9 @@ const persistMiddleware = () => next => action => {
   return next(action);
 };
 
-const composeEnhancers = compose; // window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||;
+const composeEnhancers = isServer
+  ? compose
+  : window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export function initializeStore(initialState) {
   const initialStateLoaded = {
@@ -63,25 +66,27 @@ export function initializeStore(initialState) {
     initialStateLoaded,
     composeEnhancers(
       applyMiddleware(
-        progressMiddleware,
+        // progressMiddleware,
         thunk,
-        // routerMiddleware(history),
+        routerMiddleware(),
         errorMiddleware,
         persistMiddleware
       )
     )
   );
 
-  store.subscribe(
-    throttle(() => {
-      const state = store.getState();
-      if (state.token) {
-        localStorage.setItem('token', state.token);
-      } else {
-        localStorage.removeItem('token');
-      }
-    }, 1000)
-  );
+  if (!isServer) {
+    store.subscribe(
+      throttle(() => {
+        const state = store.getState();
+        if (state.token) {
+          localStorage.setItem('token', state.token);
+        } else {
+          localStorage.removeItem('token');
+        }
+      }, 1000)
+    );
+  }
 
   return store;
 }
@@ -93,7 +98,7 @@ export function initializeStore(initialState) {
  * Thanks to https://github.com/reactjs/react-router-redux/blob/master/src/middleware.js
  * Initial idea from https://github.com/reactjs/react-router-redux#what-if-i-want-to-issue-navigation-events-via-redux-actions
  */
-function routerMiddleware(history) {
+function routerMiddleware() {
   return () => next => action => {
     if (action.type !== CALL_HISTORY_METHOD) {
       return next(action);

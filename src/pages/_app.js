@@ -12,7 +12,7 @@ import { ThemeProvider } from '../common/ThemeContext';
 import './_app.scss';
 
 const isServer = typeof window === 'undefined';
-const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__';
+const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'; // eslint-disable-line
 
 export default class MyApp extends React.Component {
   constructor(props) {

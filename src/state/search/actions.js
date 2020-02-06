@@ -18,7 +18,7 @@ export const Ordering = {
   Oldest: 'source_first_published',
 };
 
-export function parseUrl(locationSearch) {
+export function parseUrl(queryParams) {
   /* eslint-disable prefer-const */
   let {
     q: query,
@@ -27,7 +27,7 @@ export function parseUrl(locationSearch) {
     ordering = Ordering.BestMatch,
     filter_order: filterOrder = '',
     ...filters
-  } = getQueryParamObject(locationSearch);
+  } = queryParams;
   /* eslint-enable */
 
   // for consistency, ensure all values in filters are arrays
@@ -41,8 +41,8 @@ export function parseUrl(locationSearch) {
 
   // parse parameters from url
   query = query ? decodeURIComponent(query) : undefined;
-  page = parseInt(page, 10);
-  size = parseInt(size, 10);
+  page = page ? parseInt(page, 10) : 1;
+  size = size ? parseInt(size, 10) : 10;
   filterOrder = filterOrder ? filterOrder.split(',') : [];
 
   return { query, page, size, ordering, filters, filterOrder };
@@ -74,7 +74,8 @@ const navigateToResults = ({
   };
 
   return push({
-    search: `${getQueryString(urlParams)}`,
+    pathname: '/search',
+    query: urlParams,
   });
 };
 

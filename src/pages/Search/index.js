@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'next/router';
 
 import Helmet from 'react-helmet';
 import Link from 'next/link';
@@ -39,18 +40,31 @@ import RequestSearchButton from './RequestSearchButton';
 import { SingleValueFilter } from './ResultFilters/FilterCategory';
 
 class SearchResults extends Component {
-  state = {
-    query: '',
-    filters: {},
-  };
-
   constructor(props) {
     super(props);
-
-    const searchArgs = parseUrl(props.location.search);
     this.state = {
+      query: props.query,
+      filters: props.filters,
+      hasError: props.hasError,
+      isLoading: false,
+    };
+  }
+
+  static async getInitialProps(ctx) {
+    const searchArgs = parseUrl(ctx.query);
+
+    let hasError = false;
+    // initial fetch of results
+    try {
+      await ctx.reduxStore.dispatch(fetchResults(searchArgs));
+    } catch {
+      hasError = true;
+    }
+
+    return {
       query: searchArgs.query,
       filters: searchArgs.filters,
+      hasError,
     };
   }
 
@@ -58,7 +72,7 @@ class SearchResults extends Component {
    * Reads the search query and other parameters from the url and submits a new request to update the results.
    */
   async updateResults() {
-    const searchArgs = parseUrl(this.props.location.search);
+    const searchArgs = parseUrl(this.props.router.query);
 
     this.setState({
       query: searchArgs.query,
@@ -73,11 +87,13 @@ class SearchResults extends Component {
 
     // reset scroll position when the results change
     window.scrollTo(0, 0);
+    this.setState({ isLoading: true });
     await this.props.fetchResults(searchArgs);
+    this.setState({ isLoading: false });
   }
 
   resultsAreFetched() {
-    const searchArgs = parseUrl(this.props.location.search);
+    const searchArgs = parseUrl(this.props.router.query);
 
     return (
       this.props.results &&
@@ -100,7 +116,7 @@ class SearchResults extends Component {
     const totalPages = Math.ceil(totalResults / resultsPerPage);
 
     return (
-      <div>
+      <div className="layout__content">
         <InfoBox />
 
         <div className="results">
@@ -124,80 +140,76 @@ class SearchResults extends Component {
           every time that the url is updated and also when the component is mounted.
           We do several checks to determine what to display, eg: no results, when no search term has
           been entered, etc */}
-          <Loader
-            updateProps={this.props.location.search}
-            fetch={() => this.updateResults()}
-          >
-            {({ isLoading, hasError }) => {
-              if (isLoading && !this.resultsAreFetched()) {
-                return <Spinner />;
-              }
-              if (hasError) {
-                return <ErrorApiUnderHeavyLoad />;
-              }
-              if (!results.length && !anyFilterApplied(this.state.filters)) {
-                return <NoSearchResults query={this.state.query} />;
-              }
-              if (!results.length) {
-                return (
-                  <NoSearchResultsTooManyFilters
-                    query={this.state.query}
-                    appliedFilters={this.state.filters}
-                  />
-                );
-              }
-
+          {(() => {
+            if (this.state.isLoading && !this.resultsAreFetched()) {
+              return <Spinner />;
+            }
+            if (this.state.hasError) {
+              return <ErrorApiUnderHeavyLoad />;
+            }
+            if (!results.length && !anyFilterApplied(this.state.filters)) {
+              return <NoSearchResults query={this.state.query} />;
+            }
+            if (!results.length) {
               return (
-                <div className="results__container">
-                  <ResultsTopBar />
-                  <div className="results__add-samples">
-                    <AddPageToDataSetButton results={results} />
-                  </div>
-                  <ResultFilters appliedFilters={this.state.filters} />
-                  <div className="results__list">
-                    <Hightlight
-                      match={[
-                        this.state.query,
-                        ...getAccessionCodes(this.state.query),
-                      ]}
-                    >
-                      {results.map((result, index) => (
-                        <React.Fragment key={result.accession_code}>
-                          <Result result={result} query={this.state.query} />
-
-                          {result._isTopResult &&
-                            results[index + 1] &&
-                            !results[index + 1]._isTopResult && (
-                              <div className="results__related-block">
-                                Related Results for '{this.state.query}'
-                              </div>
-                            )}
-                        </React.Fragment>
-                      ))}
-
-                      {currentPage === totalPages && (
-                        <div className="result result--note">
-                          Didn't see a related experiment?{' '}
-                          <RequestSearchButton query={this.state.query} />
-                        </div>
-                      )}
-                    </Hightlight>
-
-                    <Pagination
-                      onPaginate={updatePage}
-                      totalPages={totalPages}
-                      currentPage={currentPage}
-                    />
-                  </div>
-                </div>
+                <NoSearchResultsTooManyFilters
+                  query={this.state.query}
+                  appliedFilters={this.state.filters}
+                />
               );
-            }}
-          </Loader>
+            }
+
+            return (
+              <div className="results__container">
+                <ResultsTopBar />
+                <div className="results__add-samples">
+                  <AddPageToDataSetButton results={results} />
+                </div>
+                <ResultFilters appliedFilters={this.state.filters} />
+                <div className="results__list">
+                  <Hightlight
+                    match={[
+                      this.state.query,
+                      ...getAccessionCodes(this.state.query),
+                    ]}
+                  >
+                    {results.map((result, index) => (
+                      <React.Fragment key={result.accession_code}>
+                        <Result result={result} query={this.state.query} />
+
+                        {result._isTopResult &&
+                          results[index + 1] &&
+                          !results[index + 1]._isTopResult && (
+                            <div className="results__related-block">
+                              Related Results for '{this.state.query}'
+                            </div>
+                          )}
+                      </React.Fragment>
+                    ))}
+
+                    {currentPage === totalPages && (
+                      <div className="result result--note">
+                        Didn't see a related experiment?{' '}
+                        <RequestSearchButton query={this.state.query} />
+                      </div>
+                    )}
+                  </Hightlight>
+
+                  <Pagination
+                    onPaginate={updatePage}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                  />
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
     );
   }
 }
+SearchResults = withRouter(SearchResults);
 SearchResults = connect(
   ({
     search: { results, pagination, searchTerm, appliedFilters, ordering },

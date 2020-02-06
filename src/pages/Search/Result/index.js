@@ -3,7 +3,6 @@ import Link from 'next/link';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
-import './Result.scss';
 import {
   formatSentenceCase,
   getMetadataFields,
@@ -19,6 +18,8 @@ import TechnologyBadge, {
 import { NDownloadableSamples } from '../../../components/Strings';
 
 import RequestExperimentButton from '../../experiments/[accessionCode]/RequestExperimentButton';
+
+import './Result.scss';
 
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result.sample_metadata_fields);
@@ -36,14 +37,16 @@ const Result = ({ result, query }) => {
             <HText>{result.accession_code}</HText>
           </div>
           <Link
-            className="link result__title"
-            href={routes.experiments(result, {
+            href="/experiments/[accessionCode]/[slug]"
+            as={routes.experiments(result, {
               ref: 'search',
               query,
               result,
             })}
           >
-            <a>{result.title ? <HText>{result.title}</HText> : 'No title.'}</a>
+            <a className="link result__title">
+              {result.title ? <HText>{result.title}</HText> : 'No title.'}
+            </a>
           </Link>
         </div>
 
@@ -110,14 +113,14 @@ const Result = ({ result, query }) => {
         </p>
 
         <Link
-          className="button button--secondary"
-          href={routes.experimentsSamples(result, {
+          href="/experiments/[accessionCode]/[slug]"
+          as={routes.experimentsSamples(result, {
             ref: 'search',
             query,
             result,
           })}
         >
-          <a>View Samples</a>
+          <a className="button button--secondary">View Samples</a>
         </Link>
       </div>
     </div>
