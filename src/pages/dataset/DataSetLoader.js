@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getDataSet, getDataSetDetails } from '../../../api/dataSet';
-import Loader from '../../../components/Loader';
-import { timeout } from '../../../common/helpers';
+import { getDataSet, getDataSetDetails } from '../../api/dataSet';
+import Loader from '../../components/Loader';
+import { timeout } from '../../common/helpers';
 
 class DataSetLoader extends React.Component {
   _loader = React.createRef();

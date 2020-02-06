@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { formatBytes } from '../../../common/helpers';
+import { formatBytes } from '../../common/helpers';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
-import Button from '../../../components/Button';
+import Button from '../../components/Button';
 import ProcessingGears from './ProcessingGears';
-import TermsOfUse from '../../../components/TermsOfUse';
+import TermsOfUse from '../../components/TermsOfUse';
 import DownloadErrorImage from './dataset-error.svg';
-import { getDataSet } from '../../../api/dataSet';
+import { getDataSet } from '../../api/dataSet';
 import TubeyAdventureImage from './tubey-adventure.svg';
-import apiData from '../../../apiData.json';
-import InfoIcon from '../../../common/icons/info-badge.svg';
+import apiData from '../../apiData.json';
+import InfoIcon from '../../common/icons/info-badge.svg';
 import {
   startDownload,
   regenerateDataSet,
