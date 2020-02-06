@@ -125,11 +125,15 @@ function routerMiddleware() {
  * saved
  */
 function loadInitialState() {
+  if (isServer) {
+    return {};
+  }
+
   return {
     download: {
-      // dataSetId: localStorage.getItem('dataSetId'),
+      dataSetId: localStorage.getItem('dataSetId'),
     },
-    // token: localStorage.getItem('token'),
+    token: localStorage.getItem('token'),
   };
 }
 
