@@ -8,8 +8,8 @@ import { useRouter } from 'next/router';
 
 import './DataSet.scss';
 
-import { ShareDatasetButton } from '../Downloads/DownloadBar';
-import DownloadStart from '../Downloads/DownloadStart/DownloadStart';
+import { ShareDatasetButton } from '../download/DownloadBar';
+import DownloadStart from '../download/DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
 import NoMatch from '../../components/NoMatch';
 import DataSetLoader from './DataSetLoader';

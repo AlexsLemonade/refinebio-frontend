@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { SpeciesSamples, ExperimentsView } from '../Downloads/DownloadDetails';
-import DownloadFileSummary from '../Downloads/DownloadFileSummary';
-import DownloadDatasetSummary from '../Downloads/DownloadDatasetSummary';
+import { SpeciesSamples, ExperimentsView } from '../download/DownloadDetails';
+import DownloadFileSummary from '../download/DownloadFileSummary';
+import DownloadDatasetSummary from '../download/DownloadDatasetSummary';
 import { formatSentenceCase } from '../../common/helpers';
 import TabControl from '../../components/TabControl';
 import Button from '../../components/Button';
 import { regenerateDataSet } from '../../state/download/actions';
 import DownloadOptionsForm, {
   getTransformationOptionFromName,
-} from '../Downloads/DownloadOptionsForm';
+} from '../download/DownloadOptionsForm';
 
 export default function DatasetDetails({ dataSet }) {
   return (
