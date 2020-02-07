@@ -35,7 +35,7 @@ import DataSetSampleActions from '../../../components/DataSetSampleActions';
 
 import * as routes from '../../../routes';
 import { getExperiment } from '../../../api/experiments';
-import NoMatch from '../../NoMatch';
+import NoMatch from '../../../components/NoMatch';
 import { ServerError } from '../../../common/errors';
 import ServerErrorPage from '../../ServerError';
 import { Hightlight, HText } from '../../../components/HighlightedText';

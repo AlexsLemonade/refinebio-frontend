@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import DistressedTubey from '../common/images/distressed-tubey.svg';
-import './NoMatch/NoMatch.scss';
+import '../components/NoMatch/NoMatch.scss';
 
 const ServerError = () => (
   <div className="error-page">

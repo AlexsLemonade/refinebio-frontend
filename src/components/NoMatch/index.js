@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import RewardPoster from './404-reward-poster.svg';
-import Button from '../../components/Button';
+import Button from '../Button';
 import './NoMatch.scss';
 
 import { goBack } from '../../state/routerActions';

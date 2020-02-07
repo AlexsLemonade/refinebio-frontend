@@ -11,7 +11,7 @@ import './DataSet.scss';
 import { ShareDatasetButton } from '../Downloads/DownloadBar';
 import DownloadStart from '../Downloads/DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
-import NoMatch from '../NoMatch';
+import NoMatch from '../../components/NoMatch';
 import DataSetLoader from './DataSetLoader';
 
 import DataSetPageHeader from './DataSetPageHeader';
