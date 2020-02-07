@@ -40,14 +40,7 @@ import { ServerError } from '../../../common/errors';
 import ServerErrorPage from '../../ServerError';
 import { Hightlight, HText } from '../../../components/HighlightedText';
 import RequestExperimentButton from './RequestExperimentButton';
-
-// Disable server side rendering for the samples table. (Temporarily)
-const SamplesTable = dynamic(
-  () => import('../../../components/SamplesTable/SamplesTable'),
-  {
-    ssr: false,
-  }
-);
+import SamplesTable from '../../../components/SamplesTable/SamplesTable';
 
 const { searchUrl } = routes;
 

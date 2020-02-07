@@ -12,11 +12,8 @@ import { getDataSet } from '../../api/dataSet';
 import TubeyAdventureImage from './tubey-adventure.svg';
 import apiData from '../../apiData.json';
 import InfoIcon from '../../common/icons/info-badge.svg';
-import {
-  startDownload,
-  regenerateDataSet,
-} from '../../../state/download/actions';
-import { createToken } from '../../../state/token';
+import { startDownload, regenerateDataSet } from '../../state/download/actions';
+import { createToken } from '../../state/token';
 
 /**
  * Renders the header of the dataset page
