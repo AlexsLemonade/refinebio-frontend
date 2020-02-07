@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import { IoMdMenu } from 'react-icons/io';
-import { withRouter } from 'next/router';
+import { withRouter, useRouter } from 'next/router';
 
 import logo from '../../common/icons/logo.svg';
 import { fetchDataSet } from '../../state/download/actions';
@@ -27,7 +27,7 @@ let Header = ({ router: location }) => {
       })}
     >
       <div className="header__container">
-        <Link href="/">
+        <Link href="/index" as="/">
           <a>
             <img src={logo} alt="refine.bio" className="header__logo" />
           </a>
@@ -52,10 +52,11 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
   return (
     <ul className="header__menu">
       <HeaderLink
-        href="/"
+        href="/index"
+        as="/"
         onClick={itemClicked}
         location={location}
-        activePath={[searchUrl()]}
+        activePath={['/search']}
       >
         Search
       </HeaderLink>{' '}
@@ -121,17 +122,18 @@ HeaderLinks = connect(
   }
 )(HeaderLinks);
 
-const HeaderLink = ({ href, onClick, children, location, activePath = [] }) => {
+const HeaderLink = ({ href, as, onClick, children, activePath = [] }) => {
+  const router = useRouter();
+  const isActive =
+    router.pathname === href || activePath.includes(router.pathname);
+
   return (
     <li
       className={classnames('header__link', {
-        'header__link--active':
-          location &&
-          (location.pathname === href ||
-            activePath.includes(location.pathname)),
+        'header__link--active': isActive,
       })}
     >
-      <Link href={href}>
+      <Link href={href} as={as || href}>
         <a onClick={onClick}>{children}</a>
       </Link>
     </li>

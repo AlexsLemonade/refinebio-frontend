@@ -6,7 +6,6 @@ import { push } from '../../state/routerActions';
 import SearchInput from '../../components/SearchInput';
 import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
-import './Main.scss';
 import {
   SamplesPerSpeciesGraph,
   SamplesOverTimeGraph,
@@ -25,6 +24,9 @@ import networkBottomIcon from './network-combined.svg';
 import networkDocsIcon from './icon-docs.svg';
 
 import { themes, useTheme } from '../../common/ThemeContext';
+
+import './Main.scss';
+import '../about/About.scss';
 
 let Main = ({ push }) => {
   useTheme(themes.inverted);

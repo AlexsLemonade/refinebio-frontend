@@ -1,8 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
-import './About.scss';
-
 import circusPlot from './circus-plot.svg';
 import savingTimes from './saving-times.svg';
 import oneRepo from './one-repo.svg';
@@ -17,6 +15,9 @@ import {
   numberFormatter,
   formatBytes,
 } from '../../common/helpers';
+
+import './About.scss';
+import '../index/Main.scss';
 
 function About() {
   useTheme(themes.inverted);
