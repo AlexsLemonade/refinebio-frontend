@@ -1,4 +1,4 @@
-@import '../common/styles/variables';
+@import '../src/common/styles/variables';
 
 .container {
   display: flex;
@@ -218,5 +218,5 @@ fieldset {
   }
 }
 
-@import '../common/styles/type';
-@import '../common/styles/form';
+@import '../src/common/styles/type';
+@import '../src/common/styles/form';

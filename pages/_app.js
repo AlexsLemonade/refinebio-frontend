@@ -4,10 +4,10 @@ import { Provider } from 'react-redux';
 import classnames from 'classnames';
 import App from 'next/app';
 import Router from 'next/router';
-import { initializeStore } from '../store/store';
-import Layout from '../components/Layout';
-import ErrorBoundary from '../components/ErrorBoundary';
-import { ThemeProvider } from '../common/ThemeContext';
+import { initializeStore } from '../src/store/store';
+import Layout from '../src/components/Layout';
+import ErrorBoundary from '../src/components/ErrorBoundary';
+import { ThemeProvider } from '../src/common/ThemeContext';
 
 import './_app.scss';
 

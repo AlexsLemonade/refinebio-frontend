@@ -1,5 +1,5 @@
 import React from 'react';
-import NoMatch from '../components/NoMatch';
+import NoMatch from '../src/components/NoMatch';
 
 function Error({ statusCode }) {
   return (
