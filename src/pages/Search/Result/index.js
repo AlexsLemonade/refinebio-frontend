@@ -17,7 +17,7 @@ import TechnologyBadge, {
 } from '../../../components/TechnologyBadge';
 import { NDownloadableSamples } from '../../../components/Strings';
 
-import RequestExperimentButton from '../../experiments/[accessionCode]/RequestExperimentButton';
+import RequestExperimentButton from '../../experiments/RequestExperimentButton';
 
 import './Result.scss';
 

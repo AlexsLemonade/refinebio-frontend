@@ -6,8 +6,6 @@ import { Formik, Field } from 'formik';
 import { IoIosWarning } from 'react-icons/io';
 import { useRouter } from 'next/router';
 
-import './DataSet.scss';
-
 import { ShareDatasetButton } from '../download/DownloadBar';
 import DownloadStart from '../download/DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
@@ -23,6 +21,8 @@ import { push } from '../../state/routerActions';
 
 import { RadioField } from '../../components/Radio';
 import DatasetDetails from './DatasetDetails';
+
+import './DataSet.scss';
 
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
