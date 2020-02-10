@@ -1,3 +1,7 @@
-import Page from '../src/pages/download';
+import dynamic from 'next/dynamic';
 
-export default Page;
+const Download = dynamic(() => import('../src/pages/download'), {
+  ssr: false,
+});
+
+export default Download;
