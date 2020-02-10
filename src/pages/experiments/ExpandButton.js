@@ -1,7 +1,7 @@
 import React from 'react';
-import ExpandIcon from '../../../common/icons/expand.svg';
-import CollapseIcon from '../../../common/icons/collapse.svg';
-import Button from '../../../components/Button';
+import ExpandIcon from '../../common/icons/expand.svg';
+import CollapseIcon from '../../common/icons/collapse.svg';
+import Button from '../../components/Button';
 
 /**
  * Expand/Collapse button

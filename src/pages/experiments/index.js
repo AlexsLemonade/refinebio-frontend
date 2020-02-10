@@ -4,42 +4,41 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
 
-import Loader from '../../../components/Loader';
-import Button from '../../../components/Button';
+import Loader from '../../components/Loader';
+import Button from '../../components/Button';
 import ExpandButton from './ExpandButton';
 import {
   formatSentenceCase,
   truncateOnWord,
   maxTableWidth,
-} from '../../../common/helpers';
-import slugify from '../../../common/slugify';
+} from '../../common/helpers';
+import slugify from '../../common/slugify';
 
-import AccessionIcon from '../../../common/icons/accession.svg';
-import SampleIcon from '../../../common/icons/sample.svg';
-import OrganismIcon from '../../../common/icons/organism.svg';
-import BackToTop from '../../../components/BackToTop';
+import AccessionIcon from '../../common/icons/accession.svg';
+import SampleIcon from '../../common/icons/sample.svg';
+import OrganismIcon from '../../common/icons/organism.svg';
+import BackToTop from '../../components/BackToTop';
 
-import Anchor from '../../../components/Anchor';
-import Spinner from '../../../components/Spinner';
-import InfoBox from '../../../components/InfoBox';
-import Checkbox from '../../../components/Checkbox';
-import { goBack } from '../../../state/routerActions';
-import DataSetStats from '../../../common/DataSetStats';
+import Anchor from '../../components/Anchor';
+import Spinner from '../../components/Spinner';
+import InfoBox from '../../components/InfoBox';
+import Checkbox from '../../components/Checkbox';
+import { goBack } from '../../state/routerActions';
+import DataSetStats from '../../common/DataSetStats';
 import Technology, { getTechnologies } from './Technology';
-import { NDownloadableSamples } from '../../../components/Strings';
-import ScrollTopOnMount from '../../../components/ScrollTopOnMount';
-import DataSetSampleActions from '../../../components/DataSetSampleActions';
+import { NDownloadableSamples } from '../../components/Strings';
+import ScrollTopOnMount from '../../components/ScrollTopOnMount';
+import DataSetSampleActions from '../../components/DataSetSampleActions';
 
-import * as routes from '../../../routes';
-import { getExperiment } from '../../../api/experiments';
-import NoMatch from '../../../components/NoMatch';
-import { ServerError } from '../../../common/errors';
-import ServerErrorPage from '../../ServerError';
-import { Hightlight, HText } from '../../../components/HighlightedText';
+import * as routes from '../../routes';
+import { getExperiment } from '../../api/experiments';
+import NoMatch from '../../components/NoMatch';
+import { ServerError } from '../../common/errors';
+import ServerErrorPage from '../ServerError';
+import { Hightlight, HText } from '../../components/HighlightedText';
 import RequestExperimentButton from './RequestExperimentButton';
-import SamplesTable from '../../../components/SamplesTable/SamplesTable';
+import SamplesTable from '../../components/SamplesTable/SamplesTable';
 
 import './Experiment.scss';
 

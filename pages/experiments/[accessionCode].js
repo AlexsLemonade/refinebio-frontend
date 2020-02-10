@@ -1,8 +1,8 @@
 import React from 'react';
 import Router, { useRouter } from 'next/router';
-import { getExperiment } from '../../api/experiments';
-import { experiments } from '../../routes';
-import NoMatch from '../../components/NoMatch';
+import { getExperiment } from '../../src/api/experiments';
+import { experiments } from '../../src/routes';
+import NoMatch from '../../src/components/NoMatch';
 
 function redirect(params) {
   const { ctx, location, status = 302 } = params;

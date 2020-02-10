@@ -2,7 +2,7 @@ import React from 'react';
 import AccessionIcon from '../../common/icons/accession.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import { formatSentenceCase } from '../../common/helpers';
-import Technology from '../experiments/[accessionCode]/Technology';
+import Technology from '../experiments/Technology';
 import MetadataAnnotationsCell from '../../components/SamplesTable/MetadataAnnotationsCell';
 import ProcessingInformationCell from '../../components/SamplesTable/ProcessingInformationCell';
 
