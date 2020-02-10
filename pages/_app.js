@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import classnames from 'classnames';
 import App from 'next/app';
 import Router from 'next/router';
+import * as Sentry from '@sentry/browser';
 import { initializeStore } from '../src/store/store';
 import Layout from '../src/components/Layout';
 import ErrorBoundary from '../src/components/ErrorBoundary';
@@ -39,6 +40,11 @@ export default class MyApp extends React.Component {
   }
 
   componentDidMount() {
+    this.initializeScrollRestoration();
+    initializeSentry();
+  }
+
+  initializeScrollRestoration() {
     // thanks to https://github.com/zeit/next.js/issues/3303#issuecomment-536166016
     window.history.scrollRestoration = 'auto';
     const cachedScrollPositions = [];
@@ -115,6 +121,25 @@ function getOrCreateStore(initialState) {
     window[__NEXT_REDUX_STORE__] = initializeStore(initialState);
   }
   return window[__NEXT_REDUX_STORE__];
+}
+
+function initializeSentry() {
+  // initialize sentry on production
+  if (!isServer && process.env.NODE_ENV === 'production') {
+    Sentry.init({
+      dsn: 'https://eca1cd24f75a4565afdca8af72700bf2@sentry.io/1223688',
+      // add release info https://docs.sentry.io/workflow/releases/?platform=browsernpm#configure-sdk
+      release: apiData.version
+        ? `refinebio-frontend@${apiData.version.substr(1)}`
+        : null,
+      environment:
+        window.location.host === 'www.refine.bio'
+          ? 'production'
+          : window.location.host === 'staging.refine.bio'
+          ? 'staging'
+          : 'dev',
+    });
+  }
 }
 
 function isIos() {
