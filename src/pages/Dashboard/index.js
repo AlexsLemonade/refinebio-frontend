@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import * as chartSelectors from './chartSelectors';
 import DashboardSection from './DashboardSection';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
@@ -12,8 +13,9 @@ import { getQueryParamObject, formatBytes } from '../../common/helpers';
 import './Dashboard.scss';
 
 function Dashboard(props) {
+  const router = useRouter();
   const [chartUpdating, setChartUpdating] = React.useState(true);
-  let { range: rangeParam } = getQueryParamObject(props.location.search);
+  let { range: rangeParam } = router.query;
   if (!['day', 'week', 'month', 'year'].includes(rangeParam)) {
     rangeParam = 'day';
   }
@@ -37,7 +39,7 @@ function Dashboard(props) {
   }
 
   return (
-    <div className="dashboard">
+    <div className="dashboard layout__content">
       <div className="dashboard__container">
         <TimeRangeSelect
           selectedOption={range}
