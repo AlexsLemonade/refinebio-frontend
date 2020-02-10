@@ -33,11 +33,12 @@ import {
 import Spinner from '../../components/Spinner';
 import InfoBox from '../../components/InfoBox';
 import { searchUrl } from '../../routes';
-import './SearchResults.scss';
 import { ApiOverwhelmed } from '../ServerError';
 import { Hightlight } from '../../components/HighlightedText';
 import RequestSearchButton from './RequestSearchButton';
 import { SingleValueFilter } from './ResultFilters/FilterCategory';
+
+import './SearchResults.scss';
 
 class SearchResults extends Component {
   constructor(props) {

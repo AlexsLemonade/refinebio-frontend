@@ -2,7 +2,7 @@ import React from 'react';
 import Router, { useRouter } from 'next/router';
 import { getExperiment } from '../../api/experiments';
 import { experiments } from '../../routes';
-import NoMatch from '../NoMatch';
+import NoMatch from '../../components/NoMatch';
 
 function redirect(params) {
   const { ctx, location, status = 302 } = params;

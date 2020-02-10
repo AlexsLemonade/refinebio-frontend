@@ -3,10 +3,10 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import BackToTop from '../../components/BackToTop';
 import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
-import './Downloads.scss';
 import NoDatasetsImage from '../../common/images/no-datasets.svg';
 import { useLoader } from '../../components/Loader';
 import { fetchDataSetDetails } from '../../state/download/actions';
@@ -14,14 +14,17 @@ import { getQueryParamObject } from '../../common/helpers';
 import DownloadStart from './DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
 
-let Download = ({ download, location, fetchDataSetDetails }) => {
+import './Downloads.scss';
+
+let Download = ({ download, fetchDataSetDetails }) => {
+  const router = useRouter();
   const { dataSetId, dataSet } = download;
   const { isLoading, refresh } = useLoader(() =>
     fetchDataSetDetails(dataSetId)
   );
 
   const dataSetCanBeDownloaded = dataSet && Object.keys(dataSet).length > 0;
-  const params = getQueryParamObject(location.search);
+  const params = router.query;
 
   // show form to get information and start the download
   if (params.start === 'true') {
@@ -36,14 +39,16 @@ let Download = ({ download, location, fetchDataSetDetails }) => {
   if (!dataSetCanBeDownloaded) return <DownloadEmpty />;
 
   return (
-    <div className="downloads">
-      <Helmet>
-        <title>Download Dataset - refine.bio</title>
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
-      <BackToTop />
-      <DownloadBar dataSet={download} />
-      <DownloadDetails dataSet={download} onRefreshDataSet={refresh} />
+    <div className="layout__content">
+      <div className="downloads">
+        <Helmet>
+          <title>Download Dataset - refine.bio</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+        <BackToTop />
+        <DownloadBar dataSet={download} />
+        <DownloadDetails dataSet={download} onRefreshDataSet={refresh} />
+      </div>
     </div>
   );
 };

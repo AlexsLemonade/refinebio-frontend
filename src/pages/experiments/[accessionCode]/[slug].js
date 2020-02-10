@@ -15,7 +15,6 @@ import {
   maxTableWidth,
 } from '../../../common/helpers';
 import slugify from '../../../common/slugify';
-import './Experiment.scss';
 
 import AccessionIcon from '../../../common/icons/accession.svg';
 import SampleIcon from '../../../common/icons/sample.svg';
@@ -41,6 +40,8 @@ import ServerErrorPage from '../../ServerError';
 import { Hightlight, HText } from '../../../components/HighlightedText';
 import RequestExperimentButton from './RequestExperimentButton';
 import SamplesTable from '../../../components/SamplesTable/SamplesTable';
+
+import './Experiment.scss';
 
 const { searchUrl } = routes;
 

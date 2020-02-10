@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Router } from 'next/router';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
-import DownloadDatasetImage from '../Downloads/DataSet/download-dataset.svg';
+import DownloadDatasetImage from '../dataset/download-dataset.svg';
 import TubeyAdventureImage from './tubey-adventure.svg';
 import { formatSentenceCase } from '../../common/helpers';
 

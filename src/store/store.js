@@ -7,7 +7,7 @@ import rootReducer from '../state/rootReducer';
 // import history from '../history';
 import { CALL_HISTORY_METHOD } from '../state/routerActions';
 import { REPORT_ERROR } from '../state/reportError';
-import progressMiddleware from './progressMiddleware';
+// import progressMiddleware from './progressMiddleware';
 import { ApiVersionMismatchError } from '../common/errors';
 import { isServer } from '../common/helpers';
 
