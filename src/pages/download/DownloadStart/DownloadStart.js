@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import { connect } from 'react-redux';
 import ProcessingImage from './download-processing.svg';
 import { startDownload } from '../../../state/download/actions';
@@ -32,9 +32,9 @@ let DownloadStart = ({ dataSetId, dataSet, agreedToTerms, startDownload }) => {
     <div className="dataset__container">
       <div className="dataset__message">
         <div>
-          <Helmet>
+          <Head>
             <title>Download - refine.bio</title>
-          </Helmet>
+          </Head>
           <h1>
             We're almost ready to start putting your download files together!
           </h1>

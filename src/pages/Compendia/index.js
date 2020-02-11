@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import classnames from 'classnames';
 import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
@@ -31,9 +31,9 @@ function Compendia({ router: location }) {
 
   return (
     <div>
-      <Helmet>
+      <Head>
         <title>Compendia</title>
-      </Helmet>
+      </Head>
       <div className="compendia">
         <div className="compendia__header">
           <PointsBackground />

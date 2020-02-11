@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Link from 'next/link';
@@ -312,7 +312,7 @@ function experimentSlugMatches(slug, experimentTitle) {
 
 function ExperimentHelmet({ experiment }) {
   return (
-    <Helmet>
+    <Head>
       {experiment.title && <title>{experiment.title} - refine.bio</title>}
       {experiment.description && (
         <meta
@@ -324,7 +324,7 @@ function ExperimentHelmet({ experiment }) {
         rel="canonical"
         href={`https://www.refine.bio${routes.experiments(experiment)}`}
       />
-    </Helmet>
+    </Head>
   );
 }
 

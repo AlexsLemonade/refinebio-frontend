@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import { connect } from 'react-redux';
 import RewardPoster from './404-reward-poster.svg';
 import Button from '../Button';
@@ -9,9 +9,9 @@ import { goBack } from '../../state/routerActions';
 
 let NoMatch = ({ goBack }) => (
   <div className="error-page">
-    <Helmet>
+    <Head>
       <title>The page you're looking for isn't expressed. - refine.bio</title>
-    </Helmet>
+    </Head>
     <div className="error-page__text">
       <h1>The page you are looking for isn’t expressed.</h1>
       <Button text="Go Back" onClick={goBack} />

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import Link from 'next/link';
 import isEqual from 'lodash/isEqual';
 import fromPairs from 'lodash/fromPairs';
@@ -121,13 +121,13 @@ class SearchResults extends Component {
         <InfoBox />
 
         <div className="results">
-          <Helmet>
+          <Head>
             <title>{this.state.query || ''} Results - refine.bio</title>
             <meta
               name="description"
               content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
             />
-          </Helmet>
+          </Head>
 
           <BackToTop />
           <div className="results__search">

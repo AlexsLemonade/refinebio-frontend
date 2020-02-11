@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import { Formik, Field } from 'formik';
@@ -47,14 +47,14 @@ export default function DataSet() {
 
   return (
     <div className="layout__content">
-      <Helmet>
+      <Head>
         <title>Dataset - refine.bio</title>
         <meta name="robots" content="noindex, nofollow" />
         <meta
           name="description"
           content="Explore and download this custom harmonized childhood cancer transcriptome dataset."
         />
-      </Helmet>
+      </Head>
       <DataSetLoader dataSetId={dataSetId}>
         {({ dataSet, isLoading, hasError }) => {
           if (isLoading) return <Spinner />;

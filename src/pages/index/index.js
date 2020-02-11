@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import { push } from '../../state/routerActions';
@@ -32,7 +32,7 @@ let Main = ({ push }) => {
   useTheme(themes.inverted);
   return (
     <div className="main">
-      <Helmet>
+      <Head>
         <title>Search for harmonized transcriptome data - refine.bio</title>
         <script type="application/ld+json">
           {`
@@ -48,7 +48,7 @@ let Main = ({ push }) => {
           }
         `}
         </script>
-      </Helmet>
+      </Head>
       <section className="main__section main__section--searchbox">
         <img src={circusPlot} className="about__header-bg" alt="Circus Plot" />
       </section>

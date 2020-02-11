@@ -1,12 +1,12 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import './Terms.scss';
 
 const Terms = () => (
   <div className="terms">
-    <Helmet>
+    <Head>
       <title>Terms of Use - refine.bio</title>
-    </Helmet>
+    </Head>
     <h1 className="terms__title">Terms of Use</h1>
     <p>
       Welcome to the Alex’s Lemonade Childhood Cancer Data Lab, which is

@@ -1,12 +1,12 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import Link from 'next/link';
+import Head from 'next/head';
 
 const Privacy = () => (
   <div className="terms">
-    <Helmet>
+    <Head>
       <title>Privacy - refine.bio</title>
-    </Helmet>
+    </Head>
     <h1 className="terms__title">Privacy Policy</h1>
     <p>
       This database and websites, located at{' '}

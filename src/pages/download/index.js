@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Link from 'next/link';
@@ -41,10 +41,10 @@ let Download = ({ download, fetchDataSetDetails }) => {
   return (
     <div className="layout__content">
       <div className="downloads">
-        <Helmet>
+        <Head>
           <title>Download Dataset - refine.bio</title>
           <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
+        </Head>
         <BackToTop />
         <DownloadBar dataSet={download} />
         <DownloadDetails dataSet={download} onRefreshDataSet={refresh} />

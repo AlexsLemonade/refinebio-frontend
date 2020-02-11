@@ -1,8 +1,8 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import classnames from 'classnames';
 import App from 'next/app';
+import Head from 'next/head';
 import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
 import { initializeStore } from '../src/store/store';
@@ -84,13 +84,13 @@ export default class MyApp extends React.Component {
     // In order to render `App` individually in the tests, Provider needs to wrap it's contents.
     return (
       <AppWrap>
-        <Helmet>
+        <Head>
           <title>refine.bio</title>
           <meta
             name="description"
             content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
           />
-        </Helmet>
+        </Head>
 
         <Provider store={this.reduxStore}>
           <ThemeProvider>

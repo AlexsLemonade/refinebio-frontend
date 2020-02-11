@@ -1,11 +1,11 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 
 const Privacy = () => (
   <div className="terms">
-    <Helmet>
+    <Head>
       <title>License - refine.bio</title>
-    </Helmet>
+    </Head>
     <h1 className="terms__title">BSD 3-Clause License</h1>
     <p>
       Copyright &copy; 2017-2018, Greene Laboratory, University of Pennsylvania

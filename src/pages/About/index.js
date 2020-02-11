@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 
 import circusPlot from './circus-plot.svg';
 import savingTimes from './saving-times.svg';
@@ -23,13 +23,13 @@ function About() {
   useTheme(themes.inverted);
   return (
     <div>
-      <Helmet>
+      <Head>
         <title>About refine.bio</title>
         <meta
           name="description"
           content="Learn how this collection of childhood cancer data gives researchers a powerful new tool to accelerate the search for cures."
         />
-      </Helmet>
+      </Head>
       <div className="about">
         <div className="about__header">
           <img
