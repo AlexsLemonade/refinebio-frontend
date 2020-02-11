@@ -10,6 +10,8 @@ import Layout from '../src/components/Layout';
 import ErrorBoundary from '../src/components/ErrorBoundary';
 import { ThemeProvider } from '../src/common/ThemeContext';
 
+import apiData from '../src/apiData.json';
+
 import './_app.scss';
 
 const isServer = typeof window === 'undefined';
@@ -40,8 +42,10 @@ export default class MyApp extends React.Component {
   }
 
   componentDidMount() {
-    this.initializeScrollRestoration();
-    initializeSentry();
+    if (!isServer) {
+      this.initializeScrollRestoration();
+      initializeSentry();
+    }
   }
 
   initializeScrollRestoration() {
@@ -125,7 +129,7 @@ function getOrCreateStore(initialState) {
 
 function initializeSentry() {
   // initialize sentry on production
-  if (!isServer && process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     Sentry.init({
       dsn: 'https://eca1cd24f75a4565afdca8af72700bf2@sentry.io/1223688',
       // add release info https://docs.sentry.io/workflow/releases/?platform=browsernpm#configure-sdk
