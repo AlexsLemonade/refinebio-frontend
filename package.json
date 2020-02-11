@@ -54,7 +54,6 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "analyze": "source-map-explorer build/static/js/main.*",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow",

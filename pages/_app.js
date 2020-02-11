@@ -5,6 +5,7 @@ import App from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
+import ReactGA from 'react-ga';
 import { initializeStore } from '../src/store/store';
 import Layout from '../src/components/Layout';
 import ErrorBoundary from '../src/components/ErrorBoundary';
@@ -74,6 +75,16 @@ export default class MyApp extends React.Component {
       }
       window.history.scrollRestoration = 'manual';
       return true;
+    });
+  }
+
+  initializeGoogleAnalytics() {
+    if (process.env.NODE_ENV !== 'production') return;
+
+    ReactGA.initialize('UA-6025776-8');
+    registerPageView(window.location);
+    Router.events.on('routeChangeComplete', () => {
+      registerPageView(window.location);
     });
   }
 
@@ -148,4 +159,10 @@ function initializeSentry() {
 
 function isIos() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+function registerPageView(location) {
+  const url = location.pathname + location.search;
+  ReactGA.set({ page: url });
+  ReactGA.pageview(url);
 }
