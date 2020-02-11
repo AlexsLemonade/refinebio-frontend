@@ -51,12 +51,10 @@
     ]
   },
   "scripts": {
-    "ndev": "next",
-    "nbuild": "next build",
-    "nstart": "next start",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
     "analyze": "source-map-explorer build/static/js/main.*",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow",
