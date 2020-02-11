@@ -105,13 +105,13 @@ const Footer = () => (
     </div>
 
     <div className="footer__container footer__link-container">
-      <Link href="/license">
+      <Link href="/license" as="/license">
         <a className="footer__link">BSD 3-Clause License</a>
       </Link>
-      <Link href="/privacy">
+      <Link href="/privacy" as="/privacy">
         <a className="footer__link">Privacy</a>
       </Link>
-      <Link href="/terms">
+      <Link href="/terms" as="/terms">
         <a className="footer__link">Terms of Use</a>
       </Link>
       <a className="footer__link" href="mailto:ccdl@alexslemonade.org">

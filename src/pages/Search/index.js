@@ -309,12 +309,8 @@ const NoSearchResults = ({ query }) => (
     <h2>Try another term</h2>
     <div className="results__suggestion-list">
       {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
-        <Link
-          className="link results__suggestion"
-          href={searchUrl({ q })}
-          key={q}
-        >
-          <a>{q}</a>
+        <Link href="/search" as={searchUrl({ q })} key={q}>
+          <a className="link results__suggestion">{q}</a>
         </Link>
       ))}
     </div>

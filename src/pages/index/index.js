@@ -66,7 +66,7 @@ let Main = ({ push }) => {
             <p className="main__search-suggestion-label">Try searching for:</p>
 
             {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
-              <Link href={searchUrl({ q })} key={q}>
+              <Link href="/search" as={searchUrl({ q })} key={q}>
                 <a className="main__search-suggestion">{q}</a>
               </Link>
             ))}
@@ -244,7 +244,7 @@ let Main = ({ push }) => {
                 processed and packaged for broad and felxible use.
               </div>
               <div className="main__explore-card__actions">
-                <Link href="/compendia">
+                <Link href="/compendia" as="/compendia">
                   <a className="button button--secondary ">Learn More</a>
                 </Link>
               </div>

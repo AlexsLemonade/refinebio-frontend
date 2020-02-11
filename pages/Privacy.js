@@ -43,7 +43,7 @@ const Privacy = () => (
     <p>
       Your access to, and use of, the CCDL is subject to our Terms of Use,
       located at{' '}
-      <Link className="link" href="/terms">
+      <Link className="link" href="/terms" as="/terms">
         <a>http://refine.bio/terms</a>
       </Link>{' '}
       (the <strong>"Terms of Use"</strong>). We have created this Privacy Policy

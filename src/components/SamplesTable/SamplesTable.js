@@ -266,7 +266,7 @@ const NoDataComponent = ({ hasError, children, fetchData }) =>
 
 function AccessionCodeCell({ value }) {
   return (
-    <Link href={`/samples/${value}`}>
+    <Link href="/samples/[accessionCode]" as={`/samples/${value}`}>
       <a>
         <HText>{value}</HText>
       </a>

@@ -120,13 +120,10 @@ let DownloadCompendia = ({
               onClick={() => setAgree(!agree)}
             >
               I agree to the{' '}
-              <Link
-                href="/terms"
-                className="link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <a>Terms of Use</a>
+              <Link href="/terms" as="/terms">
+                <a className="link" target="_blank" rel="noopener noreferrer">
+                  Terms of Use
+                </a>
               </Link>
             </Checkbox>
           </div>

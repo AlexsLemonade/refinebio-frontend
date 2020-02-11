@@ -220,7 +220,8 @@ let Experiment = ({
             <ExperimentHeaderRow label="Submitter’s Institution">
               {(experimentData.submitter_institution && (
                 <Link
-                  href={searchUrl({
+                  href="/search"
+                  as={searchUrl({
                     q: `submitter_institution: ${
                       experimentData.submitter_institution
                     }`,
@@ -241,7 +242,8 @@ let Experiment = ({
                 experimentData.publication_authors
                   .map(author => (
                     <Link
-                      href={searchUrl({
+                      href="/search"
+                      as={searchUrl({
                         q: `publication_authors:${author}`,
                       })}
                     >

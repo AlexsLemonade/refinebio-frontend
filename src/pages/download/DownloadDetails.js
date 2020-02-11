@@ -238,10 +238,12 @@ export class ExperimentsView extends React.Component {
               <div className="downloads__sample" key={experimentAccessionCode}>
                 <div className="downloads__dataSet-info">
                   <Link
-                    href={routes.experiments(experiment)}
-                    className="downloads__experiment-title link"
+                    href="/experiments/[accessionCode]/[slug]"
+                    as={routes.experiments(experiment)}
                   >
-                    <a>{experiment.title}</a>
+                    <a className="downloads__experiment-title link">
+                      {experiment.title}
+                    </a>
                   </Link>
                   {experiment.technology === RNA_SEQ && !quantile_normalize && (
                     <div className="dot-label dot-label--info">

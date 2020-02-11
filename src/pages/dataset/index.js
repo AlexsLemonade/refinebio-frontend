@@ -157,8 +157,10 @@ function MoveToDatasetButtonModal({
                   }}
                 />
                 There are {totalSamplesinCurrentDataSet} samples in{' '}
-                <Link href="/download" className="link" target="_blank">
-                  <a>My Dataset</a>
+                <Link href="/download" as="/download">
+                  <a className="link" target="_blank">
+                    My Dataset
+                  </a>
                 </Link>
               </h2>
 
