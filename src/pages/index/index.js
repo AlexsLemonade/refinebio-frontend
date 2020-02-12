@@ -59,14 +59,23 @@ let Main = ({ push }) => {
             Search for normalized transcriptome data
           </h1>
           <SearchInput
-            onSubmit={query => push(searchUrl(query ? { q: query } : null))}
+            onSubmit={query =>
+              push({
+                pathname: searchUrl(query ? { q: query } : null),
+                query: { q: query },
+              })
+            }
             buttonStyle="primary"
           />
           <div className="main__search-suggestions">
             <p className="main__search-suggestion-label">Try searching for:</p>
 
             {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
-              <Link href="/search" as={searchUrl({ q })} key={q}>
+              <Link
+                href={{ pathname: '/search', query: { q } }}
+                as={searchUrl({ q })}
+                key={q}
+              >
                 <a className="main__search-suggestion">{q}</a>
               </Link>
             ))}
