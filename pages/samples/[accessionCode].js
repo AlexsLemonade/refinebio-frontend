@@ -7,4 +7,10 @@ const Sample = dynamic(() => import('../../src/pages/Sample'), {
   loading: () => <Spinner />,
 });
 
-export default Sample;
+export default function() {
+  return (
+    <div className="layout__content">
+      <Sample />
+    </div>
+  );
+}
