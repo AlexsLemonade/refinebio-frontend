@@ -6,6 +6,7 @@ import Head from 'next/head';
 import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
 import ReactGA from 'react-ga';
+import NProgress from 'nprogress';
 import { initializeStore } from '../src/store/store';
 import Layout from '../src/components/Layout';
 import ErrorBoundary from '../src/components/ErrorBoundary';
@@ -46,6 +47,7 @@ export default class MyApp extends React.Component {
     if (!isServer) {
       this.initializeScrollRestoration();
       initializeSentry();
+      initializeRouterLoading();
     }
   }
 
@@ -155,6 +157,14 @@ function initializeSentry() {
           : 'dev',
     });
   }
+}
+
+function initializeRouterLoading() {
+  // use loading indicator when navigating between pages
+  // https://github.com/zeit/next.js/issues/2985#issuecomment-335020393
+  Router.events.on('onRouteChangeStart', () => NProgress.start());
+  Router.events.on('onRouteChangeError', () => NProgress.done());
+  Router.events.on('routeChangeComplete', () => NProgress.done());
 }
 
 function isIos() {
