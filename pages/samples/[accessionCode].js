@@ -1,6 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import Spinner from '../src/components/Spinner';
+import Spinner from '../../src/components/Spinner';
 
 const Sample = dynamic(() => import('../../src/pages/Sample'), {
   ssr: false,
