@@ -16,6 +16,4 @@ function updateLocation(method) {
  */
 export const push = updateLocation('push');
 export const replace = updateLocation('replace');
-export const go = updateLocation('go');
-export const goBack = updateLocation('goBack');
-export const goForward = updateLocation('goForward');
+export const goBack = updateLocation('back');

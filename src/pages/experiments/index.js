@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import Loader from '../../components/Loader';
 import Button from '../../components/Button';
 import ExpandButton from './ExpandButton';
 import {
@@ -58,10 +57,9 @@ let Experiment = ({
   experiment,
 }) => {
   const router = useRouter();
-  const state = {}; // TODO REMOVE
   // check for the parameter `ref=search` to ensure that the previous page was the search
-  const comesFromSearch = state && state.ref === 'search';
-  const { accessionCode } = router.query;
+  const { accessionCode, ref, query } = router.query;
+  const comesFromSearch = ref === 'search';
 
   if (hasError) {
     return (
@@ -75,27 +73,11 @@ let Experiment = ({
     );
   }
 
-  let displaySpinner = false; // isLoading;
-  let experimentData = experiment || { samples: [] };
-  let totalSamples = experimentData.samples.length;
-  const numDownloadableSamples = experimentData['num_downloadable_samples'];
+  const totalSamples = experiment.samples.length;
+  const numDownloadableSamples = experiment['num_downloadable_samples'];
 
-  // for users coming from the search, see if there's any experiment's data in the url state
-  if (comesFromSearch && state.result) {
-    displaySpinner = false;
-    experimentData = {
-      ...state.result,
-      samples: [],
-    };
-    totalSamples = state.result.total_samples_count;
-  }
-
-  return displaySpinner ? (
-    <div className="layout__content">
-      <Spinner />
-    </div>
-  ) : (
-    <Hightlight match={comesFromSearch && state.query}>
+  return (
+    <Hightlight match={comesFromSearch && query}>
       <div className="layout__content">
         <InfoBox />
 
@@ -109,7 +91,7 @@ let Experiment = ({
         )}
 
         <div className="experiment">
-          <ExperimentHelmet experiment={experimentData} />
+          <ExperimentHelmet experiment={experiment} />
           <BackToTop />
           <div className="experiment__accession">
             <img
@@ -117,12 +99,12 @@ let Experiment = ({
               className="experiment__stats-icon"
               alt="Accession Icon"
             />
-            <HText>{experimentData.accession_code}</HText>
+            <HText>{experiment.accession_code}</HText>
           </div>
 
           <div className="experiment__header">
             <h1 className="experiment__header-title mobile-p">
-              <HText>{experimentData.title || 'No Title.'}</HText>
+              <HText>{experiment.title || 'No Title.'}</HText>
             </h1>
             <div>
               {numDownloadableSamples === 0 ? (
@@ -130,7 +112,7 @@ let Experiment = ({
               ) : (
                 <DataSetSampleActions
                   dataSetSlice={{
-                    [experimentData.accession_code]: {
+                    [experiment.accession_code]: {
                       all: true,
                       total: numDownloadableSamples,
                     },
@@ -147,8 +129,8 @@ let Experiment = ({
                 className="experiment__stats-icon"
                 alt="Organism Icon"
               />{' '}
-              {experimentData.organism_names.length
-                ? experimentData.organism_names
+              {experiment.organism_names.length
+                ? experiment.organism_names
                     .map(organism => formatSentenceCase(organism))
                     .join(', ')
                 : 'No species.'}
@@ -165,10 +147,10 @@ let Experiment = ({
             <div
               className={classnames('experiment__stats-item', {
                 'experiment__stats-item--lg':
-                  getTechnologies(experimentData.samples).length > 3,
+                  getTechnologies(experiment.samples).length > 3,
               })}
             >
-              <Technology samples={experimentData.samples} />
+              <Technology samples={experiment.samples} />
             </div>
           </div>
 
@@ -176,19 +158,19 @@ let Experiment = ({
 
           <div>
             <ExperimentHeaderRow label="Description">
-              <HText>{experimentData.description}</HText>
+              <HText>{experiment.description}</HText>
             </ExperimentHeaderRow>
             <ExperimentHeaderRow label="PubMed ID">
-              {(experimentData.pubmed_id && (
+              {(experiment.pubmed_id && (
                 <a
                   href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                    experimentData.pubmed_id
+                    experiment.pubmed_id
                   }`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link"
                 >
-                  {experimentData.pubmed_id}
+                  {experiment.pubmed_id}
                 </a>
               )) || (
                 <i className="experiment__not-provided">
@@ -197,16 +179,16 @@ let Experiment = ({
               )}
             </ExperimentHeaderRow>
             <ExperimentHeaderRow label="Publication Title">
-              {(experimentData.publication_title && (
+              {(experiment.publication_title && (
                 <a
                   href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                    experimentData.pubmed_id
+                    experiment.pubmed_id
                   }`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link"
                 >
-                  <HText>{experimentData.publication_title}</HText>
+                  <HText>{experiment.publication_title}</HText>
                 </a>
               )) || (
                 <i className="experiment__not-provided">
@@ -218,17 +200,17 @@ let Experiment = ({
               {totalSamples}
             </ExperimentHeaderRow>
             <ExperimentHeaderRow label="Submitter’s Institution">
-              {(experimentData.submitter_institution && (
+              {(experiment.submitter_institution && (
                 <Link
                   href="/search"
                   as={searchUrl({
                     q: `submitter_institution: ${
-                      experimentData.submitter_institution
+                      experiment.submitter_institution
                     }`,
                   })}
                 >
                   <a className="link">
-                    <HText>{experimentData.submitter_institution}</HText>
+                    <HText>{experiment.submitter_institution}</HText>
                   </a>
                 </Link>
               )) || (
@@ -238,8 +220,8 @@ let Experiment = ({
               )}
             </ExperimentHeaderRow>
             <ExperimentHeaderRow label="Authors">
-              {experimentData.publication_authors.length > 0 ? (
-                experimentData.publication_authors
+              {experiment.publication_authors.length > 0 ? (
+                experiment.publication_authors
                   .map(author => (
                     <Link
                       href="/search"
@@ -265,22 +247,22 @@ let Experiment = ({
                 </i>
               )}
             </ExperimentHeaderRow>
-            {experimentData.source_database && (
+            {experiment.source_database && (
               <ExperimentHeaderRow label="Source Repository">
                 <a
-                  href={experimentData.source_url}
+                  href={experiment.source_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link"
                 >
-                  {DatabaseNames[experimentData.source_database]}
+                  {DatabaseNames[experiment.source_database]}
                 </a>
               </ExperimentHeaderRow>
             )}
           </div>
         </div>
       </div>
-      <SamplesTableBlock experiment={experimentData} />
+      <SamplesTableBlock experiment={experiment} />
     </Hightlight>
   );
 };

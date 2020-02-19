@@ -107,8 +107,8 @@ function routerMiddleware() {
     const {
       payload: { method, args },
     } = action;
-    Router[method](...args);
-    return null;
+
+    return Router[method](...args);
   };
 }
 

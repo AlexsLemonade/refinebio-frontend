@@ -1,5 +1,4 @@
 import React from 'react';
-import Head from 'next/head';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import { Formik, Field } from 'formik';
@@ -32,58 +31,40 @@ import './DataSet.scss';
  * Related discussion https://github.com/AlexsLemonade/refinebio-frontend/issues/27
  */
 export default function DataSet() {
+  const {
+    query: { dataSetId, regenerate, emailAddress, hasError },
+  } = useRouter();
+
   // Check if the user arrived here and wants to regenerate the current page.
-  // TODO restore regenerate dataset
-  // if (location.state && location.state.regenerate) {
-  //   return (
-  //     <DownloadStart
-  //       dataSetId={location.state.dataSetId}
-  //       dataSet={location.state.dataSet}
-  //     />
-  //   );
-  // }
-  const router = useRouter();
-  const { dataSetId } = router.query;
+  if (regenerate) {
+    return <DownloadStart dataSetId={dataSetId} />;
+  }
 
   return (
-    <div className="layout__content">
-      <Head>
-        <title>Dataset - refine.bio</title>
-        <meta name="robots" content="noindex, nofollow" />
-        <meta
-          name="description"
-          content="Explore and download this custom harmonized childhood cancer transcriptome dataset."
-        />
-      </Head>
-      <DataSetLoader dataSetId={dataSetId}>
-        {({ dataSet, isLoading, hasError }) => {
-          if (isLoading) return <Spinner />;
-          if (hasError) return <NoMatch />;
+    <DataSetLoader dataSetId={dataSetId}>
+      {({ dataSet, isLoading, hasError: requestHasError }) => {
+        if (isLoading) return <Spinner />;
+        if (requestHasError) return <NoMatch />;
 
-          return (
-            <div>
-              <DataSetPageHeader
-                dataSet={dataSet}
-                emailAddress={
-                  // the email is never returned from the api, check if it was passed
-                  // on the url state on a previous step
-                  false // location.state && location.state.email_address
-                }
-                hasError={false} // location.state && location.state.hasError}
-              />
-              <div className="downloads__bar">
-                <div className="flex-row">
-                  <ShareDatasetButton dataSet={dataSet} />
+        return (
+          <div>
+            <DataSetPageHeader
+              dataSet={dataSet}
+              emailAddress={emailAddress} // the email is never returned from the api
+              hasError={hasError}
+            />
+            <div className="downloads__bar">
+              <div className="flex-row">
+                <ShareDatasetButton dataSet={dataSet} />
 
-                  <MoveToDatasetButtonModal dataSet={dataSet} />
-                </div>
+                <MoveToDatasetButtonModal dataSet={dataSet} />
               </div>
-              <DatasetDetails dataSet={dataSet} />
             </div>
-          );
-        }}
-      </DataSetLoader>
-    </div>
+            <DatasetDetails dataSet={dataSet} />
+          </div>
+        );
+      }}
+    </DataSetLoader>
   );
 }
 
@@ -102,20 +83,26 @@ function MoveToDatasetButtonModal({
   async function modifyCurrentDataSet(append = true) {
     if (append) {
       await addSamples(dataSet.data);
-      push({
-        pathname: '/download',
-        state: {
-          message: `Appended ${totalSamples} samples to My Dataset`,
+      push(
+        {
+          pathname: '/download',
+          query: {
+            message: `Appended ${totalSamples} samples to My Dataset`,
+          },
         },
-      });
+        '/download'
+      );
     } else {
       await replaceSamples(dataSet.data);
-      push({
-        pathname: '/download',
-        state: {
-          message: `Moved ${totalSamples} samples to My Dataset`,
+      push(
+        {
+          pathname: '/download',
+          query: {
+            message: `Moved ${totalSamples} samples to My Dataset`,
+          },
         },
-      });
+        '/download'
+      );
     }
   }
 

@@ -37,12 +37,14 @@ const Result = ({ result, query }) => {
             <HText>{result.accession_code}</HText>
           </div>
           <Link
-            href="/experiments/[accessionCode]/[slug]"
-            as={routes.experiments(result, {
-              ref: 'search',
-              query,
-              result,
-            })}
+            href={{
+              pathname: '/experiments/[accessionCode]/[slug]',
+              query: {
+                ref: 'search',
+                query,
+              },
+            }}
+            as={routes.experiments(result)}
           >
             <a className="link result__title">
               {result.title ? <HText>{result.title}</HText> : 'No title.'}
@@ -113,12 +115,14 @@ const Result = ({ result, query }) => {
         </p>
 
         <Link
-          href="/experiments/[accessionCode]/[slug]"
-          as={routes.experimentsSamples(result, {
-            ref: 'search',
-            query,
-            result,
-          })}
+          href={{
+            pathname: '/experiments/[accessionCode]/[slug]',
+            query: {
+              ref: 'search',
+              query,
+            },
+          }}
+          as={routes.experimentsSamples(result)}
         >
           <a className="button button--secondary">View Samples</a>
         </Link>

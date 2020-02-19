@@ -23,7 +23,7 @@ let DownloadBar = ({ dataSet, push, editDataSet }) => {
       <DownloadOptionsForm
         dataSet={dataSet}
         onChange={values => editDataSet(values)}
-        onSubmit={() => push('/download?start=true')}
+        onSubmit={() => push('/download?start=true', '/download')}
       />
     </div>
   );

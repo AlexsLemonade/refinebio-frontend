@@ -15,7 +15,7 @@ import { useLocalStorage } from '../../../common/hooks';
 /**
  * This component gets rendereded in the DataSet page, when no email has been assigned
  */
-let DownloadStart = ({ dataSetId, dataSet, agreedToTerms, startDownload }) => {
+let DownloadStart = ({ dataSetId, agreedToTerms, startDownload }) => {
   const [emailAddress, setEmailAddress] = useLocalStorage('email-address', '');
   const submitEmailForm = async ({ email, termsOfService, receiveUpdates }) => {
     setEmailAddress(email);
@@ -24,37 +24,31 @@ let DownloadStart = ({ dataSetId, dataSet, agreedToTerms, startDownload }) => {
       termsOfService,
       receiveUpdates,
       dataSetId,
-      dataSet,
     });
   };
 
   return (
     <div className="dataset__container">
       <div className="dataset__message">
-        <div>
-          <Head>
-            <title>Download - refine.bio</title>
-          </Head>
-          <h1>
-            We're almost ready to start putting your download files together!
-          </h1>
-          <h2>
-            Enter your email and we will send you the download link when your
-            files are ready. It usually takes about 15-20 minutes.
-          </h2>
-          <EmailForm
-            dataSetId={dataSetId}
-            emailAddress={emailAddress}
-            agreedToTerms={agreedToTerms}
-            onSubmit={data => submitEmailForm(data)}
+        <h1>
+          We're almost ready to start putting your download files together!
+        </h1>
+        <h2>
+          Enter your email and we will send you the download link when your
+          files are ready. It usually takes about 15-20 minutes.
+        </h2>
+        <EmailForm
+          dataSetId={dataSetId}
+          emailAddress={emailAddress}
+          agreedToTerms={agreedToTerms}
+          onSubmit={data => submitEmailForm(data)}
+        />
+        <div className="dataset__image">
+          <img
+            src={ProcessingImage}
+            alt="We're processing your download file"
+            className="img-responsive"
           />
-          <div className="dataset__image">
-            <img
-              src={ProcessingImage}
-              alt="We're processing your download file"
-              className="img-responsive"
-            />
-          </div>
         </div>
       </div>
     </div>

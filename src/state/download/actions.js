@@ -249,7 +249,6 @@ export const editDataSet = ({ ...params }) => async (dispatch, getState) => {
 
 export const startDownload = ({
   dataSetId,
-  dataSet,
   email,
   receiveUpdates = false,
 }) => async (dispatch, getState) => {
@@ -258,6 +257,9 @@ export const startDownload = ({
     await dispatch(createToken());
     tokenId = getState().token;
   }
+
+  // fetch the latest dataset before updating it.
+  const { data: dataSet } = await getDataSet(dataSetId, tokenId);
 
   try {
     await Ajax.put(
@@ -286,14 +288,18 @@ export const startDownload = ({
     // if there's an error, redirect to the dataset page, and show a message
     // also with a button to try again
     return dispatch(
-      replace({
-        pathname: `/dataset/${dataSetId}`,
-        state: { hasError: true },
-      })
+      replace(
+        {
+          pathname: `/dataset/[dataSetId]`,
+          query: { dataSetId, hasError: true },
+        },
+        `/dataset/${dataSetId}`
+      )
     );
   }
 
   const currentDataSet = getState().download.dataSetId;
+
   if (currentDataSet === dataSetId) {
     // clear the current dataset if a download is started for it.
     await dispatch(dropDataSet());
@@ -301,10 +307,13 @@ export const startDownload = ({
 
   // redirect to the dataset page, and send the email address in the state
   return dispatch(
-    replace({
-      pathname: `/dataset/${dataSetId}`,
-      state: { email_address: email },
-    })
+    replace(
+      {
+        pathname: `/dataset/[dataSetId]`,
+        query: { dataSetId, emailAddress: email },
+      },
+      `/dataset/${dataSetId}`
+    )
   );
 };
 
@@ -328,10 +337,13 @@ export const regenerateDataSet = dataSet => async dispatch => {
 
     // 3. redirect to the new dataset page, where the user will be able to add an email
     dispatch(
-      push({
-        pathname: `/dataset/${dataSetId}`,
-        state: { regenerate: true, dataSetId, dataSet: data },
-      })
+      push(
+        {
+          pathname: `/dataset/[dataSetId]`,
+          query: { dataSetId, regenerate: true },
+        },
+        `/dataset/${dataSetId}`
+      )
     );
   } catch (e) {
     dispatch(reportError(e));

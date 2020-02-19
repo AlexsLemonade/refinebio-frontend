@@ -1,22 +1,25 @@
 import React from 'react';
-import { withRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { IoMdCheckmarkCircle, IoMdClose } from 'react-icons/io';
 
 import Button from './Button';
 
 import './Notification.scss';
 
-let Notification = ({ router: location }) => {
-  const { pathname, state } = location;
+export default function Notification() {
+  const {
+    pathname,
+    query: { message },
+  } = useRouter();
   const [closed, setClosed] = React.useState({});
 
-  if (!state || !state.message) return null;
-  if (closed[pathname + state.message]) return null;
+  if (!message) return null;
+  if (closed[pathname + message]) return null;
 
   function closeMessage() {
     setClosed({
       ...closed,
-      [pathname + state.message]: true,
+      [pathname + message]: true,
     });
   }
 
@@ -25,7 +28,7 @@ let Notification = ({ router: location }) => {
       <div className="layout__content">
         <div className="notification__content">
           <IoMdCheckmarkCircle style={{ fontSize: 24, marginRight: 8 }} />
-          {state.message}
+          {message}
 
           <Button
             className="notification__close"
@@ -38,6 +41,4 @@ let Notification = ({ router: location }) => {
       </div>
     </div>
   );
-};
-Notification = withRouter(Notification);
-export default Notification;
+}
