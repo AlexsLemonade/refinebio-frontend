@@ -56,11 +56,10 @@
     "build": "next build",
     "start": "next start",
     "test": "jest --env=jsdom src/*",
-    "flow": "flow",
     "eslint": "eslint src/",
     "cacheBackend": "node cacheBackend.js",
     "buildSitemap": "node sitemap.js",
-    "test:integration": "jest --runInBand -c integration/jest.config.js"
+    "test:integration": "next build && next start --port 14568 && jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
     "@testing-library/react": "^8.0.1",
@@ -74,7 +73,6 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.13.0",
     "eslint-plugin-react-hooks": "^1.6.0",
-    "flow-bin": "^0.68.0",
     "husky": "^1.3.1",
     "jest-dom": "^3.4.0",
     "jest-puppeteer": "^3.7.0",
