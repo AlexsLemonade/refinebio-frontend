@@ -3,7 +3,7 @@ const { page, jestPuppeteer } = global;
 const TIMEOUT = 60000;
 const BASE_URL = 'http://localhost:14568';
 
-describe('refine.bio integration tests', () => {
+xdescribe('refine.bio integration tests', () => {
   it(
     'landing page loads',
     async () => {
