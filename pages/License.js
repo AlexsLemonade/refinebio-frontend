@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 
 const Privacy = () => (
-  <div className="terms">
+  <div className="layout__content terms">
     <Head>
       <title>License - refine.bio</title>
     </Head>
