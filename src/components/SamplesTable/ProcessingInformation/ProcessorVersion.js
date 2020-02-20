@@ -2,7 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import pick from 'lodash/pick';
 import { Accordion, AccordionItem } from '../../Accordion';
-import styles from './ProcessorVersion.scss';
+
+import styles from './ProcessorVersion.module.scss';
 
 /**
  * Returns an object with the primary versions that should be displayed in the modal
@@ -109,7 +110,7 @@ function ProcessorVersionItem({ processor, primaryPackages, ...props }) {
       )}
     >
       <div>
-        <table className="version-table">
+        <table className={styles.versionTable}>
           <tbody>
             <VersionTable
               title="OS Packages"
@@ -141,18 +142,12 @@ function ProcessorVersionItem({ processor, primaryPackages, ...props }) {
 function VersionTable({ title, versions, className }) {
   return (
     <React.Fragment>
-      <tr
-        className={classnames(
-          styles.tableTitle,
-          'version-table__group-start',
-          className
-        )}
-      >
+      <tr className={classnames(styles.tableTitle, className)}>
         <td colSpan="2">{title}</td>
       </tr>
       {Object.keys(versions).map(version => (
         <tr className={className} key={version}>
-          <td className="version-table__label">{version}</td>
+          <td className={styles.versionTableLabel}>{version}</td>
           <td>{versions[version]}</td>
         </tr>
       ))}
