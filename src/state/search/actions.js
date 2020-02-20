@@ -1,4 +1,7 @@
 import uniqBy from 'lodash/uniqBy';
+import pickBy from 'lodash/pickBy';
+import isEmpty from 'lodash/isEmpty';
+
 import { push } from '../routerActions';
 import {
   getQueryString,
@@ -62,7 +65,7 @@ const navigateToResults = ({
   filterOrder,
   ordering,
 }) => {
-  const urlParams = {
+  let urlParams = {
     q: query,
     p: page > 1 ? page : undefined,
     size: size !== 10 ? size : undefined,
@@ -72,6 +75,9 @@ const navigateToResults = ({
       filterOrder && filterOrder.length > 0 ? filterOrder.join(',') : undefined,
     ...filters,
   };
+
+  // clean urlparams
+  urlParams = pickBy(urlParams, value => !!value && !isEmpty(value));
 
   return push({
     pathname: '/search',

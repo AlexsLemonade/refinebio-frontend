@@ -60,18 +60,21 @@ export function initializeStore(initialState) {
     ...initialState,
   };
 
+  const middlewares = [
+    thunk,
+    routerMiddleware(),
+    errorMiddleware,
+    persistMiddleware,
+  ];
+
+  if (!isServer) {
+    middlewares.push(progressMiddleware);
+  }
+
   const store = createStore(
     rootReducer,
     initialStateLoaded,
-    composeEnhancers(
-      applyMiddleware(
-        progressMiddleware,
-        thunk,
-        routerMiddleware(),
-        errorMiddleware,
-        persistMiddleware
-      )
-    )
+    composeEnhancers(applyMiddleware(...middlewares))
   );
 
   if (!isServer) {
