@@ -8,7 +8,7 @@ import { withRouter, useRouter } from 'next/router';
 import logo from '../../common/icons/logo.svg';
 import { fetchDataSet } from '../../state/download/actions';
 import { getTotalSamplesAdded } from '../../state/download/reducer';
-import './Header.scss';
+
 import Loader from '../Loader';
 import SideMenu from '../SideMenu';
 import ResponsiveSwitch from '../ResponsiveSwitch';

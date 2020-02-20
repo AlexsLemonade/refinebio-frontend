@@ -2,7 +2,7 @@ import React from 'react';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import { stringEnumerate } from '../../../common/helpers';
-import './ProcessingInformation.scss';
+
 import SubmitterSuppliedProtocol from './SubmitterSuppliedProtocol';
 import ProcessorVersion from './ProcessorVersion';
 import FileIcon from './file.svg';

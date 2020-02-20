@@ -3,7 +3,6 @@ import PieChart from '../../../components/PieChart';
 import LineChart from '../../../components/LineChart';
 import AreaChart from '../../../components/AreaChart';
 import BarChart from '../../../components/BarChart';
-import './DashboardItem.scss';
 
 const DashboardItem = props => {
   const { type, title, data, size = 'small', series, ...rest } = props;

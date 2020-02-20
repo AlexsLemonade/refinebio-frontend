@@ -1,7 +1,7 @@
 import React from 'react';
 import { IoIosWarning } from 'react-icons/io';
 import Button from './Button';
-import './Alert.scss';
+
 import { useLocalStorage } from '../common/hooks';
 
 export default function Alert({ children, dismissableKey = false }) {

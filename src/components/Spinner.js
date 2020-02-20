@@ -1,5 +1,4 @@
 import React from 'react';
-import './Spinner.scss';
 
 export default function Spinner({
   helixColor = '#002f6c',

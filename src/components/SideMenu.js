@@ -2,8 +2,6 @@ import React from 'react';
 import Modal from 'react-modal';
 import classnames from 'classnames';
 
-import './SideMenu.scss';
-
 export default class SideMenu extends React.Component {
   state = {
     menuOpen: false,

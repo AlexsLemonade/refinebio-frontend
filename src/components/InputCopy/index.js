@@ -1,8 +1,6 @@
 import React from 'react';
 import { IoIosCheckmarkCircle } from 'react-icons/io';
 import Button from '../Button';
-import './InputCopy.scss';
-import '../Input/Input.scss';
 
 // Creates an input with a copy button next to it, when the button is clicked the content of
 // the input is copied to the keyboard.

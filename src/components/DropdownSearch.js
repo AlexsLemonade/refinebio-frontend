@@ -1,5 +1,5 @@
 import React from 'react';
-import './DropdownSearch.scss';
+
 import classnames from 'classnames';
 import { IoMdSearch } from 'react-icons/io';
 

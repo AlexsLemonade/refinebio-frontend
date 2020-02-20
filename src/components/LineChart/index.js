@@ -12,8 +12,6 @@ import {
 } from 'recharts';
 import { COLORS } from '../../common/constants';
 
-import './LineChart.scss';
-
 // type Props = {
 //   series: Array<string>,
 //   data: Array<{ date: string }>,

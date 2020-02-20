@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { IoLogoTwitter, IoLogoGithub } from 'react-icons/io';
 import FundIcon from '../../common/icons/fund-icon.svg';
-import './Footer.scss';
 
 import apiData from '../../apiData.json';
 

@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import Dropdown from '../Dropdown';
-import './TimeRangeSelect.scss';
 
 // type Props = {
 //   options: Array<{ value: number, label: string }>,

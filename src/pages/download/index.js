@@ -13,8 +13,6 @@ import { getQueryParamObject } from '../../common/helpers';
 import DownloadStart from './DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
 
-import './Downloads.scss';
-
 let Download = ({ download, fetchDataSetDetails }) => {
   const router = useRouter();
   const { dataSetId, dataSet } = download;

@@ -1,5 +1,5 @@
 import React from 'react';
-import './Input.scss';
+
 import classnames from 'classnames';
 import { IoMdClose, IoMdSearch } from 'react-icons/io';
 import Button from '../Button';

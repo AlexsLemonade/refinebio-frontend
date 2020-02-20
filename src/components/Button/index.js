@@ -1,5 +1,5 @@
 import React from 'react';
-import './Button.scss';
+
 import classnames from 'classnames';
 import { useWaitForAsync } from '../../common/hooks';
 

@@ -39,8 +39,6 @@ import { Hightlight, HText } from '../../components/HighlightedText';
 import RequestExperimentButton from './RequestExperimentButton';
 import SamplesTable from '../../components/SamplesTable/SamplesTable';
 
-import './Experiment.scss';
-
 const { searchUrl } = routes;
 
 const DatabaseNames = {

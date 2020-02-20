@@ -25,9 +25,6 @@ import networkDocsIcon from './icon-docs.svg';
 
 import { themes, useTheme } from '../../common/ThemeContext';
 
-import './Main.scss';
-import '../about/About.scss';
-
 let Main = ({ push }) => {
   useTheme(themes.inverted);
   return (

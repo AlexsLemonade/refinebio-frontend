@@ -4,7 +4,7 @@ import AppRunningSpeed from './AppRunningSpeed';
 import SampleBreakdownBlock from './SampleBreakdownBlock';
 import { useLoader } from '../../components/Loader';
 import { numberFormatter } from '../../common/helpers';
-import './ExecutiveDashboard.scss';
+
 import Spinner from '../../components/Spinner';
 import SamplesProcessedBlock from './SamplesProcessedBlock';
 import { fetchDashboardData } from '../../api/dashboad';

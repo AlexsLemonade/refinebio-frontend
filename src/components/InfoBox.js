@@ -1,7 +1,7 @@
 import React from 'react';
 import { IoMdClose } from 'react-icons/io';
 import ResponsiveSwitch from './ResponsiveSwitch';
-import './InfoBox.scss';
+
 import Button from './Button';
 
 function InfoBoxDesktop({ onClose }) {

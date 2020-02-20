@@ -1,5 +1,4 @@
 import React from 'react';
-import 'react-table/react-table.css';
 import debounce from 'lodash/debounce';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import Link from 'next/link';
@@ -13,7 +12,7 @@ import InfoIcon from '../../common/icons/info-badge.svg';
 import { PAGE_SIZES } from '../../common/constants';
 import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from '../DataSetSampleActions';
-import './SamplesTable.scss';
+
 import HorizontalScroll from '../HorizontalScroll';
 
 import MetadataAnnotationsCell from './MetadataAnnotationsCell';

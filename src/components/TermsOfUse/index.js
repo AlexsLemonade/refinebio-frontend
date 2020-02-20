@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Checkbox from '../Checkbox';
-import './TermsOfUse.scss';
 
 export default function TermsOfUse({ agreedToTerms, handleToggle }) {
   return (

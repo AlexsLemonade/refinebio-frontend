@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import './Terms.scss';
 
 const Terms = () => (
   <div className="terms">

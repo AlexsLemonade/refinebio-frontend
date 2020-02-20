@@ -10,7 +10,6 @@ import { fetchDashboardData } from '../../api/dashboad';
 import Spinner from '../../components/Spinner';
 import ServerErrorPage from '../ServerError';
 import { getQueryParamObject, formatBytes } from '../../common/helpers';
-import './Dashboard.scss';
 
 function Dashboard(props) {
   const router = useRouter();

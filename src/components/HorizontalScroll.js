@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import './HorizontalScroll.scss';
+
 import classnames from 'classnames';
 import useVisibility from 'react-use-visibility';
 import NoSSR from './NoSSR';

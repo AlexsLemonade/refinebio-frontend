@@ -21,8 +21,6 @@ import { push } from '../../state/routerActions';
 import { RadioField } from '../../components/Radio';
 import DatasetDetails from './DatasetDetails';
 
-import './DataSet.scss';
-
 /**
  * Dataset page, has 3 states that correspond with the states on the backend
  * - Processing: The download file is being created

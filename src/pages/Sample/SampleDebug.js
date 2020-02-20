@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import { IoMdSync } from 'react-icons/io';
 import { Ajax } from '../../common/helpers';
-import './sample.scss';
+
 import SampleDebugContext, { SampleDebugProvider } from './SampleDebugContext';
 import Checkbox from '../../components/Checkbox';
 

@@ -4,8 +4,6 @@ import { IoMdCheckmarkCircle, IoMdClose } from 'react-icons/io';
 
 import Button from './Button';
 
-import './Notification.scss';
-
 export default function Notification() {
   const {
     pathname,

@@ -3,7 +3,6 @@ import { withRouter } from 'next/router';
 import Header from '../Header';
 import Footer from '../Footer';
 import Notification from '../Notification';
-import './Layout.scss';
 
 let Layout = ({ children, router: location }) => {
   // in some cases it's useful to mark the root object with a class to identify the current page, in case

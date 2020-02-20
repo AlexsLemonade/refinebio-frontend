@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Button from '../../components/Button';
 import ModalManager from '../../components/Modal/ModalManager';
 import InputCopy from '../../components/InputCopy';
-import './DownloadBar.scss';
+
 import { getDomain } from '../../common/helpers';
 import { editDataSet } from '../../state/download/actions';
 import DownloadOptionsForm from './DownloadOptionsForm';

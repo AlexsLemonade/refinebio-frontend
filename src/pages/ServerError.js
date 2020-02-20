@@ -1,7 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
 import DistressedTubey from '../common/images/distressed-tubey.svg';
-import '../components/NoMatch/NoMatch.scss';
 
 const ServerError = () => (
   <div className="error-page">

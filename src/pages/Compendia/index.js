@@ -3,7 +3,7 @@ import Head from 'next/head';
 import classnames from 'classnames';
 import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
-import './Compendia.scss';
+
 import PointsBackground from './PointsBackground';
 import NormalizedCompendia from './NormalizedCompendia';
 import RNASeqSampleCompendia from './RNASeqSampleCompendia';

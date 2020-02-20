@@ -19,8 +19,6 @@ import { NDownloadableSamples } from '../../../components/Strings';
 
 import RequestExperimentButton from '../../experiments/RequestExperimentButton';
 
-import './Result.scss';
-
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result.sample_metadata_fields);
 

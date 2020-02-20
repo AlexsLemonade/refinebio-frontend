@@ -16,9 +16,6 @@ import {
   formatBytes,
 } from '../../common/helpers';
 
-import './About.scss';
-import '../index/Main.scss';
-
 function About() {
   useTheme(themes.inverted);
   return (

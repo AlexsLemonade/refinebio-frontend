@@ -38,8 +38,6 @@ import { Hightlight } from '../../components/HighlightedText';
 import RequestSearchButton from './RequestSearchButton';
 import { SingleValueFilter } from './ResultFilters/FilterCategory';
 
-import './SearchResults.scss';
-
 class SearchResults extends Component {
   constructor(props) {
     super(props);

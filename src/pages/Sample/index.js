@@ -7,8 +7,6 @@ import { getDetailedSample } from '../../api/samples';
 import SampleInfo from './SampleInfo';
 import Spinner from '../../components/Spinner';
 
-import './sample.scss';
-
 export default function Sample() {
   const {
     query: { accessionCode },
