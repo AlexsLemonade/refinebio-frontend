@@ -1,9 +1,12 @@
+import fetch from 'isomorphic-unfetch';
 import {
   getQueryString,
   getQueryParamObject,
   Ajax,
   stringEnumerate,
 } from './helpers';
+
+jest.mock('isomorphic-unfetch');
 
 describe('getQueryString', () => {
   it('with falsy values', () => {
@@ -62,27 +65,35 @@ describe('getQueryParamObject', () => {
 
 describe('Ajax', () => {
   beforeEach(() => {
-    global.fetch = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve({ ok: true, json: () => {} }));
+    fetch.mockImplementation(() =>
+      Promise.resolve({ ok: true, json: () => {} })
+    );
   });
 
   describe('get', () => {
+    beforeEach(() => {
+      fetch.mockReset();
+    });
+
     it('makes requests to url', () => {
       Ajax.get('/url');
-      expect(global.fetch.mock.calls[0]).toEqual(['/url']);
+      expect(fetch.mock.calls[0]).toEqual(['/url']);
     });
 
     it('sends parameters encoded in url', () => {
       Ajax.get('/url', { a: 1, b: 2 });
-      expect(global.fetch.mock.calls[0]).toEqual(['/url?a=1&b=2']);
+      expect(fetch.mock.calls[0]).toEqual(['/url?a=1&b=2']);
     });
   });
 
   describe('post', () => {
+    beforeEach(() => {
+      fetch.mockReset();
+    });
+
     it('sends requests with parameters', () => {
       Ajax.post('/url', { a: 1, b: 2 });
-      expect(global.fetch.mock.calls[0]).toEqual([
+      expect(fetch.mock.calls[0]).toEqual([
         '/url',
         {
           body: '{"a":1,"b":2}',
@@ -96,9 +107,13 @@ describe('Ajax', () => {
   });
 
   describe('put', () => {
+    beforeEach(() => {
+      fetch.mockReset();
+    });
+
     it('sends requests with parameters', () => {
       Ajax.put('/url', { a: 1, b: 2 });
-      expect(global.fetch.mock.calls[0]).toEqual([
+      expect(fetch.mock.calls[0]).toEqual([
         '/url',
         {
           body: '{"a":1,"b":2}',

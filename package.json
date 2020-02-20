@@ -52,10 +52,10 @@
   },
   "scripts": {
     "dev": "next",
+    "prebuild": "node cacheBackend.js && node sitemap.js",
     "build": "next build",
     "start": "next start",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
+    "test": "jest --env=jsdom src/*",
     "flow": "flow",
     "eslint": "eslint src/",
     "cacheBackend": "node cacheBackend.js",
