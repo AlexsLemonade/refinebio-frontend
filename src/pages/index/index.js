@@ -61,8 +61,8 @@ let Main = ({ push }) => {
           <SearchInput
             onSubmit={query =>
               push({
-                pathname: searchUrl(query ? { q: query } : null),
-                query: { q: query },
+                pathname: '/search',
+                query: query ? { q: query } : null,
               })
             }
             buttonStyle="primary"

@@ -68,7 +68,7 @@ export function FilterCategory({
             setSavedQuery(query);
             onToggleFilter(queryField, filter);
           }}
-          checked={activeValues && activeValues.includes(filter)}
+          checked={!!activeValues && activeValues.includes(filter)}
         >
           <HighlightedText text={formatValue(filter)} highlight={query} />
           <span className="nowrap"> ({filterValues[filter]})</span>

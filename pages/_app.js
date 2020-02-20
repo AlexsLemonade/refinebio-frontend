@@ -92,7 +92,6 @@ export default class MyApp extends React.Component {
 
   render() {
     const { Component, pageProps } = this.props;
-    const ios = false;
 
     // In order to render `App` individually in the tests, Provider needs to wrap it's contents.
     return (
@@ -162,8 +161,8 @@ function initializeSentry() {
 function initializeRouterLoading() {
   // use loading indicator when navigating between pages
   // https://github.com/zeit/next.js/issues/2985#issuecomment-335020393
-  Router.events.on('onRouteChangeStart', () => NProgress.start());
-  Router.events.on('onRouteChangeError', () => NProgress.done());
+  Router.events.on('routeChangeStart', () => NProgress.start());
+  Router.events.on('routeChangeError', () => NProgress.done());
   Router.events.on('routeChangeComplete', () => NProgress.done());
 }
 

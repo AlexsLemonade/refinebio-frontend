@@ -155,7 +155,7 @@ class SearchResults extends Component {
               return (
                 <NoSearchResultsTooManyFilters
                   query={this.state.query}
-                  appliedFilters={this.state.filters}
+                  appliedFilters={this.props.appliedFilters}
                 />
               );
             }
@@ -166,7 +166,7 @@ class SearchResults extends Component {
                 <div className="results__add-samples">
                   <AddPageToDataSetButton results={results} />
                 </div>
-                <ResultFilters appliedFilters={this.state.filters} />
+                <ResultFilters appliedFilters={this.props.appliedFilters} />
                 <div className="results__list">
                   <Hightlight
                     match={[
@@ -217,7 +217,7 @@ SearchResults = connect(
   }) => ({
     results,
     pagination,
-    searchTerm,
+    query: searchTerm,
     appliedFilters,
     ordering,
   }),
