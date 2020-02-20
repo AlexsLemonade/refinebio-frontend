@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 
 const Terms = () => (
-  <div className="terms">
+  <div className="layout__content terms">
     <Head>
       <title>Terms of Use - refine.bio</title>
     </Head>

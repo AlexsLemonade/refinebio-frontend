@@ -1,0 +1,150 @@
+@import '../../../common/styles/variables';
+
+.result {
+  background: $whisper;
+  margin-bottom: 3 * 8px;
+  box-shadow: 0 3px 20px 0 rgba($black, 0.1);
+  padding: 24px;
+
+  @include tablet {
+    margin-bottom: 6 * 8px;
+  }
+
+  &__accession {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  &__title-info {
+    margin-bottom: 16px;
+  }
+
+  @include tablet {
+    &__title-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__title-info {
+      flex: 1;
+      margin-right: 80px;
+      margin-bottom: 0;
+    }
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: left;
+    font-weight: 600;
+    word-break: break-all; // FF doesn't support `break-word`
+    word-break: break-word;
+    display: block;
+  }
+
+  &__stats {
+    border-top: 1px solid $gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin: 24px 0 0 0;
+    padding: 4.5px 0 0 0;
+    flex-wrap: wrap;
+
+    @include tablet {
+      margin-bottom: 24px;
+      border-bottom: 1px solid $gray;
+      padding-bottom: 4.5px;
+    }
+  }
+
+  &__icon {
+    margin-right: 5px;
+    height: 24px;
+  }
+
+  &__stat {
+    font-family: 'Rubik', sans-serif;
+    font-size: 0.9rem;
+    flex: 1 1 45%;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    margin: 8px 0;
+
+    @include tablet {
+      flex-basis: (100%/3);
+    }
+
+    &--lg {
+      flex-basis: 100%;
+    }
+  }
+
+  &__paragraph {
+    margin-bottom: 1.5rem;
+  }
+
+  &__not-provided {
+    color: $gray;
+  }
+
+  &__details {
+    display: none;
+
+    @include tablet {
+      display: block;
+    }
+  }
+
+  &--note {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    max-width: 380px;
+  }
+}
+
+.dataset-remove-button,
+.dataset-add-button {
+  &__added {
+    display: flex;
+    align-items: center;
+    margin-right: 6px;
+    font-size: 0.875rem;
+    color: $success;
+  }
+
+  &__added-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &__added-icon {
+    margin-right: 6px;
+  }
+
+  &__added-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  &__info-icon {
+    display: inline-block;
+    font-size: 1.2rem;
+    transform: rotate(15deg);
+    color: #002f6c;
+    vertical-align: bottom;
+    margin-top: 4px;
+  }
+
+  &__info-text {
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+}
