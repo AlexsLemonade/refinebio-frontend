@@ -5,6 +5,7 @@ import { IoMdCheckmarkCircle } from 'react-icons/io';
 import DownloadDatasetImage from '../dataset/download-dataset.svg';
 import TubeyAdventureImage from './tubey-adventure.svg';
 import { formatSentenceCase } from '../../common/helpers';
+import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 
 export default function DownloadPage() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function DownloadPage() {
 
   return (
     <div className="layout__content">
+      <ScrollTopOnMount />
       <div className="dataset__container">
         <div className="dataset__message">
           <div className="dataset__way-container">
