@@ -39,15 +39,10 @@ import RequestSearchButton from './RequestSearchButton';
 import { SingleValueFilter } from './ResultFilters/FilterCategory';
 
 class SearchResults extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: props.query,
-      filters: props.filters,
-      hasError: props.hasError,
-      isLoading: false,
-    };
-  }
+  state = {
+    hasError: this.props.hasError,
+    // isLoading: false,
+  };
 
   static async getInitialProps(ctx) {
     const searchArgs = parseUrl(ctx.query);
@@ -65,30 +60,6 @@ class SearchResults extends Component {
       filters: searchArgs.filters,
       hasError,
     };
-  }
-
-  /**
-   * Reads the search query and other parameters from the url and submits a new request to update the results.
-   */
-  async updateResults() {
-    const searchArgs = parseUrl(this.props.router.query);
-
-    this.setState({
-      query: searchArgs.query,
-      filters: searchArgs.filters,
-    });
-
-    // check if the search term and the filters are the same, in which case we don't need to
-    // fetch the results again
-    if (this.resultsAreFetched()) {
-      return;
-    }
-
-    // reset scroll position when the results change
-    window.scrollTo(0, 0);
-    this.setState({ isLoading: true });
-    await this.props.fetchResults(searchArgs);
-    this.setState({ isLoading: false });
   }
 
   resultsAreFetched() {
@@ -120,7 +91,7 @@ class SearchResults extends Component {
 
         <div className="results">
           <Head>
-            <title>{this.state.query || ''} Results - refine.bio</title>
+            <title>{this.props.query || ''} Results - refine.bio</title>
             <meta
               name="description"
               content="Browse decades of harmonized childhood cancer data and discover how this multi-species repository accelerates the search for cures."
@@ -130,7 +101,7 @@ class SearchResults extends Component {
           <BackToTop />
           <div className="results__search">
             <SearchInput
-              searchTerm={this.state.query}
+              searchTerm={this.props.query}
               onSubmit={query => triggerSearch(query)}
             />
           </div>
@@ -140,19 +111,19 @@ class SearchResults extends Component {
           We do several checks to determine what to display, eg: no results, when no search term has
           been entered, etc */}
           {(() => {
-            if (this.state.isLoading && !this.resultsAreFetched()) {
-              return <Spinner />;
-            }
             if (this.state.hasError) {
               return <ErrorApiUnderHeavyLoad />;
             }
-            if (!results.length && !anyFilterApplied(this.state.filters)) {
-              return <NoSearchResults query={this.state.query} />;
+            if (
+              !results.length &&
+              !anyFilterApplied(this.props.appliedFilters)
+            ) {
+              return <NoSearchResults query={this.props.query} />;
             }
             if (!results.length) {
               return (
                 <NoSearchResultsTooManyFilters
-                  query={this.state.query}
+                  query={this.props.query}
                   appliedFilters={this.props.appliedFilters}
                 />
               );
@@ -168,19 +139,19 @@ class SearchResults extends Component {
                 <div className="results__list">
                   <Hightlight
                     match={[
-                      this.state.query,
-                      ...getAccessionCodes(this.state.query),
+                      this.props.query,
+                      ...getAccessionCodes(this.props.query),
                     ]}
                   >
                     {results.map((result, index) => (
                       <React.Fragment key={result.accession_code}>
-                        <Result result={result} query={this.state.query} />
+                        <Result result={result} query={this.props.query} />
 
                         {result._isTopResult &&
                           results[index + 1] &&
                           !results[index + 1]._isTopResult && (
                             <div className="results__related-block">
-                              Related Results for '{this.state.query}'
+                              Related Results for '{this.props.query}'
                             </div>
                           )}
                       </React.Fragment>
@@ -189,7 +160,7 @@ class SearchResults extends Component {
                     {currentPage === totalPages && (
                       <div className="result result--note">
                         Didn't see a related experiment?{' '}
-                        <RequestSearchButton query={this.state.query} />
+                        <RequestSearchButton query={this.props.query} />
                       </div>
                     )}
                   </Hightlight>
