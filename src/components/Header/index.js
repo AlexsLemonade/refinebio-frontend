@@ -122,10 +122,16 @@ HeaderLinks = connect(
   }
 )(HeaderLinks);
 
-const HeaderLink = ({ href, as, onClick, children, activePath = [] }) => {
+const HeaderLink = ({
+  href,
+  as: asPath,
+  onClick,
+  children,
+  activePath = [],
+}) => {
   const router = useRouter();
   const isActive =
-    router.pathname === href || activePath.includes(router.pathname);
+    router.pathname === asPath || activePath.includes(router.pathname);
 
   return (
     <li
@@ -133,7 +139,7 @@ const HeaderLink = ({ href, as, onClick, children, activePath = [] }) => {
         'header__link--active': isActive,
       })}
     >
-      <Link href={href} as={as || href}>
+      <Link href={href} as={asPath || href}>
         <a onClick={onClick}>{children}</a>
       </Link>
     </li>
