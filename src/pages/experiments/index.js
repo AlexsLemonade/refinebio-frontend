@@ -200,12 +200,14 @@ let Experiment = ({
             <ExperimentHeaderRow label="Submitter’s Institution">
               {(experiment.submitter_institution && (
                 <Link
-                  href="/search"
-                  as={searchUrl({
-                    q: `submitter_institution: ${
-                      experiment.submitter_institution
-                    }`,
-                  })}
+                  href={{
+                    pathname: '/search',
+                    query: {
+                      q: `submitter_institution:${
+                        experiment.submitter_institution
+                      }`,
+                    },
+                  }}
                 >
                   <a className="link">
                     <HText>{experiment.submitter_institution}</HText>
@@ -222,10 +224,12 @@ let Experiment = ({
                 experiment.publication_authors
                   .map(author => (
                     <Link
-                      href="/search"
-                      as={searchUrl({
-                        q: `publication_authors:${author}`,
-                      })}
+                      href={{
+                        pathname: '/search',
+                        query: {
+                          q: `publication_authors:${author}`,
+                        },
+                      }}
                     >
                       <a className="link">
                         <HText>{author}</HText>
