@@ -52,7 +52,7 @@
   },
   "scripts": {
     "dev": "next",
-    "prebuild": "node cacheBackend.js && node sitemap.js",
+    "prebuild123": "node cacheBackend.js && node sitemap.js",
     "build": "next build",
     "start": "next start",
     "test": "jest --env=jsdom src/*",

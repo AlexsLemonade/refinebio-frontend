@@ -9,5 +9,11 @@ module.exports = withImages(
     env: {
       REACT_APP_API_HOST: ApiHost,
     },
+    // webpack: (config, { dev, webpack }) => {
+    //   if (!dev) {
+    //     config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    //   }
+    //   return config;
+    // },
   })
 );
