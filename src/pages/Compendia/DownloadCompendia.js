@@ -49,9 +49,13 @@ let DownloadCompendia = ({
     if (selected) {
       const tokenId = token || (await createToken());
       trackDownloadType(selected);
+      const compendiumResult = await fetchCompendium(tokenId, selected.id);
       push({
         pathname: '/compendia/download',
-        state: await fetchCompendium(tokenId, selected.id),
+        query: {
+          organism: compendiumResult.compendium.primary_organism_name,
+          url: compendiumResult.downloadUrl,
+        },
       });
     }
   };
