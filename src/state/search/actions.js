@@ -77,7 +77,12 @@ const navigateToResults = ({
   };
 
   // clean urlparams
-  urlParams = pickBy(urlParams, value => !!value && !isEmpty(value));
+  urlParams = pickBy(
+    urlParams,
+    value =>
+      (!Array.isArray(value) && !!value) ||
+      (Array.isArray(value) && value.length > 0)
+  );
 
   return push({
     pathname: '/search',
@@ -118,7 +123,7 @@ export function fetchResults({
         // with `num_downloadable_samples__gt: 0`
         ...(!appliedFilters || !appliedFilters['empty']
           ? { num_downloadable_samples__gt: 0 }
-          : { include_empty: undefined }),
+          : { empty: undefined }),
       });
       let { results } = apiResults;
       const { count: totalResults, facets } = apiResults;
