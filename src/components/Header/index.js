@@ -66,14 +66,14 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
             title: 'Normalized Compendia',
             location: {
               pathname: '/compendia',
-              hash: '#normalized',
+              query: { c: 'normalized' },
             },
           },
           {
             title: 'RNA-seq Sample Compendia',
             location: {
               pathname: '/compendia',
-              hash: '#rna-seq-sample',
+              query: { c: 'rna-seq-sample' },
             },
           },
         ]}

@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import classnames from 'classnames';
 import Link from 'next/link';
-import Router, { withRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 import PointsBackground from './PointsBackground';
 import NormalizedCompendia from './NormalizedCompendia';
@@ -10,16 +10,17 @@ import RNASeqSampleCompendia from './RNASeqSampleCompendia';
 import EmailSection from '../index/EmailSection';
 import { themes, useTheme } from '../../common/ThemeContext';
 
-function Compendia({ router: location }) {
+function Compendia() {
   useTheme(themes.light);
+  const router = useRouter();
   const compendiaOptions = [
     {
-      hash: '#normalized',
+      hash: 'normalized',
       name: 'Normalized Compendia',
       tab: NormalizedCompendia,
     },
     {
-      hash: '#rna-seq-sample',
+      hash: 'rna-seq-sample',
       name: 'RNA-seq Sample Compendia',
       tab: RNASeqSampleCompendia,
     },
@@ -27,7 +28,8 @@ function Compendia({ router: location }) {
 
   // when no hash is specified we render the normalized compendia
   const active =
-    compendiaOptions.find(c => c.hash === location.hash) || compendiaOptions[0];
+    compendiaOptions.find(c => router.query['c'] === c.hash) ||
+    compendiaOptions[0];
 
   return (
     <div>
@@ -56,8 +58,8 @@ function Compendia({ router: location }) {
               >
                 <Link
                   href={{
-                    pathname: location.path,
-                    hash: compendia.hash,
+                    pathname: router.pathname,
+                    query: { c: compendia.hash },
                   }}
                   replace
                 >
@@ -76,4 +78,4 @@ function Compendia({ router: location }) {
   );
 }
 
-export default withRouter(Compendia);
+export default Compendia;
