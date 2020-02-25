@@ -8,7 +8,6 @@
     "@zeit/next-sass": "^1.0.1",
     "babel-eslint": "^10.0.1",
     "classnames": "^2.2.6",
-    "delayed-scroll-restoration-polyfill": "^0.1.1",
     "formik": "^1.5.0",
     "gsap": "^2.0.2",
     "history": "^4.7.2",
@@ -25,15 +24,12 @@
     "react-icons": "^3.7.0",
     "react-modal": "^3.8.1",
     "react-redux": "^6.0.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "3.0.1",
     "react-table": "^6.9.1",
     "react-use-visibility": "^0.2.0",
     "recharts": "^1.4.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "shortid": "^2.2.14",
-    "smoothscroll-polyfill": "^0.4.3",
     "yup": "^0.26.10"
   },
   "husky": {
