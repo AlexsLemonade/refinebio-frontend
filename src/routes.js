@@ -1,4 +1,4 @@
-import { getQueryString, isServer } from './common/helpers';
+import { getQueryString } from './common/helpers';
 import slugify from './common/slugify';
 
 /**

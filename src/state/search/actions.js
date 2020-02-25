@@ -1,13 +1,8 @@
 import uniqBy from 'lodash/uniqBy';
 import pickBy from 'lodash/pickBy';
-import isEmpty from 'lodash/isEmpty';
 
 import { push } from '../routerActions';
-import {
-  getQueryString,
-  Ajax,
-  getQueryParamObject,
-} from '../../common/helpers';
+import { Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { getUrlParams } from './reducer';
 

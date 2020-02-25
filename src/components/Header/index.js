@@ -12,7 +12,6 @@ import { getTotalSamplesAdded } from '../../state/download/reducer';
 import Loader from '../Loader';
 import SideMenu from '../SideMenu';
 import ResponsiveSwitch from '../ResponsiveSwitch';
-import { searchUrl } from '../../routes';
 import githubCorner from './github-corner.svg';
 
 import { useTheme } from '../../common/ThemeContext';
@@ -98,6 +97,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
             className="button button--secondary header__link-button"
             onClick={itemClicked}
             role="button"
+            tabIndex={0}
           >
             My Dataset
             <Loader fetch={fetchDataSet}>
@@ -140,7 +140,9 @@ const HeaderLink = ({
       })}
     >
       <Link href={href} as={asPath || href}>
-        <a onClick={onClick}>{children}</a>
+        <a onClick={onClick} role="button" tabIndex={0}>
+          {children}
+        </a>
       </Link>
     </li>
   );
@@ -204,6 +206,8 @@ const HeaderDropDownLink = ({
                       closeDropdown();
                       if (onClick) onClick(...click);
                     }}
+                    role="button"
+                    tabIndex={0}
                   >
                     {title}
                   </a>

@@ -9,7 +9,7 @@ import { useInterval } from '../../common/hooks';
 import { fetchDashboardData } from '../../api/dashboad';
 import Spinner from '../../components/Spinner';
 import ServerErrorPage from '../ServerError';
-import { getQueryParamObject, formatBytes } from '../../common/helpers';
+import { formatBytes } from '../../common/helpers';
 
 function Dashboard(props) {
   const router = useRouter();

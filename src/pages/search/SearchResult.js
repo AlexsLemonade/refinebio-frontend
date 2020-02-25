@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import AccessionIcon from '../../../common/icons/accession.svg';
-import OrganismIcon from '../../../common/icons/organism.svg';
-import SampleIcon from '../../../common/icons/sample.svg';
+import AccessionIcon from '../../common/icons/accession.svg';
+import OrganismIcon from '../../common/icons/organism.svg';
+import SampleIcon from '../../common/icons/sample.svg';
 import {
   formatSentenceCase,
   getMetadataFields,

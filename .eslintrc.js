@@ -37,6 +37,9 @@ module.exports = {
     'no-unused-vars': 2,
     'no-func-assign': 0,
 
+    // Nextjs forwards the Href tag automatically to `<a>` links
+    'jsx-a11y/anchor-is-valid': 0,
+
     // Not sure if we should enforce these rules.
     'class-methods-use-this': 0,
     'react/prop-types': 0,
@@ -70,9 +73,6 @@ module.exports = {
 
     // TODO DISABLE THIS AFTER NEXTJS MIGRATION
     'no-unused-vars': 0,
-    'jsx-a11y/interactive-supports-focus': 0,
-    'jsx-a11y/no-static-element-interactions': 0,
-    'jsx-a11y/anchor-is-valid': 0,
     'import/no-unresolved': 0,
   },
 };

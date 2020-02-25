@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import Head from 'next/head';
 import { connect } from 'react-redux';
 import ProcessingImage from './download-processing.svg';
 import { startDownload } from '../../../state/download/actions';

@@ -13,7 +13,6 @@ import {
   truncateOnWord,
   maxTableWidth,
 } from '../../common/helpers';
-import slugify from '../../common/slugify';
 
 import AccessionIcon from '../../common/icons/accession.svg';
 import SampleIcon from '../../common/icons/sample.svg';
@@ -289,13 +288,6 @@ Experiment.getInitialProps = async ctx => {
 };
 
 export default Experiment;
-
-function experimentSlugMatches(slug, experimentTitle) {
-  if (!slug) return false;
-  // since the slug is the last parameter it can contain a hash, ensure that's not considered
-  const slugWithoutHash = slug.split('#')[0];
-  return slugWithoutHash === slugify(experimentTitle);
-}
 
 function ExperimentHelmet({ experiment }) {
   return (

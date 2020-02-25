@@ -1,15 +1,12 @@
 import React from 'react';
-import Head from 'next/head';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import BackToTop from '../../components/BackToTop';
 import DownloadBar from './DownloadBar';
 import DownloadDetails from './DownloadDetails';
 import NoDatasetsImage from '../../common/images/no-datasets.svg';
 import { useLoader } from '../../components/Loader';
 import { fetchDataSetDetails } from '../../state/download/actions';
-import { getQueryParamObject } from '../../common/helpers';
 import DownloadStart from './DownloadStart/DownloadStart';
 import Spinner from '../../components/Spinner';
 

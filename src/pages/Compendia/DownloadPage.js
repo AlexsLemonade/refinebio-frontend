@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { Router, useRouter } from 'next/router';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import DownloadDatasetImage from '../dataset/download-dataset.svg';

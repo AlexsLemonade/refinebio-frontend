@@ -1,8 +1,5 @@
 import React from 'react';
-// import history from '../history';
-import { getQueryParamObject } from './helpers';
-
-const isServer = typeof window === 'undefined';
+import { isServer } from './helpers';
 
 /**
  * Calculate values from a dom node
