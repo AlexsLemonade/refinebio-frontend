@@ -52,13 +52,11 @@
   },
   "scripts": {
     "dev": "next",
-    "prebuild123": "node cacheBackend.js && node sitemap.js",
+    "prebuild": "node cacheBackend.js && node sitemap.js",
     "build": "next build",
     "start": "next start",
     "test": "jest --env=jsdom src/*",
     "eslint": "eslint src/",
-    "cacheBackend": "node cacheBackend.js",
-    "buildSitemap": "node sitemap.js",
     "test:integration": "next build && concurrently -k -s first \"jest --runInBand -c integration/jest.config.js\" \"next start --port 14568\""
   },
   "devDependencies": {
