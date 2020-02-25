@@ -72,7 +72,6 @@ module.exports = {
     'jsx-a11y/label-has-for': 0,
 
     // TODO DISABLE THIS AFTER NEXTJS MIGRATION
-    'no-unused-vars': 0,
     'import/no-unresolved': 0,
   },
 };

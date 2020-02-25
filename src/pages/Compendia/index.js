@@ -1,14 +1,19 @@
 import React from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import classnames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import PointsBackground from './PointsBackground';
 import NormalizedCompendia from './NormalizedCompendia';
 import RNASeqSampleCompendia from './RNASeqSampleCompendia';
 import EmailSection from '../index/EmailSection';
 import { themes, useTheme } from '../../common/ThemeContext';
+
+// only render the points in the client
+const PointsBackground = dynamic(() => import('./PointsBackground'), {
+  ssr: false,
+});
 
 function Compendia() {
   useTheme(themes.light);
