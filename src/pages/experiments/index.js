@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Link from 'next/link';
@@ -21,7 +22,6 @@ import BackToTop from '../../components/BackToTop';
 
 import Anchor from '../../components/Anchor';
 import Spinner from '../../components/Spinner';
-import InfoBox from '../../components/InfoBox';
 import Checkbox from '../../components/Checkbox';
 import { goBack } from '../../state/routerActions';
 import DataSetStats from '../../common/DataSetStats';
@@ -39,7 +39,10 @@ import { Hightlight, HText } from '../../components/HighlightedText';
 import RequestExperimentButton from './RequestExperimentButton';
 import SamplesTable from '../../components/SamplesTable/SamplesTable';
 
-const { searchUrl } = routes;
+// only render the infobox on the client side
+const InfoBox = dynamic(() => import('../../components/InfoBox'), {
+  ssr: false,
+});
 
 const DatabaseNames = {
   GEO: 'Gene Expression Omnibus (GEO)',

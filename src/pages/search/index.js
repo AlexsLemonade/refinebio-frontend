@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
-
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
 import isEqual from 'lodash/isEqual';
@@ -16,7 +16,6 @@ import { PAGE_SIZES } from '../../common/constants';
 import GhostSampleImage from '../../common/images/ghost-sample.svg';
 import DistressedTubey from '../../common/images/distressed-tubey.svg';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
-import Loader from '../../components/Loader';
 import Button from '../../components/Button';
 import {
   Ordering,
@@ -30,13 +29,16 @@ import {
   getAccessionCodes,
   parseUrl,
 } from '../../state/search/actions';
-import Spinner from '../../components/Spinner';
-import InfoBox from '../../components/InfoBox';
 import { searchUrl } from '../../routes';
 import { ApiOverwhelmed } from '../ServerError';
 import { Hightlight } from '../../components/HighlightedText';
 import RequestSearchButton from './RequestSearchButton';
 import { SingleValueFilter } from './ResultFilters/FilterCategory';
+
+// only render the infobox on the client side
+const InfoBox = dynamic(() => import('../../components/InfoBox'), {
+  ssr: false,
+});
 
 class SearchResults extends Component {
   state = {
