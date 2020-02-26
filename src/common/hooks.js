@@ -42,20 +42,6 @@ export function useInterval(callback, delay) {
   }, [delay]);
 }
 
-export function useHistory() {
-  // TODOX history
-
-  return {
-    pathname: '/',
-    params: {},
-  };
-
-  // return {
-  //   pathname: history.location.pathname,
-  //   params: getQueryParamObject(history.location.search),
-  // };
-}
-
 /**
  * Thanks to https://usehooks.com/useLocalStorage
  * @param {*} key
