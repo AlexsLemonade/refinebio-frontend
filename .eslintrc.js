@@ -64,8 +64,5 @@ module.exports = {
 
     // deprecated
     'jsx-a11y/label-has-for': 0,
-
-    // TODO DISABLE THIS AFTER NEXTJS MIGRATION
-    'import/no-unresolved': 0,
   },
 };
