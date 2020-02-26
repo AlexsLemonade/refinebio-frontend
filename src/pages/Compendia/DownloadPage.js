@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import DownloadDatasetImage from '../dataset/download-dataset.svg';
 import TubeyAdventureImage from './tubey-adventure.svg';
