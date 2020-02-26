@@ -11,7 +11,7 @@ import Spinner from '../../components/Spinner';
 import ServerErrorPage from '../ServerError';
 import { formatBytes } from '../../common/helpers';
 
-function Dashboard(props) {
+function Dashboard() {
   const router = useRouter();
   const [chartUpdating, setChartUpdating] = React.useState(true);
   let { range: rangeParam } = router.query;

@@ -1,11 +1,5 @@
 module.exports = {
-  extends: [
-    'airbnb',
-    'react-app',
-    'prettier',
-    'prettier/react',
-    'prettier/flowtype',
-  ],
+  extends: ['airbnb', 'prettier', 'prettier/react', 'prettier/flowtype'],
   plugins: ['react-hooks'],
   parser: 'babel-eslint',
   env: {

@@ -123,7 +123,9 @@ export function useWaitForAsync(func) {
     waiting,
     async (...args) => {
       setWaiting(true);
-      func && (await func(...args));
+      if (func) {
+        await func(...args);
+      }
       if (mountedRef.current) setWaiting(false);
     },
   ];

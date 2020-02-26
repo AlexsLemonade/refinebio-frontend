@@ -154,7 +154,6 @@ const HeaderDropDownLink = ({
   children,
   location,
   activePath = [],
-  push,
   replace,
 }) => {
   const [open, setOpen] = React.useState(false);

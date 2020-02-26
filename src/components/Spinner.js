@@ -29,10 +29,10 @@ export default function Spinner({
   const getBezier = (p0, p1, p2, p3) => {
     return [0, 1].map(axis => {
       return t =>
-        Math.pow(1 - t, 3) * p0[axis] +
-        3 * Math.pow(1 - t, 2) * t * p1[axis] +
-        3 * (1 - t) * Math.pow(t, 2) * p2[axis] +
-        Math.pow(t, 3) * p3[axis];
+        (1 - t) ** 3 * p0[axis] +
+        3 * (1 - t) ** 2 * t * p1[axis] +
+        3 * (1 - t) * t ** 2 * p2[axis] +
+        t ** 3 * p3[axis];
     });
   };
 
@@ -80,7 +80,7 @@ export default function Spinner({
       >
         <path {...helixPath} />
         <path {...helixPath} {...{ transform: flipX }} />
-        {basePairLines.map((line, index, pairs) => (
+        {basePairLines.map((line, index) => (
           <line
             {...line}
             style={{
@@ -88,7 +88,7 @@ export default function Spinner({
             }}
           />
         ))}
-        {[...basePairLines].reverse().map((line, index, pairs) => (
+        {[...basePairLines].reverse().map((line, index) => (
           <line
             {...line}
             {...{ transform: flipY }}

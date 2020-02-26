@@ -143,8 +143,8 @@ function loadInitialState() {
  * Returns true if the app is running on www.refine.bio or staging.refine.bio
  */
 function isProduction() {
-  return false;
   return (
+    !isServer &&
     process.env.NODE_ENV === 'production' &&
     ['staging.refine.bio', 'www.refine.bio'].includes(window.location.host)
   );

@@ -5,9 +5,7 @@ import { IoMdSearch } from 'react-icons/io';
 
 const DropdownSearch = ({
   options = [],
-  selectedOption = '',
   onChange,
-  disabled = false,
   label = x => x,
   placeholder = '',
 }) => {

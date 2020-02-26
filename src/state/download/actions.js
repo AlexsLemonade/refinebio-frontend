@@ -193,7 +193,7 @@ export const fetchDataSet = (details = false) => async (dispatch, getState) => {
 
 // Remove all dataset
 export const clearDataSet = () => dispatch =>
-  dispatch(dataSetUpdateOperation(dataSet => ({})));
+  dispatch(dataSetUpdateOperation(() => ({})));
 
 /**
  * Gets detailed information about the samples and experiments associated with

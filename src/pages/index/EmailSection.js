@@ -47,7 +47,7 @@ export default function EmailSection() {
               .required('Please enter your email address'),
           })}
         >
-          {({ values, isSubmitting, handleChange, touched, errors }) => (
+          {({ isSubmitting, touched, errors }) => (
             <Form>
               <div
                 id="embed_signup_scroll"
