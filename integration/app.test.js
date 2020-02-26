@@ -3,7 +3,7 @@ const { page, jestPuppeteer } = global;
 const TIMEOUT = 60000;
 const BASE_URL = 'http://localhost:14568';
 
-xdescribe('refine.bio integration tests', () => {
+describe('refine.bio integration tests', () => {
   it(
     'landing page loads',
     async () => {
@@ -41,6 +41,8 @@ xdescribe('refine.bio integration tests', () => {
 
       // navigate to first result
       await expect(page).toClick('.result:nth-child(1) a');
+      await page.waitForSelector('.experiment');
+
       await expect(page).toMatch('Submitter Supplied Information');
     },
     TIMEOUT
