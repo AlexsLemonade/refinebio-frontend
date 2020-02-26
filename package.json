@@ -3,10 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@next/bundle-analyzer": "^9.2.2",
     "@sentry/browser": "^4.6.4",
-    "@zeit/next-css": "^1.0.1",
-    "@zeit/next-sass": "^1.0.1",
     "babel-eslint": "^10.0.1",
     "classnames": "^2.2.6",
     "cross-env": "^7.0.0",
@@ -54,13 +51,15 @@
     "build": "next build",
     "start": "next start",
     "test": "jest --env=jsdom src/*",
-    "eslint": "eslint src/",
+    "eslint": "eslint src/ pages/",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
     "test:integration": "jest --runInBand -c integration/jest.config.js"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^9.2.2",
+    "@zeit/next-sass": "^1.0.1",
     "@testing-library/react": "^8.0.1",
     "axios": "^0.19.0",
     "concurrently": "^5.1.0",

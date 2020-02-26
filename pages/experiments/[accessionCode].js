@@ -1,5 +1,5 @@
 import React from 'react';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import { getExperiment } from '../../src/api/experiments';
 import { experiments } from '../../src/routes';
 import NoMatch from '../../src/components/NoMatch';
