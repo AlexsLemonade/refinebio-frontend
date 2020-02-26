@@ -7,19 +7,17 @@ import { formatSentenceCase } from '../../common/helpers';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 
 export default function DownloadPage() {
-  const router = useRouter();
-  const { organism, url } = router.query;
+  const {
+    query: { organism, url },
+  } = useRouter();
 
   React.useEffect(() => {
     if (url) {
       window.location = url;
+    } else {
+      Router.push('/compendia');
     }
-  });
-  // this needs to account for rna-seq or normalized
-  if (!url) {
-    Router.push('/compendia');
-    return null;
-  }
+  }, []);
 
   return (
     <div className="layout__content">
