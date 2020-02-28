@@ -39,10 +39,12 @@ module.exports = withImages(
                 chunks: 'all',
                 minChunks: 3,
               },
-              react: {
-                name: 'commons',
+              charts: {
+                name: 'charts',
                 chunks: 'all',
-                test: /[\\/]node_modules[\\/](react|react-dom|scheduler|use-subscription)[\\/]/,
+                test: /[\\/]node_modules[\\/](recharts|d3.*)[\\/]/,
+                enforce: true,
+                priority: 10,
               },
               // Only create one CSS file
               styles: {
