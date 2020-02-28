@@ -27,7 +27,7 @@ class MyDocument extends Document {
             href="https://www.refine.bio/favicon-16x16.png"
           />
           <link
-            href="https://fonts.googleapis.com/css?family=Rubik:400,500,700|Lato:400,500,700"
+            href="https://fonts.googleapis.com/css?family=Rubik:400,500,700|Lato:400,500,700|Oxygen+Mono&display=swap"
             rel="stylesheet"
           />
           <link
