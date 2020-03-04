@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "alias": "refinebio",
+  "alias": "refinebio-staging",
   "env": {
     "REACT_APP_API_HOST": "https://api.staging.refine.bio"
   },
