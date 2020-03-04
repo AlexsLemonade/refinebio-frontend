@@ -39,8 +39,8 @@ export function parseUrl(queryParams) {
 
   // parse parameters from url
   query = query ? decodeURIComponent(query) : undefined;
-  page = page ? parseInt(page, 10) : 1;
-  size = size ? parseInt(size, 10) : 10;
+  page = page && !Number.isNaN(Number(page)) ? parseInt(page, 10) : 1;
+  size = size && !Number.isNaN(Number(size)) ? parseInt(size, 10) : 10;
   filterOrder = filterOrder ? filterOrder.split(',') : [];
 
   return { query, page, size, ordering, filters, filterOrder };

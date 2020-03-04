@@ -6,9 +6,36 @@ import {
   toggleFilterHelper,
   updateFilterOrderHelper,
   fetchResults,
+  parseUrl,
 } from './actions';
 
 jest.mock('isomorphic-unfetch');
+
+describe('parseUrlArguments', () => {
+  it('gets right arguments', () => {
+    const args = parseUrl({ q: 'homo' });
+    expect(args).toEqual({
+      filterOrder: [],
+      filters: {},
+      ordering: '_score',
+      page: 1,
+      query: 'homo',
+      size: 10,
+    });
+  });
+
+  it('NaN page goes to default value', () => {
+    const args = parseUrl({ q: 'homo', p: 'asd', size: 'asd' });
+    expect(args).toEqual({
+      filterOrder: [],
+      filters: {},
+      ordering: '_score',
+      page: 1,
+      query: 'homo',
+      size: 10,
+    });
+  });
+});
 
 describe('toggleFilterHelper', () => {
   it('adds filter when none selected', () => {
