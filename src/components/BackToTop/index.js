@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { IoIosArrowUp } from 'react-icons/io';
 import Button from '../Button';
-import './BackToTop.scss';
 
 class BackToTop extends Component {
   state = {

@@ -12,14 +12,14 @@ import {
 } from 'recharts';
 import { COLORS } from '../../common/constants';
 
-type Props = {
-  series: Array<string>,
-  data: Array<{ date: string }>,
-  formatValue: Function,
-  formatLabel: Function,
-};
+// type Props = {
+//   series: Array<string>,
+//   data: Array<{ date: string }>,
+//   formatValue: Function,
+//   formatLabel: Function,
+// };
 
-const AreaChart = (props: Props) => {
+const AreaChart = props => {
   const { data = [], series = [] } = props;
   return (
     <ResponsiveContainer>

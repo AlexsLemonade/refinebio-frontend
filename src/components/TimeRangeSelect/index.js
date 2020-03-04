@@ -1,13 +1,12 @@
 // @flow
 import React from 'react';
 import Dropdown from '../Dropdown';
-import './TimeRangeSelect.scss';
 
-type Props = {
-  options: Array<{ value: number, label: string }>,
-};
+// type Props = {
+//   options: Array<{ value: number, label: string }>,
+// };
 
-const TimeRangeSelect = ({ selectedOption, options, onChange }: Props) => (
+const TimeRangeSelect = ({ selectedOption, options, onChange }) => (
   <div className="time-range-select">
     <div className="time-range-select__field">
       <label className="time-range-select__label" htmlFor="timeRange">

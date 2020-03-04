@@ -1,37 +1,39 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import Router, { useRouter } from 'next/router';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
-import DownloadDatasetImage from '../Downloads/DataSet/download-dataset.svg';
+import DownloadDatasetImage from '../dataset/download-dataset.svg';
 import TubeyAdventureImage from './tubey-adventure.svg';
 import { formatSentenceCase } from '../../common/helpers';
+import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 
-export default function DownloadPage({ location }) {
+export default function DownloadPage() {
+  const {
+    query: { organism, url },
+  } = useRouter();
+
   React.useEffect(() => {
-    if (location.state && location.state.compendium) {
-      window.location = location.state.downloadUrl;
+    if (url) {
+      window.location = url;
+    } else {
+      Router.push('/compendia');
     }
-  });
-  // this needs to account for rna-seq or normalized
-  if (!location.state || !location.state.downloadUrl) {
-    return <Redirect to="/species-compendia" />;
-  }
-  const { compendium, downloadUrl } = location.state;
+  }, []);
 
   return (
     <div className="layout__content">
+      <ScrollTopOnMount />
       <div className="dataset__container">
         <div className="dataset__message">
           <div className="dataset__way-container">
             <div className="dataset__processed-text">
               <h1>
                 <IoMdCheckmarkCircle className="color-success" /> Downloading{' '}
-                {formatSentenceCase(compendium.primary_organism_name)}{' '}
-                compendium...
+                {formatSentenceCase(organism)} compendium...
               </h1>
               <p>
                 If the download did not start,{' '}
                 <a
-                  href={downloadUrl}
+                  href={url}
                   className="link"
                   target="_blank"
                   rel="noopener noreferrer"

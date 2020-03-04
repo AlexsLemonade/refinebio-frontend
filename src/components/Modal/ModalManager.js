@@ -4,9 +4,7 @@ import classnames from 'classnames';
 import { IoMdClose } from 'react-icons/io';
 import Button from '../Button';
 
-import './Modal.scss';
-
-if (process.env.NODE_ENV !== 'test') Modal.setAppElement('#root');
+if (process.env.NODE_ENV !== 'test') Modal.setAppElement('body');
 
 // This class makes it easier to create a Component that displays a modal dialog.
 // It abstracts the functionality that saves the state wether the dialog is open or not.

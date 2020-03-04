@@ -1,10 +1,8 @@
 import uniqBy from 'lodash/uniqBy';
+import pickBy from 'lodash/pickBy';
+
 import { push } from '../routerActions';
-import {
-  getQueryString,
-  Ajax,
-  getQueryParamObject,
-} from '../../common/helpers';
+import { Ajax } from '../../common/helpers';
 import reportError from '../reportError';
 import { getUrlParams } from './reducer';
 
@@ -18,7 +16,7 @@ export const Ordering = {
   Oldest: 'source_first_published',
 };
 
-export function parseUrl(locationSearch) {
+export function parseUrl(queryParams) {
   /* eslint-disable prefer-const */
   let {
     q: query,
@@ -27,7 +25,7 @@ export function parseUrl(locationSearch) {
     ordering = Ordering.BestMatch,
     filter_order: filterOrder = '',
     ...filters
-  } = getQueryParamObject(locationSearch);
+  } = queryParams;
   /* eslint-enable */
 
   // for consistency, ensure all values in filters are arrays
@@ -41,8 +39,8 @@ export function parseUrl(locationSearch) {
 
   // parse parameters from url
   query = query ? decodeURIComponent(query) : undefined;
-  page = parseInt(page, 10);
-  size = parseInt(size, 10);
+  page = page && !Number.isNaN(Number(page)) ? parseInt(page, 10) : 1;
+  size = size && !Number.isNaN(Number(size)) ? parseInt(size, 10) : 10;
   filterOrder = filterOrder ? filterOrder.split(',') : [];
 
   return { query, page, size, ordering, filters, filterOrder };
@@ -62,7 +60,7 @@ const navigateToResults = ({
   filterOrder,
   ordering,
 }) => {
-  const urlParams = {
+  let urlParams = {
     q: query,
     p: page > 1 ? page : undefined,
     size: size !== 10 ? size : undefined,
@@ -73,8 +71,17 @@ const navigateToResults = ({
     ...filters,
   };
 
+  // clean urlparams
+  urlParams = pickBy(
+    urlParams,
+    value =>
+      (!Array.isArray(value) && !!value) ||
+      (Array.isArray(value) && value.length > 0)
+  );
+
   return push({
-    search: `${getQueryString(urlParams)}`,
+    pathname: '/search',
+    query: urlParams,
   });
 };
 
@@ -111,7 +118,7 @@ export function fetchResults({
         // with `num_downloadable_samples__gt: 0`
         ...(!appliedFilters || !appliedFilters['empty']
           ? { num_downloadable_samples__gt: 0 }
-          : { include_empty: undefined }),
+          : { empty: undefined }),
       });
       let { results } = apiResults;
       const { count: totalResults, facets } = apiResults;

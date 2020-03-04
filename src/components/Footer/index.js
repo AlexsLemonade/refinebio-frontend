@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { IoLogoTwitter, IoLogoGithub } from 'react-icons/io';
 import FundIcon from '../../common/icons/fund-icon.svg';
-import './Footer.scss';
 
 import apiData from '../../apiData.json';
 
@@ -105,14 +104,14 @@ const Footer = () => (
     </div>
 
     <div className="footer__container footer__link-container">
-      <Link className="footer__link" to="/license">
-        BSD 3-Clause License
+      <Link href="/license" as="/license">
+        <a className="footer__link">BSD 3-Clause License</a>
       </Link>
-      <Link className="footer__link" to="/privacy">
-        Privacy
+      <Link href="/privacy" as="/privacy">
+        <a className="footer__link">Privacy</a>
       </Link>
-      <Link className="footer__link" to="/terms">
-        Terms of Use
+      <Link href="/terms" as="/terms">
+        <a className="footer__link">Terms of Use</a>
       </Link>
       <a className="footer__link" href="mailto:ccdl@alexslemonade.org">
         Contact

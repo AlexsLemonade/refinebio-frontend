@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Formik, Field, Form } from 'formik';
 import Button from '../Button';
-import './SearchInput.scss';
 
 export default class SearchInput extends Component {
   static defaultProps = {

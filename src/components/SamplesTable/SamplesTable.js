@@ -1,8 +1,7 @@
 import React from 'react';
-import 'react-table/react-table.css';
 import debounce from 'lodash/debounce';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 import RefineTable from '../RefineTable';
 
@@ -13,7 +12,7 @@ import InfoIcon from '../../common/icons/info-badge.svg';
 import { PAGE_SIZES } from '../../common/constants';
 import ProcessingInformationCell from './ProcessingInformationCell';
 import DataSetSampleActions from '../DataSetSampleActions';
-import './SamplesTable.scss';
+
 import HorizontalScroll from '../HorizontalScroll';
 
 import MetadataAnnotationsCell from './MetadataAnnotationsCell';
@@ -266,8 +265,10 @@ const NoDataComponent = ({ hasError, children, fetchData }) =>
 
 function AccessionCodeCell({ value }) {
   return (
-    <Link to={`/samples/${value}`}>
-      <HText>{value}</HText>
+    <Link href="/samples/[accessionCode]" as={`/samples/${value}`}>
+      <a>
+        <HText>{value}</HText>
+      </a>
     </Link>
   );
 }

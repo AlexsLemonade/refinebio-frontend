@@ -2,22 +2,19 @@
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com)
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
-
-You can find the most recent version of the Create React App guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and later migrated to [NextJS](https://nextjs.org/)
 
 ## Table of Contents
 
-* [Getting Started](#getting-started)
-* [Development](#development)
-  * [Git Workflow](#git-workflow)
-  * [JavaScript](#javascript)
-    * [Framework](#framework)
-    * [Formatting](#formatting)
-    * [Static Type Checking](#static-type-checking)
-  * [Styling](#styling)
-* [Executive Dashboard](#executive-dashboard)
-  * [Running Locally](#running-locally)
+- [Getting Started](#getting-started)
+- [Development](#development)
+  - [Git Workflow](#git-workflow)
+  - [JavaScript](#javascript)
+    - [Framework](#framework)
+    - [Formatting](#formatting)
+  - [Styling](#styling)
+- [Executive Dashboard](#executive-dashboard)
+- [Running Locally](#running-locally)
 
 ## Getting Started
 
@@ -39,33 +36,29 @@ In the project directory, run:
 
 In the project directory, run:
 
-#### `yarn start`
+#### `yarn run dev`
 
-* Runs the app in development mode
-* Open http://localhost:3000 to view it in the browser
-* Page will reload if you make any edits
-* You will also see lint errors in the console
+- Runs the app in development mode
+- Open http://localhost:3000 to view it in the browser
+- Page will reload if you make any edits
+- You will also see lint errors in the console
 
 ### Production
 
 #### `yarn run build`
 
-* Builds the app for production to the `./build` folder
-* Correctly bundles React in production mode and optimizes the build for the best performance
-* Build is minified and filenames include hashes
+- Prefetches the api version and other data required to run the app.
+- Builds the app for production to the `./next` folder
+- Correctly bundles React in production mode and optimizes the build for the best performance
+
+#### `yarn run start`
+
+- Initializes the app in production mode
+- Open http://localhost:3000 to view it in the browser
 
 #### Deployment
 
-Deploys are triggered by git tags.
-These git tags should correspond to a version of the project.
-Once a tag has been pushed, it will trigger a new CircleCI build which will run the tests and then deploy the static files to S3 where they are served from.
-A tag pushed to the `dev` branch will result in a new deploy to the staging enviroment while a tag pushed to the `master` branch will result in a new deploy to the prod environment.
-A tag can be created and pushed with the following commands:
-
-```
-git tag -s vX.X.X -m "<RELEASE MESSAGE>"
-git push origin vX.X.X
-```
+Deploys are triggered automatically by pushing to the `master` or `dev` branches.
 
 ## Development
 
@@ -81,32 +74,27 @@ Merges into `master` happen at the end of sprints, and tags in master correspond
 
 #### Framework
 
-This project is using [React](https://reactjs.org/) as a frontend framework coupled with [Redux](https://redux.js.org/) for state management. Routing is being implemented with [React Router](https://github.com/ReactTraining/react-router).
+This project is using [React](https://reactjs.org/) as a frontend framework coupled with [Redux](https://redux.js.org/) for state management.
+
+Also it get's server rendered with [NextJS](https://nextjs.org/).
 
 #### Formatting
 
 We use [Prettier](https://prettier.io/), an opinionated code formatter, for JS code formatting. Whenever a commit is made, Prettier will automatically format the changed files. Prettier can also be [integrated](https://prettier.io/docs/en/editors.html) into many text editors.
 
-#### Static Type Checking
-
-We use [Flow](https://flow.org/) for static type checking.
-
-Flow only checks files that include this annotation as the first line of the file:
-
-`// @flow`
-
-Run Flow via the command line with `yarn flow`.
-
 ### Styling
 
-* Pre-processor: [SASS](https://sass-lang.com/)
-* Write resuabled, modularized using [BEM](http://getbem.com/)
-* Configured using [custom-react-scripts](https://github.com/kitze/custom-react-scripts) to avoid losing future creat-react-app support
+- Pre-processor: [SASS](https://sass-lang.com/)
+- Write resuabled, modularized using [BEM](http://getbem.com/)
 
 ## Executive Dashboard
 
 Our executive dashboard is used for monitoring the health and state of our system. The dashboard can be viewed at the `/dashboard` route of the frontend.
 
-### Running Locally
-If you have the refine.bio backend running locally, just modify `proxy` in `package.json` to point to where your local backend is running.
+## Running Locally
 
+If you have the refine.bio backend running locally, just run the script with the variable `REACT_APP_API_HOST` pointing to the local API. For example:
+
+```
+REACT_APP_API_HOST=http://localhost:8000 yarn run dev
+```

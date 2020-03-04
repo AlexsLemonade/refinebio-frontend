@@ -1,0 +1,25 @@
+@import '../../../common/styles/variables';
+
+.versionTable {
+  border-spacing: 0;
+  width: 100%;
+
+  td {
+    padding: 2px 2px 2px 4px;
+  }
+}
+
+.versionTableLabel {
+  padding-right: 32px !important;
+  text-align: right;
+  width: 160px;
+  white-space: nowrap;
+}
+
+.tableTitle {
+  font-weight: bold;
+}
+
+.highlight {
+  background-color: $background-color--highlight;
+}

@@ -1,13 +1,11 @@
 import React from 'react';
-import './DropdownSearch.scss';
+
 import classnames from 'classnames';
 import { IoMdSearch } from 'react-icons/io';
 
 const DropdownSearch = ({
   options = [],
-  selectedOption = '',
   onChange,
-  disabled = false,
   label = x => x,
   placeholder = '',
 }) => {

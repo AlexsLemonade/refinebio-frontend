@@ -1,7 +1,8 @@
 import React from 'react';
 import { Accordion, AccordionItem } from '../../Accordion';
 import { formatSentenceCase, truncateOnWord } from '../../../common/helpers';
-import styles from './SubmitterSuppliedProtocol.scss';
+
+import styles from './SubmitterSuppliedProtocol.module.scss';
 
 const PROTOCOLS_BY_SAMPLE_TYPE = {
   GEO: GeoSubmitterSuppliedProtocol,
