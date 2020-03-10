@@ -1,11 +1,5 @@
 module.exports = {
-  extends: [
-    'airbnb',
-    'react-app',
-    'prettier',
-    'prettier/react',
-    'prettier/flowtype',
-  ],
+  extends: ['airbnb', 'prettier', 'prettier/react', 'prettier/flowtype'],
   plugins: ['react-hooks'],
   parser: 'babel-eslint',
   env: {
@@ -36,6 +30,9 @@ module.exports = {
     'no-console': ['error', { allow: ['error'] }], // only allow `console.error` calls
     'no-unused-vars': 2,
     'no-func-assign': 0,
+
+    // Nextjs forwards the Href tag automatically to `<a>` links
+    'jsx-a11y/anchor-is-valid': 0,
 
     // Not sure if we should enforce these rules.
     'class-methods-use-this': 0,

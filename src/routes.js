@@ -5,17 +5,14 @@ import slugify from './common/slugify';
  * This file contains routes used in the app
  */
 
-export const experiments = ({ accession_code, title }, state = false) => {
+export const experiments = ({ accession_code, title }) => {
   const pathname = `/experiments/${accession_code}/${slugify(title)}`;
-  return !state ? pathname : { pathname, state };
+  return pathname;
 };
 
-export const experimentsSamples = (
-  { accession_code, title },
-  state = false
-) => {
+export const experimentsSamples = ({ accession_code, title }) => {
   const pathname = `/experiments/${accession_code}/${slugify(title)}#samples`;
-  return !state ? pathname : { pathname, state };
+  return pathname;
 };
 
 export const searchUrl = (params = false) => {

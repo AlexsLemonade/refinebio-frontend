@@ -1,14 +1,15 @@
 import React from 'react';
 import classnames from 'classnames';
+import { useRouter } from 'next/router';
 import AppRunningSpeed from './AppRunningSpeed';
 import SampleBreakdownBlock from './SampleBreakdownBlock';
 import { useLoader } from '../../components/Loader';
 import { numberFormatter } from '../../common/helpers';
-import './ExecutiveDashboard.scss';
+
 import Spinner from '../../components/Spinner';
 import SamplesProcessedBlock from './SamplesProcessedBlock';
 import { fetchDashboardData } from '../../api/dashboad';
-import { useInterval, useHistory } from '../../common/hooks';
+import { useInterval } from '../../common/hooks';
 import Header from './Header';
 import ServerErrorPage from '../ServerError';
 
@@ -22,7 +23,7 @@ export default function ExecutiveDashboard() {
     if (data) refresh();
   }, 5 * 60 * 1000);
 
-  const { params } = useHistory();
+  const { query: params } = useRouter();
   const isTv = !!params.tv;
   const processorJobs = data
     ? [...data.processor_jobs.timeline.slice(0, -1)]

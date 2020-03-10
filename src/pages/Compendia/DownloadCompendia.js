@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import ReactGA from 'react-ga';
 
 import { formatSentenceCase, formatBytes } from '../../common/helpers';
@@ -49,9 +49,13 @@ let DownloadCompendia = ({
     if (selected) {
       const tokenId = token || (await createToken());
       trackDownloadType(selected);
+      const compendiumResult = await fetchCompendium(tokenId, selected.id);
       push({
         pathname: '/compendia/download',
-        state: await fetchCompendium(tokenId, selected.id),
+        query: {
+          organism: compendiumResult.compendium.primary_organism_name,
+          url: compendiumResult.downloadUrl,
+        },
       });
     }
   };
@@ -120,13 +124,10 @@ let DownloadCompendia = ({
               onClick={() => setAgree(!agree)}
             >
               I agree to the{' '}
-              <Link
-                to="/terms"
-                className="link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Terms of Use
+              <Link href="/terms" as="/terms">
+                <a className="link" target="_blank" rel="noopener noreferrer">
+                  Terms of Use
+                </a>
               </Link>
             </Checkbox>
           </div>

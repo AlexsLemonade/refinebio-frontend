@@ -1,10 +1,41 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import fetch from 'isomorphic-unfetch';
+
 import {
   toggleFilterHelper,
   updateFilterOrderHelper,
   fetchResults,
+  parseUrl,
 } from './actions';
+
+jest.mock('isomorphic-unfetch');
+
+describe('parseUrlArguments', () => {
+  it('gets right arguments', () => {
+    const args = parseUrl({ q: 'homo' });
+    expect(args).toEqual({
+      filterOrder: [],
+      filters: {},
+      ordering: '_score',
+      page: 1,
+      query: 'homo',
+      size: 10,
+    });
+  });
+
+  it('NaN page goes to default value', () => {
+    const args = parseUrl({ q: 'homo', p: 'asd', size: 'asd' });
+    expect(args).toEqual({
+      filterOrder: [],
+      filters: {},
+      ordering: '_score',
+      page: 1,
+      query: 'homo',
+      size: 10,
+    });
+  });
+});
 
 describe('toggleFilterHelper', () => {
   it('adds filter when none selected', () => {
@@ -65,8 +96,8 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('fetching a dataset', () => {
-  beforeEach(function() {
-    global.fetch = jest.fn().mockImplementation(() =>
+  beforeEach(() => {
+    fetch.mockReset().mockImplementation(() =>
       Promise.resolve({
         ok: true,
         json: () => ({ results: [], count: 0, facets: [] }),
@@ -77,7 +108,7 @@ describe('fetching a dataset', () => {
   it('sends correct ordering parameter by default', async () => {
     const store = mockStore();
     await store.dispatch(fetchResults({ query: 'cancer', ordering: '' }));
-    expect(global.fetch.mock.calls[0]).toEqual([
+    expect(fetch.mock.calls[0]).toEqual([
       '/v1/search/?search=cancer&limit=10&offset=0&ordering=_score&num_downloadable_samples__gt=0',
     ]);
   });
@@ -87,7 +118,7 @@ describe('fetching a dataset', () => {
     await store.dispatch(
       fetchResults({ query: 'cancer', ordering: 'num_downloadable_samples' })
     );
-    expect(global.fetch.mock.calls[0]).toEqual([
+    expect(fetch.mock.calls[0]).toEqual([
       '/v1/search/?search=cancer&limit=10&offset=0&ordering=num_downloadable_samples&num_downloadable_samples__gt=0',
     ]);
   });

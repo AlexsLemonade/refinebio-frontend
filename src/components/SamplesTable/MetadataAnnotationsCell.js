@@ -7,7 +7,7 @@ import ModalManager from '../Modal/ModalManager';
 import Button from '../Button';
 import InfoIcon from '../../common/icons/info-badge.svg';
 import Input from '../Input';
-import './MetadataAnnotationsCell.scss';
+
 import { isValidURL } from '../../common/helpers';
 import HighlightedText from '../HighlightedText';
 

@@ -41,6 +41,8 @@ describe('refine.bio integration tests', () => {
 
       // navigate to first result
       await expect(page).toClick('.result:nth-child(1) a');
+      await page.waitForSelector('.experiment');
+
       await expect(page).toMatch('Submitter Supplied Information');
     },
     TIMEOUT

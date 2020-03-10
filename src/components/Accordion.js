@@ -4,7 +4,6 @@ import isFunction from 'lodash/isFunction';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import Button from './Button';
 import Checkbox from './Checkbox';
-import './Accordion.scss';
 
 export class Accordion extends React.Component {
   constructor(props) {

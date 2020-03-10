@@ -1,5 +1,5 @@
 import React from 'react';
-import './Radio.scss';
+
 import classnames from 'classnames';
 
 const Radio = ({

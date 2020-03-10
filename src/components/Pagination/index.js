@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { getRange } from '../../common/helpers';
-import './Pagination.scss';
+
 import JumpToPageForm from './JumpToPageForm';
 
 class Pagination extends Component {

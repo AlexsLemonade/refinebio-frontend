@@ -12,16 +12,14 @@ import {
 } from 'recharts';
 import { COLORS } from '../../common/constants';
 
-import './LineChart.scss';
+// type Props = {
+//   series: Array<string>,
+//   data: Array<{ date: string }>,
+//   formatValue: Function,
+//   formatLabel: Function,
+// };
 
-type Props = {
-  series: Array<string>,
-  data: Array<{ date: string }>,
-  formatValue: Function,
-  formatLabel: Function,
-};
-
-const LineChart = (props: Props) => {
+const LineChart = props => {
   const { data = [], series = [] } = props;
   return (
     <ResponsiveContainer>

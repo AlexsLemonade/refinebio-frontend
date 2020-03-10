@@ -10,11 +10,11 @@ import {
 } from 'recharts';
 import { COLORS } from '../../common/constants';
 
-type Props = {
-  data: Array<{ value: any, name: string }>,
-};
+// type Props = {
+//   data: Array<{ value: any, name: string }>,
+// };
 
-const PieChart = (props: Props) => {
+const PieChart = props => {
   const { data = [] } = props;
   return (
     <ResponsiveContainer>

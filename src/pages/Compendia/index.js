@@ -1,36 +1,46 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import classnames from 'classnames';
-import { Link, withRouter, Redirect } from 'react-router-dom';
-import './Compendia.scss';
-import PointsBackground from './PointsBackground';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
 import NormalizedCompendia from './NormalizedCompendia';
 import RNASeqSampleCompendia from './RNASeqSampleCompendia';
-import EmailSection from '../Main/EmailSection';
+import EmailSection from '../index/EmailSection';
 import { themes, useTheme } from '../../common/ThemeContext';
 
-const Compendia = function Compendia({ location, replace }) {
+// only render the points in the client
+const PointsBackground = dynamic(() => import('./PointsBackground'), {
+  ssr: false,
+});
+
+function Compendia() {
   useTheme(themes.light);
+  const router = useRouter();
   const compendiaOptions = [
     {
-      hash: '#normalized',
+      hash: 'normalized',
       name: 'Normalized Compendia',
       tab: NormalizedCompendia,
     },
     {
-      hash: '#rna-seq-sample',
+      hash: 'rna-seq-sample',
       name: 'RNA-seq Sample Compendia',
       tab: RNASeqSampleCompendia,
     },
   ];
 
-  const active = compendiaOptions.find(c => c.hash === location.hash);
-  if (!active) return <Redirect to={{ hash: '#normalized' }} />;
+  // when no hash is specified we render the normalized compendia
+  const active =
+    compendiaOptions.find(c => router.query['c'] === c.hash) ||
+    compendiaOptions[0];
+
   return (
     <div>
-      <Helmet>
+      <Head>
         <title>Compendia</title>
-      </Helmet>
+      </Head>
       <div className="compendia">
         <div className="compendia__header">
           <PointsBackground />
@@ -52,13 +62,13 @@ const Compendia = function Compendia({ location, replace }) {
                 })}
               >
                 <Link
-                  to={{
-                    pathname: location.path,
-                    hash: compendia.hash,
+                  href={{
+                    pathname: router.pathname,
+                    query: { c: compendia.hash },
                   }}
                   replace
                 >
-                  {compendia.name}
+                  <a>{compendia.name}</a>
                 </Link>
               </li>
             ))}
@@ -71,6 +81,6 @@ const Compendia = function Compendia({ location, replace }) {
       </div>
     </div>
   );
-};
+}
 
-export default withRouter(Compendia);
+export default Compendia;

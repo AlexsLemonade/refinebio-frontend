@@ -1,0 +1,284 @@
+@import '../src/common/styles/variables';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh;
+}
+
+.app-wrap {
+  min-height: 100vh;
+}
+
+html,
+body {
+  background-color: rgba(12, 52, 131, 0.94);
+  // overflow-x: hidden;
+
+  // // momentum scrolling on ios https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/
+  // -webkit-overflow-scrolling: touch;
+}
+
+html,
+body,
+#root {
+  background-color: $whisper;
+  width: 100%;
+  min-height: 100vh;
+  color: $font-color;
+}
+
+#root {
+  position: relative;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.no-scroll {
+  overflow-y: hidden;
+  height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+svg {
+  overflow: visible;
+}
+
+button {
+  -moz-osx-font-smoothing: inherit;
+  -webkit-font-smoothing: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 0;
+  text-align: inherit;
+  width: auto;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+}
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+}
+
+@keyframes flip {
+  0% {
+    transform: rotate(0);
+  }
+
+  50% {
+    transform: rotateY(180deg);
+  }
+
+  100% {
+    transform: rotateY(180deg) rotateX(180deg);
+  }
+}
+
+.color-success {
+  color: $success;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.pos-relative {
+  position: relative;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &__icon {
+    margin-right: 8px;
+    font-size: 1.5rem;
+  }
+}
+
+.center-block {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// shows a centered button in mobile, but aligns with flex layout on desktop
+.flex-button-container {
+  display: flex;
+  justify-content: space-around;
+
+  &--left {
+    justify-content: left;
+  }
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+.mr-1 {
+  margin-right: 1rem;
+}
+
+// adds a bottom margin on mobile devices
+.mobile-p {
+  margin-bottom: 16px;
+
+  @include tablet {
+    margin-bottom: 0;
+  }
+}
+
+.tablet-p {
+  margin-bottom: 16px;
+
+  @include desktop {
+    margin-bottom: 0;
+  }
+}
+
+.vertical-center {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.hidden-xs {
+  display: none;
+
+  @include tablet() {
+    display: block;
+  }
+}
+
+.text-highlight {
+  background-color: $highlight-color;
+}
+
+.recharts-text {
+  fill: $gray2;
+}
+
+.color-error {
+  color: $color-error !important;
+}
+
+.error {
+  color: $color-error;
+
+  svg {
+    font-size: 1.2rem;
+    vertical-align: sub;
+  }
+}
+
+.flex-row {
+  display: flex;
+  flex-flow: row wrap;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+
+  &--top {
+    align-items: flex-start;
+  }
+}
+
+@import '../src/common/styles/type';
+@import '../src/common/styles/form';
+
+// import all remaining app styles.
+// NextJS only supports global styles imported on a custom `App`
+// component. https://nextjs.org/blog/next-9-2#built-in-css-support-for-global-stylesheets
+// Here we import all global styles into the App stylesheet
+// This could potentially be removed if we change the webpack configuration
+// to bundle all styles together. By default next only loads the styles
+// required for the required pages
+
+// styles for packages
+@import '../node_modules/nprogress/nprogress.css';
+@import '../node_modules/react-table/react-table.css';
+
+// All component styles
+@import '../src/components/Accordion.scss';
+@import '../src/components/Alert.scss';
+@import '../src/components/Button/Button.scss';
+@import '../src/components/Checkbox/Checkbox.scss';
+@import '../src/components/Dropdown/Dropdown.scss';
+@import '../src/components/DropdownSearch.scss';
+@import '../src/components/Footer/Footer.scss';
+@import '../src/components/BackToTop/BackToTop.scss';
+@import '../src/components/Header/Header.scss';
+@import '../src/components/HorizontalScroll.scss';
+@import '../src/components/Input/Input.scss';
+@import '../src/components/InputCopy/InputCopy.scss';
+@import '../src/components/Layout/Layout.scss';
+@import '../src/components/LineChart/LineChart.scss';
+@import '../src/components/Modal/Modal.scss';
+@import '../src/components/NoMatch/NoMatch.scss';
+@import '../src/components/Notification.scss';
+@import '../src/components/Pagination/Pagination.scss';
+@import '../src/components/Radio/Radio.scss';
+@import '../src/components/RequestDataForm/RequestData.scss';
+@import '../src/components/SamplesTable/MetadataAnnotationsCell.scss';
+@import '../src/components/SamplesTable/ProcessingInformation/ProcessingInformation.scss';
+@import '../src/components/SamplesTable/SamplesTable.scss';
+@import '../src/components/SearchInput/SearchInput.scss';
+@import '../src/components/SideMenu.scss';
+@import '../src/components/Spinner.scss';
+@import '../src/components/TermsOfUse/TermsOfUse.scss';
+@import '../src/components/TimeRangeSelect/TimeRangeSelect.scss';
+@import '../src/components/Toggle/Toggle.scss';
+@import '../src/components/InfoBox.scss';
+
+// page styles
+@import '../src/pages/Compendia/Compendia.scss';
+@import '../src/pages/Dashboard/Dashboard.scss';
+@import '../src/pages/Dashboard/DashboardItem/DashboardItem.scss';
+@import '../src/pages/Dashboard/DashboardSection/DashboardSection.scss';
+@import '../src/pages/ExecDashboard/ExecutiveDashboard.scss';
+@import '../src/pages/Sample/sample.scss';
+@import '../src/pages/about/About.scss';
+@import '../src/pages/dataset/DataSet.scss';
+@import '../src/pages/download/DownloadBar.scss';
+@import '../src/pages/download/Downloads.scss';
+@import '../src/pages/experiments/Experiment.scss';
+@import '../src/pages/index/Main.scss';
+@import '../src/pages/search/Result/Result.scss';
+@import '../src/pages/search/ResultFilters/ResultFilters.scss';
+@import '../src/pages/search/SearchResults.scss';
+@import './Terms.scss';

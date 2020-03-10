@@ -1,13 +1,12 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import DistressedTubey from '../common/images/distressed-tubey.svg';
-import './NoMatch/NoMatch.scss';
 
 const ServerError = () => (
   <div className="error-page">
-    <Helmet>
+    <Head>
       <title>We’re a little overwhelmed at the moment - refine.bio</title>
-    </Helmet>
+    </Head>
     <div className="error-page__text">
       <ApiOverwhelmed />
     </div>

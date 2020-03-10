@@ -9,15 +9,16 @@ const MOBILE_LIMIT = 768;
  * thanks to https://goshakkk.name/different-mobile-desktop-tablet-layouts-react/
  */
 export default class ResponsiveSwitch extends React.Component {
-  constructor() {
-    super();
+  state = {
+    width: 1280, // assume desktop on the server
+  };
 
-    this.state = {
+  componentWillMount() {}
+
+  componentDidMount() {
+    this.setState({
       width: window.innerWidth,
-    };
-  }
-
-  componentWillMount() {
+    });
     window.addEventListener('resize', this.handleWindowSizeChange);
   }
 

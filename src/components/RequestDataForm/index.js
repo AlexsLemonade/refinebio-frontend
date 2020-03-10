@@ -7,8 +7,6 @@ import { CheckboxField } from '../Checkbox';
 import MissingSampleImage from './light-missing-sample.svg';
 import ResearcherLookingImage from './illustration-forms.svg';
 
-import './RequestData.scss';
-
 const RequestDataForm = ({
   renderHeader,
   onSubmit,

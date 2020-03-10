@@ -1,6 +1,5 @@
 import React from 'react';
 import DashboardItem from '../DashboardItem';
-import './DashboardSection.scss';
 
 const DashboardSection = props => {
   const { title, charts, isLoading, range } = props;

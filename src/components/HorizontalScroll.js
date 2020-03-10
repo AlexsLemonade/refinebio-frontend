@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
-import './HorizontalScroll.scss';
+
 import classnames from 'classnames';
 import useVisibility from 'react-use-visibility';
+import NoSSR from './NoSSR';
 
 /**
  * Adds buttons to modify the horizontal scroll position of an element. It's usually
@@ -86,14 +87,17 @@ export default class HorizontalScroll extends React.Component {
         >
           {this.props.children}
         </div>
-        <ButtonLeft
-          onClick={this.scrollLeft}
-          disabled={this.state.disableLeftButton}
-        />
-        <ButtonRight
-          onClick={this.scrollRight}
-          disabled={this.state.disableRightButton}
-        />
+
+        <NoSSR>
+          <ButtonLeft
+            onClick={this.scrollLeft}
+            disabled={this.state.disableLeftButton}
+          />
+          <ButtonRight
+            onClick={this.scrollRight}
+            disabled={this.state.disableRightButton}
+          />
+        </NoSSR>
       </div>
     );
   }

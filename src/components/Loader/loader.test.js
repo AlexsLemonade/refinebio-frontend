@@ -34,7 +34,7 @@ describe('useLoader', () => {
   // Couldn't find a way around it https://github.com/testing-library/react-testing-library/issues/281#issuecomment-461150694
   it('calls fetch a single time when loaded', async () => {
     const DATA = 101;
-    const mockCallback = jest.fn(x => DATA);
+    const mockCallback = jest.fn(() => DATA);
     const { getByTestId } = render(<MockLoader fetch={mockCallback} />);
     await waitForElement(() => getByTestId('result'));
     expect(getByTestId('result')).toHaveTextContent(DATA);
@@ -43,7 +43,7 @@ describe('useLoader', () => {
 
   it('calls fetch when refresh is executed', async () => {
     let data = 101;
-    const mockCallback = jest.fn(x => data);
+    const mockCallback = jest.fn(() => data);
     const { getByTestId, getByText } = render(
       <MockLoader fetch={mockCallback} />
     );
@@ -60,7 +60,7 @@ describe('useLoader', () => {
 
   it('calls fetch when a dependency changes', async () => {
     let data = 101;
-    const mockCallback = jest.fn(x => data);
+    const mockCallback = jest.fn(() => data);
     const { getByTestId, getByText } = render(
       <MockLoader fetch={mockCallback} />
     );
