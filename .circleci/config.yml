@@ -19,9 +19,21 @@ jobs:
       - run: yarn install --ignore-engines
       - run: yarn run test:integration
 
+  deploy-staging:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - run: yarn global add now
+      - run: $(yarn global bin)/now --prod --token $ZEIT_TOKEN --local-config now.staging.json --scope ccdl
+
 workflows:
   version: 2
   test-and-deploy:
     jobs:
       - test
       - test_user
+      - deploy-staging:
+        filters:
+          branches:
+            only: dev

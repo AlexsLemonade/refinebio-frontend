@@ -1,9 +1,6 @@
 {
   "version": 2,
   "alias": "refinebio",
-  "env": {
-    "REACT_APP_API_HOST": "https://api.refine.bio"
-  },
   "github": {
     "silent": true
   }
