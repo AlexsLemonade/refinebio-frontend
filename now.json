@@ -1,7 +1,8 @@
 {
   "version": 2,
-  "alias": "refinebio",
+  "alias": ["www.refinebio.org"],
   "github": {
+    "enabled": false,
     "silent": true
   }
 }

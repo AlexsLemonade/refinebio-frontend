@@ -19,6 +19,14 @@ jobs:
       - run: yarn install --ignore-engines
       - run: yarn run test:integration
 
+  deploy-prod:
+    docker:
+      - image: circleci/python:3-node
+    steps:
+      - checkout
+      - run: yarn global add now
+      - run: $(yarn global bin)/now --prod --token $ZEIT_TOKEN --local-config now.json --scope ccdl
+
   deploy-staging:
     docker:
       - image: circleci/python:3-node
@@ -37,3 +45,7 @@ workflows:
           filters:
             branches:
               only: dev
+      - deploy-prod:
+          filters:
+            branches:
+              only: master
