@@ -21,7 +21,7 @@ jobs:
 
   deploy-staging:
     docker:
-      - image: circleci/node:8
+      - image: circleci/python:3-node
     steps:
       - checkout
       - run: yarn global add now
