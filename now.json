@@ -1,6 +1,7 @@
 {
   "version": 2,
   "alias": ["refinebio.now.sh"],
+  "name": "refinebio-frontend",
   "github": {
     "autoAlias": false,
     "silent": true
