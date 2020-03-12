@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "alias": ["staging.refinebio.org"],
+  "alias": ["refinebio-staging.now.sh"],
   "build": {
     "env": {
       "REACT_APP_API_HOST": "https://api.staging.refine.bio"
     }
   },
   "github": {
-    "enabled": false,
+    "autoAlias": false,
     "silent": true
   }
 }
