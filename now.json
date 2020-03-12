@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "alias": ["www.refinebio.org"],
+  "alias": ["refinebio.now.sh"],
   "github": {
-    "enabled": false,
+    "autoAlias": false,
     "silent": true
   }
 }

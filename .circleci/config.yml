@@ -25,7 +25,9 @@ jobs:
     steps:
       - checkout
       - run: yarn global add now
-      - run: $(yarn global bin)/now --prod --token $ZEIT_TOKEN --local-config now.json --scope ccdl
+      - run:
+          command: $(yarn global bin)/now --prod --token $ZEIT_TOKEN --local-config now.json --scope ccdl
+          no_output_timeout: 1h
 
   deploy-staging:
     docker:
@@ -33,7 +35,9 @@ jobs:
     steps:
       - checkout
       - run: yarn global add now
-      - run: $(yarn global bin)/now --prod --token $ZEIT_TOKEN --local-config now.staging.json --scope ccdl
+      - run:
+          command: $(yarn global bin)/now --prod --token $ZEIT_TOKEN --local-config now.staging.json --scope ccdl
+          no_output_timeout: 1h
 
 workflows:
   version: 2
