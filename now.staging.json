@@ -1,7 +1,7 @@
 {
   "version": 2,
   "public": true,
-  "alias": ["refinebio-staging.now.sh"],
+  "alias": ["staging.refine.bio"],
   "name": "refinebio-frontend",
   "build": {
     "env": {
