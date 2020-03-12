@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "alias": "refinebio",
-  "env": {
-    "REACT_APP_API_HOST": "https://api.refine.bio"
-  },
+  "public": true,
+  "alias": ["refinebio.now.sh"],
+  "name": "refinebio-frontend",
   "github": {
+    "autoAlias": false,
     "silent": true
   }
 }
