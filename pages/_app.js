@@ -48,6 +48,7 @@ export default class MyApp extends React.Component {
       this.initializeScrollRestoration();
       initializeSentry();
       initializeRouterLoading();
+      this.initializeGoogleAnalytics();
     }
   }
 
