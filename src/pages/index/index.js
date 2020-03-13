@@ -247,7 +247,7 @@ let Main = ({ push }) => {
               </div>
               <div className="main__explore-card__body">
                 refine.bio compendia are collections of samples that have been
-                processed and packaged for broad and felxible use.
+                processed and packaged for broad and flexible use.
               </div>
               <div className="main__explore-card__actions">
                 <Link href="/compendia" as="/compendia">
