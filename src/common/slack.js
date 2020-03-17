@@ -4,7 +4,7 @@
 
 // btoa(webhook_url)
 const SLACK_HOOK_URL =
-  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JCUzUyVDc5OC9UWnZZSGkzcnFyY29aSWYyaFlCVDZVdTA=';
+  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JCUzUyVDc5OC9vbTBlMWplM0ZObTJuMk5hblFHZ0pSMW4=';
 
 // get IP
 const getIP = async () => {
