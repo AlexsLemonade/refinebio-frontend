@@ -6,6 +6,7 @@
   box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1);
   padding: 24px;
   margin: 16px 0 40px;
+  position: relative;
 
   &__header-title {
     word-break: break-all;
@@ -17,6 +18,25 @@
       flex: 1;
       margin-right: 16px;
     }
+  }
+
+  &__dataset-buttons {
+    flex-direction: column;
+    justify-content: end;
+
+    .dataset-download__button {
+      margin-top: 1rem;
+
+      &.dot-label {
+        position: absolute;
+        top: -8px;
+        right: 8px;
+      }
+    }
+  }
+
+  &__dataset-buttons-samples {
+    min-width: 320px;
   }
 
   &__title {
