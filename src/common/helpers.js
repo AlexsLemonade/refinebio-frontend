@@ -359,3 +359,23 @@ export function numberFormatter(num, digits = 0) {
   }
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol;
 }
+
+/**
+ * Subscribe an email to CCDL Emails
+ *
+ * @param {*} EmailAddress
+ */
+
+export const subscribeToMailingList = async email => {
+  const portalId = '5187852';
+  const formGuid = 'ea5b970d-c22f-4b42-b569-26f84b1cea2f';
+  const formUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+  try {
+    await Ajax.post(formUrl, {
+      fields: [{ name: 'email', value: email }],
+    });
+  } catch (err) {
+    // Show error message?"
+    // console.log(err);
+  }
+};
