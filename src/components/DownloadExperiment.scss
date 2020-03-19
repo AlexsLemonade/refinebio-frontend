@@ -1,0 +1,57 @@
+.download-experiment {
+  &__button {
+    position: absolute;
+    top: 16;
+    right: 16;
+  }
+
+  &-modal {
+    max-width: 585px;
+    font-size: 1rem;
+  }
+
+  &__form {
+    padding-right: 1rem;
+
+    p {
+      &.emphasis {
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__email-input {
+    flex: 1 1 100%;
+    width: 100%;
+    .input-wrap {
+      flex: 1;
+    }
+  }
+
+  &__submit {
+    justify-content: end;
+    flex: 1;
+  }
+
+  // processing modalS
+  &__processing {
+    padding: 4rem 4rem 5rem;
+  }
+
+  &__gears-button {
+    flex-direction: column;
+  }
+
+  &__email {
+    font-weight: bold;
+  }
+
+  &__dataset-link {
+    color: #386db0;
+  }
+
+  &__close-button {
+    margin-top: 1rem;
+  }
+}
