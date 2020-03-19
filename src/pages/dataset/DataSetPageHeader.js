@@ -5,7 +5,7 @@ import { formatBytes } from '../../common/helpers';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import Button from '../../components/Button';
-import ProcessingGears from './ProcessingGears';
+import ProcessingGears from '../../components/ProcessingGears';
 import TermsOfUse from '../../components/TermsOfUse';
 import DownloadErrorImage from './dataset-error.svg';
 import { getDataSet } from '../../api/dataSet';
