@@ -78,7 +78,11 @@ export function useLocalStorage(key, initialValue) {
       setStoredValue(valueToStore);
       // Save to local storage
       if (!isServer) {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        if (valueToStore === null) {
+          window.localStorage.removeItem(key);
+        } else {
+          window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        }
       }
     } catch (error) {
       // A more advanced implementation would handle the error case
