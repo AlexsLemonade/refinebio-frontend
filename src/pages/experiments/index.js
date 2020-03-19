@@ -28,6 +28,7 @@ import Technology, { getTechnologies } from './Technology';
 import { NDownloadableSamples } from '../../components/Strings';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
+import DownloadExperiment from '../../components/DownloadExperiment';
 
 import * as routes from '../../routes';
 import { getExperiment } from '../../api/experiments';
@@ -106,18 +107,21 @@ let Experiment = ({
             <h1 className="experiment__header-title mobile-p">
               <HText>{experiment.title || 'No Title.'}</HText>
             </h1>
-            <div>
+            <div className="flex-row experiment__dataset-buttons">
               {numDownloadableSamples === 0 ? (
                 <RequestExperimentButton accessionCode={accessionCode} />
               ) : (
-                <DataSetSampleActions
-                  dataSetSlice={{
-                    [experiment.accession_code]: {
-                      all: true,
-                      total: numDownloadableSamples,
-                    },
-                  }}
-                />
+                <>
+                  <DataSetSampleActions
+                    dataSetSlice={{
+                      [experiment.accession_code]: {
+                        all: true,
+                        total: numDownloadableSamples,
+                      },
+                    }}
+                  />
+                  <DownloadExperiment experiment={experiment} showProcessing />
+                </>
               )}
             </div>
           </div>
@@ -337,14 +341,17 @@ function SamplesTableBlock({ experiment }) {
             <h2 className="experiment__title mobile-p">Samples</h2>
             <div>
               {experiment && (
-                <DataSetSampleActions
-                  dataSetSlice={{
-                    [experiment.accession_code]: {
-                      all: true,
-                      total: totalProcessedSamples,
-                    },
-                  }}
-                />
+                <div className="flex-row experiment__dataset-buttons-samples">
+                  <DownloadExperiment experiment={experiment} />
+                  <DataSetSampleActions
+                    dataSetSlice={{
+                      [experiment.accession_code]: {
+                        all: true,
+                        total: totalProcessedSamples,
+                      },
+                    }}
+                  />
+                </div>
               )}
             </div>
           </div>
