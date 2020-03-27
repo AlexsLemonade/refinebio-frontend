@@ -56,7 +56,7 @@ const DownloadExperiment = ({ experiment, showProcessing = false }) => {
         setDatasetIsProcessing(refreshedDataset.id);
       } else {
         setDataset(emptyDataset);
-        setDatasetIsProcessing(null);
+        setDatasetIsProcessing(undefined);
       }
     };
 
