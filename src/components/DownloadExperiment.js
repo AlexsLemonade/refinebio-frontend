@@ -25,11 +25,10 @@ const DownloadExperiment = ({ experiment, showProcessing = false }) => {
     num_downloadable_samples: downloadableSamplesCount,
   } = experiment;
 
-  const data = {};
-  data[experimentAccessionCode] = experiment.samples.map(s => s.accession_code);
-
   const emptyDataset = {
-    data,
+    data: {
+      [experimentAccessionCode]: experiment.samples.map(s => s.accession_code),
+    },
     aggregate_by: 'EXPERIMENT',
     quantile_normalize: true,
     scale_by: 'NONE',
@@ -37,7 +36,7 @@ const DownloadExperiment = ({ experiment, showProcessing = false }) => {
     email_ccdl_ok: false,
   };
 
-  const [dataset, setDataset] = React.useState(emptyDataset);
+  const [dataset, setDataset] = React.useState({ ...emptyDataset });
 
   const [processingDataset, setDatasetIsProcessing] = useLocalStorage(
     `dataset-${experiment.accession_code}`,
@@ -55,7 +54,7 @@ const DownloadExperiment = ({ experiment, showProcessing = false }) => {
         setDataset(refreshedDataset);
         setDatasetIsProcessing(refreshedDataset.id);
       } else {
-        setDataset(emptyDataset);
+        setDataset({ ...emptyDataset });
         setDatasetIsProcessing(undefined);
       }
     };
