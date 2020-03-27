@@ -27,237 +27,221 @@ const DatasetDownloadOptionsContext = React.createContext();
 // If you do not add children this is what will be populated
 // Notice no EMAIL
 const DefaultOptions = () => {
+  const { classPrefix } = React.useContext(DatasetDownloadOptionsContext);
   return (
-    <DatasetDownloadOptionsContext.Consumer>
-      {({ classPrefix }) => (
-        <>
-          <div className={`${classPrefix}__actions`}>
-            <div className={`${classPrefix}__fieldset`}>
-              <AggreationOptions />
-              <TransformationOptions />
-              <AdvancedOptionsToggle />
-            </div>
-            <SubmitDatasetOptionsForm />
-          </div>
-          <AdvancedOptions />
-        </>
-      )}
-    </DatasetDownloadOptionsContext.Consumer>
+    <>
+      <div className={`${classPrefix}__actions`}>
+        <div className={`${classPrefix}__fieldset`}>
+          <AggreationOptions />
+          <TransformationOptions />
+          <AdvancedOptionsToggle />
+        </div>
+        <SubmitDatasetOptionsForm />
+      </div>
+      <AdvancedOptions />
+    </>
   );
 };
 
 // Options for dataset aggregation
 export const AggreationOptions = () => {
+  const { handleChange, values, classPrefix } = React.useContext(
+    DatasetDownloadOptionsContext
+  );
   return (
-    <DatasetDownloadOptionsContext.Consumer>
-      {({ handleChange, values, classPrefix }) => (
-        <label htmlFor="aggregation" className={`${classPrefix}__label`}>
-          <div className={`${classPrefix}__label-text`}>
-            Aggregate{' '}
-            <HelpIcon
-              alt="What does aggregate mean?"
-              url="//docs.refine.bio/en/latest/main_text.html#aggregations"
-            />
-          </div>{' '}
-          <Dropdown
-            name="aggregate_by"
-            options={['EXPERIMENT', 'SPECIES']}
-            label={formatSentenceCase}
-            selectedOption={values.aggregate_by}
-            onChange={value =>
-              handleChange({ target: { name: 'aggregate_by', value } })
-            }
-          />
-        </label>
-      )}
-    </DatasetDownloadOptionsContext.Consumer>
+    <label htmlFor="aggregation" className={`${classPrefix}__label`}>
+      <div className={`${classPrefix}__label-text`}>
+        Aggregate{' '}
+        <HelpIcon
+          alt="What does aggregate mean?"
+          url="//docs.refine.bio/en/latest/main_text.html#aggregations"
+        />
+      </div>{' '}
+      <Dropdown
+        name="aggregate_by"
+        options={['EXPERIMENT', 'SPECIES']}
+        label={formatSentenceCase}
+        selectedOption={values.aggregate_by}
+        onChange={value =>
+          handleChange({ target: { name: 'aggregate_by', value } })
+        }
+      />
+    </label>
   );
 };
 
 // Options for dataset transformation
 
 export const TransformationOptions = () => {
+  const { handleChange, values, classPrefix } = React.useContext(
+    DatasetDownloadOptionsContext
+  );
   return (
-    <DatasetDownloadOptionsContext.Consumer>
-      {({ handleChange, values, classPrefix }) => (
-        <label htmlFor="transformation" className={`${classPrefix}__label`}>
-          <div className={`${classPrefix}__label-text`}>
-            Transformation{' '}
-            <HelpIcon
-              alt="What does transformation mean?"
-              url="//docs.refine.bio/en/latest/main_text.html#transformations"
-            />
-          </div>{' '}
-          <Dropdown
-            name="scale_by"
-            options={['NONE', 'MINMAX', 'STANDARD']}
-            selectedOption={values.scale_by}
-            label={getTransformationOptionFromName}
-            onChange={value =>
-              handleChange({ target: { name: 'scale_by', value } })
-            }
-          />
-        </label>
-      )}
-    </DatasetDownloadOptionsContext.Consumer>
+    <label htmlFor="transformation" className={`${classPrefix}__label`}>
+      <div className={`${classPrefix}__label-text`}>
+        Transformation{' '}
+        <HelpIcon
+          alt="What does transformation mean?"
+          url="//docs.refine.bio/en/latest/main_text.html#transformations"
+        />
+      </div>{' '}
+      <Dropdown
+        name="scale_by"
+        options={['NONE', 'MINMAX', 'STANDARD']}
+        selectedOption={values.scale_by}
+        label={getTransformationOptionFromName}
+        onChange={value =>
+          handleChange({ target: { name: 'scale_by', value } })
+        }
+      />
+    </label>
   );
 };
 
 // button with chevron to collapse advanced dataset options
 export const AdvancedOptionsToggle = () => {
+  const { showAdvancedOptions, setAdvancedOptions } = React.useContext(
+    DatasetDownloadOptionsContext
+  );
   return (
-    <DatasetDownloadOptionsContext.Consumer>
-      {({ showAdvancedOptions, setAdvancedOptions }) => (
-        <button
-          type="button"
-          className="link flex-row"
-          onClick={() => setAdvancedOptions(!showAdvancedOptions)}
-        >
-          Advanced Options{' '}
-          {showAdvancedOptions ? <IoIosArrowUp /> : <IoIosArrowDown />}
-        </button>
-      )}
-    </DatasetDownloadOptionsContext.Consumer>
+    <button
+      type="button"
+      className="link flex-row"
+      onClick={() => setAdvancedOptions(!showAdvancedOptions)}
+    >
+      Advanced Options{' '}
+      {showAdvancedOptions ? <IoIosArrowUp /> : <IoIosArrowDown />}
+    </button>
   );
 };
 
 // advanced options for now only applicable to rna-seq data
 export const AdvancedOptions = ({ hideTitle = false }) => {
+  const {
+    showAdvancedOptions,
+    values,
+    dataSetId,
+    handleChange,
+    classPrefix,
+  } = React.useContext(DatasetDownloadOptionsContext);
   return (
-    <DatasetDownloadOptionsContext.Consumer>
-      {({
-        showAdvancedOptions,
-        values,
-        dataSetId,
-        handleChange,
-        classPrefix,
-      }) =>
-        showAdvancedOptions && (
-          <div className={`${classPrefix}__advanced-options flex-row--top`}>
-            {!hideTitle && (
-              <p>
-                <b>Advanced Options {values.quantile_normalize}</b>
-              </p>
-            )}
-            <Checkbox
-              onClick={() =>
-                handleChange({
-                  target: {
-                    name: 'quantile_normalize',
-                    value: !values.quantile_normalize,
-                  },
-                })
-              }
-              checked={
-                !values.quantile_normalize && values.aggregate_by !== 'SPECIES'
-              }
-              disabled={values.aggregate_by === 'SPECIES'}
-            >
-              <span>Skip quantile normalization for RNA-seq samples</span>
-              <HelpIcon
-                alt="What does it mean to skip quantile normalization for RNA-seq samples?"
-                url="//docs.refine.bio/en/latest/faq.html#what-does-it-mean-to-skip-quantile-normalization-for-rna-seq-samples"
-              />
-            </Checkbox>
-            {!values.quantile_normalize && (
-              <Alert
-                dismissableKey={`skip_quantile_normalization_${dataSetId}`}
-              >
-                Skipping quantile normalization will make your dataset less
-                comparable to other refine.bio data
-              </Alert>
-            )}
-          </div>
-        )
-      }
-    </DatasetDownloadOptionsContext.Consumer>
+    showAdvancedOptions && (
+      <div className={`${classPrefix}__advanced-options flex-row--top`}>
+        {!hideTitle && (
+          <p>
+            <b>Advanced Options {values.quantile_normalize}</b>
+          </p>
+        )}
+        <Checkbox
+          onClick={() =>
+            handleChange({
+              target: {
+                name: 'quantile_normalize',
+                value: !values.quantile_normalize,
+              },
+            })
+          }
+          checked={
+            !values.quantile_normalize && values.aggregate_by !== 'SPECIES'
+          }
+          disabled={values.aggregate_by === 'SPECIES'}
+        >
+          <span>Skip quantile normalization for RNA-seq samples</span>
+          <HelpIcon
+            alt="What does it mean to skip quantile normalization for RNA-seq samples?"
+            url="//docs.refine.bio/en/latest/faq.html#what-does-it-mean-to-skip-quantile-normalization-for-rna-seq-samples"
+          />
+        </Checkbox>
+        {!values.quantile_normalize && (
+          <Alert dismissableKey={`skip_quantile_normalization_${dataSetId}`}>
+            Skipping quantile normalization will make your dataset less
+            comparable to other refine.bio data
+          </Alert>
+        )}
+      </div>
+    )
   );
 };
 
 export const EmailAddressOptions = ({ children }) => {
+  const {
+    touched,
+    errors,
+    values,
+    handleChange,
+    emailAddress,
+    classPrefix,
+    hasToken,
+    submitCount,
+  } = React.useContext(DatasetDownloadOptionsContext);
   return (
-    <DatasetDownloadOptionsContext.Consumer>
-      {({
-        touched,
-        errors,
-        values,
-        handleChange,
-        emailAddress,
-        classPrefix,
-        hasToken,
-        submitCount,
-      }) => (
-        <>
-          {touched.email_address && errors.email_address && (
-            <Error>{errors.email_address}</Error>
+    <>
+      {touched.email_address && errors.email_address && (
+        <Error>{errors.email_address}</Error>
+      )}
+      <div className={`${classPrefix}__email-input`}>
+        <Field
+          name="email_address"
+          type="email_address"
+          placeholder="jdoe@example.com"
+          className={classnames(
+            `input-text ${classPrefix}__email-input mobile-p`,
+            {
+              'input--error': touched.email_address && errors.email_address,
+            }
           )}
-          <div className={`${classPrefix}__email-input`}>
-            <Field
-              name="email_address"
-              type="email_address"
-              placeholder="jdoe@example.com"
-              className={classnames(
-                `input-text ${classPrefix}__email-input mobile-p`,
-                {
-                  'input--error': touched.email_address && errors.email_address,
-                }
-              )}
-            />
+        />
 
-            {children}
-          </div>
-          {!hasToken && (
-            <>
-              {submitCount > 0 && errors.acceptTerms && (
-                <Error>{errors.acceptTerms}</Error>
-              )}
-              <Checkbox
-                name="acceptTerms"
-                checked={values.acceptTerms}
-                onChange={handleChange}
-              >
-                I agree to the{' '}
-                <Link href="/terms" as="/terms">
-                  <a className="link" target="_blank" rel="noopener noreferrer">
-                    Terms of Use
-                  </a>
-                </Link>
-              </Checkbox>
-            </>
+        {children}
+      </div>
+      {!hasToken && (
+        <>
+          {submitCount > 0 && errors.acceptTerms && (
+            <Error>{errors.acceptTerms}</Error>
           )}
-          {(emailAddress === '' || values.email_address !== emailAddress) && (
-            <div>
-              <Checkbox
-                name="ccdl_email_ok"
-                checked={values.ccdl_email_ok}
-                onChange={handleChange}
-              >
-                I would like to receive occasional updates from the refine.bio
-                team
-              </Checkbox>
-            </div>
-          )}
+          <Checkbox
+            name="acceptTerms"
+            checked={values.acceptTerms}
+            onChange={handleChange}
+          >
+            I agree to the{' '}
+            <Link href="/terms" as="/terms">
+              <a className="link" target="_blank" rel="noopener noreferrer">
+                Terms of Use
+              </a>
+            </Link>
+          </Checkbox>
         </>
       )}
-    </DatasetDownloadOptionsContext.Consumer>
+      {(emailAddress === '' || values.email_address !== emailAddress) && (
+        <div>
+          <Checkbox
+            name="ccdl_email_ok"
+            checked={values.ccdl_email_ok}
+            onChange={handleChange}
+          >
+            I would like to receive occasional updates from the refine.bio team
+          </Checkbox>
+        </div>
+      )}
+    </>
   );
 };
 
 export const SubmitDatasetOptionsForm = () => {
+  const { actionText, isSubmitting, classPrefix } = React.useContext(
+    DatasetDownloadOptionsContext
+  );
   return (
-    <DatasetDownloadOptionsContext.Consumer>
-      {({ actionText, isSubmitting, classPrefix }) => (
-        <div
-          className={classnames(
-            `${classPrefix}__submit`,
-            'flex-button-container',
-            'flex-button-container--left'
-          )}
-        >
-          <Button type="submit" text={actionText} disabled={isSubmitting} />
-        </div>
+    <div
+      className={classnames(
+        `${classPrefix}__submit`,
+        'flex-button-container',
+        'flex-button-container--left'
       )}
-    </DatasetDownloadOptionsContext.Consumer>
+    >
+      <Button type="submit" text={actionText} disabled={isSubmitting} />
+    </div>
   );
 };
 
