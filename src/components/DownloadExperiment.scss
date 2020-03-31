@@ -6,8 +6,18 @@
   }
 
   &-modal {
-    max-width: 585px;
     font-size: 1rem;
+    // this is different than everywhere else
+    padding: 40px !important;
+    max-width: 585px !important;
+
+    hr {
+      display: block;
+      height: 2px;
+      background-color: #f2f2f2;
+      border-color: transparent;
+      box-shadow: none;
+    }
   }
 
   &__form {
@@ -15,10 +25,18 @@
 
     p {
       &.emphasis {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: bold;
       }
     }
+  }
+
+  &__label-text {
+    margin-bottom: 1rem;
+  }
+
+  &__checkbox {
+    margin: 12px 0;
   }
 
   &__email-input {
