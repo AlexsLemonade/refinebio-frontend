@@ -94,6 +94,71 @@ export function useLocalStorage(key, initialValue) {
 }
 
 /**
+ * Same as useLocalStrage but updates state when local storage changes
+ */
+
+export function useWatchedLocalStorage(key, initialValue) {
+  const getLocalStore = () => {
+    if (!isServer) {
+      const value = window.localStorage.getItem(key);
+      return value ? JSON.parse(value) : undefined;
+    }
+    return undefined;
+  };
+
+  const setLocalStore = newValue => {
+    console.error(newValue);
+    if (!isServer) {
+      if (newValue !== undefined) {
+        window.localStorage.setItem(key, JSON.stringify(newValue));
+      } else {
+        window.localStorage.removeItem(key);
+      }
+    }
+  };
+
+  const [value, setValue] = React.useState(
+    () => getLocalStore() || initialValue
+  );
+
+  const setValueItem = newValue => {
+    setValue(newValue);
+    setLocalStore(newValue);
+  };
+
+  React.useEffect(() => {
+    const newValue = getLocalStore();
+    if (value !== newValue) {
+      setValue(newValue || initialValue);
+    }
+  });
+
+  // handle events from other windows
+  React.useEffect(() => {
+    const handleStorage = event => {
+      const sameKey = event.key === key;
+      const newNewValue = event.newValue !== value;
+      const notNull = event.newValue !== null;
+      if (sameKey && newNewValue && notNull) {
+        setValue(JSON.parse(event.newValue));
+      }
+    };
+
+    if (!isServer) {
+      window.addEventListener('storage', handleStorage, false);
+    }
+    return () => {
+      if (!isServer) {
+        window.removeEventListener('storage', handleStorage, false);
+      }
+    };
+  }, [value, setValue, key]);
+
+  // return interface
+  return [value, setValueItem];
+}
+
+/**
  * Get a state variable that's true while passed in function is being executed asynchronously.
  * Returns array containing waiting state and wrapped function that updates waiting state.
  * @param {*} func Function that will be wrapped.
