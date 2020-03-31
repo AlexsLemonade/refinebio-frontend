@@ -14,108 +14,107 @@ import {
 
 import { getDataSet } from '../api/dataSet';
 
-import { useLocalStorage } from '../common/hooks';
+import { useLocalStorage, useWatchedLocalStorage } from '../common/hooks';
 import { getDomain } from '../common/helpers';
 
-const DownloadExperiment = ({ experiment, showProcessing = false }) => {
-  const [emailAddress] = useLocalStorage('email-address');
+// TODO: Rethink how we use email fallback to support designs
 
-  const {
-    accession_code: experimentAccessionCode,
-    num_downloadable_samples: downloadableSamplesCount,
-  } = experiment;
+// This is the hook used to manage the dataset that is being processed
+export const useExperimentDataset = experimentAccessionCode => {
+  const [emailAddress] = useLocalStorage('email-address', undefined);
 
+  // this is an empy dataset for the experiment
   const emptyDataset = {
     data: {
-      [experimentAccessionCode]: experiment.samples.map(s => s.accession_code),
+      [experimentAccessionCode]: ['ALL'],
     },
     aggregate_by: 'EXPERIMENT',
     quantile_normalize: true,
     scale_by: 'NONE',
-    email_address: undefined,
+    email_address: emailAddress,
     email_ccdl_ok: false,
   };
 
   const [dataset, setDataset] = React.useState({ ...emptyDataset });
 
-  const [processingDataset, setDatasetIsProcessing] = useLocalStorage(
-    `dataset-${experiment.accession_code}`,
-    false
+  // save datasetId to localstorage
+  const [datasetId, setDatasetId] = useWatchedLocalStorage(
+    `dataset-${experimentAccessionCode}`,
+    undefined
   );
+
+  const setDatasetToLocalStorage = newDataset => {
+    setDataset(newDataset);
+    if (newDataset.id) {
+      setDatasetId(newDataset.id);
+    } else {
+      setDatasetId(undefined);
+    }
+  };
 
   // check if dataset is being processed
   // if not clean up localstorage
   React.useEffect(() => {
-    const datasetId = dataset.id || processingDataset;
     const refreshState = async () => {
-      const refreshedDataset = await getDataSet(datasetId);
-
-      if (refreshedDataset.is_processing) {
-        setDataset(refreshedDataset);
-        setDatasetIsProcessing(refreshedDataset.id);
-      } else {
-        setDataset({ ...emptyDataset });
-        setDatasetIsProcessing(undefined);
+      const refreshedDataset = await getDataSet(dataset.id || datasetId);
+      if (refreshedDataset.is_processed) {
+        setDatasetToLocalStorage({ ...emptyDataset });
+      } else if (!dataset.id) {
+        setDatasetToLocalStorage({ ...refreshedDataset });
       }
     };
 
-    const justStarted = dataset.id !== processingDataset;
-    const wasProccessing = processingDataset && !dataset.id;
+    // it was started or we have it in localstorage
+    if (dataset.is_processing || datasetId) refreshState();
+  }, [datasetId, dataset, setDatasetToLocalStorage]);
 
-    if (datasetId && (justStarted || wasProccessing)) refreshState();
-  }, [dataset, setDataset, processingDataset, setDatasetIsProcessing]);
+  return [dataset, setDatasetToLocalStorage];
+};
 
-  // Hide this component
-  if (downloadableSamplesCount === 0) return false;
-  if (dataset.is_processing && !showProcessing) return false;
+export const DownloadExperiment = ({ experiment, dataset, setDataset }) => {
+  const { technology, samples } = experiment;
+  const hasRNASeqTechnology = Boolean(technology) && technology === 'RNA-SEQ';
+  const hasRNASeqSamples =
+    samples && samples.map(s => s.technology).includes('RNA-SEQ');
+  const hasMultipleSpecies = experiment.organism_names.length > 1;
+
+  if (dataset.is_processing) return false;
 
   return (
     <ModalManager
       modalProps={{ className: 'download-experiment-modal', center: true }}
-      component={showModal =>
-        dataset.is_processing ? (
-          <button
-            type="button"
-            onClick={showModal}
-            className="dataset-download__button dot-label dot-label--info"
-          >
-            Processing Dataset
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={showModal}
-            className="dataset-download__button button button--secondary"
-          >
-            Download Now
-          </button>
-        )
-      }
+      component={showModal => (
+        <button
+          type="button"
+          onClick={showModal}
+          className="dataset-download__button button button--secondary"
+        >
+          Download Now
+        </button>
+      )}
     >
-      {({ hideModal }) =>
-        dataset.is_processing ? (
-          <DatasetProcessingContent
-            dataset={dataset}
-            hideModal={hideModal}
-            emailAddress={emailAddress}
-          />
-        ) : (
-          <DatasetDownloadOptionsContent
-            dataset={dataset}
-            setDataset={setDataset}
-            setDatasetIsProcessing={setDatasetIsProcessing}
-          />
-        )
-      }
+      {() => (
+        <DatasetDownloadOptionsContent
+          hasRNASeq={hasRNASeqTechnology || hasRNASeqSamples}
+          hasMultipleSpecies={hasMultipleSpecies}
+          dataset={dataset}
+          setDataset={setDataset}
+        />
+      )}
     </ModalManager>
   );
 };
 
-const DatasetDownloadOptionsContent = ({ dataset, setDataset }) => {
+const DatasetDownloadOptionsContent = ({
+  hasRNASeq,
+  hasMultipleSpecies,
+  dataset,
+  setDataset,
+}) => {
   return (
     <div>
       <h1 className="mb-1">Download Options</h1>
-      <hr className="mb-1" />
+      <hr className="mb-2" />
       <DatasetDownloadOptionsForm
         dataset={dataset}
         setDataset={setDataset}
@@ -125,16 +124,20 @@ const DatasetDownloadOptionsContent = ({ dataset, setDataset }) => {
         startDownload
       >
         <>
-          <div className="flex-row mb-2">
-            <AggreationOptions />
-          </div>
+          {hasMultipleSpecies && (
+            <div className="flex-row mb-2">
+              <AggreationOptions />
+            </div>
+          )}
           <div className="flex-row mb-2">
             <TransformationOptions />
           </div>
-          <div className="flex-row mb-2">
-            <AdvancedOptions hideTitle />
-          </div>
-          <div className="flex-row mb-2">
+          {hasRNASeq && (
+            <div className="flex-row mb-2">
+              <AdvancedOptions hideTitle />
+            </div>
+          )}
+          <div className="flex-row mb-1">
             <p className="emphasis mb-1">
               Putting the download files together takes about 10-20 minutes.
               Enter your email and we will send you the download link once your
@@ -148,6 +151,34 @@ const DatasetDownloadOptionsContent = ({ dataset, setDataset }) => {
         </>
       </DatasetDownloadOptionsForm>
     </div>
+  );
+};
+
+// Show Badge while dataset is processing
+export const ProcessingExperiment = ({ dataset }) => {
+  const [emailAddress] = useLocalStorage('email-address', undefined);
+
+  return (
+    <ModalManager
+      modalProps={{ className: 'download-experiment-modal', center: true }}
+      component={showModal => (
+        <button
+          type="button"
+          onClick={showModal}
+          className="dataset-download__button dot-label dot-label--info"
+        >
+          Processing Dataset
+        </button>
+      )}
+    >
+      {({ hideModal }) => (
+        <DatasetProcessingContent
+          dataset={dataset}
+          hideModal={hideModal}
+          emailAddress={emailAddress}
+        />
+      )}
+    </ModalManager>
   );
 };
 
