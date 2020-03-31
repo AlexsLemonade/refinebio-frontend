@@ -137,7 +137,7 @@ const DatasetDownloadOptionsContent = ({
               <AdvancedOptions hideTitle />
             </div>
           )}
-          <div className="flex-row mb-1">
+          <div className="flex-row mb-2">
             <p className="emphasis mb-1">
               Putting the download files together takes about 10-20 minutes.
               Enter your email and we will send you the download link once your

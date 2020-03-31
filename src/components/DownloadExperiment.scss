@@ -36,7 +36,11 @@
   }
 
   &__checkbox {
-    margin: 12px 0;
+    margin: 8px 0 4px;
+
+    &:last-child {
+      margin-top: 0;
+    }
   }
 
   &__email-input {
