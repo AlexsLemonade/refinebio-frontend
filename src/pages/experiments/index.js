@@ -28,7 +28,11 @@ import Technology, { getTechnologies } from './Technology';
 import { NDownloadableSamples } from '../../components/Strings';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
-import DownloadExperiment from '../../components/DownloadExperiment';
+import {
+  useExperimentDataset,
+  DownloadExperiment,
+  ProcessingExperiment,
+} from '../../components/DownloadExperiment';
 
 import * as routes from '../../routes';
 import { getExperiment } from '../../api/experiments';
@@ -77,6 +81,8 @@ let Experiment = ({
   const totalSamples = experiment.samples.length;
   const numDownloadableSamples = experiment['num_downloadable_samples'];
 
+  const [dataset, setDataset] = useExperimentDataset(experiment.accession_code);
+
   return (
     <Hightlight match={comesFromSearch && query}>
       <div className="layout__content">
@@ -120,7 +126,15 @@ let Experiment = ({
                       },
                     }}
                   />
-                  <DownloadExperiment experiment={experiment} showProcessing />
+                  {!dataset.is_processing ? (
+                    <DownloadExperiment
+                      experiment={experiment}
+                      dataset={dataset}
+                      setDataset={setDataset}
+                    />
+                  ) : (
+                    <ProcessingExperiment dataset={dataset} />
+                  )}
                 </>
               )}
             </div>
@@ -270,7 +284,11 @@ let Experiment = ({
           </div>
         </div>
       </div>
-      <SamplesTableBlock experiment={experiment} />
+      <SamplesTableBlock
+        experiment={experiment}
+        dataset={dataset}
+        setDataset={setDataset}
+      />
     </Hightlight>
   );
 };
@@ -320,7 +338,7 @@ function ExperimentHeaderRow({ label, children }) {
   );
 }
 
-function SamplesTableBlock({ experiment }) {
+function SamplesTableBlock({ experiment, dataset, setDataset }) {
   const [expanded, setExpanded] = React.useState(false);
   const totalColumns = 4 + (experiment ? experiment.sample_metadata.length : 0);
   const style = expanded
@@ -342,7 +360,6 @@ function SamplesTableBlock({ experiment }) {
             <div>
               {experiment && (
                 <div className="flex-row experiment__dataset-buttons-samples">
-                  <DownloadExperiment experiment={experiment} />
                   <DataSetSampleActions
                     dataSetSlice={{
                       [experiment.accession_code]: {
@@ -351,6 +368,13 @@ function SamplesTableBlock({ experiment }) {
                       },
                     }}
                   />
+                  {!dataset.is_processing && (
+                    <DownloadExperiment
+                      experiment={experiment}
+                      dataset={dataset}
+                      setDataset={setDataset}
+                    />
+                  )}
                 </div>
               )}
             </div>
