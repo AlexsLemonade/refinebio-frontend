@@ -32,8 +32,14 @@ export async function getDataSetDetails(dataSetId, tokenId = null) {
 /**
  * Creates a new dataset
  */
-export async function createDataSet() {
-  return Ajax.post('/v1/dataset/', { data: {} });
+export async function createDataSet(email = false) {
+  const dataset = { data: {} };
+
+  if (email) {
+    dataset.email_address = email;
+  }
+
+  return Ajax.post('/v1/dataset/', dataset);
 }
 
 export async function updateDataSet(dataSetId, dataSet, details = false) {
