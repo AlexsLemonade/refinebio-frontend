@@ -195,7 +195,7 @@ export const EmailAddressOptions = ({ children }) => {
         {children}
       </div>
       {!hasToken && (
-        <>
+        <div className={`${classPrefix}__checkbox`}>
           {submitCount > 0 && errors.acceptTerms && (
             <Error>{errors.acceptTerms}</Error>
           )}
@@ -211,10 +211,10 @@ export const EmailAddressOptions = ({ children }) => {
               </a>
             </Link>
           </Checkbox>
-        </>
+        </div>
       )}
       {(emailAddress === '' || values.email_address !== emailAddress) && (
-        <div>
+        <div className={`${classPrefix}__checkbox`}>
           <Checkbox
             name="ccdl_email_ok"
             checked={values.ccdl_email_ok}
@@ -294,12 +294,12 @@ const DatasetDownloadOptionsFormComponent = ({
     if (isSubmitting) return false;
 
     try {
-      const datasetId = dataset.id || (await createDataSet()).id;
+      const datasetId =
+        dataset.id || (await createDataSet(values.email_address)).id;
 
       // update dataset with option
       const updatedDataset = await updateDataSetOptions({
         id: datasetId,
-        data: dataset.data,
         ...values,
       });
 
