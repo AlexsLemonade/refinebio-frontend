@@ -36,6 +36,7 @@
   }
 
   &__dataset-buttons-samples {
+    flex-flow: row-reverse;
     min-width: 320px;
   }
 
