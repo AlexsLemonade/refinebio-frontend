@@ -1,5 +1,9 @@
 import fetch from 'isomorphic-unfetch';
-import { ApiVersionMismatchError, ServerError } from './errors';
+import {
+  ApiVersionMismatchError,
+  ServerError,
+  EmailSubscriptionError,
+} from './errors';
 
 const isServer = typeof window === 'undefined';
 export { isServer };
@@ -370,7 +374,11 @@ export const subscribeToMailingList = async email => {
   const portalId = '5187852';
   const formGuid = 'ea5b970d-c22f-4b42-b569-26f84b1cea2f';
   const formUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
-  await Ajax.post(formUrl, {
-    fields: [{ name: 'email', value: email }],
-  });
+  try {
+    await Ajax.post(formUrl, {
+      fields: [{ name: 'email', value: email }],
+    });
+  } catch (err) {
+    throw new EmailSubscriptionError(email);
+  }
 };
