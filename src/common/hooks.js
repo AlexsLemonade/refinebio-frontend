@@ -107,7 +107,6 @@ export function useWatchedLocalStorage(key, initialValue) {
   };
 
   const setLocalStore = newValue => {
-    console.error(newValue);
     if (!isServer) {
       if (newValue !== undefined) {
         window.localStorage.setItem(key, JSON.stringify(newValue));
