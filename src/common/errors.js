@@ -31,3 +31,11 @@ export class InvalidTokenError extends ExtendableError {
     Object.setPrototypeOf(this, InvalidTokenError.prototype);
   }
 }
+
+export class EmailSubscriptionError extends ExtendableError {
+  constructor(email) {
+    super('EmailSubscriptionError');
+    this.data = email;
+    Object.setPrototypeOf(this, EmailSubscriptionError.prototype);
+  }
+}

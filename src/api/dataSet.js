@@ -32,12 +32,19 @@ export async function getDataSetDetails(dataSetId, tokenId = null) {
 /**
  * Creates a new dataset
  */
-export async function createDataSet() {
-  return Ajax.post('/v1/dataset/', { data: {} });
+export async function createDataSet(email = false) {
+  const dataset = { data: {} };
+
+  if (email) {
+    dataset.email_address = email;
+  }
+
+  return Ajax.post('/v1/dataset/', dataset);
 }
 
 export async function updateDataSet(dataSetId, dataSet, details = false) {
-  // It's not technically wrong to add a query parameter to the URL of a PUT request. ref https://github.com/AlexsLemonade/refinebio-frontend/pull/485#discussion_r246158557
+  // It's not technically wrong to add a query parameter to the URL of a PUT request.
+  // ref https://github.com/AlexsLemonade/refinebio-frontend/pull/485#discussion_r246158557
   // In this case, after a dataset is modified we'll need to fetch detailed information for it,
   // which will include the samples grouped by organism for example.
   // For a fully restfull api we could do a sepparate request for those, but that seems unnecessary
@@ -55,6 +62,14 @@ export async function updateDataSet(dataSetId, dataSet, details = false) {
         experiments: formatExperiments(result.experiments),
       }
     : result;
+}
+
+export async function updateDataSetOptions(dataset, token = false) {
+  const headers = token ? { 'API-KEY': token } : undefined;
+
+  const result = await Ajax.put(`/v1/dataset/${dataset.id}/`, dataset, headers);
+
+  return result;
 }
 
 // Takes in arrays of samples and experiments as formatted by the serializer
