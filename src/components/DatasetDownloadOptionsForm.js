@@ -245,6 +245,31 @@ export const SubmitDatasetOptionsForm = () => {
   );
 };
 
+const defaultValidation = (token, startDownload) => {
+  return yup.object().shape({
+    id: yup.string(),
+    aggregate_by: yup
+      .string()
+      .oneOf(['SPECIES', 'EXPERIMENT'])
+      .required(),
+    data: yup.object().required(), // always required
+    email_address: yup
+      .string()
+      .email('Please enter a valid email address')
+      .required(() =>
+        startDownload ? 'Please enter your email address' : false
+      ),
+    acceptTerms: yup
+      .bool()
+      .test(
+        'acceptTerms',
+        'Please accept our terms of use to process and download data',
+        value => value === true || Boolean(token)
+      ),
+    ccdl_email_ok: yup.boolean(),
+  });
+};
+
 /**
  *
  */
@@ -256,6 +281,7 @@ const DatasetDownloadOptionsFormComponent = ({
   children = false,
   advancedOptions = false,
   startDownload = false,
+  validator,
   token,
   createToken: connectedCreateToken,
 }) => {
@@ -264,31 +290,7 @@ const DatasetDownloadOptionsFormComponent = ({
   );
 
   const [emailAddress, setEmailAddress] = useLocalStorage('email-address', '');
-
-  const defaultValidation = () => {
-    return yup.object().shape({
-      id: yup.string(),
-      aggregate_by: yup
-        .string()
-        .oneOf(['SPECIES', 'EXPERIMENT'])
-        .required(),
-      data: yup.object().required(), // always required
-      email_address: yup
-        .string()
-        .email('Please enter a valid email address')
-        .required(() =>
-          startDownload ? 'Please enter your email address' : false
-        ),
-      acceptTerms: yup
-        .bool()
-        .test(
-          'acceptTerms',
-          'Please accept our terms of use to process and download data',
-          value => value === true || Boolean(token)
-        ),
-      ccdl_email_ok: yup.boolean(),
-    });
-  };
+  const validation = validator || defaultValidation(token, startDownload);
 
   const handleSubmit = async (values, { setSubmitting, isSubmitting }) => {
     if (isSubmitting) return false;
@@ -346,7 +348,7 @@ const DatasetDownloadOptionsFormComponent = ({
         ccdl_email_ok: false,
       }}
       onSubmit={handleSubmit}
-      validationSchema={defaultValidation}
+      validationSchema={validation}
     >
       {formikContext => (
         <DatasetDownloadOptionsContext.Provider
