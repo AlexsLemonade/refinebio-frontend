@@ -28,6 +28,11 @@ import Technology, { getTechnologies } from './Technology';
 import { NDownloadableSamples } from '../../components/Strings';
 import ScrollTopOnMount from '../../components/ScrollTopOnMount';
 import DataSetSampleActions from '../../components/DataSetSampleActions';
+import {
+  useExperimentDataset,
+  DownloadExperiment,
+  ProcessingExperiment,
+} from '../../components/DownloadExperiment';
 
 import * as routes from '../../routes';
 import { getExperiment } from '../../api/experiments';
@@ -76,6 +81,8 @@ let Experiment = ({
   const totalSamples = experiment.samples.length;
   const numDownloadableSamples = experiment['num_downloadable_samples'];
 
+  const [dataset, setDataset] = useExperimentDataset(experiment.accession_code);
+
   return (
     <Hightlight match={comesFromSearch && query}>
       <div className="layout__content">
@@ -106,18 +113,29 @@ let Experiment = ({
             <h1 className="experiment__header-title mobile-p">
               <HText>{experiment.title || 'No Title.'}</HText>
             </h1>
-            <div>
+            <div className="flex-row experiment__dataset-buttons">
               {numDownloadableSamples === 0 ? (
                 <RequestExperimentButton accessionCode={accessionCode} />
               ) : (
-                <DataSetSampleActions
-                  dataSetSlice={{
-                    [experiment.accession_code]: {
-                      all: true,
-                      total: numDownloadableSamples,
-                    },
-                  }}
-                />
+                <>
+                  <DataSetSampleActions
+                    dataSetSlice={{
+                      [experiment.accession_code]: {
+                        all: true,
+                        total: numDownloadableSamples,
+                      },
+                    }}
+                  />
+                  {!dataset.is_processing ? (
+                    <DownloadExperiment
+                      experiment={experiment}
+                      dataset={dataset}
+                      setDataset={setDataset}
+                    />
+                  ) : (
+                    <ProcessingExperiment dataset={dataset} />
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -266,7 +284,11 @@ let Experiment = ({
           </div>
         </div>
       </div>
-      <SamplesTableBlock experiment={experiment} />
+      <SamplesTableBlock
+        experiment={experiment}
+        dataset={dataset}
+        setDataset={setDataset}
+      />
     </Hightlight>
   );
 };
@@ -316,7 +338,7 @@ function ExperimentHeaderRow({ label, children }) {
   );
 }
 
-function SamplesTableBlock({ experiment }) {
+function SamplesTableBlock({ experiment, dataset, setDataset }) {
   const [expanded, setExpanded] = React.useState(false);
   const totalColumns = 4 + (experiment ? experiment.sample_metadata.length : 0);
   const style = expanded
@@ -337,14 +359,23 @@ function SamplesTableBlock({ experiment }) {
             <h2 className="experiment__title mobile-p">Samples</h2>
             <div>
               {experiment && (
-                <DataSetSampleActions
-                  dataSetSlice={{
-                    [experiment.accession_code]: {
-                      all: true,
-                      total: totalProcessedSamples,
-                    },
-                  }}
-                />
+                <div className="flex-row experiment__dataset-buttons-samples">
+                  <DataSetSampleActions
+                    dataSetSlice={{
+                      [experiment.accession_code]: {
+                        all: true,
+                        total: totalProcessedSamples,
+                      },
+                    }}
+                  />
+                  {!dataset.is_processing && (
+                    <DownloadExperiment
+                      experiment={experiment}
+                      dataset={dataset}
+                      setDataset={setDataset}
+                    />
+                  )}
+                </div>
               )}
             </div>
           </div>

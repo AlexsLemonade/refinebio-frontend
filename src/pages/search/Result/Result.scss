@@ -45,6 +45,24 @@
     display: block;
   }
 
+  &__dataset-buttons {
+    flex-direction: column;
+    justify-content: flex-end;
+    align-content: end;
+    position: relative;
+    min-height: 90px;
+    min-width: 180px;
+
+    .dataset-download__button {
+      margin-top: 1rem;
+
+      &.dot-label {
+        position: absolute;
+        top: 0;
+      }
+    }
+  }
+
   &__stats {
     border-top: 1px solid $gray;
     display: flex;

@@ -18,9 +18,16 @@ import TechnologyBadge, {
 import { NDownloadableSamples } from '../../../components/Strings';
 
 import RequestExperimentButton from '../../experiments/RequestExperimentButton';
+import {
+  useExperimentDataset,
+  DownloadExperiment,
+  ProcessingExperiment,
+} from '../../../components/DownloadExperiment';
 
 const Result = ({ result, query }) => {
   const metadataFields = getMetadataFields(result.sample_metadata_fields);
+
+  const [dataset, setDataset] = useExperimentDataset(result.accession_code);
 
   return (
     <div className="result">
@@ -50,18 +57,31 @@ const Result = ({ result, query }) => {
           </Link>
         </div>
 
-        {result.num_downloadable_samples === 0 ? (
-          <RequestExperimentButton accessionCode={result.accession_code} />
-        ) : (
-          <DataSetSampleActions
-            dataSetSlice={{
-              [result.accession_code]: {
-                all: true,
-                total: result.num_downloadable_samples,
-              },
-            }}
-          />
-        )}
+        <div className="flex-row result__dataset-buttons">
+          {result.num_downloadable_samples === 0 ? (
+            <RequestExperimentButton accessionCode={result.accession_code} />
+          ) : (
+            <>
+              <DataSetSampleActions
+                dataSetSlice={{
+                  [result.accession_code]: {
+                    all: true,
+                    total: result.num_downloadable_samples,
+                  },
+                }}
+              />
+              {!dataset.is_processing ? (
+                <DownloadExperiment
+                  experiment={result}
+                  dataset={dataset}
+                  setDataset={setDataset}
+                />
+              ) : (
+                <ProcessingExperiment dataset={dataset} />
+              )}
+            </>
+          )}
+        </div>
       </div>
       <ul className="result__stats">
         <li className="result__stat">

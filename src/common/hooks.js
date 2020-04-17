@@ -78,7 +78,11 @@ export function useLocalStorage(key, initialValue) {
       setStoredValue(valueToStore);
       // Save to local storage
       if (!isServer) {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        if (valueToStore === undefined) {
+          window.localStorage.removeItem(key);
+        } else {
+          window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        }
       }
     } catch (error) {
       // A more advanced implementation would handle the error case
@@ -87,6 +91,70 @@ export function useLocalStorage(key, initialValue) {
   };
 
   return [storedValue, setValue];
+}
+
+/**
+ * Same as useLocalStrage but updates state when local storage changes
+ */
+
+export function useWatchedLocalStorage(key, initialValue) {
+  const getLocalStore = () => {
+    if (!isServer) {
+      const value = window.localStorage.getItem(key);
+      return value ? JSON.parse(value) : undefined;
+    }
+    return undefined;
+  };
+
+  const setLocalStore = newValue => {
+    if (!isServer) {
+      if (newValue !== undefined) {
+        window.localStorage.setItem(key, JSON.stringify(newValue));
+      } else {
+        window.localStorage.removeItem(key);
+      }
+    }
+  };
+
+  const [value, setValue] = React.useState(
+    () => getLocalStore() || initialValue
+  );
+
+  const setValueItem = newValue => {
+    setValue(newValue);
+    setLocalStore(newValue);
+  };
+
+  React.useEffect(() => {
+    const newValue = getLocalStore();
+    if (value !== newValue) {
+      setValue(newValue || initialValue);
+    }
+  });
+
+  // handle events from other windows
+  React.useEffect(() => {
+    const handleStorage = event => {
+      const sameKey = event.key === key;
+      const newNewValue = event.newValue !== value;
+      const notNull = event.newValue !== null;
+      if (sameKey && newNewValue && notNull) {
+        setValue(JSON.parse(event.newValue));
+      }
+    };
+
+    if (!isServer) {
+      window.addEventListener('storage', handleStorage, false);
+    }
+    return () => {
+      if (!isServer) {
+        window.removeEventListener('storage', handleStorage, false);
+      }
+    };
+  }, [value, setValue, key]);
+
+  // return interface
+  return [value, setValueItem];
 }
 
 /**

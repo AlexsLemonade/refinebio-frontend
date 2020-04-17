@@ -1,0 +1,79 @@
+.download-experiment {
+  &__button {
+    position: absolute;
+    top: 16;
+    right: 16;
+  }
+
+  &-modal {
+    font-size: 1rem;
+    // this is different than everywhere else
+    padding: 40px !important;
+    max-width: 585px !important;
+
+    hr {
+      display: block;
+      height: 2px;
+      background-color: #f2f2f2;
+      border-color: transparent;
+      box-shadow: none;
+    }
+  }
+
+  &__form {
+    padding-right: 1rem;
+
+    p {
+      &.emphasis {
+        font-size: 1rem;
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__label-text {
+    margin-bottom: 1rem;
+  }
+
+  &__checkbox {
+    margin: 8px 0 4px;
+
+    &:last-child {
+      margin-top: 0;
+    }
+  }
+
+  &__email-input {
+    flex: 1 1 100%;
+    width: 100%;
+    .input-wrap {
+      flex: 1;
+    }
+  }
+
+  &__submit {
+    justify-content: end;
+    flex: 1;
+  }
+
+  // processing modalS
+  &__processing {
+    padding: 4rem 4rem 5rem;
+  }
+
+  &__gears-button {
+    flex-direction: column;
+  }
+
+  &__email {
+    font-weight: bold;
+  }
+
+  &__dataset-link {
+    color: #386db0;
+  }
+
+  &__close-button {
+    margin-top: 1rem;
+  }
+}
