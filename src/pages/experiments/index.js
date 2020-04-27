@@ -347,7 +347,9 @@ function SamplesTableBlock({ experiment, dataset, setDataset }) {
   const totalProcessedSamples = experiment
     ? experiment.samples.filter(x => x.is_processed).length
     : 0;
-  const numDownloadableSamples = experiment['num_downloadable_samples'];
+  const numDownloadableSamples = experiment
+    ? experiment['num_downloadable_samples']
+    : 0;
 
   return (
     <div
