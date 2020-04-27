@@ -347,6 +347,7 @@ function SamplesTableBlock({ experiment, dataset, setDataset }) {
   const totalProcessedSamples = experiment
     ? experiment.samples.filter(x => x.is_processed).length
     : 0;
+  const numDownloadableSamples = experiment['num_downloadable_samples'];
 
   return (
     <div
@@ -358,7 +359,7 @@ function SamplesTableBlock({ experiment, dataset, setDataset }) {
           <div className="experiment__header">
             <h2 className="experiment__title mobile-p">Samples</h2>
             <div>
-              {experiment && (
+              {experiment && numDownloadableSamples > 0 && (
                 <div className="flex-row experiment__dataset-buttons-samples">
                   <DataSetSampleActions
                     dataSetSlice={{
