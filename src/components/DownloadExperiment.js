@@ -23,6 +23,11 @@ import { getDomain } from '../common/helpers';
 export const useExperimentDataset = experimentAccessionCode => {
   const [emailAddress] = useLocalStorage('email-address', undefined);
 
+  const [shownProcessingModals, setShownProcessingModals] = useLocalStorage(
+    'shown-procesing-modals',
+    []
+  );
+
   // this is an empy dataset for the experiment
   const emptyDataset = {
     data: {
@@ -59,6 +64,11 @@ export const useExperimentDataset = experimentAccessionCode => {
       const refreshedDataset = await getDataSet(dataset.id || datasetId);
       if (refreshedDataset.is_processed) {
         setDatasetToLocalStorage({ ...emptyDataset });
+        // remove dataset id the best we can
+        const newModals = shownProcessingModals.filter(
+          datasetId => datasetId !== refreshedDataset.id
+        );
+        setShownProcessingModals(newModals);
       } else if (!dataset.id) {
         setDatasetToLocalStorage({ ...refreshedDataset });
       }
@@ -68,7 +78,12 @@ export const useExperimentDataset = experimentAccessionCode => {
     if (dataset.is_processing || datasetId) refreshState();
   }, [datasetId, dataset, setDatasetToLocalStorage]);
 
-  return [dataset, setDatasetToLocalStorage];
+  return [
+    dataset,
+    setDatasetToLocalStorage,
+    shownProcessingModals,
+    setShownProcessingModals,
+  ];
 };
 
 export const DownloadExperiment = ({ experiment, dataset, setDataset }) => {
@@ -157,9 +172,22 @@ const DatasetDownloadOptionsContent = ({
 // Show Badge while dataset is processing
 export const ProcessingExperiment = ({ dataset }) => {
   const [emailAddress] = useLocalStorage('email-address', undefined);
+  const [shownProcessingModals, setShownProcessingModals] = useLocalStorage(
+    'shown-procesing-modals',
+    []
+  );
+
+  React.useEffect(() => {
+    if (!shownProcessingModals.includes(dataset.id)) {
+      setShownProcessingModals([...shownProcessingModals, dataset.id]);
+    }
+  });
+
+  const showWhenStarting = !shownProcessingModals.includes(dataset.id);
 
   return (
     <ModalManager
+      defaultOpen={showWhenStarting}
       modalProps={{ className: 'download-experiment-modal', center: true }}
       component={showModal => (
         <button
