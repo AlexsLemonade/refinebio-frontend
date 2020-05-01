@@ -29,7 +29,7 @@ export default class ModalManager extends React.Component {
   };
 
   state = {
-    modalOpen: false,
+    modalOpen: this.props.defaultOpen || false,
     childOpen: false,
   };
 
