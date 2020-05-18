@@ -284,11 +284,7 @@ let Experiment = ({
           </div>
         </div>
       </div>
-      <SamplesTableBlock
-        experiment={experiment}
-        dataset={dataset}
-        setDataset={setDataset}
-      />
+      <SamplesTableBlock experiment={experiment} />
     </Hightlight>
   );
 };
@@ -338,7 +334,7 @@ function ExperimentHeaderRow({ label, children }) {
   );
 }
 
-function SamplesTableBlock({ experiment, dataset, setDataset }) {
+function SamplesTableBlock({ experiment }) {
   const [expanded, setExpanded] = React.useState(false);
   const totalColumns = 4 + (experiment ? experiment.sample_metadata.length : 0);
   const style = expanded
@@ -371,13 +367,6 @@ function SamplesTableBlock({ experiment, dataset, setDataset }) {
                       },
                     }}
                   />
-                  {!dataset.is_processing && (
-                    <DownloadExperiment
-                      experiment={experiment}
-                      dataset={dataset}
-                      setDataset={setDataset}
-                    />
-                  )}
                 </div>
               )}
             </div>
