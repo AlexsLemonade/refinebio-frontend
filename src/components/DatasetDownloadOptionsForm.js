@@ -82,7 +82,7 @@ export const TransformationOptions = () => {
         Transformation{' '}
         <HelpIcon
           alt="What does transformation mean?"
-          url="//docs.refine.bio/en/latest/main_text.html#transformations"
+          url="//docs.refine.bio/en/latest/main_text.html#gene-transformations"
         />
       </div>{' '}
       <Dropdown
