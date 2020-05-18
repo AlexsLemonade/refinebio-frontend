@@ -128,7 +128,7 @@ const DatasetDownloadOptionsContent = ({
 }) => {
   return (
     <div>
-      <h1 className="mb-1">Download Options</h1>
+      <h1 className="mb-1">Download All Samples Now</h1>
       <hr className="mb-2" />
       <DatasetDownloadOptionsForm
         dataset={dataset}
@@ -139,6 +139,7 @@ const DatasetDownloadOptionsContent = ({
         startDownload
       >
         <>
+          <p className="emphasis mb-2">Download Options</p>
           {hasMultipleSpecies && (
             <div className="flex-row mb-2">
               <AggreationOptions />
