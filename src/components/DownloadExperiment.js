@@ -129,7 +129,7 @@ const DatasetDownloadOptionsContent = ({
   return (
     <div>
       <h1 className="mb-1">Download All Samples Now</h1>
-      <hr className="mb-2" />
+      <hr className="mb-1-5" />
       <DatasetDownloadOptionsForm
         dataset={dataset}
         setDataset={setDataset}
