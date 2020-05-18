@@ -23,6 +23,7 @@
   &__dataset-buttons {
     flex-direction: column;
     justify-content: end;
+    align-items: end;
 
     .dataset-download__button {
       margin-top: 1rem;

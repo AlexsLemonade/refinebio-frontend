@@ -97,7 +97,7 @@ export function RemoveFromDatasetButton({
       {samplesInDataset && (
         <p className="dataset-remove-button__info-text">
           <IoIosInformationCircle className="dataset-remove-button__info-icon" />{' '}
-          {samplesInDataset} Samples are already in Dataset
+          {samplesInDataset} Samples already in My Dataset
         </p>
       )}
     </div>
@@ -122,7 +122,7 @@ function AddRemainingSamples({ onAdd, totalSamplesInDataset }) {
       <Button text="Add Remaining" buttonStyle="secondary" onClick={onAdd} />
       <p className="dataset-add-button__info-text">
         <IoIosInformationCircle className="dataset-remove-button__info-icon" />{' '}
-        {totalSamplesInDataset} Samples are already in Dataset
+        {totalSamplesInDataset} Samples already in My Dataset
       </p>
     </div>
   );
