@@ -4,7 +4,7 @@ import { useLocalStorage } from '../../common/hooks';
 import Button from '../../components/Button';
 import PageModal from '../../components/Modal/PageModal';
 import RequestDataForm from '../../components/RequestDataForm';
-import { submitExperimentDataRequest } from '../../common/slack';
+import { submitExperimentDataRequest } from '../../common/github';
 
 export default function RequestExperimentButton({ accessionCode }) {
   const [requestOpen, setRequestOpen] = React.useState(false);
@@ -50,7 +50,7 @@ export default function RequestExperimentButton({ accessionCode }) {
                   Request Experiment '{accessionCode}'
                 </h1>
                 <p className="mb-2">
-                  Help us priortize your request by answering these questions.
+                  Help us prioritize your request by answering these questions.
                 </p>
               </>
             )}
