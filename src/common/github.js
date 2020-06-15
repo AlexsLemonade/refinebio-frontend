@@ -19,7 +19,7 @@ export async function createIssue(params) {
 }
 
 export async function submitExperimentDataRequestGithub(accessionCode) {
-  await createIssue({
+  return createIssue({
     title: `Dataset Request ${accessionCode}`,
     body: `### Context\r\n\r\nA user requested [${accessionCode}](https://www.refine.bio/experiments/${accessionCode})
         \r\n\r\n### Problem or idea\r\n\r\n(Add description of experiment/problem here)
