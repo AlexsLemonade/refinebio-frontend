@@ -4,7 +4,8 @@
 
 // btoa(webhook_url)
 const SLACK_HOOK_URL =
-  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JCUzUyVDc5OC9vbTBlMWplM0ZObTJuMk5hblFHZ0pSMW4=';
+  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JOOUpVNFBUNi92R3VCZHJLY2c2RXZmOGJmNmlHdmlJNzE=';
+// Actual webhook: 'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JCUzUyVDc5OC9vbTBlMWplM0ZObTJuMk5hblFHZ0pSMW4=';
 
 // get IP
 const getIP = async () => {
@@ -78,7 +79,7 @@ export async function submitSearchDataRequest(query, values) {
   });
 }
 
-export async function submitExperimentDataRequest(accessionCode, values) {
+export async function submitExperimentDataRequestSlack(accessionCode, values) {
   const ip = await getIP();
   await postToSlack({
     attachments: [

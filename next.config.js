@@ -11,6 +11,7 @@ module.exports = withImages(
     target: 'serverless',
     env: {
       REACT_APP_API_HOST: ApiHost,
+      GITHUB_TOKEN: process.env.GITHUB_TOKEN,
     },
     webpack: (config, { isServer, dev, webpack }) => {
       // add custom webpack config only for the client side in production
