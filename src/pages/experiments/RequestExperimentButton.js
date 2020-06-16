@@ -4,7 +4,9 @@ import { useLocalStorage } from '../../common/hooks';
 import Button from '../../components/Button';
 import PageModal from '../../components/Modal/PageModal';
 import RequestDataForm from '../../components/RequestDataForm';
-import { submitExperimentDataRequest } from '../../common/slack';
+import { submitExperimentDataRequestSlack } from '../../common/slack';
+import { submitExperimentDataRequestGithub } from '../../common/github';
+import { submitExperimentDataRequestHubspot } from '../../common/hubspot';
 
 export default function RequestExperimentButton({ accessionCode }) {
   const [requestOpen, setRequestOpen] = React.useState(false);
@@ -35,13 +37,24 @@ export default function RequestExperimentButton({ accessionCode }) {
             useMissingDataImage={false}
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
-              // 1. report to slack
-              await submitExperimentDataRequest(accessionCode, values);
+              // 1. create GitHub issue for refinebio repo
+              const response = await submitExperimentDataRequestGithub(
+                accessionCode
+              );
 
-              // 2. mark experiment as requested in local storage
+              // If authorization fails, then send to Slack instead (should probably change to != 200 later)
+              if (response.status !== 200) {
+                // console.log(`Failed to connect to GitHub (error ${response.status})`);
+                await submitExperimentDataRequestSlack(accessionCode, values);
+              }
+
+              // 2. add contact to HubSpot list
+              await submitExperimentDataRequestHubspot(accessionCode, values);
+
+              // 3. mark experiment as requested in local storage
               setRequestedExperiments([...requestedExperiments, accessionCode]);
 
-              // 3. close page
+              // 4. close page
               setRequestOpen(false);
             }}
             renderHeader={() => (
@@ -50,7 +63,7 @@ export default function RequestExperimentButton({ accessionCode }) {
                   Request Experiment '{accessionCode}'
                 </h1>
                 <p className="mb-2">
-                  Help us priortize your request by answering these questions.
+                  Help us prioritize your request by answering these questions.
                 </p>
               </>
             )}
