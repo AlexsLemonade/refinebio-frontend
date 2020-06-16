@@ -6,7 +6,7 @@ import PageModal from '../../components/Modal/PageModal';
 import RequestDataForm from '../../components/RequestDataForm';
 import { submitExperimentDataRequestSlack } from '../../common/slack';
 import { submitExperimentDataRequestGithub } from '../../common/github';
-// import { submitExperimentDataRequestHubspot } from '../../common/hubspot';
+import { submitExperimentDataRequestHubspot } from '../../common/hubspot';
 
 export default function RequestExperimentButton({ accessionCode }) {
   const [requestOpen, setRequestOpen] = React.useState(false);
@@ -43,13 +43,13 @@ export default function RequestExperimentButton({ accessionCode }) {
               );
 
               // If authorization fails, then send to Slack instead (should probably change to != 200 later)
-              if (response.status === 401) {
-                // console.log("Authorization to GitHub failed");
+              if (response.status !== 200) {
+                // console.log(`Failed to connect to GitHub (error ${response.status})`);
                 await submitExperimentDataRequestSlack(accessionCode, values);
               }
 
-              // 2. add email to HubSpot list
-              // await submitExperimentDataRequestHubspot(accessionCode, values);
+              // 2. add contact to HubSpot list
+              await submitExperimentDataRequestHubspot(accessionCode, values);
 
               // 3. mark experiment as requested in local storage
               setRequestedExperiments([...requestedExperiments, accessionCode]);
