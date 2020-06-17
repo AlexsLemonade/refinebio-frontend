@@ -42,7 +42,6 @@ export default function RequestExperimentButton({ accessionCode }) {
                 accessionCode
               );
 
-              // If authorization fails, then send to Slack instead (should probably change to != 200 later)
               if (response.status !== 200) {
                 // console.log(`Failed to connect to GitHub (error ${response.status})`);
                 await submitExperimentDataRequestSlack(accessionCode, values);
