@@ -4,9 +4,9 @@ import { useLocalStorage } from '../../common/hooks';
 import Button from '../../components/Button';
 import PageModal from '../../components/Modal/PageModal';
 import RequestDataForm from '../../components/RequestDataForm';
-import { submitExperimentDataRequestSlack } from '../../common/slack';
-import { submitExperimentDataRequestGithub } from '../../common/github';
-import { submitExperimentDataRequestHubspot } from '../../common/hubspot';
+import { submitExperimentDataRequest as slackRequest } from '../../common/slack';
+import { submitExperimentDataRequest as githubRequest } from '../../common/github';
+import { submitExperimentDataRequest as hubspotRequest } from '../../common/hubspot';
 
 export default function RequestExperimentButton({ accessionCode }) {
   const [requestOpen, setRequestOpen] = React.useState(false);
@@ -38,17 +38,15 @@ export default function RequestExperimentButton({ accessionCode }) {
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
               // 1. create GitHub issue for refinebio repo
-              const response = await submitExperimentDataRequestGithub(
-                accessionCode
-              );
+              const response = await githubRequest(accessionCode);
 
-              if (response.status !== 200) {
-                // console.log(`Failed to connect to GitHub (error ${response.status})`);
-                await submitExperimentDataRequestSlack(accessionCode, values);
+              // Send to slack instead if GitHub request failed
+              if (!response.ok) {
+                await slackRequest(accessionCode, values);
               }
 
               // 2. add contact to HubSpot list
-              await submitExperimentDataRequestHubspot(accessionCode, values);
+              await hubspotRequest(accessionCode, values);
 
               // 3. mark experiment as requested in local storage
               setRequestedExperiments([...requestedExperiments, accessionCode]);

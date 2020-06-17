@@ -79,7 +79,7 @@ export async function submitSearchDataRequest(query, values) {
   });
 }
 
-export async function submitExperimentDataRequestSlack(accessionCode, values) {
+export async function submitExperimentDataRequest(accessionCode, values) {
   const ip = await getIP();
   await postToSlack({
     attachments: [
