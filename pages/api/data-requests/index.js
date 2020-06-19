@@ -13,7 +13,7 @@ export default async (req, res) => {
   } = req
   
   switch (method) {
-    case 'POST':
+    case 'POST': {
       let githubResponse;
       let hubspotResponse;
 
@@ -55,9 +55,11 @@ export default async (req, res) => {
       }
 
       break
-    default:
+    }
+    default: {
       res.setHeader('Allow', ['POST'])
       res.status(405).end(`Method ${method} Not Allowed`)
+    }
   }
 
   res.end();
