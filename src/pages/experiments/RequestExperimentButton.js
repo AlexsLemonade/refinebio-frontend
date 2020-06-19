@@ -4,9 +4,7 @@ import { useLocalStorage } from '../../common/hooks';
 import Button from '../../components/Button';
 import PageModal from '../../components/Modal/PageModal';
 import RequestDataForm from '../../components/RequestDataForm';
-import { submitExperimentDataRequest as slackRequest } from '../../common/slack';
-import { submitExperimentDataRequest as githubRequest } from '../../common/github';
-import { submitExperimentDataRequest as hubspotRequest } from '../../common/hubspot';
+import { dataRequest } from '../../api/requests';
 
 export default function RequestExperimentButton({ accessionCode }) {
   const [requestOpen, setRequestOpen] = React.useState(false);
@@ -37,21 +35,13 @@ export default function RequestExperimentButton({ accessionCode }) {
             useMissingDataImage={false}
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
-              // 1. create GitHub issue for refinebio repo
-              const response = await githubRequest(accessionCode);
+              // 1. send experiment request, which takes the accession code and values from the form
+              dataRequest({ accessionCode, values });
 
-              // Send to slack instead if GitHub request failed
-              if (!response.ok) {
-                await slackRequest(accessionCode, values);
-              }
-
-              // 2. add contact to HubSpot list
-              await hubspotRequest(accessionCode, values);
-
-              // 3. mark experiment as requested in local storage
+              // 2. mark experiment as requested in local storage
               setRequestedExperiments([...requestedExperiments, accessionCode]);
 
-              // 4. close page
+              // 3. close page
               setRequestOpen(false);
             }}
             renderHeader={() => (

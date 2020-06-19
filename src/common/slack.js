@@ -2,10 +2,7 @@
  * This file contains helper methods that post to the CCDL slack channel
  */
 
-// btoa(webhook_url)
-const SLACK_HOOK_URL =
-  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JOOUpVNFBUNi92R3VCZHJLY2c2RXZmOGJmNmlHdmlJNzE=';
-// Actual webhook: 'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JCUzUyVDc5OC9vbTBlMWplM0ZObTJuMk5hblFHZ0pSMW4=';
+const { SLACK_HOOK_URL } = process.env;
 
 // get IP
 const getIP = async () => {
@@ -23,13 +20,13 @@ const getIP = async () => {
  * @param {object} params Slack webhooks params
  */
 export async function postToSlack(params) {
-  return fetch(atob(SLACK_HOOK_URL), {
+  return fetch(SLACK_HOOK_URL, {
     method: 'POST',
     body: JSON.stringify(params),
   });
 }
 
-export async function submitSearchDataRequest(query, values) {
+export async function submitSearchDataRequest(query, values, failedRequest) {
   const ip = await getIP();
   await postToSlack({
     attachments: [
@@ -71,7 +68,9 @@ export async function submitSearchDataRequest(query, values) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
+        footer: `Refine.bio | ${ip} | ${
+          navigator.userAgent
+        } | This message was sent because the request to ${failedRequest} failed`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },
@@ -79,7 +78,11 @@ export async function submitSearchDataRequest(query, values) {
   });
 }
 
-export async function submitExperimentDataRequest(accessionCode, values) {
+export async function submitExperimentDataRequest(
+  accessionCode,
+  values,
+  failedRequest
+) {
   const ip = await getIP();
   await postToSlack({
     attachments: [
@@ -116,7 +119,9 @@ export async function submitExperimentDataRequest(accessionCode, values) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
+        footer: `Refine.bio | ${ip} | ${
+          navigator.userAgent
+        } | This message was sent because the request to ${failedRequest} failed`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },

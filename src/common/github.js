@@ -2,7 +2,8 @@
  * This file contains helper methods that create new GitHub requests
  */
 
-const GITHUB_URL = 'https://api.github.com/repos/BEW111/testrepo/issues'; // Change to actual repo once done
+// btoa
+const GITHUB_URL = 'https://api.github.com/repos/BEW111/testrepo/issues'; // this is a test github repo, change to actual repo once done
 const { GITHUB_TOKEN } = process.env;
 
 // Sends an issue to GitHub

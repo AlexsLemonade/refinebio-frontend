@@ -3,20 +3,15 @@
  */
 
 // ID for HubSpot list that contacts should be added to (currently goes to a test list)
-const LIST_ID = '1';
-const HUBSPOT_LIST_URL = `https://api.hubapi.com/contacts/v1/lists/${LIST_ID}`;
-
-// const HUBSPOT_TOKEN = process.env.HUBSPOT_TOKEN;
-const HAPIKEY = '8b29bb28-7ae7-4815-9975-2c05d0326b74'; // using personal api key for now will delete later
-const PROXY_URL = 'https://cors-anywhere.herokuapp.com/'; // idk if this is the best way to do this but this fixes the problem with CORS
+const LIST_ID = '1'; // this is a test list ID, change to actual list ID once done
+const { HUBSPOT_APIKEY } = process.env;
 
 export async function createContact(params) {
   return fetch(
-    `${PROXY_URL}https://api.hubapi.com/contacts/v1/contact/?hapikey=${HAPIKEY}`,
+    `https://api.hubapi.com/contacts/v1/contact/?hapikey=${HUBSPOT_APIKEY}`,
     {
       method: 'POST',
       headers: {
-        // Authorization: `Bearer ${HUBSPOT_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(params),
@@ -25,13 +20,16 @@ export async function createContact(params) {
 }
 
 export async function addToContactList(params) {
-  return fetch(`${PROXY_URL + HUBSPOT_LIST_URL}/add?hapikey=${HAPIKEY}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
+  return fetch(
+    `https://api.hubapi.com/contacts/v1/lists/${LIST_ID}/add?hapikey=${HUBSPOT_APIKEY}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    }
+  );
 }
 
 export async function getContact(email) {
@@ -39,7 +37,7 @@ export async function getContact(email) {
   let status;
 
   await fetch(
-    `${PROXY_URL}https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${HAPIKEY}`,
+    `https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${HUBSPOT_APIKEY}`,
     {
       method: 'GET',
       headers: {
@@ -52,8 +50,10 @@ export async function getContact(email) {
       return response.json();
     })
     .then(data => {
-      if (data && data.properties.dataset_request_details) {
-        datasetRequestDetails = data.properties.dataset_request_details.value;
+      if (data.status !== 'error') {
+        if (data.properties.dataset_request_details) {
+          datasetRequestDetails = data.properties.dataset_request_details.value;
+        }
       }
     });
   return {
@@ -64,7 +64,7 @@ export async function getContact(email) {
 
 export async function updateContact(email, params) {
   await fetch(
-    `${PROXY_URL}https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${HAPIKEY}`,
+    `https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${HUBSPOT_APIKEY}`,
     {
       method: 'POST',
       headers: {
@@ -118,7 +118,7 @@ export async function updateContactList(email, newDetails) {
   }
 
   // Add that contact to the list
-  await addToContactList({
+  return addToContactList({
     emails: [email],
   });
 }
@@ -136,7 +136,7 @@ export async function submitSearchDataRequest(query, values) {
       : '(Does not want email updates)'
   }\nSubmitted ${new Date().toLocaleString()}`;
 
-  updateContactList(values.email, newDetails);
+  return updateContactList(values.email, newDetails);
 }
 
 export async function submitExperimentDataRequest(accessionCode, values) {
@@ -150,5 +150,5 @@ export async function submitExperimentDataRequest(accessionCode, values) {
       : '(Does not want email updates)'
   }\nSubmitted ${new Date().toLocaleString()}`;
 
-  updateContactList(values.email, newDetails);
+  return updateContactList(values.email, newDetails);
 }

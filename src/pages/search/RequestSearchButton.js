@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import { Field } from 'formik';
 import { push } from '../../state/routerActions';
 import Button from '../../components/Button';
-import { submitSearchDataRequest as slackRequest } from '../../common/slack';
-import { submitSearchDataRequest as githubRequest } from '../../common/github';
-import { submitSearchDataRequest as hubspotRequest } from '../../common/hubspot';
 import PageModal from '../../components/Modal/PageModal';
 import RequestDataForm from '../../components/RequestDataForm';
+import { dataRequest } from '../../api/requests';
 
 let RequestSearchButton = ({ query, push }) => {
   const [requestOpen, setRequestOpen] = React.useState(false);
@@ -28,17 +26,10 @@ let RequestSearchButton = ({ query, push }) => {
           <RequestDataForm
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
-              // 1. report to GitHub
-              const response = await githubRequest(queryParam, values);
+              // 1. send experiment request, which takes the search query and the values from the form
+              dataRequest({ query: queryParam, values });
 
-              if (!response.ok) {
-                await slackRequest(queryParam, values);
-              }
-
-              // 2. add contact to HubSpot list
-              await hubspotRequest(queryParam, values);
-
-              // 3. redirect to landing page with notification
+              // 2. redirect to landing page with notification
               push({
                 pathname: '/',
                 state: {
