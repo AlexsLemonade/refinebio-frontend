@@ -79,7 +79,6 @@ export async function updateContact(email, params) {
 export async function updateContactList(email, newDetails) {
   let details = newDetails;
 
-  // Check if contact exists
   const contactData = await getContact(email);
 
   // Create a new contact email isn't found
@@ -106,7 +105,6 @@ export async function updateContactList(email, newDetails) {
       details = `${newDetails}\n----------\n${oldDatasetRequestDetails}`;
     }
 
-    // Update that contact with the new information
     await updateContact(email, {
       properties: [
         {
@@ -117,7 +115,6 @@ export async function updateContactList(email, newDetails) {
     });
   }
 
-  // Add that contact to the list
   return addToContactList({
     emails: [email],
   });

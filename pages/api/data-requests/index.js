@@ -1,14 +1,10 @@
 /*
-Payload should be the serialized form of the request
+Payload should be accessionCode/query depending on button, and the serialized form of the request
 */
 
-import { submitSearchDataRequest as slackSearchRequest } from '../../../src/common/slack';
-import { submitSearchDataRequest as githubSearchRequest } from '../../../src/common/github';
-import { submitSearchDataRequest as hubspotSearchRequest } from '../../../src/common/hubspot';
-
-import { submitExperimentDataRequest as slackExperimentRequest } from '../../../src/common/slack';
-import { submitExperimentDataRequest as githubExperimentRequest } from '../../../src/common/github';
-import { submitExperimentDataRequest as hubspotExperimentRequest } from '../../../src/common/hubspot';
+import { submitSearchDataRequest as slackSearchRequest, submitExperimentDataRequest as slackExperimentRequest } from '../../../src/common/slack';
+import { submitSearchDataRequest as githubSearchRequest, submitExperimentDataRequest as githubExperimentRequest } from '../../../src/common/github';
+import { submitSearchDataRequest as hubspotSearchRequest, submitExperimentDataRequest as hubspotExperimentRequest } from '../../../src/common/hubspot';
 
 export default async (req, res) => {
   const {
@@ -18,8 +14,7 @@ export default async (req, res) => {
   
   switch (method) {
     case 'POST':
-      let githubResponse;
-      let hubspotResponse;
+      let githubResponse, hubspotResponse;
 
       // If query exists, then this is a request from RequestSearchButton
       if (query !== undefined) {
@@ -52,7 +47,7 @@ export default async (req, res) => {
             await slackExperimentRequest(query, values, failedRequest);
         }
 
-        res.status(400).json({ message: `${failedRequest} failed` })
+        res.status(500).json({ message: `${failedRequest} failed` })
       } 
       else {
         res.status(200).json({ message: 'GitHub and HubSpot succeeded' })
