@@ -4,7 +4,7 @@
 
 // ID for HubSpot list that contacts should be added to (currently goes to a test list)
 const LIST_ID = '1'; // this is a test list ID, change to actual list ID once done
-const { HUBSPOT_APIKEY } = process.env;
+const HUBSPOT_APIKEY = process.env.HUBSPOT_APIKEY;
 
 export async function createContact(params) {
   return fetch(

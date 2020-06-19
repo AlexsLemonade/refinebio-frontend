@@ -3,7 +3,7 @@
  */
 
 const GITHUB_URL = 'https://api.github.com/repos/BEW111/testrepo/issues'; // this is a test github repo, change to actual repo once done
-const { GITHUB_TOKEN } = process.env;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 // Sends an issue to GitHub
 export async function createIssue(params) {

@@ -14,7 +14,8 @@ export default async (req, res) => {
   
   switch (method) {
     case 'POST':
-      let githubResponse, hubspotResponse;
+      let githubResponse;
+      let hubspotResponse;
 
       // If query exists, then this is a request from RequestSearchButton
       if (query !== undefined) {
@@ -33,7 +34,7 @@ export default async (req, res) => {
         if (!githubResponse.ok && !hubspotResponse.ok) {
           failedRequest = "GitHub and HubSpot"
         }
-        else if (!githubRequest.ok) {
+        else if (!githubResponse.ok) {
           failedRequest = "GitHub"
         }
         else {
