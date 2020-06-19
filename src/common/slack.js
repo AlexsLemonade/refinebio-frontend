@@ -2,7 +2,7 @@
  * This file contains helper methods that post to the CCDL slack channel
  */
 
-const { SLACK_HOOK_URL } = process.env;
+const SLACK_HOOK_URL = process.env.SLACK_HOOK_URL;
 
 // get IP
 const getIP = async () => {
