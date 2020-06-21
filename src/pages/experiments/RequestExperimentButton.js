@@ -35,8 +35,11 @@ export default function RequestExperimentButton({ accessionCode }) {
             useMissingDataImage={false}
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
-              // 1. send experiment request, which takes the accession code and values from the form
-              dataRequest({ accessionCode, values });
+              // 1. send experiment request
+              const requestValues = values;
+              requestValues.accession_codes = accessionCode;
+              requestValues.request_type = 'experiment';
+              dataRequest({ requestValues });
 
               // 2. mark experiment as requested in local storage
               setRequestedExperiments([...requestedExperiments, accessionCode]);

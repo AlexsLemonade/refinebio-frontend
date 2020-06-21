@@ -27,7 +27,10 @@ let RequestSearchButton = ({ query, push }) => {
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
               // 1. send experiment request, which takes the search query and the values from the form
-              dataRequest({ query: queryParam, values });
+              const requestValues = values;
+              requestValues.query = queryParam;
+              requestValues.request_type = 'search';
+              dataRequest({ requestValues });
 
               // 2. redirect to landing page with notification
               push({

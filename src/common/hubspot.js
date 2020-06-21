@@ -120,10 +120,10 @@ export async function updateContactList(email, newDetails) {
   });
 }
 
-export async function submitSearchDataRequest(query, values) {
+export async function submitSearchDataRequest(values) {
   const newDetails = `Requested experiment(s) ${
     values.accession_codes
-  } for search term "${query}"\nPediatric cancer research: ${
+  } for search term "${values.query}"\nPediatric cancer research: ${
     values.pediatric_cancer
   }\nPrimary approach: ${values.approach}\n\nAdditional Notes:\n${
     values.comments
@@ -136,12 +136,12 @@ export async function submitSearchDataRequest(query, values) {
   return updateContactList(values.email, newDetails);
 }
 
-export async function submitExperimentDataRequest(accessionCode, values) {
-  const newDetails = `Requested experiment ${accessionCode}\nPediatric cancer research: ${
-    values.pediatric_cancer
-  }\nPrimary approach: ${values.approach}\n\nAdditional Notes:\n${
-    values.comments
-  }\n\n${
+export async function submitExperimentDataRequest(values) {
+  const newDetails = `Requested experiment ${
+    values.accession_codes
+  }\nPediatric cancer research: ${values.pediatric_cancer}\nPrimary approach: ${
+    values.approach
+  }\n\nAdditional Notes:\n${values.comments}\n\n${
     values.email_updates
       ? '(Wants email updates)'
       : '(Does not want email updates)'

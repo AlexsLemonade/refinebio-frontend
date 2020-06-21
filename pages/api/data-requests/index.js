@@ -8,7 +8,7 @@ import { submitSearchDataRequest as hubspotSearchRequest, submitExperimentDataRe
 
 export default async (req, res) => {
   const {
-    body: { accessionCode, query, values },
+    body: { values },
     method,
   } = req
   
@@ -17,15 +17,15 @@ export default async (req, res) => {
       let githubResponse;
       let hubspotResponse;
 
-      // If query exists, then this is a request from RequestSearchButton
-      if (query !== undefined) {
-        githubResponse = await githubSearchRequest(query, values);
-        hubspotResponse = await hubspotSearchRequest(query, values);
+      const response = { status: 204, message: '' };
+
+      if (values.request_type === 'search') {
+        githubResponse = await githubSearchRequest(values);
+        hubspotResponse = await hubspotSearchRequest(values);
       }
-      // If accessionCode exists, then this is a request from RequestExperimentButton
-      else if (accessionCode !== undefined) {
-        githubResponse = await githubExperimentRequest(accessionCode, values);
-        hubspotResponse = await hubspotExperimentRequest(accessionCode, values);
+      else if (values.request_type === 'experiment') {
+        githubResponse = await githubExperimentRequest(values);
+        hubspotResponse = await hubspotExperimentRequest(values);
       }
 
       // Send to slack instead if GitHub or HubSpot request failed
@@ -42,17 +42,21 @@ export default async (req, res) => {
         }
 
         if (query !== undefined) {
-            await slackSearchRequest(query, values, failedRequest);
+            await slackSearchRequest(values, failedRequest);
         }
         else if (accessionCode !== undefined) {
-            await slackExperimentRequest(query, values, failedRequest);
+            await slackExperimentRequest(values, failedRequest);
         }
 
-        res.status(500).json({ message: `${failedRequest} failed` })
+        response.status = 206;
+        response.message = `${failedRequest} failed, sent to Slack`;
       } 
       else {
-        res.status(200).json({ message: 'GitHub and HubSpot succeeded' })
+        response.status = 200;
+        response.message = 'GitHub and HubSpot succeeded';
       }
+
+      res.status(response.status).json(response);
 
       break
     }

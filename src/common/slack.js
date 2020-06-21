@@ -26,15 +26,16 @@ export async function postToSlack(params) {
   });
 }
 
-export async function submitSearchDataRequest(query, values, failedRequest) {
+export async function submitSearchDataRequest(values, failedRequest) {
   const ip = await getIP();
+
   await postToSlack({
     attachments: [
       {
-        fallback: `Missing data for search term '${query}'`,
+        fallback: `Missing data for search term '${values.query}'`,
         color: '#2eb886',
-        title: `Missing data for search term '${query}'`,
-        title_link: `https://www.refine.bio/search?q=${query}`,
+        title: `Missing data for search term '${values.query}'`,
+        title_link: `https://www.refine.bio/search?q=${values.query}`,
         fields: [
           {
             title: 'Accession Codes',
@@ -69,7 +70,7 @@ export async function submitSearchDataRequest(query, values, failedRequest) {
             : []),
         ],
         footer: `Refine.bio | ${ip} | ${
-          navigator.userAgent
+          values.navigatorUserAgent
         } | This message was sent because the request to ${failedRequest} failed`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
@@ -78,19 +79,17 @@ export async function submitSearchDataRequest(query, values, failedRequest) {
   });
 }
 
-export async function submitExperimentDataRequest(
-  accessionCode,
-  values,
-  failedRequest
-) {
+export async function submitExperimentDataRequest(values, failedRequest) {
   const ip = await getIP();
   await postToSlack({
     attachments: [
       {
-        fallback: `${accessionCode} Experiment Requested`,
+        fallback: `${values.accession_codes} Experiment Requested`,
         color: '#2eb886',
-        title: `${accessionCode} Experiment Requested`,
-        title_link: `https://www.refine.bio/experiments/${accessionCode}`,
+        title: `${values.accession_codes} Experiment Requested`,
+        title_link: `https://www.refine.bio/experiments/${
+          values.accession_codes
+        }`,
         fields: [
           {
             title: 'Pediatric Cancer Research',
@@ -120,7 +119,7 @@ export async function submitExperimentDataRequest(
             : []),
         ],
         footer: `Refine.bio | ${ip} | ${
-          navigator.userAgent
+          values.navigatorUserAgent
         } | This message was sent because the request to ${failedRequest} failed`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time

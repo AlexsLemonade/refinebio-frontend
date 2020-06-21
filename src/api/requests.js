@@ -5,8 +5,10 @@
 import fetch from 'isomorphic-unfetch';
 
 // Used by both RequestSearchButton and RequestExperimentButton
-// requestBody should contain either a search query or accessionCode depending on the button, and the form values as values: {}
+// requestBody has values TODO make body just value params not one value which contains params
 export const dataRequest = async requestBody => {
+  requestBody.values.navigatorUserAgent = navigator.userAgent;
+
   const response = await fetch(`api/data-requests`, {
     method: 'POST',
     headers: {

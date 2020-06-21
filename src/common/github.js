@@ -18,12 +18,14 @@ export async function createIssue(params) {
   });
 }
 
-export async function submitSearchDataRequest(query, values) {
+export async function submitSearchDataRequest(values) {
   return createIssue({
     title: `Dataset Request ${values.accession_codes}`,
     body: `### Context\r\n\r\nA user requested ${
       values.accession_codes
-    } for the search term ["${query}"](https://www.refine.bio/search?q=${query})
+    } for the search term ["${values.query}"](https://www.refine.bio/search?q=${
+      values.query
+    })
         \r\n\r\n### Problem or idea\r\n\r\n(Add description of experiment/problem here)
         \r\n\r\n### Solution or next step\r\n\r\n(Add solution/next step here)`,
     labels: [
@@ -34,10 +36,12 @@ export async function submitSearchDataRequest(query, values) {
   });
 }
 
-export async function submitExperimentDataRequest(accessionCode) {
+export async function submitExperimentDataRequest(values) {
   return createIssue({
-    title: `Dataset Request ${accessionCode}`,
-    body: `### Context\r\n\r\nA user requested [${accessionCode}](https://www.refine.bio/experiments/${accessionCode})
+    title: `Dataset Request ${values.accession_codes}`,
+    body: `### Context\r\n\r\nA user requested [${
+      values.accession_codes
+    }](https://www.refine.bio/experiments/${values.accession_codes})
         \r\n\r\n### Problem or idea\r\n\r\n(Add description of experiment/problem here)
         \r\n\r\n### Solution or next step\r\n\r\n(Add solution/next step here)`,
     labels: [
