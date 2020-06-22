@@ -41,10 +41,10 @@ export default async (req, res) => {
           failedRequest = "HubSpot"
         }
 
-        if (query !== undefined) {
+        if (values.request_type === 'search') {
             await slackSearchRequest(values, failedRequest);
         }
-        else if (accessionCode !== undefined) {
+        else if (values.request_type === 'experiment') {
             await slackExperimentRequest(values, failedRequest);
         }
 
