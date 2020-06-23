@@ -7,6 +7,7 @@ import {
   formatSentenceCase,
   getMetadataFields,
   formatPlatformName,
+  getUrlForCode,
 } from '../../../common/helpers';
 import DataSetSampleActions from '../../../components/DataSetSampleActions';
 import * as routes from '../../../routes';
@@ -121,6 +122,21 @@ const Result = ({ result, query }) => {
             <HText>{result.publication_title}</HText>
           ) : (
             <i className="result__not-provided">No associated publication</i>
+          )}
+        </p>
+        <h3> Alternate Accession IDs </h3>
+        <p className="result__paragraph">
+          {result.alternate_accession_code ? (
+            <a
+              href={getUrlForCode(result.alternate_accession_code)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link"
+            >
+              <HText>{result.alternate_accession_code}</HText>
+            </a>
+          ) : (
+            <i className="result__not-provided">None</i>
           )}
         </p>
         <h3>Sample Metadata Fields</h3>

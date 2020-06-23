@@ -12,6 +12,7 @@ import {
   formatSentenceCase,
   truncateOnWord,
   maxTableWidth,
+  getUrlForCode,
 } from '../../common/helpers';
 
 import AccessionIcon from '../../common/icons/accession.svg';
@@ -281,6 +282,18 @@ let Experiment = ({
                 </a>
               </ExperimentHeaderRow>
             )}
+            <ExperimentHeaderRow label="Alternate Accession IDs">
+              {(experiment.alternate_accession_code && (
+                <a
+                  href={getUrlForCode(experiment.alternate_accession_code)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link"
+                >
+                  <HText>{experiment.alternate_accession_code}</HText>
+                </a>
+              )) || <i className="experiment__not-provided">None</i>}
+            </ExperimentHeaderRow>
           </div>
         </div>
       </div>
