@@ -1,0 +1,37 @@
+name: tests
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    container: node:lts-buster
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn install --ignore-engines
+
+      - name: Run eslint
+        run: yarn eslint
+
+      - name: Run tests
+        run: yarn test
+
+  # end to end tests. These are sepparated because they take longer since chrome needs to be launched
+  test_user:
+    container: node:lts-buster
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup puppeteer
+        run: 'sh .github/scripts/setup_puppeteer.sh'
+
+      - name: Install dependencies
+        run: yarn install --ignore-engines
+
+      - name: Run integration tests
+        run: yarn run test:integration
