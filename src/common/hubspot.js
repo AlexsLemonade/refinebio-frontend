@@ -2,8 +2,10 @@
  * This file contains helper methods that update the hubspot list
  */
 
-// ID for HubSpot list that contacts should be added to (currently goes to a test list)
-const LIST_ID = '1'; // this is a test list ID, change to actual list ID once done
+// ID for HubSpot list that contacts should be added to
+// should look like https://app.hubspot.com/contacts/[PORTAL_ID]/lists/[LIST_ID]
+// portal ID will depend on the user but is not needed as an env variable (because of api key)
+const LIST_ID = process.env.HUBSPOT_LIST_ID;
 const HUBSPOT_APIKEY = process.env.HUBSPOT_APIKEY;
 
 export async function createContact(params) {

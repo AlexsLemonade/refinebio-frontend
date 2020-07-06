@@ -11,7 +11,9 @@ module.exports = withImages(
     target: 'serverless',
     env: {
       REACT_APP_API_HOST: ApiHost,
+      GITHUB_URL: process.env.GITHUB_URL,
       GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+      HUBSPOT_LIST_ID: process.env.HUBSPOT_LIST_ID,
       HUBSPOT_APIKEY: process.env.HUBSPOT_APIKEY,
       SLACK_HOOK_URL: process.env.SLACK_HOOK_URL,
     },
