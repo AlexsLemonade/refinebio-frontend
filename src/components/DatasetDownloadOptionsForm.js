@@ -316,6 +316,7 @@ const DatasetDownloadOptionsFormComponent = ({
         const startedDataset = await updateDataSetOptions(
           {
             ...updatedDataset,
+            email_address: values.email_address,
             start: true,
           },
           tokenId

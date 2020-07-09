@@ -85,7 +85,7 @@ const navigateToResults = ({
   });
 };
 
-const ACCESSION_CODE_REGEX = /^(GSE|ERP|SRP)(\d{3,6}$)|(E-[A-Z]{4}-\d{2,4}$)/i;
+const ACCESSION_CODE_REGEX = /^(GSE|ERP|SRP)(\d{3,6}$)|(E-[A-Z]{4}-\d{2,6}$)/i;
 
 /**
  * Returns an array with all the accession codes in the search query (if any)
@@ -131,7 +131,10 @@ export function fetchResults({
         const promises = await Promise.all(
           accessionCodes.map(code =>
             Ajax.get('/v1/search/', {
-              search: `accession_code:${code}`,
+              search: [
+                `accession_code:${code}`,
+                `alternate_accession_code:${code}`,
+              ],
             })
           )
         );
