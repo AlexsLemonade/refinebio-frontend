@@ -153,7 +153,7 @@ let Main = ({ push }) => {
               </div>
               <div className="main__use-card__actions">
                 <a
-                  href="https://github.com/AlexsLemonade/refinebio-examples/tree/master/differential-expression"
+                  href="https://github.com/AlexsLemonade/refinebio-examples/tree/v1.0/differential-expression"
                   className="button button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -171,7 +171,7 @@ let Main = ({ push }) => {
               </div>
               <div className="main__use-card__actions">
                 <a
-                  href="https://github.com/AlexsLemonade/refinebio-examples/tree/master/pathway-analysis"
+                  href="https://github.com/AlexsLemonade/refinebio-examples/tree/v1.0/pathway-analysis"
                   className="button button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
