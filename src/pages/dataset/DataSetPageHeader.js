@@ -286,7 +286,7 @@ function DataSetNextSteps() {
         </p>
         <p>
           <a
-            href="https://github.com/AlexsLemonade/refinebio-examples/tree/master/ensembl-id-convert"
+            href="https://github.com/AlexsLemonade/refinebio-examples/tree/v1.0/ensembl-id-convert"
             className="link"
             target="_blank"
             rel="noopener noreferrer nofollow"
@@ -296,7 +296,7 @@ function DataSetNextSteps() {
         </p>
         <p>
           <a
-            href="https://github.com/AlexsLemonade/refinebio-examples/tree/master/differential-expression"
+            href="https://github.com/AlexsLemonade/refinebio-examples/tree/v1.0/differential-expression"
             className="link"
             target="_blank"
             rel="noopener noreferrer nofollow"
