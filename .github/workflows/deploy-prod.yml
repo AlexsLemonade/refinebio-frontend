@@ -1,0 +1,22 @@
+name: deploy-prod
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy-prod:
+    container: node:lts-buster
+    runs-on: ubuntu-latest
+    env:
+      ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install now
+        run: yarn global add now
+
+      - name: Deploy to prod
+        run: $(yarn global bin)/now  --confirm --prod --token $ZEIT_TOKEN --local-config now.json --scope ccdl
+

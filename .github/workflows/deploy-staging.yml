@@ -1,0 +1,22 @@
+name: deploy-staging
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy-staging:
+    container: node:lts-buster
+    env:
+      ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install now
+        run: yarn global add now
+
+      - name: Deploy to staging
+        run: $(yarn global bin)/now  --confirm --prod --token $ZEIT_TOKEN --local-config now.staging.json --scope ccdl
+
