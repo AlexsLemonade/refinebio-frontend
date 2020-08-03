@@ -8,7 +8,7 @@ import { submitSearchDataRequest as hubspotSearchRequest, submitExperimentDataRe
 
 export default async (req, res) => {
   const {
-    body: { values },
+    body: { requestValues },
     method,
   } = req
   
@@ -19,13 +19,13 @@ export default async (req, res) => {
 
       const response = { status: 204, message: '' };
 
-      if (values.request_type === 'search') {
-        githubResponse = await githubSearchRequest(values);
-        hubspotResponse = await hubspotSearchRequest(values);
+      if (requestValues.request_type === 'search') {
+        githubResponse = await githubSearchRequest(requestValues);
+        hubspotResponse = await hubspotSearchRequest(requestValues);
       }
-      else if (values.request_type === 'experiment') {
-        githubResponse = await githubExperimentRequest(values);
-        hubspotResponse = await hubspotExperimentRequest(values);
+      else if (requestValues.request_type === 'experiment') {
+        githubResponse = await githubExperimentRequest(requestValues);
+        hubspotResponse = await hubspotExperimentRequest(requestValues);
       }
 
       // Send to slack instead if GitHub or HubSpot request failed
@@ -41,11 +41,11 @@ export default async (req, res) => {
           failedRequest = "HubSpot"
         }
 
-        if (values.request_type === 'search') {
-            await slackSearchRequest(values, failedRequest);
+        if (requestValues.request_type === 'search') {
+            await slackSearchRequest(requestValues, failedRequest);
         }
-        else if (values.request_type === 'experiment') {
-            await slackExperimentRequest(values, failedRequest);
+        else if (requestValues.request_type === 'experiment') {
+            await slackExperimentRequest(requestValues, failedRequest);
         }
 
         response.status = 206;
