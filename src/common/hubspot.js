@@ -5,6 +5,7 @@
 // ID for HubSpot list that contacts should be added to
 // should look like https://app.hubspot.com/contacts/[PORTAL_ID]/lists/[LIST_ID]
 // portal ID will depend on the user but is not needed as an env variable (because of api key)
+
 const LIST_ID = process.env.HUBSPOT_LIST_ID;
 const HUBSPOT_APIKEY = process.env.HUBSPOT_APIKEY;
 
@@ -128,7 +129,7 @@ export async function submitSearchDataRequest(values) {
   } for search term "${values.query}"\nPediatric cancer research: ${
     values.pediatric_cancer
   }\nPrimary approach: ${values.approach}\n\nAdditional Notes:\n${
-    values.comments
+    values.comments ? values.comments : 'none'
   }\n\n${
     values.email_updates
       ? '(Wants email updates)'
@@ -143,7 +144,7 @@ export async function submitExperimentDataRequest(values) {
     values.accession_codes
   }\nPediatric cancer research: ${values.pediatric_cancer}\nPrimary approach: ${
     values.approach
-  }\n\nAdditional Notes:\n${values.comments}\n\n${
+  }\n\nAdditional Notes:\n${values.comments ? values.comments : 'none'}\n\n${
     values.email_updates
       ? '(Wants email updates)'
       : '(Does not want email updates)'

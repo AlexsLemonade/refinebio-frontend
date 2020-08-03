@@ -2,7 +2,9 @@
  * This file contains helper methods that create new GitHub requests
  */
 
+// API URL for the issues of the repo, e.g. https://api.github.com/repos/AlexsLemonadeStand/refinebio/issues
 const GITHUB_URL = process.env.GITHUB_URL;
+// Personal access token (https://github.com/settings/tokens)
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 // Sends an issue to GitHub
