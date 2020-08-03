@@ -382,3 +382,18 @@ export const subscribeToMailingList = async email => {
     throw new EmailSubscriptionError(email);
   }
 };
+
+/**
+ * Returns the external accession code URL for a given accession code
+ */
+export function getUrlForCode(code) {
+  let mainUrl = '';
+  if (code.startsWith('GSE')) {
+    mainUrl = 'https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=';
+  } else if (code.startsWith('RP', 1)) {
+    mainUrl = 'https://www.ebi.ac.uk/ena/data/view/';
+  } else if (code.startsWith('E-')) {
+    mainUrl = 'https://www.ebi.ac.uk/arrayexpress/experiments/';
+  }
+  return mainUrl + code;
+}
