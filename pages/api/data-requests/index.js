@@ -14,38 +14,37 @@ export default async (req, res) => {
   
   switch (method) {
     case 'POST': {
-      let githubResponse;
-      let hubspotResponse;
+      let githubOk; let hubspotResponse;
 
       const response = { status: 204, message: '' };
 
       if (requestValues.request_type === 'search') {
-        githubResponse = await githubSearchRequest(requestValues);
+        githubOk = await githubSearchRequest(requestValues);
         hubspotResponse = await hubspotSearchRequest(requestValues);
       }
       else if (requestValues.request_type === 'experiment') {
-        githubResponse = await githubExperimentRequest(requestValues);
+        githubOk = await githubExperimentRequest(requestValues);
         hubspotResponse = await hubspotExperimentRequest(requestValues);
       }
 
       // Send to slack instead if GitHub or HubSpot request failed
-      if (!githubResponse.ok || !hubspotResponse.ok) {
+      if (!githubOk || !hubspotResponse.ok) {
         let failedRequest;
-        if (!githubResponse.ok && !hubspotResponse.ok) {
+        if (!githubOk && !hubspotResponse.ok) {
           failedRequest = "GitHub and HubSpot"
         }
-        else if (!githubResponse.ok) {
+        else if (!githubOk) {
           failedRequest = "GitHub"
         }
         else {
           failedRequest = "HubSpot"
         }
-
+        
         if (requestValues.request_type === 'search') {
-            await slackSearchRequest(requestValues, failedRequest);
+          slackSearchRequest(requestValues, failedRequest);
         }
         else if (requestValues.request_type === 'experiment') {
-            await slackExperimentRequest(requestValues, failedRequest);
+          slackExperimentRequest(requestValues, failedRequest);
         }
 
         response.status = 206;

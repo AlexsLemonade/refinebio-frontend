@@ -2,6 +2,8 @@
  * This file contains helper methods that post to the CCDL slack channel
  */
 
+import fetch from 'isomorphic-unfetch';
+
 const SLACK_HOOK_URL = process.env.SLACK_HOOK_URL;
 
 // get IP
@@ -20,10 +22,23 @@ const getIP = async () => {
  * @param {object} params Slack webhooks params
  */
 export async function postToSlack(params) {
-  return fetch(SLACK_HOOK_URL, {
+  // fetch will give a different error if the URL is undefined, so check that first
+  if (!SLACK_HOOK_URL) {
+    return false;
+  }
+
+  fetch(SLACK_HOOK_URL, {
     method: 'POST',
     body: JSON.stringify(params),
-  });
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      throw error;
+    });
+
+  return false;
 }
 
 export async function submitSearchDataRequest(values, failedRequest) {

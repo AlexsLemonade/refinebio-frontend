@@ -2,6 +2,8 @@
  * This file contains helper methods that update the hubspot list
  */
 
+import fetch from 'isomorphic-unfetch';
+
 // ID for HubSpot list that contacts should be added to
 // should look like https://app.hubspot.com/contacts/[PORTAL_ID]/lists/[LIST_ID]
 // portal ID will depend on the user but is not needed as an env variable (because of api key)
