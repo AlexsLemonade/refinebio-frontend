@@ -9,30 +9,22 @@ const GITHUB_URL = process.env.GITHUB_URL;
 // Personal access token (https://github.com/settings/tokens)
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-// Sends an issue to GitHub, returns true/false depending on if the fetch worked
+// Sends an issue to GitHub, returns true/false depending on if the fetch succeeded
 export async function createIssue(params) {
-  // fetch will give a different error if the URL is undefined, so check that first
-  if (!GITHUB_URL) {
+  try {
+    await fetch(GITHUB_URL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/vnd.github.v3+json',
+        Authorization: `token ${GITHUB_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    });
+    return true;
+  } catch {
     return false;
   }
-
-  fetch(GITHUB_URL, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-      Authorization: `token ${GITHUB_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  })
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
-
-  return false;
 }
 
 export async function submitSearchDataRequest(values) {

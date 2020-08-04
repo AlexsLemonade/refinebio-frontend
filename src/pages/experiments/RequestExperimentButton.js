@@ -39,10 +39,15 @@ export default function RequestExperimentButton({ accessionCode }) {
               const requestValues = values;
               requestValues.accession_codes = accessionCode;
               requestValues.request_type = 'experiment';
-              dataRequest({ requestValues });
+              const res = await dataRequest({ requestValues });
 
-              // 2. mark experiment as requested in local storage
-              setRequestedExperiments([...requestedExperiments, accessionCode]);
+              // 2. If the data requests as a ticket worked, then mark experiment as requested in local storage
+              if (res.status !== 500) {
+                setRequestedExperiments([
+                  ...requestedExperiments,
+                  accessionCode,
+                ]);
+              }
 
               // 3. close page
               setRequestOpen(false);
