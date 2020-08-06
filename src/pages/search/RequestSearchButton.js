@@ -30,13 +30,16 @@ let RequestSearchButton = ({ query, push }) => {
               const requestValues = values;
               requestValues.query = queryParam;
               requestValues.request_type = 'search';
-              dataRequest({ requestValues });
+              const res = await dataRequest({ requestValues });
 
               // 2. redirect to landing page with notification
               push({
                 pathname: '/',
                 state: {
-                  message: 'Request for Experiment Received!',
+                  message:
+                    res.status === 500
+                      ? 'There was a problem with requesting the experiment. Please try again later'
+                      : 'Request for Experiment Received!',
                 },
               });
             }}

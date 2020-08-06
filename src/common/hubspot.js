@@ -2,6 +2,8 @@
  * This file contains helper methods that update the hubspot list
  */
 
+import fetch from 'isomorphic-unfetch';
+
 // ID for HubSpot list that contacts should be added to
 // should look like https://app.hubspot.com/contacts/[PORTAL_ID]/lists/[LIST_ID]
 // portal ID will depend on the user but is not needed as an env variable (because of api key)
@@ -118,11 +120,13 @@ export async function updateContactList(email, newDetails) {
     });
   }
 
-  return addToContactList({
+  const res = await addToContactList({
     emails: [email],
   });
+  return res.ok;
 }
 
+// Return false if there are any errors with updating the contact list
 export async function submitSearchDataRequest(values) {
   const newDetails = `Requested experiment(s) ${
     values.accession_codes
@@ -136,9 +140,15 @@ export async function submitSearchDataRequest(values) {
       : '(Does not want email updates)'
   }\nSubmitted ${new Date().toLocaleString()}`;
 
-  return updateContactList(values.email, newDetails);
+  try {
+    // This will try to update the contact list, and returns whether or not that response was successful
+    return updateContactList(values.email, newDetails);
+  } catch {
+    return false;
+  }
 }
 
+// Return false if there are any errors with updating the contact list
 export async function submitExperimentDataRequest(values) {
   const newDetails = `Requested experiment ${
     values.accession_codes
@@ -150,5 +160,10 @@ export async function submitExperimentDataRequest(values) {
       : '(Does not want email updates)'
   }\nSubmitted ${new Date().toLocaleString()}`;
 
-  return updateContactList(values.email, newDetails);
+  try {
+    // This will try to update the contact list, and returns whether or not that response was successful
+    return updateContactList(values.email, newDetails);
+  } catch {
+    return false;
+  }
 }
