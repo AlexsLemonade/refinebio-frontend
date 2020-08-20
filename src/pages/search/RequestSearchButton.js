@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Field } from 'formik';
 import { push } from '../../state/routerActions';
 import Button from '../../components/Button';
-import { submitSearchDataRequest } from '../../common/slack';
 import PageModal from '../../components/Modal/PageModal';
 import RequestDataForm from '../../components/RequestDataForm';
+import { dataRequest } from '../../api/requests';
 
 let RequestSearchButton = ({ query, push }) => {
   const [requestOpen, setRequestOpen] = React.useState(false);
@@ -26,14 +26,20 @@ let RequestSearchButton = ({ query, push }) => {
           <RequestDataForm
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
-              // 1. report to slack
-              await submitSearchDataRequest(queryParam, values);
+              // 1. send experiment request, which takes the search query and the values from the form
+              const requestValues = values;
+              requestValues.query = queryParam;
+              requestValues.request_type = 'search';
+              const res = await dataRequest({ requestValues });
 
               // 2. redirect to landing page with notification
               push({
                 pathname: '/',
                 state: {
-                  message: 'Request for Experiment Received!',
+                  message:
+                    res.status === 500
+                      ? 'There was a problem with requesting the experiment. Please try again later'
+                      : 'Request for Experiment Received!',
                 },
               });
             }}

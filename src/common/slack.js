@@ -2,9 +2,9 @@
  * This file contains helper methods that post to the CCDL slack channel
  */
 
-// btoa(webhook_url)
-const SLACK_HOOK_URL =
-  'aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDYyR1g1UlFVL0JCUzUyVDc5OC9vbTBlMWplM0ZObTJuMk5hblFHZ0pSMW4=';
+import fetch from 'isomorphic-unfetch';
+
+const SLACK_HOOK_URL = process.env.SLACK_HOOK_URL;
 
 // get IP
 const getIP = async () => {
@@ -20,23 +20,30 @@ const getIP = async () => {
 /**
  * Send data to slack, configured in CCDL channel
  * @param {object} params Slack webhooks params
+ * Returns true if the request was successful
  */
 export async function postToSlack(params) {
-  return fetch(atob(SLACK_HOOK_URL), {
-    method: 'POST',
-    body: JSON.stringify(params),
-  });
+  try {
+    const res = await fetch(SLACK_HOOK_URL, {
+      method: 'POST',
+      body: JSON.stringify(params),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
 }
 
-export async function submitSearchDataRequest(query, values) {
+export async function submitSearchDataRequest(values, failedRequest) {
   const ip = await getIP();
-  await postToSlack({
+
+  return postToSlack({
     attachments: [
       {
-        fallback: `Missing data for search term '${query}'`,
+        fallback: `Missing data for search term '${values.query}'`,
         color: '#2eb886',
-        title: `Missing data for search term '${query}'`,
-        title_link: `https://www.refine.bio/search?q=${query}`,
+        title: `Missing data for search term '${values.query}'`,
+        title_link: `https://www.refine.bio/search?q=${values.query}`,
         fields: [
           {
             title: 'Accession Codes',
@@ -70,7 +77,9 @@ export async function submitSearchDataRequest(query, values) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
+        footer: `Refine.bio | ${ip} | ${
+          values.navigatorUserAgent
+        } | This message was sent because the request to ${failedRequest} failed`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },
@@ -78,15 +87,18 @@ export async function submitSearchDataRequest(query, values) {
   });
 }
 
-export async function submitExperimentDataRequest(accessionCode, values) {
+export async function submitExperimentDataRequest(values, failedRequest) {
   const ip = await getIP();
-  await postToSlack({
+
+  return postToSlack({
     attachments: [
       {
-        fallback: `${accessionCode} Experiment Requested`,
+        fallback: `${values.accession_codes} Experiment Requested`,
         color: '#2eb886',
-        title: `${accessionCode} Experiment Requested`,
-        title_link: `https://www.refine.bio/experiments/${accessionCode}`,
+        title: `${values.accession_codes} Experiment Requested`,
+        title_link: `https://www.refine.bio/experiments/${
+          values.accession_codes
+        }`,
         fields: [
           {
             title: 'Pediatric Cancer Research',
@@ -115,7 +127,9 @@ export async function submitExperimentDataRequest(accessionCode, values) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${ip} | ${navigator.userAgent}`,
+        footer: `Refine.bio | ${ip} | ${
+          values.navigatorUserAgent
+        } | This message was sent because the request to ${failedRequest} failed`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },

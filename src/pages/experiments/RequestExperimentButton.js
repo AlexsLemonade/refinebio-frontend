@@ -4,7 +4,7 @@ import { useLocalStorage } from '../../common/hooks';
 import Button from '../../components/Button';
 import PageModal from '../../components/Modal/PageModal';
 import RequestDataForm from '../../components/RequestDataForm';
-import { submitExperimentDataRequest } from '../../common/slack';
+import { dataRequest } from '../../api/requests';
 
 export default function RequestExperimentButton({ accessionCode }) {
   const [requestOpen, setRequestOpen] = React.useState(false);
@@ -35,11 +35,19 @@ export default function RequestExperimentButton({ accessionCode }) {
             useMissingDataImage={false}
             onClose={() => setRequestOpen(false)}
             onSubmit={async values => {
-              // 1. report to slack
-              await submitExperimentDataRequest(accessionCode, values);
+              // 1. send experiment request
+              const requestValues = values;
+              requestValues.accession_codes = accessionCode;
+              requestValues.request_type = 'experiment';
+              const res = await dataRequest({ requestValues });
 
-              // 2. mark experiment as requested in local storage
-              setRequestedExperiments([...requestedExperiments, accessionCode]);
+              // 2. If the data requests as a ticket worked, then mark experiment as requested in local storage
+              if (res.status !== 500) {
+                setRequestedExperiments([
+                  ...requestedExperiments,
+                  accessionCode,
+                ]);
+              }
 
               // 3. close page
               setRequestOpen(false);
@@ -50,7 +58,7 @@ export default function RequestExperimentButton({ accessionCode }) {
                   Request Experiment '{accessionCode}'
                 </h1>
                 <p className="mb-2">
-                  Help us priortize your request by answering these questions.
+                  Help us prioritize your request by answering these questions.
                 </p>
               </>
             )}
