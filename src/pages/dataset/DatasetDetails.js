@@ -59,7 +59,7 @@ function DatasetRegenerateOptions({ dataSet, regenerateDataSet }) {
       </div>
       {!dataSet.quantile_normalize && (
         <div className="downloads__file-modifier">
-          Quantile Normailzation Skipped for RNA-seeq samples
+          Quantile Normalization Skipped for RNA-seq samples
         </div>
       )}
       <div className="downloads__file-modifier">
