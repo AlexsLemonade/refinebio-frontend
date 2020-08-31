@@ -43,8 +43,6 @@ export default class ProcessorVersion extends React.Component {
           {results.map(({ processor }) => this._renderProcessor(processor))}
 
           {this._renderGnomeVersion()}
-
-          {this._renderDatabaseInfo()}
         </Accordion>
       </React.Fragment>
     );
@@ -87,33 +85,6 @@ export default class ProcessorVersion extends React.Component {
                       salmonProcessedResult.organism_index.assembly_name,
                   }}
                 />
-              </tbody>
-            </table>
-          </div>
-        )}
-      />
-    );
-  }
-
-  _renderDatabaseInfo() {
-    const salmonProcessedResult = this.props.results.find(
-      result => result.processor.name === 'Salmon Quant'
-    );
-    if (
-      !salmonProcessedResult ||
-      !salmonProcessedResult.organism_index ||
-      !salmonProcessedResult.organism_index.source_version
-    ) {
-      return null;
-    }
-    return (
-      <AccordionItem
-        title={() => (
-          <div>
-            <b>Database Info</b>
-
-            <table>
-              <tbody>
                 <VersionTable
                   versions={{
                     'database name':
