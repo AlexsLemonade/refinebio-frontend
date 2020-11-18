@@ -85,6 +85,18 @@ export default class ProcessorVersion extends React.Component {
                       salmonProcessedResult.organism_index.assembly_name,
                   }}
                 />
+                <VersionTable
+                  versions={{
+                    'database name':
+                      salmonProcessedResult.organism_index.database_name,
+                  }}
+                />
+                <VersionTable
+                  versions={{
+                    'release version':
+                      salmonProcessedResult.organism_index.release_version,
+                  }}
+                />
               </tbody>
             </table>
           </div>
