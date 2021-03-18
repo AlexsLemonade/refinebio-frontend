@@ -64,8 +64,8 @@ const DataSetErrorDownloading = ({ dataSet }) => {
             </p>
             <p>
               Please contact{' '}
-              <a href="mailto:ccdl@alexslemonade.org" className="link">
-                ccdl@alexslemonade.org
+              <a href="mailto:requests@ccdatalab.org" className="link">
+                requests@ccdatalab.org
               </a>
               {dataSet.failure_reason && (
                 <span>
