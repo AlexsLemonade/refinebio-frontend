@@ -33,11 +33,6 @@ module.exports = () => {
     env.REACT_APP_API_HOST = process.env.REACT_APP_API_HOST;
   }
 
-  console.log(
-    process.env.VERCEL_GIT_COMMIT_REF,
-    process.env.REACT_APP_API_HOST
-  );
-
   const nextConfig = {
     target: 'serverless',
     env,
