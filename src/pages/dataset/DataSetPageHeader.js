@@ -300,7 +300,7 @@ const DataSetNextSteps = ({ dataSet }) => {
     },
     {
       text: 'See what other analyses you can do with refine.bio data',
-      href: 'https://refine.bio',
+      href: 'http://refine.bio',
     },
   ];
   const microarrayLinks = [
@@ -321,7 +321,7 @@ const DataSetNextSteps = ({ dataSet }) => {
     },
     {
       text: 'See what other analyses you can do with refine.bio data',
-      href: 'https://refine.bio',
+      href: 'http://refine.bio',
     },
   ];
 
@@ -350,7 +350,7 @@ const DataSetNextSteps = ({ dataSet }) => {
     },
     {
       text: 'See what other analyses you can do with refine.bio data',
-      href: 'https://refine.bio',
+      href: 'http://refine.bio',
     },
   ];
 
