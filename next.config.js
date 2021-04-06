@@ -28,6 +28,11 @@ module.exports = () => {
   // env vars can be found on vercel.com
   const env = isProduction ? productionEnv : stageEnv;
 
+  // for tests
+  if (process.env.REACT_APP_API_HOST) {
+    env.REACT_APP_API_HOST = process.env.REACT_APP_API_HOST;
+  }
+
   const nextConfig = {
     target: 'serverless',
     env,
