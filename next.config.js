@@ -4,20 +4,35 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const ApiHost = process.env.REACT_APP_API_HOST || 'https://api.refine.bio';
+module.exports = () => {
+  const isProduction = process.env.VERCEL_GIT_COMMIT_REF === 'master';
 
-module.exports = withImages(
-  withBundleAnalyzer({
+  const productionEnv = {
+    REACT_APP_API_HOST: process.env.API_HOST,
+    GITHUB_URL: process.env.GITHUB_URL,
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+    HUBSPOT_LIST_ID: process.env.HUBSPOT_LIST_ID,
+    HUBSPOT_APIKEY: process.env.HUBSPOT_APIKEY,
+    SLACK_HOOK_URL: process.env.SLACK_HOOK_URL,
+  };
+
+  const stageEnv = {
+    REACT_APP_API_HOST: process.env.STAGE_API_HOST,
+    GITHUB_URL: process.env.STAGE_GITHUB_URL,
+    GITHUB_TOKEN: process.env.STAGE_GITHUB_TOKEN,
+    HUBSPOT_LIST_ID: process.env.STAGE_HUBSPOT_LIST_ID,
+    HUBSPOT_APIKEY: process.env.STAGE_HUBSPOT_APIKEY,
+    SLACK_HOOK_URL: process.env.STAGE_SLACK_HOOK_URL,
+  };
+
+  // env vars can be found on vercel.com
+  const env = isProduction ? productionEnv : stageEnv;
+
+  const nextConfig = {
     target: 'serverless',
-    env: {
-      REACT_APP_API_HOST: ApiHost,
-      GITHUB_URL: process.env.GITHUB_URL,
-      GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-      HUBSPOT_LIST_ID: process.env.HUBSPOT_LIST_ID,
-      HUBSPOT_APIKEY: process.env.HUBSPOT_APIKEY,
-      SLACK_HOOK_URL: process.env.SLACK_HOOK_URL,
-    },
-    webpack: (config, { isServer, dev, webpack }) => {
+    env,
+    webpack: (baseConfig, { isServer, dev, webpack }) => {
+      const config = { ...baseConfig };
       // add custom webpack config only for the client side in production
       if (!isServer && !dev) {
         // ignore momentjs locales
@@ -25,8 +40,8 @@ module.exports = withImages(
           new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
         );
 
-        // lodash is referenced by multiple libraries, this makes sure we only
-        // inlcude it once
+        // lodash is referenced by multiple libraries,
+        // this makes sure we only inlcude it once
         config.resolve.alias = {
           ...config.resolve.alias,
           lodash: path.resolve(__dirname, 'node_modules/lodash'),
@@ -64,5 +79,7 @@ module.exports = withImages(
       }
       return config;
     },
-  })
-);
+  };
+
+  return withImages(withBundleAnalyzer(nextConfig));
+};
