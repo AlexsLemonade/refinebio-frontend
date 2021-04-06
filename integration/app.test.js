@@ -1,4 +1,5 @@
-const { page, jestPuppeteer } = global;
+// jestPuppeteer is in global
+const { page, browser } = global;
 
 const TIMEOUT = 60000;
 const BASE_URL = 'http://localhost:14568';
@@ -7,8 +8,11 @@ describe('refine.bio integration tests', () => {
   it(
     'landing page loads',
     async () => {
-      await page.goto(BASE_URL);
-      await expect(page).toMatch('Search for normalized transcriptome data');
+      const homePage = await browser.newPage();
+      await homePage.goto(BASE_URL);
+      await expect(homePage).toMatch(
+        'Search for normalized transcriptome data'
+      );
     },
     TIMEOUT
   );
@@ -16,7 +20,8 @@ describe('refine.bio integration tests', () => {
   it(
     'downloads page is empty initially',
     async () => {
-      await page.goto(BASE_URL + '/download');
+      const downloadPage = await browser.newPage();
+      await downloadPage.goto(`${BASE_URL}/download`);
       await expect(page).toMatch('Your dataset is empty');
     },
     TIMEOUT
@@ -25,25 +30,28 @@ describe('refine.bio integration tests', () => {
   it(
     'search for osteosarcoma and navigate to first result',
     async () => {
-      const page = await browser.newPage();
+      const homePage = await browser.newPage();
       // open landing page
-      await page.goto(BASE_URL);
+      await homePage.goto(BASE_URL);
 
       // search for osteosarcoma
-      await expect(page).toFill('input.search-input__textbox', 'osteosarcoma');
-      await expect(page).toClick('button.search-input__button');
+      await expect(homePage).toFill(
+        'input.search-input__textbox',
+        'osteosarcoma'
+      );
+      await expect(homePage).toClick('button.search-input__button');
 
       // wait for results to appear
-      await page.waitForSelector('.results__list');
+      await homePage.waitForSelector('.results__list');
 
       // check that some results are being displayed
-      await expect(page).toMatch(/of \d* results/gi);
+      await expect(homePage).toMatch(/of \d* results/gi);
 
       // navigate to first result
-      await expect(page).toClick('.result:nth-child(1) a');
-      await page.waitForSelector('.experiment');
+      await expect(homePage).toClick('.result:nth-child(1) a');
+      await homePage.waitForSelector('.experiment');
 
-      await expect(page).toMatch('Submitter Supplied Information');
+      await expect(homePage).toMatch('Submitter Supplied Information');
     },
     TIMEOUT
   );
