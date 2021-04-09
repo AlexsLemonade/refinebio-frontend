@@ -113,7 +113,7 @@ const Footer = () => (
       <Link href="/terms" as="/terms">
         <a className="footer__link">Terms of Use</a>
       </Link>
-      <a className="footer__link" href="mailto:ccdl@alexslemonade.org">
+      <a className="footer__link" href="mailto:requests@ccdatalab.org">
         Contact
       </a>
       {apiData.version && apiData.apiVersion && (
