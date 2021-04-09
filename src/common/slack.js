@@ -4,7 +4,7 @@
 
 import fetch from 'isomorphic-unfetch';
 
-const SLACK_HOOK_URL = process.env.SLACK_HOOK_URL;
+const slackHookUrl = process.env.SLACK_HOOK_URL;
 
 // get IP
 const getIP = async () => {
@@ -24,7 +24,7 @@ const getIP = async () => {
  */
 export async function postToSlack(params) {
   try {
-    const res = await fetch(SLACK_HOOK_URL, {
+    const res = await fetch(slackHookUrl, {
       method: 'POST',
       body: JSON.stringify(params),
     });
@@ -77,9 +77,7 @@ export async function submitSearchDataRequest(values, failedRequest) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${ip} | ${
-          values.navigatorUserAgent
-        } | This message was sent because the request to ${failedRequest} failed`,
+        footer: `Refine.bio | ${ip} | ${values.navigatorUserAgent} | This message was sent because the request to ${failedRequest} failed`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },
@@ -96,9 +94,7 @@ export async function submitExperimentDataRequest(values, failedRequest) {
         fallback: `${values.accession_codes} Experiment Requested`,
         color: '#2eb886',
         title: `${values.accession_codes} Experiment Requested`,
-        title_link: `https://www.refine.bio/experiments/${
-          values.accession_codes
-        }`,
+        title_link: `https://www.refine.bio/experiments/${values.accession_codes}`,
         fields: [
           {
             title: 'Pediatric Cancer Research',
@@ -127,9 +123,7 @@ export async function submitExperimentDataRequest(values, failedRequest) {
               ]
             : []),
         ],
-        footer: `Refine.bio | ${ip} | ${
-          values.navigatorUserAgent
-        } | This message was sent because the request to ${failedRequest} failed`,
+        footer: `Refine.bio | ${ip} | ${values.navigatorUserAgent} | This message was sent because the request to ${failedRequest} failed`,
         footer_icon: 'https://s3.amazonaws.com/refinebio-email/logo-2x.png',
         ts: Date.now() / 1000, // unix time
       },
