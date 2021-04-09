@@ -1,5 +1,5 @@
 import React from 'react';
-import { TweenLite } from 'gsap/TweenLite';
+import { TweenLite } from 'gsap';
 import { Circ } from 'gsap/EasePack';
 import Canvas from './Canvas';
 
