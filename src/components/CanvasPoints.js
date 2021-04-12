@@ -1,6 +1,5 @@
 import React from 'react';
-import { TweenLite } from 'gsap';
-import { Circ } from 'gsap/EasePack';
+import { TweenLite, Circ } from 'gsap';
 import Canvas from './Canvas';
 
 export default class CanvasPoints extends React.Component {
