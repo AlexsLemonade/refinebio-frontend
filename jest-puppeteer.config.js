@@ -1,5 +1,4 @@
 const PORT = 14568;
-
 module.exports = {
   launch: {
     headless: process.env.CI === 'true',
