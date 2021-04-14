@@ -18,7 +18,7 @@ import { searchUrl } from '../../routes';
 import circusPlot from '../about/circus-plot.svg';
 
 import pathwayIcon from './icon-pathway.svg';
-import processIcon from './icon-process.svg';
+import exploreIcon from './icon-explore.svg';
 import heatmapIcon from './icon-heatmap.svg';
 import networkBottomIcon from './network-combined.svg';
 import networkDocsIcon from './icon-docs.svg';
@@ -143,6 +143,26 @@ let Main = ({ push }) => {
 
           <div className="main__uses-container">
             <div className="main__use-card">
+              <img src={exploreIcon} alt="" className="main__use-card__icon" />
+              <div className="main__use-card__title">
+                Getting Started using refine.bio data
+              </div>
+              <div className="main__use-card__body">
+                Explore different ways you can use refine.bio data to help with
+                your scientific questions.
+              </div>
+              <div className="main__use-card__actions main__use-card__actions__alone">
+                <a
+                  href="https://alexslemonade.github.io/refinebio-examples/03-rnaseq/differential-expression_rnaseq_01.html"
+                  className="button button--secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Get Started
+                </a>
+              </div>
+            </div>
+            <div className="main__use-card">
               <img src={heatmapIcon} alt="" className="main__use-card__icon" />
               <div className="main__use-card__title">
                 Differential Expression Analysis
@@ -153,12 +173,20 @@ let Main = ({ push }) => {
               </div>
               <div className="main__use-card__actions">
                 <a
-                  href="https://github.com/AlexsLemonade/refinebio-examples/tree/v1.0/differential-expression"
+                  href="https://alexslemonade.github.io/refinebio-examples/03-rnaseq/differential-expression_rnaseq_01.html"
                   className="button button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  View Example
+                  RNA-seq Example
+                </a>
+                <a
+                  href="https://alexslemonade.github.io/refinebio-examples/02-microarray/differential-expression_microarray_01_2-groups.html"
+                  className="button button--secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Microarray Example
                 </a>
               </div>
             </div>
@@ -171,41 +199,20 @@ let Main = ({ push }) => {
               </div>
               <div className="main__use-card__actions">
                 <a
-                  href="https://github.com/AlexsLemonade/refinebio-examples/tree/v1.0/pathway-analysis"
-                  className="button button--secondary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Example
-                </a>
-              </div>
-            </div>
-            <div className="main__use-card">
-              <img src={processIcon} alt="" className="main__use-card__icon" />
-              <div className="main__use-card__title">
-                Use your data alongside refine.bio data
-              </div>
-              <div className="main__use-card__body">
-                We make our transcriptome indices and our reference
-                distributions used for quantile normalization available to make
-                your own data more comparable to refine.bio data.
-              </div>
-              <div className="main__use-card__actions">
-                <a
-                  href="//docs.refine.bio/en/latest/main_text.html#transcriptome-index"
+                  href="https://alexslemonade.github.io/refinebio-examples/03-rnaseq/pathway-analysis_rnaseq_02_gsea.html"
                   className="button button--secondary mr-1"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  See Indices
+                  RNA-seq Example
                 </a>
                 <a
-                  href="//docs.refine.bio/en/latest/main_text.html#quantile-normalizing-your-own-data-with-refine-bio-reference-distribution"
+                  href="https://alexslemonade.github.io/refinebio-examples/02-microarray/pathway-analysis_microarray_02_gsea.html"
                   className="button button--secondary "
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Learn More
+                  Microarray Example
                 </a>
               </div>
             </div>
@@ -288,9 +295,6 @@ let Main = ({ push }) => {
     </div>
   );
 };
-Main = connect(
-  null,
-  { push }
-)(Main);
+Main = connect(null, { push })(Main);
 
 export default Main;

@@ -261,17 +261,30 @@
 
     &__icon {
       height: 50px;
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.2rem;
     }
 
     &__title {
-      font-size: 1.2rem;
+      font-size: 1rem;
       font-weight: 600;
       margin-bottom: 1rem;
     }
 
     &__body {
       margin-bottom: 1rem;
+    }
+
+    &__actions {
+      text-align: center;
+      .button {
+        margin: 0 auto 1.2rem;
+      }
+
+      &__alone {
+        .button {
+          margin: 1.2rem auto;
+        }
+      }
     }
   }
 
