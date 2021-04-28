@@ -13,7 +13,7 @@ export function useDom(ref, fn) {
     if (ref.current) {
       setResult(fn(ref.current));
     }
-  }, [ref, fn]);
+  }, [ref]);
 
   return result;
 }
