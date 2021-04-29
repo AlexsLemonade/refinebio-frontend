@@ -153,7 +153,7 @@ let Main = ({ push }) => {
               </div>
               <div className="main__use-card__actions main__use-card__actions__alone">
                 <a
-                  href="https://alexslemonade.github.io/refinebio-examples/03-rnaseq/differential-expression_rnaseq_01.html"
+                  href="https://alexslemonade.github.io/refinebio-examples/"
                   className="button button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
