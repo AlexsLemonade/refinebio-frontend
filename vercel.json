@@ -1,8 +1,6 @@
 {
   "version": 2,
   "public": true,
-  "alias": ["www.refine.bio"],
-  "name": "refinebio-frontend",
   "github": {
     "autoAlias": false,
     "silent": true

@@ -65,16 +65,13 @@ describe('getQueryParamObject', () => {
 
 describe('Ajax', () => {
   beforeEach(() => {
+    fetch.mockReset();
     fetch.mockImplementation(() =>
       Promise.resolve({ ok: true, json: () => {} })
     );
   });
 
   describe('get', () => {
-    beforeEach(() => {
-      fetch.mockReset();
-    });
-
     it('makes requests to url', () => {
       Ajax.get('/url');
       expect(fetch.mock.calls[0]).toEqual(['/url']);
@@ -87,10 +84,6 @@ describe('Ajax', () => {
   });
 
   describe('post', () => {
-    beforeEach(() => {
-      fetch.mockReset();
-    });
-
     it('sends requests with parameters', () => {
       Ajax.post('/url', { a: 1, b: 2 });
       expect(fetch.mock.calls[0]).toEqual([
@@ -107,10 +100,6 @@ describe('Ajax', () => {
   });
 
   describe('put', () => {
-    beforeEach(() => {
-      fetch.mockReset();
-    });
-
     it('sends requests with parameters', () => {
       Ajax.put('/url', { a: 1, b: 2 });
       expect(fetch.mock.calls[0]).toEqual([

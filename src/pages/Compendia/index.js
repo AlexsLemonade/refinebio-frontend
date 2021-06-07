@@ -73,7 +73,7 @@ function Compendia() {
               </li>
             ))}
           </ul>
-          {<active.tab title={active.name} />}
+          <active.tab title={active.name} />
         </div>
       </div>
       <div className="main__section main__section--blue-gradient">
