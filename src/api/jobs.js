@@ -25,7 +25,7 @@ export async function getRunningJobs(accessionCode) {
   ]);
 
   return [
-    ...processorJobs.results.map(job => job.nomad_job_id),
-    ...downloaderJobs.results.map(job => job.nomad_job_id),
+    ...processorJobs.results.map(job => job.batch_job_id),
+    ...downloaderJobs.results.map(job => job.batch_job_id),
   ];
 }
