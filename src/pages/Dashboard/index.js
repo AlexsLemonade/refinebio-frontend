@@ -177,25 +177,25 @@ function getDashboardChartConfig(state, range) {
       ],
     },
     {
-      title: 'Current Nomad Jobs (from service)',
+      title: 'Current Jobs (from service)',
       charts: [
         {
           title: 'Running jobs',
-          data: state.nomad_running_jobs,
+          data: state.running_jobs,
           type: 'text',
           size: 'small',
         },
         {
           title: 'Pending jobs',
-          data: state.nomad_pending_jobs,
+          data: state.pending_jobs,
           type: 'text',
           size: 'small',
         },
         {
           title: 'Running jobs by type',
           data: chartSelectors.getJobsByType(
-            state.nomad_running_jobs_by_type,
-            state.nomad_pending_jobs_by_type
+            state.running_jobs_by_type,
+            state.pending_jobs_by_type
           ),
           type: 'bar',
           series: ['running', 'pending'],
@@ -204,8 +204,8 @@ function getDashboardChartConfig(state, range) {
         {
           title: 'Running jobs by volume',
           data: chartSelectors.getJobsByType(
-            state.nomad_running_jobs_by_volume,
-            state.nomad_pending_jobs_by_volume
+            state.running_jobs_by_queue,
+            state.pending_jobs_by_queue
           ),
           type: 'bar',
           series: ['running', 'pending'],
