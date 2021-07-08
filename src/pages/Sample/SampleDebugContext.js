@@ -66,12 +66,10 @@ export function mergeJobs(processorJobs, downloaderJobs) {
   const processorJobsResult = processorJobs.map(job => ({
     ...job,
     type: 'processor',
-    isRunning: job.is_queued,
   }));
   const downloaderJobsResult = downloaderJobs.map(job => ({
     ...job,
     type: 'downloader',
-    isRunning: job.is_queued,
   }));
 
   return [...processorJobsResult, ...downloaderJobsResult].sort(
