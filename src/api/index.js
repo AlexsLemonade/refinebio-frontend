@@ -18,7 +18,7 @@ export {
   updateDataSet,
 } from './dataSet';
 
-export { getDownloaderJobs, getProcessorJobs, getRunningJobs } from './jobs';
+export { getDownloaderJobs, getProcessorJobs } from './jobs';
 
 export { getComputedFiles } from './computedFiles';
 

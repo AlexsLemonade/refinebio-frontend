@@ -49,16 +49,15 @@ export default function AppRunningSpeed({ data }) {
  * @param {*} stats stats object as returned by `/stats`
  */
 function getRunningSpeed(stats) {
-  const activeVolumes = stats.active_volumes.length;
-  const runningNomadJobs = parseInt(stats.nomad_running_jobs, 10);
+  const runningJobs = parseInt(stats.running_jobs, 10);
 
-  if (activeVolumes > 5 && runningNomadJobs > 200) {
+  if (runningJobs >= 100) {
     return RunningStatus.RunningFast;
   }
-  if (activeVolumes > 5 && runningNomadJobs > 50) {
+  if (runningJobs >= 10) {
     return RunningStatus.Running;
   }
-  if (activeVolumes > 0 && runningNomadJobs > 10) {
+  if (runningJobs >= 1) {
     return RunningStatus.RunningSlow;
   }
   return RunningStatus.NotRunning;
