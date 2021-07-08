@@ -26,6 +26,6 @@ export async function getRunningJobs(accessionCode) {
 
   const jobs = [processorJobs, downloaderJobs];
 
-  // filter out only the running jobs
+  // filter out non-running jobs
   return jobs.filter(job => job.is_queued).map(job => job.batch_job_id);
 }
