@@ -16,11 +16,9 @@ export async function getRunningJobs(accessionCode) {
   const [processorJobs, downloaderJobs] = await Promise.all([
     Ajax.get(`/v1/jobs/downloader/`, {
       sample_accession_code: accessionCode,
-      is_queued: true,
     }),
     Ajax.get(`/v1/jobs/processor/`, {
       sample_accession_code: accessionCode,
-      is_queued: true,
     }),
   ]);
 
