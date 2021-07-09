@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { formatBytes } from '../../common/helpers';
+import { formatBytes, getExampleLink } from '../../common/helpers';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import Button from '../../components/Button';
@@ -285,72 +285,76 @@ const DataSetNextSteps = ({ dataSet }) => {
   const rnaSeqLinks = [
     {
       text: 'Convert ENSEMBL IDs to Gene Symbols',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/03-rnaseq/gene-id-annotation_rnaseq_01_ensembl.html',
+      href: getExampleLink(
+        '03-rnaseq/gene-id-annotation_rnaseq_01_ensembl.html'
+      ),
     },
     {
       text: 'Follow an example differential expression analysis',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/03-rnaseq/differential-expression_rnaseq_01.html',
+      href: getExampleLink('03-rnaseq/differential-expression_rnaseq_01.html'),
     },
     {
       text: 'Follow a example pathway analysis',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/03-rnaseq/pathway-analysis_rnaseq_02_gsea.html',
+      href: getExampleLink('03-rnaseq/pathway-analysis_rnaseq_02_gsea.html'),
     },
     {
       text: 'See what other analyses you can do with refine.bio data',
-      href: 'https://alexslemonade.github.io/refinebio-examples/',
+      href: getExampleLink('index.html'),
     },
   ];
   const microarrayLinks = [
     {
       text: 'Convert ENSEMBL IDs to Gene Symbols',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/02-microarray/gene-id-annotation_microarray_01_ensembl.html',
+      href: getExampleLink(
+        '02-microarray/gene-id-annotation_microarray_01_ensembl.html'
+      ),
     },
     {
       text: 'Follow an example differential expression analysis',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/02-microarray/differential-expression_microarray_01_2-groups.html',
+      href: getExampleLink(
+        '02-microarray/differential-expression_microarray_01_2-groups.html'
+      ),
     },
     {
       text: 'Follow a example pathway analysis',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/02-microarray/pathway-analysis_microarray_02_gsea.html',
+      href: getExampleLink(
+        '02-microarray/pathway-analysis_microarray_02_gsea.html'
+      ),
     },
     {
       text: 'See what other analyses you can do with refine.bio data',
-      href: 'https://alexslemonade.github.io/refinebio-examples/',
+      href: getExampleLink('index.html'),
     },
   ];
 
   const mixedLinks = [
     {
       text: 'Convert ENSEMBL IDs to Gene Symbols for microarray data',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/02-microarray/gene-id-annotation_microarray_01_ensembl.html',
+      href: getExampleLink(
+        '02-microarray/gene-id-annotation_microarray_01_ensembl.html'
+      ),
     },
     {
       text: 'Convert ENSEMBL IDs to Gene Symbols for RNA-seq data',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/03-rnaseq/gene-id-annotation_rnaseq_01_ensembl.html',
+      href: getExampleLink(
+        '03-rnaseq/gene-id-annotation_rnaseq_01_ensembl.html'
+      ),
     },
     {
       text:
         'Follow an example differential expression analysis for microarray data',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/02-microarray/differential-expression_microarray_01_2-groups.html',
+      href: getExampleLink(
+        '02-microarray/differential-expression_microarray_01_2-groups.html'
+      ),
     },
     {
       text:
         'Follow an example differential expression analysis for RNA-seq data',
-      href:
-        'https://alexslemonade.github.io/refinebio-examples/03-rnaseq/differential-expression_rnaseq_01.html',
+      href: getExampleLink('03-rnaseq/differential-expression_rnaseq_01.html'),
     },
     {
       text: 'See what other analyses you can do with refine.bio data',
-      href: 'https://alexslemonade.github.io/refinebio-examples/',
+      href: getExampleLink('index.html'),
     },
   ];
 

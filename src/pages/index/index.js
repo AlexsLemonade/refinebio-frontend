@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Link from 'next/link';
 import { push } from '../../state/routerActions';
 import SearchInput from '../../components/SearchInput';
+import { getExampleLink } from '../../common/helpers';
 import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
 import {
@@ -153,7 +154,7 @@ let Main = ({ push }) => {
               </div>
               <div className="main__use-card__actions main__use-card__actions__alone">
                 <a
-                  href="https://alexslemonade.github.io/refinebio-examples/"
+                  href={getExampleLink('index.html')}
                   className="button button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -173,7 +174,9 @@ let Main = ({ push }) => {
               </div>
               <div className="main__use-card__actions">
                 <a
-                  href="https://alexslemonade.github.io/refinebio-examples/03-rnaseq/differential-expression_rnaseq_01.html"
+                  href={getExampleLink(
+                    '03-rnaseq/differential-expression_rnaseq_01.html'
+                  )}
                   className="button button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -181,7 +184,9 @@ let Main = ({ push }) => {
                   RNA-seq Example
                 </a>
                 <a
-                  href="https://alexslemonade.github.io/refinebio-examples/02-microarray/differential-expression_microarray_01_2-groups.html"
+                  href={getExampleLink(
+                    '02-microarray/differential-expression_microarray_01_2-groups.html'
+                  )}
                   className="button button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -199,7 +204,9 @@ let Main = ({ push }) => {
               </div>
               <div className="main__use-card__actions">
                 <a
-                  href="https://alexslemonade.github.io/refinebio-examples/03-rnaseq/pathway-analysis_rnaseq_02_gsea.html"
+                  href={getExampleLink(
+                    '03-rnaseq/pathway-analysis_rnaseq_02_gsea.html'
+                  )}
                   className="button button--secondary mr-1"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -207,7 +214,9 @@ let Main = ({ push }) => {
                   RNA-seq Example
                 </a>
                 <a
-                  href="https://alexslemonade.github.io/refinebio-examples/02-microarray/pathway-analysis_microarray_02_gsea.html"
+                  href={getExampleLink(
+                    '02-microarray/pathway-analysis_microarray_02_gsea.html'
+                  )}
                   className="button button--secondary "
                   target="_blank"
                   rel="noopener noreferrer"
