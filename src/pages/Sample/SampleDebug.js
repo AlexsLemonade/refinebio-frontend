@@ -123,22 +123,18 @@ function JobRow({ job }) {
             rel="noopener noreferrer"
             href={
               job.type === 'processor'
-                ? `https://api.refine.bio/v1/jobs/processor/?format=json&id=${
-                    job.id
-                  }`
-                : `https://api.refine.bio/v1/jobs/downloader/?format=json&id=${
-                    job.id
-                  }`
+                ? `https://api.refine.bio/v1/jobs/processor/?format=json&id=${job.id}`
+                : `https://api.refine.bio/v1/jobs/downloader/?format=json&id=${job.id}`
             }
           >
             {job.id}
           </a>
         </td>
-        <td title={job.isRunning ? 'This job is currently running' : null}>
+        <td title={job.is_queued ? 'This job is currently running' : null}>
           {job.type === 'processor'
             ? `${job.pipeline_applied} (${job.ram_amount})`
             : job.downloader_task}{' '}
-          {job.isRunning ? <IoMdSync /> : null}
+          {job.is_queued ? <IoMdSync /> : null}
         </td>
         <td>{job.num_retries}</td>
         <td>{job.retried ? 'yes' : 'no'}</td>

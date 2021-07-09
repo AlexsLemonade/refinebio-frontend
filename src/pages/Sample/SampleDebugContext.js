@@ -5,7 +5,6 @@ import Spinner from '../../components/Spinner';
 import {
   getDownloaderJobs,
   getProcessorJobs,
-  getRunningJobs,
   getComputedFiles,
   getOriginalFiles,
   getDetailedSample,
@@ -48,33 +47,29 @@ export async function loadData(accessionCode) {
     computedFiles,
     processorJobs,
     downloaderJobs,
-    runningJobs,
   ] = await Promise.all([
     getOriginalFiles(sample.id),
     getComputedFiles(sample.id),
     getProcessorJobs(accessionCode),
     getDownloaderJobs(accessionCode),
-    getRunningJobs(accessionCode),
   ]);
 
   return {
     sample,
     originalFiles: originalFiles.results,
     computedFiles: computedFiles.results,
-    jobs: mergeJobs(processorJobs.results, downloaderJobs.results, runningJobs),
+    jobs: mergeJobs(processorJobs.results, downloaderJobs.results),
   };
 }
 
-export function mergeJobs(processorJobs, downloaderJobs, runningJobs) {
+export function mergeJobs(processorJobs, downloaderJobs) {
   const processorJobsResult = processorJobs.map(job => ({
     ...job,
     type: 'processor',
-    isRunning: runningJobs.includes(job.nomad_job_id),
   }));
   const downloaderJobsResult = downloaderJobs.map(job => ({
     ...job,
     type: 'downloader',
-    isRunning: runningJobs.includes(job.nomad_job_id),
   }));
 
   return [...processorJobsResult, ...downloaderJobsResult].sort(

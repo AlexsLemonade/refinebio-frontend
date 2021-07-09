@@ -9,7 +9,7 @@ import fetch from 'isomorphic-unfetch';
 export const dataRequest = async requestBody => {
   requestBody.requestValues.navigatorUserAgent = navigator.userAgent;
 
-  const response = await fetch(`api/data-requests`, {
+  const response = await fetch(`/api/data-requests`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -5,15 +5,15 @@
 import fetch from 'isomorphic-unfetch';
 
 // ID for HubSpot list that contacts should be added to
-// should look like https://app.hubspot.com/contacts/[PORTAL_ID]/lists/[LIST_ID]
+// should look like https://app.hubspot.com/contacts/[PORTAL_ID]/lists/[listId]
 // portal ID will depend on the user but is not needed as an env variable (because of api key)
 
-const LIST_ID = process.env.HUBSPOT_LIST_ID;
-const HUBSPOT_APIKEY = process.env.HUBSPOT_APIKEY;
+const listId = process.env.HUBSPOT_LIST_ID;
+const hubspotApiKey = process.env.HUBSPOT_APIKEY;
 
-export async function createContact(params) {
-  return fetch(
-    `https://api.hubapi.com/contacts/v1/contact/?hapikey=${HUBSPOT_APIKEY}`,
+export const createContact = async params =>
+  fetch(
+    `https://api.hubapi.com/contacts/v1/contact/?hapikey=${hubspotApiKey}`,
     {
       method: 'POST',
       headers: {
@@ -22,11 +22,10 @@ export async function createContact(params) {
       body: JSON.stringify(params),
     }
   );
-}
 
-export async function addToContactList(params) {
-  return fetch(
-    `https://api.hubapi.com/contacts/v1/lists/${LIST_ID}/add?hapikey=${HUBSPOT_APIKEY}`,
+export const addToContactList = async params =>
+  fetch(
+    `https://api.hubapi.com/contacts/v1/lists/${listId}/add?hapikey=${hubspotApiKey}`,
     {
       method: 'POST',
       headers: {
@@ -35,41 +34,34 @@ export async function addToContactList(params) {
       body: JSON.stringify(params),
     }
   );
-}
 
-export async function getContact(email) {
-  let datasetRequestDetails;
-  let status;
-
-  await fetch(
-    `https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${HUBSPOT_APIKEY}`,
+export const getContact = async email => {
+  const response = await fetch(
+    `https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${hubspotApiKey}`,
     {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     }
-  )
-    .then(response => {
-      status = response.status;
-      return response.json();
-    })
-    .then(data => {
-      if (data.status !== 'error') {
-        if (data.properties.dataset_request_details) {
-          datasetRequestDetails = data.properties.dataset_request_details.value;
-        }
-      }
-    });
-  return {
-    status,
-    datasetRequestDetails,
-  };
-}
+  );
+
+  const { status } = response;
+  const data = await response.json();
+
+  if (data.status !== 'error' && data.properties.dataset_request_details) {
+    return {
+      status,
+      datasetRequestDetails: data.properties.dataset_request_details.value,
+    };
+  }
+
+  return { status };
+};
 
 export async function updateContact(email, params) {
   await fetch(
-    `https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${HUBSPOT_APIKEY}`,
+    `https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${hubspotApiKey}`,
     {
       method: 'POST',
       headers: {

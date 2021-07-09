@@ -8,14 +8,14 @@ import { numberFormatter } from '../../common/helpers';
 
 import Spinner from '../../components/Spinner';
 import SamplesProcessedBlock from './SamplesProcessedBlock';
-import { fetchDashboardData } from '../../api/dashboad';
+import { fetchExecutiveDashboardData } from '../../api/dashboad';
 import { useInterval } from '../../common/hooks';
 import Header from './Header';
 import ServerErrorPage from '../ServerError';
 
 export default function ExecutiveDashboard() {
   const { data, hasError, refresh } = useLoader(() =>
-    fetchDashboardData('day')
+    fetchExecutiveDashboardData('day')
   );
 
   // refresh data every 5 mins
