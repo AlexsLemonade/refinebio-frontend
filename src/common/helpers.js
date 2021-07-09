@@ -403,7 +403,8 @@ export function getUrlForCode(code) {
  * Gets Link to example
  */
 export function getExampleLink(link) {
-  const example = examples.find(e => e.endsWith(link));
+  const root = 'https://alexslemonade.github.io/refinebio-examples/';
+  const example = examples.find(e => e === `${root}${link}`);
 
   if (!example) {
     console.error(
