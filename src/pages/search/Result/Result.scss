@@ -82,6 +82,10 @@
   &__icon {
     margin-right: 5px;
     height: 24px;
+
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
   }
 
   &__stat {
