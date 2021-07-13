@@ -160,7 +160,7 @@ export function fetchResults({
 
       let filters = {
         ...facets,
-        organism: facets.organism_names,
+        organism: facets.downloadable_organism_names,
         platform: facets.platform_accession_codes,
       };
 
@@ -181,7 +181,7 @@ export function fetchResults({
           });
           previousFilters = {
             ...previousFacets,
-            organism: previousFacets.organism_names,
+            organism: previousFacets.downloadable_organism_names,
             platform: previousFacets.platform_accession_codes,
           };
         }
