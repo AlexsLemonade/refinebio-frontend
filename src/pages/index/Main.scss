@@ -253,6 +253,11 @@
     margin-bottom: 24px;
     text-align: left;
 
+    @include tablet {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
     @include desktop {
       margin-left: 25px;
       margin-right: 25px;
@@ -276,8 +281,9 @@
 
     &__actions {
       text-align: center;
+
       .button {
-        margin: 0 auto 1.2rem;
+        margin: 0 1rem 1.2rem;
       }
 
       &__alone {
@@ -308,6 +314,11 @@
     flex: 1 0 0;
     background-repeat: no-repeat;
     background-position: bottom right;
+
+    @include tablet {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
 
     @include desktop {
       margin-bottom: 0;
