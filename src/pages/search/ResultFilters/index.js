@@ -52,12 +52,12 @@ let FilterList = ({
         )}
       </div>
 
-      {!isEmpty(filters['organism']) && (
+      {!isEmpty(filters['downloadable_organism']) && (
         <FilterCategory
           title="Organism"
-          queryField="organism"
-          filterValues={filters['organism']}
-          activeValues={appliedFilters['organism']}
+          queryField="downloadable_organism"
+          filterValues={filters['downloadable_organism']}
+          activeValues={appliedFilters['downloadable_organism']}
           formatValue={formatSentenceCase}
           onToggleFilter={onToggleFilter}
         />
@@ -141,10 +141,10 @@ let FiltersDesktop = ({
     </div>
   );
 };
-FiltersDesktop = connect(
-  ({ search: { results } }) => ({ results }),
-  { onToggleFilter: toggleFilter, onClearFilters: clearFilters }
-)(FiltersDesktop);
+FiltersDesktop = connect(({ search: { results } }) => ({ results }), {
+  onToggleFilter: toggleFilter,
+  onClearFilters: clearFilters,
+})(FiltersDesktop);
 
 /**
  * Mobile version of the filters. In this case we want to show the filters in a
@@ -223,14 +223,11 @@ function FiltersMobile({
     </SideMenu>
   );
 }
-FiltersMobile = connect(
-  null,
-  {
-    onToggleFilter: toggleFilter,
-    onUpdateFilters: updateFilters,
-    onClearFilters: clearFilters,
-  }
-)(FiltersMobile);
+FiltersMobile = connect(null, {
+  onToggleFilter: toggleFilter,
+  onUpdateFilters: updateFilters,
+  onClearFilters: clearFilters,
+})(FiltersMobile);
 
 function FilterLabel({ value, onClick }) {
   return (
