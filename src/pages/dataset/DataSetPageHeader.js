@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { formatBytes } from '../../common/helpers';
+import { formatBytes, getExampleLink } from '../../common/helpers';
 import DownloadImage from './download-dataset.svg';
 import DownloadExpiredImage from './download-expired-dataset.svg';
 import Button from '../../components/Button';
@@ -196,17 +196,14 @@ class DataSetReady extends React.Component {
             </div>
           </div>
         </div>
-        <DataSetNextSteps />
+        <DataSetNextSteps dataSet={this.props.dataSet} />
       </>
     );
   }
 }
-DataSetReady = connect(
-  ({ token }) => ({ hasToken: !!token }),
-  {
-    createToken,
-  }
-)(DataSetReady);
+DataSetReady = connect(({ token }) => ({ hasToken: !!token }), {
+  createToken,
+})(DataSetReady);
 
 /**
  * Returns true if there's a difference between the two minor versions given
@@ -259,62 +256,128 @@ let DataSetExpired = ({ dataSet, regenerateDataSet }) => (
     </div>
   </div>
 );
-DataSetExpired = connect(
-  null,
-  {
-    regenerateDataSet,
-  }
-)(DataSetExpired);
+DataSetExpired = connect(null, {
+  regenerateDataSet,
+})(DataSetExpired);
 
-function DataSetNextSteps() {
+const NextStepLink = ({ href, text }) => {
+  return (
+    <p>
+      <a
+        href={href}
+        className="link"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >
+        {text}
+      </a>
+    </p>
+  );
+};
+
+const DataSetNextSteps = ({ dataSet }) => {
+  const { experiments } = dataSet;
+  const technologies = Object.values(experiments).map(e => e.technology);
+  const hasRNASeq = technologies.includes('RNA-SEQ');
+  const hasMicroarray = technologies.includes('MICROARRAY');
+  const isMixed = hasRNASeq && hasMicroarray;
+
+  const rnaSeqLinks = [
+    {
+      text: 'Convert ENSEMBL IDs to Gene Symbols',
+      href: getExampleLink(
+        '03-rnaseq/gene-id-annotation_rnaseq_01_ensembl.html'
+      ),
+    },
+    {
+      text: 'Follow an example differential expression analysis',
+      href: getExampleLink('03-rnaseq/differential-expression_rnaseq_01.html'),
+    },
+    {
+      text: 'Follow a example pathway analysis',
+      href: getExampleLink('03-rnaseq/pathway-analysis_rnaseq_02_gsea.html'),
+    },
+    {
+      text: 'See what other analyses you can do with refine.bio data',
+      href: getExampleLink('index.html'),
+    },
+  ];
+  const microarrayLinks = [
+    {
+      text: 'Convert ENSEMBL IDs to Gene Symbols',
+      href: getExampleLink(
+        '02-microarray/gene-id-annotation_microarray_01_ensembl.html'
+      ),
+    },
+    {
+      text: 'Follow an example differential expression analysis',
+      href: getExampleLink(
+        '02-microarray/differential-expression_microarray_01_2-groups.html'
+      ),
+    },
+    {
+      text: 'Follow a example pathway analysis',
+      href: getExampleLink(
+        '02-microarray/pathway-analysis_microarray_02_gsea.html'
+      ),
+    },
+    {
+      text: 'See what other analyses you can do with refine.bio data',
+      href: getExampleLink('index.html'),
+    },
+  ];
+
+  const mixedLinks = [
+    {
+      text: 'Convert ENSEMBL IDs to Gene Symbols for microarray data',
+      href: getExampleLink(
+        '02-microarray/gene-id-annotation_microarray_01_ensembl.html'
+      ),
+    },
+    {
+      text: 'Convert ENSEMBL IDs to Gene Symbols for RNA-seq data',
+      href: getExampleLink(
+        '03-rnaseq/gene-id-annotation_rnaseq_01_ensembl.html'
+      ),
+    },
+    {
+      text:
+        'Follow an example differential expression analysis for microarray data',
+      href: getExampleLink(
+        '02-microarray/differential-expression_microarray_01_2-groups.html'
+      ),
+    },
+    {
+      text:
+        'Follow an example differential expression analysis for RNA-seq data',
+      href: getExampleLink('03-rnaseq/differential-expression_rnaseq_01.html'),
+    },
+    {
+      text: 'See what other analyses you can do with refine.bio data',
+      href: getExampleLink('index.html'),
+    },
+  ];
+
   return (
     <div className="dataset__next-steps">
       <img src={TubeyAdventureImage} alt="" />
-
       <div>
         <h1>Explore what you can do with your refine.bio dataset!</h1>
-
-        <p>
-          <a
-            href="//docs.refine.bio/en/latest/getting_started.html#getting-started-with-a-refine-bio-dataset"
-            className="link"
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-          >
-            Get started with your dataset
-          </a>
-        </p>
-        <p>
-          <a
-            href="https://github.com/AlexsLemonade/refinebio-examples/tree/v1.0/ensembl-id-convert"
-            className="link"
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-          >
-            Convert ENSEMBL IDs to Gene Symbols
-          </a>
-        </p>
-        <p>
-          <a
-            href="https://github.com/AlexsLemonade/refinebio-examples/tree/v1.0/differential-expression"
-            className="link"
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-          >
-            Follow an example differential expression analysis
-          </a>
-        </p>
-        <p>
-          <a
-            href="//docs.refine.bio/en/latest/index.html"
-            className="link"
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-          >
-            Learn more about how we source and process data
-          </a>
-        </p>
+        {isMixed &&
+          mixedLinks.map(l => (
+            <NextStepLink key={l.text} href={l.href} text={l.text} />
+          ))}
+        {!isMixed &&
+          hasMicroarray &&
+          microarrayLinks.map(l => (
+            <NextStepLink href={l.href} key={l.text} text={l.text} />
+          ))}
+        {!isMixed &&
+          hasRNASeq &&
+          rnaSeqLinks.map(l => (
+            <NextStepLink key={l.text} href={l.href} text={l.text} />
+          ))}
       </div>
     </div>
   );
-}
+};

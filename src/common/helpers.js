@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-unfetch';
+import examples from './examples-links.json';
 import {
   ApiVersionMismatchError,
   ServerError,
@@ -396,4 +397,21 @@ export function getUrlForCode(code) {
     mainUrl = 'https://www.ebi.ac.uk/arrayexpress/experiments/';
   }
   return mainUrl + code;
+}
+
+/**
+ * Gets Link to example
+ */
+export function getExampleLink(link) {
+  const root = 'https://alexslemonade.github.io/refinebio-examples/';
+  const example = examples.find(e => e === `${root}${link}`);
+
+  if (!example) {
+    console.error(
+      'Please make sure the link is in common/examples-links.json and that the url is correct',
+      link
+    );
+  }
+
+  return example;
 }
