@@ -1,15 +1,14 @@
 {
   "version": "0.0.0",
-  "apiVersion": "v1.42.20-hotfix",
   "stats": {
-    "generated_on": "2021-07-14T20:43:47.228483Z",
+    "generated_on": "2021-07-08T19:08:23.041668Z",
     "survey_jobs": {
-      "total": 97689,
-      "successful": 575,
-      "failed": 97114,
+      "total": 97716,
+      "successful": 598,
+      "failed": 97118,
       "pending": 0,
       "open": 0,
-      "average_time": 68.983588,
+      "average_time": 78.625452,
       "timeline": [
         {
           "start": "2020-08-01T00:00:00Z",
@@ -54,12 +53,12 @@
       ]
     },
     "downloader_jobs": {
-      "total": 2744905,
-      "successful": 8037,
-      "failed": 2730618,
+      "total": 2744964,
+      "successful": 8079,
+      "failed": 2730635,
       "pending": 24,
       "open": 0,
-      "average_time": 255.806697,
+      "average_time": 255.265375,
       "timeline": [
         {
           "start": "2020-08-01T00:00:00Z",
@@ -104,12 +103,12 @@
       ]
     },
     "processor_jobs": {
-      "total": 748957,
-      "successful": 168762,
-      "failed": 537278,
+      "total": 748970,
+      "successful": 168761,
+      "failed": 537292,
       "pending": 41254,
       "open": 0,
-      "average_time": 433.912659,
+      "average_time": 435.745576,
       "timeline": [
         {
           "start": "2020-08-01T00:00:00Z",
@@ -201,9 +200,9 @@
         },
         {
           "start": "2021-07-01T00:00:00Z",
-          "total": 15312,
-          "successful": 6782,
-          "failed": 1751,
+          "total": 15254,
+          "successful": 6725,
+          "failed": 1750,
           "pending": 6779,
           "open": 0
         }
@@ -212,70 +211,31 @@
     "experiments": {
       "total": 61158,
       "timeline": [
-        {
-          "start": "2020-10-01T00:00:00Z",
-          "total": 304
-        },
-        {
-          "start": "2021-07-01T00:00:00Z",
-          "total": 1
-        },
-        {
-          "start": "2021-06-01T00:00:00Z",
-          "total": 2
-        },
-        {
-          "start": "2020-08-01T00:00:00Z",
-          "total": 5
-        }
+        { "start": "2020-10-01T00:00:00Z", "total": 304 },
+        { "start": "2021-07-01T00:00:00Z", "total": 1 },
+        { "start": "2021-06-01T00:00:00Z", "total": 2 },
+        { "start": "2020-08-01T00:00:00Z", "total": 5 }
       ]
     },
     "unprocessed_samples": {
       "total": 1028811,
       "timeline": [
-        {
-          "start": "2020-08-01T00:00:00Z",
-          "total": 39
-        },
-        {
-          "start": "2020-09-01T00:00:00Z",
-          "total": 55
-        },
-        {
-          "start": "2020-10-01T00:00:00Z",
-          "total": 3789
-        },
-        {
-          "start": "2021-06-01T00:00:00Z",
-          "total": 438
-        }
+        { "start": "2020-08-01T00:00:00Z", "total": 39 },
+        { "start": "2020-09-01T00:00:00Z", "total": 55 },
+        { "start": "2020-10-01T00:00:00Z", "total": 3789 },
+        { "start": "2021-06-01T00:00:00Z", "total": 438 }
       ]
     },
     "processed_samples": {
       "total": 973164,
       "timeline": [
-        {
-          "start": "2020-08-01T00:00:00Z",
-          "total": 1192
-        },
-        {
-          "start": "2020-09-01T00:00:00Z",
-          "total": 168
-        },
-        {
-          "start": "2020-10-01T00:00:00Z",
-          "total": 2783
-        },
-        {
-          "start": "2021-07-01T00:00:00Z",
-          "total": 763
-        }
+        { "start": "2020-08-01T00:00:00Z", "total": 1192 },
+        { "start": "2020-09-01T00:00:00Z", "total": 168 },
+        { "start": "2020-10-01T00:00:00Z", "total": 2783 },
+        { "start": "2021-07-01T00:00:00Z", "total": 763 }
       ],
       "last_hour": 0,
-      "technology": {
-        "MICROARRAY": 613738,
-        "RNA-SEQ": 359426
-      },
+      "technology": { "MICROARRAY": 613738, "RNA-SEQ": 359426 },
       "organism": {
         "ACOMYS_CAHIRINUS": 14,
         "ACYRTHOSIPHON_PISUM": 189,
@@ -605,12 +565,12 @@
       }
     },
     "dataset": {
-      "total": 2322,
-      "aggregated_by_experiment": 2284,
+      "total": 2285,
+      "aggregated_by_experiment": 2243,
       "aggregated_by_species": 38,
-      "scale_by_none": 2156,
-      "scale_by_minmax": 39,
-      "scale_by_standard": 127,
+      "scale_by_none": 2127,
+      "scale_by_minmax": 38,
+      "scale_by_standard": 120,
       "scale_by_robust": 0,
       "timeline": [
         {
@@ -625,8 +585,8 @@
         },
         {
           "start": "2020-10-01T00:00:00Z",
-          "total": 112,
-          "total_size": 4722686692
+          "total": 116,
+          "total_size": 4724351051
         },
         {
           "start": "2020-11-01T00:00:00Z",
@@ -640,13 +600,13 @@
         },
         {
           "start": "2021-01-01T00:00:00Z",
-          "total": 68,
-          "total_size": 912712652
+          "total": 75,
+          "total_size": 973552827
         },
         {
           "start": "2021-02-01T00:00:00Z",
-          "total": 111,
-          "total_size": 1172998547
+          "total": 115,
+          "total_size": 1195686995
         },
         {
           "start": "2021-03-01T00:00:00Z",
@@ -665,13 +625,13 @@
         },
         {
           "start": "2021-06-01T00:00:00Z",
-          "total": 153,
-          "total_size": 4984790963
+          "total": 154,
+          "total_size": 4984961574
         },
         {
           "start": "2021-07-01T00:00:00Z",
-          "total": 90,
-          "total_size": 1084460885
+          "total": 37,
+          "total_size": 609901204
         }
       ]
     },
@@ -689,9 +649,7 @@
       "data-refinery-batch-smasher-queue-circleci-prod": 0,
       "data-refinery-batch-workers-queue-circleci-prod-0": 0
     },
-    "processed_experiments": {
-      "total": 38262
-    },
+    "processed_experiments": { "total": 38262 },
     "input_data_size": 347202528066232,
     "output_data_size": 0
   },
@@ -700,50 +658,6 @@
     "total_size_in_bytes": 838080533299365,
     "supported_organisms": 203,
     "experiments_processed": 45567
-  },
-  "organism": {
-    "HOMO_SAPIENS": 511403,
-    "MUS_MUSCULUS": 288720,
-    "ARABIDOPSIS_THALIANA": 23767,
-    "RATTUS_NORVEGICUS": 38582,
-    "DROSOPHILA_MELANOGASTER": 17180,
-    "SACCHAROMYCES_CEREVISIAE": 12989,
-    "DANIO_RERIO": 28529,
-    "CAENORHABDITIS_ELEGANS": 7705,
-    "SUS_SCROFA": 5908,
-    "ZEA_MAYS": 3391,
-    "GLYCINE_MAX": 5153,
-    "GALLUS_GALLUS": 3950,
-    "ORYZA_SATIVA": 2520,
-    "PSEUDOMONAS_AERUGINOSA": 2261,
-    "BOS_TAURUS": 5493,
-    "ESCHERICHIA_COLI": 1387,
-    "MACACA_MULATTA": 2295,
-    "TRITICUM_AESTIVUM": 2083,
-    "XENOPUS_LAEVIS": 753,
-    "HORDEUM_VULGARE": 2206,
-    "POPULUS_TRICHOCARPA": 1680,
-    "ANOPHELES_GAMBIAE": 808,
-    "OVIS_ARIES": 925,
-    "PSEUDOMONAS_AERUGINOSA_PAO1": 338,
-    "STAPHYLOCOCCUS_AUREUS": 420,
-    "SCHIZOSACCHAROMYCES_POMBE": 310,
-    "VITIS_VINIFERA": 769,
-    "ORYZA_SATIVA_INDICA_GROUP": 706,
-    "MACACA_FASCICULARIS": 979,
-    "POPULUS_TREMULA_X_POPULUS_ALBA": 246,
-    "ESCHERICHIA_COLI_STR._K-12_SUBSTR._MG1655": 551,
-    "GOSSYPIUM_HIRSUTUM": 318,
-    "CITRUS_SINENSIS": 248,
-    "ESCHERICHIA_COLI_K-12": 152,
-    "EQUUS_CABALLUS": 227,
-    "MUSTELA_PUTORIUS_FURO": 217,
-    "PLASMODIUM_FALCIPARUM": 106,
-    "POPULUS_X_CANADENSIS": 143,
-    "BOS_INDICUS": 57,
-    "LEPIDIUM_SATIVUM": 139,
-    "VITIS_HYBRID_CULTIVAR": 251,
-    "VITIS_RIPARIA": 251
   },
   "qnTargets": {
     "MUSTELA_PUTORIUS_FURO": true,

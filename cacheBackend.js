@@ -120,7 +120,7 @@ async function getSamplesPerOrganism() {
   try {
     const response = await axios.get(`${ApiHost}/search/?limit=1&offset=0`);
     return {
-      organism: response.data.facets.downloadable_organism_names,
+      organism: response.data.filters.organism,
       apiVersion: response.headers['x-source-revision'],
     };
   } catch {
