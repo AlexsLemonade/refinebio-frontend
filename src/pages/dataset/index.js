@@ -136,7 +136,6 @@ let DownloadDataSetButtonModal = ({
                 </p>
               </div>
             )}
-
             <div className="flex-row mb-1">
               <AggreationOptions />
             </div>
