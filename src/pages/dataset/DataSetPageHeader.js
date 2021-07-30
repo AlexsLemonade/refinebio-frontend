@@ -44,7 +44,11 @@ export default function DataSetPageHeader({ emailAddress, hasError, dataSet }) {
 
   if (is_processing) {
     return (
-      <DataSetProcessing emailAddress={emailAddress} dataSetId={dataSetId} />
+      <DataSetProcessing
+        emailAddress={emailAddress}
+        dataSetId={dataSetId}
+        dataSet={dataSet}
+      />
     );
   }
 
@@ -100,7 +104,7 @@ const DataSetErrorDownloading = ({ dataSet }) => {
   );
 };
 
-function DataSetProcessing({ emailAddress }) {
+function DataSetProcessing({ emailAddress, dataSet }) {
   const message = emailAddress ? (
     <p>
       An email with a download link will be sent to{' '}
@@ -127,7 +131,7 @@ function DataSetProcessing({ emailAddress }) {
           </div>
         </div>
       </div>
-      <DataSetNextSteps />
+      <DataSetNextSteps dataSet={dataSet} />
     </>
   );
 }
