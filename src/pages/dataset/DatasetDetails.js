@@ -72,9 +72,6 @@ function DatasetRegenerateOptions({ dataSet, regenerateDataSet }) {
     </div>
   );
 }
-DatasetRegenerateOptions = connect(
-  null,
-  {
-    regenerateDataSet,
-  }
-)(DatasetRegenerateOptions);
+DatasetRegenerateOptions = connect(null, {
+  regenerateDataSet,
+})(DatasetRegenerateOptions);
