@@ -43,13 +43,7 @@ export default function DataSetPageHeader({ emailAddress, hasError, dataSet }) {
   }
 
   if (is_processing) {
-    return (
-      <DataSetProcessing
-        emailAddress={emailAddress}
-        dataSetId={dataSetId}
-        dataSet={dataSet}
-      />
-    );
+    return <DataSetProcessing emailAddress={emailAddress} dataSet={dataSet} />;
   }
 
   return <h1 className="downloads__heading">Shared Dataset</h1>;
