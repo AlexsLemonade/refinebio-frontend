@@ -130,75 +130,68 @@ function DataSetProcessing({ emailAddress, dataSet }) {
   );
 }
 
-class DataSetReady extends React.Component {
-  state = {
-    agreedToTerms: false,
+let DataSetReady = ({ dataSet, createToken, hasToken }) => {
+  const [agreedToTerms, setAgreedToTerms] = React.useState(false);
+  const handleAgreedToTerms = () => {
+    setAgreedToTerms(!agreedToTerms);
   };
 
-  handleAgreedToTerms = () => {
-    this.setState(state => ({ agreedToTerms: !state.agreedToTerms }));
-  };
-
-  handleSubmit = async () => {
-    if (!this.props.hasToken) {
+  const handleSubmit = async () => {
+    if (!hasToken) {
       // if the current user doesn't has a valid token, we have to generate it
       // and request the dataset data again to get the `download_url`
-      const token = await this.props.createToken();
-      const dataSet = await getDataSet(this.props.dataSet.id, token);
+      const token = await createToken();
+      const dataSet = await getDataSet(dataSet.id, token);
       window.location.href = dataSet.download_url;
     } else {
       // otherwise we should have gotten the download url when the original
       // data was requested
-      window.location.href = this.props.dataSet.download_url;
+      window.location.href = dataSet.download_url;
     }
   };
 
-  render() {
-    return (
-      <>
-        <div className="dataset__container">
-          <div className="dataset__message">
-            <div className="dataset__way-container">
-              <div className="dataset__processed-text">
-                <h1>Your dataset is ready for download!</h1>
+  return (
+    <>
+      <div className="dataset__container">
+        <div className="dataset__message">
+          <div className="dataset__way-container">
+            <div className="dataset__processed-text">
+              <h1>Your dataset is ready for download!</h1>
 
-                {!!this.props.dataSet.size_in_bytes && (
-                  <div className="mb-1">
-                    Download size:{' '}
-                    {formatBytes(this.props.dataSet.size_in_bytes)}
-                  </div>
+              {!!dataSet.size_in_bytes && (
+                <div className="mb-1">
+                  Download size: {formatBytes(dataSet.size_in_bytes)}
+                </div>
+              )}
+
+              <div className="dataset__way-container">
+                {!hasToken && (
+                  <TermsOfUse
+                    agreedToTerms={agreedToTerms}
+                    handleToggle={handleAgreedToTerms}
+                  />
                 )}
 
-                <div className="dataset__way-container">
-                  {!this.props.hasToken && (
-                    <TermsOfUse
-                      agreedToTerms={this.state.agreedToTerms}
-                      handleToggle={this.handleAgreedToTerms}
-                    />
-                  )}
-
-                  <Button
-                    onClick={this.handleSubmit}
-                    isDisabled={
-                      !this.state.agreedToTerms && !this.props.hasToken
-                    }
-                  >
-                    Download Now
-                  </Button>
-                </div>
+                <Button
+                  onClick={handleSubmit}
+                  isDisabled={!agreedToTerms && !hasToken}
+                >
+                  Download Now
+                </Button>
               </div>
+            </div>
 
-              <div className="dataset__way-image">
-                <img src={DownloadImage} alt="" />
-              </div>
+            <div className="dataset__way-image">
+              <img src={DownloadImage} alt="" />
             </div>
           </div>
         </div>
-        <DataSetNextSteps dataSet={this.props.dataSet} />
-      </>
-    );
-  }
-}
+      </div>
+      <DataSetNextSteps dataSet={dataSet} />
+    </>
+  );
+};
+
 DataSetReady = connect(({ token }) => ({ hasToken: !!token }), {
   createToken,
 })(DataSetReady);
