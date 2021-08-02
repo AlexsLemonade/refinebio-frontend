@@ -60,6 +60,7 @@ export default function DataSet() {
       {({ dataSet, isLoading, hasError: requestHasError }) => {
         if (isLoading) return <Spinner />;
         if (requestHasError) return <NoMatch />;
+
         const showDownloadButton = !(
           dataSet.is_processing || dataSet.is_processed
         );
@@ -73,20 +74,25 @@ export default function DataSet() {
             />
             <div className="downloads__bar">
               <div className="flex-row">
-                <ShareDatasetButton dataSet={dataSet} />
-                {showDownloadButton && (
-                  // if it is not processed
-                  // allow the user to download the dataset
-                  // otherwise use the regenerate dataset flow
-                  <DownloadDataSetButtonModal
-                    shared={shared}
-                    dataSet={dataSet}
-                  />
-                )}
                 <MoveToDatasetButtonModal dataSet={dataSet} />
+                <div className="downloads__bar__share-download">
+                  <ShareDatasetButton dataSet={dataSet} />
+                  {showDownloadButton && (
+                    // if it is not processed
+                    // allow the user to download the dataset
+                    // otherwise use the regenerate dataset flow
+                    <DownloadDataSetButtonModal
+                      shared={shared}
+                      dataSet={dataSet}
+                    />
+                  )}
+                </div>
               </div>
             </div>
-            <DatasetDetails dataSet={dataSet} />
+            <DatasetDetails
+              dataSet={dataSet}
+              showRegenerate={!showDownloadButton}
+            />
           </div>
         );
       }}
