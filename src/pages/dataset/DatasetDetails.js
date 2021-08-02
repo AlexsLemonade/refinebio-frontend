@@ -12,12 +12,12 @@ import DownloadOptionsForm, {
   getTransformationOptionFromName,
 } from '../download/DownloadOptionsForm';
 
-export default function DatasetDetails({ dataSet }) {
+export default function DatasetDetails({ dataSet, showRegenerate = true }) {
   return (
     <div>
       <h2>Download Files Summary</h2>
 
-      <DatasetRegenerateOptions dataSet={dataSet} />
+      {showRegenerate && <DatasetRegenerateOptions dataSet={dataSet} />}
 
       <DownloadFileSummary dataSet={dataSet} />
       <DownloadDatasetSummary dataSet={dataSet} />
