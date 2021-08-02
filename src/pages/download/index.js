@@ -34,12 +34,9 @@ let Download = ({ download, fetchDataSetDetails }) => {
     </div>
   );
 };
-Download = connect(
-  ({ download }) => ({ download }),
-  {
-    fetchDataSetDetails,
-  }
-)(Download);
+Download = connect(({ download }) => ({ download }), {
+  fetchDataSetDetails,
+})(Download);
 export default Download;
 
 function DownloadEmpty() {

@@ -44,6 +44,12 @@
     padding-bottom: 1rem;
     flex-direction: column;
     margin-bottom: 2rem;
+
+    &__share-download {
+      > button:last-child {
+        margin-left: 16px;
+      }
+    }
   }
 
   &__actions {

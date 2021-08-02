@@ -28,13 +28,10 @@ let DownloadBar = ({ dataSet, push, editDataSet }) => {
     </div>
   );
 };
-DownloadBar = connect(
-  null,
-  {
-    editDataSet,
-    push,
-  }
-)(DownloadBar);
+DownloadBar = connect(null, {
+  editDataSet,
+  push,
+})(DownloadBar);
 export default DownloadBar;
 
 export function ShareDatasetButton({ dataSet: { id: dataSetId } }) {
