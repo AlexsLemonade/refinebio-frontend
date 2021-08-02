@@ -4,66 +4,54 @@ import { getDataSet, getDataSetDetails } from '../../api/dataSet';
 import Loader from '../../components/Loader';
 import { timeout } from '../../common/helpers';
 
-class DataSetLoader extends React.Component {
-  _loader = React.createRef();
+let DataSetLoader = ({ dataSetId, token, children }) => {
+  const loader = React.createRef();
+  let liveUpdate = true;
 
-  _liveUpdate = true;
+  const [dataSet, setDataSet] = React.useState({});
+  const [firstUpdate, setFirstUpdate] = React.useState(true);
 
-  state = {
-    dataSet: {},
-    firstUpdate: true,
-  };
+  const fetchDataSet = async () => {
+    const freshDataSet = firstUpdate
+      ? await getDataSetDetails(dataSetId, token)
+      : await getDataSet(dataSetId, token);
 
-  componentWillUnmount() {
-    // disable live updates after the component is unmounted
-    this._liveUpdate = false;
-  }
-
-  async _fetchDataSet() {
-    const { dataSetId } = this.props;
-
-    const dataSet = this.state.firstUpdate
-      ? await getDataSetDetails(dataSetId, this.props.token)
-      : await getDataSet(dataSetId, this.props.token);
-
-    if (dataSet.is_processing) {
-      this._startLiveUpdate();
+    if (freshDataSet.is_processing) {
+      startLiveUpdate();
     }
 
     // override the current dataset with the newest state
-    this.setState(state => ({
-      firstUpdate: false,
-      dataSet: { ...state.dataSet, ...dataSet },
-    }));
-  }
+    setDataSet({ ...dataSet, ...freshDataSet });
+    setFirstUpdate(false);
+  };
 
-  async _startLiveUpdate() {
+  const startLiveUpdate = async () => {
     await timeout(20000); // wait 20 secs
 
-    if (this._liveUpdate) {
-      this._loader.current.refresh();
+    if (liveUpdate) {
+      loader.current.refresh();
     }
-  }
+  };
 
-  render() {
-    const { dataSetId } = this.props;
+  React.useEffect(() => {
+    return () => {
+      // disable live updates after the component is unmounted
+      liveUpdate = false;
+    };
+  });
 
-    return (
-      <Loader
-        ref={this._loader}
-        updateProps={dataSetId}
-        fetch={() => this._fetchDataSet()}
-      >
-        {({ isLoading, hasError }) =>
-          this.props.children({
-            isLoading: isLoading && this.state.firstUpdate,
-            hasError,
-            dataSet: this.state.dataSet,
-          })
-        }
-      </Loader>
-    );
-  }
-}
+  return (
+    <Loader ref={loader} updateProps={dataSetId} fetch={() => fetchDataSet()}>
+      {({ isLoading, hasError }) =>
+        children({
+          isLoading: isLoading && firstUpdate,
+          hasError,
+          dataSet,
+        })
+      }
+    </Loader>
+  );
+};
+
 DataSetLoader = connect(({ token }) => ({ token }))(DataSetLoader);
 export default DataSetLoader;
