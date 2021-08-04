@@ -7,13 +7,6 @@ import SearchInput from '../../components/SearchInput';
 import { getExampleLink } from '../../common/helpers';
 import SearchIcon from '../../common/icons/search.svg';
 import DatasetIcon from '../../common/icons/dataset.svg';
-import {
-  SamplesPerSpeciesGraph,
-  SamplesOverTimeGraph,
-  getSamplesOverTime,
-} from './graphs';
-import TabControl from '../../components/TabControl';
-import apiData from '../../apiData.json';
 import EmailSection from './EmailSection';
 import { searchUrl } from '../../routes';
 import circusPlot from '../about/circus-plot.svg';
@@ -228,25 +221,6 @@ let Main = ({ push }) => {
           </div>
         </div>
       </section>
-
-      {(getSamplesOverTime() || apiData.organism) && (
-        <section className="main__section main__section--gray hidden-xs">
-          <div className="main__container">
-            <h2 className="main__heading-1">Summary Statistics</h2>
-
-            <TabControl
-              tabs={[
-                apiData.organism ? 'Samples per Species' : false,
-                getSamplesOverTime() ? 'Samples over Time' : false,
-              ]}
-              toggleClassName="toggle--statics-tabs"
-            >
-              <SamplesPerSpeciesGraph />
-              <SamplesOverTimeGraph />
-            </TabControl>
-          </div>
-        </section>
-      )}
 
       <section className="main__section main__section--explore">
         <div className="main__container">
