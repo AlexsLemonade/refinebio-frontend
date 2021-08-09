@@ -141,8 +141,8 @@ let DataSetReady = ({ dataSet, createToken, hasToken }) => {
       // if the current user doesn't has a valid token, we have to generate it
       // and request the dataset data again to get the `download_url`
       const token = await createToken();
-      const dataSet = await getDataSet(dataSet.id, token);
-      window.location.href = dataSet.download_url;
+      const { download_url: downloadUrl } = await getDataSet(dataSet.id, token);
+      window.location.href = downloadUrl;
     } else {
       // otherwise we should have gotten the download url when the original
       // data was requested
