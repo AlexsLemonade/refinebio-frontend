@@ -5,7 +5,7 @@ import circusPlot from './circus-plot.svg';
 import savingTimes from './saving-times.svg';
 import oneRepo from './one-repo.svg';
 import betterMed from './better-med.svg';
-import alsfLogo from './ALSFsquare.jpg';
+import alsfLogo from './ALSFsquare.svg';
 import ccdlLogo from './CCDL-logo.jpg';
 import { themes, useTheme } from '../../common/ThemeContext';
 
