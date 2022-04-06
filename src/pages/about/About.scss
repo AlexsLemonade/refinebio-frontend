@@ -203,23 +203,16 @@
     }
 
     &__logo-container {
-      text-align: center;
-
-      @include tablet() {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
+      margin-bottom: 50px;
     }
 
     &__logo {
-      &:first-child {
-        margin-bottom: 50px;
-      }
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      @include tablet() {
-        flex-grow: 1;
+      img {
+        width: 80%;
       }
     }
   }
