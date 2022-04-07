@@ -123,8 +123,8 @@ function JobRow({ job }) {
             rel="noopener noreferrer"
             href={
               job.type === 'processor'
-                ? `https://api.refine.bio/v1/jobs/processor/?format=json&id=${job.id}`
-                : `https://api.refine.bio/v1/jobs/downloader/?format=json&id=${job.id}`
+                ? `https://api.refine.bio/v1/jobs/processor/${job.id}`
+                : `https://api.refine.bio/v1/jobs/downloader/${job.id}`
             }
           >
             {job.id}

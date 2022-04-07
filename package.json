@@ -46,7 +46,8 @@
     ]
   },
   "scripts": {
-    "dev": "next",
+    "dev": "REACT_APP_API_HOST=https://api.refine.bio next",
+    "dev:local": "yarn dev",
     "prebuild": "node cacheBackend.js && node sitemap.js",
     "build": "next build",
     "start": "next start",
