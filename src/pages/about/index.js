@@ -5,8 +5,7 @@ import circusPlot from './circus-plot.svg';
 import savingTimes from './saving-times.svg';
 import oneRepo from './one-repo.svg';
 import betterMed from './better-med.svg';
-import alsfLogo from './ALSFsquare.svg';
-import ccdlLogo from './CCDL-logo.jpg';
+import logo from './CCDL_and_ALSF_Logo .png';
 import { themes, useTheme } from '../../common/ThemeContext';
 
 import apiData from '../../apiData.json';
@@ -165,21 +164,9 @@ function About() {
           <div className="about__section-created__logo-container">
             <div className="about__section-created__logo">
               <img
-                src={alsfLogo}
+                src={logo}
                 className="img-responsive"
-                width="186"
-                height="200"
-                alt="ALSF Logo"
-              />
-            </div>
-
-            <div className="about__section-created__logo">
-              <img
-                src={ccdlLogo}
-                className="img-responsive"
-                width="319"
-                height="156"
-                alt="CCDL Logo"
+                alt=" Childhood Cancer Data Lab, powered by Alex’s Lemonade Stand Foundation Logo"
               />
             </div>
           </div>
