@@ -183,7 +183,7 @@ function About() {
 
               <div className="about__section-donate__action">
                 <a
-                  href="https://secure.squarespace.com/checkout/donate?donatePageId=5b046884575d1f9eea37935b"
+                  href="https://www.ccdatalab.org/donate-link"
                   className="button button--large about__button-donate"
                   target="_blank"
                   rel="noopener noreferrer"
