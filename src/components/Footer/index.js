@@ -24,7 +24,7 @@ const Footer = () => (
         </p>
         <div className="footer__socials">
           <a
-            href="https://www.alexslemonade.org/contribute/414?restrict=ChildhoodCancerDataLab"
+            href="https://www.ccdatalab.org/donate-link"
             className="button"
             target="_blank"
             rel="noopener noreferrer"

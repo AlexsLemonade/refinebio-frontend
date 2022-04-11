@@ -183,7 +183,7 @@ function About() {
 
               <div className="about__section-donate__action">
                 <a
-                  href="https://www.alexslemonade.org/contribute/414?restrict=ChildhoodCancerDataLab"
+                  href="https://www.ccdatalab.org/donate-link"
                   className="button button--large about__button-donate"
                   target="_blank"
                   rel="noopener noreferrer"
