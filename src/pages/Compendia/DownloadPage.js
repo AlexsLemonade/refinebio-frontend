@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Router, { useRouter } from 'next/router';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import DownloadDatasetImage from '../dataset/download-dataset.svg';
@@ -43,7 +44,7 @@ export default function DownloadPage() {
               </p>
             </div>
             <div className="dataset__way-image">
-              <img src={DownloadDatasetImage} alt="" />
+              <Image src={DownloadDatasetImage} alt="" />
             </div>
           </div>
         </div>
@@ -86,7 +87,7 @@ export default function DownloadPage() {
             </a>
           </p>
 
-          <img src={TubeyAdventureImage} alt="" />
+          <Image src={TubeyAdventureImage} alt="" />
         </div>
       </div>
     </div>

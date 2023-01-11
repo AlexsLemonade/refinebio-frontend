@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
@@ -164,7 +165,7 @@ function FiltersMobile({
         <div className="vertical-center">
           <Button onClick={showMenu} buttonStyle="secondary" className="mr-1">
             <div className="vertical-center">
-              <img src={FilterIcon} className="button__icon" alt="" />
+              <Image src={FilterIcon} className="button__icon" alt="" />
               <span>Filters</span>
             </div>
           </Button>

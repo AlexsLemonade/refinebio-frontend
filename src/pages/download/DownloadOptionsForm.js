@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Formik } from 'formik';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
@@ -141,7 +142,7 @@ function HelpIcon({ url = '//docs.refine.bio/', alt = 'What is this?' }) {
       title={alt}
       className="downloads__help-icon"
     >
-      <img src={HelpIconImage} alt={alt} />
+      <Image src={HelpIconImage} alt={alt} />
     </a>
   );
 }

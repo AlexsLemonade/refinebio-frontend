@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { connect } from 'react-redux';
 
 import Link from 'next/link';
@@ -244,7 +245,7 @@ export class ExperimentsView extends React.Component {
                   )}
                   <div className="downloads__sample-stats">
                     <div className="downloads__sample-stat">
-                      <img
+                      <Image
                         src={AccessionIcon}
                         className="downloads__sample-icon"
                         alt="Accession Icon"
@@ -252,7 +253,7 @@ export class ExperimentsView extends React.Component {
                       {experiment.accession_code}
                     </div>
                     <div className="downloads__sample-stat">
-                      <img
+                      <Image
                         src={SampleIcon}
                         className="downloads__sample-icon"
                         alt="Sample Icon"
@@ -260,7 +261,7 @@ export class ExperimentsView extends React.Component {
                       {addedSamples.length} Samples
                     </div>
                     <div className="downloads__sample-stat downloads__sample-stat--experiment">
-                      <img
+                      <Image
                         src={OrganismIcon}
                         className="downloads__sample-icon"
                         alt="Organism Icon"

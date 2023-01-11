@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import Link from 'next/link';
@@ -28,7 +29,7 @@ let Header = ({ router: location }) => {
       <div className="header__container">
         <Link legacyBehavior href="/index" as="/">
           <a>
-            <img src={logo} alt="refine.bio" className="header__logo" />
+            <Image src={logo} alt="refine.bio" className="header__logo" />
           </a>
         </Link>
 
@@ -262,7 +263,7 @@ function GithubCorner() {
       rel="nofollow noopener noreferrer"
       className="github-corner"
     >
-      <img src={githubCorner} alt="github link" />
+      <Image src={githubCorner} alt="github link" />
     </a>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import pickBy from 'lodash/pickBy';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
@@ -56,8 +57,8 @@ class AnnotationsModalContent extends React.Component {
           </div>
 
           <div className="metadata-modal__subtitle info">
-            <img className="info__icon" src={InfoIcon} alt="" /> Sample metadata
-            included in download
+            <Image className="info__icon" src={InfoIcon} alt="" /> Sample
+            metadata included in download
           </div>
         </div>
 

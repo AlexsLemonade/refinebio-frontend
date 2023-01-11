@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import debounce from 'lodash/debounce';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import Link from 'next/link';
@@ -216,7 +217,7 @@ class SamplesTable extends React.Component {
                   </div>
                   <div className="samples-table-layout__footer">
                     <div className="samples-table__notice info">
-                      <img className="info__icon" src={InfoIcon} alt="" />
+                      <Image className="info__icon" src={InfoIcon} alt="" />
                       <div>
                         Some fields may be harmonized.{' '}
                         <a
@@ -338,7 +339,7 @@ function AddRemoveCell({ sample, experimentAccessionCodes }) {
   ) {
     return (
       <div className="sample-not-processed info">
-        <img className="info__icon" src={InfoIcon} alt="" />
+        <Image className="info__icon" src={InfoIcon} alt="" />
         <div>
           <div className="nowrap">Sample not processed</div>
           <a

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import InfoIcon from '../../common/icons/info-badge.svg';
 
 import downloadFilesData from './downloadFilesData';
@@ -28,7 +29,7 @@ const DownloadFileSummary = ({ dataSet }) => {
         ))}
       </div>
       <div className="downloads-processed-info info">
-        <img className="info__icon" src={InfoIcon} alt="" />
+        <Image className="info__icon" src={InfoIcon} alt="" />
         <div>
           <div className="nowrap">
             All data you download from refine.bio has been uniformly processed

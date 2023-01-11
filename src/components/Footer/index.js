@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { IoLogoTwitter, IoLogoGithub } from 'react-icons/io';
 import FundIcon from '../../common/icons/fund-icon.svg';
@@ -29,8 +30,8 @@ const Footer = () => (
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={FundIcon} className="footer__icon" alt="fund-icon" /> Fund
-            the CCDL
+            <Image src={FundIcon} className="footer__icon" alt="fund-icon" />{' '}
+            Fund the CCDL
           </a>
           <div>
             <a

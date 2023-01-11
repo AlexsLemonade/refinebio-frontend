@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
 import { connect } from 'react-redux';
 import RewardPoster from './404-reward-poster.svg';
@@ -17,7 +18,7 @@ let NoMatch = ({ goBack }) => (
     </div>
 
     <div>
-      <img
+      <Image
         src={RewardPoster}
         alt="404 not found reward poster"
         className="img-responsive"
@@ -25,9 +26,6 @@ let NoMatch = ({ goBack }) => (
     </div>
   </div>
 );
-NoMatch = connect(
-  null,
-  { goBack }
-)(NoMatch);
+NoMatch = connect(null, { goBack })(NoMatch);
 
 export default NoMatch;

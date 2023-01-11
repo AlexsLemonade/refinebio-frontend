@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import classnames from 'classnames';
 import logo from '../../common/icons/logo.svg';
@@ -13,7 +14,7 @@ export default function Header({ isTv }) {
     >
       <Link legacyBehavior href="/index" as="/">
         <a>
-          <img src={logo} alt="refine.bio" className="header__logo" />
+          <Image src={logo} alt="refine.bio" className="header__logo" />
         </a>
       </Link>
       | Executive Dashboard

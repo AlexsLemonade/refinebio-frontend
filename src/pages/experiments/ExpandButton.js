@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import ExpandIcon from '../../common/icons/expand.svg';
 import CollapseIcon from '../../common/icons/collapse.svg';
 import Button from '../../components/Button';
@@ -15,12 +16,12 @@ export default function ExpandButton({ expanded, onClick }) {
     >
       {!expanded ? (
         <>
-          <img src={ExpandIcon} alt="expand icon" />
+          <Image src={ExpandIcon} alt="expand icon" />
           Expand Table
         </>
       ) : (
         <>
-          <img src={CollapseIcon} alt="collapse icon" />
+          <Image src={CollapseIcon} alt="collapse icon" />
           Collapse Table
         </>
       )}

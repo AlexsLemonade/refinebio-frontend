@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { connect } from 'react-redux';
@@ -102,7 +103,7 @@ let Experiment = ({
           <ExperimentHelmet experiment={experiment} />
           <BackToTop />
           <div className="experiment__accession">
-            <img
+            <Image
               src={AccessionIcon}
               className="experiment__stats-icon"
               alt="Accession Icon"
@@ -143,7 +144,7 @@ let Experiment = ({
 
           <div className="experiment__stats">
             <div className="experiment__stats-item">
-              <img
+              <Image
                 src={OrganismIcon}
                 className="experiment__stats-icon"
                 alt="Organism Icon"
@@ -155,7 +156,7 @@ let Experiment = ({
                 : 'No species.'}
             </div>
             <div className="experiment__stats-item">
-              <img
+              <Image
                 src={SampleIcon}
                 className="experiment__stats-icon"
                 alt="Sample Icon"
