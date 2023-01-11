@@ -41,7 +41,14 @@ module.exports = () => {
       if (!isServer && !dev) {
         // ignore momentjs locales
         config.plugins.push(
-          new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+          new webpack.IgnorePlugin({
+            checkResource() {
+              return {
+                resourceRegExp: /^\.\/locale$/,
+                contentRegExp: /moment$/,
+              };
+            },
+          })
         );
 
         // lodash is referenced by multiple libraries,
@@ -85,5 +92,5 @@ module.exports = () => {
     },
   };
 
-  return withImages(withBundleAnalyzer(nextConfig));
+  return withBundleAnalyzer(nextConfig);
 };
