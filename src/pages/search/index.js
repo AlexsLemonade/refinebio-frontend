@@ -280,7 +280,7 @@ const NoSearchResults = ({ query }) => (
     <h2>Try another term</h2>
     <div className="results__suggestion-list">
       {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
-        <Link href="/search" as={searchUrl({ q })} key={q}>
+        <Link legacyBehavior href="/search" as={searchUrl({ q })} key={q}>
           <a className="link results__suggestion">{q}</a>
         </Link>
       ))}
@@ -328,12 +328,9 @@ let NoSearchResultsTooManyFilters = ({
     </div>
   </div>
 );
-NoSearchResultsTooManyFilters = connect(
-  null,
-  {
-    clearFilters,
-  }
-)(NoSearchResultsTooManyFilters);
+NoSearchResultsTooManyFilters = connect(null, {
+  clearFilters,
+})(NoSearchResultsTooManyFilters);
 
 let OrderingDropdown = ({ ordering, updateOrdering }) => {
   const options = [

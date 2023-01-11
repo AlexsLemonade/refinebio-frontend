@@ -58,12 +58,9 @@ let DownloadDetails = ({ dataSet, isImmutable = false, onRefreshDataSet }) => {
     </div>
   );
 };
-DownloadDetails = connect(
-  null,
-  {
-    clearDataSet,
-  }
-)(DownloadDetails);
+DownloadDetails = connect(null, {
+  clearDataSet,
+})(DownloadDetails);
 export default DownloadDetails;
 
 function ClearDatasetButton({ clearDataSet }) {
@@ -94,12 +91,9 @@ function ClearDatasetButton({ clearDataSet }) {
     </ModalManager>
   );
 }
-ClearDatasetButton = connect(
-  null,
-  {
-    clearDataSet,
-  }
-)(ClearDatasetButton);
+ClearDatasetButton = connect(null, {
+  clearDataSet,
+})(ClearDatasetButton);
 
 export function SpeciesSamples({
   dataSet: {
@@ -188,12 +182,9 @@ export function SpeciesSamples({
     </div>
   );
 }
-SpeciesSamples = connect(
-  null,
-  {
-    removeSamples,
-  }
-)(SpeciesSamples);
+SpeciesSamples = connect(null, {
+  removeSamples,
+})(SpeciesSamples);
 
 export class ExperimentsView extends React.Component {
   state = { organism: false };
@@ -238,6 +229,7 @@ export class ExperimentsView extends React.Component {
               <div className="downloads__sample" key={experimentAccessionCode}>
                 <div className="downloads__dataSet-info">
                   <Link
+                    legacyBehavior
                     href="/experiments/[accessionCode]/[slug]"
                     as={routes.experiments(experiment)}
                   >
@@ -363,12 +355,9 @@ export class ExperimentsView extends React.Component {
     );
   }
 }
-ExperimentsView = connect(
-  null,
-  {
-    removeExperiment,
-  }
-)(ExperimentsView);
+ExperimentsView = connect(null, {
+  removeExperiment,
+})(ExperimentsView);
 
 /**
  * ViewSamples button, that when clicked shows a modal with a SamplesTable.

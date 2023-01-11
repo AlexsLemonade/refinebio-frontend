@@ -249,7 +249,7 @@ function MoveToDatasetButtonModal({
                   }}
                 />
                 There are {totalSamplesinCurrentDataSet} samples in{' '}
-                <Link href="/download" as="/download">
+                <Link legacyBehavior href="/download" as="/download">
                   <a className="link" target="_blank">
                     My Dataset
                   </a>

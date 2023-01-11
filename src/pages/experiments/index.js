@@ -182,9 +182,7 @@ let Experiment = ({
             <ExperimentHeaderRow label="PubMed ID">
               {(experiment.pubmed_id && (
                 <a
-                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                    experiment.pubmed_id
-                  }`}
+                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${experiment.pubmed_id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link"
@@ -200,9 +198,7 @@ let Experiment = ({
             <ExperimentHeaderRow label="Publication Title">
               {(experiment.publication_title && (
                 <a
-                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                    experiment.pubmed_id
-                  }`}
+                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${experiment.pubmed_id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link"
@@ -221,12 +217,11 @@ let Experiment = ({
             <ExperimentHeaderRow label="Submitter’s Institution">
               {(experiment.submitter_institution && (
                 <Link
+                  legacyBehavior
                   href={{
                     pathname: '/search',
                     query: {
-                      q: `submitter_institution:${
-                        experiment.submitter_institution
-                      }`,
+                      q: `submitter_institution:${experiment.submitter_institution}`,
                     },
                   }}
                 >
@@ -245,6 +240,7 @@ let Experiment = ({
                 experiment.publication_authors
                   .map(author => (
                     <Link
+                      legacyBehavior
                       href={{
                         pathname: '/search',
                         query: {
@@ -301,10 +297,7 @@ let Experiment = ({
     </Hightlight>
   );
 };
-Experiment = connect(
-  null,
-  { goBack }
-)(Experiment);
+Experiment = connect(null, { goBack })(Experiment);
 Experiment.getInitialProps = async ctx => {
   const { accessionCode } = ctx.query;
   let experiment;

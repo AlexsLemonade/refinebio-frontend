@@ -11,7 +11,7 @@ export default function Header({ isTv }) {
         'header--inverted': !isTv,
       })}
     >
-      <Link href="/index" as="/">
+      <Link legacyBehavior href="/index" as="/">
         <a>
           <img src={logo} alt="refine.bio" className="header__logo" />
         </a>

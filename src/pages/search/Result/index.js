@@ -43,6 +43,7 @@ const Result = ({ result, query }) => {
             <HText>{result.accession_code}</HText>
           </div>
           <Link
+            legacyBehavior
             href={{
               pathname: '/experiments/[accessionCode]/[slug]',
               query: {
@@ -149,6 +150,7 @@ const Result = ({ result, query }) => {
         </p>
 
         <Link
+          legacyBehavior
           href={{
             pathname: '/experiments/[accessionCode]/[slug]',
             query: {

@@ -63,6 +63,7 @@ let Main = ({ push }) => {
 
             {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
               <Link
+                legacyBehavior
                 href={{ pathname: '/search', query: { q } }}
                 as={searchUrl({ q })}
                 key={q}
@@ -240,7 +241,7 @@ let Main = ({ push }) => {
                 processed and packaged for broad and flexible use.
               </div>
               <div className="main__explore-card__actions">
-                <Link href="/compendia" as="/compendia">
+                <Link legacyBehavior href="/compendia" as="/compendia">
                   <a className="button button--secondary ">Learn More</a>
                 </Link>
               </div>
