@@ -34,7 +34,6 @@ module.exports = () => {
   }
 
   const nextConfig = {
-    target: 'serverless',
     env,
     webpack: (baseConfig, { isServer, dev, webpack }) => {
       const config = { ...baseConfig };
