@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "@sentry/browser": "^4.6.4",
-    "babel-eslint": "^10.0.1",
+    "babel-eslint": "^10.1.0",
     "classnames": "^2.2.6",
     "cross-env": "^7.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-import": "^0.13.0",
     "formik": "^2.2.9",
     "gsap": "^3.6.0",
     "history": "^4.7.2",
@@ -29,6 +31,7 @@
     "recharts": "^1.4.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "sharp": "^0.31.3",
     "shortid": "^2.2.14",
     "yup": "^0.32.11"
   },
@@ -61,15 +64,16 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.1.1",
+    "@next/eslint-plugin-next": "^13.1.1",
     "@testing-library/react": "^8.0.1",
     "axios": "^0.21.4",
     "concurrently": "^5.1.0",
-    "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-babel": "^9.0.0",
     "eslint-config-prettier": "^4.3.0",
-    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-import": "^2.27.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-next": "^0.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.13.0",
     "eslint-plugin-react-hooks": "^1.6.0",
@@ -81,9 +85,10 @@
     "prettier": "^1.11.1",
     "puppeteer": "^2.1.1",
     "redux-mock-store": "^1.5.1",
-    "sass": "^1.26.3",
+    "sass": "^1.57.1",
     "sitemap": "^4.1.1",
-    "source-map-explorer": "^2.5.3"
+    "source-map-explorer": "^2.5.3",
+    "typescript": "^4.9.4"
   },
   "proxy": "http://localhost:8000/",
   "browserslist": {
