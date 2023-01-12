@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { IoLogoTwitter, IoLogoGithub } from 'react-icons/io';
 import FundIcon from '../../common/icons/fund-icon.svg';
@@ -29,8 +30,8 @@ const Footer = () => (
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={FundIcon} className="footer__icon" alt="fund-icon" /> Fund
-            the CCDL
+            <Image src={FundIcon} className="footer__icon" alt="fund-icon" />{' '}
+            Fund the CCDL
           </a>
           <div>
             <a
@@ -104,13 +105,13 @@ const Footer = () => (
     </div>
 
     <div className="footer__container footer__link-container">
-      <Link href="/license" as="/license">
+      <Link legacyBehavior href="/license" as="/license">
         <a className="footer__link">BSD 3-Clause License</a>
       </Link>
-      <Link href="/privacy" as="/privacy">
+      <Link legacyBehavior href="/privacy" as="/privacy">
         <a className="footer__link">Privacy</a>
       </Link>
-      <Link href="/terms" as="/terms">
+      <Link legacyBehavior href="/terms" as="/terms">
         <a className="footer__link">Terms of Use</a>
       </Link>
       <a className="footer__link" href="mailto:requests@ccdatalab.org">

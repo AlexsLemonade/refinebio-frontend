@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
 import { connect } from 'react-redux';
 import Link from 'next/link';
@@ -41,7 +42,11 @@ let Main = ({ push }) => {
         </script>
       </Head>
       <section className="main__section main__section--searchbox">
-        <img src={circusPlot} className="about__header-bg" alt="Circus Plot" />
+        <Image
+          src={circusPlot}
+          className="about__header-bg"
+          alt="Circus Plot"
+        />
       </section>
 
       <div>
@@ -63,6 +68,7 @@ let Main = ({ push }) => {
 
             {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
               <Link
+                legacyBehavior
                 href={{ pathname: '/search', query: { q } }}
                 as={searchUrl({ q })}
                 key={q}
@@ -78,7 +84,11 @@ let Main = ({ push }) => {
         <div className="main__steps-container">
           <div className="main__col">
             <h3 className="main__heading-2">
-              <img src={SearchIcon} className="main__icon" alt="search-icon" />{' '}
+              <Image
+                src={SearchIcon}
+                className="main__icon"
+                alt="search-icon"
+              />{' '}
               <div>
                 Find the data you need
                 <p className="main__paragraph">
@@ -110,7 +120,7 @@ let Main = ({ push }) => {
           </div>
           <div className="main__col">
             <h3 className="main__heading-2">
-              <img
+              <Image
                 src={DatasetIcon}
                 className="main__icon"
                 alt="dataset-icon"
@@ -137,7 +147,11 @@ let Main = ({ push }) => {
 
           <div className="main__uses-container">
             <div className="main__use-card">
-              <img src={exploreIcon} alt="" className="main__use-card__icon" />
+              <Image
+                src={exploreIcon}
+                alt=""
+                className="main__use-card__icon"
+              />
               <div className="main__use-card__title">
                 Getting Started using refine.bio data
               </div>
@@ -157,7 +171,11 @@ let Main = ({ push }) => {
               </div>
             </div>
             <div className="main__use-card">
-              <img src={heatmapIcon} alt="" className="main__use-card__icon" />
+              <Image
+                src={heatmapIcon}
+                alt=""
+                className="main__use-card__icon"
+              />
               <div className="main__use-card__title">
                 Differential Expression Analysis
               </div>
@@ -189,7 +207,11 @@ let Main = ({ push }) => {
               </div>
             </div>
             <div className="main__use-card">
-              <img src={pathwayIcon} alt="" className="main__use-card__icon" />
+              <Image
+                src={pathwayIcon}
+                alt=""
+                className="main__use-card__icon"
+              />
               <div className="main__use-card__title">Pathway Analysis</div>
               <div className="main__use-card__body">
                 Learn how you can use refine.bio data to identify pathways that
@@ -240,7 +262,7 @@ let Main = ({ push }) => {
                 processed and packaged for broad and flexible use.
               </div>
               <div className="main__explore-card__actions">
-                <Link href="/compendia" as="/compendia">
+                <Link legacyBehavior href="/compendia" as="/compendia">
                   <a className="button button--secondary ">Learn More</a>
                 </Link>
               </div>

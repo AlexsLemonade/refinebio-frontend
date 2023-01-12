@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { connect } from 'react-redux';
 
 import Link from 'next/link';
@@ -58,12 +59,9 @@ let DownloadDetails = ({ dataSet, isImmutable = false, onRefreshDataSet }) => {
     </div>
   );
 };
-DownloadDetails = connect(
-  null,
-  {
-    clearDataSet,
-  }
-)(DownloadDetails);
+DownloadDetails = connect(null, {
+  clearDataSet,
+})(DownloadDetails);
 export default DownloadDetails;
 
 function ClearDatasetButton({ clearDataSet }) {
@@ -94,12 +92,9 @@ function ClearDatasetButton({ clearDataSet }) {
     </ModalManager>
   );
 }
-ClearDatasetButton = connect(
-  null,
-  {
-    clearDataSet,
-  }
-)(ClearDatasetButton);
+ClearDatasetButton = connect(null, {
+  clearDataSet,
+})(ClearDatasetButton);
 
 export function SpeciesSamples({
   dataSet: {
@@ -188,12 +183,9 @@ export function SpeciesSamples({
     </div>
   );
 }
-SpeciesSamples = connect(
-  null,
-  {
-    removeSamples,
-  }
-)(SpeciesSamples);
+SpeciesSamples = connect(null, {
+  removeSamples,
+})(SpeciesSamples);
 
 export class ExperimentsView extends React.Component {
   state = { organism: false };
@@ -238,6 +230,7 @@ export class ExperimentsView extends React.Component {
               <div className="downloads__sample" key={experimentAccessionCode}>
                 <div className="downloads__dataSet-info">
                   <Link
+                    legacyBehavior
                     href="/experiments/[accessionCode]/[slug]"
                     as={routes.experiments(experiment)}
                   >
@@ -252,7 +245,7 @@ export class ExperimentsView extends React.Component {
                   )}
                   <div className="downloads__sample-stats">
                     <div className="downloads__sample-stat">
-                      <img
+                      <Image
                         src={AccessionIcon}
                         className="downloads__sample-icon"
                         alt="Accession Icon"
@@ -260,7 +253,7 @@ export class ExperimentsView extends React.Component {
                       {experiment.accession_code}
                     </div>
                     <div className="downloads__sample-stat">
-                      <img
+                      <Image
                         src={SampleIcon}
                         className="downloads__sample-icon"
                         alt="Sample Icon"
@@ -268,7 +261,7 @@ export class ExperimentsView extends React.Component {
                       {addedSamples.length} Samples
                     </div>
                     <div className="downloads__sample-stat downloads__sample-stat--experiment">
-                      <img
+                      <Image
                         src={OrganismIcon}
                         className="downloads__sample-icon"
                         alt="Organism Icon"
@@ -363,12 +356,9 @@ export class ExperimentsView extends React.Component {
     );
   }
 }
-ExperimentsView = connect(
-  null,
-  {
-    removeExperiment,
-  }
-)(ExperimentsView);
+ExperimentsView = connect(null, {
+  removeExperiment,
+})(ExperimentsView);
 
 /**
  * ViewSamples button, that when clicked shows a modal with a SamplesTable.

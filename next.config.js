@@ -1,5 +1,4 @@
 const path = require('path');
-const withImages = require('next-images');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -34,7 +33,6 @@ module.exports = () => {
   }
 
   const nextConfig = {
-    target: 'serverless',
     env,
     webpack: (baseConfig, { isServer, dev, webpack }) => {
       const config = { ...baseConfig };
@@ -42,7 +40,10 @@ module.exports = () => {
       if (!isServer && !dev) {
         // ignore momentjs locales
         config.plugins.push(
-          new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+          new webpack.IgnorePlugin({
+            resourceRegExp: /^\.\/locale$/,
+            contextRegExp: /moment$/,
+          })
         );
 
         // lodash is referenced by multiple libraries,
@@ -86,5 +87,5 @@ module.exports = () => {
     },
   };
 
-  return withImages(withBundleAnalyzer(nextConfig));
+  return withBundleAnalyzer(nextConfig);
 };

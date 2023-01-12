@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
 import DistressedTubey from '../common/images/distressed-tubey.svg';
 
@@ -12,7 +13,7 @@ const ServerError = () => (
     </div>
 
     <div>
-      <img
+      <Image
         src={DistressedTubey}
         alt="server error"
         className="img-responsive"

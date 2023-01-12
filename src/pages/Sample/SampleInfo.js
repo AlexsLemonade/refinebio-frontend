@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import AccessionIcon from '../../common/icons/accession.svg';
 import OrganismIcon from '../../common/icons/organism.svg';
 import { formatSentenceCase } from '../../common/helpers';
@@ -10,7 +11,7 @@ export default function SampleInfo({ sample }) {
   return (
     <div className="experiment">
       <div className="experiment__accession mb-2">
-        <img
+        <Image
           src={AccessionIcon}
           className="experiment__stats-icon"
           alt="Accession Icon"
@@ -24,7 +25,7 @@ export default function SampleInfo({ sample }) {
 
       <div className="experiment__stats">
         <div className="experiment__stats-item">
-          <img
+          <Image
             src={OrganismIcon}
             className="experiment__stats-icon"
             alt="Organism Icon"

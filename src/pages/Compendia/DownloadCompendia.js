@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import ReactGA from 'react-ga';
@@ -100,7 +101,7 @@ let DownloadCompendia = ({
 
         {selected && selected.organism_names.length > 1 && (
           <div className="download-compendia__info">
-            <img src={InfoBadge} alt="Attention" />
+            <Image src={InfoBadge} alt="Attention" />
             <p>
               Also contains small number of samples from other
               <br />
@@ -124,7 +125,7 @@ let DownloadCompendia = ({
               onClick={() => setAgree(!agree)}
             >
               I agree to the{' '}
-              <Link href="/terms" as="/terms">
+              <Link legacyBehavior href="/terms" as="/terms">
                 <a className="link" target="_blank" rel="noopener noreferrer">
                   Terms of Use
                 </a>

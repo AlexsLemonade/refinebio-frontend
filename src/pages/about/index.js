@@ -1,11 +1,12 @@
 import React from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
 
 import circusPlot from './circus-plot.svg';
 import savingTimes from './saving-times.svg';
 import oneRepo from './one-repo.svg';
 import betterMed from './better-med.svg';
-import logo from './CCDL_and_ALSF_Logo .png';
+import logo from './CCDL_and_ALSF_Logo.png';
 import { themes, useTheme } from '../../common/ThemeContext';
 
 import apiData from '../../apiData.json';
@@ -28,7 +29,7 @@ function About() {
       </Head>
       <div className="about">
         <div className="about__header">
-          <img
+          <Image
             src={circusPlot}
             className="about__header-bg"
             alt="Circus Plot"
@@ -81,7 +82,7 @@ function About() {
 
         <div className="about__section about__info-item about__info-item--right">
           <div>
-            <img
+            <Image
               src={savingTimes}
               className="about__info-item-image"
               alt="Saving Time to Save Lives"
@@ -107,7 +108,7 @@ function About() {
 
         <div className="about__section about__info-item">
           <div>
-            <img
+            <Image
               src={oneRepo}
               className="about__info-item-image"
               alt="One Language, One Repository"
@@ -131,7 +132,7 @@ function About() {
 
         <div className="about__section about__info-item about__info-item--right">
           <div>
-            <img
+            <Image
               src={betterMed}
               className="about__info-item-image"
               alt="Better Medicine Through Machine Learning"
@@ -163,7 +164,7 @@ function About() {
 
           <div className="about__section-created__logo-container">
             <div className="about__section-created__logo">
-              <img
+              <Image
                 src={logo}
                 className="img-responsive"
                 alt=" Childhood Cancer Data Lab, powered by Alex’s Lemonade Stand Foundation Logo"

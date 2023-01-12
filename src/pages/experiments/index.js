@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { connect } from 'react-redux';
@@ -102,7 +103,7 @@ let Experiment = ({
           <ExperimentHelmet experiment={experiment} />
           <BackToTop />
           <div className="experiment__accession">
-            <img
+            <Image
               src={AccessionIcon}
               className="experiment__stats-icon"
               alt="Accession Icon"
@@ -143,7 +144,7 @@ let Experiment = ({
 
           <div className="experiment__stats">
             <div className="experiment__stats-item">
-              <img
+              <Image
                 src={OrganismIcon}
                 className="experiment__stats-icon"
                 alt="Organism Icon"
@@ -155,7 +156,7 @@ let Experiment = ({
                 : 'No species.'}
             </div>
             <div className="experiment__stats-item">
-              <img
+              <Image
                 src={SampleIcon}
                 className="experiment__stats-icon"
                 alt="Sample Icon"
@@ -182,9 +183,7 @@ let Experiment = ({
             <ExperimentHeaderRow label="PubMed ID">
               {(experiment.pubmed_id && (
                 <a
-                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                    experiment.pubmed_id
-                  }`}
+                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${experiment.pubmed_id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link"
@@ -200,9 +199,7 @@ let Experiment = ({
             <ExperimentHeaderRow label="Publication Title">
               {(experiment.publication_title && (
                 <a
-                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${
-                    experiment.pubmed_id
-                  }`}
+                  href={`https://www.ncbi.nlm.nih.gov/pubmed/${experiment.pubmed_id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link"
@@ -221,12 +218,11 @@ let Experiment = ({
             <ExperimentHeaderRow label="Submitter’s Institution">
               {(experiment.submitter_institution && (
                 <Link
+                  legacyBehavior
                   href={{
                     pathname: '/search',
                     query: {
-                      q: `submitter_institution:${
-                        experiment.submitter_institution
-                      }`,
+                      q: `submitter_institution:${experiment.submitter_institution}`,
                     },
                   }}
                 >
@@ -245,6 +241,7 @@ let Experiment = ({
                 experiment.publication_authors
                   .map(author => (
                     <Link
+                      legacyBehavior
                       href={{
                         pathname: '/search',
                         query: {
@@ -301,10 +298,7 @@ let Experiment = ({
     </Hightlight>
   );
 };
-Experiment = connect(
-  null,
-  { goBack }
-)(Experiment);
+Experiment = connect(null, { goBack })(Experiment);
 Experiment.getInitialProps = async ctx => {
   const { accessionCode } = ctx.query;
   let experiment;

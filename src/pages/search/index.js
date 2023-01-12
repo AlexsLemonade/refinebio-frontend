@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Image from 'next/image';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -266,7 +267,7 @@ const ErrorApiUnderHeavyLoad = () => (
   <div className="results__no-results">
     <ApiOverwhelmed />
 
-    <img
+    <Image
       src={DistressedTubey}
       alt="Start searching"
       className="results__no-results-image img-responsive"
@@ -280,7 +281,7 @@ const NoSearchResults = ({ query }) => (
     <h2>Try another term</h2>
     <div className="results__suggestion-list">
       {['Notch', 'Medulloblastoma', 'GSE24528'].map(q => (
-        <Link href="/search" as={searchUrl({ q })} key={q}>
+        <Link legacyBehavior href="/search" as={searchUrl({ q })} key={q}>
           <a className="link results__suggestion">{q}</a>
         </Link>
       ))}
@@ -289,7 +290,7 @@ const NoSearchResults = ({ query }) => (
       Expecting a specific experiment? <RequestSearchButton query={query} />
     </p>
 
-    <img
+    <Image
       src={GhostSampleImage}
       alt="Start searching"
       className="results__no-results-image img-responsive"
@@ -319,7 +320,7 @@ let NoSearchResultsTooManyFilters = ({
             Clear Filters
           </Button>
         </p>
-        <img
+        <Image
           src={GhostSampleImage}
           alt="Start searching"
           className="results__no-results-image img-responsive"
@@ -328,12 +329,9 @@ let NoSearchResultsTooManyFilters = ({
     </div>
   </div>
 );
-NoSearchResultsTooManyFilters = connect(
-  null,
-  {
-    clearFilters,
-  }
-)(NoSearchResultsTooManyFilters);
+NoSearchResultsTooManyFilters = connect(null, {
+  clearFilters,
+})(NoSearchResultsTooManyFilters);
 
 let OrderingDropdown = ({ ordering, updateOrdering }) => {
   const options = [
