@@ -41,12 +41,8 @@ module.exports = () => {
         // ignore momentjs locales
         config.plugins.push(
           new webpack.IgnorePlugin({
-            checkResource() {
-              return {
-                resourceRegExp: /^\.\/locale$/,
-                contentRegExp: /moment$/,
-              };
-            },
+            resourceRegExp: /^\.\/locale$/,
+            contextRegExp: /moment$/,
           })
         );
 
