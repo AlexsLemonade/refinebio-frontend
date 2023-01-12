@@ -14,12 +14,12 @@ export default function Notification() {
   if (!message) return null;
   if (closed[pathname + message]) return null;
 
-  function closeMessage() {
+  const closeMessage = () => {
     setClosed({
       ...closed,
       [pathname + message]: true,
     });
-  }
+  };
 
   return (
     <div className="notification">

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import HelpIconImage from '../common/icons/help.svg';
 
 export const HelpIconLink = ({
@@ -13,7 +14,7 @@ export const HelpIconLink = ({
       title={alt}
       className="downloads__help-icon"
     >
-      <img src={HelpIconImage} alt={alt} />
+      <Image src={HelpIconImage} alt={alt} />
     </a>
   );
 };

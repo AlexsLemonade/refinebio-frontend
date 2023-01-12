@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import AccessionIcon from '../../../common/icons/accession.svg';
 import OrganismIcon from '../../../common/icons/organism.svg';
@@ -35,7 +36,7 @@ const Result = ({ result, query }) => {
       <div className="result__title-container">
         <div className="result__title-info">
           <div className="result__accession">
-            <img
+            <Image
               src={AccessionIcon}
               className="result__icon"
               alt="accession-icon"
@@ -43,6 +44,7 @@ const Result = ({ result, query }) => {
             <HText>{result.accession_code}</HText>
           </div>
           <Link
+            legacyBehavior
             href={{
               pathname: '/experiments/[accessionCode]/[slug]',
               query: {
@@ -86,7 +88,7 @@ const Result = ({ result, query }) => {
       </div>
       <ul className="result__stats">
         <li className="result__stat">
-          <img
+          <Image
             src={OrganismIcon}
             className="result__icon"
             alt="organism-icon"
@@ -98,7 +100,7 @@ const Result = ({ result, query }) => {
             'No species.'}
         </li>
         <li className="result__stat">
-          <img src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
+          <Image src={SampleIcon} className="result__icon" alt="sample-icon" />{' '}
           <NDownloadableSamples total={result.num_downloadable_samples} />
         </li>
         <li className="result__stat">
@@ -149,6 +151,7 @@ const Result = ({ result, query }) => {
         </p>
 
         <Link
+          legacyBehavior
           href={{
             pathname: '/experiments/[accessionCode]/[slug]',
             query: {

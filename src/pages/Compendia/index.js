@@ -62,6 +62,7 @@ function Compendia() {
                 })}
               >
                 <Link
+                  legacyBehavior
                   href={{
                     pathname: router.pathname,
                     query: { c: compendia.hash },

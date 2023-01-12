@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { formatBytes, getExampleLink } from '../../common/helpers';
@@ -90,7 +91,7 @@ const DataSetErrorDownloading = ({ dataSet }) => {
           </div>
 
           <div className="dataset__way-image">
-            <img src={DownloadErrorImage} alt="" />
+            <Image src={DownloadErrorImage} alt="" />
           </div>
         </div>
       </div>
@@ -182,7 +183,7 @@ let DataSetReady = ({ dataSet, createToken, hasToken }) => {
             </div>
 
             <div className="dataset__way-image">
-              <img src={DownloadImage} alt="" />
+              <Image src={DownloadImage} alt="" />
             </div>
           </div>
         </div>
@@ -224,7 +225,7 @@ let DataSetExpired = ({ dataSet, regenerateDataSet }) => (
           </div>
           {minorVersionChanged(apiData.apiVersion, dataSet.worker_version) && (
             <div className="dataset__tip-info info">
-              <img className="info__icon" src={InfoIcon} alt="" />
+              <Image className="info__icon" src={InfoIcon} alt="" />
               <span>
                 Some expression values may differ.{' '}
                 <a
@@ -241,7 +242,7 @@ let DataSetExpired = ({ dataSet, regenerateDataSet }) => (
         </div>
 
         <div className="dataset__way-image">
-          <img src={DownloadExpiredImage} alt="" />
+          <Image src={DownloadExpiredImage} alt="" />
         </div>
       </div>
     </div>
@@ -351,7 +352,7 @@ const DataSetNextSteps = ({ dataSet }) => {
 
   return (
     <div className="dataset__next-steps">
-      <img src={TubeyAdventureImage} alt="" />
+      <Image src={TubeyAdventureImage} alt="" />
       <div>
         <h1>Explore what you can do with your refine.bio dataset!</h1>
         {isMixed &&

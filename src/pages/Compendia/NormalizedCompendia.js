@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import NormalizedIcon from './icon-normal-curve.svg';
 import DownloadCompendia from './DownloadCompendia';
 
@@ -7,7 +8,7 @@ export default function NormalizedCompendia({ title }) {
     <div className="compendia__tab--container">
       <div className="compendia__download">
         <div className="compendia__icon">
-          <img alt="compendia" src={NormalizedIcon} />
+          <Image alt="compendia" src={NormalizedIcon} />
         </div>
         <p className="compendia__name">Normalized Compendia</p>
         <div className="compendia__process-download">

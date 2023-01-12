@@ -1,12 +1,12 @@
 import React from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
 
 import circusPlot from './circus-plot.svg';
 import savingTimes from './saving-times.svg';
 import oneRepo from './one-repo.svg';
 import betterMed from './better-med.svg';
-import alsfLogo from './ALSFsquare.svg';
-import ccdlLogo from './CCDL-logo.jpg';
+import logo from './CCDL_and_ALSF_Logo.png';
 import { themes, useTheme } from '../../common/ThemeContext';
 
 import apiData from '../../apiData.json';
@@ -29,7 +29,7 @@ function About() {
       </Head>
       <div className="about">
         <div className="about__header">
-          <img
+          <Image
             src={circusPlot}
             className="about__header-bg"
             alt="Circus Plot"
@@ -82,7 +82,7 @@ function About() {
 
         <div className="about__section about__info-item about__info-item--right">
           <div>
-            <img
+            <Image
               src={savingTimes}
               className="about__info-item-image"
               alt="Saving Time to Save Lives"
@@ -108,7 +108,7 @@ function About() {
 
         <div className="about__section about__info-item">
           <div>
-            <img
+            <Image
               src={oneRepo}
               className="about__info-item-image"
               alt="One Language, One Repository"
@@ -132,7 +132,7 @@ function About() {
 
         <div className="about__section about__info-item about__info-item--right">
           <div>
-            <img
+            <Image
               src={betterMed}
               className="about__info-item-image"
               alt="Better Medicine Through Machine Learning"
@@ -164,22 +164,10 @@ function About() {
 
           <div className="about__section-created__logo-container">
             <div className="about__section-created__logo">
-              <img
-                src={alsfLogo}
+              <Image
+                src={logo}
                 className="img-responsive"
-                width="186"
-                height="200"
-                alt="ALSF Logo"
-              />
-            </div>
-
-            <div className="about__section-created__logo">
-              <img
-                src={ccdlLogo}
-                className="img-responsive"
-                width="319"
-                height="156"
-                alt="CCDL Logo"
+                alt=" Childhood Cancer Data Lab, powered by Alex’s Lemonade Stand Foundation Logo"
               />
             </div>
           </div>
@@ -196,7 +184,7 @@ function About() {
 
               <div className="about__section-donate__action">
                 <a
-                  href="https://secure.squarespace.com/checkout/donate?donatePageId=5b046884575d1f9eea37935b"
+                  href="https://www.ccdatalab.org/donate-link"
                   className="button button--large about__button-donate"
                   target="_blank"
                   rel="noopener noreferrer"

@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import Image from 'next/image';
 import { connect } from 'react-redux';
 import ProcessingImage from './download-processing.svg';
 import { startDownload } from '../../../state/download/actions';
@@ -43,7 +44,7 @@ let DownloadStart = ({ dataSetId, agreedToTerms, startDownload }) => {
           onSubmit={data => submitEmailForm(data)}
         />
         <div className="dataset__image">
-          <img
+          <Image
             src={ProcessingImage}
             alt="We're processing your download file"
             className="img-responsive"

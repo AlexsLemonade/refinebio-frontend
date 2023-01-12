@@ -12,7 +12,7 @@ export default function TermsOfUse({ agreedToTerms, handleToggle }) {
         name="termsOfUse"
       >
         I agree to the{' '}
-        <Link href="/terms" as="/terms">
+        <Link legacyBehavior href="/terms" as="/terms">
           <a className="link">Terms of Use</a>
         </Link>
       </Checkbox>

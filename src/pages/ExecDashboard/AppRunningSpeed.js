@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { IoIosWarning, IoMdCheckmarkCircle } from 'react-icons/io';
+import Image from 'next/image';
 import sonic from './sonic.gif';
 
 const RunningStatus = {
@@ -16,7 +17,7 @@ export default function AppRunningSpeed({ data }) {
   const title =
     speed === RunningStatus.RunningFast ? (
       <div className="running-status__stripes">
-        <img src={sonic} alt="sonic" />
+        <Image src={sonic} alt="sonic" />
         We’re processing data at super sonic speed!
       </div>
     ) : speed === RunningStatus.Running ||

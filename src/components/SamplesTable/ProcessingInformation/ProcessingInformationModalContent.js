@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import { stringEnumerate } from '../../../common/helpers';
@@ -70,7 +71,7 @@ export default class ProcessingInformationModalContent extends React.Component {
 
         <div className="pipeline">
           <div className="pipeline__item">
-            <img src={FileIcon} alt="" />
+            <Image src={FileIcon} alt="" />
             <div>Input File</div>
           </div>
           <div className="pipeline__arrow">
@@ -80,7 +81,7 @@ export default class ProcessingInformationModalContent extends React.Component {
           {results.map(({ processor: { name } }) => (
             <React.Fragment key={name}>
               <div className="pipeline__item">
-                <img src={ProcessIcon} alt="" />
+                <Image src={ProcessIcon} alt="" />
                 <div>{name}</div>
               </div>
               <div className="pipeline__arrow">
@@ -90,7 +91,7 @@ export default class ProcessingInformationModalContent extends React.Component {
           ))}
 
           <div className="pipeline__item">
-            <img src={FileIcon} alt="" />
+            <Image src={FileIcon} alt="" />
             <div>Gene Expression Matrix</div>
           </div>
         </div>

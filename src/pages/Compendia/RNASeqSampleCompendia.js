@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import RNASeqIcon from './icon-rnaseq-compendia.svg';
 import RNASeqProcess from './quantpendia-pipeline-illustration.svg';
 import DownloadCompendia from './DownloadCompendia';
@@ -9,7 +10,7 @@ export default function RNASeqSampleCompendia({ title }) {
     <div className="compendia__tab--container">
       <div className="compendia__download">
         <div className="compendia__icon">
-          <img alt="compendia" src={RNASeqIcon} />
+          <Image alt="compendia" src={RNASeqIcon} />
         </div>
         <p className="compendia__name">RNA-seq Sample Compendia</p>
         <div className="compendia__process-download">
@@ -19,7 +20,7 @@ export default function RNASeqSampleCompendia({ title }) {
           </p>
           <DownloadCompendia title={title} filter={{ quant_sf_only: true }}>
             <div className="download-compendia__info">
-              <img src={InfoBadge} alt="Attention" />
+              <Image src={InfoBadge} alt="Attention" />
               Data is not normalized or aggregated.
             </div>
           </DownloadCompendia>
@@ -28,7 +29,7 @@ export default function RNASeqSampleCompendia({ title }) {
       <div className="compendia__section compendia__section--inline">
         <div className="compendia__section">
           <div className="compendia__section-title">Uniformly Processed</div>
-          <img
+          <Image
             alt="RNA-seq sample compendia process - input file to salmon to tximport"
             src={RNASeqProcess}
           />

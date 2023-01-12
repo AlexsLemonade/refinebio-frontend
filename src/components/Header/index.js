@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import Link from 'next/link';
@@ -26,9 +27,9 @@ let Header = ({ router: location }) => {
       })}
     >
       <div className="header__container">
-        <Link href="/index" as="/">
+        <Link legacyBehavior href="/index" as="/">
           <a>
-            <img src={logo} alt="refine.bio" className="header__logo" />
+            <Image src={logo} alt="refine.bio" className="header__logo" />
           </a>
         </Link>
 
@@ -92,7 +93,7 @@ let HeaderLinks = ({ itemClicked, totalSamples, fetchDataSet, location }) => {
         About
       </HeaderLink>
       <li className="header__link header__link--button-wrap">
-        <Link href="/download" as="/download">
+        <Link legacyBehavior href="/download" as="/download">
           <a
             className="button button--secondary header__link-button"
             onClick={itemClicked}
@@ -139,7 +140,7 @@ const HeaderLink = ({
         'header__link--active': isActive,
       })}
     >
-      <Link href={href} as={asPath || href}>
+      <Link legacyBehavior href={href} as={asPath || href}>
         <a onClick={onClick} role="button" tabIndex={0}>
           {children}
         </a>
@@ -199,7 +200,12 @@ const HeaderDropDownLink = ({
           >
             {href.map(({ title, location: toLocation }) => (
               <li key={title}>
-                <Link href={toLocation} as={toLocation} replace={replace}>
+                <Link
+                  legacyBehavior
+                  href={toLocation}
+                  as={toLocation}
+                  replace={replace}
+                >
                   <a
                     onClick={(...click) => {
                       closeDropdown();
@@ -257,7 +263,7 @@ function GithubCorner() {
       rel="nofollow noopener noreferrer"
       className="github-corner"
     >
-      <img src={githubCorner} alt="github link" />
+      <Image src={githubCorner} alt="github link" />
     </a>
   );
 }

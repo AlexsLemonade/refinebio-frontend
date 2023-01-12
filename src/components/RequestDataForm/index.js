@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import Button from '../Button';
@@ -152,9 +153,9 @@ const RequestDataForm = ({
 
         <div className="hidden-xs">
           {useMissingDataImage ? (
-            <img src={MissingSampleImage} alt="Missing sample" />
+            <Image src={MissingSampleImage} alt="Missing sample" />
           ) : (
-            <img src={ResearcherLookingImage} alt="Missing sample" />
+            <Image src={ResearcherLookingImage} alt="Missing sample" />
           )}
         </div>
       </div>

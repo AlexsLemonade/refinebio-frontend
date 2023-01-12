@@ -205,7 +205,7 @@ export const EmailAddressOptions = ({ children }) => {
             onChange={handleChange}
           >
             I agree to the{' '}
-            <Link href="/terms" as="/terms">
+            <Link legacyBehavior href="/terms" as="/terms">
               <a className="link" target="_blank" rel="noopener noreferrer">
                 Terms of Use
               </a>

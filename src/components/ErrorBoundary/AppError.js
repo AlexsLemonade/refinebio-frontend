@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { connect } from 'react-redux';
 import * as Sentry from '@sentry/browser';
 import SpilledSample from './spilled-sample.svg';
@@ -25,7 +26,7 @@ let AppError = ({ goBack }) => (
     </div>
 
     <div>
-      <img
+      <Image
         src={SpilledSample}
         alt="Something went wrong"
         className="img-responsive"
@@ -33,11 +34,8 @@ let AppError = ({ goBack }) => (
     </div>
   </div>
 );
-AppError = connect(
-  null,
-  {
-    goBack,
-  }
-)(AppError);
+AppError = connect(null, {
+  goBack,
+})(AppError);
 
 export default AppError;

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -43,10 +44,10 @@ function DownloadEmpty() {
   return (
     <div className="downloads__empty">
       <h3 className="downloads__empty-heading">Your dataset is empty.</h3>
-      <Link href="/index" as="/">
+      <Link legacyBehavior href="/index" as="/">
         <a className="button">Search and Add Samples</a>
       </Link>
-      <img
+      <Image
         src={NoDatasetsImage}
         alt="Your dataset is empty"
         className="downloads__empty-image img-responsive"
